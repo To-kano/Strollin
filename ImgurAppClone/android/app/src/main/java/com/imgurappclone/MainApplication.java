@@ -1,4 +1,4 @@
-package com.imgurappclone;
+package com.Strollin;
 
 import android.app.Application;
 import android.content.Context;

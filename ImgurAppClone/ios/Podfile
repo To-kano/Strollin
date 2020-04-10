@@ -1,8 +1,8 @@
 platform :ios, '9.0'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
-target 'ImgurAppClone' do
-  # Pods for ImgurAppClone
+target 'Strollin' do
+  # Pods for Strollin
   pod 'FBLazyVector', :path => "../node_modules/react-native/Libraries/FBLazyVector"
   pod 'FBReactNativeSpec', :path => "../node_modules/react-native/Libraries/FBReactNativeSpec"
   pod 'RCTRequired', :path => "../node_modules/react-native/Libraries/RCTRequired"
@@ -36,7 +36,7 @@ target 'ImgurAppClone' do
 
   pod 'react-native-video', :path => '../node_modules/react-native-video'
 
-  target 'ImgurAppCloneTests' do
+  target 'StrollinTests' do
     inherit! :search_paths
     # Pods for testing
   end
@@ -44,10 +44,10 @@ target 'ImgurAppClone' do
   use_native_modules!
 end
 
-target 'ImgurAppClone-tvOS' do
-  # Pods for ImgurAppClone-tvOS
+target 'Strollin-tvOS' do
+  # Pods for Strollin-tvOS
 
-  target 'ImgurAppClone-tvOSTests' do
+  target 'Strollin-tvOSTests' do
     inherit! :search_paths
     # Pods for testing
   end

@@ -29,9 +29,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "ImgurAppClone.app"
-               BlueprintName = "ImgurAppClone"
-               ReferencedContainer = "container:ImgurAppClone.xcodeproj">
+               BuildableName = "Strollin.app"
+               BlueprintName = "Strollin"
+               ReferencedContainer = "container:Strollin.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -43,9 +43,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "ImgurAppCloneTests.xctest"
-               BlueprintName = "ImgurAppCloneTests"
-               ReferencedContainer = "container:ImgurAppClone.xcodeproj">
+               BuildableName = "StrollinTests.xctest"
+               BlueprintName = "StrollinTests"
+               ReferencedContainer = "container:Strollin.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -61,9 +61,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "ImgurAppCloneTests.xctest"
-               BlueprintName = "ImgurAppCloneTests"
-               ReferencedContainer = "container:ImgurAppClone.xcodeproj">
+               BuildableName = "StrollinTests.xctest"
+               BlueprintName = "StrollinTests"
+               ReferencedContainer = "container:Strollin.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -71,9 +71,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "ImgurAppClone.app"
-            BlueprintName = "ImgurAppClone"
-            ReferencedContainer = "container:ImgurAppClone.xcodeproj">
+            BuildableName = "Strollin.app"
+            BlueprintName = "Strollin"
+            ReferencedContainer = "container:Strollin.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -94,9 +94,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "ImgurAppClone.app"
-            BlueprintName = "ImgurAppClone"
-            ReferencedContainer = "container:ImgurAppClone.xcodeproj">
+            BuildableName = "Strollin.app"
+            BlueprintName = "Strollin"
+            ReferencedContainer = "container:Strollin.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -113,9 +113,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "ImgurAppClone.app"
-            BlueprintName = "ImgurAppClone"
-            ReferencedContainer = "container:ImgurAppClone.xcodeproj">
+            BuildableName = "Strollin.app"
+            BlueprintName = "Strollin"
+            ReferencedContainer = "container:Strollin.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
