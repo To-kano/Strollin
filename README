@@ -1,0 +1,13 @@
+Run instructions for iOS:
+    • cd "/home/pantoine/Documents/gitHub/Imgur_app_clone/ImgurAppClone" && npx react-native run-ios
+    - or -
+    • Open ImgurAppClone/ios/ImgurAppClone.xcodeproj in Xcode or run "xed -b ios"
+    • Hit the Run button
+
+Run instructions for Android:
+    • Have an Android emulator running (quickest way to get started), or a device connected.
+    • cd "/home/pantoine/Documents/gitHub/Imgur_app_clone/ImgurAppClone" && npx react-native run-android
+
+npx react-native start
+npx react-native log-android
+npx react-native run-android
