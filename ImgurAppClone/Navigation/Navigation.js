@@ -5,6 +5,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import Home from "../Components/HomeScreen";
 import Profile from "../Components/ProfileScreen";
 import ConnectionScreen from '../Components/ConnectionScreen'
+import LoginPage from '../Components/LoginPage'
 
 const Stack = createStackNavigator();
 
@@ -13,9 +14,9 @@ function MyStack() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
-            name="Connection"
-            component={ConnectionScreen}
-            options={{title: 'connection'}}
+            name="Login"
+            component={LoginPage}
+            options={{title: 'Login'}}
         />
         <Stack.Screen
           name="Home"
