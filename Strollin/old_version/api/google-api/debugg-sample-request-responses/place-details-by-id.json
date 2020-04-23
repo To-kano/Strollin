@@ -1,0 +1,61 @@
+{
+  "I added this field for the api call string": "https://maps.googleapis.com/maps/api/place/details/json?place_id=ChIJN1t_tDeuEmsRUsoyG83frY4&fields=name,rating,reviews&key=AIzaSyB-xO-UPVjhXP85uteh1n5hIbUeXqqjWRI",
+  "html_attributions":[],
+  "result":{
+     "name":"Google Australia",
+     "rating":4.1,
+     "reviews":[
+        {
+           "author_name":"Guru s",
+           "author_url":"https://www.google.com/maps/contrib/106780570080138238260/reviews",
+           "language":"en",
+           "profile_photo_url":"https://lh3.ggpht.com/-DTR0hYa08Aw/AAAAAAAAAAI/AAAAAAAAAAA/xlkETZk8IJg/s128-c0x00000000-cc-rp-mo/photo.jpg",
+           "rating":5,
+           "relative_time_description":"2 months ago",
+           "text":"Its been more than 3 years since I got the PR with great guidance & professional work from Dr. Anna. I had approached him this week for getting the passport details update . No questions asked. And the update was done in a most professional way. \n\nIf you want to get your feedback on whether you are eligible for PR , stop anything else you are doing and Dr. Anna is the person you have to speak to.\n\nBe ready to get the honest feedback on your status.",
+           "time":1570001987
+        },
+        {
+           "author_name":"LIMUEL SWANSON",
+           "author_url":"https://www.google.com/maps/contrib/100598724294317120607/reviews",
+           "language":"en",
+           "profile_photo_url":"https://lh3.ggpht.com/-VApg8x__oU8/AAAAAAAAAAI/AAAAAAAAAAA/fannhft5H2c/s128-c0x00000000-cc-rp-mo-ba3/photo.jpg",
+           "rating":5,
+           "relative_time_description":"2 weeks ago",
+           "text":"Really? I’m a Google map contributor so what else am I gonna do but to give this location five stars. \n\nYou know what they say, “don’t bite the hand that doesn’t feed you” Because yeah, we don’t get paid for this gig! \n\nAlso, Google likes me, something about algorithms.",
+           "time":1574851497
+        },
+        {
+           "author_name":"Simon Cookes",
+           "author_url":"https://www.google.com/maps/contrib/117324324636388331456/reviews",
+           "language":"en",
+           "profile_photo_url":"https://lh6.ggpht.com/-3H2w0qJn47s/AAAAAAAAAAI/AAAAAAAAAAA/qPdu7ic6TOc/s128-c0x00000000-cc-rp-mo/photo.jpg",
+           "rating":3,
+           "relative_time_description":"2 weeks ago",
+           "text":"Do not use Google Shared Drive (yet) - cannot move between content manager folders even though it says you can, cannot share folders with external clients or partners, if you did not create the file then you cant move it the author of the file needs to do that so takes days to move hundreds of files as you need to copy them individually. Stick with Dropbox (for now). Oh and unlimited space is not actually unlimited. Gmail a little clunky too. (I would have given 2 star but know some great folks working at Google.)",
+           "time":1574918492
+        },
+        {
+           "author_name":"Bastian M Goonewardena",
+           "author_url":"https://www.google.com/maps/contrib/116469171974372645286/reviews",
+           "language":"en",
+           "profile_photo_url":"https://lh5.ggpht.com/-zwvTCguP_4E/AAAAAAAAAAI/AAAAAAAAAAA/0pqwNUfNP-g/s128-c0x00000000-cc-rp-mo-ba5/photo.jpg",
+           "rating":5,
+           "relative_time_description":"2 months ago",
+           "text":"It was a honour for me to get in to google Australia office. The staff is extremely helpful very kind. I had high expectations even before entering the office but the architecture and the design of the office itself blew my expectations over the roof. \nOne thing I noticed is that google actually cares about their staff and their well-being.\n\nI was there at a google education conference. The food that they serve was very good, possibly the best ever food I have had in a conference.",
+           "time":1568879793
+        },
+        {
+           "author_name":"Ansari Brother",
+           "author_url":"https://www.google.com/maps/contrib/117649170749242908636/reviews",
+           "language":"en",
+           "profile_photo_url":"https://lh4.ggpht.com/-veKe80hNF_U/AAAAAAAAAAI/AAAAAAAAAAA/3l20dDJ6M-A/s128-c0x00000000-cc-rp-mo-ba3/photo.jpg",
+           "rating":1,
+           "relative_time_description":"a week ago",
+           "text":"A big thumb down google’s business reviews system. It is completely a jungle rule. Anyone can write any review on the business listing and business can’t even raise a voice against it. If google can’t give chance to businesses to explain the situation then remove this feature. I been this situation where customers were completely wrong but they left negative reviews. They also asked their friends to leave negative reviews. I am helpless.",
+           "time":1575189442
+        }
+     ]
+  },
+  "status":"OK"
+}

@@ -5,6 +5,8 @@ import {createStackNavigator} from '@react-navigation/stack';
 import Home from "../Components/HomeScreen";
 import Profile from "../Components/ProfileScreen";
 import ConnectionScreen from '../Components/ConnectionScreen'
+import UserRegister from '../Components/UserRegister';
+
 
 const Stack = createStackNavigator();
 
@@ -12,6 +14,11 @@ function MyStack() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+      <Stack.Screen
+            name="userRegister"
+            component={UserRegister}
+            options={{title: 'inscription'}}
+        />
         <Stack.Screen
             name="Connection"
             component={ConnectionScreen}
