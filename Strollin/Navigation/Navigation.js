@@ -6,6 +6,7 @@ import Home from "../Components/HomeScreen";
 import Profile from "../Components/ProfileScreen";
 import ConnectionScreen from '../Components/ConnectionScreen'
 import UserRegister from '../Components/UserRegister';
+import TageSelection from '../Components/TagSelection';
 
 
 const Stack = createStackNavigator();
@@ -14,7 +15,12 @@ function MyStack() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-      <Stack.Screen
+        <Stack.Screen
+            name="TagSelection"
+            component={TageSelection}
+            options={{title: 'tag selection'}}
+        />
+        <Stack.Screen
             name="userRegister"
             component={UserRegister}
             options={{title: 'inscription'}}
