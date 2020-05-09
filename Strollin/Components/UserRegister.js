@@ -136,7 +136,7 @@ function UserRegister(props) {
                 <Button
                   title="Sign In"
                   color="black"
-                  onPress={() => props.navigation.navigate('UserLogin')}
+                  onPress={() => props.navigation.navigate('userLogin')}
                 />
               </View>
             </View>

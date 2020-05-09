@@ -56,7 +56,10 @@ function LoginPage(props) {
           <Text style={styles.textLink} onPress={()=> console.log("ok")}>
             Forgot Password ?
           </Text>
-          <Text style={styles.textLink} onPress={()=> console.log("ok")}>
+          <Text style={styles.textLink} onPress={()=> {
+              props.navigation.navigate('userRegister');
+              //console.log("ok");
+              }}>
             Dont have an account ?
           </Text>
         </View>
