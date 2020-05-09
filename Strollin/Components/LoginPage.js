@@ -44,7 +44,7 @@ function LoginPage(props) {
             <TextInput
               underlineColorAndroid={'purple'}
               style={{ height: 80, width: '100%', fontSize: 40}}
-              onChangeText={text => onChangeText(text)}
+              onChangeText={text => onChangePass(text)}
               value={valuePass}
               textAlign={'left'}
               Placeholder={'Password'}
