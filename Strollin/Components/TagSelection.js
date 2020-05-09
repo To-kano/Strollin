@@ -129,89 +129,10 @@ class Tag extends Component {
   }
 }
 
-class TageSelection extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      tags: 'bonjour',
-      data: [],
-      color: 'pink'
-    };
-  }
+function TageSelection(props) {
 
-  updatePresses = (key) => {
-    //this.setState({data[key]: false})
-  }
-  updateColor = (color) => {
-    this.setState({ color: color })
-  }
-  updateState = (value) => {
-    console.log("update state value = ", value);
-    //this.setState({tags: value})
-    this.state.tags = value
-  }
-
-  data = [{ key: '0', name: 'hello' }];
-
-  async writeTagDataTest(tagName) {
-    fire.database().ref('Tags/' + tagName).set({
-      name: tagName,
-      rank: 0
-    }).then((data) => {
-      //success callback
-      console.log('data ', data)
-    }).catch((error) => {
-      //error callback
-      console.log('error ', error)
-    })
-  }
-
-  async readTagsData() {
-    let tmp = await fire.database().ref('Tags/').once('value', function (snapshot) {
-      return snapshot.val()
-    });
-    console.log("tmp: ", tmp)
-    return tmp
-  }
-
-  async displayTags() {
-    let tmp = await this.readTagsData()
-    this.updateState(tmp)
-    var test = []
-    var i = 0;
-    this.state.tags.forEach(function (childSnapshot) {
-      var item = childSnapshot.val();
-      test.push({ key: i, name: item.name, rank: item.rank, pressed: false })
-      i++
-    });
-    this.setState({ data: test })
-  }
-
-  async readUserData(UserId) {
-    let tmp = await fire.database().ref('UsersTest/' + UserId).once('value', function (snapshot) {
-      return snapshot.val()
-    });
-    return tmp
-  }
-
-  async NextPage(UserId) {
-    let tmp = await this.readUserData(UserId)
-    let array = tmp.val().tagList
-    if (array.length > 4) {
-      this.props.navigation.navigate('Home', { uid: UserId })
-      return
-    }
-    alert('Please select at least 4 tags');
-  }
-
-  componentDidMount() {
-    //this.displayTags()
-  }
-  render() {
-    console.disableYellowBox = true;
-    const { navigation } = this.props;
-    return (
-      <View style={styles.container}>
+  return (
+    <View style={styles.container}>
         <View style={{flex: 1}}>
           <ImageBackground source={require('../images/london2.jpg')} style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').width / 2.2 - 10, }} />
         </View>
@@ -220,12 +141,12 @@ class TageSelection extends React.Component {
         </View>
         <View style={{ flex: 1.1, marginHorizontal: 10, marginTop: 20, borderWidth: 0, padding: 5, backgroundColor: 'rgba(255, 255, 255, 0.0)' }}>
           <Text style={[{ textAlign: "left", color: "grey", fontSize: 30 }]}>Welcome,</Text>
-          <Text style={[{ textAlign: "center", fontWeight: "bold", fontSize: 35 }]}>{this.props.profil.FirstName}</Text>
-          <Text style={[{ textAlign: "center", color: "grey", fontSize: 20, marginTop: 20, fontWeight: 'light' }]}>Choose the tags that fit best your personality</Text>
+          <Text style={[{ textAlign: "center", fontWeight: "bold", fontSize: 35 }]}>{props.profil.FirstName}</Text>
+          <Text style={[{ textAlign: "center", color: "grey", fontSize: 20, marginTop: 20, fontWeight: 'normal' }]}>Choose the tags that fit best your personality</Text>
         </View>
         <View style={{ flex: 2, margin: 10, marginTop: 20 }}>
           <FlatList
-            data={this.state.data}
+            data={props.data}
             renderItem={({ item }) => (
               <Tag name={item.name} pressed={item.pressed} userData={(navigation.getParam('uid'))} />
             )}
@@ -233,15 +154,14 @@ class TageSelection extends React.Component {
           <Button
             color='#89B3D9'
             title="Next"
-            onPress={() => this.props.navigation.navigate('userRegister')}
+            onPress={() => props.navigation.navigate('userRegister')}
             //onPress={() =>
             //  // this.NextPage(navigation.getParam('uid'))
             //}
           />
         </View>
       </View >
-    );
-  }
+  );
 }
 
 const mapStateToProps = (state) => {

@@ -9,38 +9,6 @@ import {fire} from '../dataBase/config'
 
 import {RondFormeText} from "./rondForm"
 
-
-
-//import {Form} from "./Form"
-
-function addUserData(uid, email, firstName, lastName) {
-  return new Promise((resolve) => {
-    fire.database().ref('UsersTest/' + uid).set({
-      email: email,
-      tagList: [''],
-      loading: false,
-      firstName: firstName,
-      lastName: lastName
-    });
-    resolve( {uid: uid, email: email});
-  })
-}
-
-function registerDatabase(email, password) {
-  return new Promise((resolve, reject) => {
-    fire.auth().createUserWithEmailAndPassword(email, password)
-    .then(response => {
-      console.log('responseJSON', response);
-      console.log('responseJSON', response.user.email);
-      console.log('responseJSON', response.user.uid);
-      resolve({email: response.user.email, uid: response.user.uid});
-    }).catch(error => {
-      console.log('error', error);
-      reject(error);
-    });
-  })
-}
-
 function UserRegister(props) {
 
   const [userEmail, setUserEmail] = useState('');
