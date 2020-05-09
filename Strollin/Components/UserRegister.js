@@ -147,6 +147,23 @@ function UserRegister(props) {
             />
             </View>
 
+            <View style={{flex: 1, margin: 20}}>
+            <Button
+              onPress={() => props.navigation.navigate('TagSelection')}
+              buttonStyle={[{marginBottom: 5, marginTop: 5}]}
+              title="Register"
+              color="#89B3D9"
+            />
+            <View style={{flexDirection : "row", justifyContent: "space-evenly", margin: 10}}>
+              <Text style={{paddingTop: 10}}>ALREADY HAVE AN ACCOUNT?</Text>
+              <Button
+                title="Sign In"
+                color="black"
+                onPress={() => props.navigation.navigate('UserLogin')}
+              />
+            </View>
+          </View>
+
   
         </View>
       </View>

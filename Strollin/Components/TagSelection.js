@@ -232,8 +232,9 @@ export default class TageSelection extends React.Component {
           <Button
             color='#89B3D9'
             title="Next"
+            onPress={() => this.props.navigation.navigate('userRegister')}
             //onPress={() =>
-            //  //this.NextPage(navigation.getParam('uid'))
+            //  // this.NextPage(navigation.getParam('uid'))
             //}
           />
         </View>

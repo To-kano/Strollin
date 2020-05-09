@@ -16,15 +16,16 @@ function MyStack() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
-            name="TagSelection"
-            component={TageSelection}
-            options={{title: 'tag selection'}}
-        />
-        <Stack.Screen
             name="userRegister"
             component={UserRegister}
             options={{title: 'inscription'}}
         />
+        <Stack.Screen
+            name="TagSelection"
+            component={TageSelection}
+            options={{title: 'tag selection'}}
+        />
+
         <Stack.Screen
             name="Connection"
             component={ConnectionScreen}
