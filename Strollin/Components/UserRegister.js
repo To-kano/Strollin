@@ -111,7 +111,7 @@ function UserRegister(props) {
               keyboardType={"email-address"}
               style={{marginTop: 200, marginHorizontal: 40, height: 40}}
               placeholder={"Enter email"}
-              value={userLastName}
+              value={userEmail}
               onChangeText={valueText => {
                   //setData(valueText);
                   setUserEmail(valueText);
