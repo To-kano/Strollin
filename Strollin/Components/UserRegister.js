@@ -4,7 +4,7 @@ import React, {useState, useEffect} from "react";
 import {Input} from 'react-native-elements';
 import {connect} from 'react-redux';
 //import * as actions from './features/registration/action';
-import { StyleSheet, Text, View, Button, Dimensions, TextInput, ActivityIndicator, ScrollView} from 'react-native';
+import { StyleSheet, Text, View, Button, ActivityIndicator} from 'react-native';
 import {fire} from '../dataBase/config'
 
 import {RondFormeText} from "./rondForm"
@@ -148,7 +148,17 @@ function UserRegister(props) {
         </View>
         <View style={{flex : 2,margin: 20}}>
               <Button
-                onPress={() => props.navigation.navigate('TagSelection')}
+                onPress={() => {
+                  const userData = {
+                    firstName : userFirstName,
+                    lastName : userLastName,
+                    email : userEmail,
+                    password : userPassword
+                  };
+                  const action = {type: 'SET_USER', value : userData};
+                  props.dispatch(action);
+                  props.navigation.navigate('TagSelection');
+                }}
                 buttonStyle={[{marginBottom: 5, marginTop: 5}]}
                 title="Register"
                 color="#89B3D9"
@@ -166,153 +176,6 @@ function UserRegister(props) {
     );
   }
 }
-
-class UserRegister2 extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      email: '',
-      password: '',
-      confirmPassword: '',
-      firstName: '',
-      lastName: ''
-    };
-  }
-
-  updateLoading = (bool) =>{
-    this.setState({loading: bool})
-  }
-
-  register() {
-    if (this.state.password != this.state.confirmPassword) {
-      alert("The password and confirmPassword field must be identical")
-      return
-    }
-    if (!this.state.firstName || !this.state.lastName) {
-      alert("Please fill in all the fields")
-      return
-    }
-    this.updateLoading(true)
-    registerDatabase(this.state.email, this.state.password)
-    .then(userData => {
-      addUserData(userData.uid, userData.email, this.state.firstName, this.state.lastName)
-      .then(userData => {
-        this.props.navigation.navigate('TagSelection', {email: userData.email, uid:  userData.uid, name: this.state.firstName});
-        this.updateLoading(false)
-      })
-    })
-    .catch(err =>  {
-      alert(err);
-      this.updateLoading(false)
-    });
-  }
-
-  render() {
-    console.disableYellowBox = true;
-    //<ImageBackground source={require('../../assets/tmpMap.png')} style={{width: 290, height: 330}}>
-    //<Text style={[stylesGeneric.title, {top: 250, left: 100,width: 110,textAlign: "center"}]}>Strollin'</Text>
-    //</ImageBackground>
-    if (this.state.loading)
-    {
-      return (
-        <View style={{flex: 1}}>
-          <View style={[styles.center, {flex : 1, marginTop: 20}]}>
-            <RondFormeText text="Strollin'" size={110} />
-          </View>
-          <View style={[styles.center, {flex : 1, marginTop: 20}]}>
-            <ActivityIndicator size={100} color='purple' />
-          </View>
-        </View>
-      )
-    }
-    else {
-      return (
-        <View style={styles.container}>
-          <View style={[{flex : 1, marginTop: 20, justifyContent :"center", flexDirection: "row"}]}>
-            <RondFormeText text="Strollin'" size={110} />
-          </View>
-          <View style={{flex:3, margin: 20}}>
-            <View style={{flexDirection: "row", justifyContent: "space-evenly", margin: 10}}>
-              <View style={{width: "40%"}}>
-                <Text style={{color: "grey"}}>First Name</Text>
-                <Input
-                  autoCapitalize="none"
-                  style={{marginTop: 200, marginHorizontal: 40, height: 40}}
-                  placeholder="First Name"
-                  value={this.state.firstName}
-                  onChangeText={firstName => this.setState({firstName})}
-                />
-              </View>
-              <View style={{width: "40%"}} >
-                <Text style={{color: "grey"}}>Last Name</Text>
-                <Input
-                  autoCapitalize="none"
-                  style={{marginTop: 200, marginHorizontal: 40, height: 40}}
-                  placeholder="Last Name"
-                  value={this.state.lastName}
-                  onChangeText={lastName => this.setState({lastName})}
-                />
-              </View>
-            </View>
-            <Text style={{color: "grey"}}>EMAIL</Text>
-            <Input
-              autoCapitalize="none"
-              keyboardType="email-address"
-              style={{marginTop: 200, marginHorizontal: 40, height: 40}}
-              placeholder="Enter email"
-              value={this.state.email}
-              onChangeText={email => this.setState({email})}
-            />
-            <Text style={{color: "grey", marginTop: 10}}>PASSWORD</Text>
-            <Input
-              autoCapitalize="none"
-              secureTextEntry
-              style={{marginTop: 20, marginHorizontal: 40, height: 40}}
-              placeholder="Enter password"
-              value={this.state.password}
-              onChangeText={password => this.setState({password})}
-            />
-            <Text style={{color: "grey", marginTop: 10}}>confirme Password</Text>
-            <Input
-              autoCapitalize="none"
-              secureTextEntry
-              style={{marginTop: 20, marginHorizontal: 40, height: 40}}
-              placeholder="Confirm Password"
-              value={this.state.confirmPassword}
-              onChangeText={confirmPassword => this.setState({confirmPassword})}
-            />
-          </View>
-          <View style={{flex: 1, margin: 20}}>
-            <Button
-              onPress={this.register.bind(this)}
-              buttonStyle={[{marginBottom: 5, marginTop: 5}]}
-              title="Register"
-              color="#89B3D9"
-            />
-            <View style={{flexDirection : "row", justifyContent: "space-evenly", margin: 10}}>
-              <Text style={{paddingTop: 10}}>ALREADY HAVE AN ACCOUNT?</Text>
-              <Button
-                title="Sign In"
-                color="black"
-                onPress={() => this.props.navigation.navigate('UserLogin')}
-              />
-            </View>
-          </View>
-        </View>
-      );
-    }
-  }
-}
-const mapStateToProps = state => ({
-  isLoggedIn: state.auth.isLoggedIn,
-  isLoading: state.auth.isLoading,
-  userData: state.auth.userData,
-  error: state.auth.error,
-});
-
-const mapDispatchToProps = dispatch => ({
-  register: (email, password) => dispatch(actions.register({email, password})),
-});
 
 const styles = StyleSheet.create({
   container: {
@@ -336,9 +199,9 @@ const styles = StyleSheet.create({
   }
 });
 
-//export default connect(
-//  mapStateToProps,
-//  mapDispatchToProps,
-//)(UserRegister);
 
-export default UserRegister;
+//permet de dire au composant quel reducer il a access (tous les reducer dans cette configuration)
+const mapStateToProps = (state) => {
+  return state
+}
+export default connect(mapStateToProps)(UserRegister);

@@ -1,22 +1,20 @@
 const initialState = { 
-  access_token: null,
-  refresh_token: null,
-  expires_in: null,
-  account_username: null,
-  account_id: null
+  FirstName: null,
+  LastName: null,
+  Email: null,
+  Password: null,
 };
 
 function profileReducer(state = initialState, action) {
     let nextState
     switch (action.type) {
-      case 'CONNECTION':
+      case 'SET_USER':
         nextState = {
             ...state,
-            access_token: action.accessToken,
-            refresh_token: action.refreshToken,
-            expires_in: action.expiresIn,
-            account_username: action.username,
-            account_id: action.accountId
+            FirstName: action.value.firstName,
+            LastName: action.value.lastname,
+            Email: action.value.email,
+            Password: action.value.password,
         }
         return nextState
     default:

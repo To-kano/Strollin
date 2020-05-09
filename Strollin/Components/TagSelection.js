@@ -1,5 +1,6 @@
 import React from 'react';
 import { Component } from 'react'
+import {connect} from 'react-redux';
 import { StyleSheet, Text, View, Button, ImageBackground, FlatList, Dimensions } from 'react-native';
 //import stylesGeneric from '../../styles/genericStyle'
 //import { fire } from '../../dataBase/config'
@@ -128,7 +129,7 @@ class Tag extends Component {
   }
 }
 
-export default class TageSelection extends React.Component {
+class TageSelection extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -219,7 +220,7 @@ export default class TageSelection extends React.Component {
         </View>
         <View style={{ flex: 1.1, marginHorizontal: 10, marginTop: 20, borderWidth: 0, padding: 5, backgroundColor: 'rgba(255, 255, 255, 0.0)' }}>
           <Text style={[{ textAlign: "left", color: "grey", fontSize: 30 }]}>Welcome,</Text>
-          <Text style={[{ textAlign: "center", fontWeight: "bold", fontSize: 35 }]}>USER</Text>
+          <Text style={[{ textAlign: "center", fontWeight: "bold", fontSize: 35 }]}>{this.props.profil.FirstName}</Text>
           <Text style={[{ textAlign: "center", color: "grey", fontSize: 20, marginTop: 20, fontWeight: 'light' }]}>Choose the tags that fit best your personality</Text>
         </View>
         <View style={{ flex: 2, margin: 10, marginTop: 20 }}>
@@ -242,6 +243,12 @@ export default class TageSelection extends React.Component {
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return state
+}
+
+export default connect(mapStateToProps)(TageSelection);
 
 const styles = StyleSheet.create({
   container: {
