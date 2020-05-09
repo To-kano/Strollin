@@ -4,10 +4,12 @@ import React, {useState, useEffect} from "react";
 import {Input} from 'react-native-elements';
 import {connect} from 'react-redux';
 //import * as actions from './features/registration/action';
-import { StyleSheet, Text, View, Button, ImageBackground, TextInput, ActivityIndicator} from 'react-native';
+import { StyleSheet, Text, View, Button, Dimensions, TextInput, ActivityIndicator, ScrollView} from 'react-native';
 import {fire} from '../dataBase/config'
 
 import {RondFormeText} from "./rondForm"
+
+
 
 //import {Form} from "./Form"
 
@@ -67,13 +69,10 @@ function UserRegister(props) {
   } else {
     return (
       <View style={styles.container}>
-        <View style={[{flex : 1, marginTop: 20, justifyContent :"center", flexDirection: "row"}]}>
-          <RondFormeText text="Strollin'" size={110} />
-        </View>
-        <View style={{flex:3, margin: 20}}>
+        <View style={{flex : 4, margin: 20}}>
           <View style={{flexDirection: "row", justifyContent: "space-evenly", margin: 10}}>
 
-<           View style={{width: "40%"}}>
+            <View style={{width: "40%"}}>
             <Text style={{color: "grey"}}>{"First Name"}</Text>
             <Input
               autoCapitalize="none"
@@ -104,7 +103,7 @@ function UserRegister(props) {
   
           </View>
 
-            <View style={{width: "80%"}}>
+            <View style={{width: "80%", paddingTop: 10}}>
             <Text style={{color: "grey"}}>{"EMAIL"}</Text>
             <Input
               autoCapitalize="none"
@@ -119,8 +118,8 @@ function UserRegister(props) {
             />
             </View>
 
-            <View style={{width: "80%"}}>
-            <Text style={{color: "grey"}}>{props.title}</Text>
+            <View style={{width: "80%", paddingTop: 10}}>
+            <Text style={{color: "grey"}}>{"Password"}</Text>
             <Input
               autoCapitalize="none"
               style={{marginTop: 200, marginHorizontal: 40, height: 40}}
@@ -133,7 +132,7 @@ function UserRegister(props) {
             />
             </View>
 
-            <View style={{width: "80%"}}>
+            <View style={{width: "80%", paddingTop: 10}}>
             <Text style={{color: "grey"}}>{"Confirme Password"}</Text>
             <Input
               autoCapitalize="none"
@@ -146,26 +145,23 @@ function UserRegister(props) {
                 }}
             />
             </View>
-
-            <View style={{flex: 1, margin: 20}}>
-            <Button
-              onPress={() => props.navigation.navigate('TagSelection')}
-              buttonStyle={[{marginBottom: 5, marginTop: 5}]}
-              title="Register"
-              color="#89B3D9"
-            />
-            <View style={{flexDirection : "row", justifyContent: "space-evenly", margin: 10}}>
-              <Text style={{paddingTop: 10}}>ALREADY HAVE AN ACCOUNT?</Text>
-              <Button
-                title="Sign In"
-                color="black"
-                onPress={() => props.navigation.navigate('UserLogin')}
-              />
-            </View>
-          </View>
-
-  
         </View>
+        <View style={{flex : 2,margin: 20}}>
+              <Button
+                onPress={() => props.navigation.navigate('TagSelection')}
+                buttonStyle={[{marginBottom: 5, marginTop: 5}]}
+                title="Register"
+                color="#89B3D9"
+              />
+              <View style={{flexDirection : "row", justifyContent: "space-evenly", margin: 10}}>
+                <Text style={{paddingTop: 10}}>ALREADY HAVE AN ACCOUNT?</Text>
+                <Button
+                  title="Sign In"
+                  color="black"
+                  onPress={() => props.navigation.navigate('UserLogin')}
+                />
+              </View>
+            </View>
       </View>
     );
   }
