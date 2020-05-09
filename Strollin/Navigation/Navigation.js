@@ -7,7 +7,7 @@ import Profile from "../Components/ProfileScreen";
 import ConnectionScreen from '../Components/ConnectionScreen'
 import UserRegister from '../Components/UserRegister';
 import TageSelection from '../Components/TagSelection';
-
+import LoginPage from '../Components/LoginPage';
 
 const Stack = createStackNavigator();
 
@@ -15,6 +15,11 @@ function MyStack() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+        <Stack.Screen
+            name="userLogin"
+            component={LoginPage}
+            options={{title: 'Loging'}}
+        />
         <Stack.Screen
             name="userRegister"
             component={UserRegister}
