@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {connect} from 'react-redux';
 
-import {StyleSheet ,Text , View, Image, TextInput} from "react-native";
+import {StyleSheet ,Text , View, Image, TextInput, Button} from "react-native";
 
 
 function LoginPage(props) {
@@ -52,6 +52,13 @@ function LoginPage(props) {
             />
           </View>
         </View>
+        <Button
+            title="Log In"
+            color="#89B3D9"
+            onPress={() =>
+              props.navigation.navigate('Home')
+            }
+          />
         <View style={{flex: 0.4, flexDirection: 'column'}}>
           <Text style={styles.textLink} onPress={()=> console.log("ok")}>
             Forgot Password ?
