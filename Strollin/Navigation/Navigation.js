@@ -17,14 +17,14 @@ function MyStack() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
-            name="Home"
-            component={Home}
-            options={{title: 'Homepage'}}
-        />
-        <Stack.Screen
             name="userLogin"
             component={LoginPage}
             options={{title: 'Loging'}}
+        />
+        <Stack.Screen
+        name="Home"
+        component={Home}
+        options={{title: 'Homepage'}}
         />
         <Stack.Screen
             name="userRegister"
