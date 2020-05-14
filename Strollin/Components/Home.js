@@ -4,6 +4,8 @@ import { Text, View, TouchableHighlight, FlatList, Button, ImageBackground, Styl
 //import stylesGeneric from '../../styles/genericStyle'
 //import { RondFormeText } from "../../features/geoForme/rondForm"
 
+import {connect} from 'react-redux';
+
 
 class ElementHistoryNav extends Component {
   constructor(props) {
@@ -57,22 +59,10 @@ class ElementHistoryNav extends Component {
   }
 }
 
-export default class Home extends React.Component {
-  data = [{ key: 1 }, { key: 2 }, { key: 3 }, { key: 4 }, { key: 5 }, { key: 6 }];
+function Home(props) {
 
-  render() {
-    //<Text style={[{ textAlign: "right", marginRight: 20, marginBottom: 5, fontSize: 20 }]}>Your previous trip</Text>
-
-    //  <FlatList
-    //  data={this.data}
-    //  renderItem={({ item }) => <ElementHistoryNav tag={item.key} />}
-    ///>
-
-    const { navigation } = this.props;
-    console.disableYellowBox = true;
-
-    return (
-      <View style={{ flex: 1 }}>
+  return (
+    <View style={{ flex: 1 }}>
         <View style={[{ flex: 1 , backgroundColor : "white"}]}>
         </View>
         <View style={{ flex: 1.5, marginHorizontal: "35%" , backgroundColor : "white"}}>
@@ -88,13 +78,19 @@ export default class Home extends React.Component {
           <Button
             color='#D99860'
             title="New Trip"
-            onPress={() => this.props.navigation.navigate('TripSuggestion', { uid: navigation.getParam('uid') })}
+            onPress={() => props.navigation.navigate('TripSuggestion', { uid: navigation.getParam('uid') })}
           />
         </View>
       </View>
-    );
-  }
+  );
 }
+
+const mapStateToProps = (state) => {
+  return state
+}
+
+export default connect(mapStateToProps)(Home);
+
 
 const styles = StyleSheet.create({
   container: {

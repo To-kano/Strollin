@@ -3,6 +3,7 @@ const initialState = {
   LastName: null,
   Email: null,
   Password: null,
+  history: []
 };
 
 function profileReducer(state = initialState, action) {
@@ -17,6 +18,14 @@ function profileReducer(state = initialState, action) {
             Password: action.value.password,
         }
         return nextState
+
+      case 'ADD_HISTORY':
+        nextState = {
+            ...state,
+            history: state.history + action.value,
+        }
+        return nextState
+
     default:
       return state
     }
