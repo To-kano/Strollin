@@ -6,6 +6,7 @@ import Home from "../Components/HomeScreen";
 import Profile from "../Components/ProfileScreen";
 import ConnectionScreen from '../Components/ConnectionScreen'
 import LoginPage from '../Components/LoginPage'
+import HomePage from '../Components/HomePage'
 
 const Stack = createStackNavigator();
 
@@ -20,7 +21,7 @@ function MyStack() {
         />
         <Stack.Screen
           name="Home"
-          component={Home}
+          component={HomePage}
           options={{title: 'Welcome'}}
         />
         <Stack.Screen name="Profile" component={Profile} />
