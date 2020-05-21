@@ -6,6 +6,7 @@ import IndexNavbarFR from "components/Navbars/IndexNavbarFR.js";
 import IndexHeaderFR from "components/Headers/IndexHeaderFR.js";
 import DemoFooter from "components/Footers/DemoFooter.js";
 
+import ContactFR from "views/index-sections/ContactFR.js";
 import TemoignageFR from "views/index-sections/TemoignageFR.js";
 import SectionExamplesFR from "views/index-sections/SectionExamplesFR.js";
 
@@ -40,6 +41,7 @@ function IndexFR() {
         <DescriptionFR />
         <SectionExamplesFR />
         <TemoignageFR />
+        <ContactFR />
       </div>
     </>
   );

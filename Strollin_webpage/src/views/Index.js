@@ -5,6 +5,7 @@ import IndexHeader from "components/Headers/IndexHeader.js";
 import DemoFooter from "components/Footers/DemoFooter.js";
 
 import Description from "views/index-sections/Description.js";
+import Contact from "views/index-sections/Contact.js";
 import Temoignage from "views/index-sections/Temoignage.js";
 import SectionNavbars from "views/index-sections/SectionNavbars.js";
 import SectionNavigation from "views/index-sections/SectionNavigation.js";
@@ -35,6 +36,7 @@ function Index() {
         <Description />
         <SectionExamples />
         <Temoignage />
+        <Contact />
       </div>
     </>
   );
