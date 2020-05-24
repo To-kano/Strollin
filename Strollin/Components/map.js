@@ -84,7 +84,7 @@ function Map(props) {
 
   if (props.position.permission) {
     const origin = { latitude: props.position.position.latitude, longitude: props.position.position.longitude };
-    const destination = { latitude: props.location.latitude, longitude: props.location.longitude };
+    const destination = props.waypoints[0];
     const GOOGLE_MAPS_APIKEY = 'AIzaSyB-xO-UPVjhXP85uteh1n5hIbUeXqqjWRI';
 
     return (
@@ -110,7 +110,7 @@ function Map(props) {
                 title={"USER"}
                 description={"User position"}
               />
-              {props.markers.map(marker => (
+              {props.waypoints.map(marker => (
                 <Marker
                   coordinate={{ "latitude": marker.latitude, "longitude": marker.longitude }}
                   title={marker.name}

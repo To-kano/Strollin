@@ -7,13 +7,12 @@ import Map from './map';
 
 function TripNavigation(props) {
 
-  const region = {
+  const waypoints = [
+    {
       latitude: 48.815641,
       longitude: 2.363224,
       name: '',
-  }
-
-  const waypoints = [
+    },
     {
       latitude: 47.815641,
       longitude: 2.363224,
@@ -44,7 +43,7 @@ function TripNavigation(props) {
         <Text style={{fontSize: 30, fontFamily:"lobster", color:"#EEB015"}}>Strollin</Text>
       </View>
       <View style={{flex: 3}}>
-        <Map location={region} height={"100%"} width={380} markers={waypoints} deltaView={deltaView} waypoints={waypoints} />
+        <Map height={"100%"} width={380} deltaView={deltaView} waypoints={waypoints} />
       </View>
       <View style={{flex: 1, position: 'absolute', bottom: 0, left: 0, marginTop: 10}}>
         <Button
