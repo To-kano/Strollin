@@ -19,6 +19,16 @@ function MyStack() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
+            name="userLogin"
+            component={LoginPage}
+            options={{title: 'Loging'}}
+        />
+        <Stack.Screen
+            name="Home"
+            component={Home}
+            options={{title: 'Homepage'}}
+        />
+        <Stack.Screen
             name="TripSuggestion"
             component={TripSuggestion}
             options={{title: 'TripSuggestion'}}
@@ -27,16 +37,6 @@ function MyStack() {
             name="TripNavigation"
             component={TripNavigation}
             options={{title: 'TripNavigation'}}
-        />
-        <Stack.Screen
-            name="Home"
-            component={Home}
-            options={{title: 'Homepage'}}
-        />
-        <Stack.Screen
-            name="userLogin"
-            component={LoginPage}
-            options={{title: 'Loging'}}
         />
         <Stack.Screen
             name="userRegister"
