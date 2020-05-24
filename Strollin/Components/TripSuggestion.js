@@ -8,9 +8,8 @@ import Map from './map'
 
 import {connect} from 'react-redux';
 
-function TripSuggestion(props) {
-
-  const waypoints = [
+function getNavigation() {
+  const destination1 = [
     {
       latitude: 48.815641,
       longitude: 2.363224,
@@ -24,16 +23,57 @@ function TripSuggestion(props) {
       latitude: 46.815641,
       longitude: 2.363224,
       name: '2',
-    },{
-      latitude: 45.815641,
-      longitude: 2.363224,
-      name: '3',
-    },{
-      latitude: 44.815641,
-      longitude: 2.363224,
-      name: '4',
-    },
+    }
   ]
+
+  const destination2 = [
+    {
+      latitude: 48.815641,
+      longitude: 2.363224,
+      name: 'somewhere',
+    },
+    {
+      latitude: 47.815641,
+      longitude: 2.363224,
+      name: '1',
+    },{
+      latitude: 46.815641,
+      longitude: 2.363224,
+      name: '2',
+    }
+  ]
+
+  const destination3 = [
+    {
+      latitude: 48.815641,
+      longitude: 2.363224,
+      name: 'where ?',
+    },
+    {
+      latitude: 47.815641,
+      longitude: 2.363224,
+      name: '1',
+    },{
+      latitude: 46.815641,
+      longitude: 2.363224,
+      name: '2',
+    }
+  ]
+
+  const allDestination = [
+    destination1,
+    destination2,
+    destination3
+  ]
+
+  const rand = Math.floor(Math.random() * Math.floor(3));
+
+  return allDestination[rand];
+}
+
+function TripSuggestion(props) {
+
+  const [waypoints, setWaypoints] = useState(getNavigation());
 
   const deltaView = {
     latitudeDelta: 0.0922,
@@ -57,13 +97,18 @@ function TripSuggestion(props) {
       <Button
           title="Another One!"
           color="#EEB015"
+          onPress={() =>
+            setWaypoints(getNavigation())
+          }
       />
       <Button
         title="Let's go!"
         color="#89B3D9"
-        onPress={() =>
+        onPress={() => {
+          const action = {type: 'SET_WAYPOINTS', value : waypoints};
+          props.dispatch(action);
           props.navigation.navigate('TripNavigation')
-        }
+        }}
       />
       </View>
     </View>

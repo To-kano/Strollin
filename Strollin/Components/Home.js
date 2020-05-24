@@ -78,7 +78,7 @@ function Home(props) {
           <Button
             color='#D99860'
             title="New Trip"
-            onPress={() => props.navigation.navigate('TripSuggestion', { uid: navigation.getParam('uid') })}
+            onPress={() => props.navigation.navigate('TripSuggestion')}
           />
         </View>
       </View>

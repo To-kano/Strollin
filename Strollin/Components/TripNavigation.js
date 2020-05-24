@@ -7,30 +7,7 @@ import Map from './map';
 
 function TripNavigation(props) {
 
-  const waypoints = [
-    {
-      latitude: 48.815641,
-      longitude: 2.363224,
-      name: '',
-    },
-    {
-      latitude: 47.815641,
-      longitude: 2.363224,
-      name: '1',
-    },{
-      latitude: 46.815641,
-      longitude: 2.363224,
-      name: '2',
-    },{
-      latitude: 45.815641,
-      longitude: 2.363224,
-      name: '3',
-    },{
-      latitude: 44.815641,
-      longitude: 2.363224,
-      name: '4',
-    },
-  ]
+  const waypoints = props.map.waypoints;
 
   const deltaView = {
     latitudeDelta: 0.0922,
@@ -61,46 +38,6 @@ const mapStateToProps = (state) => {
 }
 export default connect(mapStateToProps)(TripNavigation);
 
-
-export class TripNavigation2 extends React.Component {
-  render() {
-    //console.disableYellowBox = true;
-
-    this.state = {
-      region: {
-        latitude: 48.815641,
-        longitude: 2.363224,
-        latitudeDelta: 0.0922,
-        longitudeDelta: 0.0421,
-        name: '',
-      },
-      user: {
-        latitude: 48.815641,
-        longitude: 2.363224,
-        title: "USER",
-        subtitle: "User position"
-      },
-    }
-
-    const { navigation } = this.props;
-    return (
-      <View style={styles.container}>
-        <View style={{flex: 0.3, marginTop: 40}}>
-          <Text style={{fontSize: 30, fontFamily:"lobster", color:"#EEB015"}}>Strollin</Text>
-        </View>
-        <View style={{flex: 3}}>
-          <Map location={this.state.region} height={"100%"} width={380} markers={[this.state.region]} />
-        </View>
-        <View style={{flex: 1, position: 'absolute', bottom: 0, left: 0, marginTop: 10}}>
-          <Button
-            title="End Navigation"
-            onPress={() => this.props.navigation.navigate('Home')}
-          />
-        </View>
-      </View>
-    );
-  }
-}
 
 const styles = StyleSheet.create({
   container: {
