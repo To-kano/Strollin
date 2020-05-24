@@ -122,6 +122,7 @@ function Map(props) {
               />
               {props.waypoints.map(marker => (
                 <Marker
+                key={marker.id}
                   coordinate={{ "latitude": marker.latitude, "longitude": marker.longitude }}
                   title={marker.name}
                   description={"Destination"}
