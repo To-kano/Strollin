@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet, Text, View, Button, Image} from 'react-native';
 //import stylesGeneric from '../../styles/genericStyle';
 
-import {Map} from './map';
+import Map from './map';
 
 export default class TripNavigation extends React.Component {
   render() {
