@@ -111,7 +111,7 @@ class Tag extends Component {
           color='rgba(255,192,203, 1)'
           title={this.props.name}
           onPress={() => {
-            this.writeUserData(this.props.userData, this.props.name)
+            //this.writeUserData(this.props.userData, this.props.name)
             //this.writeUserDataTest(0, 'hello')
             this.updatePressed()
           }}
@@ -120,7 +120,7 @@ class Tag extends Component {
           color='rgba(130, 38, 98, 1)'
           title={this.props.name}
           onPress={() => {
-            this.removeUserData(this.props.userData, this.props.name)
+            //this.removeUserData(this.props.userData, this.props.name)
             this.updatePressed()
           }}
         />)}
@@ -130,6 +130,28 @@ class Tag extends Component {
 }
 
 function TageSelection(props) {
+
+  const data = [
+    {
+      id: '1',
+      name: 'vidéo game',
+    },
+    {
+      id: '2',
+      name: 'restaurant',
+    },
+    {
+      id: '3',
+      name: 'cinéma',
+    },
+    {
+      id: '4',
+      name: 'magie',
+    },{
+      id: '5',
+      name: 'compétition',
+    },
+  ]
 
   return (
     <View style={styles.container}>
@@ -146,9 +168,9 @@ function TageSelection(props) {
         </View>
         <View style={{ flex: 2, margin: 10, marginTop: 20 }}>
           <FlatList
-            data={props.data}
+            data={data}
             renderItem={({ item }) => (
-              <Tag name={item.name} pressed={item.pressed} userData={(navigation.getParam('uid'))} />
+              <Tag name={item.name} pressed={item.pressed} />
             )}
           />
           <Button
