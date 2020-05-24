@@ -19,14 +19,14 @@ function MyStack() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
-            name="TripNavigation"
-            component={TripNavigation}
-            options={{title: 'TripNavigation'}}
-        />
-        <Stack.Screen
             name="TripSuggestion"
             component={TripSuggestion}
             options={{title: 'TripSuggestion'}}
+        />
+        <Stack.Screen
+            name="TripNavigation"
+            component={TripNavigation}
+            options={{title: 'TripNavigation'}}
         />
         <Stack.Screen
             name="Home"

@@ -15,7 +15,7 @@ function geolocalisationReducer(state = initialState, action) {
     console.log(action);
     switch (action.type) {
         case 'SET_PERMISSION':
-            console.log("mdr");
+            //console.log("mdr");
 
             nextState = {
                 ...state,
@@ -24,7 +24,7 @@ function geolocalisationReducer(state = initialState, action) {
             }
             return nextState
         case 'SET_POSITION':
-            console.log("lol");
+            //console.log("lol");
             nextState = {
                 ...state,
                 update : true,

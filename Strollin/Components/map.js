@@ -28,7 +28,7 @@ function updatePosition(props, position) {
   props.dispatch(action);
 }
 
-function updateCoordinates(props) {
+async function updateCoordinates(props) {
   if (props.position.permission == true) {
     Geolocation.getCurrentPosition(
       (position) => {
@@ -71,7 +71,17 @@ async function requestGeolocalisationPermission(props) {
 
 function Map(props) {
 
-  console.log(props.position);
+  //const [seconds, setSeconds] = useState(0);
+
+  //useEffect(() => {
+  //  const interval = setInterval(() => {
+  //    //console.log('This will run every second!');
+  //    updateCoordinates(props);
+  //  }, 1000);  
+  //  return () => clearInterval(interval);
+  //}, []);
+
+  //console.log(props.position);
 
   if (props.position.asked == false) {
    requestGeolocalisationPermission(props);
