@@ -11,15 +11,18 @@ import {connect} from 'react-redux';
 function getNavigation() {
   const destination1 = [
     {
+      id: '1',
       latitude: 48.815641,
       longitude: 2.363224,
       name: 'nowhere',
     },
     {
+      id: '2',
       latitude: 47.815641,
       longitude: 2.363224,
       name: '1',
     },{
+      id: '3',
       latitude: 46.815641,
       longitude: 2.363224,
       name: '2',
@@ -28,15 +31,18 @@ function getNavigation() {
 
   const destination2 = [
     {
+      id: '1',
       latitude: 48.815641,
       longitude: 2.363224,
       name: 'somewhere',
     },
     {
+      id: '2',
       latitude: 47.815641,
       longitude: 2.363224,
       name: '1',
     },{
+      id: '3',
       latitude: 46.815641,
       longitude: 2.363224,
       name: '2',
@@ -45,15 +51,18 @@ function getNavigation() {
 
   const destination3 = [
     {
+      id: '1',
       latitude: 48.815641,
       longitude: 2.363224,
       name: 'where ?',
     },
     {
+      id: '2',
       latitude: 47.815641,
       longitude: 2.363224,
       name: '1',
     },{
+      id: '3',
       latitude: 46.815641,
       longitude: 2.363224,
       name: '2',
