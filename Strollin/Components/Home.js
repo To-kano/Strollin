@@ -70,7 +70,7 @@ function Home(props) {
             title="Log Out"
             color="#89B3D9"
             onPress={() =>
-              this.props.navigation.navigate('userLogin')
+              props.navigation.navigate('userLogin')
             }
           />
         </View>
