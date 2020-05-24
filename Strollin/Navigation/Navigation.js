@@ -9,6 +9,8 @@ import UserRegister from '../Components/UserRegister';
 import TageSelection from '../Components/TagSelection';
 import LoginPage from '../Components/LoginPage';
 import Home from '../Components/Home';
+import TripSuggestion from '../Components/TripSuggestion';
+import TripNavigation from '../Components/TripNavigation';
 
 const Stack = createStackNavigator();
 
@@ -22,9 +24,19 @@ function MyStack() {
             options={{title: 'Loging'}}
         />
         <Stack.Screen
-        name="Home"
-        component={Home}
-        options={{title: 'Homepage'}}
+            name="Home"
+            component={Home}
+            options={{title: 'Homepage'}}
+        />
+        <Stack.Screen
+            name="TripSuggestion"
+            component={TripSuggestion}
+            options={{title: 'TripSuggestion'}}
+        />
+        <Stack.Screen
+            name="TripNavigation"
+            component={TripNavigation}
+            options={{title: 'TripNavigation'}}
         />
         <Stack.Screen
             name="userRegister"
