@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { Component } from 'react'
 import {connect} from 'react-redux';
 import { StyleSheet, Text, View, Button, ImageBackground, FlatList, Dimensions } from 'react-native';
@@ -8,125 +8,29 @@ import {fire} from '../dataBase/config'
 
 import {RondFormeText} from "./rondForm"
 
+function Tag(props) {
 
-class Tag extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      pressed: false
-    }
-  }
+  const [pressed, setpressed] = useState(false);
 
-  /*updateColor = (color) =>{
-    this.setState({color: color})
-  }*/
 
-  removeTag(array, tag) {
-    for (var i = 0; i < array.length; i++) {
-      if (array[i] == tag) {
-        array.splice(i, 1)
-        return false
-      }
-    }
-    return true
-  }
-
-  checkArray(array, tag) {
-    for (var i = 0; i < array.length; i++) {
-      if (array[i] == tag) {
-        return false
-      }
-    }
-    return true
-  }
-
-  async readUserData(UserId) {
-    let tmp = await fire.database().ref('UsersTest/' + UserId).once('value', function (snapshot) {
-      return snapshot.val()
-    });
-    return tmp
-  }
-
-  async writeUserData(UserId, tag) {
-    console.log("USER ID =", UserId);
-
-    let val = await this.readUserData(UserId)
-    let test = val.val().tagList
-    if (this.checkArray(test, tag) == true) {
-      test = test.concat([tag])
-    }
-    fire.database().ref('UsersTest/' + UserId).set({
-      tagList: test
-    }).then((data) => {
-      //success callback
-      console.log('data ', data)
-    }).catch((error) => {
-      //error callback
-      console.log('error ', error)
-    })
-  }
-
-  async removeUserData(UserId, tag) {
-    console.log("USER ID =", UserId);
-
-    let val = await this.readUserData(UserId)
-    let test = val.val().tagList
-    if (this.removeTag(test, tag) == true) {
-      test = test.concat([tag])
-    }
-    fire.database().ref('UsersTest/' + UserId).set({
-      tagList: test
-    }).then((data) => {
-      //success callback
-      console.log('data ', data)
-    }).catch((error) => {
-      //error callback
-      console.log('error ', error)
-    })
-  }
-
-  /*async writeUserDataTest(rank, name){
-    fire.database().ref('UsersTest/' + 'TonyYe').set({
-        array: [''],
-        name: 'tony'
-    }).then((data)=>{
-        //success callback
-        console.log('data ' , data)
-    }).catch((error)=>{
-        //error callback
-        console.log('error ' , error)
-    })
-  }*/
-
-  updatePressed = () => {
-    this.setState({ pressed: !this.state.pressed })
-  }
-
-  render() {
-    const { navigation } = this.props;
-
-    return (
-      <View style={{ margin: 5 }}>
-        {this.state.pressed == false && (<Button
+  return(
+    <View style={{ margin: 5 }}>
+        {pressed == false && (<Button
           color='rgba(255,192,203, 1)'
-          title={this.props.name}
+          title={props.name}
           onPress={() => {
-            //this.writeUserData(this.props.userData, this.props.name)
-            //this.writeUserDataTest(0, 'hello')
-            this.updatePressed()
+            setpressed(!pressed)
           }}
         />)}
-        {this.state.pressed == true && (<Button
+        {pressed == true && (<Button
           color='rgba(130, 38, 98, 1)'
-          title={this.props.name}
+          title={props.name}
           onPress={() => {
-            //this.removeUserData(this.props.userData, this.props.name)
-            this.updatePressed()
+            setpressed(!pressed)
           }}
         />)}
-      </View>
-    );
-  }
+    </View>
+  )
 }
 
 function TageSelection(props) {
