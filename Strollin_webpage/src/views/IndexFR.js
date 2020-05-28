@@ -9,6 +9,7 @@ import DemoFooter from "components/Footers/DemoFooter.js";
 import ContactFR from "views/index-sections/ContactFR.js";
 import TemoignageFR from "views/index-sections/TemoignageFR.js";
 import SectionExamplesFR from "views/index-sections/SectionExamplesFR.js";
+import FaqFR from "views/index-sections/FaqFR.js";
 
 import Description from "views/index-sections/Description.js";
 import DescriptionFR from "views/index-sections/DescriptionFR.js";
@@ -42,6 +43,7 @@ function IndexFR() {
         <SectionExamplesFR />
         <TemoignageFR />
         <ContactFR />
+        <FaqFR />
       </div>
     </>
   );
