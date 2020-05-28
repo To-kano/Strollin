@@ -1,5 +1,6 @@
 const initialState = {
-    waypoints: []
+    waypoints: [],
+    historic: []
 };
 
 
@@ -12,6 +13,12 @@ function mapNavigationReducer(state = initialState, action) {
             nextState = {
                 ...state,
                 waypoints: action.value,
+            }
+            return nextState
+        case 'ADD_HISTORIC':
+            nextState = {
+                ...state,
+                historic: state.historic + action.value,
             }
             return nextState
         default:

@@ -11,6 +11,7 @@ import LoginPage from '../Components/LoginPage';
 import Home from '../Components/Home';
 import TripSuggestion from '../Components/TripSuggestion';
 import TripNavigation from '../Components/TripNavigation';
+import HistoryNav from '../Components/HistoryNav'
 
 const Stack = createStackNavigator();
 
@@ -22,6 +23,11 @@ function MyStack() {
             name="userLogin"
             component={LoginPage}
             options={{title: 'Loging'}}
+        />
+        <Stack.Screen
+            name="historicUser"
+            component={HistoryNav}
+            options={{title: 'historic'}}
         />
         <Stack.Screen
             name="Home"

@@ -4,23 +4,20 @@ import { Text, View, TouchableHighlight, FlatList, Button, ImageBackground, Styl
 //import stylesGeneric from '../../styles/genericStyle'
 //import { RondFormeText } from "../../features/geoForme/rondForm"
 
+import ElementHistoryNav from './HistoryElement';
+
 import {connect} from 'react-redux';
 
 
-function Home(props) {
+
+function HistoryNav(props) {
 
   return (
     <View style={{ flex: 1 }}>
         <View style={[{ flex: 1 , backgroundColor : "white"}]}>
         </View>
         <View style={{ flex: 1.5, marginHorizontal: "35%" , backgroundColor : "white"}}>
-          <Button
-            title="historic"
-            color="#89B3D9"
-            onPress={() =>
-              props.navigation.navigate('historicUser')
-            }
-          />
+        <ElementHistoryNav></ElementHistoryNav>
           <Button
             title="Log Out"
             color="#89B3D9"
@@ -44,7 +41,7 @@ const mapStateToProps = (state) => {
   return state
 }
 
-export default connect(mapStateToProps)(Home);
+export default connect(mapStateToProps)(HistoryNav);
 
 
 const styles = StyleSheet.create({
