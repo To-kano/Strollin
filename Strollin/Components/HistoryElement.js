@@ -17,7 +17,7 @@ function ElementHistoryNav(props) {
     longitudeDelta: 0.0421,
   }
 
-  console.log("element ", props.data[0]);
+  console.log("element ", props.data);
 
   if (showMap == false) {
     return (
@@ -41,7 +41,7 @@ function ElementHistoryNav(props) {
       <View>
         <TouchableHighlight onPress={() => setShowMap(!showMap)}>
         <View>
-          <Map height={100} width={380} deltaView={deltaView} waypoints={waypoints} />
+          <Map height={300} width={380} deltaView={deltaView} waypoints={waypoints} />
         </View>
         </TouchableHighlight>
         

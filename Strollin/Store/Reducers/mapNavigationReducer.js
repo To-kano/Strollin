@@ -15,16 +15,26 @@ function mapNavigationReducer(state = initialState, action) {
             }
             return nextState;
         case 'ADD_HISTORIC':
+
+            const day = new Date().getDate(); //Current Date
+            const month = new Date().getMonth() + 1; //Current Month
+            const year = new Date().getFullYear(); //Current Year
+            
             const history = {
                 id: Date.parse(new Date()).toString(),
+                date: day + '/' + month + '/' + year,
+                duration: "2 heures",
                 waypoints: action.value
             }
             
             nextState = {
                 ...state,
-                historic: [history],
+                historic: [ history, ...state.historic]
             }
-            console.log(nextState);
+
+            //nextState.historic.concat([history]);
+            console.log("history ", nextState.historic);
+
 
             return nextState;
         default:

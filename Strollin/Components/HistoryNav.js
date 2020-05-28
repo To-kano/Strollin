@@ -15,29 +15,32 @@ function HistoryNav(props) {
 
   return (
     <View style={{ flex: 1 }}>
-        <View style={[{ flex: 1 , backgroundColor : "white"}]}>
-        </View>
         <View style={{ flex: 1.5, marginHorizontal: "15%" , backgroundColor : "white"}}>
         <FlatList
             data={props.map.historic}
             renderItem={({ item }) => (
-              <ElementHistoryNav data={item.waypoints} />
+              <View>
+                <Text>date: {item.date}</Text>
+                <Text>duration: {item.duration}</Text>
+                <ElementHistoryNav data={item.waypoints} />
+              </View>
             )}
           />
         
+          
+        </View>
+        <View style={[{ flex: 0.3, backgroundColor : "white" , justifyContent : "center"}]}>
+          <Button
+            color='#D99860'
+            title="New Trip"
+            onPress={() => props.navigation.navigate('TripSuggestion')}
+          />
           <Button
             title="Log Out"
             color="#89B3D9"
             onPress={() =>
               props.navigation.navigate('userLogin')
             }
-          />
-        </View>
-        <View style={[{ flex: 0.5, backgroundColor : "white" , justifyContent : "center"}]}>
-          <Button
-            color='#D99860'
-            title="New Trip"
-            onPress={() => props.navigation.navigate('TripSuggestion')}
           />
         </View>
       </View>
