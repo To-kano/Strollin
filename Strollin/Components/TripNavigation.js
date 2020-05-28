@@ -25,7 +25,11 @@ function TripNavigation(props) {
       <View style={{flex: 1, position: 'absolute', bottom: 0, left: 0, marginTop: 10}}>
         <Button
           title="End Navigation"
-          onPress={() => props.navigation.navigate('Home')}
+          onPress={() => {
+            const action = {type: 'ADD_HISTORIC', value : waypoints};
+            props.dispatch(action);
+            props.navigation.navigate('Home')
+        }}
         />
       </View>
     </View>

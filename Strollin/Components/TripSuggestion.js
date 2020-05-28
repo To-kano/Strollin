@@ -12,60 +12,69 @@ function getNavigation() {
   const destination1 = [
     {
       id: '1',
-      latitude: 48.815641,
-      longitude: 2.363224,
-      name: 'nowhere',
+      latitude: 48.782120,
+      longitude: 2.457256,
+      address: "Avenue Du Général De Gaulle, Centre Commercial Régional Créteil-Soleil, 94000 Créteil",
+      name: 'UGC Ciné Cité Créteil',
     },
     {
       id: '2',
-      latitude: 47.815641,
-      longitude: 2.363224,
-      name: '1',
+      latitude: 48.769907,
+      longitude: 2.490415,
+      address: "P.A des Petits Carreaux, 94380 Bonneuil-sur-Marne",
+      name: 'Hippopotamus Bonneuil',
     },{
       id: '3',
-      latitude: 46.815641,
-      longitude: 2.363224,
-      name: '2',
+      latitude: 48.781282,
+      longitude: 2.456508,
+      address: "Avenue de la France libre, 94000 Créteil",
+      name: 'Laser Game',
     }
   ]
 
   const destination2 = [
     {
       id: '1',
-      latitude: 48.815641,
-      longitude: 2.363224,
-      name: 'somewhere',
+      latitude: 48.866606,
+      longitude: 2.335573,
+      address: "37 Rue Sainte-Anne, 75001 Paris",
+      name: 'Sapporo',
     },
     {
       id: '2',
-      latitude: 47.815641,
-      longitude: 2.363224,
-      name: '1',
+      latitude: 48.869098,
+      longitude: 2.370088,
+      address: "14 Rue de la Fontaine au Roi, 75011 Paris",
+      name: 'Le Paname Art Café',
     },{
       id: '3',
-      latitude: 46.815641,
-      longitude: 2.363224,
-      name: '2',
+      latitude: 48.850353,
+      longitude: 2.352838,
+      address: "6 Rue Cochin, 75005 Paris",    
+      name: 'La Frange',
     }
   ]
 
   const destination3 = [
     {
       id: '1',
-      latitude: 48.815641,
-      longitude: 2.363224,
-      name: 'where ?',
+      latitude: 48.798683,
+      longitude: 2.446183,
+      address: "6 Rue Thomas Edison, 94000 Créteil",
+      name: 'Centre Sportif Marie-Thérèse Eyquem',
     },
     {
       id: '2',
-      latitude: 47.815641,
-      longitude: 2.363224,
-      name: '1',
+      latitude: 48.780627,
+      longitude: 2.457364,
+      address: "Centre commercial Créteil Soleil, 101 Avenue du Général de Gaulle, 94012 Créteil",
+      name: 'Restaurant Flunch Creteil Soleil',
     },{
       id: '3',
-      latitude: 46.815641,
-      longitude: 2.363224,
-      name: '2',
+      latitude: 48.790379,
+      longitude: 2.465619,
+      address: "75 Avenue Pierre Brossolette, 94000 Creteil village",
+      name: 'Le Foz Club discothèque',
     }
   ]
 
