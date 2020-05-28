@@ -9,15 +9,22 @@ import ElementHistoryNav from './HistoryElement';
 import {connect} from 'react-redux';
 
 
-
 function HistoryNav(props) {
+
+  console.log("historic ", props.map.historic[0]);
 
   return (
     <View style={{ flex: 1 }}>
         <View style={[{ flex: 1 , backgroundColor : "white"}]}>
         </View>
-        <View style={{ flex: 1.5, marginHorizontal: "35%" , backgroundColor : "white"}}>
-        <ElementHistoryNav></ElementHistoryNav>
+        <View style={{ flex: 1.5, marginHorizontal: "15%" , backgroundColor : "white"}}>
+        <FlatList
+            data={props.map.historic}
+            renderItem={({ item }) => (
+              <ElementHistoryNav data={item.waypoints} />
+            )}
+          />
+        
           <Button
             title="Log Out"
             color="#89B3D9"

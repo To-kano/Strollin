@@ -7,22 +7,27 @@ const initialState = {
 function mapNavigationReducer(state = initialState, action) {
     let nextState
     //console.log("\n\ngalleryReducer:\n")
-    console.log(action);
     switch (action.type) {
         case 'SET_WAYPOINTS':
             nextState = {
                 ...state,
                 waypoints: action.value,
             }
-            return nextState
+            return nextState;
         case 'ADD_HISTORIC':
+            const history = {
+                id: Date.parse(new Date()),
+                waypoints: action.value
+            }
             nextState = {
                 ...state,
-                historic: state.historic + action.value,
+                historic: [history],
             }
-            return nextState
+            console.log(nextState);
+
+            return nextState;
         default:
-            return state
+            return state;
     }
 }
 

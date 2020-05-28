@@ -12,7 +12,7 @@ const initialState = {
 function geolocalisationReducer(state = initialState, action) {
     let nextState
     //console.log("\n\ngalleryReducer:\n")
-    console.log(action);
+    //console.log(action);
     switch (action.type) {
         case 'SET_PERMISSION':
             //console.log("mdr");
@@ -22,7 +22,7 @@ function geolocalisationReducer(state = initialState, action) {
                 permission: action.value,
                 asked: true
             }
-            return nextState
+            return nextState;
         case 'SET_POSITION':
             //console.log("lol");
             nextState = {
@@ -30,9 +30,9 @@ function geolocalisationReducer(state = initialState, action) {
                 update : true,
                 position: action.value
             }
-            return nextState
+            return nextState;
         default:
-            return state
+            return state;
     }
 }
 

@@ -4,36 +4,34 @@ import { Text, View, TouchableHighlight, FlatList, Button, ImageBackground, Styl
 //import stylesGeneric from '../../styles/genericStyle'
 //import { RondFormeText } from "../../features/geoForme/rondForm"
 
+import Map from './map';
 
 function ElementHistoryNav(props) {
 
   const [showMap, setShowMap] = useState(false);
 
+  const waypoints = props.data;
+
+  const deltaView = {
+    latitudeDelta: 0.0922,
+    longitudeDelta: 0.0421,
+  }
+
+  console.log("element ", props.data[0]);
 
   if (showMap == false) {
     return (
       <View style={{ margin: 20, flex: 1, alignItems: "center", justifyContent: "space-evenly" }}>
         <TouchableHighlight onPress={() => setShowMap(!showMap)}>
-          <View style={{ flexDirection: 'row', flex: 1 }}>
-            <Text style={[{ fontWeight: 'bold', fontSize: 20, margin: 15 }]}>
-              {props.tag}
-            </Text>
-            <View style={{ backgroundColor: "#39A5D6", borderRadius: 20 }}>
-              <Text style={{ fontSize: 20, margin: 15 }}>Bouvelard Saint-Germain</Text>
-              <View style={{ flexDirection: 'row-reverse' }}>
-                <Text style={[{ textAlign: 'left', fontSize: 15, marginBottom: 20, marginRight: 15 }]}>Paris</Text>
-              </View>
-              <View
-                // eslint-disable-next-line react-native/no-inline-styles
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                }}>
-                <Text style={[{ fontSize: 20, margin: 15 }]}>1,5 H - 2,8 kM</Text>
-                <Text style={[{ fontSize: 20, margin: 15 }]}>3 Pins</Text>
-              </View>
-            </View>
-          </View>
+          <FlatList
+              data={waypoints}
+              renderItem={({ item }) => (
+                <View>
+                  <Text>Name: {item.name} </Text>
+                  <Text>Adress {item.address} </Text>
+                </View>
+              )}
+          />
         </TouchableHighlight>
       </View>
     );
@@ -41,8 +39,11 @@ function ElementHistoryNav(props) {
     return (
       <View>
         <TouchableHighlight onPress={() => setShowMap(!showMap)}>
-          <Text>Map</Text>
+        <View>
+          <Map height={100} width={380} deltaView={deltaView} waypoints={waypoints} />
+        </View>
         </TouchableHighlight>
+        
       </View>
     );
   }
