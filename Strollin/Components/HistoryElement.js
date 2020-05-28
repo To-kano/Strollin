@@ -27,6 +27,7 @@ function ElementHistoryNav(props) {
               data={waypoints}
               renderItem={({ item }) => (
                 <View>
+                  <Text>Step: {item.id} </Text>
                   <Text>Name: {item.name} </Text>
                   <Text>Adress {item.address} </Text>
                 </View>

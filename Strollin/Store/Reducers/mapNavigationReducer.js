@@ -16,9 +16,10 @@ function mapNavigationReducer(state = initialState, action) {
             return nextState;
         case 'ADD_HISTORIC':
             const history = {
-                id: Date.parse(new Date()),
+                id: Date.parse(new Date()).toString(),
                 waypoints: action.value
             }
+            
             nextState = {
                 ...state,
                 historic: [history],
