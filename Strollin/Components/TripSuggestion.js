@@ -91,6 +91,20 @@ function getNavigation() {
 
 function TripSuggestion(props) {
 
+  React.useLayoutEffect(() => {
+    props.navigation.setOptions({
+      headerRight: () => (
+        <Button
+            title="Log Out"
+            color="#89B3D9"
+            onPress={() =>
+              props.navigation.navigate('userLogin')
+            }
+          />
+      ),
+    });
+  }, [props.navigation]);
+
   const [waypoints, setWaypoints] = useState(getNavigation());
 
   const deltaView = {

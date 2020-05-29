@@ -1,4 +1,8 @@
 import React from 'react';
+
+import { Button, Text, View} from 'react-native';
+
+
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
@@ -15,6 +19,15 @@ import HistoryNav from '../Components/HistoryNav'
 
 const Stack = createStackNavigator();
 
+function LogoTitle(props) {
+    console.log("logo ", props)
+    return (
+      <View>
+          <Text>title</Text>
+      </View>
+    );
+  }
+
 function MyStack() {
   return (
     <NavigationContainer>
@@ -27,7 +40,9 @@ function MyStack() {
         <Stack.Screen
             name="historicUser"
             component={HistoryNav}
-            options={{title: 'historic'}}
+            options={{
+                title: 'historic',
+            }}
         />
         <Stack.Screen
             name="Home"

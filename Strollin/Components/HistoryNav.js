@@ -13,6 +13,22 @@ function HistoryNav(props) {
 
   console.log("historic ", props.map.historic[0]);
 
+  //const [count, setCount] = React.useState(0);
+
+  React.useLayoutEffect(() => {
+    props.navigation.setOptions({
+      headerRight: () => (
+        <Button
+            title="Log Out"
+            color="#89B3D9"
+            onPress={() =>
+              props.navigation.navigate('userLogin')
+            }
+          />
+      ),
+    });
+  }, [props.navigation]);
+
   return (
     <View style={{ flex: 1 }}>
         <View style={{ flex: 1.5, marginHorizontal: "15%" , backgroundColor : "white"}}>
@@ -35,13 +51,7 @@ function HistoryNav(props) {
             title="New Trip"
             onPress={() => props.navigation.navigate('TripSuggestion')}
           />
-          <Button
-            title="Log Out"
-            color="#89B3D9"
-            onPress={() =>
-              props.navigation.navigate('userLogin')
-            }
-          />
+          
         </View>
       </View>
   );
