@@ -41,6 +41,7 @@
 		"../scss/paper-kit/_cards.scss",
 		"../scss/paper-kit/cards/_card-plain.scss",
 		"../scss/paper-kit/cards/_card-register.scss",
+		"../scss/paper-kit/cards/_question-register.scss",
 		"../scss/paper-kit/cards/_card-profile.scss",
 		"../scss/paper-kit/_examples.scss",
 		"../scss/paper-kit/_sections.scss",

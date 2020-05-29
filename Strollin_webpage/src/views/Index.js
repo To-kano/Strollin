@@ -7,6 +7,7 @@ import DemoFooter from "components/Footers/DemoFooter.js";
 import Description from "views/index-sections/Description.js";
 import Contact from "views/index-sections/Contact.js";
 import Temoignage from "views/index-sections/Temoignage.js";
+import SectionQuestion from "views/index-sections/SectionQuestion.js";
 import SectionNavbars from "views/index-sections/SectionNavbars.js";
 import SectionNavigation from "views/index-sections/SectionNavigation.js";
 import SectionProgress from "views/index-sections/SectionProgress.js";
@@ -39,6 +40,7 @@ function Index() {
         <Temoignage />
         <Contact />
         <Faq />
+        <SectionQuestion />
       </div>
     </>
   );
