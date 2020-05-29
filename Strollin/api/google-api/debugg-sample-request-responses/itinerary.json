@@ -1,0 +1,88 @@
+{
+  "I added this field for the api call string": "https://maps.googleapis.com/maps/api/directions/json?origin=48.921940,2.299830&destination=48.923970,2.295590&mode=walking&key=AIzaSyCeoupzB5M_3KGzkoC63v-mJgjfAiXpsi0",
+  "geocoded_waypoints" : [
+     {
+        "geocoder_status" : "OK",
+        "place_id" : "ChIJZ0ljWkFv5kcReVTJRAJ0kwM",
+        "types" : [ "street_address" ]
+     },
+     {
+        "geocoder_status" : "OK",
+        "place_id" : "ChIJp1e07ERv5kcRAae_3EyBQGk",
+        "types" : [ "street_address" ]
+     }
+  ],
+  "routes" : [
+     {
+        "bounds" : {
+           "northeast" : {
+              "lat" : 48.9240098,
+              "lng" : 2.299831
+           },
+           "southwest" : {
+              "lat" : 48.921931,
+              "lng" : 2.2956402
+           }
+        },
+        "copyrights" : "Map data ©2019",
+        "legs" : [
+           {
+              "distance" : {
+                 "text" : "0.4 km",
+                 "value" : 384
+              },
+              "duration" : {
+                 "text" : "5 mins",
+                 "value" : 280
+              },
+              "end_address" : "8bis Avenue Chandon, 92230 Gennevilliers, France",
+              "end_location" : {
+                 "lat" : 48.9240098,
+                 "lng" : 2.2956402
+              },
+              "start_address" : "58 Avenue Chandon, 92230 Gennevilliers, France",
+              "start_location" : {
+                 "lat" : 48.921931,
+                 "lng" : 2.299831
+              },
+              "steps" : [
+                 {
+                    "distance" : {
+                       "text" : "0.4 km",
+                       "value" : 384
+                    },
+                    "duration" : {
+                       "text" : "5 mins",
+                       "value" : 280
+                    },
+                    "end_location" : {
+                       "lat" : 48.9240098,
+                       "lng" : 2.2956402
+                    },
+                    "html_instructions" : "Head \u003cb\u003enorthwest\u003c/b\u003e on \u003cb\u003eAvenue Chandon\u003c/b\u003e toward \u003cb\u003eRue d'Ostrowiec\u003c/b\u003e\u003cdiv style=\"font-size:0.9em\"\u003eDestination will be on the left\u003c/div\u003e",
+                    "polyline" : {
+                       "points" : "aariH}d`M]~@g@lAaAdCaAbCCH{@lBSf@i@zAg@pAg@nAGN"
+                    },
+                    "start_location" : {
+                       "lat" : 48.921931,
+                       "lng" : 2.299831
+                    },
+                    "travel_mode" : "WALKING"
+                 }
+              ],
+              "traffic_speed_entry" : [],
+              "via_waypoint" : []
+           }
+        ],
+        "overview_polyline" : {
+           "points" : "aariH}d`MiEvK_AvB}@bCwApD"
+        },
+        "summary" : "Avenue Chandon",
+        "warnings" : [
+           "Walking directions are in beta. Use caution – This route may be missing sidewalks or pedestrian paths."
+        ],
+        "waypoint_order" : []
+     }
+  ],
+  "status" : "OK"
+}

@@ -1,0 +1,106 @@
+info Running jetifier to migrate libraries to AndroidX. You can disable it using "--no-jetifier" flag.
+Jetifier found 1588 file(s) to forward-jetify. Using 4 workers...
+info JS server already running.
+'adb' n'est pas reconnu en tant que commande interne
+ou externe, un programme ex�cutable ou un fichier de commandes.
+info Launching emulator...
+error Failed to launch emulator. Reason: No emulators found as an output of `emulator -list-avds`.
+warn Please launch an emulator manually or connect a device. Otherwise app may fail to launch.
+
+> Task :react-native-maps:compileDebugJavaWithJavac
+
+> Task :react-native-reanimated:compileDebugJavaWithJavac
+
+> Task :react-native-screens:compileDebugJavaWithJavac
+
+> Task :react-native-video:compileDebugJavaWithJavac
+
+> Task :react-native-webview:compileDebugJavaWithJavac
+
+> Task :app:compileDebugJavaWithJavac
+
+> Task :react-native-maps:mergeDebugShaders FAILED
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 7.0.
+Use '--warning-mode all' to show the individual deprecation warnings.
+See https://docs.gradle.org/6.0.1/userguide/command_line_interface.html#sec:command_line_warnings
+137 actionable tasks: 80 executed, 57 up-to-date
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+Note: Some input files use unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+Note: C:\pro\eip\Strollin\Strollin\node_modules\react-native-reanimated\android\src\main\java\com\swmansion\reanimated\NodesManager.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+Note: C:\pro\eip\Strollin\Strollin\node_modules\react-native-reanimated\android\src\main\java\com\swmansion\reanimated\NodesManager.java uses unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+Note: Some input files use unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+Note: C:\pro\eip\Strollin\Strollin\node_modules\react-native-video\android\src\main\java\com\android\vending\expansion\zipfile\APEZProvider.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+Note: C:\pro\eip\Strollin\Strollin\node_modules\react-native-video\android\src\main\java\com\brentvatne\react\ReactVideoViewManager.java uses unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+Note: C:\pro\eip\Strollin\Strollin\node_modules\react-native-webview\android\src\main\java\com\reactnativecommunity\webview\RNCWebViewManager.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+Note: C:\pro\eip\Strollin\Strollin\node_modules\react-native-webview\android\src\main\java\com\reactnativecommunity\webview\RNCWebViewManager.java uses unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+Note: C:\pro\eip\Strollin\Strollin\android\app\src\debug\java\com\strollin\ReactNativeFlipper.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':react-native-maps:mergeDebugShaders'.
+> Couldn't delete stale output file
+
+* Try:
+Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output. Run with --scan to get full insights.
+
+* Get more help at https://help.gradle.org
+
+BUILD FAILED in 1m 20s
+
+error Failed to install the app. Make sure you have the Android development environment set up: https://reactnative.dev/docs/getting-started.html#android-development-environment. Run CLI with --verbose flag for more details.
+Error: Command failed: gradlew.bat app:installDebug -PreactNativeDevServerPort=8081
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+Note: Some input files use unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+Note: C:\pro\eip\Strollin\Strollin\node_modules\react-native-reanimated\android\src\main\java\com\swmansion\reanimated\NodesManager.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+Note: C:\pro\eip\Strollin\Strollin\node_modules\react-native-reanimated\android\src\main\java\com\swmansion\reanimated\NodesManager.java uses unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+Note: Some input files use unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+Note: C:\pro\eip\Strollin\Strollin\node_modules\react-native-video\android\src\main\java\com\android\vending\expansion\zipfile\APEZProvider.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+Note: C:\pro\eip\Strollin\Strollin\node_modules\react-native-video\android\src\main\java\com\brentvatne\react\ReactVideoViewManager.java uses unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+Note: C:\pro\eip\Strollin\Strollin\node_modules\react-native-webview\android\src\main\java\com\reactnativecommunity\webview\RNCWebViewManager.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+Note: C:\pro\eip\Strollin\Strollin\node_modules\react-native-webview\android\src\main\java\com\reactnativecommunity\webview\RNCWebViewManager.java uses unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+Note: C:\pro\eip\Strollin\Strollin\android\app\src\debug\java\com\strollin\ReactNativeFlipper.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':react-native-maps:mergeDebugShaders'.
+> Couldn't delete stale output file
+
+* Try:
+Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output. Run with --scan to get full insights.
+
+* Get more help at https://help.gradle.org
+
+BUILD FAILED in 1m 20s
+
+    at makeError (C:\pro\eip\Strollin\Strollin\node_modules\execa\index.js:174:9)
+    at C:\pro\eip\Strollin\Strollin\node_modules\execa\index.js:278:16
+    at processTicksAndRejections (internal/process/task_queues.js:97:5)
+    at async runOnAllDevices (C:\pro\eip\Strollin\Strollin\node_modules\@react-native-community\cli-platform-android\build\commands\runAndroid\runOnAllDevices.js:94:5)
+    at async Command.handleAction (C:\pro\eip\Strollin\Strollin\node_modules\react-native\node_modules\@react-native-community\cli\build\index.js:186:9)

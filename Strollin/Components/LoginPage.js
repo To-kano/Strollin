@@ -1,8 +1,6 @@
 import React, {useState} from 'react';
-import {connect} from 'react-redux';
-
 import {StyleSheet ,Text , View, Image, TextInput, Button} from "react-native";
-
+import {connect} from 'react-redux';
 
 function RandPic() {
     var nb = Math.floor(Math.random() * 3) + 1;
@@ -67,7 +65,7 @@ function LoginPage(props) {
               <Text style={styles.textLink} onPress={()=> props.navigation.navigate('Home')}>
                 Forgot Password ?
               </Text>
-              <Text style={styles.textLink} onPress={()=> console.log("ok")}>
+              <Text style={styles.textLink} onPress={()=> { props.navigation.navigate('userRegister');}}>
                 Dont have an account ?
               </Text>
             </View>

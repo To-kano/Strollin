@@ -10,6 +10,8 @@ import TageSelection from '../Components/TagSelection';
 import LoginPage from '../Components/LoginPage';
 import Home from '../Components/Home';
 import HomePage from '../Components/HomePage';
+import TripSuggestion from '../Components/TripSuggestion';
+import TripNavigation from '../Components/TripNavigation';
 
 const Stack = createStackNavigator();
 
@@ -17,6 +19,11 @@ function MyStack() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+        <Stack.Screen
+            name="userLogin"
+            component={LoginPage}
+            options={{title: 'Loging'}}
+        />
         <Stack.Screen
             name="Home"
             component={Home}
@@ -28,9 +35,14 @@ function MyStack() {
             options={{title: 'Homepage'}}
         />
         <Stack.Screen
-            name="userLogin"
-            component={LoginPage}
-            options={{title: 'Loging'}}
+            name="TripSuggestion"
+            component={TripSuggestion}
+            options={{title: 'TripSuggestion'}}
+        />
+        <Stack.Screen
+            name="TripNavigation"
+            component={TripNavigation}
+            options={{title: 'TripNavigation'}}
         />
         <Stack.Screen
             name="userRegister"
