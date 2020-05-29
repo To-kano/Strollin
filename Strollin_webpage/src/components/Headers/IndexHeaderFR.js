@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Button,
   Card,
@@ -14,6 +14,14 @@ import {
 } from "reactstrap";
 
 function IndexHeaderFR() {
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  
+  const handleSubmit = (evt) => {
+      evt.preventDefault();
+      alert(`Submitting Email: ${email} Username: ${username} Password: ${password}`)
+  }
   return (
     <>
       <div
@@ -29,38 +37,20 @@ function IndexHeaderFR() {
             <Row>
               <Col className="mx-auto" lg="4" md="6">
                 <Card className="card-register">
-                  <h3 className="form-title text-center">Inscrivez-vous pour des bonus !</h3>
-                  <Form className="register-form">
+                  <h3 className="form-title text-center">Inscrivez-vous pour des bonus</h3>
+                  <Form className="register-form" onSubmit={handleSubmit}>
                   <h4 className="form-letter">Email</h4>
-                    <InputGroup className="form-group-no-border">
-                      <InputGroupAddon addonType="prepend">
-                        <InputGroupText>
-                          <i className="nc-icon nc-email-85" />
-                        </InputGroupText>
-                      </InputGroupAddon>
-                      <Input placeholder="Email" type="email" />
-                    </InputGroup>
+                    <Input type="email" name="email" id="exampleEmail" placeholder="Email" onChange={e => setEmail(e.target.value)} />
+                    <h4 className="form-letter">Pseudo</h4>
+                    <Input type="username" name="username" id="exampleUsername" placeholder="Username" onChange={e => setUsername(e.target.value)} />
                     <h4 className="form-letter">Mot de passe</h4>
-                    <InputGroup className="form-group-no-border">
-                      <InputGroupAddon addonType="prepend">
-                        <InputGroupText>
-                          <i className="nc-icon nc-key-25" />
-                        </InputGroupText>
-                      </InputGroupAddon>
-                      <Input placeholder="Mot de passe" type="password" />
-                    </InputGroup>
+                    <Input type="password" name="password" id="examplePassword" placeholder="Password" onChange={e => setPassword(e.target.value)} />
                     <Label check className="form-little-letter">
-                        <Input type="checkbox" name="check" id="exampleCheck"/>
-                          J'accepte les conditions d'utilisations
+                      <Input type="checkbox" name="check" id="exampleCheck" required/>
+                        J'accepte les conditions d'utilisations
                     </Label>
-                    <Button
-                      block
-                      className="btn-round"
-                      color="success"
-                      type="button"
-                    >
-                      S'inscrire
-                    </Button>
+                    <br/>
+                    <Input style={{backgroundColor: '#5cb85c', color: 'white', fontSize: '15px', fontWeight: 'bold' }} type="submit" value="S'inscrire" />
                   </Form>
                 </Card>
               </Col>
