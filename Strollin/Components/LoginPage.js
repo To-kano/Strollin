@@ -57,7 +57,7 @@ function LoginPage(props) {
             </View>
             <View style={{flex: 0.1, flexDirection: 'column', marginTop: '0%'}}>
               <Button
-                onPress={() => console.log('rip titi')}
+                onPress={() => props.navigation.navigate('HomePage')}
                 title="Confirm"
                 color="#841584"
                 accessibilityLabel="Learn more about this purple button"
