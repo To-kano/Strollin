@@ -21,29 +21,40 @@ function ElementHistoryNav(props) {
 
   if (showMap == false) {
     return (
-      <View style={{ margin: 20, flex: 1, alignItems: "center", justifyContent: "space-evenly" }}>
-        <TouchableHighlight onPress={() => setShowMap(!showMap)}>
-          <FlatList
-              data={waypoints}
-              renderItem={({ item }) => (
-                <View style={{ margin: 10}}>
-                  <Text>Step: {item.id} </Text>
-                  <Text>Name: {item.name} </Text>
-                  <Text>Adress {item.address} </Text>
-                </View>
-              )}
+      <View style={{ margin: 20, paddingTop: 10, flex: 1, alignItems: "center", justifyContent: "space-evenly" }}>
+        <View>
+          <Button
+              title="Carte"
+              color="#89B3D9"
+              onPress={() => setShowMap(!showMap)}
           />
-        </TouchableHighlight>
+        </View>
+        <FlatList
+            data={waypoints}
+            renderItem={({ item }) => (
+              <View style={{ margin: 10}}>
+                <Text>Step: {item.id} </Text>
+                <Text>Name: {item.name} </Text>
+                <Text>Adress {item.address} </Text>
+              </View>
+            )}
+        />
       </View>
     );
   } else {
     return (
-      <View style={{ paddingTop: 10}}>
-        <TouchableHighlight onPress={() => setShowMap(!showMap)}>
-        <View>
-          <Map height={300} width={250} deltaView={deltaView} waypoints={waypoints} />
+      <View style={{ margin: 20,padding: 20, flex: 1, alignItems: "center", justifyContent: "space-evenly" }}>
+        <View style={{ marginBottom: 10}}>
+          <Button
+              title="Step"
+              color="#89B3D9"
+              onPress={() => setShowMap(!showMap)}
+          />
         </View>
-        </TouchableHighlight>
+
+        <View>
+          <Map height={250} width={200} deltaView={deltaView} waypoints={waypoints} />
+        </View>
         
       </View>
     );

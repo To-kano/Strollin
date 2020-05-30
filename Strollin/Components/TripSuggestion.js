@@ -2,6 +2,7 @@ import React,  { Component , useState, useEffect} from 'react';
 import { StyleSheet, Text, View, Button, Image,PermissionsAndroid } from 'react-native';
 import Map from './map'
 
+import ElementHistoryNav from './HistoryElement';
 import BackgroundImage from './backgroundImage';
 //import { getGoogleApiSearch } from '../api/google-api/google-api';
 ////import { getTags } from '../../dataBase/actions'
@@ -121,8 +122,8 @@ function TripSuggestion(props) {
         <Text style={[{ textAlign: "center", fontSize: 20, color: "#39A5D6", margin: 5 }]}>Heading to:</Text>
         <Text style={[{ textAlign: "center", fontSize: 25 }]}>{waypoints[0].name}</Text>
       </View>
-      <View style={{ flex: 3, marginTop: 50}}>
-        <Map height={'100%'} width={290} deltaView={deltaView} waypoints={waypoints} />
+      <View style={{ flex: 3, marginTop: 50, backgroundColor : 'rgba(255,255,255, 0.9)', borderRadius: 10, width: "80%"}}>
+        <ElementHistoryNav data={waypoints} />
       </View>
       <View style={{ flex: 0.3, flexDirection: "row", justifyContent: "space-around", paddingTop: 10, marginBottom: 10 }}>
           <Button
