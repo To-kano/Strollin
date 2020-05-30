@@ -9,6 +9,9 @@ import {fire} from '../dataBase/config'
 
 import {RondFormeText} from "./rondForm"
 
+import BackgroundImage from './backgroundImage';
+
+
 function UserRegister(props) {
 
   const [userEmail, setUserEmail] = useState('');
@@ -37,7 +40,8 @@ function UserRegister(props) {
   } else {
     return (
       <View style={styles.container}>
-        <View style={{flex : 4, margin: 20}}>
+      <BackgroundImage/>
+        <View style={{flex : 4, margin: 20, backgroundColor: 'rgba(255,255,255, 0.95)', padding: 10,justifyContent: 'space-around', borderRadius: 10}}>
           <View style={{flexDirection: "row", justifyContent: "space-evenly", margin: 10}}>
 
             <View style={{width: "40%"}}>
@@ -114,7 +118,7 @@ function UserRegister(props) {
             />
             </View>
         </View>
-        <View style={{flex : 2,margin: 20}}>
+        <View style={{flex : 1,margin: 20, backgroundColor: 'rgba(255,255,255, 0.9)',padding: 10,justifyContent: 'space-around', borderRadius: 10}}>
               <Button
                 onPress={() => {
                   const userData = {

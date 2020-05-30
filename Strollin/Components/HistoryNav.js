@@ -32,7 +32,7 @@ function HistoryNav(props) {
   return (
     <View style={{ flex: 1,flexDirection: 'column', justifyContent: 'space-around', }}>
       <BackgroundImage/>
-        <View style={{ flex: 1.5, marginHorizontal: "15%", marginTop: 20 , backgroundColor : "white"}}>
+        <View style={{ flex: 1.5, marginHorizontal: "15%", marginTop: 20 , backgroundColor : 'rgba(255,255,255, 0.9)', borderRadius: 10}}>
         <FlatList
             data={props.map.historic}
             renderItem={({ item }) => (

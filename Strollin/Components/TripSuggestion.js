@@ -117,7 +117,7 @@ function TripSuggestion(props) {
   return (
     <View style={styles.container}>
       <BackgroundImage/>
-      <View style={{justifyContent: 'space-around', flex: 1, marginTop: 20,marginHorizontal: "10%", backgroundColor: 'rgba(255,255,255, 0.9)', borderRadius: 0, width: "80%" }}>
+      <View style={{justifyContent: 'space-around', flex: 1, marginTop: 20,marginHorizontal: "10%", backgroundColor: 'rgba(255,255,255, 0.9)', borderRadius: 20, width: "80%" }}>
         <Text style={[{ textAlign: "center", fontSize: 20, color: "#39A5D6", margin: 5 }]}>Heading to:</Text>
         <Text style={[{ textAlign: "center", fontSize: 25 }]}>{waypoints[0].name}</Text>
       </View>
