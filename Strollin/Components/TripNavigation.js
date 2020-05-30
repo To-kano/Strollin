@@ -30,9 +30,6 @@ function TripNavigation(props) {
 
   return (
     <View style={styles.container}>
-      <View style={{flex: 0.3, marginTop: 40}}>
-        <Text style={{fontSize: 30, fontFamily:"lobster", color:"#EEB015"}}>Strollin</Text>
-      </View>
       <View style={{flex: 3}}>
         <Map height={"100%"} width={380} deltaView={deltaView} waypoints={waypoints} />
       </View>

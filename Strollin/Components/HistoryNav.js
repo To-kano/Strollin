@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableHighlight, FlatList, Button, ImageBackground, StyleSheet, Dimensions } from 'react-native';
+import { Text, View, Image, FlatList, Button, ImageBackground, StyleSheet, Dimensions } from 'react-native';
 //import stylesHomepage from '../../styles/homepage'
 //import stylesGeneric from '../../styles/genericStyle'
 //import { RondFormeText } from "../../features/geoForme/rondForm"
 
 import ElementHistoryNav from './HistoryElement';
+import BackgroundImage from './backgroundImage';
 
 import {connect} from 'react-redux';
-
 
 function HistoryNav(props) {
 
@@ -30,12 +30,13 @@ function HistoryNav(props) {
   }, [props.navigation]);
 
   return (
-    <View style={{ flex: 1 }}>
-        <View style={{ flex: 1.5, marginHorizontal: "15%" , backgroundColor : "white"}}>
+    <View style={{ flex: 1,flexDirection: 'column', justifyContent: 'space-around', }}>
+      <BackgroundImage/>
+        <View style={{ flex: 1.5, marginHorizontal: "15%", marginTop: 20 , backgroundColor : "white"}}>
         <FlatList
             data={props.map.historic}
             renderItem={({ item }) => (
-              <View>
+              <View style={{padding: 10}} >
                 <Text>date: {item.date}</Text>
                 <Text>duration: {item.duration}</Text>
                 <ElementHistoryNav data={item.waypoints} />
@@ -45,7 +46,7 @@ function HistoryNav(props) {
         
           
         </View>
-        <View style={[{ flex: 0.3, backgroundColor : "white" , justifyContent : "center"}]}>
+        <View style={[{ flex: 0.3,marginHorizontal: "15%", backgroundColor: 'rgba(0,0,0,0.0)' , justifyContent : "center"}]}>
           <Button
             color='#D99860'
             title="New Trip"

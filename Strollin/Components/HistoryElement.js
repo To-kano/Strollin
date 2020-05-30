@@ -13,8 +13,8 @@ function ElementHistoryNav(props) {
   const waypoints = props.data;
 
   const deltaView = {
-    latitudeDelta: 0.0922,
-    longitudeDelta: 0.0421,
+    latitudeDelta: 0.1622,
+    longitudeDelta: 0.1021,
   }
 
   console.log("element ", props.data);
@@ -26,7 +26,7 @@ function ElementHistoryNav(props) {
           <FlatList
               data={waypoints}
               renderItem={({ item }) => (
-                <View>
+                <View style={{ margin: 10}}>
                   <Text>Step: {item.id} </Text>
                   <Text>Name: {item.name} </Text>
                   <Text>Adress {item.address} </Text>
@@ -38,10 +38,10 @@ function ElementHistoryNav(props) {
     );
   } else {
     return (
-      <View>
+      <View style={{ paddingTop: 10}}>
         <TouchableHighlight onPress={() => setShowMap(!showMap)}>
         <View>
-          <Map height={300} width={380} deltaView={deltaView} waypoints={waypoints} />
+          <Map height={300} width={250} deltaView={deltaView} waypoints={waypoints} />
         </View>
         </TouchableHighlight>
         
