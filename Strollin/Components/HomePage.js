@@ -31,7 +31,7 @@ function HomePage(props) {
         </TouchableOpacity>
         <TouchableOpacity
           style={{width: '20%', height: '100%', marginLeft: '10%'}}
-          onPress={() => console.log('insert navigation to trip history page here')}
+          onPress={() => props.navigation.navigate('historicUser')}
         >
           <Image style={{height: '70%', width: '70%', marginTop: '10%', marginLeft: '10%'}} source={require('../ressources/history.png')} />
         </TouchableOpacity>
@@ -53,9 +53,9 @@ function HomePage(props) {
       <View style={{flex: 0.10, flexDirection: 'column', marginTop: '10%'}}>
         <TouchableOpacity
           style={{alignItems: "center", backgroundColor: "#E67E22", paddingVertical: '5%', paddingHorizontal: '32%'}}
-          onPress={() => console.log('insert navigation to trip selection page here')}
+          onPress={() => props.navigation.navigate('TripSuggestion')}
         >
-          <Text style={{fontSize: 20}}> Start a new trip </Text>
+          <Text style={{fontSize: 15}}> Start a new trip </Text>
         </TouchableOpacity>
       </View>
     </View>
