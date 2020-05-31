@@ -37,7 +37,7 @@ function Temoignage() {
                   </div>
               </div>
           </div>
-          <br/><br/><br/>
+          <br/><br/><hr/><br/>
       </div>
     </>
   );

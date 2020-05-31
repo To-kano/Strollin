@@ -13,6 +13,7 @@ import UserRegister from '../Components/UserRegister';
 import TageSelection from '../Components/TagSelection';
 import LoginPage from '../Components/LoginPage';
 import Home from '../Components/Home';
+import HomePage from '../Components/HomePage';
 import TripSuggestion from '../Components/TripSuggestion';
 import TripNavigation from '../Components/TripNavigation';
 import HistoryNav from '../Components/HistoryNav'
@@ -47,6 +48,11 @@ function MyStack() {
         <Stack.Screen
             name="Home"
             component={Home}
+            options={{title: 'Homepage'}}
+        />
+        <Stack.Screen
+            name="HomePage"
+            component={HomePage}
             options={{title: 'Homepage'}}
         />
         <Stack.Screen
