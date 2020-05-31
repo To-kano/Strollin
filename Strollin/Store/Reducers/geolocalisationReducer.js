@@ -5,6 +5,12 @@ const initialState = {
     position: {
         latitude: 48.815641,
         longitude: 2.363224,
+    },
+    region : {
+        latitude: 48.815641,
+        longitude: 2.363224,
+        latitudeDelta: 0.1622,
+        longitudeDelta: 0.1021
     }
 };
 
@@ -29,6 +35,13 @@ function geolocalisationReducer(state = initialState, action) {
                 ...state,
                 update : true,
                 position: action.value
+            }
+            return nextState;
+        case 'SET_REGION':
+            //console.log("lol");
+            nextState = {
+                ...state,
+                region: action.value
             }
             return nextState;
         default:

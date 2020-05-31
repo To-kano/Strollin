@@ -28,6 +28,13 @@ function TripNavigation(props) {
     longitudeDelta: 0.0421,
   }
 
+  Map.region = {
+    latitude: props.position.position.latitude,
+    longitude: props.position.position.longitude,
+    latitudeDelta: deltaView.latitudeDelta,
+    longitudeDelta: deltaView.longitudeDelta
+  }
+
   return (
     <View style={styles.container}>
       <View style={{flex: 3}}>

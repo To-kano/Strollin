@@ -12,7 +12,7 @@ function RandPic() {
       img = require('../ressources/street2.jpeg');
     if (nb == 3)
       img = require('../ressources/plum2.jpg');
-    console.log(nb)
+    //console.log(nb)
     return img;
 }
 

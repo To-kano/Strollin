@@ -11,28 +11,30 @@ import {connect} from 'react-redux';
 
 // apiKey AIzaSyDT8niDsJMDOvWCmxCh4n7BCKxpiZleQIg
 
-function onRegionChange(region) {
-  //console.log(region);
-
-  //this.setState({ region });
-}
 
 function updatePosition(props, position) {
 
-  let data = {
-    latitude: position.coords.latitude,
-    longitude: position.coords.longitude,
-}
+  if ( typeof updatePosition.one == 'undefined' ) {
+    // It has not... perform the initialization
+    updatePosition.one = 0;
+  }
 
-  const action = {type: 'SET_POSITION', value : data};
-  props.dispatch(action);
+  //updatePosition.one += 0.01;
+
+  let data = {
+    latitude: position.coords.latitude + updatePosition.one,
+    longitude: position.coords.longitude,
+  }
+
+  const action_position = {type: 'SET_POSITION', value : data};
+  props.dispatch(action_position);
 }
 
 async function updateCoordinates(props) {
   if (props.position.permission == true) {
     Geolocation.getCurrentPosition(
       (position) => {
-        console.log(position);
+        //console.log(position);
         updatePosition(props, position);
       },
       (error) => {
@@ -42,6 +44,16 @@ async function updateCoordinates(props) {
     );
   }
 };
+
+function updateRegion(props) {
+
+  //console.log("update region props ", props);
+  console.log("update region region ", Map.region);
+
+  const action_region = {type: 'SET_REGION', value : Map.region};
+  props.dispatch(action_region);
+
+}
 
 async function requestGeolocalisationPermission(props) {
   try {
@@ -69,17 +81,48 @@ async function requestGeolocalisationPermission(props) {
   }
 }
 
+//{
+//  latitude: props.position.position.latitude,
+//  longitude: props.position.position.longitude,
+//  latitudeDelta: props.deltaView.latitudeDelta,
+//  longitudeDelta: props.deltaView.longitudeDelta
+//}
+
+var wildRegion = {
+        latitude: 48.815641,
+        longitude: 2.363224,
+        latitudeDelta: 0.1622,
+        longitudeDelta: 0.1021
+}
+
 function Map(props) {
 
-  //const [seconds, setSeconds] = useState(0);
+  let [localRegion, setLocalRegion] = useState({
+      latitude: props.position.position.latitude,
+      longitude: props.position.position.longitude,
+      latitudeDelta: props.deltaView.latitudeDelta,
+      longitudeDelta: props.deltaView.longitudeDelta
+  })
 
-  //useEffect(() => {
-  //  const interval = setInterval(() => {
-  //    //console.log('This will run every second!');
-  //    updateCoordinates(props);
-  //  }, 1000);  
-  //  return () => clearInterval(interval);
-  //}, []);
+  if ( typeof Map.region == 'undefined' ) {
+    // It has not... perform the initialization
+    Map.region = {
+      latitude: props.position.position.latitude,
+      longitude: props.position.position.longitude,
+      latitudeDelta: props.deltaView.latitudeDelta,
+      longitudeDelta: props.deltaView.longitudeDelta
+  };
+  }
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      //console.log('This will run every second!');
+
+      updateRegion(props);
+      updateCoordinates(props);
+    }, 1000);  
+    return () => clearInterval(interval);
+  }, []);
 
   //console.log(props.position);
 
@@ -99,13 +142,8 @@ function Map(props) {
 
     return (
         <MapView style={{ height: props.height, width: props.width }}
-              region={{
-                latitude: props.position.position.latitude,
-                longitude: props.position.position.longitude,
-                latitudeDelta: props.deltaView.latitudeDelta,
-                longitudeDelta: props.deltaView.longitudeDelta
-              }}
-              onRegionChange={onRegionChange}
+              region={props.position.region}
+              onRegionChange={(region)=> {Map.region = region}}
               >
               <MapViewDirections
                 origin={origin}

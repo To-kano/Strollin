@@ -6,6 +6,9 @@ import { Text, View, TouchableHighlight, FlatList, Button, ImageBackground, Styl
 
 import Map from './map';
 
+import {connect} from 'react-redux';
+
+
 function ElementHistoryNav(props) {
 
   const [showMap, setShowMap] = useState(false);
@@ -17,7 +20,14 @@ function ElementHistoryNav(props) {
     longitudeDelta: 0.1021,
   }
 
-  console.log("element ", props.data);
+  Map.region = {
+    latitude: props.position.position.latitude,
+    longitude: props.position.position.longitude,
+    latitudeDelta: deltaView.latitudeDelta,
+    longitudeDelta: deltaView.longitudeDelta
+  }
+
+  //console.log("element ", props.data);
 
   if (showMap == false) {
     return (
@@ -61,7 +71,13 @@ function ElementHistoryNav(props) {
   }
 }
 
-export default ElementHistoryNav;
+
+const mapStateToProps = (state) => {
+  return state
+}
+export default connect(mapStateToProps)(ElementHistoryNav);
+
+//export default ElementHistoryNav;
 
 
 const styles = StyleSheet.create({

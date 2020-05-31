@@ -11,7 +11,7 @@ import {connect} from 'react-redux';
 
 function HistoryNav(props) {
 
-  console.log("historic ", props.map.historic[0]);
+  //console.log("historic ", props.map.historic[0]);
 
   //const [count, setCount] = React.useState(0);
 
