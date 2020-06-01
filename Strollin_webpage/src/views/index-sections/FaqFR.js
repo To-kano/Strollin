@@ -1,6 +1,35 @@
 import React from "react";
 
 function FaqFR() {
+    var faqData = require('./FaqContentFR.json');
+
+    function faqPrinter(obj) {
+        let grid = [];
+        let tmp = [];
+        let i = 0;
+        for (var key in obj) {
+            let question = obj[key]["question"];
+            let answer = obj[key]["answer"];
+            tmp.push(
+            <div class="col-xl-4 col-lg-4 col-md-6">
+                <div class="services-caption text-center mb-30">
+                    <div class={ 'fas fa-hand-holding-usd' }>
+                        <h4 style={{fontSize:"25px", fontWeight:"bold"}}>{question}<br/></h4>
+                        <p style={{fontSize:"18px", fontWeight:"500"}}><br/>{answer}</p>
+                    </div>
+                </div>
+            </div>);
+            i++;
+            if (i % 3 == 0) {
+                grid.push(<div class="row">{tmp}</div>);
+                tmp = [];
+            }
+        }
+        if (typeof tmp !== 'undefined' && tmp.length > 0) {
+            grid.push(<div class="row">{tmp}</div>);
+        }
+        return (grid);
+    }
 
   return (
     <>
@@ -10,42 +39,10 @@ function FaqFR() {
                     <span style={{fontSize:"50px", fontWeight:"bold"}}><br/>FAQ<br/><br/></span>
                 </div>
           </div>
-          <div class="row">
-              <div class="col-xl-4 col-lg-4 col-md-6">
-                  <div class="services-caption text-center mb-30">
-                      <div class={ 'fas fa-hand-holding-usd' }>
-                        <h4 style={{fontSize:"25px", fontWeight:"bold"}}>Comment signaler un bug ?<br/></h4>
-                        <p style={{fontSize:"18px", fontWeight:"500"}}><br/>Par mail dans les contacts, vous pourrez recevoir des récompenses !</p>
-                      </div>
-                  </div>
-              </div>
-              <div class="col-xl-4 col-lg-4 col-md-6">
-                  <div class="services-caption active text-center mb-30">
-                      <div class="service-icon">
-                          <span class="flaticon-pay"></span>
-                      </div> 
-                      <div class="service-cap">
-                          <h4 style={{fontSize:"25px", fontWeight:"bold"}}>Aurons-nous des achats intégrés ?<br/></h4>
-                          <p style={{fontSize:"18px", fontWeight:"500"}}><br/>Oui, il y aura par exemple des "Navis" (petit personnage original ou issue de collaboration pour vous guidez, avec par exemple des voix japonaises) bientôt disponible</p>
-                      </div>
-                  </div>
-              </div> 
-              <div class="col-xl-4 col-lg-4 col-md-6">
-                  <div class="services-caption text-center mb-30">
-                      <div class="service-icon">
-                          <span class="flaticon-plane"></span>
-                      </div> 
-                      <div class="service-cap">
-                          <h4 style={{fontSize:"25px", fontWeight:"bold"}}>Est-ce que mes données sont privées ?</h4>
-                          <p style={{fontSize:"18px", fontWeight:"500"}}><br/>Elles ne seront utilisées que si vous le permettez lorsque vous visionnez des publicités dans le but d'obtenir des Stroll coins. Autrement elles sont privées.</p>
-                      </div>
-                  </div>
-              </div>
-          </div>
+          {faqPrinter(faqData)}
           <br/><br/><hr/><br/>
       </div>
     </>
   );
 }
-
 export default FaqFR;

@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import axios from "axios";
+
 import {
   Button,
   Card,
@@ -20,6 +22,22 @@ function SectionQuestion() {
   const handleSubmit = (evt) => {
       evt.preventDefault();
       alert(`Submitting Email: ${email} Question: ${question}`)
+
+      /*axios({
+        method: "POST", 
+        url:"http://localhost:3000/send",
+        data: {
+          email: email,
+          question: question
+        }
+    }).then((response)=>{
+        if (response.data.msg === 'success') {
+            alert("Email sent, awesome!"); 
+        } else if (response.data.msg === 'fail') {
+            alert("Oops, something went wrong. Try again")
+        }
+    })*/
+
       return false;
   }
 
@@ -41,7 +59,7 @@ function SectionQuestion() {
                       <h4 className="form-letter">Email</h4>
                       <Input type="email" name="email" id="exampleEmail" placeholder="Email" onChange={e => setEmail(e.target.value)} />
                       <h4 className="form-letter">Question</h4>
-                      <textarea style={{ height: "400px", width: "640px"}} type="question" name="question" id="exampleQuestion" placeholder="Question" onChange={e => setQuestion(e.target.value)}/>
+                      <textarea style={{ height: "400px", width: "640px"}} type="question" name="question" id="exampleQuestion" placeholder="Your question" onChange={e => setQuestion(e.target.value)}/>
                       <Input style={{backgroundColor: '#5cb85c', color: 'white', fontSize: '15px', fontWeight: 'bold' }} type="submit" value="Send question"/>
                     </Form>
                   </Card>

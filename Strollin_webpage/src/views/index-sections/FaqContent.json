@@ -1,0 +1,14 @@
+{
+    "Question1" : {
+        "question" : "How do I report a bug?",
+        "answer" : "By mail to the contact, you may also receive a reward!"
+    },
+    "Question2" : {
+        "question" : "Is there in-app purchase?",
+        "answer" : "Yes there will be exclusive free and purchasable 'Navi' (small original or collab' character that guide you, even with japanese voice actor) available soon"
+    },
+    "Question3" : {
+        "question" : "Is my data private?",
+        "answer" : "If you chose to watch publicity to get Stroll coins, you can enable the use of your personal data for more accurate publicity. Otherwise your data is strictly private"
+    }
+}
