@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {StyleSheet ,Text , View, Image, TextInput} from "react-native";
+import {StyleSheet ,Text , View, Image, TextInput, Button} from "react-native";
 import {connect} from 'react-redux';
 
 function RandPic() {
@@ -12,7 +12,7 @@ function RandPic() {
       img = require('../ressources/street2.jpeg');
     if (nb == 3)
       img = require('../ressources/plum2.jpg');
-    console.log(nb)
+    //console.log(nb)
     return img;
 }
 
@@ -51,6 +51,14 @@ function LoginPage(props) {
                 placeholder={'Password'}
                 autoCompleteType={'password'}
                 secureTextEntry={true}
+              />
+            </View>
+            <View style={{flex: 0.1, flexDirection: 'column', marginTop: '0%'}}>
+              <Button
+                onPress={() => props.navigation.navigate('HomePage')}
+                title="Confirm"
+                color="#841584"
+                accessibilityLabel="Learn more about this purple button"
               />
             </View>
             <View style={{flex: 0.4, flexDirection: 'column'}}>

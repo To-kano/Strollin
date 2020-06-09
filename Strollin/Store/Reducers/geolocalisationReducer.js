@@ -5,6 +5,12 @@ const initialState = {
     position: {
         latitude: 48.815641,
         longitude: 2.363224,
+    },
+    region : {
+        latitude: 48.815641,
+        longitude: 2.363224,
+        latitudeDelta: 0.1622,
+        longitudeDelta: 0.1021
     }
 };
 
@@ -12,7 +18,7 @@ const initialState = {
 function geolocalisationReducer(state = initialState, action) {
     let nextState
     //console.log("\n\ngalleryReducer:\n")
-    console.log(action);
+    //console.log(action);
     switch (action.type) {
         case 'SET_PERMISSION':
             //console.log("mdr");
@@ -22,7 +28,7 @@ function geolocalisationReducer(state = initialState, action) {
                 permission: action.value,
                 asked: true
             }
-            return nextState
+            return nextState;
         case 'SET_POSITION':
             //console.log("lol");
             nextState = {
@@ -30,9 +36,16 @@ function geolocalisationReducer(state = initialState, action) {
                 update : true,
                 position: action.value
             }
-            return nextState
+            return nextState;
+        case 'SET_REGION':
+            //console.log("lol");
+            nextState = {
+                ...state,
+                region: action.value
+            }
+            return nextState;
         default:
-            return state
+            return state;
     }
 }
 

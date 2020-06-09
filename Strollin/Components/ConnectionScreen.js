@@ -2,6 +2,8 @@ import React from "react";
 import { Button , View} from "react-native";
 import {connect} from 'react-redux';
 
+import 'react-native-get-random-values';
+import { v4 as uuidv4 } from 'uuid';
 import environement from '../env/Environement'
 import { WebView } from 'react-native-webview';
 
@@ -45,6 +47,8 @@ function ConnectionScreen(prop) {
         }
     }
     return (
+            //<View>
+            //</View>
             <WebView
                 source={{uri: environement.Base_Auth}}
                 onNavigationStateChange = {handleWebViewNavigationStateChange}
@@ -54,5 +58,5 @@ function ConnectionScreen(prop) {
 
 const mapStateToProps = (state) => {
     return state
-  }  
+  }
 export default connect(mapStateToProps)(ConnectionScreen);

@@ -7,6 +7,20 @@ import Map from './map';
 
 function TripNavigation(props) {
 
+  React.useLayoutEffect(() => {
+    props.navigation.setOptions({
+      headerRight: () => (
+        <Button
+            title="Log Out"
+            color="#89B3D9"
+            onPress={() =>
+              props.navigation.navigate('userLogin')
+            }
+          />
+      ),
+    });
+  }, [props.navigation]);
+
   const waypoints = props.map.waypoints;
 
   const deltaView = {
@@ -14,18 +28,26 @@ function TripNavigation(props) {
     longitudeDelta: 0.0421,
   }
 
+  Map.region = {
+    latitude: props.position.position.latitude,
+    longitude: props.position.position.longitude,
+    latitudeDelta: deltaView.latitudeDelta,
+    longitudeDelta: deltaView.longitudeDelta
+  }
+
   return (
     <View style={styles.container}>
-      <View style={{flex: 0.3, marginTop: 40}}>
-        <Text style={{fontSize: 30, fontFamily:"lobster", color:"#EEB015"}}>Strollin</Text>
-      </View>
       <View style={{flex: 3}}>
         <Map height={"100%"} width={380} deltaView={deltaView} waypoints={waypoints} />
       </View>
       <View style={{flex: 1, position: 'absolute', bottom: 0, left: 0, marginTop: 10}}>
         <Button
           title="End Navigation"
-          onPress={() => props.navigation.navigate('Home')}
+          onPress={() => {
+            const action = {type: 'ADD_HISTORIC', value : waypoints};
+            props.dispatch(action);
+            props.navigation.navigate('Home')
+        }}
         />
       </View>
     </View>

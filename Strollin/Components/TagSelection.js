@@ -12,7 +12,6 @@ function Tag(props) {
 
   const [pressed, setpressed] = useState(false);
 
-
   return(
     <View style={{ margin: 5 }}>
         {pressed == false && (<Button
