@@ -7,6 +7,7 @@ import "assets/scss/paper-kit.scss";
 import "assets/demo/demo.css";
 import Index from "views/Index.js";
 import IndexFR from "views/IndexFR.js";
+import SendMail from "views/SendMail.js";
 import StrollinMain from "views/StrollinMain.js";
 import LandingPage from "views/examples/LandingPage.js";
 import ProfilePage from "views/examples/ProfilePage.js";
@@ -32,6 +33,10 @@ ReactDOM.render(
       <Route
         path="/register-page"
         render={props => <RegisterPage {...props} />}
+      />
+      <Route
+        path="/send"
+        render={props => <SendMail {...props} />}
       />
       <Redirect to="/index" />
     </Switch>

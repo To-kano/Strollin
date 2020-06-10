@@ -19,10 +19,10 @@ function ContactFR() {
                       </div> 
                       <div class="service-cap">
                         <img size="30" src={require("./../../assets/img/Tony_souriant.jpg")} style={{ width: 90, height: 90}}/>,
-                          <h4 style={{fontSize:"25px", fontWeight:"bold"}}>Tony Smile (secrétaire)<br/></h4>
+                          <h4 style={{fontSize:"25px", fontWeight:"bold"}}>Tony Smile (chef de projet)<br/></h4>
                           <p style={{fontSize:"18px", fontWeight:"500"}}><br/>Disponible : De 10h à 20h</p>
-                          <p style={{fontSize:"18px", fontWeight:"500"}}><br/>Téléphone : 06XXXXXXXX</p>
-                          <p style={{fontSize:"18px", fontWeight:"500"}}><br/>E-mail : tony.xx@xxxxx.xx</p>
+                          <p style={{fontSize:"18px", fontWeight:"500"}}><br/>Téléphone : 0614542133</p>
+                          <p style={{fontSize:"18px", fontWeight:"500"}}><br/>E-mail : tony.ye@epitech.eu</p>
                       </div>
                   </div>
               </div> 
@@ -32,11 +32,11 @@ function ContactFR() {
                           <span class="flaticon-plane"></span>
                       </div> 
                       <div class="service-cap">
-                        <img size="30" src={require("./../../assets/img/Tony_emo.jpg")} style={{ width: 90, height: 90}}/>,
-                          <h4 style={{fontSize:"25px", fontWeight:"bold"}}>Tony Mo (Manager)</h4>
+                        <img size="30" src={require("./../../assets/img/strollin_logo.png")} style={{ width: 90, height: 90}}/>,
+                          <h4 style={{fontSize:"25px", fontWeight:"bold"}}>Strollin' App</h4>
                           <p style={{fontSize:"18px", fontWeight:"500"}}><br/>Disponible : Sur rendez-vous</p>
-                          <p style={{fontSize:"18px", fontWeight:"500"}}><br/>Téléphone : 06XXXXXXXX</p>
-                          <p style={{fontSize:"18px", fontWeight:"500"}}><br/>E-mail : tony.xx@xxxxx.xx</p>
+                          <p style={{fontSize:"18px", fontWeight:"500"}}><br/>Téléphone : Pas de données</p>
+                          <p style={{fontSize:"18px", fontWeight:"500"}}><br/>E-mail : StrollinApp@gmail.com</p>
                       </div>
                   </div>
               </div>

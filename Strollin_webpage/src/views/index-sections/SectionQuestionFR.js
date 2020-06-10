@@ -41,7 +41,7 @@ function SectionQuestionFR() {
                       <h4 className="form-letter">Email</h4>
                       <Input type="email" name="email" id="exampleEmail" placeholder="Email" onChange={e => setEmail(e.target.value)} />
                       <h4 className="form-letter">Question</h4>
-                      <textarea style={{ height: "400px", width: "640px"}} type="question" name="question" id="exampleQuestion" placeholder="Question" onChange={e => setQuestion(e.target.value)}/>
+                      <textarea style={{ height: "400px", width: "640px"}} type="question" name="question" id="exampleQuestion" placeholder="Votre question" onChange={e => setQuestion(e.target.value)}/>
                       <Input style={{backgroundColor: '#5cb85c', color: 'white', fontSize: '15px', fontWeight: 'bold' }} type="submit" value="Envoyer la question"/>
                     </Form>
                   </Card>

@@ -1,6 +1,36 @@
 import React from "react";
 
 function Faq() {
+    var faqData = require('./FaqContent.json');
+
+    function faqPrinter(obj) {
+        let grid = [];
+        let tmp = [];
+        let i = 0;
+        for (var key in obj) {
+            let question = obj[key]["question"];
+            let answer = obj[key]["answer"];
+            tmp.push(
+            <div class="col-xl-4 col-lg-4 col-md-6">
+                <div class="services-caption text-center mb-30">
+                    <div class={ 'fas fa-hand-holding-usd' }>
+                        <h4 style={{fontSize:"25px", fontWeight:"bold"}}>{question}<br/></h4>
+                        <p style={{fontSize:"18px", fontWeight:"500"}}><br/>{answer}</p>
+                    </div>
+                </div>
+            </div>);
+            i++;
+            if (i % 3 == 0) {
+                grid.push(<div class="row">{tmp}</div>);
+                tmp = [];
+            }
+        }
+        if (typeof tmp !== 'undefined' && tmp.length > 0) {
+            grid.push(<div class="row">{tmp}</div>);
+        }
+        return (grid);
+    }
+
   return (
     <>
       <div class="container">
@@ -9,38 +39,7 @@ function Faq() {
                     <span style={{fontSize:"50px", fontWeight:"bold"}}><br/>FAQ<br/><br/></span>
                 </div>
           </div>
-          <div class="row">
-              <div class="col-xl-4 col-lg-4 col-md-6">
-                  <div class="services-caption text-center mb-30">
-                      <div class={ 'fas fa-hand-holding-usd' }>
-                        <h4 style={{fontSize:"25px", fontWeight:"bold"}}>How do I report a bug?<br/></h4>
-                        <p style={{fontSize:"18px", fontWeight:"500"}}><br/>By mail to the contact, you may also receive a reward!</p>
-                      </div>
-                  </div>
-              </div>
-              <div class="col-xl-4 col-lg-4 col-md-6">
-                  <div class="services-caption active text-center mb-30">
-                      <div class="service-icon">
-                          <span class="flaticon-pay"></span>
-                      </div> 
-                      <div class="service-cap">
-                          <h4 style={{fontSize:"25px", fontWeight:"bold"}}>Is there in-app purchase?<br/></h4>
-                          <p style={{fontSize:"18px", fontWeight:"500"}}><br/>Yes there will be exclusive free and purchasable "Navi" (small original or collab' character that guide you, even with japanese voice actor) available soon</p>
-                      </div>
-                  </div>
-              </div> 
-              <div class="col-xl-4 col-lg-4 col-md-6">
-                  <div class="services-caption text-center mb-30">
-                      <div class="service-icon">
-                          <span class="flaticon-plane"></span>
-                      </div> 
-                      <div class="service-cap">
-                          <h4 style={{fontSize:"25px", fontWeight:"bold"}}>Is my data private?</h4>
-                          <p style={{fontSize:"18px", fontWeight:"500"}}><br/>If you chose to watch publicity to get Stroll coins, you can enable the use of your personal data for more accurate publicity. Otherwise your data is strictly private</p>
-                      </div>
-                  </div>
-              </div>
-          </div>
+          {faqPrinter(faqData)}
           <br/><br/><hr/><br/>
       </div>
     </>

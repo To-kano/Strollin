@@ -7,7 +7,7 @@ function Temoignage() {
       <div class="container">
           <div class="row d-flex justify-content-center">
                 <div class="section-tittle text-center">
-                    <span style={{fontSize:"50px", fontWeight:"bold"}}><br/>Witness<br/><br/></span>
+                    <span style={{fontSize:"50px", fontWeight:"bold"}}><br/>Testimony<br/><br/></span>
                 </div>
           </div>
           <br/>
