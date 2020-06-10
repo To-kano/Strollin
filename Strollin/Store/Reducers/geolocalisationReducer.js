@@ -44,6 +44,14 @@ function geolocalisationReducer(state = initialState, action) {
                 region: action.value
             }
             return nextState;
+        case 'SET_REGION_AND_POSITION':
+            //console.log("lol");
+            nextState = {
+                ...state,
+                position: action.value,
+                region: action.value
+            }
+            return nextState;
         default:
             return state;
     }

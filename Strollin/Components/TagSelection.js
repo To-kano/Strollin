@@ -79,7 +79,7 @@ function TageSelection(props) {
           <Button
             color='#89B3D9'
             title="Next"
-            onPress={() => props.navigation.navigate('Home')}
+            onPress={() => props.navigation.navigate('HomePage')}
             //onPress={() =>
             //  // this.NextPage(navigation.getParam('uid'))
             //}

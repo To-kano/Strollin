@@ -9,8 +9,10 @@ import {connect} from 'react-redux';
 
 
 
-// apiKey AIzaSyDT8niDsJMDOvWCmxCh4n7BCKxpiZleQIg
+// apiKey AIzaSyDGvC3HkeGolvgvOevKuaE_6LmS9MPjlvE
 
+
+//AIzaSyB2twbHyNnN0rJWw4731l9rOjEgANYLrQU
 
 function updatePosition(props, position) {
 
@@ -114,15 +116,15 @@ function Map(props) {
   };
   }
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      //console.log('This will run every second!');
-
-      updateRegion(props);
-      updateCoordinates(props);
-    }, 1000);  
-    return () => clearInterval(interval);
-  }, []);
+  //useEffect(() => {
+  //  const interval = setInterval(() => {
+  //    //console.log('This will run every second!');
+//
+  //    updateRegion(props);
+  //    updateCoordinates(props);
+  //  }, 1000);  
+  //  return () => clearInterval(interval);
+  //}, []);
 
   //console.log(props.position);
 
@@ -138,11 +140,16 @@ function Map(props) {
   if (props.position.permission) {
     const origin = { latitude: props.position.position.latitude, longitude: props.position.position.longitude };
     const destination = props.waypoints[0];
-    const GOOGLE_MAPS_APIKEY = 'AIzaSyB-xO-UPVjhXP85uteh1n5hIbUeXqqjWRI';
+    const GOOGLE_MAPS_APIKEY = 'AIzaSyDGvC3HkeGolvgvOevKuaE_6LmS9MPjlvE';
 
     return (
         <MapView style={{ height: props.height, width: props.width }}
-              region={props.position.region}
+              region={{
+                latitude: props.position.position.latitude,
+                longitude: props.position.position.longitude,
+                latitudeDelta: props.deltaView.latitudeDelta,
+                longitudeDelta: props.deltaView.longitudeDelta
+            }}
               onRegionChange={(region)=> {Map.region = region}}
               >
               <MapViewDirections

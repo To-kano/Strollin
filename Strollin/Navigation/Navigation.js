@@ -16,7 +16,7 @@ import Home from '../Components/Home';
 import HomePage from '../Components/HomePage';
 import TripSuggestion from '../Components/TripSuggestion';
 import TripNavigation from '../Components/TripNavigation';
-import HistoryNav from '../Components/HistoryNav'
+import HistoryNav from '../Components/HistoryNav';
 
 const Stack = createStackNavigator();
 

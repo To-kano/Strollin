@@ -62,7 +62,7 @@ function LoginPage(props) {
               />
             </View>
             <View style={{flex: 0.4, flexDirection: 'column'}}>
-              <Text style={styles.textLink} onPress={()=> props.navigation.navigate('Home')}>
+              <Text style={styles.textLink}>
                 Forgot Password ?
               </Text>
               <Text style={styles.textLink} onPress={()=> { props.navigation.navigate('userRegister');}}>

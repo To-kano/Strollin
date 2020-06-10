@@ -28,12 +28,12 @@ function TripNavigation(props) {
     longitudeDelta: 0.0421,
   }
 
-  Map.region = {
-    latitude: props.position.position.latitude,
-    longitude: props.position.position.longitude,
-    latitudeDelta: deltaView.latitudeDelta,
-    longitudeDelta: deltaView.longitudeDelta
-  }
+  //Map.region = {
+  //  latitude: props.position.position.latitude,
+  //  longitude: props.position.position.longitude,
+  //  latitudeDelta: deltaView.latitudeDelta,
+  //  longitudeDelta: deltaView.longitudeDelta
+  //}
 
   return (
     <View style={styles.container}>
@@ -46,7 +46,7 @@ function TripNavigation(props) {
           onPress={() => {
             const action = {type: 'ADD_HISTORIC', value : waypoints};
             props.dispatch(action);
-            props.navigation.navigate('Home')
+            props.navigation.navigate('HomePage')
         }}
         />
       </View>
