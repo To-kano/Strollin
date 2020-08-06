@@ -1,25 +1,52 @@
 import React, { Component , useState, useEffect} from 'react';
-import {StyleSheet, Text, View, Button, Image} from 'react-native';
+import {StyleSheet, AppState, View, Button, BackHandler} from 'react-native';
 
 import {connect} from 'react-redux';
 
 import Map from './map';
+import AndroidPip from 'react-native-android-pip';
+
 
 function TripNavigation(props) {
 
-  React.useLayoutEffect(() => {
-    props.navigation.setOptions({
-      headerRight: () => (
-        <Button
-            title="Log Out"
-            color="#89B3D9"
-            onPress={() =>
-              props.navigation.navigate('userLogin')
-            }
-          />
-      ),
-    });
-  }, [props.navigation]);
+  useEffect(() => {
+    const backAction = () => {
+      AndroidPip.enterPictureInPictureMode();
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => backHandler.remove();
+  }, []);
+
+
+  useEffect(() => {
+
+    const _handleAppStateChange = (nextAppState) => {
+      if (nextAppState === 'background') {
+        AndroidPip.enterPictureInPictureMode();
+     }
+    }
+
+    AppState.addEventListener('change', _handleAppStateChange);
+
+    return () => {
+      const _handleAppStateChange = (nextAppState) => {
+        if (nextAppState === 'background') {
+          AndroidPip.enterPictureInPictureMode();
+       }
+      }
+  
+      AppState.removeEventListener('change',_handleAppStateChange)
+    };
+  }, []);
+
+
+
 
   const waypoints = props.map.waypoints;
 

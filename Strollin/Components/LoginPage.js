@@ -2,6 +2,9 @@ import React, {useState} from 'react';
 import {StyleSheet ,Text , View, Image, TextInput, Button} from "react-native";
 import {connect} from 'react-redux';
 
+import AndroidPip from 'react-native-android-pip';
+
+
 function RandPic() {
     var nb = Math.floor(Math.random() * 3) + 1;
     var img = '';
@@ -34,10 +37,12 @@ function LoginPage(props) {
               <TextInput
                 underlineColorAndroid={'purple'}
                 style={{ height: 50, width: '70%', fontSize: 20}}
-                onChangeText={text => onChangeText(text)}
+                onChangeText={text => {
+                  onChangeText(text)
+                console.log(text)}}
                 value={value}
                 textAlign={'center'}
-                placeholder={'Username'}
+                placeholder={'username'}
                 autoCompleteType={'username'}
               />
             </View>
@@ -55,7 +60,9 @@ function LoginPage(props) {
             </View>
             <View style={{flex: 0.1, flexDirection: 'column', marginTop: '0%'}}>
               <Button
-                onPress={() => props.navigation.navigate('HomePage')}
+                onPress={() => {
+                  props.navigation.navigate('HomePage');
+                }}
                 title="Confirm"
                 color="#841584"
                 accessibilityLabel="Learn more about this purple button"
