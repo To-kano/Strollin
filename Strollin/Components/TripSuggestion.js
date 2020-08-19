@@ -9,6 +9,8 @@ import BackgroundImage from './backgroundImage';
 //import Geolocation from '@react-native-community/geolocation';
 //import Geolocation from 'react-native-geolocation-service';
 
+import Tts from 'react-native-tts';
+
 import {connect} from 'react-redux';
 
 function getNavigation() {
@@ -109,6 +111,18 @@ function TripSuggestion(props) {
   }, [props.navigation]);
 
   const [waypoints, setWaypoints] = useState(getNavigation());
+
+  useEffect(() => {
+    Tts.setDefaultLanguage('en-US');
+
+    for (let i = 0; i < waypoints.length ; i++) {
+      Tts.speak('Step ' + (i + 1));
+      Tts.speak(waypoints[i].name);
+    }
+
+  }, [waypoints]);
+
+
 
   const deltaView = {
     latitudeDelta: 0.0922,
