@@ -1,0 +1,13 @@
+{
+	"List": [{
+			"Tags": ["BAR", "VIDEO GAMES"],
+			"Pos": [-10, 34],
+			"Name": "Burger KING"
+		},
+		{
+			"Tags": ["MEUBLES", "SUEDOIS"],
+			"Pos": [-30, 14],
+			"Name": "Ikea"
+		}
+	]
+}
