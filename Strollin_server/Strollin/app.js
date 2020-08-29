@@ -8,6 +8,8 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
+var algo = require('./Algo/BasicAlgo2');
+
 var app = express();
 
 var mongoDB = 'mongodb://127.0.0.1:27017/Strollin';
@@ -39,6 +41,20 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
 app.use(express.static('public'));
+
+console.log('hey');
+
+const promise1 = algo.data.hello()
+
+promise1.then((value) => {
+  console.log("---------------------------------------");
+  console.log("\n\n");
+  console.log("You are going to: ", value);
+  console.log("\n\n");
+  console.log("---------------------------------------");
+});
+
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
