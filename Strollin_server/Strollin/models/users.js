@@ -13,9 +13,12 @@ var UserModelSchema = new Schema({
         type: String,
         required: true
     },
-    creationDate: {
+    creation_date: {
         type: Date,
         default: Date.now
+    },
+    access_token: {
+        type: String,
     },
     tags: {
         type: [String],
