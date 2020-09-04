@@ -1,7 +1,7 @@
 
 // My IPv4 = 82.253.190.129
 
-const IP_SERVER = process.env['IP_SERVER'] || '82.253.190.129';
+const IP_SERVER = process.env['IP_SERVER'] || '127.0.0.1';
 
 module.exports.IP_SERVER = IP_SERVER;
 
