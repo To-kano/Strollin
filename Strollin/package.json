@@ -19,6 +19,7 @@
     "react-native": "0.62.2",
     "react-native-android-pip": "^1.0.1",
     "react-native-elements": "^1.2.7",
+    "react-native-fbsdk": "^2.0.0",
     "react-native-geolocation-service": "^4.0.1",
     "react-native-gesture-handler": "^1.6.1",
     "react-native-get-random-values": "^1.4.0",
