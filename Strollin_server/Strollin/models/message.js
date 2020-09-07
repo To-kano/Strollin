@@ -27,7 +27,7 @@ var MessageModelSchema = new Schema({
     fileURL: {
         type: String
     },
-    creationDate: {
+    creation_date: {
         type: Date,
         default: Date.now
     },
