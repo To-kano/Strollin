@@ -41,10 +41,10 @@ router.get('/login', async function(req, res) {
 // LOGOUT
 router.get('/logout', async function(req, res) {
 
-  let user = await UserModel.findOne({username: req.headers.username, password: req.headers.password});
+  let user = await UserModel.findOne({access_token: req.headers.access_token});
   let token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
-  if (user && (user.access_token == req.headers.access_token)) {
+  if (user) {
     await user.updateOne({access_token: token});
     return  res.status(200).send({status: "Log out successfully."});
   }
@@ -55,9 +55,9 @@ router.get('/logout', async function(req, res) {
 // DELETE
 router.delete('/delete', async function(req, res) {
 
-  let user = await UserModel.findOne({username: req.headers.username, password: req.headers.password});
+  let user = await UserModel.findOne({access_token: req.headers.access_token, password: req.headers.password});
 
-  if (user && user.access_token == req.headers.access_token) {
+  if (user) {
     await user.remove();
     return res.status(200).send({status: "Account successfully deleted."});
   }
