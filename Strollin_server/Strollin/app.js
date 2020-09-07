@@ -8,6 +8,7 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
+//var algo = require('./Algo/BasicAlgo');
 var algo = require('./Algo/BasicAlgo2');
 
 var app = express();
@@ -42,9 +43,7 @@ app.use('/users', usersRouter);
 
 app.use(express.static('public'));
 
-console.log('hey');
-
-const promise1 = algo.data.hello()
+/*const promise1 = algo.data.hello()
 
 promise1.then((value) => {
   console.log("---------------------------------------");
@@ -52,7 +51,7 @@ promise1.then((value) => {
   console.log("You are going to: ", value);
   console.log("\n\n");
   console.log("---------------------------------------");
-});
+});*/
 
 
 
