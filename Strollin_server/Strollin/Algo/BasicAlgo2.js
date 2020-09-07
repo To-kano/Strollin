@@ -2,7 +2,6 @@ var PlacesJson = require('./Ressources/Places');
 var TagsJson = require('./Ressources/UserTags');
 
 var methods = {}
-console.log('hello world')
 
 function compare(a, b) {
   if (a.Dist > b.Dist) return 1;
@@ -30,7 +29,6 @@ function DistCalc2D(UserPos, PlacePos) {
   var Y2 = PlacePos[1]
 
   var res = Math.sqrt( Math.pow((X1 - X2), 2) + Math.pow((Y1 - Y2), 2) )
-  console.log(res);
   return res;
 }
 
@@ -54,14 +52,17 @@ function algoTest(UserTags, Places) {
         PlacesArray[i].Dist = DistCalc2D(PlacesArray[i].Pos, UserPos)
       }
       PlacesArray.sort(compare)
-      FinalArray.push(PlacesArray[0])
+      if (TagsJson.Budget > PlacesArray[0].Price) {
+        FinalArray.push(PlacesArray[0])
+        TagsJson.Budget -= PlacesArray[0].Price
+      }
       UserPos = PlacesArray[0].Pos
       PlacesArray.shift()
-      console.log("PlacesArrayt: ", PlacesArray);
+      //console.log("PlacesArrayt: ", PlacesArray);
     }
-    console.log("FinalArray", FinalArray);
+    //console.log("FinalArray", FinalArray);
     //console.log("PlacesArray", PlacesArray);
-    //resolve(PlacesArray[0])
+    resolve(FinalArray)
   });
 }
 

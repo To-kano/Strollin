@@ -2,7 +2,6 @@ var PlacesJson = require('./Ressources/Places');
 var TagsJson = require('./Ressources/UserTags');
 
 var methods = {}
-console.log('hello world')
 
 function compare(a, b) {
   if (a.Dist > b.Dist) return 1;
@@ -30,7 +29,6 @@ function DistCalc2D(UserPos, PlacePos) {
   var Y2 = PlacePos[1]
 
   var res = Math.sqrt( Math.pow((X1 - X2), 2) + Math.pow((Y1 - Y2), 2) )
-  console.log(res);
   return res;
 }
 

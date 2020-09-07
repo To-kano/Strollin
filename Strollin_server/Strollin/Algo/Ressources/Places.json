@@ -2,38 +2,44 @@
 	"List": [{
 			"Tags": ["BAR", "VIDEO GAMES"],
 			"Pos": [-12, 24],
-			"Name": "Burger KING",
-      "Dist": 0
+			"Name": "Reset",
+      "Dist": 0,
+      "Price": 15
 		},
 		{
 			"Tags": ["MEUBLES", "SUEDOIS"],
 			"Pos": [-30, 14],
 			"Name": "Ikea",
-      "Dist": 0
+      "Dist": 0,
+      "Price": 40
 		},
     {
 			"Tags": ["Restaurant", "Asian Food"],
 			"Pos": [-10, 34],
 			"Name": "Mr.Rice",
-      "Dist": 0
+      "Dist": 0,
+      "Price": 8
 		},
     {
 			"Tags": ["Restaurant", "Asian Food"],
 			"Pos": [-12, 34],
-			"Name": "Mr.Rice2",
-      "Dist": 0
+			"Name": "Saporo",
+      "Dist": 0,
+      "Price": 12
 		},
     {
 			"Tags": ["Restaurant", "Asian Food"],
 			"Pos": [-5, 34],
-			"Name": "Mr.Rice3",
-      "Dist": 0
+			"Name": "Kodawari Ramen",
+      "Dist": 0,
+      "Price": 15
 		},
     {
 			"Tags": ["Vetements"],
 			"Pos": [-33, 34],
 			"Name": "H&M",
-      "Dist": 0
+      "Dist": 0,
+      "Price": 20
 		}
 	]
 }
