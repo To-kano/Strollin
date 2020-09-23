@@ -13,11 +13,11 @@ var MessageModelSchema = new Schema({
         type: String,
         required: true
     },
-    conversation_name: {
+    conversation: {
         type: String,
         required: true
     },
-    creation_date: {
+    creationDate: {
         type: Date,
         required: true
     },
@@ -28,12 +28,6 @@ var MessageModelSchema = new Schema({
     message: {
         type: String,
         required: true
-    },
-    fileID: {
-        type: String,
-    },
-    fileURL: {
-        type: String
     },
 })
 

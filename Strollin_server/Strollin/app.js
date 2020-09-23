@@ -29,7 +29,7 @@ var db = mongoose.connection;
 //Bind connection to error event (to get notification of connection errors)
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
-////
+//        //
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -70,16 +70,16 @@ promise1.then((value) => {
 // SIO //
 
 sio.on("connection", socket => {
-  console.log("a user connected !");
-  socket.on("chat message:", msg => {
-    console.log(msg);
-    sio.emit("chat message", msg);
+  console.log("a user connected !");  // Connexion d'un user
+  socket.on("chat message:", msg => { // Quand je reçois un message
+    console.log(msg);                 // Action
+    sio.emit("chat message", msg);    // Réponse pour l'user
   });
 })
 
 sio_server.listen(4000, () => console.log("server is running on port 4000"));
 
-////
+//    //
 
 
 // catch 404 and forward to error handler

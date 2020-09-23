@@ -5,16 +5,17 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var ConversationModelSchema = new Schema({
-    name: {
-        type: String,
-        required: true
-    },
     participants: {
         type: [String],
-        required: true
+        required: true,
     },
-    message_list: {
-        type: [String]
+    name: {
+        type: String,
+        default: "",
+    },
+    messageList: {
+        type: [String],
+        default: [],
     },
 })
 
