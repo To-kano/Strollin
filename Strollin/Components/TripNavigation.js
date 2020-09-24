@@ -65,7 +65,7 @@ function TripNavigation(props) {
   return (
     <View style={styles.container}>
       <View style={{flex: 3}}>
-        <Map height={"100%"} width={380} deltaView={deltaView} waypoints={waypoints} />
+        <Map height={"90%"} width={300} deltaView={deltaView} waypoints={waypoints} />
       </View>
       <View style={{flex: 1, position: 'absolute', bottom: 0, left: 0, marginTop: 10}}>
         <Button
@@ -91,6 +91,7 @@ export default connect(mapStateToProps)(TripNavigation);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginTop: 30,
     backgroundColor: '#fff',
     alignItems: "center",
     justifyContent: "center",
