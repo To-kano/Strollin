@@ -14,24 +14,6 @@ import {connect} from 'react-redux';
 
 //AIzaSyB2twbHyNnN0rJWw4731l9rOjEgANYLrQU
 
-function updatePosition(props, position) {
-
-  //if ( typeof updatePosition.one == 'undefined' ) {
-  //  // It has not... perform the initialization
-  //  updatePosition.one = 0;
-  //}
-
-  //updatePosition.one += 0.01;
-
-  let data = {
-    latitude: position.coords.latitude, //+ updatePosition.one,
-    longitude: position.coords.longitude,
-  }
-
-  const action_position = {type: 'SET_POSITION', value : data};
-  props.dispatch(action_position);
-}
-
 async function updateCoordinates(setUserPosition) {
   //if (props.position.permission == true) {
     Geolocation.getCurrentPosition(
@@ -40,7 +22,7 @@ async function updateCoordinates(setUserPosition) {
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
         }
-        //console.log(position);
+        console.log(position);
         setUserPosition(data);
       },
       (error) => {
@@ -131,6 +113,12 @@ function Map(props) {
     return () => clearInterval(interval);
   }, []);
 
+  const [magic, setMagic] = useState(1);
+
+  const BlackMagic = () => {
+    setMagic(0);
+  }
+
   //console.log(props.position);
 
   if (props.position.asked == false) {
@@ -143,22 +131,18 @@ function Map(props) {
 
 
   if (props.position.permission && userPosition && localRegion.latitude && localRegion.longitude) {
-    const origin = { latitude: props.position.position.latitude, longitude: props.position.position.longitude };
     const destination = props.waypoints[0];
     const GOOGLE_MAPS_APIKEY = 'AIzaSyDGvC3HkeGolvgvOevKuaE_6LmS9MPjlvE';
 
     return (
-        <MapView style={{ height: props.height, width: props.width }}
-              region={{
-                latitude: props.position.position.latitude,
-                longitude: props.position.position.longitude,
-                latitudeDelta: props.deltaView.latitudeDelta,
-                longitudeDelta: props.deltaView.longitudeDelta
-            }}
-            showsUserLocation={true}
-            onUserLocationChange={(data) => {
-              //console.log("data = ", data.nativeEvent);
-            }}
+        <MapView style={{ height: props.height, width: props.width + magic}} // showsMyLocationButton do not show if width is not change
+              initialRegion={localRegion}
+              showsUserLocation={true}
+              showsCompass={true}
+              onMapReady={BlackMagic}
+              onUserLocationChange={(data) => {
+                console.log("data = ", data.nativeEvent);
+              }}
               onRegionChange={(region)=> {}}
               >
               <MapViewDirections
@@ -166,7 +150,7 @@ function Map(props) {
                 destination={destination}
                 waypoints = {props.waypoints}
                 apikey={GOOGLE_MAPS_APIKEY}
-                strokeWidth={7}
+                strokeWidth={5}
                 strokeColor="#39A5D6"
               />
               {props.waypoints.map(marker => (
@@ -188,6 +172,13 @@ function Map(props) {
   }
 
 }
+
+//{
+//  latitude: props.position.position.latitude,
+//  longitude: props.position.position.longitude,
+//  latitudeDelta: props.deltaView.latitudeDelta,
+//  longitudeDelta: props.deltaView.longitudeDelta
+//}
 
 //<Marker
 //coordinate={{ "latitude": props.position.position.latitude, "longitude": props.position.position.longitude }}
