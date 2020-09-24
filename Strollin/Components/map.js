@@ -123,6 +123,9 @@ function Map(props) {
     setMagic(0);
   }
 
+  const [refMapView, setRefMapView] = useState(React.createRef());
+
+
   const onUserPositionChange = (data) => {
     //console.log("data = ", data);
     const position = {
@@ -132,6 +135,9 @@ function Map(props) {
     if (waypoint.length != 0 && isNear(position, waypoint[0])) {
       setWaypoint(waypoint.slice(1, waypoint.length));
     }
+    //if (props.background) {
+      //refMapView.current.animateToRegion(localRegion, 500);
+    //}
     setUserPosition(position)
   }
 
@@ -152,6 +158,7 @@ function Map(props) {
 
     return (
         <MapView style={{ height: props.height, width: props.width + magic}} // showsMyLocationButton do not show if width is not change
+              ref={ refMapView }
               initialRegion={localRegion}
               showsUserLocation={true}
               showsCompass={true}

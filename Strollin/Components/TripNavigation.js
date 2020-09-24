@@ -15,6 +15,7 @@ function TripNavigation(props) {
   useEffect(() => {
     const backAction = () => {
       AndroidPip.enterPictureInPictureMode();
+      setBackground(true);
       return true;
     };
 
@@ -65,8 +66,8 @@ function TripNavigation(props) {
   }
 
   const deltaViewBackground = {
-    latitudeDelta: 0.0422,
-    longitudeDelta: 0.0421,
+    latitudeDelta: 0.0052,
+    longitudeDelta: 0.0121,
   }
 
   //Map.region = {
