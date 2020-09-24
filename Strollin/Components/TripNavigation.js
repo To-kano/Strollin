@@ -9,6 +9,9 @@ import AndroidPip from 'react-native-android-pip';
 
 function TripNavigation(props) {
 
+  const [background, setBackground] = useState(false);
+
+
   useEffect(() => {
     const backAction = () => {
       AndroidPip.enterPictureInPictureMode();
@@ -29,6 +32,9 @@ function TripNavigation(props) {
     const _handleAppStateChange = (nextAppState) => {
       if (nextAppState === 'background') {
         AndroidPip.enterPictureInPictureMode();
+        setBackground(true);
+     } else {
+      setBackground(false);
      }
     }
 
@@ -38,6 +44,9 @@ function TripNavigation(props) {
       const _handleAppStateChange = (nextAppState) => {
         if (nextAppState === 'background') {
           AndroidPip.enterPictureInPictureMode();
+          setBackground(true);
+       } else {
+        setBackground(false);
        }
       }
   
@@ -55,6 +64,11 @@ function TripNavigation(props) {
     longitudeDelta: 0.0421,
   }
 
+  const deltaViewBackground = {
+    latitudeDelta: 0.0422,
+    longitudeDelta: 0.0421,
+  }
+
   //Map.region = {
   //  latitude: props.position.position.latitude,
   //  longitude: props.position.position.longitude,
@@ -65,17 +79,18 @@ function TripNavigation(props) {
   return (
     <View style={styles.container}>
       <View style={{flex: 3}}>
-        <Map height={"90%"} width={320} deltaView={deltaView} waypoints={waypoints} />
+        <Map height={"100%"} width={background ? 270 : 360} deltaView={background ?deltaViewBackground : deltaView} waypoints={waypoints} background={background}/>
       </View>
       <View style={{flex: 1, position: 'absolute', bottom: 0, left: 0, marginTop: 10}}>
-        <Button
+        {!background ? <Button
           title="End Navigation"
           onPress={() => {
             const action = {type: 'ADD_HISTORIC', value : waypoints};
             props.dispatch(action);
             props.navigation.navigate('HomePage')
-        }}
-        />
+          }}
+        /> : 
+        <></>}
       </View>
     </View>
   );
@@ -91,7 +106,6 @@ export default connect(mapStateToProps)(TripNavigation);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 30,
     backgroundColor: '#fff',
     alignItems: "center",
     justifyContent: "center",

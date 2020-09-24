@@ -33,16 +33,6 @@ async function updateCoordinates(setUserPosition) {
   //}
 };
 
-function updateRegion(props) {
-
-  //console.log("update region props ", props);
-  console.log("update region region ", Map.region);
-
-  const action_region = {type: 'SET_REGION', value : Map.region};
-  props.dispatch(action_region);
-
-}
-
 async function requestGeolocalisationPermission(props) {
   try {
     const granted = await PermissionsAndroid.request(
@@ -69,23 +59,7 @@ async function requestGeolocalisationPermission(props) {
   }
 }
 
-//{
-//  latitude: props.position.position.latitude,
-//  longitude: props.position.position.longitude,
-//  latitudeDelta: props.deltaView.latitudeDelta,
-//  longitudeDelta: props.deltaView.longitudeDelta
-//}
 
-var wildRegion = {
-        latitude: 48.815641,
-        longitude: 2.363224,
-        latitudeDelta: 0.1622,
-        longitudeDelta: 0.1021
-}
-
-function onUserPositionChange(data) {
-  console.log("data = ", data);
-}
 
 function Map(props) {
 
@@ -103,15 +77,19 @@ function Map(props) {
     longitudeDelta: props.deltaView.longitudeDelta
   });
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      //console.log('This will run every second!');
+  //useEffect(() => {
+  //  const interval = setInterval(() => {
+  //    //console.log('This will run every second!');
+//
+  //    //updateRegion(props);
+  //    //updateCoordinates(props);
+  //  }, 1000);  
+  //  return () => clearInterval(interval);
+  //}, []);
 
-      //updateRegion(props);
-      //updateCoordinates(props);
-    }, 1000);  
-    return () => clearInterval(interval);
-  }, []);
+  const [waypoint, setWaypoint] = useState(props.waypoints);
+
+  console.log(waypoint);
 
   const [magic, setMagic] = useState(1);
 
@@ -119,6 +97,14 @@ function Map(props) {
     setMagic(0);
   }
 
+  const onUserPositionChange = (data) => {
+    //console.log("data = ", data);
+    const position = {
+      latitude: data.coordinate.latitude,
+      longitude: data.coordinate.longitude,
+    }
+    setUserPosition(position)
+  }
   //console.log(props.position);
 
   if (props.position.asked == false) {
@@ -131,7 +117,6 @@ function Map(props) {
 
 
   if (props.position.permission && userPosition && localRegion.latitude && localRegion.longitude) {
-    const destination = props.waypoints[0];
     const GOOGLE_MAPS_APIKEY = 'AIzaSyDGvC3HkeGolvgvOevKuaE_6LmS9MPjlvE';
 
     return (
@@ -140,18 +125,25 @@ function Map(props) {
               showsUserLocation={true}
               showsCompass={true}
               onMapReady={BlackMagic}
+              userLocationPriority={'balanced'}
               onUserLocationChange={(data) => {
-                console.log("data = ", data.nativeEvent);
+                onUserPositionChange(data.nativeEvent);
               }}
               onRegionChange={(region)=> {}}
               >
               <MapViewDirections
                 origin={userPosition}
-                destination={destination}
-                waypoints = {props.waypoints}
+                destination={waypoint[waypoint.length - 1]}
+                waypoints = {waypoint.slice(0, waypoint.length - 1)}
                 apikey={GOOGLE_MAPS_APIKEY}
                 strokeWidth={5}
+                timePrecision={"now"}
+                resetOnChange={false}
                 strokeColor="#39A5D6"
+                mode={"WALKING"}
+                onReady={({ distance, duration, coordinates, fare, waypointOrder}) => {
+                  console.log("distance ", distance, " duration ", duration);
+                }}
               />
               {props.waypoints.map(marker => (
                 <Marker
