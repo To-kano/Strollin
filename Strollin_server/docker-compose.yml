@@ -24,6 +24,7 @@ services:
     depends_on:
       - db
   server:
+    #image: docmurloc/strollin
     build: ./Strollin
     container_name: server-Strollin
     networks:
@@ -37,4 +38,4 @@ services:
 networks:
   backend:
     # Use a custom driver which takes special options
-    driver: overlay
+    #driver: overlay
