@@ -59,6 +59,16 @@ async function requestGeolocalisationPermission(props) {
   }
 }
 
+function isNear(userPosition, elementPosition) {
+  const margin = 0.0022;
+
+  if (userPosition.latitude <= elementPosition.latitude + margin && userPosition.latitude >= elementPosition.latitude - margin) {
+    if (userPosition.longitude <= elementPosition.longitude + margin && userPosition.longitude >= elementPosition.longitude - margin) {
+      return true;
+    }
+  }
+  return false;
+}
 
 
 function Map(props) {
@@ -89,7 +99,17 @@ function Map(props) {
 
   const [waypoint, setWaypoint] = useState(props.waypoints);
 
-  console.log(waypoint);
+  useEffect(() => {
+    console.log("waypoint ", waypoint);
+
+    if (waypoint.length == []) {
+      const action = {type: 'ADD_HISTORIC', value : props.waypoints};
+      props.dispatch(action);
+      props.navigation.navigate('HomePage')
+    }
+  }, [waypoint])
+
+  //console.log(waypoint);
 
   const [magic, setMagic] = useState(1);
 
@@ -103,8 +123,13 @@ function Map(props) {
       latitude: data.coordinate.latitude,
       longitude: data.coordinate.longitude,
     }
+    if (waypoint.length != 0 && isNear(position, waypoint[0])) {
+      setWaypoint(waypoint.slice(1, waypoint.length));
+    }
     setUserPosition(position)
   }
+
+  
   //console.log(props.position);
 
   if (props.position.asked == false) {
@@ -145,7 +170,7 @@ function Map(props) {
                   console.log("distance ", distance, " duration ", duration);
                 }}
               />
-              {props.waypoints.map(marker => (
+              {waypoint.map(marker => (
                 <Marker
                 key={marker.id}
                   coordinate={{ "latitude": marker.latitude, "longitude": marker.longitude }}

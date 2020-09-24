@@ -79,7 +79,7 @@ function TripNavigation(props) {
   return (
     <View style={styles.container}>
       <View style={{flex: 3}}>
-        <Map height={"100%"} width={background ? 270 : 360} deltaView={background ?deltaViewBackground : deltaView} waypoints={waypoints} background={background}/>
+        <Map {...props} height={"100%"} width={background ? 270 : 360} deltaView={background ?deltaViewBackground : deltaView} waypoints={waypoints} background={background}/>
       </View>
       <View style={{flex: 1, position: 'absolute', bottom: 0, left: 0, marginTop: 10}}>
         {!background ? <Button
