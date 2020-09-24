@@ -103,6 +103,8 @@ function Map(props) {
     //console.log("waypoint ", waypoint);
 
     if (waypoint.length == []) {
+      Tts.setDefaultLanguage('en-US');
+      Tts.speak("You have done your navigation");
       const action = {type: 'ADD_HISTORIC', value : props.waypoints};
       props.dispatch(action);
       props.navigation.navigate('HomePage')
