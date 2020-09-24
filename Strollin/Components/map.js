@@ -6,7 +6,7 @@ import MapViewDirections from 'react-native-maps-directions';
 
 import {connect} from 'react-redux';
 
-
+import Tts from 'react-native-tts';
 
 
 // apiKey AIzaSyDGvC3HkeGolvgvOevKuaE_6LmS9MPjlvE
@@ -100,13 +100,17 @@ function Map(props) {
   const [waypoint, setWaypoint] = useState(props.waypoints);
 
   useEffect(() => {
-    console.log("waypoint ", waypoint);
+    //console.log("waypoint ", waypoint);
 
     if (waypoint.length == []) {
       const action = {type: 'ADD_HISTORIC', value : props.waypoints};
       props.dispatch(action);
       props.navigation.navigate('HomePage')
+    } else {
+      Tts.setDefaultLanguage('en-US');
+      Tts.speak("Heading to "  + waypoint[0].name);
     }
+
   }, [waypoint])
 
   //console.log(waypoint);
