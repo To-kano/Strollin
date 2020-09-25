@@ -1,19 +1,19 @@
 import React, { Component } from 'react';
-import {Button,Image, View, StyleSheet,Text,ScrollView,FlatList} from 'react-native';
-
+import {
+  Button, Image, View, StyleSheet, Text, ScrollView, FlatList
+} from 'react-native';
 
 export default class Box extends Component {
-
-
-    render() {
-      return (
+  render() {
+    return (
+      <View style={styles.cont}>
+        <Text style={{ fontSize: 40 }}> Trending trip: </Text>
         <View style={styles.cont}>
-          <Text style={{fontSize: 40}}> Trending trip: </Text>
-          <View style={styles.cont}>
-            <Image style={{resizeMode: 'stretch'}} source={require('../ressources/plum2.jpg')} />
-          </View>
+          <Image style={{ resizeMode: 'stretch' }} source={require('../ressources/plum2.jpg')} />
         </View>
-      )}
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
