@@ -1,10 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
-  Text, View, TouchableHighlight, FlatList, Button, ImageBackground, StyleSheet, Dimensions
+  View, Button, StyleSheet
 } from 'react-native';
-// import stylesHomepage from '../../styles/homepage'
-// import stylesGeneric from '../../styles/genericStyle'
-// import { RondFormeText } from "../../features/geoForme/rondForm"
 
 import { connect } from 'react-redux';
 
@@ -41,17 +38,13 @@ export default connect(mapStateToProps)(Home);
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    // justifyContent: 'center',
-    // backgroundColor: "gray"
   },
   center: {
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-    // backgroundColor: "gray"
   }
 });

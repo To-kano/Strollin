@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Button, View, StyleSheet, Image, Text
+  View, StyleSheet, Image, Text
 } from 'react-native';
 import json from '../ressources/profile.json';
 

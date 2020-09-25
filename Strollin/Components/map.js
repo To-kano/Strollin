@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect } from 'react';
+import React, {  useState, useEffect } from 'react';
 import MapView, { Marker } from 'react-native-maps';
 import { PermissionsAndroid, View, Text } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
@@ -13,7 +13,6 @@ import Tts from 'react-native-tts';
 // AIzaSyB2twbHyNnN0rJWw4731l9rOjEgANYLrQU
 
 async function updateCoordinates(setUserPosition) {
-  // if (props.position.permission == true) {
   Geolocation.getCurrentPosition(
     (position) => {
       const data = {
@@ -28,7 +27,6 @@ async function updateCoordinates(setUserPosition) {
     },
     { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
   );
-  // }
 }
 
 async function requestGeolocalisationPermission(props) {
@@ -83,20 +81,9 @@ function Map(props) {
     longitudeDelta: props.deltaView.longitudeDelta
   });
 
-  // useEffect(() => {
-  //  const interval = setInterval(() => {
-  //    //console.log('This will run every second!');
-  //
-  //    //updateRegion(props);
-  //    //updateCoordinates(props);
-  //  }, 1000);
-  //  return () => clearInterval(interval);
-  // }, []);
-
   const [waypoint, setWaypoint] = useState(props.waypoints);
 
   useEffect(() => {
-    // console.log("waypoint ", waypoint);
 
     if (waypoint.length == []) {
       Tts.setDefaultLanguage('en-US');
@@ -110,8 +97,6 @@ function Map(props) {
     }
   }, [waypoint]);
 
-  // console.log(waypoint);
-
   const [magic, setMagic] = useState(1);
 
   const BlackMagic = () => {
@@ -121,7 +106,6 @@ function Map(props) {
   const [refMapView, setRefMapView] = useState(React.createRef());
 
   const onUserPositionChange = (data) => {
-    // console.log("data = ", data);
     const position = {
       latitude: data.coordinate.latitude,
       longitude: data.coordinate.longitude,
@@ -134,8 +118,6 @@ function Map(props) {
     // }
     setUserPosition(position);
   };
-
-  // console.log(props.position);
 
   if (props.position.asked == false) {
     requestGeolocalisationPermission(props);
@@ -195,19 +177,6 @@ function Map(props) {
     </View>
   );
 }
-
-// {
-//  latitude: props.position.position.latitude,
-//  longitude: props.position.position.longitude,
-//  latitudeDelta: props.deltaView.latitudeDelta,
-//  longitudeDelta: props.deltaView.longitudeDelta
-// }
-
-// <Marker
-// coordinate={{ "latitude": props.position.position.latitude, "longitude": props.position.position.longitude }}
-// title={"USER"}
-// description={"User position"}
-/// >
 
 const mapStateToProps = (state) => state;
 export default connect(mapStateToProps)(Map);

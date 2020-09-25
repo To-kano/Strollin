@@ -9,7 +9,6 @@ import Gallery from './Gallery';
 
 const styles = StyleSheet.create({
   container: {
-    // backgroundColor: 'red',
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'space-between'
@@ -59,7 +58,6 @@ function HomeScreen(props) {
           ...gallery,
           ...answer.data
         ]
-        // answer.data
       );
     });
   }, [page]);
@@ -84,7 +82,6 @@ function HomeScreen(props) {
 
   let loading = false;
   const DisplayMoreMedia = () => {
-    // console.log("more media call\n", gallery)
     if (loading) {
       return;
     }
@@ -99,7 +96,6 @@ function HomeScreen(props) {
         newDisplay.galleryDisplay.push(gallery[i]);
       }
       loading = true;
-      // console.log("new ", newDisplay);
       setPageDisplay(newDisplay);
     } else {
       NextPage();

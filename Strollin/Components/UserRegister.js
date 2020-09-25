@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import { Input } from 'react-native-elements';
 import { connect } from 'react-redux';
@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 import {
   StyleSheet, Text, View, Button, ActivityIndicator
 } from 'react-native';
-import { fire } from '../dataBase/config';
 
 import { RondFormeText } from './rondForm';
 
@@ -21,9 +20,9 @@ function UserRegister(props) {
 
   const [loading, setLoading] = useState(false);
 
-  callbackFirstName = (value) => {
-    setUserFirstName(value);
-  };
+  //callbackFirstName = (value) => {
+  //  setUserFirstName(value);
+  //};
 
   if (loading) {
     return (

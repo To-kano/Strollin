@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  StyleSheet, Text, View, Button, ImageBackground, TextInput
+  Text, View
 } from 'react-native';
 
 class RondFormeText extends Component {

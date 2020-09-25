@@ -1,19 +1,13 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
-  Text, View, Image, FlatList, Button, ImageBackground, StyleSheet, Dimensions
+  Text, View, FlatList, Button, StyleSheet
 } from 'react-native';
-// import stylesHomepage from '../../styles/homepage'
-// import stylesGeneric from '../../styles/genericStyle'
-// import { RondFormeText } from "../../features/geoForme/rondForm"
 
 import { connect } from 'react-redux';
 import ElementHistoryNav from './HistoryElement';
 import BackgroundImage from './backgroundImage';
 
 function HistoryNav(props) {
-  // console.log("historic ", props.map.historic[0]);
-
-  // const [count, setCount] = React.useState(0);
 
   React.useLayoutEffect(() => {
     props.navigation.setOptions({
@@ -73,17 +67,13 @@ export default connect(mapStateToProps)(HistoryNav);
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    // justifyContent: 'center',
-    // backgroundColor: "gray"
   },
   center: {
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-    // backgroundColor: "gray"
   }
 });

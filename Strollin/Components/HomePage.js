@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
-  StyleSheet, Text, View, Image, TextInput, TouchableOpacity, FlatList, Button
+  StyleSheet, Text, View, Image, TouchableOpacity, FlatList
 } from 'react-native';
 import Box from './box';
 
 function HomePage(props) {
-  const [value, onChangeText] = React.useState('');
   const DATA = [
     {
       id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',

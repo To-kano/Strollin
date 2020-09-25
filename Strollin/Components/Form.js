@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 import { Input } from 'react-native-elements';
 
 import {
-  StyleSheet, Text, View, Button, ImageBackground, TextInput, ActivityIndicator
+  Text, View
 } from 'react-native';
 
 function Form(props) {

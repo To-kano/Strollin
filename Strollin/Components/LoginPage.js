@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   StyleSheet, Text, View, Image, TextInput, Button
 } from 'react-native';
@@ -10,8 +10,6 @@ import {
   GraphRequest,
   GraphRequestManager,
 } from 'react-native-fbsdk';
-
-import AndroidPip from 'react-native-android-pip';
 
 // export default class App extends Component {
 //   state = {userInfo: {}};

@@ -1,12 +1,9 @@
-import React, { useState, useEffect, Component } from 'react';
+import React, { useState } from 'react';
 
 import { connect } from 'react-redux';
 import {
   StyleSheet, Text, View, Button, ImageBackground, FlatList, Dimensions
 } from 'react-native';
-// import stylesGeneric from '../../styles/genericStyle'
-// import { fire } from '../../dataBase/config'
-import { fire } from '../dataBase/config';
 
 import { RondFormeText } from './rondForm';
 
@@ -106,7 +103,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    // alignItems: 'center',
-    // justifyContent: 'center',
   },
 });

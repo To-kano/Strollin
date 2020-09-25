@@ -1,10 +1,7 @@
-import React, { Component, useState, useEffect } from 'react';
+import React, {useState} from 'react';
 import {
-  Text, View, TouchableHighlight, FlatList, Button, ImageBackground, StyleSheet, Dimensions
+  Text, View, FlatList, Button, StyleSheet
 } from 'react-native';
-// import stylesHomepage from '../../styles/homepage'
-// import stylesGeneric from '../../styles/genericStyle'
-// import { RondFormeText } from "../../features/geoForme/rondForm"
 
 import { connect } from 'react-redux';
 import Map from './map';
@@ -26,7 +23,6 @@ function ElementHistoryNav(props) {
     longitudeDelta: deltaView.longitudeDelta
   };
 
-  // console.log("element ", props.data);
 
   if (showMap == false) {
     return (
@@ -91,17 +87,13 @@ export default connect(mapStateToProps)(ElementHistoryNav);
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    // justifyContent: 'center',
-    // backgroundColor: "gray"
   },
   center: {
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-    // backgroundColor: "gray"
   }
 });
