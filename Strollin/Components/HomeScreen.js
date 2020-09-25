@@ -35,13 +35,13 @@ const defaultPage = {
 };
 
 function HomeScreen(props) {
-  console.log('refresh\n');
+  // console.log('refresh\n');
 
   const [gallery, setGallery] = useState([]);
 
   useEffect(() => {
-    console.log('\n\nnewGallery:\n');
-    console.log(gallery.length);
+    // console.log('\n\nnewGallery:\n');
+    // console.log(gallery.length);
     const action = { type: 'SET_GALLERY', value: gallery };
     props.dispatch(action);
     DisplayMoreMedia();
@@ -50,8 +50,8 @@ function HomeScreen(props) {
   const [page, setPage] = useState(defaultPage);
 
   useEffect(() => {
-    console.log('\n\nnewPage:\n');
-    console.log(page);
+    // console.log('\n\nnewPage:\n');
+    // console.log(page);
     getGallery(props.profil.access_token, page).then((answer) => {
       setGallery(
         [
@@ -68,8 +68,8 @@ function HomeScreen(props) {
   });
 
   useEffect(() => {
-    console.log('\n\npageDisplay:\n\n');
-    console.log(pageDisplay.nbDisplay);
+    // console.log('\n\npageDisplay:\n\n');
+    // console.log(pageDisplay.nbDisplay);
   }, [pageDisplay]);
 
   const NextPage = () => {
@@ -92,7 +92,8 @@ function HomeScreen(props) {
         nbDisplay: pageDisplay.nbDisplay + 10
       };
 
-      for (let i = pageDisplay.nbDisplay; i < pageDisplay.nbDisplay + 10 && i < gallery.length; i++) {
+      for (let i = pageDisplay.nbDisplay; i < pageDisplay.nbDisplay + 10
+        && i < gallery.length; i += 1) {
         newDisplay.galleryDisplay.push(gallery[i]);
       }
       loading = true;

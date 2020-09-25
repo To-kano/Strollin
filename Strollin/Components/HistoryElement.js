@@ -1,30 +1,20 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
-  Text, View, FlatList, Button, StyleSheet
+  Text, View, FlatList, Button
 } from 'react-native';
 
 import { connect } from 'react-redux';
 import Map from './map';
 
-function ElementHistoryNav(props) {
+function ElementHistoryNav({ data }) {
   const [showMap, setShowMap] = useState(false);
-
-  const waypoints = props.data;
 
   const deltaView = {
     latitudeDelta: 0.1622,
     longitudeDelta: 0.1021,
   };
 
-  Map.region = {
-    latitude: props.position.position.latitude,
-    longitude: props.position.position.longitude,
-    latitudeDelta: deltaView.latitudeDelta,
-    longitudeDelta: deltaView.longitudeDelta
-  };
-
-
-  if (showMap == false) {
+  if (showMap === false) {
     return (
       <View style={{
         margin: 20, paddingTop: 10, flex: 1, alignItems: 'center', justifyContent: 'space-evenly'
@@ -38,7 +28,7 @@ function ElementHistoryNav(props) {
           />
         </View>
         <FlatList
-          data={waypoints}
+          data={data}
           renderItem={({ item }) => (
             <View style={{ margin: 10 }}>
               <Text>
@@ -73,7 +63,7 @@ function ElementHistoryNav(props) {
       </View>
 
       <View>
-        <Map height={250} width={200} deltaView={deltaView} waypoints={waypoints} />
+        <Map height={250} width={200} deltaView={deltaView} waypoints={data} />
       </View>
 
     </View>
@@ -82,18 +72,3 @@ function ElementHistoryNav(props) {
 
 const mapStateToProps = (state) => state;
 export default connect(mapStateToProps)(ElementHistoryNav);
-
-// export default ElementHistoryNav;
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#fff',
-    alignItems: 'center',
-  },
-  center: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  }
-});

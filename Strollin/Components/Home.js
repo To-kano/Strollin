@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  View, Button, StyleSheet
+  View, Button
 } from 'react-native';
 
 import { connect } from 'react-redux';
@@ -35,16 +35,3 @@ function Home(props) {
 const mapStateToProps = (state) => state;
 
 export default connect(mapStateToProps)(Home);
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#fff',
-    alignItems: 'center',
-  },
-  center: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  }
-});

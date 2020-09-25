@@ -1,4 +1,4 @@
-import React, {  useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import MapView, { Marker } from 'react-native-maps';
 import { PermissionsAndroid, View, Text } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
@@ -84,7 +84,6 @@ function Map(props) {
   const [waypoint, setWaypoint] = useState(props.waypoints);
 
   useEffect(() => {
-
     if (waypoint.length == []) {
       Tts.setDefaultLanguage('en-US');
       Tts.speak('You have done your navigation');

@@ -7,24 +7,26 @@ import {
 
 import { RondFormeText } from './rondForm';
 
-function Tag(props) {
+const imageLondon = require('../images/london2.jpg');
+
+function Tag({ name }) {
   const [pressed, setpressed] = useState(false);
 
   return (
     <View style={{ margin: 5 }}>
-      {pressed == false && (
+      {pressed === false && (
       <Button
         color="rgba(255,192,203, 1)"
-        title={props.name}
+        title={name}
         onPress={() => {
           setpressed(!pressed);
         }}
       />
       )}
-      {pressed == true && (
+      {pressed === true && (
       <Button
         color="rgba(130, 38, 98, 1)"
-        title={props.name}
+        title={name}
         onPress={() => {
           setpressed(!pressed);
         }}
@@ -34,7 +36,7 @@ function Tag(props) {
   );
 }
 
-function TageSelection(props) {
+function TageSelection({ navigation, profil }) {
   const data = [
     {
       id: '1',
@@ -60,7 +62,7 @@ function TageSelection(props) {
   return (
     <View style={styles.container}>
       <View style={{ flex: 1 }}>
-        <ImageBackground source={require('../images/london2.jpg')} style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').width / 2.2 - 10, }} />
+        <ImageBackground source={imageLondon} style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').width / 2.2 - 10, }} />
       </View>
       <View style={{ marginLeft: '35%', marginTop: '3%', position: 'absolute' }}>
         <RondFormeText text="Strollin'" size={120} />
@@ -70,7 +72,7 @@ function TageSelection(props) {
       }}
       >
         <Text style={[{ textAlign: 'left', color: 'grey', fontSize: 30 }]}>Welcome,</Text>
-        <Text style={[{ textAlign: 'center', fontWeight: 'bold', fontSize: 35 }]}>{props.profil.FirstName}</Text>
+        <Text style={[{ textAlign: 'center', fontWeight: 'bold', fontSize: 35 }]}>{profil.FirstName}</Text>
         <Text style={[{
           textAlign: 'center', color: 'grey', fontSize: 20, marginTop: 20, fontWeight: 'normal'
         }]}
@@ -88,7 +90,7 @@ function TageSelection(props) {
         <Button
           color="#89B3D9"
           title="Next"
-          onPress={() => props.navigation.navigate('HomePage')}
+          onPress={() => navigation.navigate('HomePage')}
         />
       </View>
     </View>

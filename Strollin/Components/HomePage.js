@@ -4,6 +4,10 @@ import {
 } from 'react-native';
 import Box from './box';
 
+const imageFriend = require('../ressources/friend.png');
+const imageHistory = require('../ressources/history.png');
+const imageProfile = require('../ressources/profile.png');
+
 function HomePage(props) {
   const DATA = [
     {
@@ -25,13 +29,13 @@ function HomePage(props) {
       <View style={styles.header}>
         <TouchableOpacity
           style={{ width: '20%', height: '100%', marginLeft: '10%' }}
-          onPress={() => console.log('hi')}
+          // onPress={() => console.log('hi')}
         >
           <Image
             style={{
               height: '70%', width: '70%', marginTop: '10%', marginLeft: '10%'
             }}
-            source={require('../ressources/friend.png')}
+            source={imageFriend}
           />
         </TouchableOpacity>
         <TouchableOpacity
@@ -42,7 +46,7 @@ function HomePage(props) {
             style={{
               height: '70%', width: '70%', marginTop: '10%', marginLeft: '10%'
             }}
-            source={require('../ressources/history.png')}
+            source={imageHistory}
           />
         </TouchableOpacity>
         <TouchableOpacity
@@ -53,7 +57,7 @@ function HomePage(props) {
             style={{
               resizeMode: 'stretch', height: '70%', width: '70%', marginTop: '10%', marginLeft: '10%'
             }}
-            source={require('../ressources/profile.png')}
+            source={imageProfile}
           />
         </TouchableOpacity>
       </View>
@@ -61,7 +65,7 @@ function HomePage(props) {
         <FlatList
           data={DATA}
           contentContainerStyle={{ flexGrow: 0.1 }}
-          renderItem={({ item }) => <Box style={{ height: '80%' }} />}
+          renderItem={() => <Box style={{ height: '80%' }} />}
           keyExtractor={(item) => item.id}
         />
       </View>

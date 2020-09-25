@@ -1,25 +1,24 @@
 import React from 'react';
 import {
-  Text, View, FlatList, Button, StyleSheet
+  Text, View, FlatList, Button
 } from 'react-native';
 
 import { connect } from 'react-redux';
 import ElementHistoryNav from './HistoryElement';
 import BackgroundImage from './backgroundImage';
 
-function HistoryNav(props) {
-
+function HistoryNav({ navigation, map }) {
   React.useLayoutEffect(() => {
-    props.navigation.setOptions({
+    navigation.setOptions({
       headerRight: () => (
         <Button
           title="Log Out"
           color="#89B3D9"
-          onPress={() => props.navigation.navigate('userLogin')}
+          onPress={() => navigation.navigate('userLogin')}
         />
       ),
     });
-  }, [props.navigation]);
+  }, [navigation]);
 
   return (
     <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'space-around', }}>
@@ -29,7 +28,7 @@ function HistoryNav(props) {
       }}
       >
         <FlatList
-          data={props.map.historic}
+          data={map.historic}
           renderItem={({ item }) => (
             <View style={{ padding: 10 }}>
               <Text>
@@ -53,7 +52,7 @@ function HistoryNav(props) {
         <Button
           color="#D99860"
           title="New Trip"
-          onPress={() => props.navigation.navigate('TripSuggestion')}
+          onPress={() => navigation.navigate('TripSuggestion')}
         />
 
       </View>
@@ -64,16 +63,3 @@ function HistoryNav(props) {
 const mapStateToProps = (state) => state;
 
 export default connect(mapStateToProps)(HistoryNav);
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#fff',
-    alignItems: 'center',
-  },
-  center: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  }
-});

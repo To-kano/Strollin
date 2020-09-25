@@ -6,21 +6,23 @@ import {
   Text, View
 } from 'react-native';
 
-function Form(props) {
+function Form({
+  style, title, keyboardType, value, onChangeText, placeholder
+}) {
   // const [data, setData] = useState(props.value);
 
   return (
-    <View style={props.style}>
-      <Text style={{ color: 'grey' }}>{props.title}</Text>
+    <View style={style}>
+      <Text style={{ color: 'grey' }}>{title}</Text>
       <Input
         autoCapitalize="none"
-        keyboardType={props.keyboardType}
+        keyboardType={keyboardType}
         style={{ marginTop: 200, marginHorizontal: 40, height: 40 }}
-        placeholder={props.placeholder}
-        value={props.value}
+        placeholder={placeholder}
+        value={value}
         onChangeText={(valueText) => {
           // setData(valueText);
-          props.onChangeText(valueText);
+          onChangeText(valueText);
         }}
       />
     </View>

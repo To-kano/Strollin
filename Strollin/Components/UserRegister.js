@@ -20,9 +20,9 @@ function UserRegister(props) {
 
   const [loading, setLoading] = useState(false);
 
-  //callbackFirstName = (value) => {
+  // callbackFirstName = (value) => {
   //  setUserFirstName(value);
-  //};
+  // };
 
   if (loading) {
     return (

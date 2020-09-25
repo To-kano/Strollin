@@ -27,7 +27,7 @@ function TripNavigation(props) {
   }, []);
 
   useEffect(() => {
-    const _handleAppStateChange = (nextAppState) => {
+    const handleAppStateChange = (nextAppState) => {
       if (nextAppState === 'background') {
         AndroidPip.enterPictureInPictureMode();
         setBackground(true);
@@ -36,19 +36,10 @@ function TripNavigation(props) {
       }
     };
 
-    AppState.addEventListener('change', _handleAppStateChange);
+    AppState.addEventListener('change', handleAppStateChange);
 
     return () => {
-      const _handleAppStateChange = (nextAppState) => {
-        if (nextAppState === 'background') {
-          AndroidPip.enterPictureInPictureMode();
-          setBackground(true);
-        } else {
-          setBackground(false);
-        }
-      };
-
-      AppState.removeEventListener('change', _handleAppStateChange);
+      AppState.removeEventListener('change', handleAppStateChange);
     };
   }, []);
 

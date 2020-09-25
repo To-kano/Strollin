@@ -11,6 +11,11 @@ import {
   GraphRequestManager,
 } from 'react-native-fbsdk';
 
+const imageStreet1 = require('../ressources/street1.jpg');
+const imageStreet2 = require('../ressources/street2.jpeg');
+const imagePlum2 = require('../ressources/plum2.jpg');
+const imageLogo3 = require('../ressources/logo3.png');
+
 // export default class App extends Component {
 //   state = {userInfo: {}};
 
@@ -67,9 +72,9 @@ function RandPic() {
   const nb = Math.floor(Math.random() * 3) + 1;
   let img = '';
 
-  if (nb == 1) img = require('../ressources/street1.jpg');
-  if (nb == 2) img = require('../ressources/street2.jpeg');
-  if (nb == 3) img = require('../ressources/plum2.jpg');
+  if (nb === 1) img = imageStreet1;
+  if (nb === 2) img = imageStreet2;
+  if (nb === 3) img = imagePlum2;
   // console.log(nb)
   return img;
 }
@@ -85,10 +90,10 @@ const getInfoFromToken = (token, setUserInfo) => {
     { token, parameters: PROFILE_REQUEST_PARAMS },
     (error, result) => {
       if (error) {
-        console.log(`login info has error: ${error}`);
+        // console.log(`login info has error: ${error}`);
       } else {
         setUserInfo(result);
-        console.log('result:', result);
+        // console.log('result:', result);
       }
     },
   );
@@ -111,14 +116,14 @@ function LoginPage(props) {
       />
       <View style={styles.form}>
         <View style={styles.logo}>
-          <Image source={require('../ressources/logo3.png')} />
+          <Image source={imageLogo3} />
         </View>
         <View style={styles.textInput}>
           <TextInput
             style={styles.inputText}
             onChangeText={(text) => {
               onChangeText(text);
-              console.log(text);
+              // console.log(text);
             }}
             value={value}
             textAlign="left"
@@ -156,9 +161,9 @@ function LoginPage(props) {
           <LoginButton
             onLoginFinished={(error, result) => {
               if (error) {
-                console.log(`login has error: ${result.error}`);
+                // console.log(`login has error: ${result.error}`);
               } else if (result.isCancelled) {
-                console.log('login is cancelled.');
+                // console.log('login is cancelled.');
               } else {
                 AccessToken.getCurrentAccessToken().then((data) => {
                   const accessToken = data.accessToken.toString();

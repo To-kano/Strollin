@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
   }
 });
 
-function Gallery(props) {
+function Gallery({ data }) {
   // console.log("gallery:\n")
   /// /console.log("props:")
   /// /console.log(props)
@@ -38,8 +38,8 @@ function Gallery(props) {
   //    console.log(props.data)
   // }
 
-  if (!cover && props.data.cover) {
-    getImage(props.data.cover).then((answer) => {
+  if (!cover && data.cover) {
+    getImage(data.cover).then((answer) => {
       // console.log("answer is :\n");
       // console.log(answer.data);
       setImageCover(answer.data);
@@ -48,26 +48,26 @@ function Gallery(props) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{props.data.title}</Text>
+      <Text style={styles.title}>{data.title}</Text>
       <Text>
         by
-        {props.data.account_url}
+        {data.account_url}
       </Text>
       <DisplayMedia data={cover} />
       <View style={styles.detail}>
         <Text>
-          {props.data.views}
+          {data.views}
           {' '}
           views
         </Text>
         <Text>
-          {props.data.points}
+          {data.points}
           {' '}
           points
         </Text>
       </View>
       <Text>description</Text>
-      <Text>{props.data.description}</Text>
+      <Text>{data.description}</Text>
     </View>
   );
 }

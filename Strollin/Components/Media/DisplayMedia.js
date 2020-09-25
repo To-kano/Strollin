@@ -27,7 +27,7 @@ function DisplayMedia(props) {
 
   const { type } = props.data;
 
-  if (type == 'image/jpeg' || type == 'image/png' || type == 'image/gif') {
+  if (type === 'image/jpeg' || type === 'image/png' || type === 'image/gif') {
     return (
       <DisplayImage
         data={props.data}
@@ -42,8 +42,8 @@ function DisplayMedia(props) {
       />
     );
   }
-  console.log('\n\nmedia not support:\n');
-  console.log(props.data);
+  // console.log('\n\nmedia not support:\n');
+  // console.log(props.data);
 
   return (
     <View style={styles.viewImage}>

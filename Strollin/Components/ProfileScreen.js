@@ -4,23 +4,25 @@ import {
 } from 'react-native';
 import json from '../ressources/profile.json';
 
+const imageProfile = require('../ressources/profile.png');
+
 function ParseTags(Tags) {
   let list = Tags[0];
 
-  for (let i = 1; i < Tags.length; i++) {
+  for (let i = 1; i < Tags.length; i += 1) {
     list += `, ${Tags[i]}`;
   }
-  console.log('list: ', list);
+  // console.log('list: ', list);
   return list;
 }
 
-function ProfileScreen({ navigation }) {
-  console.log('json: ', json.Tags);
+function ProfileScreen() {
+  // console.log('json: ', json.Tags);
   const list = ParseTags(json.Tags);
   return (
     <View>
       <View style={styles.logo}>
-        <Image style={{ resizeMode: 'center' }} source={require('../ressources/profile.png')} />
+        <Image style={{ resizeMode: 'center' }} source={imageProfile} />
       </View>
       <View style={styles.name}>
         <Text style={{ fontSize: 40 }}>
