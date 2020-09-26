@@ -8,45 +8,25 @@ const {
 // REGISTER
 router.post('/register', async function(req, res) {
 
-  let login = await UserModel.findOne({login: req.body.login});
-  let pseudo = await UserModel.findOne({pseudo: req.body.pseudo});
   let mail = await UserModel.findOne({mail: req.body.mail});
   let token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
-  if (login) {
-    return res.status(400).send({status: "The login exists already."});
-  }
-  if (pseudo) {
-    return res.status(400).send({status: "The pseudo exists already."});
-  }
   if (mail) {
     return res.status(400).send({status: "The mail is used already."});
   }
-  if (req.body.login && req.body.password && req.body.pseudo && req.body.mail) {
+  if (req.body.mail && req.body.password) {
     user = new UserModel({
-      login: req.body.login,
-      password: req.body.password,
-      pseudo: req.body.pseudo,
       mail: req.body.mail,
-      first_name: req.body.first_name,
-      last_name: req.body.last_name,
-      access_token: token,
-      tags: [],
-      friends_list: {
-        friends : [],
-        requests : [],
-      },
-      type: req.body.type,
-      historic: [],
-      scoreCourse: [],
-      scoreLocation: [],
-      scoreComment: [],
+      password: req.body.password,
+      pseudo: "user",
+      type: "normal",
+      accessToken: token,
     });
-    if (req.body.pseudo == null || req.body.pseudo == '') {
-      user.pseudo = user.login
+    if (req.body.pseudo != null) {
+      user.pseudo = req.body.pseudo
     }
     await user.save();
-    return  res.status(200).send({status: "Account created successfully.", access_token: token});
+    return  res.status(200).send({status: "Account created successfully.", accessToken: token});
   }
   return res.status(400).send({status: "The entry is invalid."});
 });
