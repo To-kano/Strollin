@@ -27,13 +27,35 @@ USER RELATED:
 
 | Description                                                     | Body                                                              | Require Token | Return              |
 |-----------------------------------------------------------------|-------------------------------------------------------------------|:-------------:|---------------------|
-| Register a new user for database.<br>For non-professional user. | mail: String<br>password: String<br>pseudo: String <br>(optional) |       No      | accessToken: String |
+| Register a new user for database.<br>For non-professional user.<br>Return a access token. | mail: String<br>password: String<br>pseudo: String <br>(optional) |       No      | accessToken: String |
 
-- GET log in: ```POST /users/login```
+
+- GET log in: ```GET /users/login```
 
 | Description                         | Body                             | Require Token | Return              |
 |-------------------------------------|----------------------------------|:-------------:|---------------------|
 | Log in an user to get a valid token | mail: String<br>password: String |       No      | accessToken: String |
+
+
+- POST log in: ```POST /users/logout```
+
+| Description                         | Body                             | Require Token | Return              |
+|-------------------------------------|----------------------------------|:-------------:|---------------------|
+| Log out an user.<br>Unavailable the current token.| None |       Yes      | None |
+
+
+- GET user's profile: ```GET /users/logout```
+
+| Description                         | Body                             | Require Token | Return              |
+|-------------------------------------|----------------------------------|:-------------:|---------------------|
+| Get the user's informations.<br>For the profile page.| None |       Yes      | profile: {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mail: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;firstName: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lastName: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tags: [tagID],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;friendList: [userID],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;historic: [courseID],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;scoreCourse: [{courseID, score, Date}],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;scoreLocation: [{locationID, score, Date}],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;scoreComment: [{commentID, score, Date}]<br>} |
+
+- DEL user's account: ```DEL /users/delete```
+
+| Description                         | Body                             | Require Token | Return              |
+|-------------------------------------|----------------------------------|:-------------:|---------------------|
+| Delete an user's account.| password: String | Yes | None |
+
 
 MESSAGE RELATED:
 ================

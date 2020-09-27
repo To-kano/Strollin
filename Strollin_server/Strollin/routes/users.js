@@ -35,7 +35,7 @@ router.post('/register', async function(req, res) {
 // LOGIN
 router.get('/login', async function(req, res) {
 
-  let user = await UserModel.findOne({login: req.headers.login, password: req.headers.password});
+  let user = await UserModel.findOne({login: req.body.login, password: req.body.password});
   let token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
   if (user) {
@@ -46,7 +46,7 @@ router.get('/login', async function(req, res) {
 });
 
 // LOGOUT
-router.get('/logout', async function(req, res) {
+router.post('/logout', async function(req, res) {
 
   let user = await UserModel.findOne({access_token: req.headers.access_token});
   let token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
@@ -60,14 +60,13 @@ router.get('/logout', async function(req, res) {
 
 
 // GET_PROFILE
-router.get('/get_profile', async function(req, res) {
+router.get('/getProfile', async function(req, res) {
 
   let user = await UserModel.findOne({access_token: req.headers.access_token});
   let profile = {};
 
   if (user) {
     profile = {
-      pseudo: user.pseudo,
       mail: user.mail,
       first_name: user.first_name,
       last_name: user.last_name,
