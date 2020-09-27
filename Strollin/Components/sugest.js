@@ -1,19 +1,17 @@
 import React, { Component } from 'react';
-import {Button,Image, View, StyleSheet,Text,ScrollView,FlatList} from 'react-native';
-import Arti from './arti'
+import {
+  Button, Image, View, StyleSheet, Text, ScrollView, FlatList
+} from 'react-native';
+import Arti from './arti';
 
 const blank = '{"Tags": ["Tech"], "Title": "blank","Link": "","Image": "","Desc": "","Source": "","Autor": "","Date": ""}';
 
 export default class Sugest extends Component {
-
-
-    render() {
-        return (
-          <View style={styles.cont}>
-            
-          </View>
-        )
-    }
+  render() {
+    return (
+      <View style={styles.cont} />
+    );
+  }
 }
 
 const styles = StyleSheet.create({

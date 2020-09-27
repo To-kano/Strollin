@@ -32,7 +32,12 @@ function LogoTitle(props) {
 function MyStack() {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator
+      screenOptions={{
+        headerShown: false
+      }}
+      >
+          
         <Stack.Screen
             name="userLogin"
             component={LoginPage}
