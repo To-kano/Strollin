@@ -61,6 +61,9 @@ function HomePage(props) {
           />
         </TouchableOpacity>
       </View>
+      <View style={styles.cont}>
+        <Text style={{ fontSize: 40 }}> Trending trip: </Text>
+      </View>
       <View style={styles.fill}>
         <FlatList
           data={DATA}
@@ -104,7 +107,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flex: 0.1,
     width: '100%',
-  }
+  },
+  cont: {
+    marginTop: '5%',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    flex: 0.1,
+    backgroundColor: '#FFC300',
+    width: '90%',
+    borderRadius: 20
+  },
 });
 
 export default HomePage;

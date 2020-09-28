@@ -17,6 +17,7 @@ import HomePage from '../Components/HomePage';
 import TripSuggestion from '../Components/TripSuggestion';
 import TripNavigation from '../Components/TripNavigation';
 import HistoryNav from '../Components/HistoryNav';
+import CommentScreen from '../Components/CommentScreen';
 
 const Stack = createStackNavigator();
 
@@ -85,6 +86,11 @@ function MyStack() {
             name="Connection"
             component={ConnectionScreen}
             options={{title: 'connection'}}
+        />
+        <Stack.Screen
+            name="Comment"
+            component={CommentScreen}
+            options={{title: 'comment'}}
         />
         <Stack.Screen name="Profile" component={Profile} />
       </Stack.Navigator>
