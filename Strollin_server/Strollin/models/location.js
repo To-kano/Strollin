@@ -5,8 +5,8 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var LocationModelSchema = new Schema({
-    locations: {
-        type: [String],
+    name: {
+        type: String,
         required: true
     },
     score: {
@@ -21,6 +21,14 @@ var LocationModelSchema = new Schema({
         type: String,
         default: '0'
     },
+    coordinate: {
+        type: [Float, Float],
+        required: true,
+    },
+    address: {
+        type: String,
+        required: true,
+    },
     description: {
         type: String,
         default: "",
@@ -30,14 +38,6 @@ var LocationModelSchema = new Schema({
         default: [],
     },
     timetable: {        // Définit les horaires possible en prenant les timetable de la liste des lieux
-        type: String,
-        required: true,
-    },
-    coordinate: {
-        type: [Float, Float],
-        required: true,
-    },
-    address: {
         type: String,
         required: true,
     },

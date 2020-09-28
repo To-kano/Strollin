@@ -53,7 +53,7 @@ var UserModelSchema = new Schema({
         type: [],
         default: [],
     },
-    historic: {             // Historique de parcours (historique de lieu ?)
+    courseHistoric: {             // Historique de parcours (historique de lieu ?)
         type: [{String, Date}],
         default: [],
     },
@@ -72,7 +72,11 @@ var UserModelSchema = new Schema({
     socketID: {             // ID du socket IO en cours d'utilisation, vide lorsque l'utilisateur se déconnecte
         type: String,
         default: "",
-    }
+    },
+    facebookID: {           // ID de facebook pour la connexion facebook ?
+        type: String,
+        default: "",
+    },
 })
 
 
