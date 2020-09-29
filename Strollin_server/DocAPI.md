@@ -200,6 +200,13 @@ COMMENT RELATED:
 
 **SCHEMA:**
 
+- message ```String```
+- author ```userID```
+- userScore ```[userID]```
+- creationDate ```Date```
+- commentprevious ```commentID```
+- commentNext ```commentID```
+
 <br>
 
 **REQUESTS:**
@@ -212,6 +219,11 @@ TAGS RELATED:
 
 **SCHEMA:**
 
+- name ```String```
+- description ```String```
+- numberUse ```String```
+- locationList ```[locationID]```
+- courseList ```[courseID]```
 
 <br>
 
