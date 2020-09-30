@@ -12,18 +12,26 @@ function HomePage(props) {
   const DATA = [
     {
       id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-      img: '../ressources/history.png'
+      name: 'Geek Route',
+      budget: '25 ~ 30€',
+      period: "Fin d'après-midi",
+      destinations: ['Starbucks', 'Reset', 'Cinéma']
     },
     {
       id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-      img: '../ressources/history.png'
+      name: 'Bar Route',
+      budget: '38 ~ 42€',
+      period: "Fin d'après-midi",
+      destinations: ['Bistrot Opéra', 'Jhin Dance', 'Paname']
     },
     {
       id: '58694a0f-3da1-471f-bd96-145571e29d72',
-      img: '../ressources/history.png'
-    },
+      name: 'Full Bouffe',
+      budget: '25 ~ 45€',
+      period: "Toujours",
+      destinations: ['Macdo', 'Sushi Land', 'Flunch']
+    }
   ];
-
   return (
     <View style={styles.back}>
       <View style={styles.header}>
@@ -68,7 +76,7 @@ function HomePage(props) {
         <FlatList
           data={DATA}
           contentContainerStyle={{ flexGrow: 0.1 }}
-          renderItem={() => <Box style={{ height: '80%' }} />}
+          renderItem={({item}) => <Box navigation={props.navigation} name={item.name} budget={item.budget} period={item.period} destinations={item.destinations} />}
           keyExtractor={(item) => item.id}
         />
       </View>

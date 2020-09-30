@@ -88,9 +88,14 @@ function MyStack() {
             options={{title: 'connection'}}
         />
         <Stack.Screen
+            name="CommentScreen"
+            component={CommentScreen}
+            options={{title: 'comment screen'}}
+        />
+        <Stack.Screen
             name="Comment"
             component={CommentScreen}
-            options={{title: 'comment'}}
+            options={{title: 'comments'}}
         />
         <Stack.Screen name="Profile" component={Profile} />
       </Stack.Navigator>

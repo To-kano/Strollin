@@ -1,34 +1,42 @@
-import React, { Component } from 'react';
 import {
   Button, Image, View, StyleSheet, Text, ScrollView, FlatList
 } from 'react-native';
+import React from "react";
 
-export default class Box extends Component {
-  render() {
-    return (
-      <View style={{
-        justifyContent: 'space-around', flex: 1, marginTop: 20, marginHorizontal: '10%', backgroundColor: 'rgba(255,255,255, 0.9)', borderRadius: 20, width: '80%'
-      }}
-      >
-        <Text style={[{
-          textAlign: 'center', fontSize: 20, color: '#39A5D6', margin: 5
-        }]}
-        >
-          Geek route
-        </Text>
-        <Text style={[{ textAlign: 'center', fontSize: 25 }]}>Budget : 25€ ~ 30€</Text>
-        <Text style={[{ textAlign: 'center', fontSize: 25 }]}>Période : Fin d'après-midi</Text>
-        <Text style={[{ textAlign: 'center', fontSize: 25 }]}>1/ Starbucks</Text>
-        <Text style={[{ textAlign: 'center', fontSize: 25 }]}>2/ Reset</Text>
-        <Text style={[{ textAlign: 'center', fontSize: 25 }]}>3/ Cinéma</Text>
-        <Button
-        title="Commentaires"
-        onPress={() => props.navigation.navigate('Comment')}
-      />
-      </View>
-    );
-  }
+async function GotoComment(props) {
+  console.log("GOING TO COMMENT");
+  //redux currentComment = props.data.id
+  props.navigation.navigate("CommentScreen");
 }
+
+function Box(props)  {
+
+  console.log("props = ", props);
+  return (
+    <View style={{
+      justifyContent: 'space-around', flex: 1, marginTop: 20, marginHorizontal: '10%', backgroundColor: 'rgba(255,255,255, 0.9)', borderRadius: 20, width: '80%'
+    }}
+    >
+      <Text style={[{
+        textAlign: 'center', fontSize: 30, color: '#39A5D6', margin: 5
+      }]}
+      >
+        {props.name}
+      </Text>
+      <Text style={[{ fontSize: 25, marginLeft: '5%' }]}>Budget : {props.budget}</Text>
+      <Text style={[{ fontSize: 25, marginLeft: '5%' }]}>Période : {props.period}</Text>
+      <Text style={[{ fontSize: 25, marginLeft: '5%' }]}>1/ {props.destinations[0]}</Text>
+      <Text style={[{ fontSize: 25, marginLeft: '5%' }]}>2/ {props.destinations[1]}</Text>
+      <Text style={[{ fontSize: 25, marginLeft: '5%' }]}>3/ {props.destinations[2]}</Text>
+      <Button
+      title="Commentaires"
+      onPress={() => GotoComment(props)}
+    />
+    </View>
+  );
+}
+
+export default Box;
 
 const styles = StyleSheet.create({
   cont: {
