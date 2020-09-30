@@ -14,9 +14,6 @@ const { isObject } = require('util');
 
 var app = express();
 
-var sio_server = require('http').createServer(app)
-var sio = require('socket.io').listen(sio_server)
-
 
 // MongoDB //
 
@@ -65,21 +62,6 @@ promise1.then((value) => {
   console.log("\n\n");
   console.log("---------------------------------------");
 });
-
-
-// SIO //
-
-sio.on("connection", socket => {
-  console.log("a user connected !");  // Connexion d'un user
-  socket.on("chat message:", msg => { // Quand je reçois un message
-    console.log(msg);                 // Action
-    sio.emit("chat message", msg);    // Réponse pour l'user
-  });
-})
-
-sio_server.listen(4000, () => console.log("server is running on port 4000"));
-
-//    //
 
 
 // catch 404 and forward to error handler

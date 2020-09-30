@@ -4,9 +4,9 @@ var mongoose = require('mongoose');
 //Define the schema
 var Schema = mongoose.Schema;
 
-var CourseModelSchema = new Schema({
-    locations: {
-        type: [String],
+var LocationModelSchema = new Schema({
+    name: {
+        type: String,
         required: true
     },
     score: {
@@ -14,20 +14,28 @@ var CourseModelSchema = new Schema({
         default: '0'
     },
     userScore: {
-        type: [String], //list of User ID that gave score, see user.scoreCourse
+        type: [String], //list of User ID that gave score, see user.scoreLocation
         default: []
     },
-    used: {             // Nombre de fois que ce parcours à été utilisé
+    visited: {             // Nombre de fois que ce lieu à été visité
         type: String,
         default: '0'
     },
-    author: {
-        type: String,
-        required: true
+    coordinate: {
+        type: [Float, Float],
+        required: true,
     },
-    creationDate: {
-        type: Date,
-        default: Date.now,
+    address: {
+        type: String,
+        required: true,
+    },
+    description: {
+        type: String,
+        default: "",
+    },
+    photo: {
+        type: [String],
+        default: [],
     },
     timetable: {        // Définit les horaires possible en prenant les timetable de la liste des lieux
         type: String,
@@ -44,6 +52,6 @@ var CourseModelSchema = new Schema({
 })
 
 // Compile model from schema
-var CourseModel = mongoose.model('Course', CourseModelSchema);
+var LocationModel = mongoose.model('Location', LocationModelSchema);
 
-exports.CourseModel = CourseModel;
+exports.LocationModel = LocationModel;

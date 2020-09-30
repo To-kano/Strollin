@@ -5,7 +5,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var UserModelSchema = new Schema({
-    login: {                // Identifiant du compte
+    mail: {                 // Adresse mail pour login et communication
         type: String,
         required: true,
     },
@@ -21,34 +21,39 @@ var UserModelSchema = new Schema({
         type: String,
         required: true,
     },
-    mail: {                 // Adresse mail pour les confirmation de compte et empêcher les duplicata
+    type: {                 // Particulier, Commencerçant, etc...
         type: String,
         required: true,
     },
     firstName: {            // Prénom
         type: String,
-        required: true,
+        default: "",
     },
     lastName: {             // Nom
         type: String,
-        required: true,
+        default: "",
     },
     accessToken: {          // Token pour rester connecté sur l'application
         type: String,
+        required: true,
     },
     tags: {                 // Liste des tags
         type: [String],
         default: [],
     },
     friendsList: {          // Contient : friendList (liste par défaut), requestList (liste d'ami en attente), autres groupes 
-        type: {},
-        default: {},
+        type: [],
+        default: [],
     },
-    type: {                 // Particulier, Commencerçant, etc...
-        type: String,
-        required: true,
+    friendsRequest: {       // Contient : friendList (liste par défaut), requestList (liste d'ami en attente), autres groupes 
+        type: [],
+        default: [],
     },
-    historic: {             // Historique de parcours (historique de lieu ?)
+    groups: {
+        type: [],
+        default: [],
+    },
+    courseHistoric: {             // Historique de parcours (historique de lieu ?)
         type: [{String, Date}],
         default: [],
     },
@@ -63,6 +68,14 @@ var UserModelSchema = new Schema({
     scoreComment: {         // Liste des commentaires notés (ID, Note, Date)
         type: [{String, String, Date}],
         default: [],
+    },
+    socketID: {             // ID du socket IO en cours d'utilisation, vide lorsque l'utilisateur se déconnecte
+        type: String,
+        default: "",
+    },
+    facebookID: {           // ID de facebook pour la connexion facebook ?
+        type: String,
+        default: "",
     },
 })
 
