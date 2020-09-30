@@ -40,6 +40,20 @@
 			"Name": "H&M",
       "Dist": 0,
       "Price": 20
+		},
+    {
+			"Tags": ["Music"],
+			"Pos": [-32, 34],
+			"Name": "OCD",
+      "Dist": 0,
+      "Price": 10
+		},
+    {
+			"Tags": ["Art"],
+			"Pos": [-32, 34],
+			"Name": "Le louvre",
+      "Dist": 0,
+      "Price": 25
 		}
 	]
 }

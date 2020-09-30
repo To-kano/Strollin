@@ -1,5 +1,5 @@
 {
-			"Tags": ["BAR", "VIDEO GAMES", "Restaurant", "Asian Food", "Music"],
+			"Tags": [["BAR", "VIDEO GAMES", "Restaurant", "Asian Food", "Music"], ["BAR", "VIDEO GAMES", "Music", "Art", "Furniture"]],
       "Pos": [-8, 30],
       "Budget": 300
 }

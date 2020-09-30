@@ -1,0 +1,24 @@
+{
+"List": [{
+    "Tags": ["Fitness", "Sport"],
+    "Pos": [-12, 24],
+    "Name": "Decathlon",
+    "Dist": 0,
+    "Price": 15
+  },
+  {
+    "Tags": ["Music", "VIDEO GAMES", "Multimedia"],
+    "Pos": [-30, 14],
+    "Name": "Fnac",
+    "Dist": 0,
+    "Price": 40
+  },
+  {
+    "Tags": ["Restaurant", "Asian Food"],
+    "Pos": [-10, 34],
+    "Name": "Chez Didier",
+    "Dist": 0,
+    "Price": 8
+  }
+]
+}

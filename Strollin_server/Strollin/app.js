@@ -9,7 +9,10 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 //var algo = require('./Algo/BasicAlgo');
-var algo = require('./Algo/BasicAlgo2');
+//var algo = require('./Algo/BasicAlgo2');
+var algo = require('./Algo/TwoPersonAlgo');
+
+var pop = require('./Algo/PopUpAlgo');
 
 var app = express();
 
@@ -52,6 +55,8 @@ promise1.then((value) => {
   console.log("\n\n");
   console.log("---------------------------------------");
 });
+
+pop.data.Popup()
 
 
 
