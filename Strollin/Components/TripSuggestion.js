@@ -8,10 +8,6 @@ import Map from './map';
 
 import ElementHistoryNav from './HistoryElement';
 import BackgroundImage from './backgroundImage';
-// import { getGoogleApiSearch } from '../api/google-api/google-api';
-/// /import { getTags } from '../../dataBase/actions'
-// import Geolocation from '@react-native-community/geolocation';
-// import Geolocation from 'react-native-geolocation-service';
 
 function getNavigation() {
   const destination1 = [
