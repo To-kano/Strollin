@@ -86,3 +86,35 @@ async function loginUser(props, newMail, newPassword) {
   }
   
   exports.registerUser = registerUser;
+
+  async function registerUserTag(props, newPseudo, newPassword, newMail) {
+    const bodyRequest = JSON.stringify({
+      pseudo: newPseudo,
+      password: newPassword,
+      mail : newMail,
+    });
+  
+    fetch('http://' + IP_SERVER + ':' + PORT_SERVER + '/users/register', {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      method: 'post',
+      body: bodyRequest,
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then(async (answer) => {
+        if (answer.accessToken) {
+            await profileUser(props, answer.accessToken);            
+          const action = {type: 'CONNECTION', value: answer.accessToken};
+          props.dispatch(action);
+        }
+      })
+      .catch((error) => {
+        console.error('error :', error);
+      });
+  }
+  
+  exports.registerUserTag = registerUserTag;
