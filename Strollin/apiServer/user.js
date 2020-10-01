@@ -16,7 +16,7 @@ async function loginUser(props, newMail, newPassword) {
       .then(async (answer) => {
         if (answer.accessToken) {
             await profileUser(props, answer.accessToken);
-            const action = {type: 'SET_USER', value: {accessToken : answer.accessToken}};
+            const action = {type: 'CONNECTION', value: answer.accessToken};
             props.dispatch(action);
         } else {
         }
@@ -76,7 +76,7 @@ async function loginUser(props, newMail, newPassword) {
       .then(async (answer) => {
         if (answer.accessToken) {
             await profileUser(props, answer.accessToken);            
-          const action = {type: 'SET_USER', value: {accessToken : answer.accessToken}};
+          const action = {type: 'CONNECTION', value: answer.accessToken};
           props.dispatch(action);
         }
       })
