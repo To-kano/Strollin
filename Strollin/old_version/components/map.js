@@ -4,23 +4,22 @@ import { PermissionsAndroid, View, Text } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import MapViewDirections from 'react-native-maps-directions';
 
-
 // apiKey AIzaSyDGvC3HkeGolvgvOevKuaE_6LmS9MPjlvE
 
 class Map extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       permission: false,
       user: {
         latitude: 48.815641,
         longitude: 2.363224,
-        title: "USER",
-        subtitle: "User position"
+        title: 'USER',
+        subtitle: 'User position'
       }
-    }
+    };
     this.updateCoordinates();
-  };
+  }
 
   componentDidMount() {
     this.requestGeolocalisationPermission();
@@ -29,18 +28,18 @@ class Map extends Component {
   }
 
   updatePosition(position) {
-    //console.log(position);
-    let newLatitude = position.coords.latitude;
-    let newLongitude = position.coords.longitude;
+    // console.log(position);
+    const newLatitude = position.coords.latitude;
+    const newLongitude = position.coords.longitude;
 
     this.setState({
       user: {
         latitude: newLatitude,
         longitude: newLongitude,
-        title: "USER",
-        subtitle: "User position"
+        title: 'USER',
+        subtitle: 'User position'
       }
-    })
+    });
   }
 
   updateCoordinates = () => {
@@ -69,7 +68,7 @@ class Map extends Component {
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         this.state.permission = true;
-        this.setState({ permission: true })
+        this.setState({ permission: true });
         console.log('You can use the geolocalisation');
       } else {
         console.log('geolocalisation permission denied');
@@ -80,9 +79,9 @@ class Map extends Component {
   }
 
   onRegionChange(region) {
-    //console.log(region);
+    // console.log(region);
 
-    //this.setState({ region });
+    // this.setState({ region });
   }
 
   render() {
@@ -91,7 +90,8 @@ class Map extends Component {
     const GOOGLE_MAPS_APIKEY = 'AIzaSyB-xO-UPVjhXP85uteh1n5hIbUeXqqjWRI';
     if (this.state.permission) {
       return (
-        <MapView style={{ height: this.props.height, width: this.props.width }}
+        <MapView
+          style={{ height: this.props.height, width: this.props.width }}
           region={{
             latitude: this.state.user.latitude,
             longitude: this.state.user.longitude,
@@ -108,28 +108,26 @@ class Map extends Component {
             strokeColor="#39A5D6"
           />
           <Marker
-            coordinate={{ "latitude": this.state.user.latitude, "longitude": this.state.user.longitude }}
-            title={"USER"}
-            description={"User position"}
+            coordinate={{ latitude: this.state.user.latitude, longitude: this.state.user.longitude }}
+            title="USER"
+            description="User position"
           />
-          {this.props.markers.map(marker => (
+          {this.props.markers.map((marker) => (
             <Marker
-              coordinate={{ "latitude": marker.latitude, "longitude": marker.longitude }}
+              coordinate={{ latitude: marker.latitude, longitude: marker.longitude }}
               title={marker.name}
-              description={"Destination"}
+              description="Destination"
             />
           ))}
 
-
         </MapView>
       );
-    } else {
-      return (
-        <View>
-          <Text>No permision</Text>
-        </View>
-      )
     }
+    return (
+      <View>
+        <Text>No permision</Text>
+      </View>
+    );
   }
 }
 

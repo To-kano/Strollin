@@ -1,11 +1,11 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 
 const stylesHomepage = StyleSheet.create({
   ElementHistoryNav: {
-    //flex: 1,
-    //height: 200,
+    // flex: 1,
+    // height: 200,
     justifyContent: 'center',
-    //alignItems: "center",
+    // alignItems: "center",
     backgroundColor: '#9FA8DA',
   },
   base: {

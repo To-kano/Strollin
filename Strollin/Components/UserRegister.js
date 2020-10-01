@@ -11,7 +11,7 @@ import { RondFormeText } from './rondForm';
 
 import BackgroundImage from './backgroundImage';
 
-import {registerUser} from '../apiServer/user';
+import { registerUser } from '../apiServer/user';
 
 function UserRegister(props) {
   const [userEmail, setUserEmail] = useState('');

@@ -1,1 +1,1 @@
-/**all required static values are stored **/
+/** all required static values are stored * */

@@ -1,6 +1,5 @@
 import AsyncStorage from '@react-native-community/async-storage';
 
-
 const initialState = {
   accessToken: null,
   mail: null,
@@ -26,38 +25,38 @@ const storeProfile = async (value) => {
 };
 
 function profileReducer(state = initialState, action) {
-    let nextState
-    switch (action.type) {
-      case 'CONNECTION':
-        nextState = {
-            ...state,
-            accessToken : action.value
-        }
-        return nextState
+  let nextState;
+  switch (action.type) {
+    case 'CONNECTION':
+      nextState = {
+        ...state,
+        accessToken: action.value
+      };
+      return nextState;
 
-      case 'DECONNECTION':
+    case 'DECONNECTION':
       storeProfile(initialState);
-        return initialState
+      return initialState;
 
-      case 'SET_USER':
-        nextState = {
-            ...state,
-            ...action.value
-        }
-        storeProfile(nextState);
-        return nextState
+    case 'SET_USER':
+      nextState = {
+        ...state,
+        ...action.value
+      };
+      storeProfile(nextState);
+      return nextState;
 
-      case 'ADD_HISTORY':
-        nextState = {
-            ...state,
-            history: state.history + action.value,
-        }
-        storeProfile(nextState);
-        return nextState
+    case 'ADD_HISTORY':
+      nextState = {
+        ...state,
+        history: state.history + action.value,
+      };
+      storeProfile(nextState);
+      return nextState;
 
     default:
-      return state
-    }
+      return state;
   }
+}
 
 export default profileReducer;
