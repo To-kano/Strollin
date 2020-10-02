@@ -6,6 +6,8 @@ import { Text, View, TouchableHighlight, FlatList, Button, StatusBar, SafeAreaVi
 
 import {connect} from 'react-redux';
 
+var test = 0
+
 const User = [
   {
     name: 'tony',
@@ -57,9 +59,52 @@ const group = [
 ]
 
 function getFriend(group, friend) {
-  if (!group.friend)
-    return friend
   var userAdd = []
+  for (var i = 0; i < group.friend.length; i += 1) {
+    for (var j = 0; j < friend.length; j += 1) {
+      if (group.friend[i] == friend[j].id) {
+        userAdd.push(friend[j])
+        console.log("friend add")
+        console.log(friend[j].name)
+        console.log(userAdd[0].name)
+        console.log(group.name)
+        console.log("           ")
+      }
+    }
+  }
+  return userAdd
+
+/*  var userAdd = group.friend.filter(function(item) {
+    var userTmp = []
+    var i = 0
+    for (var j = 0; j < friend.length; j += 1) {
+      if (item == friend[j].id) {
+        i = 1
+        userTmp.push(friend[j])
+        console.log("friend add")
+        console.log(friend[j].name)
+        console.log(userTmp[0].name)
+        console.log(group.name)
+        console.log("           ")
+      }
+    }
+    return userTmp
+  })
+  if (userAdd) {
+    return userAdd
+  }*/
+
+    /*for (var j = 0; j < friend.length; j += 1) {
+      if (group.friend[i] == friend[j].id) {
+        userAdd.prototype.push(friend[j])
+        console.log("friend add")
+        console.log(friend[j].name)
+        console.log(userAdd[0].name)
+        console.log(group.name)
+        console.log("           ")
+      }
+    }*/
+  /*var userAdd = []
   group.friend.forEach(item => {
     var userTmp = friend.filter(function(item2) {
       return item == item2.id
@@ -68,7 +113,7 @@ function getFriend(group, friend) {
   })
   console.log("stop")
   console.log(userAdd[0])
-  return userAdd
+  return userAdd*/
 }
 
 const ItemFriend = ({friend, func, group}) => (
@@ -146,11 +191,20 @@ function FriendList(props) {
                 />
               </View>
               <View>
-                <ItemFriend friend={Friend} func={onChangeFriend} group={[]}/>
+                <FlatList
+                  data={Friend}
+                  renderItem={({ item }) =>
+                    <Item title={item.name} friend={Friend} func={onChangeFriend}/>
+                  }
+                  keyExtractor={item => item.id}
+                />
                 <FlatList
                   data={group}
                   renderItem={({ item }) =>
-                    <ItemFriend friend={Friend} func={onChangeFriend} group={item}/>
+                    <View>
+                      <Text>{item.name}</Text>
+                      <ItemFriend friend={Friend} func={onChangeFriend} group={item}/>
+                    </View>
                   }
                   keyExtractor={item => item.id}
                 />
