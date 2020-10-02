@@ -3,7 +3,12 @@ var router = express.Router();
 
 const {
   UserModel
-} = require("../models/users")
+} = require("../models/user")
+
+const {
+  TagModel
+} = require("../models/tag")
+
 
 // REGISTER
 router.post('/register', async function(req, res) {
@@ -31,6 +36,40 @@ router.post('/register', async function(req, res) {
   return res.status(400).send({status: "The entry is invalid."});
 });
 
+// ADD FRIEND
+router.post('/addFriend', async function(req, res) {
+
+  let user = await UserModel.findOne({accessToken: req.body.accessToken});
+  let friend = await UserModel.findOne({pseudo: req.body.pseudo});
+
+  if (user && friend) {
+
+    await user.updateOne({$push: {"friends_list": friend._id}});
+    await friend.updateOne({$push: {"friends_list": user._id}});
+    return  res.status(200).send({status: "Friend added successfully."});
+  }
+  return res.status(400).send({status: "You cannot be friend."});
+});
+
+// ADD TAG
+router.post('/addTag', async function(req, res) {
+
+  let user = await UserModel.findOne({accessToken: req.body.accessToken});
+  let tag = null;
+  let addList = req.body.tagList
+
+  if (user) {
+    for (let index = 0; index < addList.length; index++) {
+      tag = await TagModel.findOne({name: addList[index]})
+      if (tag) {
+        await user.updateOne({$push: {"tagsList": tag._id}})
+      }
+    }
+    return  res.status(200).send({status: "Tag(s) added successfully."});
+  }
+  return res.status(400).send({status: "You have to be connected."});
+});
+
 
 // LOGIN
 router.get('/login', async function(req, res) {
@@ -39,20 +78,20 @@ router.get('/login', async function(req, res) {
   let token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
   if (user) {
-    await user.updateOne({access_token: token});
-    return  res.status(200).send({status: "Log in successfully." , access_token: token});
+    await user.updateOne({accessToken: token});
+    return  res.status(200).send({status: "Log in successfully." , accessToken: token});
   }
   return res.status(400).send({status: "The login or the password is incorrect."});
 });
 
 // LOGOUT
-router.post('/logout', async function(req, res) {
+router.get('/logout', async function(req, res) {
 
-  let user = await UserModel.findOne({access_token: req.headers.access_token});
+  let user = await UserModel.findOne({accessToken: req.headers.accessToken});
   let token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
   if (user) {
-    await user.updateOne({access_token: token});
+    await user.updateOne({accessToken: token});
     return  res.status(200).send({status: "Log out successfully."});
   }
   return res.status(400).send({status: "You are already log out."});
@@ -62,7 +101,7 @@ router.post('/logout', async function(req, res) {
 // GET_PROFILE
 router.get('/getProfile', async function(req, res) {
 
-  let user = await UserModel.findOne({access_token: req.headers.access_token});
+  let user = await UserModel.findOne({accessToken: req.headers.accessToken});
   let profile = {};
 
   if (user) {
@@ -83,25 +122,10 @@ router.get('/getProfile', async function(req, res) {
   return res.status(400).send({status: "You are not connected."});
 });
 
-// ADD FRIEND
-router.post('/add_friend', async function(req, res) {
-
-  let user = await UserModel.findOne({access_token: req.body.access_token});
-  let friend = await UserModel.findOne({pseudo: req.body.pseudo});
-
-  if (user && friend) {
-
-    await user.updateOne({$push: {"friends_list": friend._id}});
-    await friend.updateOne({$push: {"friends_list": user._id}});
-    return  res.status(200).send({status: "Friend added successfully."});
-  }
-  return res.status(400).send({status: "You cannot be friend."});
-});
-
 // DELETE
 router.delete('/delete', async function(req, res) {
 
-  let user = await UserModel.findOne({access_token: req.headers.access_token, password: req.headers.password});
+  let user = await UserModel.findOne({accessToken: req.headers.accessToken, password: req.headers.password});
 
   if (user) {
     await user.remove();

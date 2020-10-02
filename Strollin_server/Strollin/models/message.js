@@ -9,10 +9,6 @@ var MessageModelSchema = new Schema({
         type: String,
         required: true
     },
-    destinator: {
-        type: String,
-        required: true
-    },
     conversation: {
         type: String,
         required: true
