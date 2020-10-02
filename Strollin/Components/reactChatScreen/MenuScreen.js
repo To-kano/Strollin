@@ -1,34 +1,149 @@
-import React, { useState } from "react"
-import  { View, Text, StyleSheet, TextInput, TouchableOpacity, Image } from "react-native";
+import React, { useState, useEffect } from "react"
+import  { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, FlatList } from "react-native";
+import {connect} from 'react-redux';
+import ConvPreview from './ConvPreview';
+import SearchBar from "./SearchBar";
+import Store from '../../Store/configureStore';
+import ButtonIcon from './ButtonIcon.js';
 
-function LoginScreen({navigation})  {
-    const [name, setName] = useState("");
 
+function NewConversation(props) {
+    props.navigation.navigate("NewConversation");
+}
+
+function setUser(props, profile) {
+    const action = { type: 'SET_USER', value : { firstName: "Tony",
+                                                 lastName: "Ye",
+                                                 email: "tony.ye@epitech.eu",
+                                                 pseudo: "Kano",
+                                                 friendList: ["Koko", "Yaya", "Zaza"],} 
+                    };
+    props.dispatch(action);
+}
+
+function setHistoric(props) {
+    const data = [{ id: "convIdTEST", usersId: ["Kano", "Koko"], messages: [{ id: "llllllqq", content: "Hello", userId: "userId1TEST", username: "Kano"},
+                  { id: "ldfsfdealqq", content: "World", userId: "userId2TEST", username: "Koko"}]},
+                  
+                  { id: "convIdTEST2", usersId: ["Kano", "Yaya", "Zaza"], messages: [
+                        { id: "llkejfzqq", content: "MUDA MUDA MUDA MUDA!", userId: "userId2TEST3", username: "Zaza"},
+                        { id : "jbfkjzdz", content: "ZA", userId: "userId1TEST2", username: "Kano"},
+                        { id: "llkejfzqq", content: "WARUDO!", userId: "userId2TEST2", username: "Yaya"}]}]
+
+    const action = {type: 'SET_CONVERSATION', value : data};
+    props.dispatch(action);
+}
+
+function sortConversation(key) {
+    const store = Store.getState();
+    const result = titleFilter(store.conversation.conversationList.id);
+    
+    action = { type: 'SET_FRIEND', value : { friendList: ["Koko", "Yaya", "Zaza"] }};
+
+    if (key == "") {
+        Store.dispatch(action);
+    } else {
+        for (i in store.profil.FriendList) {
+            if (key == store.profil.FriendList[i]) {
+                action = { type: 'SET_FRIEND', value : { friendList: [key] }};
+                Store.dispatch(action);
+                notFound = false;
+            }
+        }
+        if (notFound == true) {
+            action = { type: 'SET_FRIEND', value : { friendList: [] }};
+            Store.dispatch(action);
+        }
+    }
+
+    //result = liste triée
+}
+
+function LoginScreen(props)  {
+    if (props.profil.Pseudo == null) {
+        setUser(props);
+        return (
+            <View style={styles.container}>
+                <View style={styles.circle}/>
+                <View style={{ flexDirection: 'row', justifyContent: "center" }}>
+                    <Text style={ styles.header }>Discussions            </Text>
+                    <ButtonIcon
+                      icon={require('../../images/plus.png')}
+                      onPress={() => {
+                        NewConversation(props)
+                      }}
+                    />
+                </View>
+                    <View>
+                    <Text style={ styles.header }>Charging messages</Text>
+                </View>
+            </View>
+        )
+    }
+    if (props.conversation.conversationList.length < 1) {
+
+        setHistoric(props);
+        return (
+            <View style={styles.container}>
+                <View style={styles.circle}/>
+                <View style={{ flexDirection: 'row', justifyContent: "center" }}>
+                    <Text style={ styles.header }>Discussions            </Text>
+                    <ButtonIcon
+                      icon={require('../../images/plus.png')}
+                      onPress={() => {
+                        NewConversation(props)
+                      }}
+                    />
+                </View>
+                    <View>
+                    <Text style={ styles.header }>Charging messages</Text>
+                </View>
+            </View>
+        )
+    }
+    
     return (
         <View style={styles.container}>
             <View style={styles.circle}/>
-            <View style={{ marginTop: 64}}>
+            <View style={{ flexDirection: 'row', justifyContent: "center" }}>
+                <Text style={ styles.header }>Discussions            </Text>
+                    <ButtonIcon
+                      icon={require('../../images/plus.png')}
+                      onPress={() => {
+                        NewConversation(props)
+                      }}
+                    />
             </View>
-            <View style={{ marginHorizontal: 32 }}>
-                <Text style={ styles.header }>Username</Text>
-                <TextInput 
-                    style={ styles.input }
-                    placeholder="Name"
-                    onChangeText={ name => {
-                        setName(name);
-                    }}
-                    value={ name }
+            <View>
+                <SearchBar
+                    onPress = { sortConversation }
+                    imagePath = { '../../images/loupe.svg' }
                 />
-                <View style={{ alignItems: "flex-end", marginTop:64 }}>
-                    <TouchableOpacity style={ styles.continuation } onPress={ navigation.navigate("Chat", { user: name }) }>
-                    </TouchableOpacity>
-                </View>
+            </View>
+            <View>
+                <FlatList
+                    data={props.conversation.conversationList}
+                    renderItem={({item}) => <ConvPreview {...props} jsonConversation={item} />}
+                    keyExtractor={(item) => item.id}
+                />
             </View>
         </View>
     );
 }
+//<TextInput 
+//    style={ styles.input }
+//    placeholder="Name"
+//    onChangeText={ name => {
+//        setName(name);
+//    }}
+//    value={ name }
+///>
 
-export default LoginScreen
+
+const mapStateToProps = (state) => {
+    return state;
+};
+export default connect(mapStateToProps)(LoginScreen);
 
 const styles = StyleSheet.create({
     container: {
@@ -45,10 +160,10 @@ const styles = StyleSheet.create({
         top: -20
     },
     header: {
+        textAlign: 'center',
         fontWeight: "800",
         fontSize: 30,
         color: "#514E5A",
-        marginTop: 32
     },
     input: {
         marginTop: 32,
@@ -61,11 +176,8 @@ const styles = StyleSheet.create({
         fontWeight: "600"
     },
     continuation: {
-        width: 70,
-        height: 70,
-        borderRadius: 70 / 2,
-        alignItems: "center",
-        justifyContent: "center",
+        width: 50,
+        height: 50,
         backgroundColor: "#434343"
     }
 });
