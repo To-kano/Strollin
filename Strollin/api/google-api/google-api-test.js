@@ -6,7 +6,6 @@ import {
   Button,
   ActivityIndicator,
 } from 'react-native';
-
 import {
   getMoviesFromApi,
   getGoogleApiItinerary,

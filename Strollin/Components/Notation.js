@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {Button,Image, View, StyleSheet,Text,ScrollView,FlatList, TextInput} from 'react-native';
+import I18n from "../Translation/configureTrans";
 
 function sendMessage(value) {
   console.log('messageSent')
@@ -22,7 +23,7 @@ function Notation (props){
             sendMessage(value)
             props.navigation.navigate('HomePage');
           }}
-          title="Send"
+          title={I18n.t("send")}
           color="#841584"
         />
         <View style={{marginTop:5}}>
@@ -30,7 +31,7 @@ function Notation (props){
           onPress={() => {
             props.navigation.navigate('HomePage');
           }}
-          title="Cancel"
+          title={I18n.t("cancel")}
           color="#841584"
         />
         </View>
@@ -40,23 +41,3 @@ function Notation (props){
 }
 
 export default Notation
-
-const styles = StyleSheet.create({
-  cont: {
-    marginTop: '5%',
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    flex: 0.1,
-    backgroundColor: '#FFC300'
-  },
-  img: {
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    flex: 0.1,
-    backgroundColor: 'red',
-    width: '80%'
-  }
-
-});
