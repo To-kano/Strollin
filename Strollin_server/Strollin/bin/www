@@ -94,21 +94,4 @@ function onListening() {
   debug('Listening on ' + bind);
 }
 
-
-/**
- * Socket IO
- */
-
-var sio = require('socket.io').listen(server)
-
-sio.on("connection", socket => {
-  console.log("a user connected !");  // Connexion d'un user
-  console.log(socket.id);
-  socket.on("chat message", msg => { // Quand je reçois un message
-    console.log(msg);                 // Action
-    sio.emit("chat message", msg);    // Réponse pour l'user
-  });
-
-})
-
-// sio_server.listen(4000, () => console.log("SIO server is running on port 4000"));
+exports.server = server;

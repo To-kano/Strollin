@@ -56,6 +56,12 @@ USER RELATED:
 |-|-|-|-|
 | Register a new user for database.<br>For non-professional user.<br>Return a access token. | None | mail: String<br>password: String<br>pseudo: String <br>(optional) | accessToken: String |
 
+- ADD a request friend: ```POST /users/addRequestFriend```
+
+| Description | Headers | Body | Return |
+|-|-|-|-|
+| Send friend request. | accessToken: String | friend: userID | None |
+
 - ADD a friend: ```POST /users/addFriend```
 
 - ADD new tags in user's tags: ```POST /users/addTags```
@@ -67,7 +73,7 @@ USER RELATED:
 | Log in an user to get a valid token | mail: String<br>password: String | None | accessToken: String |
 
 
-- POST log in: ```GET /users/logout```
+- GET log out: ```GET /users/logout```
 
 | Description | Headers | Body | Return |
 |-|-|-|-|
@@ -91,6 +97,7 @@ USER RELATED:
 - DEL user's friend: ```DEL /users/removeFriend```
 
 - DEL user's tags: ```DEL /users/removeTags```
+
 
 MESSAGE RELATED:
 ================

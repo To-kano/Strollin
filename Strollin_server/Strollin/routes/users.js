@@ -42,13 +42,13 @@ router.post('/addFriend', async function(req, res) {
   let user = await UserModel.findOne({accessToken: req.body.accessToken});
   let friend = await UserModel.findOne({pseudo: req.body.pseudo});
 
-  if (user && friend) {
-
-    await user.updateOne({$push: {"friends_list": friend._id}});
-    await friend.updateOne({$push: {"friends_list": user._id}});
+  if (!user)
+    return res.status(400).send({status: "You are not connected."});
+  if (friend) {
+    await friend.updateOne({$push: {"friendsRequest": user._id}});
     return  res.status(200).send({status: "Friend added successfully."});
   }
-  return res.status(400).send({status: "You cannot be friend."});
+  return res.status(400).send({status: "The friend user does not exist."});
 });
 
 // ADD TAG
@@ -67,14 +67,14 @@ router.post('/addTag', async function(req, res) {
     }
     return  res.status(200).send({status: "Tag(s) added successfully."});
   }
-  return res.status(400).send({status: "You have to be connected."});
+  return res.status(400).send({status: "You are not connected."});
 });
 
 
 // LOGIN
 router.get('/login', async function(req, res) {
 
-  let user = await UserModel.findOne({login: req.body.login, password: req.body.password});
+  let user = await UserModel.findOne({login: req.headers.login, password: req.headers.password});
   let token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
   if (user) {
@@ -131,7 +131,7 @@ router.delete('/delete', async function(req, res) {
     await user.remove();
     return res.status(200).send({status: "Account successfully deleted."});
   }
-  return res.status(400).send({status: "Not connected."});
+  return res.status(400).send({status: "You are not connected."});
 });
 
 

@@ -9,6 +9,8 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
+var socketIO = require('./socketIO/socketIO');
+
 var algo = require('./Algo/BasicAlgo2');
 const { isObject } = require('util');
 
@@ -26,7 +28,7 @@ var db = mongoose.connection;
 //Bind connection to error event (to get notification of connection errors)
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
-//        //
+/*******/
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -49,7 +51,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
-////
+/******/
+
+// SOCKET IO //
+app.use(socketIO);
+/*****/
 
 app.use(express.static('public'));
 
