@@ -1,5 +1,6 @@
 import React, { Component, useState } from 'react';
-import { Text, View, TouchableHighlight, FlatList, Button, StatusBar, SafeAreaView, ImageBackground, TouchableOpacity, TextInput, StyleSheet, Dimensions, Image } from 'react-native';
+import { Text, View, TouchableHighlight, FlatList, ScrollView, Button, StatusBar, SafeAreaView, ImageBackground, TouchableOpacity, TextInput, StyleSheet, Dimensions, Image } from 'react-native';
+import I18n from "../Translation/configureTrans";
 //import stylesHomepage from '../../styles/homepage'
 //import stylesGeneric from '../../styles/genericStyle'
 //import { RondFormeText } from "../../features/geoForme/rondForm"
@@ -64,11 +65,11 @@ function getFriend(group, friend) {
     for (var j = 0; j < friend.length; j += 1) {
       if (group.friend[i] == friend[j].id) {
         userAdd.push(friend[j])
-        console.log("friend add")
+        /*console.log("friend add")
         console.log(friend[j].name)
         console.log(userAdd[0].name)
         console.log(group.name)
-        console.log("           ")
+        console.log("           ")*/
       }
     }
   }
@@ -119,6 +120,10 @@ function getFriend(group, friend) {
 const ItemFriend = ({friend, func, group}) => (
   <View>
     <FlatList
+      horizontal
+      pagingEnabled={true}
+      showsHorizontalScrollIndicator={false}
+      legacyImplementation={false}
       data={getFriend(group, friend)}
       renderItem={({ item }) =>
         <Item title={item.name} friend={friend} func={func}/>
@@ -132,7 +137,7 @@ const Item = ({ title, friend, func }) => (
   <View style={styles.item}>
     <Text style={styles.title}>{title}</Text>
     <Button
-    title="del friend"
+    title={I18n.t("deleteFriend")}
     color="#89B3D9"
       onPress={() => {
         deleteFriend(title, friend, func)
@@ -173,7 +178,7 @@ function FriendList(props) {
             <View>
               <View >
                 <Button
-                  title="add friend"
+                  title={I18n.t("addFriend")}
                   color="#89B3D9"
                   onPress={() => {
                     addFriend(value, Friend, onChangeFriend)
@@ -190,8 +195,13 @@ function FriendList(props) {
                   value={value}
                 />
               </View>
-              <View>
+              <ScrollView >
+                <Text style={{fontSize: 20,fontWeight: "bold", textAlign: "center"}}>{I18n.t("friendList")}</Text>
                 <FlatList
+                  horizontal
+                  pagingEnabled={true}
+                  showsHorizontalScrollIndicator={false}
+                  legacyImplementation={false}
                   data={Friend}
                   renderItem={({ item }) =>
                     <Item title={item.name} friend={Friend} func={onChangeFriend}/>
@@ -202,13 +212,13 @@ function FriendList(props) {
                   data={group}
                   renderItem={({ item }) =>
                     <View>
-                      <Text>{item.name}</Text>
+                      <Text style={{fontSize: 20,fontWeight: "bold", textAlign: "center"}}>{item.name}</Text>
                       <ItemFriend friend={Friend} func={onChangeFriend} group={item}/>
                     </View>
                   }
                   keyExtractor={item => item.id}
                 />
-              </View>
+              </ScrollView>
             </View>
 
         </View>

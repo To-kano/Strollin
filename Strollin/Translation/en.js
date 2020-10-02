@@ -42,6 +42,9 @@ export default {
   lastName: "Last Name",
   confPassword: "Confirme Password",
   alreadyAccount: "Already have an account ?",
+  friendList: "Friend list",
+  deleteFriend: "Delete friend",
+  addFriend: "Add friend"
 };
 
 //{I18n.t("")}

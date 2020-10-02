@@ -41,4 +41,7 @@ export default {
   lastName: "Nom de famille",
   confPassword: "Comfirmation du mot de passe",
   alreadyAccount: "Vous avez déja un compte ?",
+  friendList: "Liste d'amis",
+  deleteFriend: "Suprimer l'ami",
+  addFriend: "Ajouter l'ami"
 };
