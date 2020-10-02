@@ -1,0 +1,197 @@
+import React, { Component, useState } from 'react';
+import { Text, View, TouchableHighlight, FlatList, Button, StatusBar, SafeAreaView, ImageBackground, TouchableOpacity, TextInput, StyleSheet, Dimensions, Image } from 'react-native';
+//import stylesHomepage from '../../styles/homepage'
+//import stylesGeneric from '../../styles/genericStyle'
+//import { RondFormeText } from "../../features/geoForme/rondForm"
+
+import {connect} from 'react-redux';
+
+const User = [
+  {
+    name: 'tony',
+    id: '3ad53abb28ba',
+  },
+  {
+    name: 'pierre',
+    id: '3ad53hbb28ba',
+  },
+  {
+    name: 'didier',
+    id: '3adg3abb28ba',
+  },
+  {
+    name: 'thomas',
+    id: '3ad53abb28ba9',
+  },
+  {
+    name: 'basile',
+    id: '3ad53abb28ba1',
+  },
+  {
+    name: 'hugo',
+    id: '3ad53abb28bab',
+  }
+]
+
+const group = [
+    {
+      id: '232131',
+      name: 'work',
+      friend: ['3ad53abb28ba9', '3adg3abb28ba']
+    },
+    {
+      id: '23123123',
+      name: 'play',
+      friend: ['3ad53abb28ba9']
+    },
+    {
+      id: '2132131',
+      name: 'friend',
+      friend: ['3ad53abb28ba1', '3ad53abb28ba9', '3adg3abb28ba', '3ad53hbb28ba', '3ad53abb28ba']
+    },
+    {
+      id: '21321312',
+      name: 'family',
+      friend: ['3ad53abb28ba1', '3ad53abb28ba']
+    }
+]
+
+function getFriend(group, friend) {
+  if (!group.friend)
+    return friend
+  var userAdd = []
+  group.friend.forEach(item => {
+    var userTmp = friend.filter(function(item2) {
+      return item == item2.id
+    })
+    userAdd += userTmp
+  })
+  console.log("stop")
+  console.log(userAdd[0])
+  return userAdd
+}
+
+const ItemFriend = ({friend, func, group}) => (
+  <View>
+    <FlatList
+      data={getFriend(group, friend)}
+      renderItem={({ item }) =>
+        <Item title={item.name} friend={friend} func={func}/>
+      }
+      keyExtractor={item => item.id}
+    />
+  </View>
+);
+
+const Item = ({ title, friend, func }) => (
+  <View style={styles.item}>
+    <Text style={styles.title}>{title}</Text>
+    <Button
+    title="del friend"
+    color="#89B3D9"
+      onPress={() => {
+        deleteFriend(title, friend, func)
+      }}
+    />
+  </View>
+);
+
+function deleteFriend(title, friend, func) {
+  var userAdd = friend.filter(function(item) {
+    return title != item.name
+  })
+
+  console.log(userAdd)
+
+  func(userAdd)
+}
+
+function addFriend(value, friend, func) {
+  var userAdd = User.filter(function(item) {
+    return value == item.name
+  })
+
+  console.log(userAdd)
+
+  if (userAdd.length > 0) {
+    func([...friend, userAdd[0]])
+  }
+}
+
+function FriendList(props) {
+
+  const [value, onChangeText] = React.useState('');
+  const [Friend, onChangeFriend] = React.useState([])
+
+    return (
+        <View>
+            <View>
+              <View >
+                <Button
+                  title="add friend"
+                  color="#89B3D9"
+                  onPress={() => {
+                    addFriend(value, Friend, onChangeFriend)
+                    onChangeText('')
+                  }}
+                />
+              </View>
+              <View >
+                <TextInput
+                  underlineColorAndroid={'black'}
+                  onChangeText={text => {
+                    onChangeText(text)
+                  console.log(text)}}
+                  value={value}
+                />
+              </View>
+              <View>
+                <ItemFriend friend={Friend} func={onChangeFriend} group={[]}/>
+                <FlatList
+                  data={group}
+                  renderItem={({ item }) =>
+                    <ItemFriend friend={Friend} func={onChangeFriend} group={item}/>
+                  }
+                  keyExtractor={item => item.id}
+                />
+              </View>
+            </View>
+
+        </View>
+    );
+}
+
+const styles = StyleSheet.create({
+    back: {
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        flex: 1
+    },
+    container: {
+    marginTop: StatusBar.currentHeight || 0,
+    flex: 1,
+    },
+    header: {
+        backgroundColor: '#E67E22',
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        flex: 0.1,
+        width: '100%',
+    },
+    item: {
+    backgroundColor: '#f9c2ff',
+    padding: 20,
+    marginVertical: 8,
+    marginHorizontal: 16,
+    },
+    title: {
+      fontSize: 32,
+    }
+})
+
+const mapStateToProps = (state) => {
+    return state
+}
+export default connect(mapStateToProps)(FriendList);

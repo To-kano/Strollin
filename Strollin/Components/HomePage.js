@@ -25,7 +25,7 @@ function HomePage(props) {
       <View style={styles.header}>
         <TouchableOpacity
           style={{width: '20%', height: '100%', marginLeft: '10%'}}
-          onPress={() => console.log('hi')}
+          onPress={() => props.navigation.navigate('FriendList')}
         >
           <Image style={{height: '70%', width: '70%', marginTop: '10%', marginLeft: '10%'}} source={require('../ressources/friend.png')} />
         </TouchableOpacity>

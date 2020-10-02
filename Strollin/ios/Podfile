@@ -79,6 +79,8 @@ target 'Strollin' do
 
   pod 'react-native-video', :path => '../node_modules/react-native-video'
 
+  pod 'RNLocalize', :path => '../node_modules/react-native-localize'
+
   target 'StrollinTests' do
     inherit! :complete
     # Pods for testing

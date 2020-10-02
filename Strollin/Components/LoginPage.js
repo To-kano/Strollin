@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {StyleSheet ,Text , View, Image, TextInput, Button} from "react-native";
 import {connect} from 'react-redux';
+import I18n from "../Translation/configureTrans";
 
 import AndroidPip from 'react-native-android-pip';
 
@@ -64,6 +65,16 @@ function LoginPage(props) {
                   props.navigation.navigate('HomePage');
                 }}
                 title="Confirm"
+                color="#841584"
+                accessibilityLabel="Learn more about this purple button"
+              />
+            </View>
+            <View style={{flex: 0.1, flexDirection: 'column', marginTop: '0%'}}>
+              <Button
+                onPress={() => {
+                  props.navigation.navigate('Notation');
+                }}
+                title={I18n.t("hello")}
                 color="#841584"
                 accessibilityLabel="Learn more about this purple button"
               />
