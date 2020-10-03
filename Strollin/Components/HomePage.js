@@ -1,9 +1,9 @@
-import React from 'react';
-import {
-  StyleSheet, Text, View, Image, TouchableOpacity, FlatList
-} from 'react-native';
 import Box from './box';
 import I18n from "../Translation/configureTrans";
+import React, {useState} from 'react';
+import {StyleSheet ,Text , View, Image, TextInput, TouchableOpacity, FlatList, Button} from "react-native";
+import BackgroundImage from './backgroundImage';
+
 
 const imageFriend = require('../ressources/friend.png');
 const imageHistory = require('../ressources/history.png');
@@ -35,39 +35,37 @@ function HomePage(props) {
   ];
   return (
     <View style={styles.back}>
+      <BackgroundImage/>
       <View style={styles.header}>
         <TouchableOpacity
-          style={{width: '20%', height: '100%', marginLeft: '10%'}}
-          onPress={() => props.navigation.navigate('FriendList')}
+          style={{width: '20%', height: '100%', marginLeft: 15}}
+          onPress={() => props.navigation.navigate('HomePage')}
         >
-          <Image
-            style={{
-              height: '70%', width: '70%', marginTop: '10%', marginLeft: '10%'
-            }}
-            source={imageFriend}
-          />
+          <Image style={{marginTop: "10%", height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'}} source={require('../ressources/home.png')} />
         </TouchableOpacity>
         <TouchableOpacity
-          style={{ width: '20%', height: '100%', marginLeft: '10%' }}
+          style={{width: '20%', height: '100%'}}
           onPress={() => props.navigation.navigate('historicUser')}
         >
-          <Image
-            style={{
-              height: '70%', width: '70%', marginTop: '10%', marginLeft: '10%'
-            }}
-            source={imageHistory}
-          />
+          <Image style={{marginTop: "10%", height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'}} source={require('../ressources/history.png')} />
         </TouchableOpacity>
         <TouchableOpacity
-          style={{ width: '20%', height: '100%', marginLeft: '10%' }}
+          style={{width: '20%', height: '100%'}}
+          onPress={() => props.navigation.navigate('TripSuggestion')}
+        >
+          <Image style={{marginTop: "10%", height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'}} source={require('../ressources/plus.png')} />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{width: '20%', height: '100%'}}
+          onPress={() => console.log('friend')}
+        >
+          <Image style={{marginTop: "10%", height: '65%', width: '50%', opacity: 0.5, resizeMode: 'stretch'}} source={require('../ressources/friend.png')} />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{width: '20%', height: '100%'}}
           onPress={() => props.navigation.navigate('Profile')}
         >
-          <Image
-            style={{
-              resizeMode: 'stretch', height: '70%', width: '70%', marginTop: '10%', marginLeft: '10%'
-            }}
-            source={imageProfile}
-          />
+          <Image style={{marginTop: "10%", height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'}} source={require('../ressources/profile.png')} />
         </TouchableOpacity>
       </View>
       <View style={styles.cont}>
@@ -76,29 +74,17 @@ function HomePage(props) {
       <View style={styles.fill}>
         <FlatList
           data={DATA}
-          contentContainerStyle={{ flexGrow: 0.1 }}
-          renderItem={({item}) => <Box navigation={props.navigation} name={item.name} budget={item.budget} period={item.period} destinations={item.destinations} />}
-          keyExtractor={(item) => item.id}
+          contentContainerStyle={{ flexGrow: 1}}
+          renderItem={({ item }) => <Box style={{height: '100%'}}/>}
+          keyExtractor={item => item.id}
         />
       </View>
-      <View style={{ flex: 0.10, flexDirection: 'column' }}>
-      <TouchableOpacity
-          style={{
-            alignItems: 'center', backgroundColor: '#E67E22', paddingVertical: '5%', paddingHorizontal: '32%'
-          }}
-          onPress={() => props.navigation.navigate('MenuChat')}
-        >
-          <Text style={{ fontSize: 15 }}> Go to Chat </Text>
-      </TouchableOpacity>
-        </View>
-      <View style={{ flex: 0.10, flexDirection: 'column', marginTop: '10%' }}>
+      <View style={{flex: 0.10, flexDirection: 'column', margin: '5%'}}>
         <TouchableOpacity
-          style={{
-            alignItems: 'center', backgroundColor: '#E67E22', paddingVertical: '5%', paddingHorizontal: '32%'
-          }}
+          style={styles.newTrip}
           onPress={() => props.navigation.navigate('TripSuggestion')}
         >
-          <Text style={{ fontSize: 15 }}> {I18n.t("startNewTrip")} </Text>
+          <Text style={{fontSize: 16, color: '#FFFFFF'}}> {I18n.t("startNewTrip")} </Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -116,27 +102,29 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    flex: 0.9,
-    width: '100%',
+    flex: 1,
+    backgroundColor: '#FFFFFF',
+    padding: 5,
+    marginTop: 10,
+    width: '95%',
+    borderRadius: 5,
+    opacity: 0.9,
   },
   header: {
-    backgroundColor: '#E67E22',
+    backgroundColor: '#FFFFFF',
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
     flex: 0.1,
     width: '100%',
   },
-  cont: {
-    marginTop: '5%',
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    flex: 0.1,
-    backgroundColor: '#FFC300',
-    width: '90%',
-    borderRadius: 20
-  },
+  newTrip: {
+    alignItems: "center", 
+    backgroundColor: "#F07323", 
+    paddingVertical: '5%', 
+    paddingHorizontal: '30%', 
+    borderRadius: 5,
+  }
 });
 
 export default HomePage;

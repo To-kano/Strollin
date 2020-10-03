@@ -46,6 +46,47 @@ function ElementHistoryNav({ data }) {
             </View>
           )}
         />
+        <View style={{width: '100%', flexDirection: 'row', flex: 1}}>
+          <View style={{flex: 0.5, marginLeft: '5%', marginRight: '5%'}}>
+            <Button
+              title="Show Map"
+              color="#89B3D9"
+              onPress={() => setShowMap(!showMap)}
+            />
+          </View>
+          <View style={{flex: 0.5, marginLeft: '5%', marginRight: '5%'}}>
+            <Button
+              title="Share"
+              color="#3b5998"
+              // onPress={() => shareLinkWithShareDialog()}
+            />
+          </View>
+        </View>
+      </View>
+    );
+  } else {
+    return (
+      <View style={{margin: 10, flex: 1, justifyContent: "space-evenly", alignItems: "center" }}>
+        <View style={{ margin: 5, marginBottom: 10}}>
+          <Map height={310} width={310} deltaView={deltaView} waypoints={waypoints} />
+        </View>
+
+        <View style={{width: '100%', flexDirection: 'row', flex: 1}}>
+          <View style={{flex: 0.5, marginLeft: '5%', marginRight: '5%'}}>
+            <Button
+              title="Show step"
+              color="#89B3D9"
+              onPress={() => setShowMap(!showMap)}
+            />
+          </View>
+          <View style={{flex: 0.5, marginLeft: '5%', marginRight: '5%'}}>
+            <Button
+              title="Share"
+              color="#3b5998"
+              onPress={() => setShowMap(!showMap)}
+            />
+          </View>
+        </View>
       </View>
     );
   }

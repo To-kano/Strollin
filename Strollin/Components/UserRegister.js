@@ -3,14 +3,37 @@ import React, { useState } from 'react';
 import { Input } from 'react-native-elements';
 import { connect } from 'react-redux';
 // import * as actions from './features/registration/action';
-import {
-  StyleSheet, Text, View, Button, ActivityIndicator
-} from 'react-native';
+import I18n from "../Translation/configureTrans";
+//import * as actions from './features/registration/action';
+import { StyleSheet, Text, View, Button, ActivityIndicator, Image, TextInput} from 'react-native';
+import {fire} from '../dataBase/config'
 
-import { RondFormeText } from './rondForm';
+import {LoginButton, AccessToken, GraphRequest, GraphRequestManager} from 'react-native-fbsdk';
+
+import {RondFormeText} from "./rondForm"
 
 import BackgroundImage from './backgroundImage';
-import I18n from "../Translation/configureTrans";
+
+const getInfoFromToken = (token, setUserInfo) => {
+  const PROFILE_REQUEST_PARAMS = {
+    fields: {
+      string: 'id, name,  first_name, last_name',
+    },
+  };
+  const profileRequest = new GraphRequest(
+    '/me',
+    {token, parameters: PROFILE_REQUEST_PARAMS},
+    (error, result) => {
+      if (error) {
+        console.log('login info has error: ' + error);
+      } else {
+        setUserInfo(result);
+        console.log('result:', result);
+      }
+    },
+  );
+  new GraphRequestManager().addRequest(profileRequest).start();
+};
 
 function UserRegister(props) {
   const [userEmail, setUserEmail] = useState('');
@@ -18,6 +41,8 @@ function UserRegister(props) {
   const [userConfirmPassWord, setUserConfirmPassword] = useState('');
   const [userFirstName, setUserFirstName] = useState('');
   const [userLastName, setUserLastName] = useState('');
+  const [userInfo, setUserInfo] = React.useState({});
+
 
   const [loading, setLoading] = useState(false);
 
@@ -72,49 +97,108 @@ function UserRegister(props) {
                 setUserLastName(valueText);
               }}
             />
+            </View>
+
+          <View style={{width: "80%"}}>
+            <TextInput
+                style={styles.inputText}
+              autoCapitalize="none"
+              keyboardType={"email-address"}
+              placeholder={"Username"}
+              value={userEmail}
+              onChangeText={valueText => {
+                  //setData(valueText);
+                  setUserFirstName(valueText);
+                }}
+            />
+          </View>
+          <View style={{width: "80%"}}>
+            <TextInput
+              style={styles.inputText}
+              autoCapitalize="none"
+              keyboardType={"email-address"}
+              placeholder={I18n.t("email")}
+              value={userEmail}
+              onChangeText={valueText => {
+                  //setData(valueText);
+                  setUserEmail(valueText);
+                }}
+            />
           </View>
 
-        </View>
+          <View style={{width: "80%"}}>
+            <TextInput
+              style={styles.inputText}
+              autoCapitalize="none"
+              placeholder={I18n.t("Password")}
+              secureTextEntry={true}
+              value={userPassword}
+              onChangeText={valueText => {
+                  //setData(valueText);
+                  setUserPassword(valueText);
+                }}
+            />
+          </View>
 
-        <View style={{ width: '80%', paddingTop: 10 }}>
-          <Text style={{ color: 'grey' }}>{I18n.t("email")}</Text>
-          <Input
-            autoCapitalize="none"
-            keyboardType="email-address"
-            style={{ marginTop: 200, marginHorizontal: 40, height: 40 }}
-            placeholder="Enter email"
-            value={userEmail}
-            onChangeText={(valueText) => {
-              // setData(valueText);
-              setUserEmail(valueText);
-            }}
-          />
-        </View>
-
-        <View style={{ width: '80%', paddingTop: 10 }}>
-          <Text style={{ color: 'grey' }}>{I18n.t("Password")}</Text>
-          <Input
-            autoCapitalize="none"
-            style={{ marginTop: 200, marginHorizontal: 40, height: 40 }}
-            placeholder="PASSWORD"
-            value={userPassword}
-            onChangeText={(valueText) => {
-              setUserPassword(valueText);
-            }}
-          />
-        </View>
-
-        <View style={{ width: '80%', paddingTop: 10 }}>
-          <Text style={{ color: 'grey' }}>{I18n.t("confPassword")}</Text>
-          <Input
-            autoCapitalize="none"
-            style={{ marginTop: 200, marginHorizontal: 40, height: 40 }}
-            placeholder="Confirm Password"
-            value={userConfirmPassWord}
-            onChangeText={(valueText) => {
-              setUserConfirmPassword(valueText);
-            }}
-          />
+          <View style={{width: "80%"}}>
+            <TextInput
+              style={styles.inputText}
+              autoCapitalize="none"
+              placeholder={I18n.t("confPassword")}
+              secureTextEntry={true}
+              value={userConfirmPassWord}
+              onChangeText={valueText => {
+                  //setData(valueText);
+                  setUserConfirmPassword(valueText);
+                }}
+            />
+          </View>
+          <View style={styles.button}>
+            <Button
+              onPress={() => {
+                const userData = {
+                  firstName : userFirstName,
+                  lastName : userLastName,
+                  email : userEmail,
+                  password : userPassword
+                };
+                const action = {type: 'SET_USER', value : userData};
+                props.dispatch(action);
+                props.navigation.navigate('TagSelection');
+              }}
+              buttonStyle={[{marginBottom: 10, marginTop: 10}]}
+              title="Register"
+              color="#89B3D9"
+            />
+          </View>
+          <View style={{flex: 0.1, flexDirection: 'column'}}>
+              <Text style={{ fontSize: 20, textAlign: 'center', margin: 10 }}>
+                OU
+              </Text>
+            </View>
+            <View style={{flex: 0.1, margin: 20}}>
+              <LoginButton
+                onLoginFinished={(error, result) => {
+                  if (error) {
+                    console.log('login has error: ' + result.error);
+                  } else if (result.isCancelled) {
+                    console.log('login is cancelled.');
+                  } else {
+                    AccessToken.getCurrentAccessToken().then(data => {
+                      const accessToken = data.accessToken.toString();
+                      getInfoFromToken(accessToken, setUserInfo);
+                      props.navigation.navigate('TagSelection');
+                    });
+                  }
+                }}
+                onLogoutFinished={() => setUserInfo({})}
+              />
+              {userInfo.name && (
+                <Text style={{fontSize: 16, marginVertical: 16}}>
+                  Logged in As {userInfo.name}
+                </Text>
+              )}
+            </View>
         </View>
       </View>
       <View style={{
@@ -158,6 +242,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     // backgroundColor: "gray"
   },
+  logo: {
+    flex: 0.1,
+    justifyContent: 'center',
+    marginTop: 100,
+    marginBottom: 100,
+  },
+  button: {
+    flex: 0.1,
+    flexDirection: 'column',
+    margin: 10,
+    width: '80%',
+    height: 50,
+  },
   center: {
     flex: 1,
     backgroundColor: '#fff',
@@ -169,6 +266,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     padding: 10
+  },
+  inputText: {
+    height: 50,
+    width: '100%',
+    fontSize: 20,
+    paddingLeft: 20,
+    backgroundColor: '#D9D9D9',
+    borderRadius: 5,
+    borderWidth: 0.5,
+    borderColor: '#404040',
   }
 });
 

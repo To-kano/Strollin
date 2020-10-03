@@ -55,12 +55,14 @@ export default Box;
 
 const styles = StyleSheet.create({
   cont: {
-    marginTop: '5%',
     flexDirection: 'column',
     justifyContent: 'flex-start',
-    alignItems: 'center',
-    flex: 0.1,
-    backgroundColor: '#FFC300'
+    marginBottom: 20,
+  },
+  text: {
+    fontSize: 22,
+    marginBottom: 5,
+    opacity: 0.5
   },
   img: {
     flexDirection: 'column',
@@ -78,7 +80,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255,255,255, 0.9)',
     borderRadius: 20,
     textAlign: "left",
-    width: '80%'
+    width: '80%',
+    resizeMode: 'stretch',
   }
-
 });
