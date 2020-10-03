@@ -9,13 +9,10 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
-var socketIO = require('./socketIO/socketIO');
-
 var algo = require('./Algo/BasicAlgo2');
 const { isObject } = require('util');
 
 var app = express();
-
 
 // MongoDB //
 
@@ -53,9 +50,6 @@ app.use('/users', usersRouter);
 
 /******/
 
-// SOCKET IO //
-app.use(socketIO);
-/*****/
 
 app.use(express.static('public'));
 

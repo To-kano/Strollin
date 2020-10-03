@@ -8,6 +8,16 @@ var app = require('../app');
 var debug = require('debug')('Strollin:server');
 var http = require('http');
 
+//Import Models
+const {
+  UserModel
+} = require("../models/user")
+
+const {
+  TagModel
+} = require("../models/tag")
+
+
 /**
  * Get port from environment and store in Express.
  */
@@ -94,4 +104,32 @@ function onListening() {
   debug('Listening on ' + bind);
 }
 
-exports.server = server;
+
+// SOCKET IO //
+
+var sio = require('socket.io').listen(server)
+
+sio.on("connection", socket => {
+
+  // Event "connection"
+  socket.on("connection", async (msg) => {
+    user = await UserModel.findOne({accessToken: msg.accessToken});
+    response = {
+      connected: false,
+    };
+    if (user) {
+      response.connected = true;
+      // join all room of conversation in his list
+      sio.emit("connection", response);
+    }
+    sio.emit("connection", response);
+  });
+  
+  // Event "sendMessage"
+  socket.on("sendMessage", msg => {
+    console.log(msg);
+    sio.emit("chat message", msg);
+  });
+
+})
+/*****/

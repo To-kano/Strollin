@@ -84,7 +84,7 @@ USER RELATED:
 
 | Description | Headers | Body | Return |
 |-|-|-|-|
-| Get the user's informations.<br>For the profile page.| accessToken: String | None | profile: {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mail: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;firstName: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lastName: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tags: [s],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;friendList: [userID],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;historic: [courseID],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;scoreCourse: [{courseID, score, Date}],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;scoreLocation: [{locationID, score, Date}],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;scoreComment: [{commentID, score, Date}]<br>} |
+| Get the user's informations.<br>For the profile page.| accessToken: String | None | profile: {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mail: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pseudo: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;firstName: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lastName: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tags: [s],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;friendList: [userID],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;historic: [courseID],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;scoreCourse: [{courseID, score, Date}],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;scoreLocation: [{locationID, score, Date}],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;scoreComment: [{commentID, score, Date}]<br>} |
 
 - GET user's tags: ```GET /users/getTags```
 

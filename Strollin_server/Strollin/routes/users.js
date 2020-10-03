@@ -107,11 +107,13 @@ router.get('/getProfile', async function(req, res) {
   if (user) {
     profile = {
       mail: user.mail,
-      first_name: user.first_name,
-      last_name: user.last_name,
-      tags: user.tags,
-      friends_list: user.friends_list,
+      pseudo: user.pseudo,
       type: user.type,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      tags: user.tags,
+      friendsList: user.friendsList,
+      friendsRequest: user.friendsRequest,
       historic: user.historic,
       scoreCourse: user.scoreCourse,
       scoreLocation: user.scoreLocation,
