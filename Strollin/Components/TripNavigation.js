@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import AndroidPip from 'react-native-android-pip';
 import Map from './map';
 
+import { PopUpForm } from './PopUpForm';
 function TripNavigation(props) {
   const [background, setBackground] = useState(false);
 
@@ -60,10 +61,12 @@ function TripNavigation(props) {
       <View style={{ flex: 3 }}>
         <Map {...props} height="100%" width={background ? 270 : 360} deltaView={background ? deltaViewBackground : deltaView} waypoints={waypoints} background={background} />
       </View>
+
       <View style={{
         flex: 1, position: 'absolute', bottom: 0, left: 0, marginTop: 10
       }}
       >
+          <PopUpForm place="Chez Didier'" height={250} width={300}/>
         {!background ? (
           <Button
             title="End Navigation"
