@@ -6,6 +6,7 @@ import {
 } from 'react-native';
 
 import { RondFormeText } from './rondForm';
+import I18n from "../Translation/configureTrans";
 
 const imageLondon = require('../images/london2.jpg');
 
@@ -71,13 +72,13 @@ function TageSelection({ navigation, profil }) {
         flex: 1.1, marginHorizontal: 10, marginTop: 20, borderWidth: 0, padding: 5, backgroundColor: 'rgba(255, 255, 255, 0.0)'
       }}
       >
-        <Text style={[{ textAlign: 'left', color: 'grey', fontSize: 30 }]}>Welcome,</Text>
+        <Text style={[{ textAlign: 'left', color: 'grey', fontSize: 30 }]}>{I18n.t("welcome")}</Text>
         <Text style={[{ textAlign: 'center', fontWeight: 'bold', fontSize: 35 }]}>{profil.FirstName}</Text>
         <Text style={[{
           textAlign: 'center', color: 'grey', fontSize: 20, marginTop: 20, fontWeight: 'normal'
         }]}
         >
-          Choose the tags that fit best your personality
+        {I18n.t("chooseTags")}
         </Text>
       </View>
       <View style={{ flex: 2, margin: 10, marginTop: 20 }}>
@@ -89,7 +90,7 @@ function TageSelection({ navigation, profil }) {
         />
         <Button
           color="#89B3D9"
-          title="Next"
+          title={I18n.t("next")}
           onPress={() => navigation.navigate('HomePage')}
         />
       </View>

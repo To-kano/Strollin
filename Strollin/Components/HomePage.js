@@ -3,6 +3,7 @@ import {
   StyleSheet, Text, View, Image, TouchableOpacity, FlatList
 } from 'react-native';
 import Box from './box';
+import I18n from "../Translation/configureTrans";
 
 const imageFriend = require('../ressources/friend.png');
 const imageHistory = require('../ressources/history.png');
@@ -36,8 +37,8 @@ function HomePage(props) {
     <View style={styles.back}>
       <View style={styles.header}>
         <TouchableOpacity
-          style={{ width: '20%', height: '100%', marginLeft: '10%' }}
-          // onPress={() => console.log('hi')}
+          style={{width: '20%', height: '100%', marginLeft: '10%'}}
+          onPress={() => props.navigation.navigate('FriendList')}
         >
           <Image
             style={{
@@ -97,7 +98,7 @@ function HomePage(props) {
           }}
           onPress={() => props.navigation.navigate('TripSuggestion')}
         >
-          <Text style={{ fontSize: 15 }}> Start a new trip </Text>
+          <Text style={{ fontSize: 15 }}> {I18n.t("startNewTrip")} </Text>
         </TouchableOpacity>
       </View>
     </View>

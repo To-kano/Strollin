@@ -5,6 +5,7 @@ import {
 import Tts from 'react-native-tts';
 import { connect } from 'react-redux';
 import Map from './map';
+import I18n from "../Translation/configureTrans";
 
 import ElementHistoryNav from './HistoryElement';
 import BackgroundImage from './backgroundImage';
@@ -95,7 +96,7 @@ function TripSuggestion(props) {
     props.navigation.setOptions({
       headerRight: () => (
         <Button
-          title="Log Out"
+          title={I18n.t("logOut")}
           color="#89B3D9"
           onPress={() => props.navigation.navigate('userLogin')}
         />
@@ -130,7 +131,7 @@ function TripSuggestion(props) {
           textAlign: 'center', fontSize: 20, color: '#39A5D6', margin: 5
         }]}
         >
-          Heading to:
+          {I18n.t("heading")}
         </Text>
         <Text style={[{ textAlign: 'center', fontSize: 25 }]}>{waypoints[0].name}</Text>
       </View>
@@ -145,12 +146,12 @@ function TripSuggestion(props) {
       }}
       >
         <Button
-          title="Another One!"
+          title={I18n.t("anotherOneBitesTheDust")}
           color="#EEB015"
           onPress={() => setWaypoints(getNavigation())}
         />
         <Button
-          title="Let's go!"
+          title={I18n.t("letsGo")}
           color="#89B3D9"
           onPress={() => {
             const action = { type: 'SET_WAYPOINTS', value: waypoints };

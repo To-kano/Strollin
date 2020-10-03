@@ -12,6 +12,7 @@ import ConnectionScreen from '../Components/ConnectionScreen'
 import UserRegister from '../Components/UserRegister';
 import TageSelection from '../Components/TagSelection';
 import LoginPage from '../Components/LoginPage';
+import FriendList from '../Components/FriendList';
 import Home from '../Components/Home';
 import HomePage from '../Components/HomePage';
 import TripSuggestion from '../Components/TripSuggestion';
@@ -22,6 +23,7 @@ import Comment from '../Components/Comment';
 import MenuChat from '../Components/reactChatScreen/MenuScreen';
 import ScreenChat from '../Components/reactChatScreen/ChatScreen';
 import NewConversation from '../Components/reactChatScreen/NewConversation';
+import Notation from '../Components/Notation';
 
 
 const Stack = createStackNavigator();
@@ -43,11 +45,16 @@ function MyStack() {
         headerShown: false
       }}
       >
-          
+
         <Stack.Screen
             name="userLogin"
             component={LoginPage}
             options={{title: 'Loging'}}
+        />
+        <Stack.Screen
+            name="FriendList"
+            component={FriendList}
+            options={{title: 'Friend'}}
         />
         <Stack.Screen
             name="historicUser"
@@ -85,6 +92,11 @@ function MyStack() {
             name="TagSelection"
             component={TageSelection}
             options={{title: 'tag selection'}}
+        />
+        <Stack.Screen
+            name="Notation"
+            component={Notation}
+            options={{title: 'Notation'}}
         />
 
         <Stack.Screen

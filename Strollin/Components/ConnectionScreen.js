@@ -10,9 +10,6 @@ import { CommonActions } from '@react-navigation/native';
 import environement from '../env/Environement';
 
 function ConnectionScreen(prop) {
-  // console.log("ConnectionScreen log:");
-  // console.log(prop.profil);
-
   if (prop.profil && prop.profil.access_token) {
     prop.navigation.dispatch(
       CommonActions.reset({
@@ -30,10 +27,6 @@ function ConnectionScreen(prop) {
     const action = {
       type: 'CONNECTION', accessToken: found[1], refreshToken: found[3], expiresIn: found[2], username: found[4], accountId: found[5]
     };
-    // console.log('url is:\n');
-    // console.log(url);
-    // console.log('found is:\n');
-    // console.log(found);
 
     prop.dispatch(action);
   };
@@ -48,8 +41,6 @@ function ConnectionScreen(prop) {
     }
   };
   return (
-  // <View>
-  // </View>
     <WebView
       source={{ uri: environement.Base_Auth }}
       onNavigationStateChange={handleWebViewNavigationStateChange}

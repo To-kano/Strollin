@@ -36,6 +36,21 @@ function Box(props)  {
   );
 }
 
+/*import I18n from "../Translation/configureTrans";
+
+export default class Box extends Component {
+  render() {
+    return (
+      <View style={styles.cont}>
+        <Text style={{ fontSize: 40 }}> {I18n.t("trendingTrip")} </Text>
+        <View style={styles.cont}>
+          <Image style={{ resizeMode: 'stretch' }} source={require('../ressources/plum2.jpg')} />
+        </View>
+      </View>
+    );
+  }
+}*/
+
 export default Box;
 
 const styles = StyleSheet.create({

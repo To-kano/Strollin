@@ -2,17 +2,17 @@ import React from 'react';
 import {
   Text, View, FlatList, Button
 } from 'react-native';
-
 import { connect } from 'react-redux';
 import ElementHistoryNav from './HistoryElement';
 import BackgroundImage from './backgroundImage';
+import I18n from "../Translation/configureTrans";
 
 function HistoryNav({ navigation, map }) {
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
         <Button
-          title="Log Out"
+          title={I18n.t("logOut")}
           color="#89B3D9"
           onPress={() => navigation.navigate('userLogin')}
         />
@@ -32,11 +32,11 @@ function HistoryNav({ navigation, map }) {
           renderItem={({ item }) => (
             <View style={{ padding: 10 }}>
               <Text>
-                date:
+                {I18n.t("date")}
                 {item.date}
               </Text>
               <Text>
-                duration:
+                {I18n.t("duratrion")}
                 {item.duration}
               </Text>
               <ElementHistoryNav data={item.waypoints} />
@@ -51,7 +51,7 @@ function HistoryNav({ navigation, map }) {
       >
         <Button
           color="#D99860"
-          title="New Trip"
+          title={I18n.t("newTrip")}
           onPress={() => navigation.navigate('TripSuggestion')}
         />
 

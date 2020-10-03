@@ -7,6 +7,7 @@ import MapViewDirections from 'react-native-maps-directions';
 import { connect } from 'react-redux';
 
 import Tts from 'react-native-tts';
+import I18n from "../Translation/configureTrans";
 
 // apiKey AIzaSyDGvC3HkeGolvgvOevKuaE_6LmS9MPjlvE
 
@@ -34,11 +35,11 @@ async function requestGeolocalisationPermission(props) {
     const granted = await PermissionsAndroid.request(
       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
       {
-        title: 'Strollin ask geolocalisation Permission',
+        title: I18n.t("geoPermission"),
         message: '',
-        buttonNeutral: 'Ask Me Later',
-        buttonNegative: 'Cancel',
-        buttonPositive: 'OK',
+        buttonNeutral: I18n.t("askLater"),
+        buttonNegative: I18n.t("cancel"),
+        buttonPositive: I18n.t("ok"),
       },
     );
     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
@@ -172,7 +173,7 @@ function Map(props) {
   }
   return (
     <View>
-      <Text>No permision</Text>
+      <Text>{I18n.t("noPermission")}</Text>
     </View>
   );
 }

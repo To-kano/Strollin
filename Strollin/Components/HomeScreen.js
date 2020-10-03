@@ -6,22 +6,8 @@ import { connect } from 'react-redux';
 
 import getGallery from '../API/getGallery';
 import Gallery from './Gallery';
+import I18n from "../Translation/configureTrans";
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'space-between'
-  },
-  title: {
-    fontSize: 20,
-    textAlign: 'center'
-  },
-  detail: {
-    flexDirection: 'row',
-    justifyContent: 'space-between'
-  }
-});
 
 const defaultPage = {
   section: '/hot',
@@ -35,13 +21,10 @@ const defaultPage = {
 };
 
 function HomeScreen(props) {
-  // console.log('refresh\n');
 
   const [gallery, setGallery] = useState([]);
 
   useEffect(() => {
-    // console.log('\n\nnewGallery:\n');
-    // console.log(gallery.length);
     const action = { type: 'SET_GALLERY', value: gallery };
     props.dispatch(action);
     DisplayMoreMedia();
@@ -50,8 +33,6 @@ function HomeScreen(props) {
   const [page, setPage] = useState(defaultPage);
 
   useEffect(() => {
-    // console.log('\n\nnewPage:\n');
-    // console.log(page);
     getGallery(props.profil.access_token, page).then((answer) => {
       setGallery(
         [
@@ -68,8 +49,6 @@ function HomeScreen(props) {
   });
 
   useEffect(() => {
-    // console.log('\n\npageDisplay:\n\n');
-    // console.log(pageDisplay.nbDisplay);
   }, [pageDisplay]);
 
   const NextPage = () => {
@@ -108,7 +87,7 @@ function HomeScreen(props) {
       style={styles.container}
     >
       <Button
-        title="Go to Jane's profile"
+        title={I18n.t("jane")}
         onPress={() => props.navigation.navigate('Profile', { name: 'Jane' })}
       />
       <View
@@ -128,5 +107,21 @@ function HomeScreen(props) {
 }
 
 const mapStateToProps = (state) => state;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'space-between'
+  },
+  title: {
+    fontSize: 20,
+    textAlign: 'center'
+  },
+  detail: {
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  }
+});
 
 export default connect(mapStateToProps)(HomeScreen);

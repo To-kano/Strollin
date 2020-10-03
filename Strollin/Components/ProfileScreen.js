@@ -3,6 +3,7 @@ import {
   View, StyleSheet, Image, Text
 } from 'react-native';
 import json from '../ressources/profile.json';
+import I18n from "../Translation/configureTrans";
 
 const imageProfile = require('../ressources/profile.png');
 
@@ -12,12 +13,10 @@ function ParseTags(Tags) {
   for (let i = 1; i < Tags.length; i += 1) {
     list += `, ${Tags[i]}`;
   }
-  // console.log('list: ', list);
   return list;
 }
 
 function ProfileScreen() {
-  // console.log('json: ', json.Tags);
   const list = ParseTags(json.Tags);
   return (
     <View>
@@ -34,17 +33,17 @@ function ProfileScreen() {
       <View style={styles.infos}>
         <Text style={{ fontSize: 30 }}>
           {' '}
-          Email:
+          {I18n.t("email")}
           {json.Email}
         </Text>
         <Text style={{ marginTop: '2%', fontSize: 30 }}>
           {' '}
-          Password:
+          {I18n.t("password")}
           {json.Password}
         </Text>
         <Text style={{ textAlign: 'center', marginTop: '2%', fontSize: 30, }}>
           {' '}
-          Tags:
+          {I18n.t("tags")}
           {list}
           {' '}
 

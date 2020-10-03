@@ -42,8 +42,6 @@ function DisplayMedia(props) {
       />
     );
   }
-  // console.log('\n\nmedia not support:\n');
-  // console.log(props.data);
 
   return (
     <View style={styles.viewImage}>

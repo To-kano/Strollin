@@ -9,8 +9,6 @@ import {
 function Form({
   style, title, keyboardType, value, onChangeText, placeholder
 }) {
-  // const [data, setData] = useState(props.value);
-
   return (
     <View style={style}>
       <Text style={{ color: 'grey' }}>{title}</Text>
@@ -21,7 +19,6 @@ function Form({
         placeholder={placeholder}
         value={value}
         onChangeText={(valueText) => {
-          // setData(valueText);
           onChangeText(valueText);
         }}
       />

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
   StyleSheet, AppState, View, Button, BackHandler
 } from 'react-native';
+import I18n from "../Translation/configureTrans";
 
 import { connect } from 'react-redux';
 
@@ -69,7 +70,7 @@ function TripNavigation(props) {
           <PopUpForm place="Chez Didier'" height={250} width={300}/>
         {!background ? (
           <Button
-            title="End Navigation"
+            title={I18n.t("endNav")}
             onPress={() => {
               const action = { type: 'ADD_HISTORIC', value: waypoints };
               props.dispatch(action);

@@ -10,6 +10,7 @@ import {
 import { RondFormeText } from './rondForm';
 
 import BackgroundImage from './backgroundImage';
+import I18n from "../Translation/configureTrans";
 
 function UserRegister(props) {
   const [userEmail, setUserEmail] = useState('');
@@ -46,7 +47,7 @@ function UserRegister(props) {
         <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', margin: 10 }}>
 
           <View style={{ width: '40%' }}>
-            <Text style={{ color: 'grey' }}>First Name</Text>
+            <Text style={{ color: 'grey' }}>{I18n.t("firstName")}</Text>
             <Input
               autoCapitalize="none"
               style={{ marginTop: 200, marginHorizontal: 40, height: 40 }}
@@ -60,7 +61,7 @@ function UserRegister(props) {
           </View>
 
           <View style={{ width: '40%' }}>
-            <Text style={{ color: 'grey' }}>Last Name</Text>
+            <Text style={{ color: 'grey' }}>{I18n.t("lastName")}</Text>
             <Input
               autoCapitalize="none"
               style={{ marginTop: 200, marginHorizontal: 40, height: 40 }}
@@ -76,7 +77,7 @@ function UserRegister(props) {
         </View>
 
         <View style={{ width: '80%', paddingTop: 10 }}>
-          <Text style={{ color: 'grey' }}>EMAIL</Text>
+          <Text style={{ color: 'grey' }}>{I18n.t("email")}</Text>
           <Input
             autoCapitalize="none"
             keyboardType="email-address"
@@ -91,28 +92,26 @@ function UserRegister(props) {
         </View>
 
         <View style={{ width: '80%', paddingTop: 10 }}>
-          <Text style={{ color: 'grey' }}>Password</Text>
+          <Text style={{ color: 'grey' }}>{I18n.t("Password")}</Text>
           <Input
             autoCapitalize="none"
             style={{ marginTop: 200, marginHorizontal: 40, height: 40 }}
             placeholder="PASSWORD"
             value={userPassword}
             onChangeText={(valueText) => {
-              // setData(valueText);
               setUserPassword(valueText);
             }}
           />
         </View>
 
         <View style={{ width: '80%', paddingTop: 10 }}>
-          <Text style={{ color: 'grey' }}>Confirme Password</Text>
+          <Text style={{ color: 'grey' }}>{I18n.t("confPassword")}</Text>
           <Input
             autoCapitalize="none"
             style={{ marginTop: 200, marginHorizontal: 40, height: 40 }}
             placeholder="Confirm Password"
             value={userConfirmPassWord}
             onChangeText={(valueText) => {
-              // setData(valueText);
               setUserConfirmPassword(valueText);
             }}
           />
@@ -135,13 +134,13 @@ function UserRegister(props) {
             props.navigation.navigate('TagSelection');
           }}
           buttonStyle={[{ marginBottom: 5, marginTop: 5 }]}
-          title="Register"
+          title={I18n.t("register")}
           color="#89B3D9"
         />
         <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', margin: 10 }}>
-          <Text style={{ paddingTop: 10 }}>ALREADY HAVE AN ACCOUNT?</Text>
+          <Text style={{ paddingTop: 10 }}>{I18n.t("alreadyAccount")}</Text>
           <Button
-            title="Sign In"
+            title={I18n.t("signIn")}
             color="black"
             onPress={() => props.navigation.navigate('userLogin')}
           />

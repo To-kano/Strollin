@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import {
   Text, View, FlatList, Button
 } from 'react-native';
-
 import { connect } from 'react-redux';
 import Map from './map';
+import I18n from "../Translation/configureTrans";
 
 function ElementHistoryNav({ data }) {
   const [showMap, setShowMap] = useState(false);
@@ -22,7 +22,7 @@ function ElementHistoryNav({ data }) {
       >
         <View>
           <Button
-            title="Carte"
+            title={I18n.t("carte")}
             color="#89B3D9"
             onPress={() => setShowMap(!showMap)}
           />
@@ -32,15 +32,15 @@ function ElementHistoryNav({ data }) {
           renderItem={({ item }) => (
             <View style={{ margin: 10 }}>
               <Text>
-                Step:
+                {I18n.t("")}
                 {item.id}
               </Text>
               <Text>
-                Name:
+                {I18n.t("name")}
                 {item.name}
               </Text>
               <Text>
-                Adress
+                {I18n.t("address")}
                 {item.address}
               </Text>
             </View>
@@ -56,7 +56,7 @@ function ElementHistoryNav({ data }) {
     >
       <View style={{ marginBottom: 10 }}>
         <Button
-          title="Step"
+          title={I18n.t("step")}
           color="#89B3D9"
           onPress={() => setShowMap(!showMap)}
         />
