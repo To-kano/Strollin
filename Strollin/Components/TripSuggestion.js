@@ -1,5 +1,5 @@
 import React,  { Component , useState, useEffect} from 'react';
-import { StyleSheet, Text, View, Button, Image,PermissionsAndroid } from 'react-native';
+import { StyleSheet, Text, View, Button, Image, PermissionsAndroid, TouchableOpacity } from 'react-native';
 import Map from './map'
 
 import ElementHistoryNav from './HistoryElement';
@@ -98,15 +98,15 @@ function TripSuggestion(props) {
 
   React.useLayoutEffect(() => {
     props.navigation.setOptions({
-      headerRight: () => (
-        <Button
-            title="Log Out"
-            color="#89B3D9"
-            onPress={() =>
-              props.navigation.navigate('userLogin')
-            }
-          />
-      ),
+      // headerRight: () => (
+      //   <Button
+      //       title="Log Out"
+      //       color="#89B3D9"
+      //       onPress={() =>
+      //         props.navigation.navigate('userLogin')
+      //       }
+      //     />
+      // ),
     });
   }, [props.navigation]);
 
@@ -130,32 +130,96 @@ function TripSuggestion(props) {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={styles.back}>
       <BackgroundImage/>
-      <View style={{justifyContent: 'space-around', flex: 1, marginTop: 20,marginHorizontal: "10%", backgroundColor: 'rgba(255,255,255, 0.9)', borderRadius: 20, width: "80%" }}>
-        <Text style={[{ textAlign: "center", fontSize: 20, color: "#39A5D6", margin: 5 }]}>Heading to:</Text>
-        <Text style={[{ textAlign: "center", fontSize: 25 }]}>{waypoints[0].name}</Text>
+      <View style={styles.header}>
+        <TouchableOpacity
+          style={{width: '20%', height: '100%', marginLeft: 15}}
+          onPress={() => props.navigation.navigate('HomePage')}
+        >
+          <Image style={{marginTop: "10%", height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'}} source={require('../ressources/home.png')} />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{width: '20%', height: '100%'}}
+          onPress={() => props.navigation.navigate('historicUser')}
+        >
+          <Image style={{marginTop: "10%", height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'}} source={require('../ressources/history.png')} />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{width: '20%', height: '100%'}}
+          onPress={() => props.navigation.navigate('TripSuggestion')}
+        >
+          <Image style={{marginTop: "10%", height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'}} source={require('../ressources/plus.png')} />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{width: '20%', height: '100%'}}
+          onPress={() => console.log('friend')}
+        >
+          <Image style={{marginTop: "10%", height: '65%', width: '50%', opacity: 0.5, resizeMode: 'stretch'}} source={require('../ressources/friend.png')} />
+        </TouchableOpacity>
+        <TouchableOpacity
+              style={{width: '20%', height: '100%'}}
+              onPress={() => props.navigation.navigate('Profile')}
+            >
+              <Image style={{marginTop: "10%", height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'}} source={require('../ressources/profile.png')} />
+            </TouchableOpacity>
       </View>
-      <View style={{ flex: 3, marginTop: 50, backgroundColor : 'rgba(255,255,255, 0.9)', borderRadius: 10, width: "80%"}}>
-        <ElementHistoryNav data={waypoints} />
-      </View>
-      <View style={{ flex: 0.3, flexDirection: "row", justifyContent: "space-around", paddingTop: 10, marginBottom: 10 }}>
-          <Button
-              title="Another One!"
-              color="#EEB015"
-              onPress={() =>
-                setWaypoints(getNavigation())
-              }
-          />
-          <Button
-            title="Let's go!"
-            color="#89B3D9"
-            onPress={() => {
-              const action = {type: 'SET_WAYPOINTS', value : waypoints};
-              props.dispatch(action);
-              props.navigation.navigate('TripNavigation')
-            }}
-          />
+      <View style={styles.fill}>
+        <View style={{
+          justifyContent: 'space-around',
+          marginTop: 10,
+          paddingLeft: 5,
+          paddingBottom: 10,
+          backgroundColor: '#FFFFFF',
+          borderRadius: 5, 
+          borderColor: "#BABABA",
+          borderWidth: 1,
+          width: "95%"
+        }}>
+          <Text style={[{fontSize: 20, opacity: 0.5, margin: 5 }]}>Heading to:</Text>
+          <Text style={[{ textAlign: "center", fontSize: 22, fontWeight: "bold", color: "#F07323" }]}>{waypoints[0].name}</Text>
+        </View>
+        <View 
+          style={{ 
+            flex: 3,
+            marginTop: 15,
+            justifyContent: 'space-around',
+            paddingLeft: 5,
+            backgroundColor: '#FFFFFF',
+            borderRadius: 5, 
+            borderColor: "#BABABA",
+            borderWidth: 1,
+            width: "95%"
+          }}>
+          <ElementHistoryNav data={waypoints} />
+        </View>
+        <View style={{
+          flex: 0.4, 
+          flexDirection: "row", 
+          justifyContent: "space-around", 
+          padding: 10,
+        }}>
+          <View style={{flex: 1, paddingTop: 10, marginRight: 10}}>
+            <Button
+                title="Another One!"
+                color="#89B3D9"
+                onPress={() =>
+                  setWaypoints(getNavigation())
+                }
+            />
+          </View>
+          <View style={{flex: 1, paddingTop: 10, marginRight: 10}}>
+            <Button
+              title="Let's go!"
+              color="#F07323"
+              onPress={() => {
+                const action = {type: 'SET_WAYPOINTS', value : waypoints};
+                props.dispatch(action);
+                props.navigation.navigate('TripNavigation')
+              }}
+            />
+          </View>
+        </View>
       </View>
     </View>
   );
@@ -170,10 +234,38 @@ export default connect(mapStateToProps)(TripSuggestion);
 
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
+  back: {
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
     alignItems: 'center',
-    justifyContent: 'center',
+    flex: 1,
   },
+  fill: {
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    flex: 1,
+    backgroundColor: '#FFFFFF',
+    padding: 5,
+    marginTop: 10,
+    marginBottom: 10,
+    width: '95%',
+    borderRadius: 5,
+    opacity: 0.9,
+  },
+  header: {
+    backgroundColor: '#FFFFFF',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    flex: 0.1,
+    width: '100%',
+  },
+  newTrip: {
+    alignItems: "center", 
+    backgroundColor: "#F07323", 
+    paddingVertical: '5%', 
+    paddingHorizontal: '30%', 
+    borderRadius: 5,
+  }
 });

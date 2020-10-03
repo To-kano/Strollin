@@ -2,66 +2,11 @@ import React, {useState} from 'react';
 import {StyleSheet ,Text , View, Image, TextInput, Button} from "react-native";
 import {connect} from 'react-redux';
 
-import {
-  LoginButton,
-  AccessToken,
-  GraphRequest,
-  GraphRequestManager,
-} from 'react-native-fbsdk';
+import {LoginButton, AccessToken, GraphRequest, GraphRequestManager} from 'react-native-fbsdk';
 
 import AndroidPip from 'react-native-android-pip';
 
-// export default class App extends Component {
-//   state = {userInfo: {}};
-
-//   getInfoFromToken = token => {
-//     const PROFILE_REQUEST_PARAMS = {
-//       fields: {
-//         string: 'id, name,  first_name, last_name',
-//       },
-//     };
-//     const profileRequest = new GraphRequest(
-//       '/me',
-//       {token, parameters: PROFILE_REQUEST_PARAMS},
-//       (error, result) => {
-//         if (error) {
-//           console.log('login info has error: ' + error);
-//         } else {
-//           this.setState({userInfo: result});
-//           console.log('result:', result);
-//         }
-//       },
-//     );
-//     new GraphRequestManager().addRequest(profileRequest).start();
-//   };
-
-//   render() {
-//     return (
-//       <View style={{flex: 1, margin: 50}}>
-//         <LoginButton
-//           onLoginFinished={(error, result) => {
-//             if (error) {
-//               console.log('login has error: ' + result.error);
-//             } else if (result.isCancelled) {
-//               console.log('login is cancelled.');
-//             } else {
-//               AccessToken.getCurrentAccessToken().then(data => {
-//                 const accessToken = data.accessToken.toString();
-//                 this.getInfoFromToken(accessToken);
-//               });
-//             }
-//           }}
-//           onLogoutFinished={() => this.setState({userInfo: {}})}
-//         />
-//         {this.state.userInfo.name && (
-//           <Text style={{fontSize: 16, marginVertical: 16}}>
-//             Logged in As {this.state.userInfo.name}
-//           </Text>
-//         )}
-//       </View>
-//     );
-//   }
-// }
+// import '../api/facebook_api/facebook-api'
 
 function RandPic() {
     var nb = Math.floor(Math.random() * 3) + 1;
@@ -106,90 +51,91 @@ function LoginPage(props) {
   const [userInfo, setUserInfo] = React.useState({});
 
   return (
-      <View style={styles.back}>
-        <Image style={{width: '100%', height: '100%', resizeMode: 'cover', position: 'absolute'}}
-          source={Img} />
-          <View style={styles.form}>
-            <View style={styles.logo}>
-              <Image source={require('../ressources/logo3.png')} />
-            </View>
-            <View style={styles.textInput}>
-              <TextInput
-                style={styles.inputText}
-                onChangeText={text => {
-                  onChangeText(text)
-                console.log(text)}}
-                value={value}
-                textAlign={'left'}
-                placeholder={'Username'}
-                autoCompleteType={'username'}
-              />
-            </View>
-            <View style={styles.textInput}>
-              <TextInput
-                style={styles.inputText}
-                onChangeText={text => onChangePass(text)}
-                value={valuePass}
-                textAlign={'left'}
-                placeholder={'Password'}
-                autoCompleteType={'password'}
-                secureTextEntry={true}
-              />
-            </View>
-            <View style={styles.button}>
-              <Button
-                onPress={() => {
-                  props.navigation.navigate('HomePage');
-                }}
-                title="Connexion"
-                color="#9dc5ef"
-                accessibilityLabel="Learn more about this purple button"
-              />
-            </View>
-            <View style={{flex: 0.1, flexDirection: 'column'}}>
-              <Text style={{ fontSize: 20, textAlign: 'center', margin: 10 }}>
-                OU
-              </Text>
-            </View>
-            <View style={{flex: 0.1, margin: 50}}>
-              <LoginButton
-                onLoginFinished={(error, result) => {
-                  if (error) {
-                    console.log('login has error: ' + result.error);
-                  } else if (result.isCancelled) {
-                    console.log('login is cancelled.');
-                  } else {
-                    AccessToken.getCurrentAccessToken().then(data => {
-                      const accessToken = data.accessToken.toString();
-                      getInfoFromToken(accessToken, setUserInfo);
-                    });
-                  }
-                }}
-                onLogoutFinished={() => setUserInfo({})}
-              />
-              {userInfo.name && (
-                <Text style={{fontSize: 16, marginVertical: 16}}>
-                  Logged in As {userInfo.name}
-                </Text>
-              )}
-            </View>
-            <View style={{flex: 0.1, flexDirection: 'column'}}>
-              <Text style={{ fontSize: 20, textAlign: 'center', margin: 10 }}>
-                OU
-              </Text>
-            </View>
-            <View style={styles.button}>
-              <Button
-                onPress={() => {
-                  props.navigation.navigate('userRegister');
-                }}
-                title="Inscivez-vous"
-                color="#9dc5ef"
-                accessibilityLabel="Learn more about this blue button"
-              />
-            </View>
+    <View style={styles.back}>
+      <Image style={{width: '100%', height: '100%', resizeMode: 'cover', position: 'absolute'}}
+        source={Img} />
+        <View style={styles.form}>
+          <View style={styles.logo}>
+            <Image source={require('../ressources/logo3.png')} />
           </View>
-      </View>
+          <View style={styles.textInput}>
+            <TextInput
+              style={styles.inputText}
+              onChangeText={text => {
+                onChangeText(text)
+              console.log(text)}}
+              value={value}
+              textAlign={'left'}
+              placeholder={'Username'}
+              autoCompleteType={'username'}
+            />
+          </View>
+          <View style={styles.textInput}>
+            <TextInput
+              style={styles.inputText}
+              onChangeText={text => onChangePass(text)}
+              value={valuePass}
+              textAlign={'left'}
+              placeholder={'Password'}
+              autoCompleteType={'password'}
+              secureTextEntry={true}
+            />
+          </View>
+          <View style={styles.button}>
+            <Button
+              onPress={() => {
+                props.navigation.navigate('HomePage');
+              }}
+              title="Connexion"
+              color="#9dc5ef"
+              accessibilityLabel="Learn more about this purple button"
+            />
+          </View>
+          <View style={{flex: 0.1, flexDirection: 'column'}}>
+            <Text style={{ fontSize: 20, textAlign: 'center', margin: 10 }}>
+              OU
+            </Text>
+          </View>
+          <View style={styles.button}>
+            <Button
+              onPress={() => {
+                props.navigation.navigate('userRegister');
+              }}
+              title="Inscivez-vous"
+              color="#9dc5ef"
+              accessibilityLabel="Learn more about this blue button"
+            />
+          </View>
+          <View style={{flex: 0.1, flexDirection: 'column'}}>
+            <Text style={{ fontSize: 20, textAlign: 'center', margin: 10 }}>
+              OU
+            </Text>
+          </View>
+          <View style={{flex: 0.1, margin: 10}}>
+            <LoginButton
+              onLoginFinished={(error, result) => {
+                if (error) {
+                  console.log('login has error: ' + result.error);
+                } else if (result.isCancelled) {
+                  console.log('login is cancelled.');
+                } else {
+                  AccessToken.getCurrentAccessToken().then(data => {
+                    const accessToken = data.accessToken.toString();
+                    getInfoFromToken(accessToken, setUserInfo);
+                    props.navigation.navigate('HomePage');
+                  });
+                }
+              }}
+              onLogoutFinished={() => setUserInfo({})}
+            />
+            {userInfo.name && (
+              <Text style={{fontSize: 16, marginVertical: 16}}>
+                Logged in As {userInfo.name}
+              </Text>
+            )}
+          </View>
+        </View>
+    </View>
   )
 }
 
@@ -209,6 +155,7 @@ const styles = StyleSheet.create({
         width: '90%',
         height: '90%',
         marginTop: '5%',
+        marginBottom: '5%',
         opacity: 0.95,
         flexDirection: 'column',
         justifyContent: 'flex-start',
@@ -232,6 +179,7 @@ const styles = StyleSheet.create({
       flexDirection: 'column',
       marginTop: 10,
       width: '70%',
+      height: 50,
     },
     logo: {
       flex: 0.1,

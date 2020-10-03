@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import {StyleSheet ,Text , View, Image, TextInput, TouchableOpacity, FlatList, Button} from "react-native";
 import Box from './box'
+import BackgroundImage from './backgroundImage';
+
 
 function HomePage(props) {
 
@@ -22,40 +24,53 @@ function HomePage(props) {
 
   return (
     <View style={styles.back}>
+      <BackgroundImage/>
       <View style={styles.header}>
         <TouchableOpacity
-          style={{width: '20%', height: '100%', marginLeft: '10%'}}
-          onPress={() => console.log('hi')}
+          style={{width: '20%', height: '100%', marginLeft: 15}}
+          onPress={() => props.navigation.navigate('HomePage')}
         >
-          <Image style={{height: '70%', width: '70%', marginTop: '10%', marginLeft: '10%'}} source={require('../ressources/friend.png')} />
+          <Image style={{marginTop: "10%", height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'}} source={require('../ressources/home.png')} />
         </TouchableOpacity>
         <TouchableOpacity
-          style={{width: '20%', height: '100%', marginLeft: '10%'}}
+          style={{width: '20%', height: '100%'}}
           onPress={() => props.navigation.navigate('historicUser')}
         >
-          <Image style={{height: '70%', width: '70%', marginTop: '10%', marginLeft: '10%'}} source={require('../ressources/history.png')} />
+          <Image style={{marginTop: "10%", height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'}} source={require('../ressources/history.png')} />
         </TouchableOpacity>
         <TouchableOpacity
-          style={{width: '20%', height: '100%', marginLeft: '10%'}}
+          style={{width: '20%', height: '100%'}}
+          onPress={() => props.navigation.navigate('TripSuggestion')}
+        >
+          <Image style={{marginTop: "10%", height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'}} source={require('../ressources/plus.png')} />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{width: '20%', height: '100%'}}
+          onPress={() => console.log('friend')}
+        >
+          <Image style={{marginTop: "10%", height: '65%', width: '50%', opacity: 0.5, resizeMode: 'stretch'}} source={require('../ressources/friend.png')} />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{width: '20%', height: '100%'}}
           onPress={() => props.navigation.navigate('Profile')}
         >
-          <Image style={{resizeMode: 'stretch', height: '70%', width: '70%', marginTop: '10%', marginLeft: '10%'}} source={require('../ressources/profile.png')} />
+          <Image style={{marginTop: "10%", height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'}} source={require('../ressources/profile.png')} />
         </TouchableOpacity>
       </View>
       <View style={styles.fill}>
         <FlatList
           data={DATA}
-          contentContainerStyle={{ flexGrow: 0.1}}
-          renderItem={({ item }) => <Box style={{height: '80%'}}/>}
+          contentContainerStyle={{ flexGrow: 1}}
+          renderItem={({ item }) => <Box style={{height: '100%'}}/>}
           keyExtractor={item => item.id}
         />
       </View>
-      <View style={{flex: 0.10, flexDirection: 'column', marginTop: '10%'}}>
+      <View style={{flex: 0.10, flexDirection: 'column', margin: '5%'}}>
         <TouchableOpacity
-          style={{alignItems: "center", backgroundColor: "#E67E22", paddingVertical: '5%', paddingHorizontal: '32%'}}
+          style={styles.newTrip}
           onPress={() => props.navigation.navigate('TripSuggestion')}
         >
-          <Text style={{fontSize: 15}}> Start a new trip </Text>
+          <Text style={{fontSize: 16, color: '#FFFFFF'}}> Start a new trip </Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -64,25 +79,37 @@ function HomePage(props) {
 
 const styles = StyleSheet.create({
   back: {
-      flexDirection: 'column',
-      justifyContent: 'flex-start',
-      alignItems: 'center',
-      flex: 1
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    flex: 1,
   },
   fill: {
-      flexDirection: 'row',
-      justifyContent: 'flex-start',
-      alignItems: 'center',
-      flex: 0.9,
-      width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    flex: 1,
+    backgroundColor: '#FFFFFF',
+    padding: 5,
+    marginTop: 10,
+    width: '95%',
+    borderRadius: 5,
+    opacity: 0.9,
   },
   header: {
-      backgroundColor: '#E67E22',
-      flexDirection: 'row',
-      justifyContent: 'flex-start',
-      alignItems: 'center',
-      flex: 0.1,
-      width: '100%',
+    backgroundColor: '#FFFFFF',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    flex: 0.1,
+    width: '100%',
+  },
+  newTrip: {
+    alignItems: "center", 
+    backgroundColor: "#F07323", 
+    paddingVertical: '5%', 
+    paddingHorizontal: '30%', 
+    borderRadius: 5,
   }
 });
 

@@ -4,34 +4,27 @@ import {Button,Image, View, StyleSheet,Text,ScrollView,FlatList} from 'react-nat
 
 export default class Box extends Component {
 
-
     render() {
       return (
         <View style={styles.cont}>
-          <Text style={{fontSize: 40}}> Trending trip: </Text>
-          <View style={styles.cont}>
-            <Image style={{resizeMode: 'stretch'}} source={require('../ressources/plum2.jpg')} />
-          </View>
+          <Image style={styles.img} source={require('../ressources/plum.jpg')} />
+          <Text style={styles.text}> Trip exemple </Text>
         </View>
       )}
 }
 
 const styles = StyleSheet.create({
   cont: {
-    marginTop: '5%',
     flexDirection: 'column',
     justifyContent: 'flex-start',
-    alignItems: 'center',
-    flex: 0.1,
-    backgroundColor: '#FFC300'
+    marginBottom: 20,
+  },
+  text: {
+    fontSize: 22,
+    marginBottom: 5,
+    opacity: 0.5
   },
   img: {
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    flex: 0.1,
-    backgroundColor: 'red',
-    width: '80%'
+    resizeMode: 'stretch',
   }
-
 });
