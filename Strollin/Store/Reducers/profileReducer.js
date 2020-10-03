@@ -2,7 +2,8 @@ const initialState = {
   FirstName: null,
   LastName: null,
   Email: null,
-  Password: null,
+  Pseudo: null,
+  FriendList: [],
   history: []
 };
 
@@ -13,9 +14,11 @@ function profileReducer(state = initialState, action) {
         nextState = {
             ...state,
             FirstName: action.value.firstName,
-            LastName: action.value.lastname,
+            LastName: action.value.lastName,
             Email: action.value.email,
-            Password: action.value.password,
+            Pseudo: action.value.pseudo,
+            FriendList: action.value.friendList
+
         }
         return nextState
 
@@ -24,6 +27,13 @@ function profileReducer(state = initialState, action) {
             ...state,
             history: state.history + action.value,
         }
+        return nextState
+      case 'SET_FRIEND':
+        nextState = {
+          ...state,
+          FriendList: action.value.friendList
+
+      }
         return nextState
 
     default:

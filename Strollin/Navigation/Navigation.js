@@ -17,6 +17,12 @@ import HomePage from '../Components/HomePage';
 import TripSuggestion from '../Components/TripSuggestion';
 import TripNavigation from '../Components/TripNavigation';
 import HistoryNav from '../Components/HistoryNav';
+import CommentScreen from '../Components/CommentScreen';
+import Comment from '../Components/Comment';
+import MenuChat from '../Components/reactChatScreen/MenuScreen';
+import ScreenChat from '../Components/reactChatScreen/ChatScreen';
+import NewConversation from '../Components/reactChatScreen/NewConversation';
+
 
 const Stack = createStackNavigator();
 
@@ -85,6 +91,31 @@ function MyStack() {
             name="Connection"
             component={ConnectionScreen}
             options={{title: 'connection'}}
+        />
+        <Stack.Screen
+            name="CommentScreen"
+            component={CommentScreen}
+            options={{title: 'comment screen'}}
+        />
+        <Stack.Screen
+            name="Comment"
+            component={Comment}
+            options={{title: 'comment'}}
+        />
+                <Stack.Screen
+            name="MenuChat"
+            component={MenuChat}
+            options={{title: 'menuchat'}}
+        />
+        <Stack.Screen
+            name="ScreenChat"
+            component={ScreenChat}
+            options={{title: 'screenchat'}}
+        />
+        <Stack.Screen
+            name="NewConversation"
+            component={NewConversation}
+            options={{title: 'newConversation'}}
         />
         <Stack.Screen name="Profile" component={Profile} />
       </Stack.Navigator>

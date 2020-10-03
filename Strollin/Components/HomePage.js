@@ -12,18 +12,26 @@ function HomePage(props) {
   const DATA = [
     {
       id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-      img: '../ressources/history.png'
+      name: 'Geek Route',
+      budget: '25 ~ 30€',
+      period: "Fin d'après-midi",
+      destinations: ['Starbucks', 'Reset', 'Cinéma']
     },
     {
       id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-      img: '../ressources/history.png'
+      name: 'Bar Route',
+      budget: '38 ~ 42€',
+      period: "Fin d'après-midi",
+      destinations: ['Bistrot Opéra', 'Jhin Dance', 'Paname']
     },
     {
       id: '58694a0f-3da1-471f-bd96-145571e29d72',
-      img: '../ressources/history.png'
-    },
+      name: 'Full Bouffe',
+      budget: '25 ~ 45€',
+      period: "Toujours",
+      destinations: ['Macdo', 'Sushi Land', 'Flunch']
+    }
   ];
-
   return (
     <View style={styles.back}>
       <View style={styles.header}>
@@ -61,14 +69,27 @@ function HomePage(props) {
           />
         </TouchableOpacity>
       </View>
+      <View style={styles.cont}>
+        <Text style={{ fontSize: 40 }}> Trending trip: </Text>
+      </View>
       <View style={styles.fill}>
         <FlatList
           data={DATA}
           contentContainerStyle={{ flexGrow: 0.1 }}
-          renderItem={() => <Box style={{ height: '80%' }} />}
+          renderItem={({item}) => <Box navigation={props.navigation} name={item.name} budget={item.budget} period={item.period} destinations={item.destinations} />}
           keyExtractor={(item) => item.id}
         />
       </View>
+      <View style={{ flex: 0.10, flexDirection: 'column' }}>
+      <TouchableOpacity
+          style={{
+            alignItems: 'center', backgroundColor: '#E67E22', paddingVertical: '5%', paddingHorizontal: '32%'
+          }}
+          onPress={() => props.navigation.navigate('MenuChat')}
+        >
+          <Text style={{ fontSize: 15 }}> Go to Chat </Text>
+      </TouchableOpacity>
+        </View>
       <View style={{ flex: 0.10, flexDirection: 'column', marginTop: '10%' }}>
         <TouchableOpacity
           style={{
@@ -104,7 +125,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flex: 0.1,
     width: '100%',
-  }
+  },
+  cont: {
+    marginTop: '5%',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    flex: 0.1,
+    backgroundColor: '#FFC300',
+    width: '90%',
+    borderRadius: 20
+  },
 });
 
 export default HomePage;
