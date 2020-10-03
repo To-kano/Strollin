@@ -12,7 +12,7 @@ var http = require('http');
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3000');
+var port = normalizePort('3000');
 app.set('port', port);
 
 /**
@@ -26,9 +26,11 @@ var server = http.createServer(app);
  */
 
 // Maison : 192.168.1.237
+// Maison box : 192.168.0.10
 // Papan : 192.168.0.19
+// Tony : 192.168.0.21
 
-server.listen(port, '127.0.0.1');
+server.listen(port, '0.0.0.0');
 server.on('error', onError);
 server.on('listening', onListening);
 
@@ -91,3 +93,22 @@ function onListening() {
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
+
+
+/**
+ * Socket IO
+ */
+
+var sio = require('socket.io').listen(server)
+
+sio.on("connection", socket => {
+  console.log("a user connected !");  // Connexion d'un user
+  console.log(socket.id);
+  socket.on("chat message", msg => { // Quand je reçois un message
+    console.log(msg);                 // Action
+    sio.emit("chat message", msg);    // Réponse pour l'user
+  });
+
+})
+
+// sio_server.listen(4000, () => console.log("SIO server is running on port 4000"));

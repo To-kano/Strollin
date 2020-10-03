@@ -3,6 +3,7 @@ var PlacesJson = require('./Ressources/Places');
 var TagsJson = require('./Ressources/UserTags2');
 var Sponsors = require('./Ressources/Sponsors');
 
+var algo = require('./BasicAlgo2');
 var methods = {}
 
 //Calcul the distance betwenn two points
@@ -15,6 +16,11 @@ function DistCalc2D(UserPos, PlacePos) {
 
   var res = Math.sqrt( Math.pow((X1 - X2), 2) + Math.pow((Y1 - Y2), 2) )
   return res;
+}
+
+function compare(a, b) {
+  if (a.Dist > b.Dist) return 1;
+  if (b.Dist > a.Dist) return -1;
 }
 
 //Check if the place contains tags corsponding with those of the user
@@ -41,13 +47,19 @@ function PopupAlgo(TagsJson, Sponsors) {
   }
 }
 
-methods.Popup = function ()
+methods.Popup = function (Destinations)
 {
   var res;
+  var UserPos = TagsJson.Pos;
+
   while(1) {
     res = PopupAlgo(TagsJson, Sponsors)
     if (res != false)
       console.log("lets go to ", res);
+      res.Dist = DistCalc2D(UserPos, res.Pos);
+      Destinations.push(res)
+      Destinations.sort(compare)
+      console.log("final: ", Destinations);
       return
   }
 }

@@ -68,8 +68,10 @@ function algoTest(UserTags, Places) {
 
 methods.hello = function ()
 {
+  console.log("hello")
   return new Promise((resolve, reject) => {
     var test = algoTest(TagsJson, PlacesJson)
+    console.log("test", test);
     resolve(test)
   });
 }

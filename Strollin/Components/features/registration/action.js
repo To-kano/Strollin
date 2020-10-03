@@ -1,4 +1,4 @@
-import {fire} from '../../../dataBase/config'
+import { fire } from '../../../dataBase/config';
 
 export function isLoading(bool: Boolean) {
   return {
@@ -22,26 +22,26 @@ export function loginFailed(error: Object) {
 }
 
 function addUserData() {
-  
+
 }
 
 export function register(data: Object) {
-  return dispatch => {
-    console.log('login :' + data.email + data.password);
+  return (dispatch) => {
+    console.log(`login :${data.email}${data.password}`);
     dispatch(isLoading(true));
     fire.auth().createUserWithEmailAndPassword(data.email, data.password)
-    .then(response => {
+      .then((response) => {
         dispatch(isLoading(false));
         console.log('responseJSON', response);
         console.log('responseJSON', response.user.email);
         console.log('responseJSON', response.user.uid);
-        dispatch(loginSuccess({email: response.user.email, uid: response.user.uid }));
-        fire.firestore().collection("userData").doc(response.user.uid).set({
+        dispatch(loginSuccess({ email: response.user.email, uid: response.user.uid }));
+        fire.firestore().collection('userData').doc(response.user.uid).set({
           email: response.user.email,
           tagList: {},
           status: 'alive'
         });
-      }).catch(error => {
+      }).catch((error) => {
         console.log('error', error);
         dispatch(isLoading(false));
         dispatch(loginFailed(error));
@@ -57,4 +57,4 @@ fire.firestore().collection(userId).get().then(snapshot => {
               var widget = {widget: widgetName, id: widgetID, data1: doc.data.data1, data2: doc.data.data2}
               commit('SET_WIDGETS', widget)
             })
-          })*/
+          }) */
