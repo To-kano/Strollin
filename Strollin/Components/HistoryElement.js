@@ -76,7 +76,7 @@ function ElementHistoryNav(props) {
           <View style={{flex: 0.5, marginLeft: '5%', marginRight: '5%'}}>
             <Button
               title="Share"
-              color="#89B3D9"
+              color="#3b5998"
               // onPress={() => shareLinkWithShareDialog()}
             />
           </View>
@@ -101,7 +101,7 @@ function ElementHistoryNav(props) {
           <View style={{flex: 0.5, marginLeft: '5%', marginRight: '5%'}}>
             <Button
               title="Share"
-              color="#89B3D9"
+              color="#3b5998"
               onPress={() => setShowMap(!showMap)}
             />
           </View>
