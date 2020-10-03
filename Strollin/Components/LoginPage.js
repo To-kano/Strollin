@@ -152,16 +152,6 @@ function LoginPage(props) {
             accessibilityLabel="Learn more about this purple button"
           />
         </View>
-        <View style={styles.button}>
-          <Button
-            onPress={() => {
-              props.navigation.navigate('MenuChat');
-            }}
-            title="Go to Chat"
-            color="#9dc5ef"
-            accessibilityLabel="Learn more about this purple button"
-          />
-        </View>
         <View style={{ flex: 0.1, flexDirection: 'column' }}>
           <Text style={{ fontSize: 20, textAlign: 'center', margin: 10 }}>
             OU
