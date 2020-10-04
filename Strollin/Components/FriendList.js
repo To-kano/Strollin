@@ -190,7 +190,7 @@ function FriendList(props) {
             value={value}
           />
         </View>
-        <ScrollView>
+        <ScrollView >
           <Text style={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center' }}>{I18n.t('friendList')}</Text>
           <FlatList
             horizontal
