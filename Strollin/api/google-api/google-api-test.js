@@ -14,7 +14,7 @@ import {
   getGoogleApiPlaceDetails
 } from './google-api.js';
 
-var dumbUrl = 'https://facebook.github.io/react-native/movies.json';
+const dumbUrl = 'https://facebook.github.io/react-native/movies.json';
 
 export default class GoogleApiTest extends React.Component {
   constructor(props) {
@@ -22,48 +22,57 @@ export default class GoogleApiTest extends React.Component {
     this.state = {
       loading: true,
       dataSource: []
-     };
+    };
   }
+
   componentDidMount() {
     fetch(dumbUrl)
-    .then(response => response.json())
-    .then((responseJson)=> {
-      console.log('######################################API responseJson', responseJson);
-      this.setState({
-       loading: false,
-       dataSource: responseJson.movies
+      .then((response) => response.json())
+      .then((responseJson) => {
+        console.log('######################################API responseJson', responseJson);
+        this.setState({
+          loading: false,
+          dataSource: responseJson.movies
+        });
       })
-    })
-    .catch(error=>console.log(error))
+      .catch((error) => console.log(error));
   }
+
   render() {
     if (this.state.isLoading) {
       <View style={styles.container}>
-        <ActivityIndicator/>
-      </View>
+        <ActivityIndicator />
+      </View>;
     } else {
-      let movies = this.state.dataSource.map((val, key) => {
-        return <View key={key} style={styles.item}>
-            <Text>Id = {val.id}</Text>
-            <Text>Title: {val.title}</Text>
-            <Text>ReleaseYear: {val.releaseYear}</Text>
-            </View>
-      })
-      let test3 = getGoogleApiSearch('json', '-33.8670522', '151.1957362', '1000', 'bakery');
+      const movies = this.state.dataSource.map((val, key) => (
+        <View key={key} style={styles.item}>
+          <Text>
+            Id =
+            {val.id}
+          </Text>
+          <Text>
+            Title:
+            {val.title}
+          </Text>
+          <Text>
+            ReleaseYear:
+            {val.releaseYear}
+          </Text>
+        </View>
+      ));
+      const test3 = getGoogleApiSearch('json', '-33.8670522', '151.1957362', '1000', 'bakery');
       getGoogleApiPlaceDetails('json', 'ChIJN1t_tDeuEmsRUsoyG83frY4', 'name,rating,reviews');
       getGoogleApiPlaceDetails('json', 'ChIJwbW5ATquEmsR5r2YuYg1aKU', 'name,rating,reviews');
-      return(
+      return (
         <View style={styles.container}>
           <Text>Data Loaded</Text>
           {movies}
           <Button
             title="Home"
-            onPress={() =>
-              this.props.navigation.navigate('Home')
-            }
-        />
+            onPress={() => this.props.navigation.navigate('Home')}
+          />
         </View>
-      )
+      );
     }
   }
 }

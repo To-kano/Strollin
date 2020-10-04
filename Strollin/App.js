@@ -7,16 +7,16 @@
  */
 
 import React from 'react';
-import Navigation from "./Navigation/Navigation";
-import {Provider} from 'react-redux'
-import Store from './Store/configureStore'
+import { Provider } from 'react-redux';
+import Navigation from './Navigation/Navigation';
+import Store from './Store/configureStore';
 
 function App() {
   return (
-    <Provider store = {Store}>
-      <Navigation/>
+    <Provider store={Store}>
+      <Navigation />
     </Provider>
-    );
+  );
 }
 
 export default App;

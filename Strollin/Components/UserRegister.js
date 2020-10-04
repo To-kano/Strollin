@@ -11,7 +11,7 @@ import {fire} from '../dataBase/config'
 import {LoginButton, AccessToken, GraphRequest, GraphRequestManager} from 'react-native-fbsdk';
 
 import {RondFormeText} from "./rondForm"
-
+import { registerUser } from '../apiServer/user';
 import BackgroundImage from './backgroundImage';
 
 const getInfoFromToken = (token, setUserInfo) => {
@@ -39,7 +39,7 @@ function UserRegister(props) {
   const [userEmail, setUserEmail] = useState('');
   const [userPassword, setUserPassword] = useState('');
   const [userConfirmPassWord, setUserConfirmPassword] = useState('');
-  const [userFirstName, setUserFirstName] = useState('');
+  const [pseudo, setPseudo] = useState('');
   const [userLastName, setUserLastName] = useState('');
   const [userInfo, setUserInfo] = React.useState({});
 
@@ -63,41 +63,26 @@ function UserRegister(props) {
     );
   }
   return (
+    <View>
     <View style={styles.container}>
       <BackgroundImage />
       <View style={{
         flex: 4, margin: 20, backgroundColor: 'rgba(255,255,255, 0.95)', padding: 10, justifyContent: 'space-around', borderRadius: 10
       }}
       >
-        <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', margin: 10 }}>
-
-          <View style={{ width: '40%' }}>
-            <Text style={{ color: 'grey' }}>{I18n.t("firstName")}</Text>
-            <Input
-              autoCapitalize="none"
-              style={{ marginTop: 200, marginHorizontal: 40, height: 40 }}
-              placeholder="First Name"
-              value={userFirstName}
-              onChangeText={(valueText) => {
-                // setData(valueText);
-                setUserFirstName(valueText);
-              }}
-            />
-          </View>
-
-          <View style={{ width: '40%' }}>
-            <Text style={{ color: 'grey' }}>{I18n.t("lastName")}</Text>
-            <Input
-              autoCapitalize="none"
-              style={{ marginTop: 200, marginHorizontal: 40, height: 40 }}
-              placeholder="Last Name"
-              value={userLastName}
-              onChangeText={(valueText) => {
-                // setData(valueText);
-                setUserLastName(valueText);
-              }}
-            />
-            </View>
+          <View style={{ width: '80%' }}>
+          <Text style={{ color: 'grey' }}>Pseudo</Text>
+          <Input
+            autoCapitalize="none"
+            style={{ marginTop: 200, marginHorizontal: 40, height: 40 }}
+            placeholder="Enter pseudo"
+            value={pseudo}
+            onChangeText={(valueText) => {
+              // setData(valueText);
+              setPseudo(valueText);
+            }}
+          />
+        </View>
 
           <View style={{width: "80%"}}>
             <TextInput
@@ -201,20 +186,15 @@ function UserRegister(props) {
             </View>
         </View>
       </View>
-      <View style={{
+    <View style={{
         flex: 1, margin: 20, backgroundColor: 'rgba(255,255,255, 0.9)', padding: 10, justifyContent: 'space-around', borderRadius: 10
       }}
       >
         <Button
           onPress={() => {
-            const userData = {
-              firstName: userFirstName,
-              lastName: userLastName,
-              email: userEmail,
-              password: userPassword
-            };
-            const action = { type: 'SET_USER', value: userData };
-            props.dispatch(action);
+            if (userPassword === userConfirmPassWord) {
+              registerUser(props, pseudo, userPassword, userEmail);
+            }
             props.navigation.navigate('TagSelection');
           }}
           buttonStyle={[{ marginBottom: 5, marginTop: 5 }]}

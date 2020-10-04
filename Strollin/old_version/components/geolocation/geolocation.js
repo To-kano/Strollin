@@ -1,7 +1,7 @@
 // geolocaltion.js
 
 import React, { Component } from 'react';
-import { Alert} from 'react-native';
+import { Alert } from 'react-native';
 
 export default class App extends Component {
   state = {
@@ -13,16 +13,17 @@ export default class App extends Component {
     speed: 0,
     accuracy: 0
   };
+
   findCoordinates = () => {
     navigator.geolocation.getCurrentPosition(
-      geolocData => {
-        const timestamp = geolocData.timestamp;
-        const latitude = geolocData.coords.latitude;
-        const longitude = geolocData.coords.longitude;
-        const altitude = geolocData.coords.altitude;
-        const heading = geolocData.coords.heading;
-        const speed = geolocData.coords.speed;
-        const accuracy = geolocData.coords.accuracy;
+      (geolocData) => {
+        const { timestamp } = geolocData;
+        const { latitude } = geolocData.coords;
+        const { longitude } = geolocData.coords;
+        const { altitude } = geolocData.coords;
+        const { heading } = geolocData.coords;
+        const { speed } = geolocData.coords;
+        const { accuracy } = geolocData.coords;
         this.setState({ timestamp });
         this.setState({ latitude });
         this.setState({ longitude });
@@ -31,7 +32,7 @@ export default class App extends Component {
         this.setState({ speed });
         this.setState({ accuracy });
       },
-      error => Alert.alert(error.message),
+      (error) => Alert.alert(error.message),
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
     );
   };

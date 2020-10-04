@@ -1,4 +1,4 @@
-var apiKey = 'AIzaSyCeoupzB5M_3KGzkoC63v-mJgjfAiXpsi0';
+const apiKey = 'AIzaSyCeoupzB5M_3KGzkoC63v-mJgjfAiXpsi0';
 
 /* samples to use functions
 var SearchNearby = {
@@ -24,26 +24,25 @@ var Itinerary = {
  *  type: (ex: restaurant, bakery) voir type list sur jira
  * Return:
  *  list of spots
- * **/
+ * * */
 
 export function getGoogleApiSearch(return_type, user_lat, user_lon, radius, type) {
-  var searchCall = 'https://maps.googleapis.com/maps/api/place/nearbysearch/'
-  + return_type +'?location=' + user_lat + ',' + user_lon +
-  '&radius=' + radius + '&type=' + type + '&key=' + apiKey;
+  const searchCall = `https://maps.googleapis.com/maps/api/place/nearbysearch/${
+    return_type}?location=${user_lat},${user_lon
+  }&radius=${radius}&type=${type}&key=${apiKey}`;
 
-  console.log("search\n\n" + searchCall);
+  console.log(`search\n\n${searchCall}`);
   return new Promise((resolve, reject) => {
     fetch(searchCall)
-    .then(response => response.json())
-    .then((responseJson)=> {
-      console.log('OKOKO JSON RAJA', responseJson);
-      resolve({
-        data: responseJson.results});
-    }).catch(error => {
-      console.log('error RAJA', error);
-      reject(error);
-    });
-  })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        console.log('OKOKO JSON RAJA', responseJson);
+        resolve({ data: responseJson.results });
+      }).catch((error) => {
+        console.log('error RAJA', error);
+        reject(error);
+      });
+  });
 }
 
 /**
@@ -53,21 +52,21 @@ export function getGoogleApiSearch(return_type, user_lat, user_lon, radius, type
  *  next_page_token
  * Return:
  *  next page results
- * **/
+ * * */
 
 export function nextPageApiSearchCall(return_type, next_page_token) {
-  var nextPageCall = 'ttps://maps.googleapis.com/maps/api/place/nearbysearch/'
-  + return_type + '?pagetoken=' + next_page_token + '&key=' + apiKey;
+  const nextPageCall = `ttps://maps.googleapis.com/maps/api/place/nearbysearch/${
+    return_type}?pagetoken=${next_page_token}&key=${apiKey}`;
 
   fetch(nextPageCall)
-    .then(response => response.json())
-    .then((responseJson)=> {
+    .then((response) => response.json())
+    .then((responseJson) => {
       console.log('######################################Next Page Call API responseJson', responseJson);
       return {
         data: responseJson.results
-      }
+      };
     })
-    .catch(error=>console.log(error))
+    .catch((error) => console.log(error));
 }
 
 /**
@@ -79,22 +78,22 @@ export function nextPageApiSearchCall(return_type, next_page_token) {
  *  destination_lat: destination point latitude
  * Return:
  *  itinerary by lon and lat
- * **/
+ * * */
 
 export function getGoogleApiItinerary(return_type, origin_lat, origin_lon, destination_lon, destination_lat) {
-  var itinCall = 'https://maps.googleapis.com/maps/api/directions/'
-  + return_type + '?origin=' + origin_lat + ',' + origin_lon + '&destination= '
-  + destination_lon + ', ' + destination_lat + '&mode=walking' + '&key=' + apiKey;
+  const itinCall = `https://maps.googleapis.com/maps/api/directions/${
+    return_type}?origin=${origin_lat},${origin_lon}&destination= ${
+    destination_lon}, ${destination_lat}&mode=walking` + `&key=${apiKey}`;
 
   fetch(itinCall)
-    .then(response => response.json())
-    .then((responseJson)=> {
+    .then((response) => response.json())
+    .then((responseJson) => {
       console.log('######################################Itinerary Call API responseJson', responseJson);
       return {
         data: responseJson.routes
-      }
+      };
     })
-    .catch(error=>console.log(error))
+    .catch((error) => console.log(error));
 }
 
 /**
@@ -105,21 +104,21 @@ export function getGoogleApiItinerary(return_type, origin_lat, origin_lon, desti
  * Return:
  *  the fields requested for a specific place
  *  (reviews field can get only up to five reviews)
- * **/
+ * * */
 
-export function  getGoogleApiPlaceDetails(return_type, place_id, requested_fields) {
-  var detailsCall = 'https://maps.googleapis.com/maps/api/place/details/'
-  + return_type + '?place_id=' + place_id + '&fields=' + requested_fields + '&key=' + apiKey;
+export function getGoogleApiPlaceDetails(return_type, place_id, requested_fields) {
+  const detailsCall = `https://maps.googleapis.com/maps/api/place/details/${
+    return_type}?place_id=${place_id}&fields=${requested_fields}&key=${apiKey}`;
 
   fetch(detailsCall)
-    .then(response => response.json())
-    .then((responseJson)=> {
+    .then((response) => response.json())
+    .then((responseJson) => {
       console.log('######################################Place Detail Call API responseJson', responseJson);
       return {
         data: responseJson.result
-      }
+      };
     })
-    .catch(error=>console.log(error))
+    .catch((error) => console.log(error));
 }
 
 /**
@@ -127,12 +126,10 @@ export function  getGoogleApiPlaceDetails(return_type, place_id, requested_field
  * */
 
 export function getMoviesFromApi() {
-  var dumbCall = 'https://facebook.github.io/react-native/movies.json';
+  const dumbCall = 'https://facebook.github.io/react-native/movies.json';
   return fetch(dumbCall)
     .then((response) => response.json())
-    .then((responseJson) => {
-      return responseJson.movies;
-    })
+    .then((responseJson) => responseJson.movies)
     .catch((error) => {
       console.error(error);
     });
