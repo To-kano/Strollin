@@ -26,12 +26,14 @@ const storeProfile = async (value) => {
 
 function profileReducer(state = initialState, action) {
   let nextState;
+
   switch (action.type) {
     case 'CONNECTION':
       nextState = {
         ...state,
         accessToken: action.value
       };
+      console.log("profile reducer", nextState);
       return nextState;
 
     case 'DECONNECTION':
@@ -43,6 +45,7 @@ function profileReducer(state = initialState, action) {
         ...state,
         ...action.value
       };
+      console.log("profile reducer", nextState);
       storeProfile(nextState);
       return nextState;
 

@@ -31,7 +31,7 @@ async function profileUser(props, accessToken) {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
-      accessToken,
+      "access_token" : accessToken,
     },
     method: 'GET',
   })
@@ -41,7 +41,7 @@ async function profileUser(props, accessToken) {
         const action = { type: 'SET_USER', value: answer.profile };
         props.dispatch(action);
       } else {
-        setInfo(answer.status);
+        console.log(answer.status);
       }
     })
     .catch((error) => {

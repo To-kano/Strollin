@@ -5,6 +5,9 @@ import I18n from "../Translation/configureTrans";
 
 import {LoginButton, AccessToken, GraphRequest, GraphRequestManager} from 'react-native-fbsdk';
 
+import { loginUser } from '../apiServer/user';
+
+
 const imageStreet1 = require('../ressources/street1.jpg');
 const imageStreet2 = require('../ressources/street2.jpeg');
 const imagePlum2 = require('../ressources/plum2.jpg');
@@ -65,7 +68,7 @@ function LoginPage(props) {
               console.log(text)}}
               value={value}
               textAlign={'left'}
-              placeholder={'Username'}
+              placeholder={'Username or mail'}
               autoCompleteType={'username'}
             />
           </View>
@@ -83,7 +86,8 @@ function LoginPage(props) {
           <View style={styles.button}>
             <Button
               onPress={() => {
-                props.navigation.navigate('HomePage');
+                loginUser(props, value, valuePass)
+                //props.navigation.navigate('HomePage');
               }}
               title={I18n.t("confirm")}
               color="#9dc5ef"

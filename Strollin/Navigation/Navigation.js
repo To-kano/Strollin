@@ -58,7 +58,7 @@ function MyStack(props) {
   if (!props.profil.access_token) {
     getProfilCache(props);
   }
-
+  //console.log("nav props: ", props.profil);
   return (
     <NavigationContainer>
       <Stack.Navigator
@@ -66,7 +66,7 @@ function MyStack(props) {
           headerShown: false
         }}
       >
-        {props.profil.access_token == null ? (
+        {props.profil.accessToken == null ? (
           <>
             <Stack.Screen
               name="userLogin"
@@ -93,6 +93,11 @@ function MyStack(props) {
           </>
         ) : (
           <>
+            <Stack.Screen
+              name="HomePage"
+              component={HomePage}
+              options={{ title: 'Homepage' }}
+            />
             <Stack.Screen
               name="historicUser"
               component={HistoryNav}
@@ -138,11 +143,6 @@ function MyStack(props) {
             <Stack.Screen
               name="Home"
               component={Home}
-              options={{ title: 'Homepage' }}
-            />
-            <Stack.Screen
-              name="HomePage"
-              component={HomePage}
               options={{ title: 'Homepage' }}
             />
             <Stack.Screen

@@ -74,7 +74,7 @@ router.post('/addTag', async function(req, res) {
 // LOGIN
 router.get('/login', async function(req, res) {
 
-  let user = await UserModel.findOne({login: req.headers.login, password: req.headers.password});
+  let user = await UserModel.findOne({mail: req.headers.mail, password: req.headers.password});
   let token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
   if (user) {
@@ -99,10 +99,12 @@ router.get('/logout', async function(req, res) {
 
 
 // GET_PROFILE
-router.get('/getProfile', async function(req, res) {
+router.get('/profile', async function(req, res) {
 
-  let user = await UserModel.findOne({accessToken: req.headers.accessToken});
+  let user = await UserModel.findOne({accessToken: req.headers.access_token});
   let profile = {};
+
+  console.log("profile :", req.headers);
 
   if (user) {
     profile = {
