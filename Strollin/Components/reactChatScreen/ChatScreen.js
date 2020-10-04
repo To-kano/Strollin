@@ -40,6 +40,7 @@ function sendMessage(message, socket) {
 function ChatScreen(props) {
   //const [messages, setMessages] = useState([getHistoric(props)]);
 
+  console.log(props.conversation.currentConversation.messages);
   return (
     <View style={styles.box}>
       <View>
@@ -51,7 +52,7 @@ function ChatScreen(props) {
               username={item.username}
             />
           )}
-          keyExtractor={(item) => item}
+          keyExtractor={(item) => item.id}
         />
       </View>
       <ConversationBar

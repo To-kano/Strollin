@@ -3,7 +3,7 @@ import {
   View, Text, StyleSheet, TextInput, TouchableOpacity, Image, FlatList
 } from 'react-native';
 import { connect } from 'react-redux';
-import friendList from './FriendList';
+import FriendList from './FriendList';
 import SearchBar from './SearchBar';
 import Store from '../../Store/configureStore';
 
@@ -47,7 +47,7 @@ function NewConversation(props) {
       <View>
         <FlatList
           data={props.profil.friendList}
-          renderItem={({ item }) => <friendList {...props} name={item} />}
+          renderItem={({ item }) => <FriendList {...props} name={item} />}
           keyExtractor={(item) => item}
         />
       </View>
