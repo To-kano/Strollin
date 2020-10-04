@@ -170,7 +170,18 @@ const styles = StyleSheet.create({
     paddingVertical: '5%',
     paddingHorizontal: '30%',
     borderRadius: 5,
-  }
+  },
+  cont: {
+    marginTop: '5%',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    flex: 0.1,
+    backgroundColor: '#FFC300',
+    width: '90%',
+    height: '120%',
+    borderRadius: 20
+  },
 });
 
 export default HomePage;
