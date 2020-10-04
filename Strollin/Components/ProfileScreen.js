@@ -1,6 +1,7 @@
 import React from 'react';
 import json from '../ressources/profile.json';
 import I18n from "../Translation/configureTrans";
+import { connect } from 'react-redux';
 
 const imageProfile = require('../ressources/profile.png');
 import { Button , View, StyleSheet, Image, Text, TouchableOpacity, TextInput} from "react-native";
@@ -17,7 +18,7 @@ function ParseTags(Tags) {
 }
 
 function ProfileScreen(props) {
-  console.log('json: ', json.Tags)
+  //console.log('json: ', json.Tags)
   const list = ParseTags(json.Tags)
 
   React.useLayoutEffect(() => {
@@ -75,11 +76,11 @@ function ProfileScreen(props) {
           <Image style={{resizeMode: 'center'}} source={require('../ressources/profile.png')} />
         </View>
         <View style={styles.name}>
-          <Text style={{fontSize: 40}}> {json.Pseudo} </Text>
+          <Text style={{fontSize: 40}}> {props.profil.pseudo} </Text>
         </View>
         <View style={styles.infos}>
           <Text style={{fontSize: 22}}>{I18n.t("email")} </Text>
-          <Text style={styles.inputText}> {json.Email} </Text>
+          <Text style={styles.inputText}> {props.profil.mail} </Text>
           <Text style={{marginTop: '4%', fontSize: 22}}>{I18n.t("password")}</Text>
           <Text style={styles.inputText}>{json.Password}</Text>
           <Text style={{marginTop: '4%', fontSize: 22,}}>{I18n.t("tags")}</Text>
@@ -150,4 +151,5 @@ function ProfileScreen(props) {
       }
   })
 
-export default ProfileScreen;
+  const mapStateToProps = (state) => state;
+  export default connect(mapStateToProps)(ProfileScreen);
