@@ -1,10 +1,10 @@
-import React, {useState} from 'react';
-import {connect} from 'react-redux';
+import React, { useState } from 'react';
+import { connect } from 'react-redux';
 
-//import {GetTrackById} from '../APIserver/Track';
+// import {GetTrackById} from '../APIserver/Track';
 //
-//import {playAtId} from '../APIsound/play';
-//import {remplaceTrack} from '../APIsound/track';
+// import {playAtId} from '../APIsound/play';
+// import {remplaceTrack} from '../APIsound/track';
 
 import {
   StyleSheet,
@@ -13,11 +13,11 @@ import {
   ActivityIndicator,
 } from 'react-native';
 
-//async function SetTrackItem(setTrack, id) {
+// async function SetTrackItem(setTrack, id) {
 //  let answer = await GetTrackById(id);
 //
 //  setTrack(answer);
-//}
+// }
 
 function MessagesItem(props) {
   const [track, setTrack] = useState(null);
@@ -30,7 +30,7 @@ function MessagesItem(props) {
       </View>
     );
   }
-  console.log("username = ", props.username, "message = ", props.message);
+  console.log('username = ', props.username, 'message = ', props.message);
   if (props.username != props.profil.Pseudo) {
     return (
       <View style={styles.greyDisplay}>
@@ -41,17 +41,16 @@ function MessagesItem(props) {
         </View>
       </View>
     );
-  } else {
-    return (
-      <View style={styles.blueDisplay}>
-        <View style={styles.box}>
-          <Text style={styles.title} numberOfLines={2} ellipsizeMode="tail">
-            {props.message}
-          </Text>
-        </View>
-      </View>
-    );
   }
+  return (
+    <View style={styles.blueDisplay}>
+      <View style={styles.box}>
+        <Text style={styles.title} numberOfLines={2} ellipsizeMode="tail">
+          {props.message}
+        </Text>
+      </View>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -81,7 +80,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     backgroundColor: 'rgba(50, 150, 250, 1)',
-    alignItems: "flex-end"
+    alignItems: 'flex-end'
   },
   text: {
     fontSize: 16,
@@ -97,7 +96,5 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = (state) => {
-  return state;
-};
+const mapStateToProps = (state) => state;
 export default connect(mapStateToProps)(MessagesItem);

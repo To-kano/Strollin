@@ -1,9 +1,11 @@
 import React, { Component, useState, useEffect } from 'react';
 import Tts from 'react-native-tts';
 import { connect } from 'react-redux';
-import I18n from "../Translation/configureTrans";
-import { StyleSheet, Text, View, Button, Image, PermissionsAndroid, TouchableOpacity } from 'react-native';
-import Map from './map'
+import {
+  StyleSheet, Text, View, Button, Image, PermissionsAndroid, TouchableOpacity
+} from 'react-native';
+import I18n from '../Translation/configureTrans';
+import Map from './map';
 
 import ElementHistoryNav from './HistoryElement';
 import BackgroundImage from './backgroundImage';
@@ -122,38 +124,63 @@ function TripSuggestion(props) {
 
   return (
     <View style={styles.back}>
-      <BackgroundImage/>
+      <BackgroundImage />
       <View style={styles.header}>
         <TouchableOpacity
-          style={{width: '20%', height: '100%', marginLeft: 15}}
+          style={{ width: '20%', height: '100%', marginLeft: 15 }}
           onPress={() => props.navigation.navigate('HomePage')}
         >
-          <Image style={{marginTop: "10%", height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'}} source={require('../ressources/home.png')} />
+          <Image
+            style={{
+              marginTop: '10%', height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'
+            }}
+            source={require('../ressources/home.png')}
+          />
         </TouchableOpacity>
         <TouchableOpacity
-          style={{width: '20%', height: '100%'}}
+          style={{ width: '20%', height: '100%' }}
           onPress={() => props.navigation.navigate('historicUser')}
         >
-          <Image style={{marginTop: "10%", height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'}} source={require('../ressources/history.png')} />
+          <Image
+            style={{
+              marginTop: '10%', height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'
+            }}
+            source={require('../ressources/history.png')}
+          />
         </TouchableOpacity>
         <TouchableOpacity
-          style={{width: '20%', height: '100%'}}
+          style={{ width: '20%', height: '100%' }}
           onPress={() => props.navigation.navigate('TripSuggestion')}
         >
-          <Image style={{marginTop: "10%", height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'}} source={require('../ressources/plus.png')} />
+          <Image
+            style={{
+              marginTop: '10%', height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'
+            }}
+            source={require('../ressources/plus.png')}
+          />
         </TouchableOpacity>
         <TouchableOpacity
-          style={{width: '20%', height: '100%'}}
+          style={{ width: '20%', height: '100%' }}
           onPress={() => props.navigation.navigate('FriendList')}
         >
-          <Image style={{marginTop: "10%", height: '65%', width: '50%', opacity: 0.5, resizeMode: 'stretch'}} source={require('../ressources/friend.png')} />
+          <Image
+            style={{
+              marginTop: '10%', height: '65%', width: '50%', opacity: 0.5, resizeMode: 'stretch'
+            }}
+            source={require('../ressources/friend.png')}
+          />
         </TouchableOpacity>
         <TouchableOpacity
-              style={{width: '20%', height: '100%'}}
-              onPress={() => props.navigation.navigate('Profile')}
-            >
-              <Image style={{marginTop: "10%", height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'}} source={require('../ressources/profile.png')} />
-            </TouchableOpacity>
+          style={{ width: '20%', height: '100%' }}
+          onPress={() => props.navigation.navigate('Profile')}
+        >
+          <Image
+            style={{
+              marginTop: '10%', height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'
+            }}
+            source={require('../ressources/profile.png')}
+          />
+        </TouchableOpacity>
       </View>
       <View style={styles.fill}>
         <View style={{
@@ -162,52 +189,58 @@ function TripSuggestion(props) {
           paddingLeft: 5,
           paddingBottom: 10,
           backgroundColor: '#FFFFFF',
-          borderRadius: 5, 
-          borderColor: "#BABABA",
+          borderRadius: 5,
+          borderColor: '#BABABA',
           borderWidth: 1,
-          width: "95%"
-        }}>
-          <Text style={[{fontSize: 20, opacity: 0.5, margin: 5 }]}>Heading to:</Text>
-          <Text style={[{ textAlign: "center", fontSize: 22, fontWeight: "bold", color: "#F07323" }]}>{waypoints[0].name}</Text>
+          width: '95%'
+        }}
+        >
+          <Text style={[{ fontSize: 20, opacity: 0.5, margin: 5 }]}>Heading to:</Text>
+          <Text style={[{
+            textAlign: 'center', fontSize: 22, fontWeight: 'bold', color: '#F07323'
+          }]}
+          >
+            {waypoints[0].name}
+          </Text>
         </View>
-        <View 
-          style={{ 
+        <View
+          style={{
             flex: 3,
             marginTop: 15,
             justifyContent: 'space-around',
             paddingLeft: 5,
             backgroundColor: '#FFFFFF',
-            borderRadius: 5, 
-            borderColor: "#BABABA",
+            borderRadius: 5,
+            borderColor: '#BABABA',
             borderWidth: 1,
-            width: "95%"
-          }}>
+            width: '95%'
+          }}
+        >
           <ElementHistoryNav data={waypoints} />
         </View>
         <View style={{
-          flex: 0.4, 
-          flexDirection: "row", 
-          justifyContent: "space-around",
-          alignItems: "center",
+          flex: 0.4,
+          flexDirection: 'row',
+          justifyContent: 'space-around',
+          alignItems: 'center',
           padding: 10,
-        }}>
-          <View style={{flex: 1, paddingTop: 10, marginRight: 10}}>
+        }}
+        >
+          <View style={{ flex: 1, paddingTop: 10, marginRight: 10 }}>
             <Button
-                title="Another One!"
-                color="#89B3D9"
-                onPress={() =>
-                  setWaypoints(getNavigation())
-                }
+              title="Another One!"
+              color="#89B3D9"
+              onPress={() => setWaypoints(getNavigation())}
             />
           </View>
-          <View style={{flex: 1, paddingTop: 10, marginRight: 10}}>
+          <View style={{ flex: 1, paddingTop: 10, marginRight: 10 }}>
             <Button
               title="Let's go!"
               color="#F07323"
               onPress={() => {
-                const action = {type: 'SET_WAYPOINTS', value : waypoints};
+                const action = { type: 'SET_WAYPOINTS', value: waypoints };
                 props.dispatch(action);
-                props.navigation.navigate('TripNavigation')
+                props.navigation.navigate('TripNavigation');
               }}
             />
           </View>
@@ -250,10 +283,10 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   newTrip: {
-    alignItems: "center", 
-    backgroundColor: "#F07323", 
-    paddingVertical: '5%', 
-    paddingHorizontal: '30%', 
+    alignItems: 'center',
+    backgroundColor: '#F07323',
+    paddingVertical: '5%',
+    paddingHorizontal: '30%',
     borderRadius: 5,
   }
 });

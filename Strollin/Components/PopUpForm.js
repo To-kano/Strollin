@@ -15,7 +15,9 @@ class PopUpForm extends Component {
         }}
         >
           do you want to go to
-          "{this.props.place}" ?
+          "
+          {this.props.place}
+          " ?
         </Text>
         <Button
           title="Yes"

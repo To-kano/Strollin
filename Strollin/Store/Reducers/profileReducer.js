@@ -33,7 +33,7 @@ function profileReducer(state = initialState, action) {
         ...state,
         accessToken: action.value
       };
-      //console.log("profile reducer", nextState);
+      // console.log("profile reducer", nextState);
       return nextState;
 
     case 'DECONNECTION':
@@ -45,7 +45,7 @@ function profileReducer(state = initialState, action) {
         ...state,
         ...action.value
       };
-      //console.log("profile reducer", nextState);
+      // console.log("profile reducer", nextState);
       storeProfile(nextState);
       return nextState;
 
@@ -56,61 +56,57 @@ function profileReducer(state = initialState, action) {
       };
       storeProfile(nextState);
       return nextState;
-      case 'SET_FRIEND':
+    case 'SET_FRIEND':
       nextState = {
         ...state,
         FriendList: action.value.friendList
 
-    }
-      return nextState
+      };
+      return nextState;
 
     case 'SET_FRIEND_INIT':
       nextState = {
         ...state,
         friend: action.value.friend
-      }
-      return nextState
+      };
+      return nextState;
 
     case 'SET_FRIEND':
       nextState = {
         ...state,
         friend: state.friend + action.value.friend
-      }
-      return nextState
+      };
+      return nextState;
 
     case 'DEL_FRIEND':
-      var userAdd = friend.filter(function(item) {
-        return action.value.name != friend.name
-      })
+      var userAdd = friend.filter((item) => action.value.name != friend.name);
       nextState = {
         ...state,
         friend: userAdd
-      }
-      return nextState
+      };
+      return nextState;
 
-      case 'SET_GROUP_INIT':
-        nextState = {
-          ...state,
-          group: action.value.group
-        }
-        return nextState
+    case 'SET_GROUP_INIT':
+      nextState = {
+        ...state,
+        group: action.value.group
+      };
+      return nextState;
 
-      case 'SET_GROUP':
-        nextState = {
-          ...state,
-          group: state.group + action.value.group
-        }
-        return nextState
+    case 'SET_GROUP':
+      nextState = {
+        ...state,
+        group: state.group + action.value.group
+      };
+      return nextState;
 
-      case 'DEL_GROUP':
-        var userAdd = group.filter(function(item) {
-          return action.value.name != group.name
-        })
-        nextState = {
-          ...state,
-          group: userAdd
-        }
-        return nextState
+    case 'DEL_GROUP':
+      var userAdd = group.filter((item) => action.value.name != group.name);
+      nextState = {
+        ...state,
+        group: userAdd
+      };
+      return nextState;
 
     default:
       return state;

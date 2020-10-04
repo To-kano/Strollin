@@ -1,13 +1,16 @@
-import I18n from "../Translation/configureTrans";
-import React, { Component , useState, useEffect} from 'react';
-import {StyleSheet, AppState, View, Text, Button, BackHandler, Image, TouchableOpacity} from 'react-native';
+import React, { Component, useState, useEffect } from 'react';
+import {
+  StyleSheet, AppState, View, Text, Button, BackHandler, Image, TouchableOpacity
+} from 'react-native';
 
 import { connect } from 'react-redux';
 
 import AndroidPip from 'react-native-android-pip';
+import I18n from '../Translation/configureTrans';
 import Map from './map';
 
 import { PopUpForm } from './PopUpForm';
+
 function TripNavigation(props) {
   const [background, setBackground] = useState(false);
 
@@ -59,54 +62,89 @@ function TripNavigation(props) {
     <View style={styles.back}>
       <View style={styles.header}>
         <TouchableOpacity
-          style={{width: '20%', height: '100%', marginLeft: 15}}
+          style={{ width: '20%', height: '100%', marginLeft: 15 }}
           onPress={() => props.navigation.navigate('HomePage')}
         >
-          <Image style={{marginTop: "10%", height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'}} source={require('../ressources/home.png')} />
+          <Image
+            style={{
+              marginTop: '10%', height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'
+            }}
+            source={require('../ressources/home.png')}
+          />
         </TouchableOpacity>
         <TouchableOpacity
-          style={{width: '20%', height: '100%'}}
+          style={{ width: '20%', height: '100%' }}
           onPress={() => props.navigation.navigate('historicUser')}
         >
-          <Image style={{marginTop: "10%", height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'}} source={require('../ressources/history.png')} />
+          <Image
+            style={{
+              marginTop: '10%', height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'
+            }}
+            source={require('../ressources/history.png')}
+          />
         </TouchableOpacity>
         <TouchableOpacity
-          style={{width: '20%', height: '100%'}}
+          style={{ width: '20%', height: '100%' }}
           onPress={() => props.navigation.navigate('TripSuggestion')}
         >
-          <Image style={{marginTop: "10%", height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'}} source={require('../ressources/plus.png')} />
+          <Image
+            style={{
+              marginTop: '10%', height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'
+            }}
+            source={require('../ressources/plus.png')}
+          />
         </TouchableOpacity>
         <TouchableOpacity
-          style={{width: '20%', height: '100%'}}
+          style={{ width: '20%', height: '100%' }}
           onPress={() => props.navigation.navigate('FriendList')}
         >
-          <Image style={{marginTop: "10%", height: '65%', width: '50%', opacity: 0.5, resizeMode: 'stretch'}} source={require('../ressources/friend.png')} />
+          <Image
+            style={{
+              marginTop: '10%', height: '65%', width: '50%', opacity: 0.5, resizeMode: 'stretch'
+            }}
+            source={require('../ressources/friend.png')}
+          />
         </TouchableOpacity>
         <TouchableOpacity
-          style={{width: '20%', height: '100%'}}
+          style={{ width: '20%', height: '100%' }}
           onPress={() => props.navigation.navigate('Profile')}
         >
-          <Image style={{marginTop: "10%", height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'}} source={require('../ressources/profile.png')} />
+          <Image
+            style={{
+              marginTop: '10%', height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'
+            }}
+            source={require('../ressources/profile.png')}
+          />
         </TouchableOpacity>
       </View>
       <View style={styles.fill}>
-        <View style={{flex: 0.1, margin: 5, flexDirection: 'row'}}>
-          <View style={{flex: 1}}>
+        <View style={{ flex: 0.1, margin: 5, flexDirection: 'row' }}>
+          <View style={{ flex: 1 }}>
             <TouchableOpacity
-              style={{flex: 1}}
+              style={{ flex: 1 }}
               onPress={() => {
-                const action = {type: 'ADD_HISTORIC', value : waypoints}
-                props.dispatch(action)
-                props.navigation.navigate('HomePage')
+                const action = { type: 'ADD_HISTORIC', value: waypoints };
+                props.dispatch(action);
+                props.navigation.navigate('HomePage');
               }}
             >
-              <Image style={{margin: "10%", height: '70%', width: '70%', opacity: 0.9, resizeMode: 'stretch'}} source={require('../ressources/end.png')} />
+              <Image
+                style={{
+                  margin: '10%', height: '70%', width: '70%', opacity: 0.9, resizeMode: 'stretch'
+                }}
+                source={require('../ressources/end.png')}
+              />
             </TouchableOpacity>
           </View>
-          <Text style={{flex: 6, textAlign:"center", fontSize: 30, color: "#F07323", fontWeight: "bold"}}>{waypoints[0].name}</Text>
+          <Text style={{
+            flex: 6, textAlign: 'center', fontSize: 30, color: '#F07323', fontWeight: 'bold'
+          }}
+          >
+            {waypoints[0].name}
+          </Text>
         </View>
-        <View style={{flex: 1}}>
-          <Map height={"100%"} width={390} deltaView={deltaView} waypoints={waypoints} />
+        <View style={{ flex: 1 }}>
+          <Map height="100%" width={390} deltaView={deltaView} waypoints={waypoints} />
         </View>
       </View>
     </View>

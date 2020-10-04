@@ -6,7 +6,7 @@ import {
 } from 'react-native';
 
 import { RondFormeText } from './rondForm';
-import I18n from "../Translation/configureTrans";
+import I18n from '../Translation/configureTrans';
 import BackgroundImage from './backgroundImage';
 
 const imageLondon = require('../images/london2.jpg');
@@ -62,86 +62,86 @@ function TageSelection({ navigation, profil }) {
   ];
 
   return (
-      // <View style={styles.header}>
-      //   <TouchableOpacity
-      //     style={{width: '20%', height: '100%', marginLeft: 15}}
-      //     onPress={() => props.navigation.navigate('HomePage')}>
-      //     <Image
-      //       style={{
-      //         marginTop: '10%',
-      //         height: '70%',
-      //         width: '50%',
-      //         opacity: 0.5,
-      //         resizeMode: 'stretch',
-      //       }}
-      //       source={require('../ressources/home.png')}
-      //     />
-      //   </TouchableOpacity>
-      //   <TouchableOpacity
-      //     style={{width: '20%', height: '100%'}}
-      //     onPress={() => props.navigation.navigate('historicUser')}>
-      //     <Image
-      //       style={{
-      //         marginTop: '10%',
-      //         height: '70%',
-      //         width: '50%',
-      //         opacity: 0.5,
-      //         resizeMode: 'stretch',
-      //       }}
-      //       source={require('../ressources/history.png')}
-      //     />
-      //   </TouchableOpacity>
-      //   <TouchableOpacity
-      //     style={{width: '20%', height: '100%'}}
-      //     onPress={() => props.navigation.navigate('TripSuggestion')}>
-      //     <Image
-      //       style={{
-      //         marginTop: '10%',
-      //         height: '70%',
-      //         width: '50%',
-      //         opacity: 0.5,
-      //         resizeMode: 'stretch',
-      //       }}
-      //       source={require('../ressources/plus.png')}
-      //     />
-      //   </TouchableOpacity>
-      //   <TouchableOpacity
-      //     style={{width: '20%', height: '100%'}}
-      //     onPress={() => console.log('friend')}>
-      //     <Image
-      //       style={{
-      //         marginTop: '10%',
-      //         height: '65%',
-      //         width: '50%',
-      //         opacity: 0.5,
-      //         resizeMode: 'stretch',
-      //       }}
-      //       source={require('../ressources/friend.png')}
-      //     />
-      //   </TouchableOpacity>
-      //   <TouchableOpacity
-      //     style={{width: '20%', height: '100%'}}
-      //     onPress={() => props.navigation.navigate('Profile')}>
-      //     <Image
-      //       style={{
-      //         marginTop: '10%',
-      //         height: '70%',
-      //         width: '50%',
-      //         opacity: 0.5,
-      //         resizeMode: 'stretch',
-      //       }}
-      //       source={require('../ressources/profile.png')}
-      //     />
-      //   </TouchableOpacity>
-      // </View>
+  // <View style={styles.header}>
+  //   <TouchableOpacity
+  //     style={{width: '20%', height: '100%', marginLeft: 15}}
+  //     onPress={() => props.navigation.navigate('HomePage')}>
+  //     <Image
+  //       style={{
+  //         marginTop: '10%',
+  //         height: '70%',
+  //         width: '50%',
+  //         opacity: 0.5,
+  //         resizeMode: 'stretch',
+  //       }}
+  //       source={require('../ressources/home.png')}
+  //     />
+  //   </TouchableOpacity>
+  //   <TouchableOpacity
+  //     style={{width: '20%', height: '100%'}}
+  //     onPress={() => props.navigation.navigate('historicUser')}>
+  //     <Image
+  //       style={{
+  //         marginTop: '10%',
+  //         height: '70%',
+  //         width: '50%',
+  //         opacity: 0.5,
+  //         resizeMode: 'stretch',
+  //       }}
+  //       source={require('../ressources/history.png')}
+  //     />
+  //   </TouchableOpacity>
+  //   <TouchableOpacity
+  //     style={{width: '20%', height: '100%'}}
+  //     onPress={() => props.navigation.navigate('TripSuggestion')}>
+  //     <Image
+  //       style={{
+  //         marginTop: '10%',
+  //         height: '70%',
+  //         width: '50%',
+  //         opacity: 0.5,
+  //         resizeMode: 'stretch',
+  //       }}
+  //       source={require('../ressources/plus.png')}
+  //     />
+  //   </TouchableOpacity>
+  //   <TouchableOpacity
+  //     style={{width: '20%', height: '100%'}}
+  //     onPress={() => console.log('friend')}>
+  //     <Image
+  //       style={{
+  //         marginTop: '10%',
+  //         height: '65%',
+  //         width: '50%',
+  //         opacity: 0.5,
+  //         resizeMode: 'stretch',
+  //       }}
+  //       source={require('../ressources/friend.png')}
+  //     />
+  //   </TouchableOpacity>
+  //   <TouchableOpacity
+  //     style={{width: '20%', height: '100%'}}
+  //     onPress={() => props.navigation.navigate('Profile')}>
+  //     <Image
+  //       style={{
+  //         marginTop: '10%',
+  //         height: '70%',
+  //         width: '50%',
+  //         opacity: 0.5,
+  //         resizeMode: 'stretch',
+  //       }}
+  //       source={require('../ressources/profile.png')}
+  //     />
+  //   </TouchableOpacity>
+  // </View>
 
     <View style={styles.back}>
       <BackgroundImage />
       <View style={styles.fill}>
-        <Text style={[{textAlign: 'left', color: 'grey', fontSize: 30}]}>
-        {I18n.t("welcome")}
+        <Text style={[{ textAlign: 'left', color: 'grey', fontSize: 30 }]}>
+          {I18n.t('welcome')}
         </Text>
-        <Text style={[{textAlign: 'center', fontWeight: 'bold', fontSize: 35}]}>
+        <Text style={[{ textAlign: 'center', fontWeight: 'bold', fontSize: 35 }]}>
           {profil.pseudo}
         </Text>
         <Text
@@ -152,24 +152,25 @@ function TageSelection({ navigation, profil }) {
               marginTop: 20,
               fontWeight: 'normal',
             },
-          ]}>
-          {I18n.t("chooseTags")}
+          ]}
+        >
+          {I18n.t('chooseTags')}
         </Text>
-        <View style={{flex: 2, margin: 10, marginTop: 20}}>
+        <View style={{ flex: 2, margin: 10, marginTop: 20 }}>
           <FlatList
             data={data}
-            renderItem={({item}) => (
+            renderItem={({ item }) => (
               <Tag name={item.name} pressed={item.pressed} />
             )}
           />
           <TouchableOpacity
             style={styles.newTrip}
             onPress={() => navigation.navigate('Profile')}
-            //onPress={() =>
+            // onPress={() =>
             //  // this.NextPage(navigation.getParam('uid'))
-            //}
+            // }
           >
-            <Text style={{fontSize: 16, color: '#FFFFFF'}}>{I18n.t("next")}</Text>
+            <Text style={{ fontSize: 16, color: '#FFFFFF' }}>{I18n.t('next')}</Text>
           </TouchableOpacity>
         </View>
       </View>

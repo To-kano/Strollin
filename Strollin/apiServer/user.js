@@ -31,7 +31,7 @@ async function profileUser(props, accessToken) {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
-      "access_token" : accessToken,
+      access_token: accessToken,
     },
     method: 'GET',
   })

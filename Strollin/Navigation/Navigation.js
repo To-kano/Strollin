@@ -27,7 +27,6 @@ import ScreenChat from '../Components/reactChatScreen/ChatScreen';
 import NewConversation from '../Components/reactChatScreen/NewConversation';
 import Notation from '../Components/Notation';
 
-
 const Stack = createStackNavigator();
 
 const getProfilCache = async (props) => {
@@ -58,7 +57,7 @@ function MyStack(props) {
   if (!props.profil.access_token) {
     getProfilCache(props);
   }
-  //console.log("nav props: ", props.profil);
+  // console.log("nav props: ", props.profil);
   return (
     <NavigationContainer>
       <Stack.Navigator
@@ -80,9 +79,9 @@ function MyStack(props) {
               options={{ title: 'inscription' }}
             />
             <Stack.Screen
-            name="Notation"
-            component={Notation}
-            options={{title: 'Notation'}}
+              name="Notation"
+              component={Notation}
+              options={{ title: 'Notation' }}
             />
             <Stack.Screen
               name="Connection"
@@ -105,34 +104,34 @@ function MyStack(props) {
               }}
             />
             <Stack.Screen
-            name="CommentScreen"
-            component={CommentScreen}
-            options={{title: 'comment screen'}}
+              name="CommentScreen"
+              component={CommentScreen}
+              options={{ title: 'comment screen' }}
             />
             <Stack.Screen
-            name="FriendList"
-            component={FriendList}
-            options={{title: 'Friend'}}
+              name="FriendList"
+              component={FriendList}
+              options={{ title: 'Friend' }}
             />
             <Stack.Screen
-            name="Comment"
-            component={Comment}
-            options={{title: 'comment'}}
-            />
-                    <Stack.Screen
-                name="MenuChat"
-                component={MenuChat}
-                options={{title: 'menuchat'}}
+              name="Comment"
+              component={Comment}
+              options={{ title: 'comment' }}
             />
             <Stack.Screen
-                name="ScreenChat"
-                component={ScreenChat}
-                options={{title: 'screenchat'}}
+              name="MenuChat"
+              component={MenuChat}
+              options={{ title: 'menuchat' }}
             />
             <Stack.Screen
-                name="NewConversation"
-                component={NewConversation}
-                options={{title: 'newConversation'}}
+              name="ScreenChat"
+              component={ScreenChat}
+              options={{ title: 'screenchat' }}
+            />
+            <Stack.Screen
+              name="NewConversation"
+              component={NewConversation}
+              options={{ title: 'newConversation' }}
             />
             <Stack.Screen
               name="TagSelection"

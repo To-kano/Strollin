@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import I18n from "../Translation/configureTrans";
+import I18n from '../Translation/configureTrans';
 import getImage from '../API/getImage';
 import DisplayMedia from './Media/DisplayMedia';
 
@@ -17,7 +17,7 @@ function Gallery({ data }) {
     <View style={styles.container}>
       <Text style={styles.title}>{data.title}</Text>
       <Text>
-        {I18n.t("by")}
+        {I18n.t('by')}
         {data.account_url}
       </Text>
       <DisplayMedia data={cover} />
@@ -25,15 +25,19 @@ function Gallery({ data }) {
         <Text>
           {data.views}
           {' '}
-          {I18n.t("views")}
+          {I18n.t('views')}
         </Text>
         <Text>
           {data.points}
           {' '}
-          {I18n.t("points")}
+          {I18n.t('points')}
         </Text>
       </View>
-      <Text> {I18n.t("description")} </Text>
+      <Text>
+        {' '}
+        {I18n.t('description')}
+        {' '}
+      </Text>
       <Text>{data.description}</Text>
     </View>
   );

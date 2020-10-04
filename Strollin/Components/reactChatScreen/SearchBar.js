@@ -1,12 +1,12 @@
-import React, {useState} from 'react';
-import {connect} from 'react-redux';
-import {StyleSheet, TextInput, View} from 'react-native';
+import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import { StyleSheet, TextInput, View } from 'react-native';
 
 import ButtonIcon from './ButtonIcon.js';
 
 function SearchBar(props) {
   const [research, setresearch] = useState('');
-  var imagePath = props.imagePath;
+  const { imagePath } = props;
   return (
     <View style={styles.container}>
       <View style={styles.horizontalDisplay}>
@@ -22,7 +22,7 @@ function SearchBar(props) {
           icon={require('../../images/search.png')}
           onPress={() => {
             props.onPress(research);
-            setresearch("");
+            setresearch('');
           }}
         />
       </View>
@@ -51,7 +51,5 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = (state) => {
-  return state;
-};
+const mapStateToProps = (state) => state;
 export default connect(mapStateToProps)(SearchBar);

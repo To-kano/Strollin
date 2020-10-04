@@ -1,6 +1,6 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import {StyleSheet, Image, TouchableHighlight} from 'react-native';
+import { connect } from 'react-redux';
+import { StyleSheet, Image, TouchableHighlight } from 'react-native';
 
 function ButtonIcon(props) {
   return (
@@ -18,7 +18,5 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = (state) => {
-  return state;
-};
+const mapStateToProps = (state) => state;
 export default connect(mapStateToProps)(ButtonIcon);

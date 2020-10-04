@@ -6,11 +6,11 @@ import mapNavigationReducer from './Reducers/mapNavigationReducer';
 import chatConversation from './Reducers/conversationReducer';
 
 const rootReducer = combineReducers({
-    profil: profileReducer,
-    gallery: galleryReducer,
-    position: geolocalisationReducer,
-    map: mapNavigationReducer,
-    conversation: chatConversation
-})
+  profil: profileReducer,
+  gallery: galleryReducer,
+  position: geolocalisationReducer,
+  map: mapNavigationReducer,
+  conversation: chatConversation
+});
 
 export default createStore(rootReducer);

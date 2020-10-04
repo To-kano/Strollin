@@ -6,8 +6,7 @@ import { connect } from 'react-redux';
 
 import getGallery from '../API/getGallery';
 import Gallery from './Gallery';
-import I18n from "../Translation/configureTrans";
-
+import I18n from '../Translation/configureTrans';
 
 const defaultPage = {
   section: '/hot',
@@ -21,7 +20,6 @@ const defaultPage = {
 };
 
 function HomeScreen(props) {
-
   const [gallery, setGallery] = useState([]);
 
   useEffect(() => {
@@ -87,7 +85,7 @@ function HomeScreen(props) {
       style={styles.container}
     >
       <Button
-        title={I18n.t("jane")}
+        title={I18n.t('jane')}
         onPress={() => props.navigation.navigate('Profile', { name: 'Jane' })}
       />
       <View

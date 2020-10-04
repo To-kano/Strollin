@@ -72,7 +72,7 @@ function UserRegister(props) {
         backgroundColor: 'rgba(255,255,255, 0.95)',
         padding: 10,
         justifyContent: 'space-around',
-        alignItems : "center",
+        alignItems: 'center',
         borderRadius: 10
       }}
       >
@@ -135,7 +135,7 @@ function UserRegister(props) {
               if (userPassword === userConfirmPassWord) {
                 registerUser(props, pseudo, userPassword, userEmail);
               }
-              //props.navigation.navigate('TagSelection');
+              // props.navigation.navigate('TagSelection');
             }}
             buttonStyle={[{ marginBottom: 5, marginTop: 5 }]}
             title={I18n.t('register')}
