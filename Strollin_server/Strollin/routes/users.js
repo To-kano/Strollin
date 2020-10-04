@@ -74,6 +74,7 @@ router.post('/addTag', async function(req, res) {
 // LOGIN
 router.get('/login', async function(req, res) {
 
+  //console.log("login :", req.headers);
   let user = await UserModel.findOne({mail: req.headers.mail, password: req.headers.password});
   let token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 

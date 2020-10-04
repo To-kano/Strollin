@@ -84,7 +84,11 @@ function MyStack(props) {
               component={TageSelection}
               options={{ title: 'tag selection' }}
             />
-
+            <Stack.Screen
+            name="Notation"
+            component={Notation}
+            options={{title: 'Notation'}}
+            />
             <Stack.Screen
               name="Connection"
               component={ConnectionScreen}
@@ -104,11 +108,6 @@ function MyStack(props) {
               options={{
                 title: 'historic',
               }}
-            />
-            <Stack.Screen
-            name="Notation"
-            component={Notation}
-            options={{title: 'Notation'}}
             />
             <Stack.Screen
             name="CommentScreen"
