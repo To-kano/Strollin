@@ -39,7 +39,7 @@ router.post('/register', async function(req, res) {
 // ADD FRIEND
 router.post('/add_request_friend', async function(req, res) {
 
-  let user = await UserModel.findOne({access_token: req.body.access_token});
+  let user = await UserModel.findOne({access_token: req.headers.access_token});
   let friend = await UserModel.findOne({pseudo: req.body.pseudo});
 
   if (!user)
@@ -54,7 +54,7 @@ router.post('/add_request_friend', async function(req, res) {
 // ADD TAG
 router.post('/add_tag', async function(req, res) {
 
-  let user = await UserModel.findOne({access_token: req.body.access_token});
+  let user = await UserModel.findOne({access_token: req.headers.access_token});
   let new_tags = null;
   let add_list = req.body.tags_list
 
