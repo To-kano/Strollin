@@ -8,8 +8,8 @@ import Box from './box'
 
 function HistoryNav({ navigation, map }) {
   React.useLayoutEffect(() => {
-    props.navigation
-    props.navigation.setOptions({
+    navigation
+    navigation.setOptions({
       // headerRight: () => (
       //   <Button
       //       title="Log Out"
@@ -28,19 +28,19 @@ function HistoryNav({ navigation, map }) {
       <View style={styles.header}>
         <TouchableOpacity
           style={{width: '20%', height: '100%', marginLeft: 15}}
-          onPress={() => props.navigation.navigate('HomePage')}
+          onPress={() => navigation.navigate('HomePage')}
         >
           <Image style={{marginTop: "10%", height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'}} source={require('../ressources/home.png')} />
         </TouchableOpacity>
         <TouchableOpacity
           style={{width: '20%', height: '100%'}}
-          onPress={() => props.navigation.navigate('historicUser')}
+          onPress={() => navigation.navigate('historicUser')}
         >
           <Image style={{marginTop: "10%", height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'}} source={require('../ressources/history.png')} />
         </TouchableOpacity>
         <TouchableOpacity
           style={{width: '20%', height: '100%'}}
-          onPress={() => props.navigation.navigate('TripSuggestion')}
+          onPress={() => navigation.navigate('TripSuggestion')}
         >
           <Image style={{marginTop: "10%", height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'}} source={require('../ressources/plus.png')} />
         </TouchableOpacity>
@@ -52,14 +52,14 @@ function HistoryNav({ navigation, map }) {
         </TouchableOpacity>
         <TouchableOpacity
           style={{width: '20%', height: '100%'}}
-          onPress={() => props.navigation.navigate('Profile')}
+          onPress={() => navigation.navigate('Profile')}
         >
           <Image style={{marginTop: "10%", height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'}} source={require('../ressources/profile.png')} />
         </TouchableOpacity>
       </View>
       <View style={styles.fill}>
         <FlatList
-          data={props.map.historic}
+          data={map.historic}
           renderItem={({ item }) => (
             <View style={{padding: 10}} >
               <Text>date: {item.date}</Text>
