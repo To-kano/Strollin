@@ -33,7 +33,7 @@ function profileReducer(state = initialState, action) {
         ...state,
         accessToken: action.value
       };
-      console.log("profile reducer", nextState);
+      //console.log("profile reducer", nextState);
       return nextState;
 
     case 'DECONNECTION':
@@ -45,7 +45,7 @@ function profileReducer(state = initialState, action) {
         ...state,
         ...action.value
       };
-      console.log("profile reducer", nextState);
+      //console.log("profile reducer", nextState);
       storeProfile(nextState);
       return nextState;
 

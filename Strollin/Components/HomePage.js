@@ -77,6 +77,7 @@ function HomePage(props) {
           contentContainerStyle={{ flexGrow: 1}}
           renderItem={({ item }) => <Box style={{height: '100%'}} 
           {...item}
+          navigation={props.navigation}
           />}
           keyExtractor={item => item.id}
         />
