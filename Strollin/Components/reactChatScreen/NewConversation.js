@@ -3,7 +3,7 @@ import {
   View, Text, StyleSheet, TextInput, TouchableOpacity, Image, FlatList
 } from 'react-native';
 import { connect } from 'react-redux';
-import FriendList from './FriendList';
+import friendList from './FriendList';
 import SearchBar from './SearchBar';
 import Store from '../../Store/configureStore';
 
@@ -17,8 +17,8 @@ function sortConversation(key) {
   if (key == '') {
     Store.dispatch(action);
   } else {
-    for (i in store.profil.FriendList) {
-      if (key == store.profil.FriendList[i]) {
+    for (i in store.profil.friendList) {
+      if (key == store.profil.friendList[i]) {
         action = { type: 'SET_FRIEND', value: { friendList: [key] } };
         Store.dispatch(action);
         notFound = false;
@@ -46,8 +46,8 @@ function NewConversation(props) {
       </View>
       <View>
         <FlatList
-          data={props.profil.FriendList}
-          renderItem={({ item }) => <FriendList {...props} name={item} />}
+          data={props.profil.friendList}
+          renderItem={({ item }) => <friendList {...props} name={item} />}
           keyExtractor={(item) => item}
         />
       </View>

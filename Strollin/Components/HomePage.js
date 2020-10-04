@@ -111,6 +111,16 @@ function HomePage(props) {
           keyExtractor={(item) => item.id}
         />
       </View>
+      <View style={{ flexDirection: 'column' }}>
+        <TouchableOpacity
+          style={styles.newTrip}
+          onPress={() => props.navigation.navigate('MenuChat')}
+        >
+          <Text style={{ fontSize: 16, color: '#FFFFFF' }}>
+            Go to Chat
+          </Text>
+        </TouchableOpacity>
+      </View>
       <View style={{ flex: 0.10, flexDirection: 'column', margin: '5%' }}>
         <TouchableOpacity
           style={styles.newTrip}

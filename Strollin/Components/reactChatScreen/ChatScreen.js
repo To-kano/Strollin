@@ -28,17 +28,17 @@ function sendMessage(message, socket) {
   const action = {
     type: 'ADD_MESSAGE_TO_CONVERSATION',
     value: {
-      id: newId, content: message, userId: store.profil.Id, username: store.profil.Pseudo
+      id: newId, content: message, userId: store.profil.Id, username: store.profil.pseudo
     }
   };
-  console.log('Pseudo =  ', store.profil.Pseudo);
+  console.log('Pseudo =  ', store.profil.pseudo);
 
   Store.dispatch(action);
   socket.emit('chat message', message);
 }
 
 function ChatScreen(props) {
-  const [messages, setMessages] = useState([getHistoric(props)]);
+  //const [messages, setMessages] = useState([getHistoric(props)]);
 
   return (
     <View style={styles.box}>

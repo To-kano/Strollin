@@ -17,7 +17,7 @@ function getUser(props) {
     if (j == true) {
       tmp = `${tmp}, `;
     }
-    if (props.jsonConversation.usersId[i] != props.profil.Pseudo) {
+    if (props.jsonConversation.usersId[i] != props.profil.pseudo) {
       tmp += props.jsonConversation.usersId[i];
       j = true;
     }

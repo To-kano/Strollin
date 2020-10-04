@@ -66,8 +66,8 @@ function sortConversation(key) {
   if (key == '') {
     Store.dispatch(action);
   } else {
-    for (i in store.profil.FriendList) {
-      if (key == store.profil.FriendList[i]) {
+    for (i in store.profil.friendList) {
+      if (key == store.profil.friendList[i]) {
         action = { type: 'SET_FRIEND', value: { friendList: [key] } };
         Store.dispatch(action);
         notFound = false;
@@ -83,7 +83,7 @@ function sortConversation(key) {
 }
 
 function LoginScreen(props) {
-  if (props.profil.Pseudo == null) {
+  if (props.profil.pseudo == null) {
     setUser(props);
     return (
       <View style={styles.container}>
