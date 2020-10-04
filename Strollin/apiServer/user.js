@@ -17,6 +17,7 @@ async function loginUser(props, newMail, newPassword) {
         const action = { type: 'CONNECTION', value: answer.accessToken };
         props.dispatch(action);
       } else {
+        console.log("login user faile: ", answer);
       }
     })
     .catch((error) => {

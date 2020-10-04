@@ -1,11 +1,5 @@
-import React, { useState } from 'react';
 import {
-  StyleSheet, Text, View, Image, TextInput, Button
-} from 'react-native';
-import { connect } from 'react-redux';
-
-import {
-  LoginButton, AccessToken, GraphRequest, GraphRequestManager
+  GraphRequest, GraphRequestManager
 } from 'react-native-fbsdk';
 
 const getInfoFromToken = (token, setUserInfo) => {

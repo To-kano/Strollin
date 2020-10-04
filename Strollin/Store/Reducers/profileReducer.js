@@ -71,18 +71,10 @@ function profileReducer(state = initialState, action) {
       };
       return nextState;
 
-    case 'SET_FRIEND':
-      nextState = {
-        ...state,
-        friend: state.friend + action.value.friend
-      };
-      return nextState;
-
     case 'DEL_FRIEND':
-      var userAdd = friend.filter((item) => action.value.name != friend.name);
       nextState = {
         ...state,
-        friend: userAdd
+        friend: state.friend.filter((item) => action.value.name !== item.name)
       };
       return nextState;
 
@@ -101,10 +93,9 @@ function profileReducer(state = initialState, action) {
       return nextState;
 
     case 'DEL_GROUP':
-      var userAdd = group.filter((item) => action.value.name != group.name);
       nextState = {
         ...state,
-        group: userAdd
+        group: state.group.filter((item) => action.value.name !== item.name)
       };
       return nextState;
 

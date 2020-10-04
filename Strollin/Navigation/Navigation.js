@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { Button, Text, View } from 'react-native';
-
 import AsyncStorage from '@react-native-community/async-storage';
 import { connect } from 'react-redux';
 
@@ -43,15 +41,6 @@ const getProfilCache = async (props) => {
     console.log('echec store profile ', e);
   }
 };
-
-function LogoTitle(props) {
-  console.log('logo ', props);
-  return (
-    <View>
-      <Text>title</Text>
-    </View>
-  );
-}
 
 function MyStack(props) {
   if (!props.profil.access_token) {
