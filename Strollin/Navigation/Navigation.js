@@ -54,7 +54,7 @@ function MyStack(props) {
           headerShown: false
         }}
       >
-        {props.profil.accessToken != null ? (
+        {props.profil.accessToken == null ? (
           <>
             <Stack.Screen
               name="userLogin"
