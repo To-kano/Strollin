@@ -57,7 +57,7 @@ function HomePage(props) {
         </TouchableOpacity>
         <TouchableOpacity
           style={{width: '20%', height: '100%'}}
-          onPress={() => console.log('friend')}
+          onPress={() => props.navigation.navigate('FriendList')}
         >
           <Image style={{marginTop: "10%", height: '65%', width: '50%', opacity: 0.5, resizeMode: 'stretch'}} source={require('../ressources/friend.png')} />
         </TouchableOpacity>
