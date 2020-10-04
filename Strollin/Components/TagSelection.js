@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 
 import { connect } from 'react-redux';
 import {
-  StyleSheet, Text, View, Button, ImageBackground, FlatList, Dimensions
+  StyleSheet, Text, View, Button, ImageBackground, FlatList, Dimensions, TouchableOpacity
 } from 'react-native';
 
 import { RondFormeText } from './rondForm';
 import I18n from "../Translation/configureTrans";
+import BackgroundImage from './backgroundImage';
 
 const imageLondon = require('../images/london2.jpg');
 
@@ -141,7 +142,7 @@ function TageSelection({ navigation, profil }) {
         {I18n.t("welcome")}
         </Text>
         <Text style={[{textAlign: 'center', fontWeight: 'bold', fontSize: 35}]}>
-          {props.profil.FirstName}
+          {profil.pseudo}
         </Text>
         <Text
           style={[
@@ -163,7 +164,7 @@ function TageSelection({ navigation, profil }) {
           />
           <TouchableOpacity
             style={styles.newTrip}
-            onPress={() => props.navigation.navigate('HomePage')}
+            onPress={() => navigation.navigate('Profile')}
             //onPress={() =>
             //  // this.NextPage(navigation.getParam('uid'))
             //}

@@ -80,11 +80,6 @@ function MyStack(props) {
               options={{ title: 'inscription' }}
             />
             <Stack.Screen
-              name="TagSelection"
-              component={TageSelection}
-              options={{ title: 'tag selection' }}
-            />
-            <Stack.Screen
             name="Notation"
             component={Notation}
             options={{title: 'Notation'}}
@@ -138,6 +133,11 @@ function MyStack(props) {
                 name="NewConversation"
                 component={NewConversation}
                 options={{title: 'newConversation'}}
+            />
+            <Stack.Screen
+              name="TagSelection"
+              component={TageSelection}
+              options={{ title: 'tag selection' }}
             />
             <Stack.Screen
               name="Home"

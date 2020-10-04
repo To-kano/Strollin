@@ -86,6 +86,11 @@ function ProfileScreen(props) {
           <Text style={{marginTop: '4%', fontSize: 22,}}>{I18n.t("tags")}</Text>
           <Text style={styles.inputText}>{list}</Text>
         </View>
+        <Button
+        title={"Change Tag"}
+        color="black"
+        onPress={() => props.navigation.navigate('TagSelection')}
+      />
       </View>
     </View>
   )}
