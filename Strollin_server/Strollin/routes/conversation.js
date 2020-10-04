@@ -7,7 +7,7 @@ const {
 
 const {
     UserModel
-} = require("../models/users")
+} = require("../models/user")
 
 
 // Post
@@ -28,21 +28,21 @@ const {
 
 // Get
 
-router.get('/getConversation', async function(req, res) {
-    let conversation = await ConversationModel.findOne({});
+router.get('/get_conversation', async function(req, res) {
+    let conversation = await ConversationModel.findOne({_id: req.headers.id});
 
     if (conversation) {
-        return  res.status(200).send({status: "The conversation is found.", discussion: message});
+        return  res.status(200).send({status: "The conversation is found.", conversation});
     }
     return res.status(400).send({status: "The conversation is not found."});
 });
 
-router.get('/getAllConversation', async function(req, res) {
+router.get('/get_all_conversation', async function(req, res) {
     let user = await UserModel.findOne({access_token: req.headers.access_token})
     let conversations = null;
 
     if (user) {
-        conversation = await ConversationModel.find({participants: {$elemMatch: user.id}})
+        conversations = await ConversationModel.find({participants: {$elemMatch: user._id}})
         return res.status(200).send({status: "All conversations are found.", conversations});
     }
     return res.status(400).send({status: "There is not conversation with your account."});
@@ -51,12 +51,12 @@ router.get('/getAllConversation', async function(req, res) {
 
 // Delete
 
-router.delete('/deleteConversation', async function(req, res) {
-    let conversation = await ConversationModel.findOne({});
+router.delete('/delete_conversation', async function(req, res) {
+    let conversation = await ConversationModel.findOne({_id: req.headers.id});
 
     if (conversation) {
         await conversation.remove();
-        return  res.status(200).send({status: "The conversation is deleted.", discussion: message});
+        return  res.status(200).send({status: "The conversation is deleted."});
     }
     return res.status(400).send({status: "The conversation is not deleted."});
 });

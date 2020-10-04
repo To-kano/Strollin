@@ -13,11 +13,11 @@ var CourseModelSchema = new Schema({
         type: String,
         default: '0'
     },
-    userScore: {
+    user_score: {
         type: [String], //list of User ID that gave score, see user.scoreCourse
         default: []
     },
-    used: {             // Nombre de fois que ce parcours à été utilisé
+    number_used: {             // Nombre de fois que ce parcours à été utilisé
         type: String,
         default: '0'
     },
@@ -25,7 +25,7 @@ var CourseModelSchema = new Schema({
         type: String,
         required: true
     },
-    creationDate: {
+    creation_date: {
         type: Date,
         default: Date.now,
     },
@@ -33,11 +33,11 @@ var CourseModelSchema = new Schema({
         type: String,
         required: true,
     },
-    commentList: {
+    comment_list: {
         type: [String],
         default: [],
     },
-    tags: {
+    tags_list: {
         type: [String],
         default: [],
     },

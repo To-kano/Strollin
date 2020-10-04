@@ -13,7 +13,7 @@ var MessageModelSchema = new Schema({
         type: String,
         required: true
     },
-    creationDate: {
+    creation_date: {
         type: Date,
         required: true
     },
