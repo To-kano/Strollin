@@ -75,7 +75,9 @@ function HomePage(props) {
         <FlatList
           data={DATA}
           contentContainerStyle={{ flexGrow: 1}}
-          renderItem={({ item }) => <Box style={{height: '100%'}}/>}
+          renderItem={({ item }) => <Box style={{height: '100%'}} 
+          {...item}
+          />}
           keyExtractor={item => item.id}
         />
       </View>
