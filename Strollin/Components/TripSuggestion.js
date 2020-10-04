@@ -187,7 +187,8 @@ function TripSuggestion(props) {
         <View style={{
           flex: 0.4, 
           flexDirection: "row", 
-          justifyContent: "space-around", 
+          justifyContent: "space-around",
+          alignItems: "center",
           padding: 10,
         }}>
           <View style={{flex: 1, paddingTop: 10, marginRight: 10}}>

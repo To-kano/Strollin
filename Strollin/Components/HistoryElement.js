@@ -21,11 +21,6 @@ function ElementHistoryNav({ data }) {
       }}
       >
         <View>
-          <Button
-            title={I18n.t("carte")}
-            color="#89B3D9"
-            onPress={() => setShowMap(!showMap)}
-          />
         </View>
         <FlatList
           data={data}
@@ -68,7 +63,7 @@ function ElementHistoryNav({ data }) {
     return (
       <View style={{margin: 10, flex: 1, justifyContent: "space-evenly", alignItems: "center" }}>
         <View style={{ margin: 5, marginBottom: 10}}>
-          <Map height={310} width={310} deltaView={deltaView} waypoints={waypoints} />
+          <Map height={310} width={310} deltaView={deltaView} waypoints={data} />
         </View>
 
         <View style={{width: '100%', flexDirection: 'row', flex: 1}}>

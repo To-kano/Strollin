@@ -72,7 +72,7 @@ function HistoryNav({ navigation, map }) {
       <View style={{flex: 0.10, flexDirection: 'column', margin: '5%'}}>
         <TouchableOpacity
           style={styles.newTrip}
-          onPress={() => props.navigation.navigate('TripSuggestion')}
+          onPress={() => navigation.navigate('TripSuggestion')}
         >
           <Text style={{fontSize: 16, color: '#FFFFFF'}}> New trip </Text>
         </TouchableOpacity>
