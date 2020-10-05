@@ -7,7 +7,7 @@ import I18n from '../Translation/configureTrans';
 import BackgroundImage from './backgroundImage';
 
 const imageFriend = require('../ressources/friend.png');
-const imageHistory = require('../ressources/history.png');
+//const imageHistory = require('../ressources/history.png');
 const imageProfile = require('../ressources/profile.png');
 
 function HomePage(props) {
@@ -57,7 +57,7 @@ function HomePage(props) {
             style={{
               marginTop: '10%', height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'
             }}
-            source={require('../ressources/history.png')}
+            source={require('../ressources/plus.png')}
           />
         </TouchableOpacity>
         <TouchableOpacity

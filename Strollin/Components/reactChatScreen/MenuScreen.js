@@ -83,7 +83,7 @@ function sortConversation(key) {
 }
 
 function LoginScreen(props) {
-  if (props.profil.pseudo == null) {
+  if (props.profil.friendList.length == 0) {
     setUser(props);
     return (
       <View style={styles.container}>
