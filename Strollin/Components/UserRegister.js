@@ -19,7 +19,7 @@ import BackgroundImage from './backgroundImage';
 const getInfoFromToken = (token, setUserInfo) => {
   const PROFILE_REQUEST_PARAMS = {
     fields: {
-      string: 'id, name,  first_name, last_name',
+      string: 'id, name, last_name, first_name',
     },
   };
   const profileRequest = new GraphRequest(
@@ -27,10 +27,10 @@ const getInfoFromToken = (token, setUserInfo) => {
     { token, parameters: PROFILE_REQUEST_PARAMS },
     (error, result) => {
       if (error) {
-        console.log(`login info has error: ${error}`);
+        // console.log(`login info has error: ${error}`);
       } else {
+        // console.log('result:', result);
         setUserInfo(result);
-        console.log('result:', result);
       }
     },
   );
@@ -71,11 +71,15 @@ function UserRegister(props) {
         margin: 20,
         backgroundColor: 'rgba(255,255,255, 0.95)',
         padding: 10,
+        paddingBottom: '5%',
         justifyContent: 'space-around',
         alignItems: 'center',
         borderRadius: 10
       }}
       >
+        <View style={styles.logo}>
+          <Image source={require('../ressources/logo3.png')} />
+        </View>
         <View style={{ width: '80%' }}>
           <TextInput
             style={styles.inputText}
@@ -106,7 +110,7 @@ function UserRegister(props) {
           <TextInput
             style={styles.inputText}
             autoCapitalize="none"
-            placeholder={I18n.t('Password')}
+            placeholder={I18n.t('password')}
             secureTextEntry
             value={userPassword}
             onChangeText={(valueText) => {
@@ -143,12 +147,14 @@ function UserRegister(props) {
           />
         </View>
         <View style={{ flex: 0.1, flexDirection: 'column' }}>
-          <Text style={{ fontSize: 20, textAlign: 'center', margin: 5 }}>
+          <Text style={{ fontSize: 20, textAlign: 'center', padding: 5 }}>
             OU
           </Text>
         </View>
-        <View style={{ flex: 0.1, margin: 20 }}>
+        <View style={{ flex: 0.1, margin: 10 }}>
           <LoginButton
+            publishPermissions={['publish_actions']}
+            readPermissions={['public_profile']}
             onLoginFinished={(error, result) => {
               if (error) {
                 console.log(`login has error: ${result.error}`);
@@ -158,26 +164,31 @@ function UserRegister(props) {
                 AccessToken.getCurrentAccessToken().then((data) => {
                   const accessToken = data.accessToken.toString();
                   getInfoFromToken(accessToken, setUserInfo);
-                  props.navigation.navigate('TagSelection');
+                  // registerUser(props, userInfo.name, userInfo.id, userInfo.name)
+                  // props.navigation.navigate('TagSelection');
                 });
               }
             }}
             onLogoutFinished={() => setUserInfo({})}
-          />
+            />
           {userInfo.name && (
-          <Text style={{ fontSize: 16, marginVertical: 16 }}>
+            <Text style={{ fontSize: 10, marginVertical: 5, textAlign: 'center', }}>
             Logged in As
             {' '}
             {userInfo.name}
-          </Text>
-          )}
+          </Text>)}
         </View>
-        <Text style={{ paddingTop: 10 }}>{I18n.t('alreadyAccount')}</Text>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', margin: 10 }}>
+        <View style={{ flex: 0.1, flexDirection: 'column' }}>
+          <Text style={{ fontSize: 20, textAlign: 'center', margin: 5 }}>
+            OU
+          </Text>
+        </View>
+        <Text style={{ paddingTop: 20 }}>{I18n.t('alreadyAccount')}</Text>
+        <View style={styles.button}>
 
           <Button
             title={I18n.t('signIn')}
-            color="black"
+            color="#89B3D9"
             onPress={() => props.navigation.navigate('userLogin')}
           />
         </View>
@@ -198,7 +209,7 @@ const styles = StyleSheet.create({
     flex: 0.1,
     justifyContent: 'center',
     marginTop: 100,
-    marginBottom: 100,
+    marginBottom: 80,
   },
   button: {
     flex: 0.1,
@@ -220,9 +231,9 @@ const styles = StyleSheet.create({
     padding: 10
   },
   inputText: {
-    height: 50,
+    height: 40,
     width: '100%',
-    fontSize: 20,
+    fontSize: 16,
     paddingLeft: 20,
     backgroundColor: '#D9D9D9',
     borderRadius: 5,

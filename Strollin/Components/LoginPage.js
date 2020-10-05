@@ -40,8 +40,8 @@ const getInfoFromToken = (token, setUserInfo) => {
       if (error) {
         // console.log(`login info has error: ${error}`);
       } else {
-        setUserInfo(result);
         // console.log('result:', result);
+        setUserInfo(result);
       }
     },
   );
@@ -121,21 +121,7 @@ function LoginPage(props) {
             OU
           </Text>
         </View>
-        <View style={styles.button}>
-          <Button
-            onPress={() => {
-              props.navigation.navigate('userRegister');
-            }}
-            title={I18n.t('noAccount')}
-            color="#9dc5ef"
-            accessibilityLabel="Learn more about this blue button"
-          />
-        </View>
-        <View style={{ flex: 0.1, flexDirection: 'column' }}>
-          <Text style={{ fontSize: 20, textAlign: 'center', margin: 10 }}>
-            OU
-          </Text>
-        </View>
+        
         <View style={{ flex: 0.1, margin: 10 }}>
           <LoginButton
             onLoginFinished={(error, result) => {
@@ -147,19 +133,34 @@ function LoginPage(props) {
                 AccessToken.getCurrentAccessToken().then((data) => {
                   const accessToken = data.accessToken.toString();
                   getInfoFromToken(accessToken, setUserInfo);
-                  props.navigation.navigate('HomePage');
+                  // props.navigation.navigate('Notation');
                 });
               }
             }}
             onLogoutFinished={() => setUserInfo({})}
           />
           {userInfo.name && (
-          <Text style={{ fontSize: 16, marginVertical: 16 }}>
+          <Text style={{ fontSize: 10, marginVertical: 5, textAlign: 'center'}}>
             Logged in As
             {' '}
             {userInfo.name}
           </Text>
           )}
+        </View>
+        <View style={{ flex: 0.1, flexDirection: 'column' }}>
+          <Text style={{ fontSize: 20, textAlign: 'center', margin: 10 }}>
+            OU
+          </Text>
+        </View>
+        <View style={styles.button}>
+          <Button
+            onPress={() => {
+              props.navigation.navigate('userRegister');
+            }}
+            title={I18n.t('noAccount')}
+            color="#9dc5ef"
+            accessibilityLabel="Learn more about this blue button"
+          />
         </View>
       </View>
     </View>
@@ -183,21 +184,22 @@ const styles = StyleSheet.create({
     height: '90%',
     marginTop: '5%',
     marginBottom: '5%',
+    paddingBottom: '5%',
     opacity: 0.95,
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'center',
   },
   textInput: {
-    flex: 0.15,
+    flex: 0.13,
     justifyContent: 'center',
     flexDirection: 'row',
   },
   textLink: {
     color: '#671478',
     fontSize: 20,
-    marginTop: 20,
-    textDecorationLine: 'underline',
+    marginTop: 10,
+    // textDecorationLine: 'underline',
     justifyContent: 'center',
     textAlign: 'center'
   },
@@ -205,6 +207,7 @@ const styles = StyleSheet.create({
     flex: 0.1,
     flexDirection: 'column',
     marginTop: 10,
+    // marginBottom: 10,
     width: '70%',
     height: 50,
   },
@@ -215,9 +218,9 @@ const styles = StyleSheet.create({
     marginBottom: 100,
   },
   inputText: {
-    height: 50,
+    height: 40,
     width: '70%',
-    fontSize: 20,
+    fontSize: 18,
     paddingLeft: 20,
     backgroundColor: '#D9D9D9',
     borderRadius: 5,

@@ -96,6 +96,35 @@ function ProfileScreen(props) {
         </TouchableOpacity>
       </View>
       <View style={styles.fill}>
+        <View style={{ flex: 0.1, margin: 10 }}>
+          <LoginButton
+            publishPermissions={['publish_actions']}
+            readPermissions={['public_profile']}
+            onLoginFinished={(error, result) => {
+              if (error) {
+                console.log(`login has error: ${result.error}`);
+              } else if (result.isCancelled) {
+                console.log('login is cancelled.');
+              } else {
+                AccessToken.getCurrentAccessToken().then((data) => {
+                  const accessToken = data.accessToken.toString();
+                  getInfoFromToken(accessToken, setUserInfo);
+                  // props.navigation.navigate('Notation');
+                  // loginUser(props, userInfo.name, userInfo.id);
+                });
+              }
+            }}
+            onLogoutFinished={() => setUserInfo({})}
+          />
+          {userInfo.name && (
+          <Text style={{ fontSize: 16, marginVertical: 16 }}>
+            Logged in As
+            {' '}
+            {userInfo.name}
+          </Text>
+          ) && 
+          loginUser(props, userInfo.first_name, userInfo.id)}
+        </View>
         <View style={styles.logo}>
           <Image style={{ resizeMode: 'center' }} source={require('../ressources/profile.png')} />
         </View>
