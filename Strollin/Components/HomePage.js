@@ -7,12 +7,11 @@ import I18n from '../Translation/configureTrans';
 import BackgroundImage from './backgroundImage';
 
 const imageFriend = require('../ressources/friend.png');
-//const imageHistory = require('../ressources/history.png');
+// const imageHistory = require('../ressources/history.png');
 const imageProfile = require('../ressources/profile.png');
 
 function HomePage(props) {
-
-  console.log("HomPage");
+  console.log('HomPage');
   const DATA = [
     {
       id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',

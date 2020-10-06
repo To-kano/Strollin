@@ -54,8 +54,7 @@ function LoginPage(props) {
   const [Img, onChangeImg] = React.useState(RandPic());
   const [userInfo, setUserInfo] = React.useState({});
 
-  //console.log("LoginPage");
-
+  // console.log("LoginPage");
 
   return (
     <View style={styles.back}>
@@ -75,7 +74,7 @@ function LoginPage(props) {
             autoCapitalize="none"
             onChangeText={(text) => {
               onChangeText(text);
-              //console.log(text);
+              // console.log(text);
             }}
             value={value}
             textAlign="left"

@@ -51,8 +51,7 @@ function UserRegister(props) {
   //  setUserFirstName(value);
   // };
 
-  console.log("UserRegister");
-
+  console.log('UserRegister');
 
   if (loading) {
     return (

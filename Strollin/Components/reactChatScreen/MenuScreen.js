@@ -12,7 +12,7 @@ function NewConversation(props) {
   props.navigation.navigate('NewConversation');
 }
 
- async function setUser() {
+async function setUser() {
   const action = {
     type: 'SET_USER',
     value: {
@@ -83,11 +83,10 @@ function sortConversation(key) {
 }
 
 function LoginScreen(props) {
-
-  console.log("Menu Screen");
+  console.log('Menu Screen');
   if (props.profil.friendList.length == 0) {
     setUser();
-    /*return (
+    /* return (
       <View style={styles.container}>
         <View style={styles.circle} />
         <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
@@ -103,11 +102,11 @@ function LoginScreen(props) {
           <Text style={styles.header}>Charging messages</Text>
         </View>
       </View>
-    );*/
+    ); */
   }
   if (props.conversation.conversationList.length < 1) {
     setHistoric();
-    /*return (
+    /* return (
       <View style={styles.container}>
         <View style={styles.circle} />
         <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
@@ -123,7 +122,7 @@ function LoginScreen(props) {
           <Text style={styles.header}>Charging messages</Text>
         </View>
       </View>
-    );*/
+    ); */
   }
 
   return (
