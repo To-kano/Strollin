@@ -51,6 +51,9 @@ function UserRegister(props) {
   //  setUserFirstName(value);
   // };
 
+  console.log("UserRegister");
+
+
   if (loading) {
     return (
       <View style={{ flex: 1 }}>

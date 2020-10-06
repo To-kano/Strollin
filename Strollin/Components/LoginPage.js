@@ -54,6 +54,9 @@ function LoginPage(props) {
   const [Img, onChangeImg] = React.useState(RandPic());
   const [userInfo, setUserInfo] = React.useState({});
 
+  console.log("LoginPage");
+
+
   return (
     <View style={styles.back}>
       <Image
@@ -69,9 +72,10 @@ function LoginPage(props) {
         <View style={styles.textInput}>
           <TextInput
             style={styles.inputText}
+            autoCapitalize="none"
             onChangeText={(text) => {
               onChangeText(text);
-              console.log(text);
+              //console.log(text);
             }}
             value={value}
             textAlign="left"
@@ -82,6 +86,7 @@ function LoginPage(props) {
         <View style={styles.textInput}>
           <TextInput
             style={styles.inputText}
+            autoCapitalize="none"
             onChangeText={(text) => onChangePass(text)}
             value={valuePass}
             textAlign="left"
