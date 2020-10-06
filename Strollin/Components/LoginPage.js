@@ -54,7 +54,7 @@ function LoginPage(props) {
   const [Img, onChangeImg] = React.useState(RandPic());
   const [userInfo, setUserInfo] = React.useState({});
 
-  console.log("LoginPage");
+  //console.log("LoginPage");
 
 
   return (

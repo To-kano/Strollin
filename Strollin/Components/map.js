@@ -20,7 +20,7 @@ async function updateCoordinates(setUserPosition) {
         latitude: position.coords.latitude,
         longitude: position.coords.longitude,
       };
-      console.log(position);
+      //console.log(position);
       setUserPosition(data);
     },
     (error) => {
@@ -45,11 +45,11 @@ async function requestGeolocalisationPermission(props) {
     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
       const action = { type: 'SET_PERMISSION', value: true };
       props.dispatch(action);
-      console.log('You can use the geolocalisation');
+      //console.log('You can use the geolocalisation');
     } else {
       const action = { type: 'SET_PERMISSION', value: false };
       props.dispatch(action);
-      console.log('geolocalisation permission denied');
+      //console.log('geolocalisation permission denied');
     }
   } catch (err) {
     console.warn(err);
