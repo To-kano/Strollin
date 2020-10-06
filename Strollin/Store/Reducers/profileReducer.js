@@ -59,7 +59,7 @@ function profileReducer(state = initialState, action) {
     case 'SET_FRIEND':
       nextState = {
         ...state,
-        FriendList: action.value.friendList
+        friendList: action.value.friendList
 
       };
       return nextState;

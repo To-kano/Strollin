@@ -43,8 +43,9 @@ const getProfilCache = async (props) => {
 };
 
 function MyStack(props) {
-  if (!props.profil.access_token) {
+  if (!props.profil.accessToken) {
     getProfilCache(props);
+    console.log('nav props: ', props.profil);
   }
   // console.log("nav props: ", props.profil);
   return (

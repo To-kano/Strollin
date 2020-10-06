@@ -7,10 +7,11 @@ import I18n from '../Translation/configureTrans';
 import BackgroundImage from './backgroundImage';
 
 const imageFriend = require('../ressources/friend.png');
-const imageHistory = require('../ressources/history.png');
+// const imageHistory = require('../ressources/history.png');
 const imageProfile = require('../ressources/profile.png');
 
 function HomePage(props) {
+  console.log('HomPage');
   const DATA = [
     {
       id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
@@ -57,7 +58,7 @@ function HomePage(props) {
             style={{
               marginTop: '10%', height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'
             }}
-            source={require('../ressources/history.png')}
+            source={require('../ressources/plus.png')}
           />
         </TouchableOpacity>
         <TouchableOpacity
@@ -111,6 +112,16 @@ function HomePage(props) {
           keyExtractor={(item) => item.id}
         />
       </View>
+      <View style={{ flexDirection: 'column' }}>
+        <TouchableOpacity
+          style={styles.newTrip}
+          onPress={() => props.navigation.navigate('MenuChat')}
+        >
+          <Text style={{ fontSize: 16, color: '#FFFFFF' }}>
+            Go to Chat
+          </Text>
+        </TouchableOpacity>
+      </View>
       <View style={{ flex: 0.10, flexDirection: 'column', margin: '5%' }}>
         <TouchableOpacity
           style={styles.newTrip}
@@ -160,7 +171,18 @@ const styles = StyleSheet.create({
     paddingVertical: '5%',
     paddingHorizontal: '30%',
     borderRadius: 5,
-  }
+  },
+  cont: {
+    marginTop: '5%',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    flex: 0.1,
+    backgroundColor: '#FFC300',
+    width: '90%',
+    height: '120%',
+    borderRadius: 20
+  },
 });
 
 export default HomePage;

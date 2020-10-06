@@ -23,9 +23,9 @@ async function GotoChat(props) {
   if (new_conversation == true) {
     const newId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
-    const action = { type: 'ADD_CONVERSATION', value: { id: newId, usersId: [store.profil.Pseudo, props.name], messages: [] } };
+    const action = { type: 'ADD_CONVERSATION', value: { id: newId, usersId: [store.profil.pseudo, props.name], messages: [] } };
     props.dispatch(action);
-    const action2 = { type: 'SET_CURRENT_CONVERSATION', value: { id: newId, usersId: [store.profil.Pseudo, props.name], messages: [] } };
+    const action2 = { type: 'SET_CURRENT_CONVERSATION', value: { id: newId, usersId: [store.profil.pseudo, props.name], messages: [] } };
     props.dispatch(action2);
     props.navigation.navigate('MenuChat');
   } else {

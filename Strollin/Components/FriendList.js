@@ -183,6 +183,7 @@ function FriendList(props) {
         <View>
           <TextInput
             underlineColorAndroid="black"
+            autoCapitalize="none"
             onChangeText={(text) => {
               onChangeText(text);
               console.log(text);

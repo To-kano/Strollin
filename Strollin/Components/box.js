@@ -4,7 +4,7 @@ import {
 import React from 'react';
 
 async function GotoComment(props) {
-  console.log('GOING TO COMMENT');
+  // console.log('GOING TO COMMENT');
   // redux currentComment = props.data.id
   props.navigation.navigate('CommentScreen');
 }
