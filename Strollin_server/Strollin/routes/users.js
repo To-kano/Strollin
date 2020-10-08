@@ -36,20 +36,38 @@ router.post('/register', async function(req, res) {
   return res.status(400).send({status: "The entry is invalid."});
 });
 
-// ADD FRIEND
-router.post('/add_request_friend', async function(req, res) {
+// ADD REQUEST FRIEND
+router.post('/add_friend_request', async function(req, res) {
 
   let user = await UserModel.findOne({access_token: req.headers.access_token});
-  let friend = await UserModel.findOne({pseudo: req.body.pseudo});
+  let friend = await UserModel.findOne({_id: req.body.friend});
 
   if (!user)
     return res.status(400).send({status: "You are not connected."});
   if (friend) {
     await friend.updateOne({$push: {friends_request: user._id}});
-    return  res.status(200).send({status: "Friend added successfully."});
+    return  res.status(200).send({status: "Friend requested successfully."});
   }
   return res.status(400).send({status: "The friend user does not exist."});
 });
+
+// ADD FRIEND
+router.post('/add_friend', async function(req, res) {
+
+  let user = await UserModel.findOne({access_token: req.headers.access_token});
+  let friend = await UserModel.findOne({_id: req.body.friend});
+
+  if (!user)
+    return res.status(400).send({status: "You are not connected."});
+  if (friend && !user.friends_list[friend]) {
+    await friend.updateOne({$push: {friends_list: user._id}});
+    await user.updateOne({$push: {friends_list: friend._id}});
+    await user.updateOne({$pull: {friends_request: friend._id}});
+    return  res.status(200).send({status: "Friend added successfully."});
+  }
+  return res.status(400).send({status: "An error occured."});
+});
+
 
 // ADD TAG
 router.post('/add_tag', async function(req, res) {
