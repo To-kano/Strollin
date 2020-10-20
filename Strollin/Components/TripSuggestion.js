@@ -145,7 +145,7 @@ function TripSuggestion(props) {
             style={{
               marginTop: '10%', height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'
             }}
-            source={require('../ressources/history.png')}
+            source={require('../ressources/plus.png')}
           />
         </TouchableOpacity>
         <TouchableOpacity

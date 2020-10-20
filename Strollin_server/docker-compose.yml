@@ -24,7 +24,7 @@ services:
     depends_on:
       - db
   server:
-    #image: docmurloc/strollin
+    #image: docmurloc/strollin:V2
     build: ./Strollin
     container_name: server-Strollin
     networks:

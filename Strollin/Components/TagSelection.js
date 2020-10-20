@@ -88,7 +88,7 @@ function TageSelection({ navigation, profil }) {
   //         opacity: 0.5,
   //         resizeMode: 'stretch',
   //       }}
-  //       source={require('../ressources/history.png')}
+  //       source={require('../ressources/plus.png')}
   //     />
   //   </TouchableOpacity>
   //   <TouchableOpacity

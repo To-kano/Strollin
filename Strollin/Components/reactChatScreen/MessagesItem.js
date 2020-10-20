@@ -31,7 +31,7 @@ function MessagesItem(props) {
     );
   }
   console.log('username = ', props.username, 'message = ', props.message);
-  if (props.username != props.profil.Pseudo) {
+  if (props.username != props.profil.pseudo) {
     return (
       <View style={styles.greyDisplay}>
         <View style={styles.box}>

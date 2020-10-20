@@ -12,7 +12,7 @@ function NewConversation(props) {
   props.navigation.navigate('NewConversation');
 }
 
-function setUser(props, profile) {
+async function setUser() {
   const action = {
     type: 'SET_USER',
     value: {
@@ -23,10 +23,10 @@ function setUser(props, profile) {
       friendList: ['Koko', 'Yaya', 'Zaza'],
     }
   };
-  props.dispatch(action);
+  Store.dispatch(action);
 }
 
-function setHistoric(props) {
+async function setHistoric() {
   const data = [{
     id: 'convIdTEST',
     usersId: ['Kano', 'Koko'],
@@ -54,7 +54,7 @@ function setHistoric(props) {
   }];
 
   const action = { type: 'SET_CONVERSATION', value: data };
-  props.dispatch(action);
+  Store.dispatch(action);
 }
 
 function sortConversation(key) {
@@ -66,8 +66,8 @@ function sortConversation(key) {
   if (key == '') {
     Store.dispatch(action);
   } else {
-    for (i in store.profil.FriendList) {
-      if (key == store.profil.FriendList[i]) {
+    for (i in store.profil.friendList) {
+      if (key == store.profil.friendList[i]) {
         action = { type: 'SET_FRIEND', value: { friendList: [key] } };
         Store.dispatch(action);
         notFound = false;
@@ -83,9 +83,10 @@ function sortConversation(key) {
 }
 
 function LoginScreen(props) {
-  if (props.profil.Pseudo == null) {
-    setUser(props);
-    return (
+  console.log('Menu Screen');
+  if (props.profil.friendList.length == 0) {
+    setUser();
+    /* return (
       <View style={styles.container}>
         <View style={styles.circle} />
         <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
@@ -101,11 +102,11 @@ function LoginScreen(props) {
           <Text style={styles.header}>Charging messages</Text>
         </View>
       </View>
-    );
+    ); */
   }
   if (props.conversation.conversationList.length < 1) {
-    setHistoric(props);
-    return (
+    setHistoric();
+    /* return (
       <View style={styles.container}>
         <View style={styles.circle} />
         <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
@@ -121,7 +122,7 @@ function LoginScreen(props) {
           <Text style={styles.header}>Charging messages</Text>
         </View>
       </View>
-    );
+    ); */
   }
 
   return (
