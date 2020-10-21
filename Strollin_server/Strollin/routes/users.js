@@ -9,6 +9,22 @@ const {
   TagModel
 } = require("../models/tag")
 
+const {
+  CourseModel
+} = require("../models/course")
+
+/* ROUTE MODEL TO COPY PASTE
+router.post('/name', async function(req, res) {
+
+  let user = await UserModel.findOne({access_token: req.headers.access_token});
+
+  if (!user)
+    return res.status(400).send({status: "You are not connected."});
+
+    return res.status(400).send({status: "An error occured."});
+});
+*/
+
 
 // REGISTER
 router.post('/register', async function(req, res) {
@@ -44,7 +60,7 @@ router.post('/add_friend_request', async function(req, res) {
 
   if (!user)
     return res.status(400).send({status: "You are not connected."});
-  if (friend) {
+  if (friend && !friend.friends_request[user._id] && !user.friends_request[friend._id]) {
     await friend.updateOne({$push: {friends_request: user._id}});
     return  res.status(200).send({status: "Friend requested successfully."});
   }
@@ -59,7 +75,7 @@ router.post('/add_friend', async function(req, res) {
 
   if (!user)
     return res.status(400).send({status: "You are not connected."});
-  if (friend && !user.friends_list[friend]) {
+  if (friend && !friend.friends_list[user._id] && !user.friends_list[friend._id] && user.friends_request[friend._id]) {
     await friend.updateOne({$push: {friends_list: user._id}});
     await user.updateOne({$push: {friends_list: friend._id}});
     await user.updateOne({$pull: {friends_request: friend._id}});
@@ -87,6 +103,22 @@ router.post('/add_tag', async function(req, res) {
   }
   return res.status(400).send({status: "You are not connected."});
 });
+
+
+// ADD COURSE HISTORIC
+router.post('/add_historic', async function(req, res) {
+
+  let user = await UserModel.findOne({access_token: req.headers.access_token});
+  let course = await CourseModel.findOne({_id: req.body.course});
+
+  if (!user)
+    return res.status(400).send({status: "You are not connected."});
+  if (course) {
+    await user.updateOne({$push: {course_historic: {course: course._id, date: Date.now}}})
+  }
+  return res.status(400).send({status: "An error occured."});
+});
+
 
 
 // LOGIN

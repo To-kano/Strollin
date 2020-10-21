@@ -69,11 +69,18 @@ USER RELATED:
 | For friend request acception. | access_token: String | friend: userID | None |
 
 
-- ADD new tags in user's tags: ```POST /users/add_tags```
+- ADD new tags in user's tags: ```POST /users/add_tag```
 
 | Description | Headers | Body | Return |
 |-|-|-|-|
 | Add existing tag in user's list. | access_token: String | tags_list: [tagID] | None |
+
+
+- ADD a course in the user's historic: ```POST /users/add historic```
+
+| Description | Headers | Body | Return |
+|-|-|-|-|
+| Add existing course in user's historic list with the current date. | access_token: String | course: courseID | None |
 
 
 - GET log in: ```GET /users/login```
