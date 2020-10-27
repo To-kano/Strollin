@@ -7,6 +7,8 @@ import "assets/scss/paper-kit.scss";
 import "assets/demo/demo.css";
 import Index from "views/Index.js";
 import IndexFR from "views/IndexFR.js";
+import IndexPart from "views/IndexPart.js";
+import IndexPartFR from "views/IndexPartFR.js";
 import SendMail from "views/SendMail.js";
 import StrollinMain from "views/StrollinMain.js";
 import LandingPage from "views/examples/LandingPage.js";
@@ -18,6 +20,8 @@ ReactDOM.render(
     <Switch>
       <Route path="/index" render={props => <Index {...props} />} />
       <Route path="/indexFR" render={props => <IndexFR {...props} />} />
+      <Route path="/indexPart" render={props => <IndexPart {...props} />} />
+      <Route path="/indexPartFR" render={props => <IndexPartFR {...props} />} />
       <Route
         path="/strollin-main"
         render={props => <StrollinMain {...props} />}

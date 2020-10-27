@@ -11,7 +11,7 @@ import {
   Container
 } from "reactstrap";
 
-function IndexNavbarFR() {
+function IndexNavbarPart() {
   const [navbarColor, setNavbarColor] = React.useState("navbar-transparent");
   const [navbarCollapse, setNavbarCollapse] = React.useState(false);
 
@@ -47,8 +47,8 @@ function IndexNavbarFR() {
         <div className="navbar-translate">
           <NavbarBrand
             data-placement="bottom"
-            href="/indexFR"
-            title="Acceuil"
+            href="/indexPart"
+            title="Home"
           >
             Strollin'
           </NavbarBrand>
@@ -75,7 +75,7 @@ function IndexNavbarFR() {
                 data-placement="bottom"
                 href="https://twitter.com/StrollinApp"
                 target="_blank"
-                title="Suivez-nous sur Twitter !"
+                title="Follow us on Twitter!"
               >
                 <i className="fa fa-twitter" />
                 <p className="d-lg-none">Twitter</p>
@@ -86,7 +86,7 @@ function IndexNavbarFR() {
                 data-placement="bottom"
                 href="https://www.facebook.com/pg/Strollin-109109370759775/posts/?ref=page_internal"
                 target="_blank"
-                title="Aimez notre page Facebook !"
+                title="Like us on Facebook!"
               >
                 <i className="fa fa-facebook-square" />
                 <p className="d-lg-none">Facebook</p>
@@ -97,17 +97,16 @@ function IndexNavbarFR() {
                 data-placement="bottom"
                 href="https://www.instagram.com/TokanoFR/"
                 target="_blank"
-                title="Suivez-nous sur Instagram !"
+                title="Follow us on Instagram!"
               >
                 <i className="fa fa-instagram" />
                 <p className="d-lg-none">Instagram</p>
               </NavLink>
             </NavItem>
-          </Nav>
-          <div className="navbar-translate">
+            <div className="navbar-translate">
             <NavbarBrand
                 data-placement="bottom"
-                href="/indexFR"
+                href="/indexPartFR"
                 title="FR"
               >
               <img src={require("./../../assets/img/franceIcon.jpg")} style={{ width: 30, height: 18}}/>
@@ -124,7 +123,7 @@ function IndexNavbarFR() {
             <div className="navbar-translate">
               <NavbarBrand
                 data-placement="bottom"
-                href="/index"
+                href="/indexPart"
                 title="EN"
               >
               <img src={require("./../../assets/img/englandIcon.jpg")} style={{ width: 30, height: 18}}/>
@@ -141,10 +140,10 @@ function IndexNavbarFR() {
             <div className="navbar-translate">
               <NavbarBrand
                 data-placement="bottom"
-                href="/indexPartFR"
-                title="Page partenaire"
+                href="/index"
+                title="Customer Page"
               >
-              Page Partenaire
+                Customer Page
               </NavbarBrand>
               <button
                 aria-expanded={navbarCollapse}
@@ -155,10 +154,11 @@ function IndexNavbarFR() {
               >
               </button>
             </div>
+          </Nav>
         </Collapse>
       </Container>
     </Navbar>
   );
 }
 
-export default IndexNavbarFR;
+export default IndexNavbarPart;
