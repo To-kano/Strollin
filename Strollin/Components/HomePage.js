@@ -58,7 +58,7 @@ function HomePage(props) {
             style={{
               marginTop: '10%', height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'
             }}
-            source={require('../ressources/plus.png')}
+            source={require('../ressources/trip.png')}
           />
         </TouchableOpacity>
         <TouchableOpacity
@@ -95,16 +95,16 @@ function HomePage(props) {
           />
         </TouchableOpacity>
       </View>
-      <View style={styles.cont}>
+      {/* <View style={styles.cont}>
         <Text style={{ fontSize: 40 }}> Trending trip: </Text>
-      </View>
+      </View> */}
       <View style={styles.fill}>
         <FlatList
           data={DATA}
           contentContainerStyle={{ flexGrow: 1 }}
           renderItem={({ item }) => (
             <Box
-              style={{ height: '100%' }}
+              style={{ height: '100%', width: '100%' }}
               {...item}
               navigation={props.navigation}
             />
@@ -112,7 +112,7 @@ function HomePage(props) {
           keyExtractor={(item) => item.id}
         />
       </View>
-      <View style={{ flexDirection: 'column' }}>
+      {/* <View style={{ flexDirection: 'column' }}>
         <TouchableOpacity
           style={styles.newTrip}
           onPress={() => props.navigation.navigate('MenuChat')}
@@ -121,7 +121,7 @@ function HomePage(props) {
             Go to Chat
           </Text>
         </TouchableOpacity>
-      </View>
+      </View> */}
       <View style={{ flex: 0.10, flexDirection: 'column', margin: '5%' }}>
         <TouchableOpacity
           style={styles.newTrip}
@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#F07323',
     paddingVertical: '5%',
-    paddingHorizontal: '30%',
+    paddingHorizontal: '10%',
     borderRadius: 5,
   },
   cont: {

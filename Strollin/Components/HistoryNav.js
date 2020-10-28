@@ -47,7 +47,7 @@ function HistoryNav({ navigation, map }) {
             style={{
               marginTop: '10%', height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'
             }}
-            source={require('../ressources/plus.png')}
+            source={require('../ressources/trip.png')}
           />
         </TouchableOpacity>
         <TouchableOpacity
