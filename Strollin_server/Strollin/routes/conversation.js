@@ -29,23 +29,16 @@ const {
 // Get
 
 router.get('/get_conversation', async function(req, res) {
-    let conversation = await ConversationModel.findOne({_id: req.headers.id});
 
-    if (conversation) {
-        return  res.status(200).send({status: "The conversation is found.", conversation});
-    }
-    return res.status(400).send({status: "The conversation is not found."});
-});
-
-router.get('/get_all_conversation', async function(req, res) {
     let user = await UserModel.findOne({access_token: req.headers.access_token})
     let conversations = null;
 
     if (user) {
         conversations = await ConversationModel.find({participants: {$elemMatch: user._id}})
+        conversations.participants = await UserModel.find({_id : {$in : conversations.participants}});
         return res.status(200).send({status: "All conversations are found.", conversations});
     }
-    return res.status(400).send({status: "There is not conversation with your account."});
+    return res.status(400).send({status: "You are not connected."});
 });
 
 
