@@ -4,7 +4,7 @@ NOTE:
 
 - The list is separated in Object Related.
 
-- Each object will present the schema and the available request.
+- Each object will presents the schema and the available requests.
 
 - Where full URLs are provided in responses they will be rendered as if service is running on 'http://' + IP_SERVER + ':' + PORT_SERVER + '/'.
 
@@ -29,22 +29,22 @@ USER RELATED:
 
 - mail ```String```
 - password ```String```
-- creationDate ```Date```
+- creation_date ```Date```
 - pseudo ```String```
 - type ```String``` : "normal" or "professional"
-- firstName ```String```
-- lastName ```String```
-- accessToken ```String```
-- tagsList ```[tagID]```
-- friendsList ```[userID]```
-- friendsRequest ```[userID]```
+- first_name ```String```
+- last_name ```String```
+- access_token ```String```
+- tags_list ```[tagID]```
+- friends_list ```[userID]```
+- friends_request ```[userID]```
 - groups ```[[groupName, userID, ...]]```
-- courseHistoric ```[courseID]```
-- scoreCourse ```[{courseID, String, Date}]``` : score as String
-- scoreLocation ```[{locationID, String, Date}]``` : score as String
-- scoreComment ```[{commentID, String, Date}]``` : score as String
-- socketID ```String```
-- facebookID ```String```
+- course_historic ```[courseID]```
+- score_course ```[{courseID, String, Date}]``` : score as String
+- score_location ```[{locationID, String, Date}]``` : score as String
+- score_comment ```[{commentID, String, Date}]``` : score as String
+- socket_id ```String```
+- facebook_id ```String```
 
 <br>
 
@@ -54,49 +54,66 @@ USER RELATED:
 
 | Description | Headers | Body | Return |
 |-|-|-|-|
-| Register a new user for database.<br>For non-professional user.<br>Return a access token. | None | mail: String<br>password: String<br>pseudo: String <br>(optional) | accessToken: String |
+| Register a new user for database.<br>For non-professional user.<br>Return a access token. | None | mail: String<br>password: String<br>pseudo: String <br>(optional) | access_token: String |
 
-- ADD a request friend: ```POST /users/addRequestFriend```
+- ADD a request friend: ```POST /users/add_friend_request```
 
 | Description | Headers | Body | Return |
 |-|-|-|-|
-| Send friend request. | accessToken: String | friend: userID | None |
+| Send friend request. | access_token: String | friend: userID | None |
 
-- ADD a friend: ```POST /users/addFriend```
+- ADD a friend: ```POST /users/add_friend```
 
-- ADD new tags in user's tags: ```POST /users/addTags```
+| Description | Headers | Body | Return |
+|-|-|-|-|
+| For friend request acception. | access_token: String | friend: userID | None |
+
+
+- ADD new tags in user's tags: ```POST /users/add_tag```
+
+| Description | Headers | Body | Return |
+|-|-|-|-|
+| Add existing tag in user's list. | access_token: String | tags_list: [tagID] | None |
+
+
+- ADD a course in the user's historic: ```POST /users/add historic```
+
+| Description | Headers | Body | Return |
+|-|-|-|-|
+| Add existing course in user's historic list with the current date. | access_token: String | course: courseID | None |
+
 
 - GET log in: ```GET /users/login```
 
 | Description | Headers | Body | Return |
 |-|-|-|-|
-| Log in an user to get a valid token | mail: String<br>password: String | None | accessToken: String |
+| Log in an user to get a valid token | mail: String<br>password: String | None | access_token: String |
 
 
 - GET log out: ```GET /users/logout```
 
 | Description | Headers | Body | Return |
 |-|-|-|-|
-| Log out an user.<br>Unavailable the current token.| accessToken: String | None | None |
+| Log out an user.<br>Unavailable the current token.| access_token: String | None | None |
 
 
 - GET user's profile: ```GET /users/profile```
 
 | Description | Headers | Body | Return |
 |-|-|-|-|
-| Get the user's informations.<br>For the profile page.| accessToken: String | None | profile: {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mail: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pseudo: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;firstName: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lastName: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tags: [s],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;friendList: [userID],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;historic: [courseID],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;scoreCourse: [{courseID, score, Date}],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;scoreLocation: [{locationID, score, Date}],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;scoreComment: [{commentID, score, Date}]<br>} |
+| Get the user's informations.<br>For the profile page.| access_token: String | None | profile: {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mail: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pseudo: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;first_name: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;last_name: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tags: [s],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;friends_list: [userID],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;course_historic: [courseID],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;score_course: [{courseID, score, Date}],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;score_location: [{locationID, score, Date}],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;score_comment: [{commentID, score, Date}]<br>} |
 
-- GET user's tags: ```GET /users/getTags```
+- GET user's tags: ```GET /users/get_tags```
 
-- DEL user's account: ```DEL /users/removeAccount```
+- DEL user's account: ```DEL /users/remove_account```
 
 | Description | Headers | Body | Return |
 |-|-|-|-|
-| Delete an user's account.| accessToken: String<br>password: String | None | None |
+| Delete an user's account.| access_token: String<br>password: String | None | None |
 
-- DEL user's friend: ```DEL /users/removeFriend```
+- DEL user's friend: ```DEL /users/remove_friend```
 
-- DEL user's tags: ```DEL /users/removeTags```
+- DEL user's tags: ```DEL /users/remove_tags```
 
 
 MESSAGE RELATED:
@@ -106,7 +123,7 @@ MESSAGE RELATED:
 
 - expeditor ```userID```
 - conversation ```conversationID```
-- creationDate ```Date```
+- creation_date ```Date```
 - type ```String``` : "message" or "image" or "video"
 - message ```String```
 
@@ -114,11 +131,11 @@ MESSAGE RELATED:
 
 **REQUESTS:**
 
-- ADD new message: ```POST /message/postMessage```
+- ADD new message: ```POST /message/post_message```
 
-- GET messages: ```GET /message/getMessage```
+- GET messages: ```GET /message/get_message```
 
-- DEL message: ```DEL /message/removeMessage```
+- DEL message: ```DEL /message/remove_message```
 
 
 CONVERSATION RELATED:
@@ -128,17 +145,17 @@ CONVERSATION RELATED:
 
 - participants ```[{userID, Date}]``` : exit Date of a user to stop message updates
 - name ```String```
-- messageList ```[messageID]```
+- messages_list ```[messageID]```
 
 <br>
 
 **REQUESTS:**
 
-- ADD new conversation: ```POST /conversation/postConversation```
+- ADD new conversation: ```POST /conversation/post_conversation```
 
-- GET conversations: ```GET /conversation/getConversation```
+- GET conversations: ```GET /conversation/get_conversation```
 
-- DEL conversation: ```DEL /conversation/removeConversation```
+- DEL conversation: ```DEL /conversation/remove_conversation```
 
 
 
@@ -149,23 +166,23 @@ COURSE RELATED:
 
 - locations ```[locationID]```
 - score ```String```
-- userScore ```[userID]```
-- used ```String``` : number of usage of the course
+- user_score ```[userID]```
+- number_used ```String``` : number of usage of the course
 - author ```String```
-- creationDate ```Date```
+- creation_date ```Date```
 - timetable ```String```
-- commentList ```[commentID]```
-- tags ```[tagID]```
+- comments_list ```[commentID]```
+- tags_list ```[tagID]```
 
 <br>
 
 **REQUESTS:**
 
-- ADD new course: ```POST /course/postCourse```
+- ADD new course: ```POST /course/post_course```
 
-- GET course: ```GET /course/getCourse```
+- GET course: ```GET /course/get_course```
 
-- DEL course: ```DEL /course/removeCourse```
+- DEL course: ```DEL /course/remove_course```
 
 
 
@@ -176,25 +193,25 @@ LOCATION RELATED:
 
 - name ```String```
 - score ```String```
-- userScore ```[userID]```
+- user_score ```[userID]```
 - visited ```String``` : number of visit of the location
 - coordinate ```[Float, Float]```
 - address ```String```
 - description ```String```
 - photo ```[String]```
 - timetable ```String```
-- commentList ```[commentID]```
-- tags ```[tagID]```
+- comment_list ```[commentID]```
+- tags_list ```[tagID]```
 
 <br>
 
 **REQUESTS:**
 
-- ADD new location: ```POST /location/postLocation```
+- ADD new location: ```POST /location/post_location```
 
-- GET location: ```GET /location/getLocation```
+- GET location: ```GET /location/get_location```
 
-- DEL location: ```DEL /location/removeLocation```
+- DEL location: ```DEL /location/remove_location```
 
 
 
@@ -205,10 +222,10 @@ COMMENT RELATED:
 
 - message ```String```
 - author ```userID```
-- userScore ```[userID]```
-- creationDate ```Date```
-- commentprevious ```commentID```
-- commentNext ```commentID```
+- user_score ```[userID]```
+- creation_date ```Date```
+- comment_previous ```commentID```
+- comment_next ```commentID```
 
 <br>
 
@@ -224,9 +241,9 @@ TAGS RELATED:
 
 - name ```String```
 - description ```String```
-- numberUse ```String```
-- locationList ```[locationID]```
-- courseList ```[courseID]```
+- number_used ```String```
+- location_list ```[locationID]```
+- course_list ```[courseID]```
 
 <br>
 

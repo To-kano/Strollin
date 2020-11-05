@@ -13,7 +13,7 @@ var UserModelSchema = new Schema({
         type: String,
         required: true,
     },
-    creationDate: {         // Date de création (gérer auto)
+    creation_date: {         // Date de création (gérer auto)
         type: Date,
         default: Date.now,
     },
@@ -25,27 +25,27 @@ var UserModelSchema = new Schema({
         type: String,
         required: true,
     },
-    firstName: {            // Prénom
+    first_name: {            // Prénom
         type: String,
         default: "",
     },
-    lastName: {             // Nom
+    last_name: {             // Nom
         type: String,
         default: "",
     },
-    accessToken: {          // Token pour rester connecté sur l'application
+    access_token: {          // Token pour rester connecté sur l'application
         type: String,
         required: true,
     },
-    tags: {                 // Liste des tags
+    tags_list: {                 // Liste des tags
         type: [String],
         default: [],
     },
-    friendsList: {          // Contient : friendList (liste par défaut), requestList (liste d'ami en attente), autres groupes 
+    friends_list: {          // Contient : friendList (liste par défaut), requestList (liste d'ami en attente), autres groupes 
         type: [],
         default: [],
     },
-    friendsRequest: {       // Contient : friendList (liste par défaut), requestList (liste d'ami en attente), autres groupes 
+    friends_request: {       // Contient : friendList (liste par défaut), requestList (liste d'ami en attente), autres groupes 
         type: [],
         default: [],
     },
@@ -53,27 +53,27 @@ var UserModelSchema = new Schema({
         type: [],
         default: [],
     },
-    courseHistoric: {             // Historique de parcours (historique de lieu ?)
+    course_historic: {             // Historique de parcours (historique de lieu ?)
         type: [{String, Date}],
         default: [],
     },
-    scoreCourse: {          // Liste des parcours notés (ID, Note, Date)
+    score_course: {          // Liste des parcours notés (ID, Note, Date)
         type: [{String, String, Date}],
         default: [],
     },
-    scoreLocation: {        // Liste des lieux notés (ID, Note, Date)
+    score_cocation: {        // Liste des lieux notés (ID, Note, Date)
         type: [{String, String, Date}],
         default: [],
     },
-    scoreComment: {         // Liste des commentaires notés (ID, Note, Date)
+    score_comment: {         // Liste des commentaires notés (ID, Note, Date)
         type: [{String, String, Date}],
         default: [],
     },
-    socketID: {             // ID du socket IO en cours d'utilisation, vide lorsque l'utilisateur se déconnecte
+    socket_id: {             // ID du socket IO en cours d'utilisation, vide lorsque l'utilisateur se déconnecte
         type: String,
         default: "",
     },
-    facebookID: {           // ID de facebook pour la connexion facebook ?
+    facebook_id: {           // ID de facebook pour la connexion facebook ?
         type: String,
         default: "",
     },

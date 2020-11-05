@@ -144,7 +144,7 @@ function TripNavigation(props) {
           </Text>
         </View>
         <View style={{ flex: 1 }}>
-          <Map height="100%" width={390} deltaView={deltaView} waypoints={waypoints} />
+          <Map navigation={props.navigation} height="100%" width={390} deltaView={deltaView} waypoints={waypoints} />
         </View>
       </View>
     </View>
