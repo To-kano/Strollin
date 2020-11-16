@@ -34,7 +34,7 @@ function sendMessage(message, socket) {
   console.log('Pseudo =  ', store.profil.pseudo);
 
   Store.dispatch(action);
-  socket.emit('chat message', message);
+  socket.emit('sendMessage', message);
 }
 
 function ChatScreen(props) {

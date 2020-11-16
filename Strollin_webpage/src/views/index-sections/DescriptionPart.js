@@ -40,8 +40,8 @@ function DescriptionPart() {
                       </div> 
                       <div class="service-cap">
                         <img size="30" src={require("./../../assets/img/freeIcon.png")} style={{ width: 75, height: 75}}/>,
-                          <h4 style={{fontSize:"25px", fontWeight:"bold"}}>Totally Free!</h4>
-                          <p style={{fontSize:"18px", fontWeight:"500"}}><br/>Strollin' include some optional in-app purchases, but is totally free and don't rely on advertising!</p>
+                          <h4 style={{fontSize:"25px", fontWeight:"bold"}}>Why become our partner?</h4>
+                          <p style={{fontSize:"18px", fontWeight:"500"}}><br/>For your company, becoming partner, mean access to : better reference, accurate pop-ups and privileged dashboard to edit advertisement and view stats!</p>
                       </div>
                   </div>
               </div>

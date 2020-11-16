@@ -17,10 +17,16 @@ function IndexHeaderPart() {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordConf, setPasswordConf] = useState("");
   
   const handleSubmit = (evt) => {
-      evt.preventDefault();
-      alert(`Submitting Email: ${email} Username: ${username} Password: ${password}`)
+    evt.preventDefault();
+
+    if (password != passwordConf) {
+      alert(`Password confirmation error!`);
+    } else {
+      alert(`Submitting Email: ${email} Username: ${username} Password: ${password}`);
+    }
   }
   return (
     <>
@@ -28,7 +34,7 @@ function IndexHeaderPart() {
         className="page-header section-dark"
         style={{
           backgroundImage:
-            "url(" + require("assets/img/empty_street.jpg") + ")"
+            "url(" + require("assets/img/shop_alley.jpg") + ")"
         }}
       >
       <div className="filter" />
@@ -41,10 +47,12 @@ function IndexHeaderPart() {
                   <Form className="register-form" onSubmit={handleSubmit}>
                   <h4 className="form-letter">Email</h4>
                     <Input type="email" name="email" id="exampleEmail" placeholder="Email" onChange={e => setEmail(e.target.value)} />
-                    <h4 className="form-letter">Username</h4>
+                    <h4 className="form-letter">Company name</h4>
                     <Input type="username" name="username" id="exampleUsername" placeholder="Username" onChange={e => setUsername(e.target.value)} />
                     <h4 className="form-letter">Password</h4>
                     <Input type="password" name="password" id="examplePassword" placeholder="Password" onChange={e => setPassword(e.target.value)} />
+                    <h4 className="form-letter">Password confirmation</h4>
+                    <Input type="password" name="password" id="examplePassword" placeholder="Password" onChange={e => setPasswordConf(e.target.value)} />
                     <Label check className="form-little-letter">
                       <Input type="checkbox" name="check" id="exampleCheck" required/>
                         I agree to the Terms and Conditions

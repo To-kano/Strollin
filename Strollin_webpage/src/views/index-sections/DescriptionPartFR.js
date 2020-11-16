@@ -40,8 +40,8 @@ function DescriptionPartFR() {
                       </div> 
                       <div class="service-cap">
                         <img size="30" src={require("./../../assets/img/freeIcon.png")} style={{ width: 75, height: 75}}/>,
-                          <h4 style={{fontSize:"25px", fontWeight:"bold"}}>Totallement gratuit !</h4>
-                          <p style={{fontSize:"18px", fontWeight:"500"}}><br/>Strollin' comportent quelques achats intégrés, mais est surtout totallement gratuit et ne compte pas sur la publicité !</p>
+                          <h4 style={{fontSize:"25px", fontWeight:"bold"}}>Pourquoi devenir partenaire ?</h4>
+                          <p style={{fontSize:"18px", fontWeight:"500"}}><br/>Pour votre commerce devenir partenaire, c'est avoir accès à : un meilleur référencement, des pop-ups ciblés et un dashboard privilégié pour éditer des publicités et voir des statistiques !</p>
                       </div>
                   </div>
               </div>

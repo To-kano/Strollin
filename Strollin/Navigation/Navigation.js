@@ -24,6 +24,8 @@ import MenuChat from '../Components/reactChatScreen/MenuScreen';
 import ScreenChat from '../Components/reactChatScreen/ChatScreen';
 import NewConversation from '../Components/reactChatScreen/NewConversation';
 import Notation from '../Components/Notation';
+import Socket from '../Components/Socket';
+import SocketContext from '../socket-context';
 
 const Stack = createStackNavigator();
 
@@ -144,6 +146,16 @@ function MyStack(props) {
               options={{ title: 'TripNavigation' }}
             />
             <Stack.Screen name="Profile" component={Profile} />
+            <Stack.Screen
+              name="Socket"
+              component={Socket}
+              options={{ title: 'Socket' }}
+            />
+            <Stack.Screen
+              name="Socket-context"
+              component={SocketContext}
+              options={{ title: 'Socket-context' }}
+            />
           </>
 
         )}

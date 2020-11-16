@@ -17,10 +17,16 @@ function IndexHeader() {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordConf, setPasswordConf] = useState("");
   
   const handleSubmit = (evt) => {
-      evt.preventDefault();
-      alert(`Submitting Email: ${email} Username: ${username} Password: ${password}`)
+    evt.preventDefault();
+
+    if (password != passwordConf) {
+      alert(`Password confirmation error!`);
+    } else {
+      alert(`Submitting Email: ${email} Username: ${username} Password: ${password}`);
+    }
   }
   return (
     <>
@@ -45,6 +51,8 @@ function IndexHeader() {
                     <Input type="username" name="username" id="exampleUsername" placeholder="Username" onChange={e => setUsername(e.target.value)} />
                     <h4 className="form-letter">Password</h4>
                     <Input type="password" name="password" id="examplePassword" placeholder="Password" onChange={e => setPassword(e.target.value)} />
+                    <h4 className="form-letter">Password confirmation</h4>
+                    <Input type="password" name="password" id="examplePassword" placeholder="Password" onChange={e => setPasswordConf(e.target.value)} />
                     <Label check className="form-little-letter">
                       <Input type="checkbox" name="check" id="exampleCheck" required/>
                         I agree to the Terms and Conditions
