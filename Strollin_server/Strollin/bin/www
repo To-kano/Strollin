@@ -111,9 +111,12 @@ var sio = require('socket.io').listen(server)
 
 sio.on("connection", socket => {
 
+  console.log("connection socket");
+
   // Event "connection"
   socket.on("connection", async (msg) => {
-    user = await UserModel.findOne({accessToken: msg.accessToken});
+
+    //user = await UserModel.findOne({accessToken: msg.accessToken});
     response = {
       connected: false,
     };

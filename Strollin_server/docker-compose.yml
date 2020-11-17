@@ -23,17 +23,17 @@ services:
     restart: 'on-failure'
     depends_on:
       - db
-  #server:
-  #  #image: docmurloc/strollin:V2
-  #  build: ./Strollin
-  #  container_name: server-Strollin
-  #  networks:
-  #    - backend
-  #  ports:
-  #    - "3000:3000"
-  #  restart: 'on-failure'
-  #  depends_on:
-  #    - db
+  server:
+    #image: docmurloc/strollin:V2
+    build: ./Strollin
+    container_name: server-Strollin
+    networks:
+      - backend
+    ports:
+      - "3000:3000"
+    restart: 'on-failure'
+    depends_on:
+      - db
 
 networks:
   backend:

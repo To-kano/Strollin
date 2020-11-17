@@ -20,14 +20,14 @@ var app = express();
 
 // MongoDB //
 
-//var mongoDB = 'mongodb://db:27017/Strollin';
-//mongoose.connect(mongoDB, { useNewUrlParser: true });
-//
-////Get the default connection
-//var db = mongoose.connection;
-//
-////Bind connection to error event (to get notification of connection errors)
-//db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+var mongoDB = 'mongodb://db:27017/Strollin';
+mongoose.connect(mongoDB, { useNewUrlParser: true });
+
+//Get the default connection
+var db = mongoose.connection;
+
+//Bind connection to error event (to get notification of connection errors)
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 
 app.use(function(req, res, next) {
