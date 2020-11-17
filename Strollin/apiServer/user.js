@@ -71,9 +71,9 @@ async function registerUser(props, newPseudo, newPassword, newMail) {
     .then((response) => response.json())
     .then(async (answer) => {
       console.log(" answer = " , answer);
-      if (answer.accessToken) {
-        await profileUser(props, answer.accessToken);
-        const action = { type: 'CONNECTION', value: answer.accessToken };
+      if (answer.access_token) {
+        await profileUser(props, answer.access_token);
+        const action = { type: 'CONNECTION', value: answer.access_token };
         props.dispatch(action);
       }
     })
