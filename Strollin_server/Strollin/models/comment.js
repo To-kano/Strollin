@@ -13,19 +13,19 @@ var CommentModelSchema = new Schema({
         type: String,
         required: true
     },
-    userScore: {
+    user_score: {
         type: [String], //list of User ID that gave score, see user.scoreComment
         default: []
     },
-    creationDate: {
+    creation_date: {
         type: Date,
         default: Date.now,
     },
-    commentPrevious: {
+    comment_previous: {
         type: String,
         default: '',
     },
-    commentNext: {
+    comment_next: {
         type: String,
         default: '',
     },

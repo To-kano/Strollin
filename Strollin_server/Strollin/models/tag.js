@@ -13,15 +13,15 @@ var TagModelSchema = new Schema({
         type: String,
         default: ""
     },
-    numberUse: {
+    number_used: {
         type: String,
         default: '1'
     },
-    locationList: {
+    location_list: {
         type: [String],
         default: []
     },
-    courseList: {
+    course_list: {
         type: [String],
         default: []
     },

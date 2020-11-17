@@ -13,7 +13,7 @@ var LocationModelSchema = new Schema({
         type: String,
         default: '0'
     },
-    userScore: {
+    user_score: {
         type: [String], //list of User ID that gave score, see user.scoreLocation
         default: []
     },
@@ -41,11 +41,11 @@ var LocationModelSchema = new Schema({
         type: String,
         required: true,
     },
-    commentList: {
+    comment_list: {
         type: [String],
         default: [],
     },
-    tags: {
+    tags_list: {
         type: [String],
         default: [],
     },

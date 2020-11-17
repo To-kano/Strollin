@@ -13,7 +13,7 @@ var ConversationModelSchema = new Schema({
         type: String,
         default: "",
     },
-    messageList: {      // Liste des messages
+    message_list: {      // Liste des messages
         type: [String],
         default: [],
     },

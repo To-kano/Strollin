@@ -7,7 +7,7 @@ const {
 
 const {
     UserModel
-} = require("../models/users")
+} = require("../models/user")
 
 
 // Post
@@ -47,14 +47,14 @@ const {
 
 // Get
 
-router.get('/getMessages', async function(req, res) {
+router.get('/get_messages', async function(req, res) {
     let user = await UserModel.findOne({access_token: req.headers.access_token});
     let message = null;
 
     if (user) {
-        message = await MessageModel.find({_id: {$in: req.headers.messageList}});
+        message = await MessageModel.find({_id: {$in: req.headers.message_list}});
         if (message) {
-            return res.status(200).send({status: "The messages are found.", messageList: message});
+            return res.status(200).send({status: "The messages are found.", message_list: message});
         }
         else {
             return res.status(400).send({status: "Message not found."});
@@ -66,7 +66,7 @@ router.get('/getMessages', async function(req, res) {
 
 // Delete
 
-router.delete('/deleteMessage', async function(req, res) {
+router.delete('/delete_message', async function(req, res) {
 
     let message = await MessageModel.find({_id: req.headers.id});
 
