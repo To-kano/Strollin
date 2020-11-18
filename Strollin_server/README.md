@@ -60,7 +60,7 @@ USER RELATED:
 
 | Description | Headers | Body | Return |
 |-|-|-|-|
-| Send friend request. | access_token: String | friend: userID | None |
+| Send friend request to an user. | access_token: String | friend: userID | None |
 
 - ADD a friend: ```POST /users/add_friend```
 
