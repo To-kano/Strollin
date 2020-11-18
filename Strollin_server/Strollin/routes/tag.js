@@ -38,15 +38,15 @@ router.post('/new_tag', async function(req, res) {
 
 router.get('/get_tags', async function(req, res) {
     let user = await UserModel.findOne({access_token: req.headers.access_token});
-    let message = null;
+    let tags = null;
 
     if (user) {
-        message = await MessageModel.find({_id: {$in: req.headers.message_list}});
-        if (message) {
-            return res.status(200).send({status: "The messages are found.", message_list: message});
+        tags = await TagModel.find({_id: {$in: req.headers.tags_list}});
+        if (tags) {
+            return res.status(200).send({status: "The tags are found.", tags_list: tags});
         }
         else {
-            return res.status(400).send({status: "Message not found."});
+            return res.status(400).send({status: "Tags not found."});
         }
     }
     return res.status(400).send({status: "You are not connected."});
@@ -55,19 +55,20 @@ router.get('/get_tags', async function(req, res) {
 
 // Delete
 
-router.delete('/delete_message', async function(req, res) {
+router.delete('/delete_tag', async function(req, res) {
+    let user = await UserModel.findOne({access_token: req.headers.access_token});
+    let tags = null;
 
-    let message = await MessageModel.find({_id: req.headers.id});
-
-    if (message) {
-        if (message.type == "video" || message.type == "image") {
-            // Delete the file
-            pass
+    if (user) {
+        tags = await TagModel.find({_id: {$in: req.headers.tags_list}});
+        if (tags) {
+            return res.status(200).send({status: "The tags are found.", tags_list: tags});
         }
-        await message.remove();
-        return res.status(200).send({status: "Message successfully deleted."});
+        else {
+            return res.status(400).send({status: "Tags not found."});
+        }
     }
-    return res.status(400).send({status: "An error occurred."});
+    return res.status(400).send({status: "You are not connected."});
 });
 
 
