@@ -10,7 +10,7 @@ const ENDPOINT = 'http://82.226.234.122:3002';
 function ConversationBar(props) {
   const [research, setresearch] = useState('');
   const { imagePath } = props;
-  const [socket, setSocket] = useState(null);
+  //const [socket, setSocket] = useState(null);
 
   //useEffect(() => {
   //  if (socket != null) {
@@ -23,9 +23,9 @@ function ConversationBar(props) {
   //  }
   //}, [socket]);
 
-  if (socket == null) {
-    setSocket(socketIOClient(ENDPOINT));
-  }
+  //if (socket == null) {
+  //  setSocket(socketIOClient(ENDPOINT));
+  //}
   
 
   console.log('ImagePath = ', props.imagePath);
@@ -35,7 +35,7 @@ function ConversationBar(props) {
         <ButtonIcon
           icon={require('../../images/picture.png')}
           onPress={() => {
-            props.onPress(research, socket);
+            props.onPress(research);
             setresearch('');
           }}
         />
@@ -50,7 +50,7 @@ function ConversationBar(props) {
         <ButtonIcon
           icon={require('../../images/send.png')}
           onPress={() => {
-            props.onPress(research, socket);
+            props.onPress(research);
             setresearch('');
           }}
         />

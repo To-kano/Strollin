@@ -6,16 +6,26 @@
 
 var app = require('../app');
 var debug = require('debug')('Strollin:server');
-var http = require('http');
+var https = require('https');
+var fs = require('fs');
 
-//Import Models
+
+// option for HTTPS
+
+const options = {
+  key: fs.readFileSync('key.pem'),
+  cert: fs.readFileSync('cert.pem')
+};
+
+//Import Models for socket.io
 const {
   UserModel
-} = require("../models/user")
+} = require("../models/user");
 
 const {
   TagModel
-} = require("../models/tag")
+} = require("../models/tag");
+const { fstat } = require('fs');
 
 
 /**
@@ -25,11 +35,12 @@ const {
 var port = normalizePort('3000');
 app.set('port', port);
 
+
 /**
- * Create HTTP server.
+ * Create HTTPS server.
  */
 
-var server = http.createServer(app);
+var server = https.createServer(options, app);
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -43,6 +54,7 @@ var server = http.createServer(app);
 server.listen(port, '0.0.0.0');
 server.on('error', onError);
 server.on('listening', onListening);
+
 
 /**
  * Normalize a port into a number, string, or false.
@@ -111,9 +123,12 @@ var sio = require('socket.io').listen(server)
 
 sio.on("connection", socket => {
 
+  console.log("connection socket");
+
   // Event "connection"
   socket.on("connection", async (msg) => {
-    user = await UserModel.findOne({accessToken: msg.accessToken});
+
+    //user = await UserModel.findOne({accessToken: msg.accessToken});
     response = {
       connected: false,
     };

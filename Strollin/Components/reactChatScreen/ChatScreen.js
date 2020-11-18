@@ -8,6 +8,7 @@ import ConversationBar from './ConversationBar';
 import MessagesItem from './MessagesItem';
 import Store from '../../Store/configureStore';
 import profileReducer from '../../Store/Reducers/profileReducer';
+import {contextSocket} from '../Socket';
 
 function getHistoric(props) {
   const tmp = [];
@@ -20,26 +21,27 @@ function getHistoric(props) {
   return (tmp);
 }
 
-function sendMessage(message, socket) {
-  console.log('sending message ', message);
-
-  const newId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-  const store = Store.getState();
-  const action = {
-    type: 'ADD_MESSAGE_TO_CONVERSATION',
-    value: {
-      id: newId, content: message, userId: store.profil.Id, username: store.profil.pseudo
-    }
-  };
-  console.log('Pseudo =  ', store.profil.pseudo);
-
-  Store.dispatch(action);
-  socket.emit('sendMessage', message);
-}
+//function sendMessage(message, socket) {
+//  console.log('sending message ', message);
+//
+//  const newId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+//  const store = Store.getState();
+//  const action = {
+//    type: 'ADD_MESSAGE_TO_CONVERSATION',
+//    value: {
+//      id: newId, content: message, userId: store.profil.Id, username: store.profil.pseudo
+//    }
+//  };
+//  console.log('Pseudo =  ', store.profil.pseudo);
+//
+//  Store.dispatch(action);
+//  socket.emit('sendMessage', message);
+//}
 
 function ChatScreen(props) {
   // const [messages, setMessages] = useState([getHistoric(props)]);
 
+  const {sendMessage} = contextSocket();
   console.log(props.conversation.currentConversation.messages);
   return (
     <View style={styles.box}>
