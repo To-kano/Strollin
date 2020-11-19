@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { StyleSheet, TextInput, View } from 'react-native';
 
-import ButtonIcon from '../ButtonIcon.js';
+import ButtonIcon from './ButtonIcon.js';
 
 function SearchBar(props) {
   const [research, setresearch] = useState('');
@@ -13,13 +13,13 @@ function SearchBar(props) {
         <View style={styles.box}>
           <TextInput
             style={styles.textInput}
-            placeholder="Search"
+            placeholder="Search with tag"
             onChangeText={(text) => setresearch(text)}
             value={research}
           />
         </View>
         <ButtonIcon
-          icon={require('../../images/search.png')}
+          icon={require('../images/search.png')}
           onPress={() => {
             props.onPress(research);
             setresearch('');
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   horizontalDisplay: {
-    width: '97 %',
+    width: '1000%',
     flexDirection: 'row',
     alignItems: 'center',
   },

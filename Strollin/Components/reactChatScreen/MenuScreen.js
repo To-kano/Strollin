@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import ConvPreview from './ConvPreview';
 import SearchBar from './SearchBar';
 import Store from '../../Store/configureStore';
-import ButtonIcon from './ButtonIcon.js';
+import ButtonIcon from '../ButtonIcon.js';
 
 function NewConversation(props) {
   props.navigation.navigate('NewConversation');
@@ -59,9 +59,10 @@ async function setHistoric() {
 
 function sortConversation(key) {
   const store = Store.getState();
-  const result = titleFilter(store.conversation.conversationList.id);
+  //const result = titleFilter(store.conversation.conversationList.id);
+  var notFound = false;
 
-  action = { type: 'SET_FRIEND', value: { friendList: ['Koko', 'Yaya', 'Zaza'] } };
+  var action = { type: 'SET_FRIEND', value: { friendList: ['Koko', 'Yaya', 'Zaza'] } };
 
   if (key == '') {
     Store.dispatch(action);
@@ -140,7 +141,7 @@ function LoginScreen(props) {
       <View>
         <SearchBar
           onPress={sortConversation}
-          imagePath="../../images/loupe.svg"
+          imagePath="../../images/loupe.png"
         />
       </View>
       <View>

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { StyleSheet, TextInput, View } from 'react-native';
 import socketIOClient from 'socket.io-client';
 
-import ButtonIcon from './ButtonIcon.js';
+import ButtonIcon from '../ButtonIcon.js';
 
 const ENDPOINT = 'http://82.226.234.122:3002';
 

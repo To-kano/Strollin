@@ -1,7 +1,7 @@
 import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 
 async function loginUser(props, newMail, newPassword) {
-  fetch(`https://${IP_SERVER}:${PORT_SERVER}/users/login`, {
+  fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/login`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -28,7 +28,7 @@ async function loginUser(props, newMail, newPassword) {
 exports.loginUser = loginUser;
 
 async function profileUser(props, accessToken) {
-  fetch(`https://${IP_SERVER}:${PORT_SERVER}/users/profile`, {
+  fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/profile`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -60,7 +60,7 @@ async function registerUser(props, newPseudo, newPassword, newMail) {
     mail: newMail,
   });
 
-  fetch(`https://${IP_SERVER}:${PORT_SERVER}/users/register`, {
+  fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/register`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',

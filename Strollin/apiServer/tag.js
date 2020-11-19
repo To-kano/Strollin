@@ -1,7 +1,7 @@
 import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 
 async function infoTage(props, accessToken) {
-  fetch(`https://${IP_SERVER}:${PORT_SERVER}/users/profile`, {
+  fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/profile`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',

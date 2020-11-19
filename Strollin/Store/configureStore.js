@@ -4,7 +4,8 @@ import galleryReducer from './Reducers/galleryReducer';
 import geolocalisationReducer from './Reducers/geolocalisationReducer';
 import mapNavigationReducer from './Reducers/mapNavigationReducer';
 import chatConversation from './Reducers/conversationReducer';
-import socketRecducer from './Reducers/socketReducer';
+import socketReducer from './Reducers/socketReducer';
+import tendanceReducer from './Reducers/tendanceReducer';
 
 const rootReducer = combineReducers({
   profil: profileReducer,
@@ -12,7 +13,8 @@ const rootReducer = combineReducers({
   position: geolocalisationReducer,
   map: mapNavigationReducer,
   conversation: chatConversation,
-  socket: socketRecducer
+  socket: socketReducer,
+  tendance: tendanceReducer
 });
 
 export default createStore(rootReducer);
