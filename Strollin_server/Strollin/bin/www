@@ -144,8 +144,13 @@ sio.on("connection", socket => {
   
   // Event "sendMessage"
   socket.on("sendMessage", msg => {
-    console.log(msg);
-    sio.emit("chat message", msg);
+    console.log("sendMessage " , msg);
+    sio.emit("receiveMessage", msg);
+  });
+
+  socket.on("createConversation", msg => {
+    console.log("createConversation " , msg);
+    sio.emit("newConversation", msg);
   });
 
 })
