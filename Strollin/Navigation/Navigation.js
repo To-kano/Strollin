@@ -48,7 +48,6 @@ function MyStack(props) {
     getProfilCache(props);
     console.log('nav props: ', props.profil);
   }
-  // console.log("nav props: ", props.profil);
   return (
     <NavigationContainer>
       <Stack.Navigator

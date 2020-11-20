@@ -5,6 +5,7 @@ import Store from '../../Store/configureStore';
 
 async function GotoChat(props) {
   console.log('GOING TO CHAT');
+  //createConversation();
   const store = Store.getState();
   let new_conversation = true;
 
