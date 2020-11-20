@@ -14,9 +14,9 @@ function ConversationBar(props) {
 
   useEffect(() => {
     if (socket != null) {
-      socket.on('chat message', (data) => {
-        console.log(data);
-      });
+      //socket.on('chat message', (data) => {
+      //  console.log(data);
+      //});
     }
   }, [socket]);
 
