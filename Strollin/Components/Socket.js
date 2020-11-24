@@ -12,6 +12,7 @@ const ENDPOINT = 'http://82.226.234.122:3002';
 import AsyncStorage from '@react-native-community/async-storage';
 
 
+
 const getProfilCache = async (dispatch) => {
   try {
     let jsonValue = await AsyncStorage.getItem('cache_profile');
@@ -26,7 +27,6 @@ const getProfilCache = async (dispatch) => {
     console.log('echec store profile ', e);
   }
 };
-
 
 function Socket({children, profil, dispatch}) {
   const [socket, setSocket] = useState(null);
@@ -50,8 +50,8 @@ function Socket({children, profil, dispatch}) {
       socket.on('receiveMessage', (data) => {
         console.log("received " + data);
       });
-      socket.on('login', (data) => {
-        console.log("login = ", data);
+      socket.on('identification', (data) => {
+        console.log("identification = ", data);
       });
       socket.on('newConversation', (data) => {
       //  const store = Store.getState();
@@ -109,21 +109,15 @@ function Socket({children, profil, dispatch}) {
     socket.emit('sendMessage', message);
   };
 
-  const createConversation = (message) => {
-    console.log('creating conversation', message);
+  const createConversation = (participants) => {
+    console.log('creating conversation', participants);
   
-    var object = { access_token: store.profil.accessToken, participants: "", groupName: "" }
+    var object = { access_token: store.profil.accessToken, participants: participants, name: "" }
     socket.emit('createConversation', object);
   };
 
-  //if (socket != null) {
-  //  console.log("access_token = ", store.profil.accessToken);
-  //  socket.emit('id', { access_token: store.profil.accessToken });
-  //  socket.emit('sendMessage', "hey Pierre!");
-  //}
-
   return (
-    <SocketContext.Provider value={{ socket, sendMessage }}>
+    <SocketContext.Provider value={{ socket, sendMessage, createConversation }}>
       {children}
     </SocketContext.Provider>
   );

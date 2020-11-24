@@ -12,9 +12,10 @@ async function loginUser(props, newMail, newPassword) {
   })
     .then((response) => response.json())
     .then(async (answer) => {
-      if (answer.accessToken) {
-        await profileUser(props, answer.accessToken);
-        const action = { type: 'CONNECTION', value: answer.accessToken };
+      if (answer.access_token) {
+        await profileUser(props, answer.access_token);
+        await conversationUser(props, answer.access_token);
+        const action = { type: 'CONNECTION', value: answer.access_token };
         props.dispatch(action);
       } else {
         console.log('login user faile: ', answer);
@@ -40,6 +41,30 @@ async function profileUser(props, accessToken) {
     .then(async (answer) => {
       if (answer.profile) {
         const action = { type: 'SET_USER', value: answer.profile };
+        props.dispatch(action);
+      } else {
+        console.log(answer.status);
+      }
+    })
+    .catch((error) => {
+      console.error('error :', error);
+    });
+}
+
+exports.profileUser = profileUser;
+
+async function conversationUser(props, accessToken) {
+  fetch(`http://${IP_SERVER}:${PORT_SERVER}/conversation/get_conversations`, {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      access_token: accessToken,
+    },
+    method: 'GET',
+  })
+    .then(async (answer) => {
+      if (answer) {
+        const action = { type: 'SET_CONVERSATION', value: answer };
         props.dispatch(action);
       } else {
         console.log(answer.status);
@@ -101,9 +126,9 @@ async function registerUserTag(props, newPseudo, newPassword, newMail) {
   })
     .then((response) => response.json())
     .then(async (answer) => {
-      if (answer.accessToken) {
-        await profileUser(props, answer.accessToken);
-        const action = { type: 'CONNECTION', value: answer.accessToken };
+      if (answer.access_token) {
+        await profileUser(props, answer.access_token);
+        const action = { type: 'CONNECTION', value: answer.access_token };
         props.dispatch(action);
       }
     })

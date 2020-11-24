@@ -1,10 +1,11 @@
 const EXEMPLE = {
   conversationList: [
     {
-      id: 'uskfdsfsd',
-      usersId: ['userId1TEST', 'userId2TEST'],
-      messages: [{ content: 'Hello', userId: 'userId1TEST', username: 'Tony' },
-        { content: 'World', userId: 'userId2TEST', username: 'Koko' }]
+      _id: 'uskfdsfsd',
+      participants: ['userId1TEST', 'userId2TEST'],
+      name: "",
+      messages_list: ["message_id", "message_id"],
+      recent_messages: [{ expeditor: "", conversation_id: "", creation_date: new Date(), type: "message", message: "" }, ]
     },
     {
 

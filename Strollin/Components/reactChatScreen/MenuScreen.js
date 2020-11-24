@@ -6,7 +6,9 @@ import { connect } from 'react-redux';
 import ConvPreview from './ConvPreview';
 import SearchBar from './SearchBar';
 import Store from '../../Store/configureStore';
-import ButtonIcon from '../ButtonIcon.js';
+import ButtonIcon from './../ButtonIcon.js';
+import { IP_SERVER, PORT_SERVER } from '../../env/Environement';
+
 
 function NewConversation(props) {
   props.navigation.navigate('NewConversation');
@@ -20,7 +22,7 @@ async function setUser() {
       lastName: 'Ye',
       email: 'tony.ye@epitech.eu',
       pseudo: 'Kano',
-      friendList: ['Koko', 'Yaya', 'Zaza'],
+      friendList: ['Koko', 'Yaya', 'Zaza']
     }
   };
   Store.dispatch(action);
@@ -59,72 +61,31 @@ async function setHistoric() {
 
 function sortConversation(key) {
   const store = Store.getState();
-  //const result = titleFilter(store.conversation.conversationList.id);
-  var notFound = false;
+  const result = titleFilter(store.conversation.conversationList.id);
 
-  var action = { type: 'SET_FRIEND', value: { friendList: ['Koko', 'Yaya', 'Zaza'] } };
-
-  if (key == '') {
-    Store.dispatch(action);
-  } else {
-    for (i in store.profil.friendList) {
-      if (key == store.profil.friendList[i]) {
-        action = { type: 'SET_FRIEND', value: { friendList: [key] } };
-        Store.dispatch(action);
-        notFound = false;
-      }
-    }
-    if (notFound == true) {
-      action = { type: 'SET_FRIEND', value: { friendList: [] } };
-      Store.dispatch(action);
-    }
-  }
+  //action = { type: 'SET_FRIEND', value: { friendList: ['Koko', 'Yaya', 'Zaza'] } };
+//
+  //if (key == '') {
+  //  Store.dispatch(action);
+  //} else {
+  //  for (i in store.profil.friendList) {
+  //    if (key == store.profil.friendList[i]) {
+  //      action = { type: 'SET_FRIEND', value: { friendList: [key] } };
+  //      Store.dispatch(action);
+  //      notFound = false;
+  //    }
+  //  }
+  //  if (notFound == true) {
+  //    action = { type: 'SET_FRIEND', value: { friendList: [] } };
+  //    Store.dispatch(action);
+  //  }
+  //}
 
   // result = liste triée
 }
 
 function LoginScreen(props) {
   console.log('Menu Screen');
-  if (props.profil.friendList.length == 0) {
-    setUser();
-    /* return (
-      <View style={styles.container}>
-        <View style={styles.circle} />
-        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-          <Text style={styles.header}>Discussions            </Text>
-          <ButtonIcon
-            icon={require('../../images/plus.png')}
-            onPress={() => {
-              NewConversation(props);
-            }}
-          />
-        </View>
-        <View>
-          <Text style={styles.header}>Charging messages</Text>
-        </View>
-      </View>
-    ); */
-  }
-  if (props.conversation.conversationList.length < 1) {
-    setHistoric();
-    /* return (
-      <View style={styles.container}>
-        <View style={styles.circle} />
-        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-          <Text style={styles.header}>Discussions            </Text>
-          <ButtonIcon
-            icon={require('../../images/plus.png')}
-            onPress={() => {
-              NewConversation(props);
-            }}
-          />
-        </View>
-        <View>
-          <Text style={styles.header}>Charging messages</Text>
-        </View>
-      </View>
-    ); */
-  }
 
   return (
     <View style={styles.container}>
@@ -141,7 +102,7 @@ function LoginScreen(props) {
       <View>
         <SearchBar
           onPress={sortConversation}
-          imagePath="../../images/loupe.png"
+          imagePath="../../images/loupe.svg"
         />
       </View>
       <View>

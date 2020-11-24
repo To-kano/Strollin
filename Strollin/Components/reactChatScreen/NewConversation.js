@@ -9,24 +9,19 @@ import Store from '../../Store/configureStore';
 
 function sortConversation(key) {
   const store = Store.getState();
-  let action = {};
   let notFound = true;
 
-  action = { type: 'SET_FRIEND', value: { friendList: ['Koko', 'Yaya', 'Zaza'] } };
-
   if (key == '') {
-    Store.dispatch(action);
+    console.log("nothing in search");
   } else {
     for (i in store.profil.friendList) {
       if (key == store.profil.friendList[i]) {
-        action = { type: 'SET_FRIEND', value: { friendList: [key] } };
-        Store.dispatch(action);
+        console.log("found in search");
         notFound = false;
       }
     }
     if (notFound == true) {
-      action = { type: 'SET_FRIEND', value: { friendList: [] } };
-      Store.dispatch(action);
+      console.log("not found in search");
     }
   }
 }

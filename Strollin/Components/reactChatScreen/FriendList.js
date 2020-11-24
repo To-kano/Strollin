@@ -2,43 +2,46 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Store from '../../Store/configureStore';
+import {contextSocket} from '../Socket';
 
-async function GotoChat(props) {
+function GotoChat(props, createConversation, name) {
   console.log('GOING TO CHAT');
-  //createConversation();
-  const store = Store.getState();
-  let new_conversation = true;
-
-  for (i in store.conversation.conversationList) {
-    if (store.conversation.conversationList[i].usersId.length == 2) {
-      for (j in store.conversation.conversationList[i].usersId) {
-        if (store.conversation.conversationList[i].usersId[j] == props.name) {
-          const action = { type: 'SET_CURRENT_CONVERSATION', value: store.conversation.conversationList[i] };
-          props.dispatch(action);
-          new_conversation = false;
-          break;
-        }
-      }
-    }
-  }
-  if (new_conversation == true) {
-    const newId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-
-    const action = { type: 'ADD_CONVERSATION', value: { id: newId, usersId: [store.profil.pseudo, props.name], messages: [] } };
-    props.dispatch(action);
-    const action2 = { type: 'SET_CURRENT_CONVERSATION', value: { id: newId, usersId: [store.profil.pseudo, props.name], messages: [] } };
-    props.dispatch(action2);
+  let participants = [ name ];
+  createConversation(participants);
+  //const store = Store.getState();
+  //let new_conversation = true;
+//
+  //for (i in store.conversation.conversationList) {
+  //  if (store.conversation.conversationList[i].usersId.length == 2) {
+  //    for (j in store.conversation.conversationList[i].usersId) {
+  //      if (store.conversation.conversationList[i].usersId[j] == props.name) {
+  //        const action = { type: 'SET_CURRENT_CONVERSATION', value: store.conversation.conversationList[i] };
+  //        props.dispatch(action);
+  //        new_conversation = false;
+  //        break;
+  //      }
+  //    }
+  //  }
+  //}
+  //if (new_conversation == true) {
+  //  const newId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+//
+  //  const action = { type: 'ADD_CONVERSATION', value: { id: newId, usersId: [store.profil.pseudo, props.name], messages: [] } };
+  //  props.dispatch(action);
+  //  const action2 = { type: 'SET_CURRENT_CONVERSATION', value: { id: newId, usersId: [store.profil.pseudo, props.name], messages: [] } };
+  //  props.dispatch(action2);
     props.navigation.navigate('MenuChat');
-  } else {
-    props.navigation.navigate('ScreenChat');
-  }
+  //} else {
+  //  props.navigation.navigate('ScreenChat');
+  //}
 }
 
 function FriendList(props) {
+  const {createConversation} = contextSocket();
   return (
     <TouchableOpacity
       style={styles.button}
-      onPress={() => GotoChat(props)}
+      onPress={() => GotoChat(props, createConversation, props.name)}
     >
       <Text style={styles.previewTitle}>
         { props.name }
