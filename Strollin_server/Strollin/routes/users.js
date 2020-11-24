@@ -169,7 +169,7 @@ router.get('/profile', async function(req, res) {
       score_location: user.score_location,
       score_comment: user.score_comment,
     }
-    return  res.status(200).send({status: "Profile sent." , profile});
+    return  res.status(200).send({status: "Profile sent." , profile : profile});
   }
   return res.status(400).send({status: "You are not connected."});
 });

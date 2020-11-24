@@ -24,6 +24,14 @@ const {
 } = require("../models/user");
 
 const {
+  ConversationModel
+} = require("../models/conversation");
+
+const {
+  MessageModel
+} = require("../models/message");
+
+const {
   TagModel
 } = require("../models/tag");
 const { fstat } = require('fs');
@@ -144,21 +152,77 @@ sio.on("connection", async (socket) => {
     if (user) {
       response.connected = true;
       // join all room of conversation in his list
-      socket.emit("login", response);
+      socket.emit("identification", response);
     } else {
-      socket.emit("login", response);
+      socket.emit("identification", response);
+    }
+  });
+
+  socket.on("createConversation", async (msg) => {
+    console.log("createConversation event " , msg);
+    const user = await UserModel.findOne({access_token: msg.access_token});
+
+    let answer = {
+      name : "",
+      participants: [],
+      statue: false
+    }
+
+    console.log("user ", user);
+    if (user) {
+      let conversation = new ConversationModel ({
+        participants : [...msg.participants, user._id],
+        name : msg.Name,
+      }); 
+
+      console.log("conversation ", conversation);
+
+      answer.name = msg.Name;
+      answer.participants = [...msg.participants, user._id];
+      answer.statue = true;
+
+      await conversation.save();
+
+      user
+      // join all room of conversation in his list
+      socket.emit("newConversation", answer);
+    } else {
+      socket.emit("newConversation", answer);
     }
   });
   
   // Event "sendMessage"
-  socket.on("sendMessage", msg => {
-    console.log("sendMessage " , msg);
-    sio.emit("receiveMessage", msg);
-  });
+  socket.on("sendMessage", async (msg) => {
+    console.log("sendMessage event " , msg);
+    const user = await UserModel.findOne({access_token: msg.access_token});
+    let response = {
+      connected: false,
+    };
 
-  socket.on("createConversation", msg => {
-    console.log("createConversation " , msg);
-    sio.emit("newConversation", msg);
+    //user.socket_id = userId;
+    //await user.save();
+
+    console.log("message ", msg);
+    if (user) {
+      let conversation = ConversationModel.findOne({_id : msg.conversation});
+
+      if (conversation) {
+
+        let message = new MessageModel ({
+          expeditor : user._id,
+          conversation : conversation._id,
+          type : msg.type,
+          message: msg.message
+        });
+
+        await message.save();
+        conversation.message_list = [message._id, ...conversation.message_list]
+        await conversation.save();
+
+      }
+      // join all room of conversation in his list
+      socket.emit("receiveMessage", message);
+    }
   });
 
 })
