@@ -52,7 +52,7 @@ router.get('/get_messages', async function(req, res) {
     let message = null;
 
     if (user) {
-        message = await MessageModel.find({_id: {$in: req.headers.message_list}});
+        message = await MessageModel.find({_id: {$in: req.headers.message_list}}, null, {sort: {creation_date: -1}});
         if (message) {
             return res.status(200).send({status: "The messages are found.", message_list: message});
         }
