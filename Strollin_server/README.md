@@ -38,7 +38,7 @@ USER RELATED:
 - tags_list ```[tagID]```
 - friends_list ```[userID]```
 - friends_request ```[userID]```
-- groups ```[[groupName, userID, ...]]```
+- groups ```[[group_name, userID, ...]]```
 - course_historic ```[courseID]```
 - score_course ```[{courseID, String, Date}]``` : score as String
 - score_location ```[{locationID, String, Date}]``` : score as String
@@ -97,11 +97,18 @@ USER RELATED:
 | Log out an user.<br>Make unavailable the current token.| access_token: String | None | None |
 
 
-- GET user's profile: ```GET /users/profile```
+- GET user's profile: ```GET /users/get_profile```
 
 | Description | Headers | Body | Return |
 |-|-|-|-|
-| Get the user's informations.<br>For the profile page.| access_token: String | None | profile: {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mail: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pseudo: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;first_name: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;last_name: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tags: [s],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;friends_list: [userID],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;course_historic: [courseID],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;score_course: [{courseID, score, Date}],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;score_location: [{locationID, score, Date}],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;score_comment: [{commentID, score, Date}]<br>} |
+| Get the current user's profile.| access_token: String | None | profile: {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mail: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;creation_date: Date,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pseudo: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type: String<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;first_name: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;last_name: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tags_list: [tagID],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;friends_list: [userID],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;friends_request: [userID],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;groups: [[group_name, userID1, userID2, ...]],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;course_historic: [courseID],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;score_course: [{courseID, score, Date}],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;score_location: [{locationID, score, Date}],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;score_comment: [{commentID, score, Date}]<br>} |
+
+
+- GET an user's profile: ```GET /users/get_user_profile```
+
+| Description | Headers | Body | Return |
+|-|-|-|-|
+| Get an user's profile by its ID.| access_token: String<br>user_id: String | None | profile: {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mail: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;creation_date: Date,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pseudo: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type: String<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;first_name: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;last_name: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tags_list: [tagID],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;friends_list: [userID] |
 
 - GET user's tags: ```GET /users/get_user_tags```
 
@@ -131,11 +138,11 @@ MESSAGE RELATED:
 
 **REQUESTS:**
 
-- ADD new message: ```POST /message/post_message```
+- GET messages: ```GET /message/get_messages```
 
-- GET messages: ```GET /message/get_message```
-
-- DEL message: ```DEL /message/remove_message```
+| Description | Headers | Body | Return |
+|-|-|-|-|
+| Get the contain of messages with a provided list of message's ID.| access_token: String | message_list: [messageID] | [messageObject] |
 
 
 CONVERSATION RELATED:
@@ -151,11 +158,11 @@ CONVERSATION RELATED:
 
 **REQUESTS:**
 
-- ADD new conversation: ```POST /conversation/post_conversation```
+- GET conversations: ```GET /conversation/get_conversations```
 
-- GET conversations: ```GET /conversation/get_conversation```
-
-- DEL conversation: ```DEL /conversation/remove_conversation```
+| Description | Headers | Body | Return |
+|-|-|-|-|
+| Get all the conversations where the user appears.| access_token: String | | [conversationObject] |
 
 
 
@@ -254,3 +261,5 @@ TAGS RELATED:
 | Description | Headers | Body | Return |
 |-|-|-|-|
 | Create a new tag.| access_token: String | name: String<br>description: (optional) String | None |
+
+- GET tag: ```POST /tags/get_tags```

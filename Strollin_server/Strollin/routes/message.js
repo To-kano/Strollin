@@ -66,20 +66,20 @@ router.get('/get_messages', async function(req, res) {
 
 // Delete
 
-router.delete('/delete_message', async function(req, res) {
+// router.delete('/delete_message', async function(req, res) {
 
-    let message = await MessageModel.find({_id: req.headers.id});
+//     let message = await MessageModel.find({_id: req.headers.id});
 
-    if (message) {
-        if (message.type == "video" || message.type == "image") {
-            // Delete the file
-            pass
-        }
-        await message.remove();
-        return res.status(200).send({status: "Message successfully deleted."});
-    }
-    return res.status(400).send({status: "An error occurred."});
-});
+//     if (message) {
+//         if (message.type == "video" || message.type == "image") {
+//             // Delete the file
+//             pass
+//         }
+//         await message.remove();
+//         return res.status(200).send({status: "Message successfully deleted."});
+//     }
+//     return res.status(400).send({status: "An error occurred."});
+// });
 
 
 module.exports = router;

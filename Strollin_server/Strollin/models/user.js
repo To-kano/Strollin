@@ -61,7 +61,7 @@ var UserModelSchema = new Schema({
         type: [{String, String, Date}],
         default: [],
     },
-    score_cocation: {        // Liste des lieux notés (ID, Note, Date)
+    score_location: {        // Liste des lieux notés (ID, Note, Date)
         type: [{String, String, Date}],
         default: [],
     },

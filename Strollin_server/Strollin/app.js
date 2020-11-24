@@ -11,7 +11,7 @@ var usersRouter = require('./routes/users');
 
 //var algo = require('./Algo/BasicAlgo');
 //var algo = require('./Algo/BasicAlgo2');
-var algo = require('./Algo/TwoPersonAlgo');
+//var algo = require('./Algo/TwoPersonAlgo');
 
 var pop = require('./Algo/PopUpAlgo');
 const { isObject } = require('util');

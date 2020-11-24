@@ -9,6 +9,10 @@ var CourseModelSchema = new Schema({
         type: [String],
         required: true
     },
+    name: {
+        type: String,
+        required: true
+    },
     score: {
         type: String,
         default: '0'
@@ -17,7 +21,7 @@ var CourseModelSchema = new Schema({
         type: [String], //list of User ID that gave score, see user.scoreCourse
         default: []
     },
-    number_used: {             // Nombre de fois que ce parcours à été utilisé
+    number_used: {      // Nombre de fois que ce parcours à été utilisé
         type: String,
         default: '0'
     },
@@ -31,7 +35,7 @@ var CourseModelSchema = new Schema({
     },
     timetable: {        // Définit les horaires possible en prenant les timetable de la liste des lieux
         type: String,
-        required: true,
+        default: {},
     },
     comment_list: {
         type: [String],

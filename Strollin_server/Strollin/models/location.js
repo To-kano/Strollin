@@ -9,6 +9,10 @@ var LocationModelSchema = new Schema({
         type: String,
         required: true
     },
+    sponsor: {
+        type: Boolean,
+        default: false
+    },
     score: {
         type: String,
         default: '0'
