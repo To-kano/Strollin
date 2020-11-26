@@ -8,6 +8,8 @@ var logger = require('morgan');
 // Import Routes
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var conversationRouter = require('./routes/conversation');
+var messageRouter = require('./routes/message');
 
 //var algo = require('./Algo/BasicAlgo');
 //var algo = require('./Algo/BasicAlgo2');
@@ -50,6 +52,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/conversation', conversationRouter);
+app.use('/message', messageRouter);
 
 /******/
 

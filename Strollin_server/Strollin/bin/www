@@ -190,24 +190,27 @@ sio.on("connection", async (socket) => {
 
     console.log("message ", msg);
     if (user) {
-      let conversation = ConversationModel.findOne({_id : msg.conversation});
+      let conversation = await ConversationModel.findOne({_id : msg.conversation});
+      console.log("conversation ", conversation);
 
       if (conversation) {
 
         let message = new MessageModel ({
           expeditor : user._id,
-          conversation : conversation._id,
+          conversation : msg.conversation,
           type : msg.type,
           message: msg.message
         });
 
         await message.save();
-        conversation.message_list = [message._id, ...conversation.message_list]
-        await conversation.save();
 
+        console.log("messageModel ", message);
+
+        conversation.message_list = [...conversation.message_list, message._id]
+        await conversation.save();
+        socket.emit("receiveMessage", message);
       }
       // join all room of conversation in his list
-      socket.emit("receiveMessage", message);
     }
   });
 

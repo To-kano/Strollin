@@ -34,9 +34,11 @@ router.get('/get_conversation', async function(req, res) {
     let conversations = null;
 
     if (user) {
-        conversations = await ConversationModel.find({participants: {$elemMatch: user._id}})
-        conversations.participants = await UserModel.find({_id : {$in : conversations.participants}});
-        return res.status(200).send({status: "All conversations are found.", conversations});
+        conversations = await ConversationModel.find({participants: user._id})
+
+        console.log("converssation get = ", conversations);
+        //conversations.participants = await UserModel.find({_id : {$in : conversations.participants}});
+        return res.status(200).send(conversations);
     }
     return res.status(400).send({status: "You are not connected."});
 });
