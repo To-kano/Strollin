@@ -156,6 +156,7 @@ router.get('/profile', async function(req, res) {
 
   if (user) {
     profile = {
+      _id : user._id,
       mail: user.mail,
       pseudo: user.pseudo,
       type: user.type,

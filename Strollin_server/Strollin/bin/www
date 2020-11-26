@@ -162,32 +162,18 @@ sio.on("connection", async (socket) => {
     console.log("createConversation event " , msg);
     const user = await UserModel.findOne({access_token: msg.access_token});
 
-    let answer = {
-      name : "",
-      participants: [],
-      statue: false
-    }
-
     console.log("user ", user);
     if (user) {
       let conversation = new ConversationModel ({
         participants : [...msg.participants, user._id],
-        name : msg.Name,
+        name : msg.name,
       }); 
 
       console.log("conversation ", conversation);
 
-      answer.name = msg.Name;
-      answer.participants = [...msg.participants, user._id];
-      answer.statue = true;
-
       await conversation.save();
-
-      user
       // join all room of conversation in his list
-      socket.emit("newConversation", answer);
-    } else {
-      socket.emit("newConversation", answer);
+      socket.emit("newConversation", conversation);
     }
   });
   
