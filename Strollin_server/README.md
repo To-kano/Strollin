@@ -60,7 +60,7 @@ USER RELATED:
 
 | Description | Headers | Body | Return |
 |-|-|-|-|
-| Send friend request. | access_token: String | friend: userID | None |
+| Send friend request to an user. | access_token: String | friend: userID | None |
 
 - ADD a friend: ```POST /users/add_friend```
 
@@ -94,7 +94,7 @@ USER RELATED:
 
 | Description | Headers | Body | Return |
 |-|-|-|-|
-| Log out an user.<br>Unavailable the current token.| access_token: String | None | None |
+| Log out an user.<br>Make unavailable the current token.| access_token: String | None | None |
 
 
 - GET user's profile: ```GET /users/profile```
@@ -103,7 +103,7 @@ USER RELATED:
 |-|-|-|-|
 | Get the user's informations.<br>For the profile page.| access_token: String | None | profile: {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mail: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pseudo: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;first_name: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;last_name: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tags: [s],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;friends_list: [userID],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;course_historic: [courseID],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;score_course: [{courseID, score, Date}],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;score_location: [{locationID, score, Date}],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;score_comment: [{commentID, score, Date}]<br>} |
 
-- GET user's tags: ```GET /users/get_tags```
+- GET user's tags: ```GET /users/get_user_tags```
 
 - DEL user's account: ```DEL /users/remove_account```
 
@@ -249,3 +249,8 @@ TAGS RELATED:
 
 **REQUESTS:**
 
+- POST new tag: ```POST /tags/new_tag```
+
+| Description | Headers | Body | Return |
+|-|-|-|-|
+| Create a new tag.| access_token: String | name: String<br>description: (optional) String | None |
