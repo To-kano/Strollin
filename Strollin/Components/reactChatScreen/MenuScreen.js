@@ -14,51 +14,6 @@ function NewConversation(props) {
   props.navigation.navigate('NewConversation');
 }
 
-async function setUser() {
-  const action = {
-    type: 'SET_USER',
-    value: {
-      firstName: 'Tony',
-      lastName: 'Ye',
-      email: 'tony.ye@epitech.eu',
-      pseudo: 'Kano',
-      friendList: ['Koko', 'Yaya', 'Zaza']
-    }
-  };
-  Store.dispatch(action);
-}
-
-async function setHistoric() {
-  const data = [{
-    id: 'convIdTEST',
-    usersId: ['Kano', 'Koko'],
-    messages: [{
-      id: 'llllllqq', content: 'Hello', userId: 'userId1TEST', username: 'Kano'
-    },
-    {
-      id: 'ldfsfdealqq', content: 'World', userId: 'userId2TEST', username: 'Koko'
-    }]
-  },
-
-  {
-    id: 'convIdTEST2',
-    usersId: ['Kano', 'Yaya', 'Zaza'],
-    messages: [
-      {
-        id: 'llkejfzqq', content: 'MUDA MUDA MUDA MUDA!', userId: 'userId2TEST3', username: 'Zaza'
-      },
-      {
-        id: 'jbfkjzdz', content: 'ZA', userId: 'userId1TEST2', username: 'Kano'
-      },
-      {
-        id: 'llkejfzqq', content: 'WARUDO!', userId: 'userId2TEST2', username: 'Yaya'
-      }]
-  }];
-
-  const action = { type: 'SET_CONVERSATION', value: data };
-  Store.dispatch(action);
-}
-
 function sortConversation(key) {
   const store = Store.getState();
   const result = titleFilter(store.conversation.conversationList.id);
@@ -108,8 +63,8 @@ function LoginScreen(props) {
       <View>
         <FlatList
           data={props.conversation.conversationList}
-          renderItem={({ item }) => <ConvPreview {...props} jsonConversation={item} />}
-          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => <ConvPreview {...props} conversationID={item} />}
+          keyExtractor={(item) => item}
         />
       </View>
     </View>

@@ -10,51 +10,23 @@ import Store from '../../Store/configureStore';
 import profileReducer from '../../Store/Reducers/profileReducer';
 import {contextSocket} from '../Socket';
 
-function getHistoric(props) {
-  const tmp = [];
-
-  console.log('lol', props.conversation.currentConversation.messages);
-
-  for (let i = 0; i < props.conversation.currentConversation.messages.length; i++) {
-    tmp.push(props.conversation.currentConversation.messages[i].content);
-  }
-  return (tmp);
-}
-
-//function sendMessage(message, socket) {
-//  console.log('sending message ', message);
-//
-//  const newId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-//  const store = Store.getState();
-//  const action = {
-//    type: 'ADD_MESSAGE_TO_CONVERSATION',
-//    value: {
-//      id: newId, content: message, userId: store.profil.Id, username: store.profil.pseudo
-//    }
-//  };
-//  console.log('Pseudo =  ', store.profil.pseudo);
-//
-//  Store.dispatch(action);
-//  socket.emit('sendMessage', message);
-//}
-
 function ChatScreen(props) {
-  // const [messages, setMessages] = useState([getHistoric(props)]);
-
   const {sendMessage} = contextSocket();
-  console.log(props.conversation.currentConversation.messages);
+
+  console.log("ChatScreen data = ", props.conversation[props.conversation.currentConversation].message_list );
+  console.log("ChatScreen data = ", props.conversation.currentConversation );
+
   return (
     <View style={styles.box}>
       <View>
         <FlatList
-          data={props.conversation.currentConversation.messages}
+          data={props.conversation[props.conversation.currentConversation].message_list}
           renderItem={({ item }) => (
             <MessagesItem
-              message={item.content}
-              username={item.username}
+            messageID={item}
             />
           )}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item}
         />
       </View>
       <ConversationBar

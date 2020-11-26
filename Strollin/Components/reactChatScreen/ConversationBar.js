@@ -5,30 +5,10 @@ import socketIOClient from 'socket.io-client';
 
 import ButtonIcon from '../ButtonIcon.js';
 
-const ENDPOINT = 'http://82.226.234.122:3002';
 
 function ConversationBar(props) {
   const [research, setresearch] = useState('');
-  const { imagePath } = props;
-  //const [socket, setSocket] = useState(null);
-
-  //useEffect(() => {
-  //  if (socket != null) {
-  //    socket.on('chat message', (data) => {
-  //      console.log(data);
-  //    });
-  //    socket.on('connection', (data) => {
-  //      console.log(data);
-  //    });
-  //  }
-  //}, [socket]);
-
-  //if (socket == null) {
-  //  setSocket(socketIOClient(ENDPOINT));
-  //}
   
-
-  console.log('ImagePath = ', props.imagePath);
   return (
     <View style={styles.container}>
       <View style={styles.horizontalDisplay}>

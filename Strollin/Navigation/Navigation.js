@@ -44,7 +44,7 @@ const getProfilCache = async (props) => {
 };
 
 function MyStack(props) {
-  if (!props.profil.accessToken) {
+  if (!props.profil.access_token) {
     getProfilCache(props);
     console.log('nav props: ', props.profil);
   }
@@ -55,7 +55,7 @@ function MyStack(props) {
           headerShown: false
         }}
       >
-        {props.profil.accessToken == null ? (
+        {props.profil.access_token == null ? (
           <>
             <Stack.Screen
               name="userLogin"

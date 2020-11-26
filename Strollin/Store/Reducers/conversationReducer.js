@@ -4,7 +4,7 @@ const EXEMPLE = {
       _id: 'uskfdsfsd',
       participants: ['userId1TEST', 'userId2TEST'],
       name: "",
-      messages_list: ["message_id", "message_id"],
+      message_list: ["message_id", "message_id"],
       recent_messages: [{ expeditor: "", conversation_id: "", creation_date: new Date(), type: "message", message: "" }, ]
     },
     {
@@ -32,9 +32,8 @@ const EXEMPLE = {
 };
 
 const initialState = {
-  conversationList: [],
-  currentConversation: {},
-  nameTest: ''
+  currentConversation: "id",
+  conversationList: []
 };
 
 function ConversationReducer(state = initialState, action) {
@@ -45,33 +44,22 @@ function ConversationReducer(state = initialState, action) {
     case 'ADD_CONVERSATION':
       nextState = {
         ...state,
-        conversationList: [...state.conversationList, action.value]
       };
+      nextState[action.value._id] = action.value;
+      nextState.conversationList = [action.value._id ,...nextState.conversationList]
       return nextState;
     case 'SET_CURRENT_CONVERSATION':
       nextState = {
         ...state,
-        currentConversation: action.value
+        currentConversation: action.value.id
       };
       return nextState;
-    case 'SET_CONVERSATION':
-      nextState = {
-        ...state,
-        conversationList: action.value
-      };
-      return nextState;
-    case 'ADD_MESSAGE_TO_CONVERSATION':
-      nextState = {
-        ...state,
+    case 'ADD_MESSAGE_ID':
 
-      };
-      nextState.currentConversation.messages = [...nextState.currentConversation.messages, action.value];
-      return nextState;
-    case 'TEST':
       nextState = {
         ...state,
-        nameTest: action.value
       };
+      nextState[action.value._id].message_list = [ ...nextState[action.value._id].message_list, action.value.message_id];
       return nextState;
     default:
       return state;

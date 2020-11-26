@@ -27,6 +27,7 @@ function sortConversation(key) {
 }
 
 function NewConversation(props) {
+  console.log("profil = ", props.profil);
   return (
     <View style={styles.container}>
       <View style={styles.circle} />
@@ -41,7 +42,7 @@ function NewConversation(props) {
       </View>
       <View>
         <FlatList
-          data={props.profil.friendList}
+          data={props.profil.friends_list}
           renderItem={({ item }) => <FriendList {...props} name={item} />}
           keyExtractor={(item) => item}
         />

@@ -6,6 +6,7 @@ import mapNavigationReducer from './Reducers/mapNavigationReducer';
 import chatConversation from './Reducers/conversationReducer';
 import socketReducer from './Reducers/socketReducer';
 import tendanceReducer from './Reducers/tendanceReducer';
+import messageReducer from './Reducers/messageReducer';
 
 const rootReducer = combineReducers({
   profil: profileReducer,
@@ -14,7 +15,8 @@ const rootReducer = combineReducers({
   map: mapNavigationReducer,
   conversation: chatConversation,
   socket: socketReducer,
-  tendance: tendanceReducer
+  tendance: tendanceReducer,
+  message: messageReducer
 });
 
 export default createStore(rootReducer);

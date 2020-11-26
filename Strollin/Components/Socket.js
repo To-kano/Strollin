@@ -37,82 +37,72 @@ function Socket({children, profil, dispatch}) {
     setSocket(socketIOClient(ENDPOINT));
   } 
 
-  if (!profil.accessToken) {
+  if (!profil.access_token) {
     getProfilCache(dispatch);
     console.log('nav props: ', profil);
   }
 
   useEffect(() => {
     if (socket != null) {
-      socket.on('sendMessage', (data) => {
-        console.log("sent " + data);
-      });
       socket.on('receiveMessage', (data) => {
         console.log("received " + data);
+
+        const store = Store.getState();
+        const action = {
+          type: 'ADD_MESSAGE',
+          value: data
+        };
+      
+        Store.dispatch(action);
+        const action2 = {
+          type: 'ADD_MESSAGE_ID',
+          value: {
+            _id: data.conversation,
+            message_id : data._id
+          }
+        };
+        console.log('message =  ', store.message);
+      
+        Store.dispatch(action2);
+        console.log('message 2=  ', store.message);
+
       });
       socket.on('identification', (data) => {
         console.log("identification = ", data);
       });
       socket.on('newConversation', (data) => {
-      //  const store = Store.getState();
-      //  let new_conversation = true;
-      //
-      //  for (i in store.conversation.conversationList) {
-      //    if (store.conversation.conversationList[i].usersId.length == 2) {
-      //      for (j in store.conversation.conversationList[i].usersId) {
-      //        if (store.conversation.conversationList[i].usersId[j] == props.name) {
-      //          const action = { type: 'SET_CURRENT_CONVERSATION', value: store.conversation.conversationList[i] };
-      //          props.dispatch(action);
-      //          new_conversation = false;
-      //          break;
-      //        }
-      //      }
-      //    }
-      //  }
-      //  if (new_conversation == true) {
-      //    const newId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-      //
-      //    //create
-      //    const action = { type: 'ADD_CONVERSATION', value: { id: newId, usersId: [store.profil.pseudo, props.name], messages: [] } };
-      //    props.dispatch(action);
-      //    const action2 = { type: 'SET_CURRENT_CONVERSATION', value: { id: newId, usersId: [store.profil.pseudo, props.name], messages: [] } };
-      //    props.dispatch(action2);
-      //  }
-      console.log("newConnection = ", data);
+        //const store = Store.getState();
+
+        console.log("newConversation = ", data);
+
+        const action = { type: 'ADD_CONVERSATION', value: data };
+        Store.dispatch(action);
       });
     }
   }, [socket]);
 
   useEffect(() => {
-    if (profil.accessToken) {
-      console.log("access_token = ", profil.accessToken);
-      socket.emit('login', { access_token: profil.accessToken });
+    if (profil.access_token) {
+      console.log("access_token = ", profil.access_token);
+      socket.emit('login', { access_token: profil.access_token });
       socket.emit('sendMessage', "hey Pierre!");
     }
 
-  }, [profil.accessToken])
+  }, [profil.access_token])
 
   const sendMessage = (message) => {
     console.log('sending message ', message);
   
-    const newId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-    const store = Store.getState();
-    const action = {
-      type: 'ADD_MESSAGE_TO_CONVERSATION',
-      value: {
-        id: newId, content: message, userId: store.profil.Id, username: store.profil.pseudo
-      }
-    };
-    console.log('Pseudo =  ', store.profil.pseudo);
-  
-    Store.dispatch(action);
-    socket.emit('sendMessage', message);
+    
+    socket.emit('sendMessage', { access_token: store.profil.access_token, 
+      conversation: store.conversation.currentConversation, type: "message", message: message});
   };
 
   const createConversation = (participants) => {
     console.log('creating conversation', participants);
   
-    var object = { access_token: store.profil.accessToken, participants: participants, name: "" }
+    let convName = store.profil.pseudo + ", " + participants;
+    var object = { access_token: store.profil.access_token, participants: participants, name: convName }
     socket.emit('createConversation', object);
   };
 
