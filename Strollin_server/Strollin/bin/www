@@ -129,7 +129,36 @@ function onListening() {
 
 // SOCKET IO //
 
+
+
 var sio = require('socket.io').listen(server)
+
+async function sendNewConversation(conversation) {
+
+  if (conversation.participants) {
+    for (let i in conversation.participants) {
+      const user = await UserModel.findOne({_id : conversation.participants[i]});
+
+      if (user.socket_id) {
+        sio.to(user.socket_id).emit("newConversation", conversation);
+      }
+    }
+  }
+}
+
+async function sendReceiveMessage(message, conversation) {
+
+  if (conversation.participants) {
+    for (let i in conversation.participants) {
+      const user = await UserModel.findOne({_id : conversation.participants[i]});
+
+      if (user.socket_id) {
+        sio.to(user.socket_id).emit("receiveMessage", message);
+      }
+    }
+  }
+}
+
 
 sio.on("connection", async (socket) => {
 
@@ -172,8 +201,11 @@ sio.on("connection", async (socket) => {
       console.log("conversation ", conversation);
 
       await conversation.save();
+
+
+      sendNewConversation(conversation);
       // join all room of conversation in his list
-      socket.emit("newConversation", conversation);
+      //socket.emit("newConversation", conversation);
     }
   });
   
@@ -208,7 +240,9 @@ sio.on("connection", async (socket) => {
 
         conversation.message_list = [...conversation.message_list, message._id]
         await conversation.save();
-        socket.emit("receiveMessage", message);
+
+        sendReceiveMessage(message, conversation);
+        //socket.emit("receiveMessage", message);
       }
       // join all room of conversation in his list
     }
