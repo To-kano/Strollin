@@ -8,7 +8,26 @@ import ButtonIcon from '../ButtonIcon.js';
 
 function ConversationBar(props) {
   const [research, setresearch] = useState('');
+<<<<<<< HEAD
   
+=======
+  const { imagePath } = props;
+  const [socket, setSocket] = useState(null);
+
+  useEffect(() => {
+    if (socket != null) {
+      //socket.on('chat message', (data) => {
+      //  console.log(data);
+      //});
+    }
+  }, [socket]);
+
+  if (socket == null) {
+    setSocket(socketIOClient(ENDPOINT));
+  }
+
+  console.log('ImagePath = ', props.imagePath);
+>>>>>>> pierreFront
   return (
     <View style={styles.container}>
       <View style={styles.horizontalDisplay}>

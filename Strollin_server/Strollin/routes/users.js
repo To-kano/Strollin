@@ -156,6 +156,7 @@ router.get('/profile', async function(req, res) {
 
   if (user) {
     profile = {
+      _id : user._id,
       mail: user.mail,
       pseudo: user.pseudo,
       type: user.type,
@@ -169,7 +170,7 @@ router.get('/profile', async function(req, res) {
       score_location: user.score_location,
       score_comment: user.score_comment,
     }
-    return  res.status(200).send({status: "Profile sent." , profile});
+    return  res.status(200).send({status: "Profile sent." , profile : profile});
   }
   return res.status(400).send({status: "You are not connected."});
 });
