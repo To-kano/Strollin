@@ -33,8 +33,13 @@ router.get('/get_conversation', async function(req, res) {
     let user = await UserModel.findOne({access_token: req.headers.access_token})
     let conversations = null;
 
+    let id = user._id;
+
+    console.log("user = ", user);
+    console.log("id =", id);
+
     if (user) {
-        conversations = await ConversationModel.find({participants: user._id})
+        conversations = await ConversationModel.find({participants: {$in: [id]}})
 
         console.log("converssation get = ", conversations);
         //conversations.participants = await UserModel.find({_id : {$in : conversations.participants}});
