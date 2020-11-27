@@ -25,7 +25,7 @@ function ConnectionScreen(prop) {
     const regex = '.*access_token=(.*)&expires_in=(.*)&token.*refresh_token=(.*)&account_username=(.*)&account_id=(.*).*';
     const found = url.match(regex);
     const action = {
-      type: 'CONNECTION', accessToken: found[1], refreshToken: found[3], expiresIn: found[2], username: found[4], accountId: found[5]
+      type: 'CONNECTION', access_token: found[1], refreshToken: found[3], expiresIn: found[2], username: found[4], accountId: found[5]
     };
 
     prop.dispatch(action);

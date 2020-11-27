@@ -3,35 +3,19 @@ import { connect } from 'react-redux';
 import { StyleSheet, TextInput, View } from 'react-native';
 import socketIOClient from 'socket.io-client';
 
-import ButtonIcon from './ButtonIcon.js';
+import ButtonIcon from '../ButtonIcon.js';
 
-const ENDPOINT = 'http://82.226.234.122:2000';
 
 function ConversationBar(props) {
   const [research, setresearch] = useState('');
-  const { imagePath } = props;
-  const [socket, setSocket] = useState(null);
-
-  useEffect(() => {
-    if (socket != null) {
-      socket.on('chat message', (data) => {
-        console.log(data);
-      });
-    }
-  }, [socket]);
-
-  if (socket == null) {
-    setSocket(socketIOClient(ENDPOINT));
-  }
-
-  console.log('ImagePath = ', props.imagePath);
+  
   return (
     <View style={styles.container}>
       <View style={styles.horizontalDisplay}>
         <ButtonIcon
           icon={require('../../images/picture.png')}
           onPress={() => {
-            props.onPress(research, socket);
+            props.onPress(research);
             setresearch('');
           }}
         />
@@ -46,7 +30,7 @@ function ConversationBar(props) {
         <ButtonIcon
           icon={require('../../images/send.png')}
           onPress={() => {
-            props.onPress(research, socket);
+            props.onPress(research);
             setresearch('');
           }}
         />

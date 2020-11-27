@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-community/async-storage';
 
 const initialState = {
-  accessToken: null,
+  access_token: null,
   mail: null,
   firstName: null,
   lastName: null,
@@ -31,13 +31,13 @@ function profileReducer(state = initialState, action) {
     case 'CONNECTION':
       nextState = {
         ...state,
-        accessToken: action.value
+        access_token: action.value
       };
-      // console.log("profile reducer", nextState);
+       console.log("profile reducer connection", nextState);
       return nextState;
 
     case 'DECONNECTION':
-      storeProfile(initialState);
+      //storeProfile(initialState);
       return initialState;
 
     case 'SET_USER':
@@ -45,8 +45,8 @@ function profileReducer(state = initialState, action) {
         ...state,
         ...action.value
       };
-      // console.log("profile reducer", nextState);
-      storeProfile(nextState);
+       console.log("profile reducer set user", nextState);
+      //storeProfile(nextState);
       return nextState;
 
     case 'ADD_HISTORY':
@@ -54,7 +54,7 @@ function profileReducer(state = initialState, action) {
         ...state,
         history: state.history + action.value,
       };
-      storeProfile(nextState);
+      //storeProfile(nextState);
       return nextState;
     case 'SET_FRIEND':
       nextState = {

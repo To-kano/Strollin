@@ -118,9 +118,6 @@ function IndexNavbar() {
                 })}
                 onClick={toggleNavbarCollapse}
               >
-                <span className="navbar-toggler-bar bar1" />
-                <span className="navbar-toggler-bar bar2" />
-                <span className="navbar-toggler-bar bar3" />
               </button>
             </div>
             <div className="navbar-translate">
@@ -138,9 +135,23 @@ function IndexNavbar() {
                 })}
                 onClick={toggleNavbarCollapse}
               >
-                <span className="navbar-toggler-bar bar1" />
-                <span className="navbar-toggler-bar bar2" />
-                <span className="navbar-toggler-bar bar3" />
+              </button>
+            </div>
+            <div className="navbar-translate">
+              <NavbarBrand
+                data-placement="bottom"
+                href="/indexPart"
+                title="Partner Page"
+              >
+                Partner Page
+              </NavbarBrand>
+              <button
+                aria-expanded={navbarCollapse}
+                className={classnames("navbar-toggler navbar-toggler", {
+                  toggled: navbarCollapse
+                })}
+                onClick={toggleNavbarCollapse}
+              >
               </button>
             </div>
           </Nav>

@@ -13,7 +13,7 @@ import {
   Label
 } from "reactstrap";
 
-function IndexHeader() {
+function IndexHeaderPartFR() {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -34,7 +34,7 @@ function IndexHeader() {
         className="page-header section-dark"
         style={{
           backgroundImage:
-            "url(" + require("assets/img/empty_street.jpg") + ")"
+            "url(" + require("assets/img/shop_alley.jpg") + ")"
         }}
       >
       <div className="filter" />
@@ -43,30 +43,30 @@ function IndexHeader() {
             <Row>
               <Col className="mx-auto" lg="4" md="6">
                 <Card className="card-register">
-                  <h3 className="form-title text-center">Register now for some bonus!</h3>
+                  <h3 className="form-title text-center">Essayer 1 mois gratuitement !</h3>
                   <Form className="register-form" onSubmit={handleSubmit}>
                   <h4 className="form-letter">Email</h4>
                     <Input type="email" name="email" id="exampleEmail" placeholder="Email" onChange={e => setEmail(e.target.value)} />
-                    <h4 className="form-letter">Username</h4>
+                    <h4 className="form-letter">Nom d'entreprise</h4>
                     <Input type="username" name="username" id="exampleUsername" placeholder="Username" onChange={e => setUsername(e.target.value)} />
-                    <h4 className="form-letter">Password</h4>
+                    <h4 className="form-letter">Mot de passe</h4>
                     <Input type="password" name="password" id="examplePassword" placeholder="Password" onChange={e => setPassword(e.target.value)} />
-                    <h4 className="form-letter">Password confirmation</h4>
+                    <h4 className="form-letter">Confirmation du mot de passe</h4>
                     <Input type="password" name="password" id="examplePassword" placeholder="Password" onChange={e => setPasswordConf(e.target.value)} />
                     <Label check className="form-little-letter">
                       <Input type="checkbox" name="check" id="exampleCheck" required/>
-                        I agree to the Terms and Conditions
+                        J'accepte les conditions d'utilisations
                     </Label>
                     <br/>
-                    <Input style={{backgroundColor: '#5cb85c', color: 'white', fontSize: '15px', fontWeight: 'bold' }} type="submit" value="Register" />
+                    <Input style={{backgroundColor: '#5cb85c', color: 'white', fontSize: '15px', fontWeight: 'bold' }} type="submit" value="S'inscrire" />
                   </Form>
                 </Card>
               </Col>
               <div className="title-brand">
-                <h1 className="presentation-title">Go out with Strollin'!</h1>
+                <h1 className="presentation-title">Gagnez en visibilité avec Strollin' !</h1>
               </div>
               <h2 className="presentation-subtitle text-center">
-                No need for plan anymore, Strollin' take care of everything!
+              Plus besoin de plan pour sortir, Strollin' s'occupe de tout !
               </h2>
             </Row>
           </Container>
@@ -76,4 +76,4 @@ function IndexHeader() {
   );
 }
 
-export default IndexHeader;
+export default IndexHeaderPartFR;

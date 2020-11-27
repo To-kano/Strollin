@@ -4,42 +4,35 @@ import { Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 async function GotoChat(props) {
   console.log('GOING TO CHAT');
-  const action = { type: 'SET_CURRENT_CONVERSATION', value: props.jsonConversation };
+  const action = { type: 'SET_CURRENT_CONVERSATION', value: {id: props.conversationID} };
   props.dispatch(action);
   props.navigation.navigate('ScreenChat');
 }
 
-function getUser(props) {
-  let tmp = '';
-  let j = false;
-
-  for (i in props.jsonConversation.usersId) {
-    if (j == true) {
-      tmp = `${tmp}, `;
-    }
-    if (props.jsonConversation.usersId[i] != props.profil.pseudo) {
-      tmp += props.jsonConversation.usersId[i];
-      j = true;
-    }
-  }
-  return (tmp);
-}
-
 function getLastMessage(props) {
-  if (props.jsonConversation.messages.length > 0) {
-    return (props.jsonConversation.messages[props.jsonConversation.messages.length - 1].content);
+  if (props.conversation[props.conversationID].message_list.length > 0) {
+
+    const message_id = props.conversation[props.conversationID].message_list[props.conversation[props.conversationID].message_list.length - 1];
+
+    console.log("message_id", message_id);
+    console.log("props.message", props.message);
+    console.log("props.message[message_id]", props.message[message_id]);
+    //console.log("props.message.message", props.message[message_id].message);
+    return (props.message[message_id].message);
+  } else {
+    return ('No message yet!');
   }
-  return ('No message yet!');
 }
 
 function ConvPreview(props) {
+
   return (
     <TouchableOpacity
       style={styles.button}
       onPress={() => GotoChat(props)}
     >
       <Text style={styles.previewTitle}>
-        { getUser(props) }
+        {  props.conversation[props.conversationID].name}
       </Text>
       <Text style={styles.previewContent}>
         { getLastMessage(props)}

@@ -11,7 +11,7 @@ import {
   Container
 } from "reactstrap";
 
-function IndexNavbarFR() {
+function IndexNavbarPartFR() {
   const [navbarColor, setNavbarColor] = React.useState("navbar-transparent");
   const [navbarCollapse, setNavbarCollapse] = React.useState(false);
 
@@ -47,7 +47,7 @@ function IndexNavbarFR() {
         <div className="navbar-translate">
           <NavbarBrand
             data-placement="bottom"
-            href="/indexFR"
+            href="/indexPartFR"
             title="Acceuil"
           >
             Strollin'
@@ -107,7 +107,7 @@ function IndexNavbarFR() {
           <div className="navbar-translate">
             <NavbarBrand
                 data-placement="bottom"
-                href="/indexFR"
+                href="/indexPartFR"
                 title="FR"
               >
               <img src={require("./../../assets/img/franceIcon.jpg")} style={{ width: 30, height: 18}}/>
@@ -124,7 +124,7 @@ function IndexNavbarFR() {
             <div className="navbar-translate">
               <NavbarBrand
                 data-placement="bottom"
-                href="/index"
+                href="/indexPart"
                 title="EN"
               >
               <img src={require("./../../assets/img/englandIcon.jpg")} style={{ width: 30, height: 18}}/>
@@ -141,10 +141,10 @@ function IndexNavbarFR() {
             <div className="navbar-translate">
               <NavbarBrand
                 data-placement="bottom"
-                href="/indexPartFR"
-                title="Page partenaire"
+                href="/indexFR"
+                title="Page Client"
               >
-              Page Partenaire
+                Page Client
               </NavbarBrand>
               <button
                 aria-expanded={navbarCollapse}
@@ -161,4 +161,4 @@ function IndexNavbarFR() {
   );
 }
 
-export default IndexNavbarFR;
+export default IndexNavbarPartFR;
