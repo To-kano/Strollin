@@ -189,7 +189,7 @@ router.get('/logout', async function(req, res) {
  * Get the user's profile for the cache.
  * @param {String} req.headers.access_token
  */
-router.get('/get_profile', async function(req, res) {
+router.get('/get_own_profile', async function(req, res) {
   const projection = '-password -access_token -socket_id -facebook_id' //-param for excluding
   let user = await UserModel.findOne({access_token: req.headers.access_token}, projection);
 
@@ -202,7 +202,7 @@ router.get('/get_profile', async function(req, res) {
 
 // GET_USER_PROFILE
 /**
- * Get an user's profile for this user's profile page.
+ * Get any user's profile.
  * @param {String} req.headers.access_token
  * @param {String} req.headers.user_id
  */
