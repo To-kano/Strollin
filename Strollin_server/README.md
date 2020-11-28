@@ -97,7 +97,7 @@ USER RELATED:
 | Log out an user.<br>Make unavailable the current token.| access_token: String | None | None |
 
 
-- GET user's profile: ```GET /users/get_profile```
+- GET user's profile: ```GET /users/get_own_profile```
 
 | Description | Headers | Body | Return |
 |-|-|-|-|
