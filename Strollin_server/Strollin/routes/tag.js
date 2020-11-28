@@ -36,40 +36,28 @@ router.post('/new_tag', async function(req, res) {
 
 // Get
 
-router.get('/get_tags', async function(req, res) {
-    let user = await UserModel.findOne({access_token: req.headers.access_token});
-    let tags = null;
+// Get tags and sort by name or number of use or...
 
-    if (user) {
-        tags = await TagModel.find({_id: {$in: req.headers.tags_list}});
-        if (tags) {
-            return res.status(200).send({status: "The tags are found.", tags_list: tags});
-        }
-        else {
-            return res.status(400).send({status: "Tags not found."});
-        }
-    }
-    return res.status(400).send({status: "You are not connected."});
-});
+// router.get('/get_tags', async function(req, res) {
+//     let user = await UserModel.findOne({access_token: req.headers.access_token});
+//     let tags = null;
+
+//     if (user) {
+//         tags = await TagModel.find({_id: {$in: req.headers.tags_list}});
+//         if (tags) {
+//             return res.status(200).send({status: "The tags are found.", tags_list: tags});
+//         }
+//         else {
+//             return res.status(400).send({status: "Tags not found."});
+//         }
+//     }
+//     return res.status(400).send({status: "You are not connected."});
+// });
 
 
 // Delete
 
-router.delete('/delete_tag', async function(req, res) {
-    let user = await UserModel.findOne({access_token: req.headers.access_token});
-    let tags = null;
-
-    if (user) {
-        tags = await TagModel.find({_id: {$in: req.headers.tags_list}});
-        if (tags) {
-            return res.status(200).send({status: "The tags are found.", tags_list: tags});
-        }
-        else {
-            return res.status(400).send({status: "Tags not found."});
-        }
-    }
-    return res.status(400).send({status: "You are not connected."});
-});
+router.delete('/delete_tag', async function(req, res) {});
 
 
 module.exports = router;

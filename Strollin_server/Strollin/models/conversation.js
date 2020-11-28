@@ -13,10 +13,14 @@ var ConversationModelSchema = new Schema({
         type: String,
         default: "",
     },
-    message_list: {      // Liste des messages
+    messages_list: {      // Liste des messages
         type: [String],
         default: [],
     },
+    recent_messages: {
+        type: [{}],
+        default: []
+    }
 })
 
 // Compile model from schema

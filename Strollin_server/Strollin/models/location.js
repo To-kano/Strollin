@@ -9,17 +9,17 @@ var LocationModelSchema = new Schema({
         type: String,
         required: true
     },
-    score: {
+    owner: {
+        type: String,
+        default: null
+    },
+    score: {        // Note du lieu
         type: String,
         default: '0'
     },
     user_score: {
         type: [String], //list of User ID that gave score, see user.scoreLocation
         default: []
-    },
-    visited: {             // Nombre de fois que ce lieu à été visité
-        type: String,
-        default: '0'
     },
     coordinate: {
         type: [Float, Float],
@@ -39,15 +39,35 @@ var LocationModelSchema = new Schema({
     },
     timetable: {        // Définit les horaires possible en prenant les timetable de la liste des lieux
         type: String,
-        required: true,
+        default: null,
     },
     comment_list: {
         type: [String],
         default: [],
     },
     tags_list: {
-        type: [String],
+        type: [{String, String}], // {tagsID, disp}
         default: [],
+    },
+    price_range: {
+        type: [String, String],
+        default: []
+    },
+    pop_disp: {
+        type: String,
+        default: '0'
+    },
+    pop_ag: {
+        type: String,
+        default: '0'
+    },
+    alg_disp: {
+        type: String,
+        default: '0'
+    },
+    alg_ag: {
+        type: String,
+        default: '0'
     },
 })
 
