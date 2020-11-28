@@ -7,7 +7,7 @@ import Store from '../Store/configureStore';
 import profileReducer from '../Store/Reducers/profileReducer';
 
 const SocketContext = createContext(); 
-const ENDPOINT = 'http://82.226.234.122:3002';
+const ENDPOINT = 'http://82.226.234.122:3003';
 
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -77,6 +77,8 @@ function Socket({children, profil, dispatch}) {
 
         const action = { type: 'ADD_CONVERSATION', value: data };
         Store.dispatch(action);
+        const action2 = { type: 'RESET_PARTICIPANT_OF_CONVERSATION'};
+        Store.dispatch(action2);
       });
     }
   }, [socket]);
@@ -100,8 +102,12 @@ function Socket({children, profil, dispatch}) {
 
   const createConversation = (participants) => {
     console.log('creating conversation', participants);
+    let convName = store.profil.pseudo;
   
-    let convName = store.profil.pseudo + ", " + participants;
+    for (let i in participants) {
+      let tmp = ", " + participants[i];
+      convName += tmp;
+    }
     var object = { access_token: store.profil.access_token, participants: participants, name: convName }
     socket.emit('createConversation', object);
   };

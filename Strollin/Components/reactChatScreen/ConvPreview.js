@@ -14,10 +14,6 @@ function getLastMessage(props) {
 
     const message_id = props.conversation[props.conversationID].message_list[props.conversation[props.conversationID].message_list.length - 1];
 
-    console.log("message_id", message_id);
-    console.log("props.message", props.message);
-    console.log("props.message[message_id]", props.message[message_id]);
-    //console.log("props.message.message", props.message[message_id].message);
     return (props.message[message_id].message);
   } else {
     return ('No message yet!');

@@ -6,6 +6,19 @@ import { connect } from 'react-redux';
 import FriendList from './FriendList';
 import SearchBar from './SearchBar';
 import Store from '../../Store/configureStore';
+import ButtonIcon from './../ButtonIcon.js';
+import {contextSocket} from '../Socket';
+
+function GotoChat(props, createConversation) {
+  if (props.createConversation.conversationParticipants.length > 0) {
+    let participants = props.createConversation.conversationParticipants;
+
+    createConversation(participants);
+    props.navigation.navigate('MenuChat');
+  } else {
+    console.log('not enough participants');
+  }
+}
 
 function sortConversation(key) {
   const store = Store.getState();
@@ -27,12 +40,23 @@ function sortConversation(key) {
 }
 
 function NewConversation(props) {
-  console.log("profil = ", props.profil);
+  const {createConversation} = contextSocket();
+
   return (
     <View style={styles.container}>
       <View style={styles.circle} />
-      <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-        <Text style={styles.header}>Friend List</Text>
+      <View style={{ flexDirection: 'row', justifyContent: 'center'}}>
+        <View style={{ flex: 7 }}>
+          <Text style={styles.header}>Friend List</Text>
+        </View>
+        <View style={{ flex: 1 }}>
+          <ButtonIcon
+            icon={require('../../images/create_button.png')}
+            onPress={() => {
+              GotoChat(props, createConversation);
+            }}
+          />
+        </View>
       </View>
       <View>
         <SearchBar

@@ -11,24 +11,6 @@ const EXEMPLE = {
 
     }
   ],
-  currentConversation: {
-    id: 'uskfdsfsd',
-    usersId: ['hytr', 'sfza'],
-    messages: [{
-      id: '0', content: 'Hello', userId: 'userId1TEST', username: 'Tony'
-    },
-    {
-      id: '1', content: 'World', userId: 'userId2TEST', username: 'Koko'
-    }]
-  },
-  currentConversation2: {
-    id: 'uskfdsfsd',
-    usersId: ['hytr', 'sfza'],
-    messages: [{
-      idExpediteur: '0', IDReceveur: '0', IDConversation: '0', Date: '0', Type: 'video', content: 'url du fichier', nom_de_conversation: 'Tony, Koko'
-    }]
-
-  }
 };
 
 const initialState = {

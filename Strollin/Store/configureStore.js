@@ -4,6 +4,7 @@ import galleryReducer from './Reducers/galleryReducer';
 import geolocalisationReducer from './Reducers/geolocalisationReducer';
 import mapNavigationReducer from './Reducers/mapNavigationReducer';
 import chatConversation from './Reducers/conversationReducer';
+import createConversation from './Reducers/createConversationReducer';
 import socketReducer from './Reducers/socketReducer';
 import tendanceReducer from './Reducers/tendanceReducer';
 import messageReducer from './Reducers/messageReducer';
@@ -16,6 +17,7 @@ const rootReducer = combineReducers({
   conversation: chatConversation,
   socket: socketReducer,
   tendance: tendanceReducer,
+  createConversation: createConversation,
   message: messageReducer
 });
 

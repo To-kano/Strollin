@@ -46,13 +46,18 @@ function LoginScreen(props) {
     <View style={styles.container}>
       <View style={styles.circle} />
       <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-        <Text style={styles.header}>Discussions            </Text>
-        <ButtonIcon
-          icon={require('../../images/plus.png')}
-          onPress={() => {
-            NewConversation(props);
-          }}
-        />
+        <View style={{ flex: 7, }}>
+          <Text style={styles.header}>Discussions</Text>
+        </View>
+        <View style={{ flex: 1 }}>
+          <ButtonIcon
+            icon={require('../../images/plus.png')}
+            onPress={() => {
+              NewConversation(props);
+            }}
+          />
+        </View>
+
       </View>
       <View>
         <SearchBar
