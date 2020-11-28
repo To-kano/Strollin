@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import {
-  LoginButton, AccessToken, GraphRequest, GraphRequestManager
+  LoginButton, access_token, GraphRequest, GraphRequestManager
 } from 'react-native-fbsdk';
 import I18n from '../Translation/configureTrans';
 
@@ -148,9 +148,9 @@ function LoginPage(props) {
               } else if (result.isCancelled) {
                 console.log('login is cancelled.');
               } else {
-                AccessToken.getCurrentAccessToken().then((data) => {
-                  const accessToken = data.accessToken.toString();
-                  getInfoFromToken(accessToken, setUserInfo);
+                access_token.getCurrentaccess_token().then((data) => {
+                  const access_token = data.access_token.toString();
+                  getInfoFromToken(access_token, setUserInfo);
                   props.navigation.navigate('HomePage');
                 });
               }

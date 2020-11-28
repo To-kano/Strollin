@@ -47,14 +47,17 @@ const {
 
 // Get
 
-router.get('/get_messages', async function(req, res) {
+router.get('/get_message', async function(req, res) {
     let user = await UserModel.findOne({access_token: req.headers.access_token});
     let message = null;
 
     if (user) {
-        message = await MessageModel.find({_id: {$in: req.headers.message_list}}, null, {sort: {creation_date: -1}});
+        //message = await MessageModel.find({_id: {$in: req.headers.message_list}}, null, {sort: {creation_date: -1}});
+        message = await MessageModel.findOne({_id: req.headers.message_id});
+
+        console.log("message get = ", message);
         if (message) {
-            return res.status(200).send({status: "The messages are found.", message_list: message});
+            return res.status(200).send(message);
         }
         else {
             return res.status(400).send({status: "Message not found."});

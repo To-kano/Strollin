@@ -6,124 +6,41 @@ import { connect } from 'react-redux';
 import ConvPreview from './ConvPreview';
 import SearchBar from './SearchBar';
 import Store from '../../Store/configureStore';
-import ButtonIcon from './ButtonIcon.js';
+import ButtonIcon from './../ButtonIcon.js';
+import { IP_SERVER, PORT_SERVER } from '../../env/Environement';
+
 
 function NewConversation(props) {
   props.navigation.navigate('NewConversation');
-}
-
-async function setUser() {
-  const action = {
-    type: 'SET_USER',
-    value: {
-      firstName: 'Tony',
-      lastName: 'Ye',
-      email: 'tony.ye@epitech.eu',
-      pseudo: 'Kano',
-      friendList: ['Koko', 'Yaya', 'Zaza'],
-    }
-  };
-  Store.dispatch(action);
-}
-
-async function setHistoric() {
-  const data = [{
-    id: 'convIdTEST',
-    usersId: ['Kano', 'Koko'],
-    messages: [{
-      id: 'llllllqq', content: 'Hello', userId: 'userId1TEST', username: 'Kano'
-    },
-    {
-      id: 'ldfsfdealqq', content: 'World', userId: 'userId2TEST', username: 'Koko'
-    }]
-  },
-
-  {
-    id: 'convIdTEST2',
-    usersId: ['Kano', 'Yaya', 'Zaza'],
-    messages: [
-      {
-        id: 'llkejfzqq', content: 'MUDA MUDA MUDA MUDA!', userId: 'userId2TEST3', username: 'Zaza'
-      },
-      {
-        id: 'jbfkjzdz', content: 'ZA', userId: 'userId1TEST2', username: 'Kano'
-      },
-      {
-        id: 'llkejfzqq', content: 'WARUDO!', userId: 'userId2TEST2', username: 'Yaya'
-      }]
-  }];
-
-  const action = { type: 'SET_CONVERSATION', value: data };
-  Store.dispatch(action);
 }
 
 function sortConversation(key) {
   const store = Store.getState();
   const result = titleFilter(store.conversation.conversationList.id);
 
-  action = { type: 'SET_FRIEND', value: { friendList: ['Koko', 'Yaya', 'Zaza'] } };
-
-  if (key == '') {
-    Store.dispatch(action);
-  } else {
-    for (i in store.profil.friendList) {
-      if (key == store.profil.friendList[i]) {
-        action = { type: 'SET_FRIEND', value: { friendList: [key] } };
-        Store.dispatch(action);
-        notFound = false;
-      }
-    }
-    if (notFound == true) {
-      action = { type: 'SET_FRIEND', value: { friendList: [] } };
-      Store.dispatch(action);
-    }
-  }
+  //action = { type: 'SET_FRIEND', value: { friendList: ['Koko', 'Yaya', 'Zaza'] } };
+//
+  //if (key == '') {
+  //  Store.dispatch(action);
+  //} else {
+  //  for (i in store.profil.friendList) {
+  //    if (key == store.profil.friendList[i]) {
+  //      action = { type: 'SET_FRIEND', value: { friendList: [key] } };
+  //      Store.dispatch(action);
+  //      notFound = false;
+  //    }
+  //  }
+  //  if (notFound == true) {
+  //    action = { type: 'SET_FRIEND', value: { friendList: [] } };
+  //    Store.dispatch(action);
+  //  }
+  //}
 
   // result = liste triée
 }
 
 function LoginScreen(props) {
   console.log('Menu Screen');
-  if (props.profil.friendList.length == 0) {
-    setUser();
-    /* return (
-      <View style={styles.container}>
-        <View style={styles.circle} />
-        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-          <Text style={styles.header}>Discussions            </Text>
-          <ButtonIcon
-            icon={require('../../images/plus.png')}
-            onPress={() => {
-              NewConversation(props);
-            }}
-          />
-        </View>
-        <View>
-          <Text style={styles.header}>Charging messages</Text>
-        </View>
-      </View>
-    ); */
-  }
-  if (props.conversation.conversationList.length < 1) {
-    setHistoric();
-    /* return (
-      <View style={styles.container}>
-        <View style={styles.circle} />
-        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-          <Text style={styles.header}>Discussions            </Text>
-          <ButtonIcon
-            icon={require('../../images/plus.png')}
-            onPress={() => {
-              NewConversation(props);
-            }}
-          />
-        </View>
-        <View>
-          <Text style={styles.header}>Charging messages</Text>
-        </View>
-      </View>
-    ); */
-  }
 
   return (
     <View style={styles.container}>
@@ -146,8 +63,8 @@ function LoginScreen(props) {
       <View>
         <FlatList
           data={props.conversation.conversationList}
-          renderItem={({ item }) => <ConvPreview {...props} jsonConversation={item} />}
-          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => <ConvPreview {...props} conversationID={item} />}
+          keyExtractor={(item) => item}
         />
       </View>
     </View>

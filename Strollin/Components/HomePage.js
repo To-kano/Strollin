@@ -5,36 +5,88 @@ import {
 import Box from './box';
 import I18n from '../Translation/configureTrans';
 import BackgroundImage from './backgroundImage';
+import SearchBar from './TendanceSearchBar';
+import { connect } from 'react-redux';
+import Store from '../Store/configureStore';
+
 
 const imageFriend = require('../ressources/friend.png');
 // const imageHistory = require('../ressources/history.png');
 const imageProfile = require('../ressources/profile.png');
 
-function HomePage(props) {
-  console.log('HomPage');
-  const DATA = [
-    {
-      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-      name: 'Geek Route',
-      budget: '25 ~ 30€',
-      period: "Fin d'après-midi",
-      destinations: ['Starbucks', 'Reset', 'Cinéma']
-    },
-    {
-      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-      name: 'Bar Route',
-      budget: '38 ~ 42€',
-      period: "Fin d'après-midi",
-      destinations: ['Bistrot Opéra', 'Jhin Dance', 'Paname']
-    },
-    {
-      id: '58694a0f-3da1-471f-bd96-145571e29d72',
-      name: 'Full Bouffe',
-      budget: '25 ~ 45€',
-      period: 'Toujours',
-      destinations: ['Macdo', 'Sushi Land', 'Flunch']
+function setTendanceData() {
+  const action = {
+    type: 'SET_TENDANCE_LIST',
+    value: [
+      {
+        id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+        tag: ['game', 'bar', 'movie'],
+        name: 'Geek Route',
+        budget: '25 ~ 30€',
+        period: "Fin d'après-midi",
+        destinations: ['Starbucks', 'Reset', 'Cinéma']
+      },
+      {
+        id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+        tag: ['show', 'bar', 'opera', 'dance'],
+        name: 'Bar Route',
+        budget: '38 ~ 42€',
+        period: "Fin d'après-midi",
+        destinations: ['Bistrot Opéra', 'Jhin Dance', 'Paname']
+      },
+      {
+        id: '58694a0f-3da1-471f-bd96-145571e29d72',
+        tag: ['restaurant', 'food'],
+        name: 'Full Bouffe',
+        budget: '25 ~ 45€',
+        period: 'Toujours',
+        destinations: ['Macdo', 'Sushi Land', 'Flunch']
+      }
+    ]
+  };
+  Store.dispatch(action);
+}
+
+function setSortedTendanceData(tag) {
+  const store = Store.getState();
+  var sortedData = [];
+  var i = 0;
+  var j = 0;
+
+  console.log("tag = ", tag)
+  for (i in store.tendance.tendanceList) {
+    for (j in store.tendance.tendanceList[i].tag) {
+      if (store.tendance.tendanceList[i].tag[j] == tag) {
+        sortedData.push(store.tendance.tendanceList[i]);
+        break;
+      }
     }
-  ];
+  }
+  console.log("sortedData = ", sortedData);
+  const action = {
+    type: 'SET_SORTED_TENDANCE_LIST',
+    value: sortedData
+  };
+  Store.dispatch(action);
+}
+
+function getData() {
+  const store = Store.getState();
+
+  if (store.tendance.sortedTendanceList.length > 0) {
+    return (store.tendance.sortedTendanceList);
+  } else {
+    return (store.tendance.tendanceList);
+  }
+}
+
+function HomePage(props) {
+  console.log('HomePage');
+  const store = Store.getState();
+
+  if (store.tendance.tendanceList.length == 0) {
+    setTendanceData();
+  }
   return (
     <View style={styles.back}>
       <BackgroundImage />
@@ -95,12 +147,18 @@ function HomePage(props) {
           />
         </TouchableOpacity>
       </View>
+      <View>
+        <SearchBar
+          onPress={setSortedTendanceData}
+          imagePath="../images/loupe.png"
+        />
+      </View>
       <View style={styles.cont}>
         <Text style={{ fontSize: 40 }}> Trending trip: </Text>
       </View>
       <View style={styles.fill}>
         <FlatList
-          data={DATA}
+          data={getData()}
           contentContainerStyle={{ flexGrow: 1 }}
           renderItem={({ item }) => (
             <Box
@@ -185,4 +243,5 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomePage;
+const mapStateToProps = (state) => state;
+export default connect(mapStateToProps)(HomePage);

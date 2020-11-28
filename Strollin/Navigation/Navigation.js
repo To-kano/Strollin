@@ -24,6 +24,7 @@ import MenuChat from '../Components/reactChatScreen/MenuScreen';
 import ScreenChat from '../Components/reactChatScreen/ChatScreen';
 import NewConversation from '../Components/reactChatScreen/NewConversation';
 import Notation from '../Components/Notation';
+import Socket from '../Components/Socket';
 
 const Stack = createStackNavigator();
 
@@ -43,11 +44,10 @@ const getProfilCache = async (props) => {
 };
 
 function MyStack(props) {
-  if (!props.profil.accessToken) {
+  if (!props.profil.access_token) {
     getProfilCache(props);
     console.log('nav props: ', props.profil);
   }
-  // console.log("nav props: ", props.profil);
   return (
     <NavigationContainer>
       <Stack.Navigator
@@ -55,7 +55,7 @@ function MyStack(props) {
           headerShown: false
         }}
       >
-        {props.profil.accessToken == null ? (
+        {props.profil.access_token == null ? (
           <>
             <Stack.Screen
               name="userLogin"
@@ -144,6 +144,11 @@ function MyStack(props) {
               options={{ title: 'TripNavigation' }}
             />
             <Stack.Screen name="Profile" component={Profile} />
+            <Stack.Screen
+              name="Socket"
+              component={Socket}
+              options={{ title: 'Socket' }}
+            />
           </>
 
         )}

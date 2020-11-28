@@ -5,8 +5,8 @@ services:
     container_name: db-Strollin
     networks:
       - backend
-    #ports:
-    #  - "27017:27017"
+    ports:
+      - "27017:27017"
     environment:
       PORT: 27017
     restart: 'on-failure'

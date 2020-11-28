@@ -24,6 +24,14 @@ const {
 } = require("../models/user");
 
 const {
+  ConversationModel
+} = require("../models/conversation");
+
+const {
+  MessageModel
+} = require("../models/message");
+
+const {
   TagModel
 } = require("../models/tag");
 const { fstat } = require('fs');
@@ -121,28 +129,123 @@ function onListening() {
 
 // SOCKET IO //
 
+
+
 var sio = require('socket.io').listen(server)
 
-sio.on("connection", socket => {
+async function sendNewConversation(conversation) {
+
+  if (conversation.participants) {
+    for (let i in conversation.participants) {
+      const user = await UserModel.findOne({_id : conversation.participants[i]});
+
+      if (user.socket_id) {
+        sio.to(user.socket_id).emit("newConversation", conversation);
+      }
+    }
+  }
+}
+
+async function sendReceiveMessage(message, conversation) {
+
+  if (conversation.participants) {
+    for (let i in conversation.participants) {
+      const user = await UserModel.findOne({_id : conversation.participants[i]});
+
+      if (user.socket_id) {
+        sio.to(user.socket_id).emit("receiveMessage", message);
+      }
+    }
+  }
+}
+
+
+sio.on("connection", async (socket) => {
+
+  const userId = socket.id;
+
+  console.log("connection socket user id ", userId);
 
   // Event "connection"
-  socket.on("connection", async (msg) => {
-    user = await UserModel.findOne({accessToken: msg.accessToken});
-    response = {
+  socket.on("login", async (msg) => {
+    console.log("connection socket event " , msg);
+    const user = await UserModel.findOne({access_token: msg.access_token});
+    let response = {
       connected: false,
     };
+
+    user.socket_id = userId;
+    await user.save();
+
+    console.log("user ", user);
     if (user) {
       response.connected = true;
       // join all room of conversation in his list
-      sio.emit("connection", response);
+      socket.emit("identification", response);
+    } else {
+      socket.emit("identification", response);
     }
-    sio.emit("connection", response);
+  });
+
+  socket.on("createConversation", async (msg) => {
+    console.log("createConversation event " , msg);
+    const user = await UserModel.findOne({access_token: msg.access_token});
+
+    console.log("user ", user);
+    if (user) {
+      let conversation = new ConversationModel ({
+        participants : [...msg.participants, user._id],
+        name : msg.name,
+      }); 
+
+      console.log("conversation ", conversation);
+
+      await conversation.save();
+
+
+      sendNewConversation(conversation);
+      // join all room of conversation in his list
+      //socket.emit("newConversation", conversation);
+    }
   });
   
   // Event "sendMessage"
-  socket.on("sendMessage", msg => {
-    console.log(msg);
-    sio.emit("chat message", msg);
+  socket.on("sendMessage", async (msg) => {
+    console.log("sendMessage event " , msg);
+    const user = await UserModel.findOne({access_token: msg.access_token});
+    let response = {
+      connected: false,
+    };
+
+    //user.socket_id = userId;
+    //await user.save();
+
+    console.log("message ", msg);
+    if (user) {
+      let conversation = await ConversationModel.findOne({_id : msg.conversation});
+      console.log("conversation ", conversation);
+
+      if (conversation) {
+
+        let message = new MessageModel ({
+          expeditor : user._id,
+          conversation : msg.conversation,
+          type : msg.type,
+          message: msg.message
+        });
+
+        await message.save();
+
+        console.log("messageModel ", message);
+
+        conversation.message_list = [...conversation.message_list, message._id]
+        await conversation.save();
+
+        sendReceiveMessage(message, conversation);
+        //socket.emit("receiveMessage", message);
+      }
+      // join all room of conversation in his list
+    }
   });
 
 })

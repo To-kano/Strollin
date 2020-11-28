@@ -22,21 +22,14 @@ import {
 function MessagesItem(props) {
   const [track, setTrack] = useState(null);
 
-  if (false) {
-    SetTrackItem(setTrack, props.id);
-    return (
-      <View>
-        <ActivityIndicator size="large" color="rgba(215, 215, 215, 1)" />
-      </View>
-    );
-  }
-  console.log('username = ', props.username, 'message = ', props.message);
-  if (props.username != props.profil.pseudo) {
+  console.log("message item ", props.messageID);
+
+  if (props.profil._id != props.message[props.messageID].expeditor) {
     return (
       <View style={styles.greyDisplay}>
         <View style={styles.box}>
           <Text style={styles.title} numberOfLines={2} ellipsizeMode="tail">
-            {props.message}
+            {props.message[props.messageID].message}
           </Text>
         </View>
       </View>
@@ -46,7 +39,7 @@ function MessagesItem(props) {
     <View style={styles.blueDisplay}>
       <View style={styles.box}>
         <Text style={styles.title} numberOfLines={2} ellipsizeMode="tail">
-          {props.message}
+          {props.message[props.messageID].message}
         </Text>
       </View>
     </View>
