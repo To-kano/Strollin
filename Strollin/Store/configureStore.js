@@ -8,6 +8,7 @@ import createConversation from './Reducers/createConversationReducer';
 import socketReducer from './Reducers/socketReducer';
 import tendanceReducer from './Reducers/tendanceReducer';
 import messageReducer from './Reducers/messageReducer';
+import searchReducer from './Reducers/searchReducer';
 
 const rootReducer = combineReducers({
   profil: profileReducer,
@@ -18,7 +19,8 @@ const rootReducer = combineReducers({
   socket: socketReducer,
   tendance: tendanceReducer,
   createConversation: createConversation,
-  message: messageReducer
+  message: messageReducer,
+  search: searchReducer
 });
 
 export default createStore(rootReducer);

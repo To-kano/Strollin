@@ -9,11 +9,18 @@ import Store from '../../Store/configureStore';
 import ButtonIcon from './../ButtonIcon.js';
 import {contextSocket} from '../Socket';
 
+function goToMenu(props) {
+  props.navigation.navigate('MenuChat');
+}
+
 function GotoChat(props, createConversation) {
   if (props.createConversation.conversationParticipants.length > 0) {
     let participants = props.createConversation.conversationParticipants;
-
+    const action = {type: 'SET_SEARCH_CONV_LIST', value: props.conversation.conversationList };
+    props.dispatch(action);
+    
     createConversation(participants);
+
     props.navigation.navigate('MenuChat');
   } else {
     console.log('not enough participants');
@@ -22,18 +29,22 @@ function GotoChat(props, createConversation) {
 
 function sortConversation(key) {
   const store = Store.getState();
-  let notFound = true;
+  let found = false;
 
   if (key == '') {
     console.log("nothing in search");
+    const action = {type: 'SET_SEARCH_FRIEND_LIST', value: store.profil.friends_list};
+    Store.dispatch(action);
   } else {
-    for (i in store.profil.friendList) {
-      if (key == store.profil.friendList[i]) {
-        console.log("found in search");
-        notFound = false;
+    for (let i in store.profil.friends_list) {
+      if (key == store.profil.friends_pseudo_list[store.profil.friends_list[i]]) {
+        const action = {type: 'SET_SEARCH_FRIEND_LIST', value: [store.profil.friends_list[i]]};
+        Store.dispatch(action);
+        found = true;
+        break;
       }
     }
-    if (notFound == true) {
+    if (found == false) {
       console.log("not found in search");
     }
   }
@@ -45,7 +56,15 @@ function NewConversation(props) {
   return (
     <View style={styles.container}>
       <View style={styles.circle} />
-      <View style={{ flexDirection: 'row', justifyContent: 'center'}}>
+      <View style={{ flexDirection: 'row', justifyContent: 'center', backgroundColor: "#ffffff"}}>
+        <View style={{ flex: 1 }}>
+          <ButtonIcon
+            icon={require('../../images/left_arrow.png')}
+            onPress={() => {
+              goToMenu(props);
+            }}
+          />
+        </View>
         <View style={{ flex: 7 }}>
           <Text style={styles.header}>Friend List</Text>
         </View>
@@ -58,16 +77,15 @@ function NewConversation(props) {
           />
         </View>
       </View>
-      <View>
+      <View style={{backgroundColor: "#ffffff"}}>
         <SearchBar
           onPress={sortConversation}
-          imagePath="../../images/loupe.svg"
         />
       </View>
       <View>
         <FlatList
-          data={props.profil.friends_list}
-          renderItem={({ item }) => <FriendList {...props} name={item} />}
+          data={props.search.searchFriendList}
+          renderItem={({ item }) => <FriendList {...props} id={item} />}
           keyExtractor={(item) => item}
         />
       </View>

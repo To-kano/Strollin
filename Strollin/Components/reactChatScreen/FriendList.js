@@ -5,7 +5,7 @@ import Store from '../../Store/configureStore';
 
 function addParticipant(props) {
   console.log('adding participant');
-  const action = { type: 'ADD_PARTICIPANT_TO_CONVERSATION', value: {participant: props.name} };
+  const action = { type: 'ADD_PARTICIPANT_TO_CONVERSATION', value: {participant: props.id} };
 
   props.dispatch(action);
   console.log('participant = ', props.createConversation);
@@ -14,7 +14,7 @@ function addParticipant(props) {
 
 function deleteParticipant(props) {
   console.log('deleting participant');
-  const action = { type: 'DELETE_PARTICIPANT_OF_CONVERSATION', value: {participant: props.name} };
+  const action = { type: 'DELETE_PARTICIPANT_OF_CONVERSATION', value: {participant: props.id} };
 
   props.dispatch(action);
   console.log('participant = ', props.createConversation);
@@ -22,14 +22,14 @@ function deleteParticipant(props) {
 
 function FriendList(props) {
   for (let i in props.createConversation.conversationParticipants) {
-    if (props.createConversation.conversationParticipants[i] == props.name) {
+    if (props.createConversation.conversationParticipants[i] == props.id) {
       return (
         <TouchableOpacity
           style={styles.selected_button}
           onPress={() => deleteParticipant(props)}
         >
           <Text style={styles.previewTitle}>
-            { props.name }
+            { props.profil.friends_pseudo_list[props.id] }
           </Text>
         </TouchableOpacity>
       );
@@ -41,7 +41,7 @@ function FriendList(props) {
       onPress={() => addParticipant(props)}
     >
       <Text style={styles.previewTitle}>
-        { props.name }
+        { props.profil.friends_pseudo_list[props.id] }
       </Text>
     </TouchableOpacity>
   );
@@ -54,12 +54,15 @@ const styles = StyleSheet.create({
   button: {
     alignItems: 'center',
     backgroundColor: '#DDDDDD',
-    padding: 10
+    padding: 10,
+    borderColor: "#000000"
   },
   selected_button: {
     alignItems: 'center',
     backgroundColor: '#595959',
-    padding: 10
+    padding: 10,
+    borderColor: "#000000"
+
   },
   previewTitle: {
     fontWeight: '800',

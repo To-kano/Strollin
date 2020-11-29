@@ -9,34 +9,46 @@ import Store from '../../Store/configureStore';
 import ButtonIcon from './../ButtonIcon.js';
 import { IP_SERVER, PORT_SERVER } from '../../env/Environement';
 
+function goToHome(props) {
+  props.navigation.navigate('HomePage');
+}
+
 
 function NewConversation(props) {
+  const action = {type: 'SET_SEARCH_FRIEND_LIST', value: props.profil.friends_list};
+  props.dispatch(action);
   props.navigation.navigate('NewConversation');
 }
 
 function sortConversation(key) {
   const store = Store.getState();
-  const result = titleFilter(store.conversation.conversationList.id);
+  let found = false;
+  let searchedConv = [];
 
-  //action = { type: 'SET_FRIEND', value: { friendList: ['Koko', 'Yaya', 'Zaza'] } };
-//
-  //if (key == '') {
-  //  Store.dispatch(action);
-  //} else {
-  //  for (i in store.profil.friendList) {
-  //    if (key == store.profil.friendList[i]) {
-  //      action = { type: 'SET_FRIEND', value: { friendList: [key] } };
-  //      Store.dispatch(action);
-  //      notFound = false;
-  //    }
-  //  }
-  //  if (notFound == true) {
-  //    action = { type: 'SET_FRIEND', value: { friendList: [] } };
-  //    Store.dispatch(action);
-  //  }
-  //}
 
-  // result = liste triée
+  if (key == '' || key == store.profil.pseudo) {
+    console.log("nothing in search or self searched");
+    const action = {type: 'SET_SEARCH_CONV_LIST', value: store.conversation.conversationList};
+    Store.dispatch(action);
+  } else {
+    for (let i in store.conversation.conversationList) {
+      for (let j in store.conversation[store.conversation.conversationList[i]].participants) {
+        console.log("j = ", j);
+        console.log("compared to ", store.profil.friends_pseudo_list[store.conversation[store.conversation.conversationList[i]].participants[j]]);
+        if (key == store.profil.friends_pseudo_list[store.conversation[store.conversation.conversationList[i]].participants[j]]) {
+          console.log("FOUND!")
+          searchedConv.push(store.conversation.conversationList[i]);
+          found = true;
+        }
+      }
+    }
+    if (found == false) {
+      console.log("not found in search");
+    } else {
+      const action = {type: 'SET_SEARCH_CONV_LIST', value: searchedConv};
+      Store.dispatch(action);
+    }
+  }
 }
 
 function LoginScreen(props) {
@@ -45,7 +57,15 @@ function LoginScreen(props) {
   return (
     <View style={styles.container}>
       <View style={styles.circle} />
-      <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+      <View style={{ flexDirection: 'row', justifyContent: 'center', backgroundColor: "#ffffff" }}>
+        <View style={{ flex: 1 }}>
+          <ButtonIcon
+            icon={require('../../images/left_arrow.png')}
+            onPress={() => {
+              goToHome(props);
+            }}
+          />
+        </View>
         <View style={{ flex: 7, }}>
           <Text style={styles.header}>Discussions</Text>
         </View>
@@ -59,7 +79,7 @@ function LoginScreen(props) {
         </View>
 
       </View>
-      <View>
+      <View style={{backgroundColor: "#ffffff"}}>
         <SearchBar
           onPress={sortConversation}
           imagePath="../../images/loupe.svg"
@@ -67,7 +87,7 @@ function LoginScreen(props) {
       </View>
       <View>
         <FlatList
-          data={props.conversation.conversationList}
+          data={props.search.searchConvList}
           renderItem={({ item }) => <ConvPreview {...props} conversationID={item} />}
           keyExtractor={(item) => item}
         />
@@ -75,14 +95,6 @@ function LoginScreen(props) {
     </View>
   );
 }
-// <TextInput
-//    style={ styles.input }
-//    placeholder="Name"
-//    onChangeText={ name => {
-//        setName(name);
-//    }}
-//    value={ name }
-/// >
 
 const mapStateToProps = (state) => state;
 export default connect(mapStateToProps)(LoginScreen);

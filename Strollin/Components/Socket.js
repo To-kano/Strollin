@@ -45,40 +45,32 @@ function Socket({children, profil, dispatch}) {
   useEffect(() => {
     if (socket != null) {
       socket.on('receiveMessage', (data) => {
-        console.log("received " + data);
+      console.log("received " + data);
+      
+      const action = { type: 'ADD_MESSAGE', value: data };
+      Store.dispatch(action);
 
-        const store = Store.getState();
-        const action = {
-          type: 'ADD_MESSAGE',
-          value: data
-        };
-      
-        Store.dispatch(action);
-        const action2 = {
-          type: 'ADD_MESSAGE_ID',
-          value: {
-            _id: data.conversation,
-            message_id : data._id
-          }
-        };
-        console.log('message =  ', store.message);
-      
-        Store.dispatch(action2);
-        console.log('message 2=  ', store.message);
+      const action2 = { 
+        type: 'ADD_MESSAGE_ID',
+        value: { _id: data.conversation, message_id : data._id}
+      };
+      Store.dispatch(action2);
 
       });
       socket.on('identification', (data) => {
         console.log("identification = ", data);
       });
       socket.on('newConversation', (data) => {
-        //const store = Store.getState();
+        const store = Store.getState();
 
-        console.log("newConversation = ", data);
+
 
         const action = { type: 'ADD_CONVERSATION', value: data };
         Store.dispatch(action);
         const action2 = { type: 'RESET_PARTICIPANT_OF_CONVERSATION'};
         Store.dispatch(action2);
+        const action3 = { type: 'ADD_TO_SEARCH_CONV', value: data };
+        Store.dispatch(action3);
       });
     }
   }, [socket]);
@@ -100,15 +92,15 @@ function Socket({children, profil, dispatch}) {
       conversation: store.conversation.currentConversation, type: "message", message: message});
   };
 
-  const createConversation = (participants) => {
-    console.log('creating conversation', participants);
+  const createConversation = (participantsID) => {
+    console.log('creating conversation', participantsID);
     let convName = store.profil.pseudo;
   
-    for (let i in participants) {
-      let tmp = ", " + participants[i];
+    for (let i in participantsID) {
+      let tmp = ", " + store.profil.friends_pseudo_list[participantsID[i]];
       convName += tmp;
     }
-    var object = { access_token: store.profil.access_token, participants: participants, name: convName }
+    var object = { access_token: store.profil.access_token, participants: participantsID, name: convName }
     socket.emit('createConversation', object);
   };
 

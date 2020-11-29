@@ -4,7 +4,7 @@ const EXEMPLE = {
         _id: 'uskfdsfsd',
         participants: ['userId1TEST', 'userId2TEST'],
         name: "",
-        message_list: ["message_id", "message_id"],
+        messages_list: ["message_id", "message_id"],
         recent_messages: [{ expeditor: "", Message_id: "", creation_date: new Date(), type: "message", message: "" }, ]
       },
       {

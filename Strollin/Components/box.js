@@ -3,9 +3,8 @@ import {
 } from 'react-native';
 import React from 'react';
 
-async function GotoComment(props) {
-  // console.log('GOING TO COMMENT');
-  // redux currentComment = props.data.id
+function GotoComment(props) {
+  props.navigation.setParams({ data: props.data });
   props.navigation.navigate('CommentScreen');
 }
 
@@ -20,27 +19,27 @@ function Box(props) {
         textAlign: 'center', fontSize: 30, color: '#39A5D6', margin: 5
       }]}
       >
-        {props.name}
+        {props.data.name}
       </Text>
       <Text style={[{ fontSize: 25, marginLeft: '5%' }]}>
         Budget :
-        {props.budget}
+        {props.data.budget}
       </Text>
       <Text style={[{ fontSize: 25, marginLeft: '5%' }]}>
         Période :
-        {props.period}
+        {props.data.period}
       </Text>
       <Text style={[{ fontSize: 25, marginLeft: '5%' }]}>
         1/
-        {props.destinations[0]}
+        {props.data.destinations[0]}
       </Text>
       <Text style={[{ fontSize: 25, marginLeft: '5%' }]}>
         2/
-        {props.destinations[1]}
+        {props.data.destinations[1]}
       </Text>
       <Text style={[{ fontSize: 25, marginLeft: '5%' }]}>
         3/
-        {props.destinations[2]}
+        {props.data.destinations[2]}
       </Text>
       <Button
         title="Commentaires"

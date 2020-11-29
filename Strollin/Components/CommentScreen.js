@@ -5,6 +5,7 @@ import {
 import Comment from './Comment';
 
 function CommentScreen(props) {
+  console.log("props = ", props.navigation.setParams);
   const DATA = [
     {
       id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
@@ -29,7 +30,7 @@ function CommentScreen(props) {
   return (
     <View style={styles.container}>
       <View>
-        <Text style={{ textAlign: 'center', fontSize: 40 }}> Geek Route</Text>
+        <Text style={{ textAlign: 'center', fontSize: 40 }}> {} </Text>
         <FlatList
           data={DATA}
           contentContainerStyle={{ flexGrow: 0.1 }}

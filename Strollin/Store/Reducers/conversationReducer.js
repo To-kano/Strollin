@@ -4,7 +4,7 @@ const EXEMPLE = {
       _id: 'uskfdsfsd',
       participants: ['userId1TEST', 'userId2TEST'],
       name: "",
-      message_list: ["message_id", "message_id"],
+      messages_list: ["message_id", "message_id"],
       recent_messages: [{ expeditor: "", conversation_id: "", creation_date: new Date(), type: "message", message: "" }, ]
     },
     {
@@ -28,7 +28,7 @@ function ConversationReducer(state = initialState, action) {
         ...state,
       };
       nextState[action.value._id] = action.value;
-      nextState.conversationList = [action.value._id ,...nextState.conversationList]
+      nextState.conversationList = [action.value._id, ...nextState.conversationList]
       return nextState;
     case 'SET_CURRENT_CONVERSATION':
       nextState = {
@@ -41,8 +41,22 @@ function ConversationReducer(state = initialState, action) {
       nextState = {
         ...state,
       };
-      nextState[action.value._id].message_list = [ ...nextState[action.value._id].message_list, action.value.message_id];
+      nextState[action.value._id].messages_list = [ ...nextState[action.value._id].messages_list, action.value.message_id];
       return nextState;
+      case 'CONVERSATION_TO_TOP':
+
+        nextState = {
+          ...state,
+        };
+        for (let i in conversationList) {
+          if (conversationList[i] == action.value._id) {
+            conversationList.splice(i, 1);
+            break;
+          }
+        }
+        nextState.conversationList = [action.value._id, ...nextState.conversationList]
+
+        return nextState;
     default:
       return state;
   }

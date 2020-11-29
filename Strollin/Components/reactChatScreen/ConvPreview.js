@@ -10,9 +10,10 @@ async function GotoChat(props) {
 }
 
 function getLastMessage(props) {
-  if (props.conversation[props.conversationID].message_list.length > 0) {
 
-    const message_id = props.conversation[props.conversationID].message_list[props.conversation[props.conversationID].message_list.length - 1];
+  if (props.conversation[props.conversationID].messages_list.length > 0) {
+
+    const message_id = props.conversation[props.conversationID].messages_list[props.conversation[props.conversationID].messages_list.length - 1];
 
     return (props.message[message_id].message);
   } else {
@@ -21,14 +22,14 @@ function getLastMessage(props) {
 }
 
 function ConvPreview(props) {
-
+  console.log("props.conversation[props.conversationID] = ", props.conversation[props.conversationID]);
   return (
     <TouchableOpacity
       style={styles.button}
       onPress={() => GotoChat(props)}
     >
       <Text style={styles.previewTitle}>
-        {  props.conversation[props.conversationID].name}
+        {props.conversation[props.conversationID].name}
       </Text>
       <Text style={styles.previewContent}>
         { getLastMessage(props)}
@@ -44,7 +45,8 @@ const styles = StyleSheet.create({
   button: {
     alignItems: 'center',
     backgroundColor: '#DDDDDD',
-    padding: 10
+    padding: 10,
+    borderColor: "#000000"
   },
   previewTitle: {
     fontWeight: '800',
@@ -52,6 +54,6 @@ const styles = StyleSheet.create({
   },
   previewContent: {
     fontWeight: '300',
-    fontSize: 12
+    fontSize: 12,
   },
 });

@@ -14,39 +14,6 @@ const imageFriend = require('../ressources/friend.png');
 // const imageHistory = require('../ressources/history.png');
 const imageProfile = require('../ressources/profile.png');
 
-function setTendanceData() {
-  const action = {
-    type: 'SET_TENDANCE_LIST',
-    value: [
-      {
-        id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-        tag: ['game', 'bar', 'movie'],
-        name: 'Geek Route',
-        budget: '25 ~ 30€',
-        period: "Fin d'après-midi",
-        destinations: ['Starbucks', 'Reset', 'Cinéma']
-      },
-      {
-        id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-        tag: ['show', 'bar', 'opera', 'dance'],
-        name: 'Bar Route',
-        budget: '38 ~ 42€',
-        period: "Fin d'après-midi",
-        destinations: ['Bistrot Opéra', 'Jhin Dance', 'Paname']
-      },
-      {
-        id: '58694a0f-3da1-471f-bd96-145571e29d72',
-        tag: ['restaurant', 'food'],
-        name: 'Full Bouffe',
-        budget: '25 ~ 45€',
-        period: 'Toujours',
-        destinations: ['Macdo', 'Sushi Land', 'Flunch']
-      }
-    ]
-  };
-  Store.dispatch(action);
-}
-
 function setSortedTendanceData(tag) {
   const store = Store.getState();
   var sortedData = [];
@@ -82,11 +49,6 @@ function getData() {
 
 function HomePage(props) {
   console.log('HomePage');
-  const store = Store.getState();
-
-  if (store.tendance.tendanceList.length == 0) {
-    setTendanceData();
-  }
   return (
     <View style={styles.back}>
       <BackgroundImage />
@@ -163,8 +125,8 @@ function HomePage(props) {
           renderItem={({ item }) => (
             <Box
               style={{ height: '100%' }}
-              {...item}
-              navigation={props.navigation}
+              {...props}
+              data={item}
             />
           )}
           keyExtractor={(item) => item.id}
@@ -173,7 +135,11 @@ function HomePage(props) {
       <View style={{ flexDirection: 'column' }}>
         <TouchableOpacity
           style={styles.newTrip}
-          onPress={() => props.navigation.navigate('MenuChat')}
+          onPress={() => {
+            const action = {type: 'SET_SEARCH_CONV_LIST', value: props.conversation.conversationList };
+            props.dispatch(action);
+            props.navigation.navigate('MenuChat');
+          }}
         >
           <Text style={{ fontSize: 16, color: '#FFFFFF' }}>
             Go to Chat
@@ -210,7 +176,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FFFFFF',
     padding: 5,
-    marginTop: 10,
+    marginTop: "10%",
     width: '95%',
     borderRadius: 5,
     opacity: 0.9,

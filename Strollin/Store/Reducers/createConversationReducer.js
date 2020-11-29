@@ -3,7 +3,8 @@ const EXEMPLE = {
 };
 
 const initialState = {
-  conversationParticipants: []
+  conversationParticipants: [],
+  participantsPseudo: []
 };
 
 function createConversationReducer(state = initialState, action) {

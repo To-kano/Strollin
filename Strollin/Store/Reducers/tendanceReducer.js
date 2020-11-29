@@ -2,7 +2,7 @@ const EXEMPLE = {
   tendanceList: [
     {
       id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-      tag: 'game',
+      tag: ['game', 'bar', 'movie', 'geek'],
       name: 'Geek Route',
       budget: '25 ~ 30€',
       period: "Fin d'après-midi",
@@ -10,7 +10,7 @@ const EXEMPLE = {
     },
     {
       id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-      tag: 'alcohol',
+      tag: ['show', 'bar', 'opera', 'dance'],
       name: 'Bar Route',
       budget: '38 ~ 42€',
       period: "Fin d'après-midi",
@@ -18,7 +18,7 @@ const EXEMPLE = {
     },
     {
       id: '58694a0f-3da1-471f-bd96-145571e29d72',
-      tag: 'restaurant',
+      tag: ['restaurant', 'food', 'diabete'],
       name: 'Full Bouffe',
       budget: '25 ~ 45€',
       period: 'Toujours',
@@ -28,7 +28,7 @@ const EXEMPLE = {
 };
 
 const initialState = {
-  tendanceList: [],
+  tendanceList: EXEMPLE['tendanceList'],
   sortedTendanceList: []
 };
 

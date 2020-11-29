@@ -22,33 +22,42 @@ import {
 function MessagesItem(props) {
   const [track, setTrack] = useState(null);
 
-  console.log("message item ", props.messageID);
-
   if (props.profil._id != props.message[props.messageID].expeditor) {
     return (
+    <View>
       <View style={styles.greyDisplay}>
         <View style={styles.box}>
-          <Text style={styles.title} numberOfLines={2} ellipsizeMode="tail">
+          <Text style={styles.message}>
             {props.message[props.messageID].message}
           </Text>
         </View>
       </View>
+      <Text style={styles.expeditor} ellipsizeMode="tail">
+        {props.profil.friends_pseudo_list[props.message[props.messageID].expeditor]}
+      </Text>
+    </View>
+
     );
   }
   return (
-    <View style={styles.blueDisplay}>
-      <View style={styles.box}>
-        <Text style={styles.title} numberOfLines={2} ellipsizeMode="tail">
-          {props.message[props.messageID].message}
-        </Text>
+    <View>
+      <View style={styles.blueDisplay}>
+        <View style={styles.box}>
+          <Text style={styles.message}>
+            {props.message[props.messageID].message}
+          </Text>
+        </View>
       </View>
+      <Text style={styles.expeditorUser} ellipsizeMode="tail">
+        {props.profil.pseudo}
+      </Text>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   box: {
-    width: '80%',
+    width: '100%',
     alignItems: 'flex-start',
     justifyContent: 'space-around',
     paddingHorizontal: 15,
@@ -58,7 +67,7 @@ const styles = StyleSheet.create({
     width: '70%',
     borderRadius: 15,
     padding: 10,
-    margin: 5,
+    marginLeft: "1%",
     flexDirection: 'row',
     justifyContent: 'flex-start',
     backgroundColor: 'rgba(215, 215, 215, 1)',
@@ -68,8 +77,7 @@ const styles = StyleSheet.create({
     width: '70%',
     borderRadius: 15,
     padding: 10,
-    margin: 10,
-    marginLeft: 100,
+    marginLeft: "30%",
     flexDirection: 'row',
     justifyContent: 'flex-start',
     backgroundColor: 'rgba(50, 150, 250, 1)',
@@ -78,13 +86,23 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 16,
   },
-  title: {
+  message: {
     fontSize: 16,
     fontWeight: 'bold',
   },
+  expeditor: {
+    fontSize: 10,
+    marginLeft: "4%"
+  },
+  expeditorUser: {
+    fontSize: 10,
+    textAlign: "right",
+    marginRight: "4%"
+
+  },
   icon: {
-    width: 50,
-    height: 50,
+    width: "20%",
+    height: "20%",
     resizeMode: 'contain',
   },
 });
