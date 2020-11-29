@@ -191,10 +191,9 @@ router.get('/logout', async function(req, res) {
  */
 router.get('/get_own_profile', async function(req, res) {
   const projection = '-password -access_token -socket_id -facebook_id' //-param for excluding
-  let user = await UserModel.findOne({access_token: req.headers.access_token}, projection);
-  let profile = user;
+  let profile = await UserModel.findOne({access_token: req.headers.access_token}, projection);
 
-  if (user) {
+  if (profile) {
     return  res.status(200).send({status: "Profile sent." , profile});
   }
   return res.status(400).send({status: "You are not connected."});

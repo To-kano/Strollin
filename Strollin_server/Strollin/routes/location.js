@@ -25,6 +25,8 @@ router.post('/new_location', async function(req, res) {
         owner: req.body.owner,
         coordinate: req.body.coordinate,
         address: req.body.address,
+        city: req.body.city,
+        country: req.body.country,
         description: req.body.description,
         timetable: req.body.timetable,
         tags_list: req.body.tags_list,
@@ -35,7 +37,18 @@ router.post('/new_location', async function(req, res) {
 });
 
 
-router.get('/get_locations', async function(req, res) {
+router.get('/get_locations_algo', async function(req, res) {
+
+    let user = await UserModel.findOne({access_token: req.headers.access_token});
+    let locations_list = null;
+    let query = {};
+
+    if (!user) {
+        return res.status(400).send({status: "You are not connected."});
+    }
+    locations_list = await LocationModel.find({
+
+    })
 });
 
 
