@@ -238,7 +238,7 @@ sio.on("connection", async (socket) => {
 
         console.log("messageModel ", message);
 
-        conversation.message_list = [...conversation.message_list, message._id]
+        conversation.messages_list = [...conversation.messages_list, message._id]
         await conversation.save();
 
         sendReceiveMessage(message, conversation);

@@ -192,9 +192,10 @@ router.get('/logout', async function(req, res) {
 router.get('/get_own_profile', async function(req, res) {
   const projection = '-password -access_token -socket_id -facebook_id' //-param for excluding
   let user = await UserModel.findOne({access_token: req.headers.access_token}, projection);
+  let profile = user;
 
   if (user) {
-    return  res.status(200).send({status: "Profile sent." , user});
+    return  res.status(200).send({status: "Profile sent." , profile});
   }
   return res.status(400).send({status: "You are not connected."});
 });
@@ -208,11 +209,13 @@ router.get('/get_own_profile', async function(req, res) {
  */
 router.get('/get_user_profile', async function(req, res) {
   const projection = 'mail creation_date pseudo type first_name last_name tags_list friends_list';
-  let user = await UserModel.findOne({access_token: req.headers.access_token}, projection);
+  let user = await UserModel.findOne({access_token: req.headers.access_token});
   let profile = null;
 
+  console.log("user in getuser =", user);
   if (user) {
     profile = await UserModel.findOne({_id: req.headers.user_id}, projection);
+    console.log("profile of friends", profile);
     if (profile) {
       return  res.status(200).send({status: "Profile sent." , profile});
     }

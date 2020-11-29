@@ -60,7 +60,7 @@ app.use('/message', messageRouter);
 
 app.use(express.static('public'));
 
-const promise1 = algo.data.hello()
+/*const promise1 = algo.data.hello()
 
 promise1.then((value) => {
   console.log("---------------------------------------");
@@ -70,7 +70,7 @@ promise1.then((value) => {
   console.log("---------------------------------------");
   pop.data.Popup(value)
 });
-
+*/
 
 
 // catch 404 and forward to error handler

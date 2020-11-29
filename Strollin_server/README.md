@@ -142,7 +142,7 @@ MESSAGE RELATED:
 
 | Description | Headers | Body | Return |
 |-|-|-|-|
-| Get the contain of messages with a provided list of message's ID.| access_token: String | message_list: [messageID] | [messageObject] |
+| Get the contain of messages with a provided list of message's ID.| access_token: String | messages_list: [messageID] | [messageObject] |
 
 
 CONVERSATION RELATED:
