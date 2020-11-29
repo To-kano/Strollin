@@ -17,11 +17,11 @@ var TagModelSchema = new Schema({
         type: String,
         default: '1'
     },
-    location_list: {
+    locations_list: {
         type: [String],
         default: []
     },
-    course_list: {
+    courses_list: {
         type: [String],
         default: []
     },

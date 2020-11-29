@@ -21,7 +21,7 @@ var UserModelSchema = new Schema({
         type: String,
         required: true,
     },
-    type: {                 // Particulier, Commencerçant, etc...
+    type: {                 // particular ou partner
         type: String,
         required: true,
     },

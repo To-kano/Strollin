@@ -37,7 +37,7 @@ router.post('/new_location', async function(req, res) {
 });
 
 
-router.get('/get_locations_algo', async function(req, res) {
+router.get('/get_locations', async function(req, res) {
 
     let user = await UserModel.findOne({access_token: req.headers.access_token});
     let locations_list = null;
@@ -46,9 +46,26 @@ router.get('/get_locations_algo', async function(req, res) {
     if (!user) {
         return res.status(400).send({status: "You are not connected."});
     }
-    locations_list = await LocationModel.find({
-
-    })
+    // if (req.headers.name) {
+    //     query.name = req.headers.name;
+    // }
+    // if (req.headers.owner) {
+    //     query.owner = req.headers.owner;
+    // }
+    // if (req.headers.coordinate) {
+    //     query.coordinate = req.headers.coordinate; // A remplacer par une Range de coordinate
+    // }
+    // if (req.headers.city) {
+    //     query.city = req.headers.city;
+    // }
+    // if (req.headers.country) {
+    //     query.country = req.headers.country;
+    // }
+    // if (req.headers.tags_list) {
+    //     query.tags_list = {$in: [req.headers.tags_list]};
+    // }
+    locations_list = await LocationModel.find(query)
+    return res.status(200).send({status: "List of locations returned.", locations_list});
 });
 
 

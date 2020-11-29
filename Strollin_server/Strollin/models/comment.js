@@ -19,7 +19,7 @@ var CommentModelSchema = new Schema({
     },
     creation_date: {
         type: Date,
-        default: Date.now,
+        default: Date.now(),
     },
     comment_previous: {
         type: String,

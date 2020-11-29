@@ -31,7 +31,7 @@ USER RELATED:
 - password ```String```
 - creation_date ```Date```
 - pseudo ```String```
-- type ```String``` : "normal" or "professional"
+- type ```String``` : "particular" or "partner"
 - first_name ```String```
 - last_name ```String```
 - access_token ```String```
@@ -150,9 +150,10 @@ CONVERSATION RELATED:
 
 **SCHEMA:**
 
-- participants ```[{userID, Date}]``` : exit Date of a user to stop message updates
+- participants ```[userID]```
 - name ```String```
 - messages_list ```[messageID]```
+- recent_messages ```[{messageObject}] (See [MESSAGE RELATED](#MESSAGE-RELATED))
 
 <br>
 
@@ -172,6 +173,7 @@ COURSE RELATED:
 **SCHEMA:**
 
 - locations ```[locationID]```
+- name ```String```
 - score ```String```
 - user_score ```[userID]```
 - number_used ```String``` : number of usage of the course
@@ -185,12 +187,6 @@ COURSE RELATED:
 
 **REQUESTS:**
 
-- ADD new course: ```POST /course/post_course```
-
-- GET course: ```GET /course/get_course```
-
-- DEL course: ```DEL /course/remove_course```
-
 
 
 LOCATION RELATED:
@@ -199,22 +195,29 @@ LOCATION RELATED:
 **SCHEMA:**
 
 - name ```String```
+- owner ```String```
 - score ```String```
 - user_score ```[userID]```
-- visited ```String``` : number of visit of the location
 - coordinate ```[Float, Float]```
 - address ```String```
+- city ```String```
+- country ```String```
 - description ```String```
 - photo ```[String]```
 - timetable ```String```
 - comment_list ```[commentID]```
 - tags_list ```[tagID]```
+- price_range ```[String, String]```
+- pop_disp ```String```
+- pop_ag ```String```
+- alg_disp ```String```
+- alg_disp ```String```
 
 <br>
 
 **REQUESTS:**
 
-- ADD new location: ```POST /location/post_location```
+- ADD new location: ```POST /location/add_location```
 
 - GET location: ```GET /location/get_location```
 
@@ -249,8 +252,8 @@ TAGS RELATED:
 - name ```String```
 - description ```String```
 - number_used ```String```
-- location_list ```[locationID]```
-- course_list ```[courseID]```
+- locations_list ```[locationID]```
+- courses_list ```[courseID]```
 
 <br>
 
