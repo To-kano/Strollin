@@ -208,6 +208,7 @@ LOCATION RELATED:
 - comment_list ```[commentID]```
 - tags_list ```[tagID]```
 - price_range ```[String, String]```
+- average_time ```String```
 - pop_disp ```String```
 - pop_ag ```String```
 - alg_disp ```String```
@@ -217,9 +218,25 @@ LOCATION RELATED:
 
 **REQUESTS:**
 
-- ADD new location: ```POST /location/add_location```
+- ADD new location: ```POST /location/new_location```
 
-- GET location: ```GET /location/get_location```
+| Description | Headers | Body | Return |
+|-|-|-|-|
+| Add a location to the database. | access_token: String | name: String<br>owner: userID (optional)<br>coordinate: [String, String]<br>address: String<br>city: String<br>country: String<br>description: String (optional)<br>timetable: String (optional)<br>tags_list: [tagID] (optional)<br>price_range: [String, String] (optional)<br>average_time: String (optional) | |
+
+- UPDATE a location: ```POST /location/update_location```
+
+| Description | Headers | Body | Return |
+|-|-|-|-|
+| Update a location's data (at least one parameter in body). | access_token: String<br>location_id = locationID | name: String (optional)<br>owner: userID (optional)<br>coordinate: [String, String] (optional)<br>address: String (optional)<br>city: String (optional)<br>country: String (optional)<br>description: String (optional)<br>timetable: String (optional)<br>tags_list: [tagID] (optional)<br>price_range: [String, String] (optional)<br>average_time: String (optional) | |
+
+
+- GET location: ```GET /location/get_locations```
+
+| Description | Headers | Body | Return |
+|-|-|-|-|
+| Get a list of locations. | access_token: String | | [LocationObject] |
+
 
 - DEL location: ```DEL /location/remove_location```
 

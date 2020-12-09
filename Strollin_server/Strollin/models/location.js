@@ -22,7 +22,7 @@ var LocationModelSchema = new Schema({
         default: []
     },
     coordinate: {
-        type: [Float, Float],
+        type: [String, String],
         required: true,
     },
     address: {
@@ -59,7 +59,11 @@ var LocationModelSchema = new Schema({
     },
     price_range: {
         type: [String, String],
-        default: []
+        default: ['', '']
+    },
+    average_time: {
+        type: String,
+        default: ''
     },
     pop_disp: {
         type: String,

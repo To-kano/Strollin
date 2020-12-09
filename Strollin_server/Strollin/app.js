@@ -10,6 +10,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var conversationRouter = require('./routes/conversation');
 var messageRouter = require('./routes/message');
+var locationRouter = require('./routes/location');
 
 //var algo = require('./Algo/BasicAlgo');
 //var algo = require('./Algo/BasicAlgo2');
@@ -54,6 +55,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/conversation', conversationRouter);
 app.use('/message', messageRouter);
+app.use('/location', locationRouter);
 
 /******/
 

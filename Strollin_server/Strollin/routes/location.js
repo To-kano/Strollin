@@ -5,6 +5,10 @@ const {
   LocationModel
 } = require("../models/location")
 
+const {
+    UserModel
+} = require("../models/user")
+
 
 router.post('/new_location', async function(req, res) {
 
@@ -20,7 +24,7 @@ router.post('/new_location', async function(req, res) {
     location = await LocationModel.findOne({name: req.body.name, address: req.body.address});
     if (location)
         return res.status(400).send({status: "The location exists already."});
-    tag = new LocationModel({
+    location = new LocationModel({
         name: req.body.name,
         owner: req.body.owner,
         coordinate: req.body.coordinate,
@@ -30,10 +34,53 @@ router.post('/new_location', async function(req, res) {
         description: req.body.description,
         timetable: req.body.timetable,
         tags_list: req.body.tags_list,
-        price_range: req.body.price
+        price_range: req.body.price,
+        average_time: req.body.average_time
     });
     await location.save();
-    return  res.status(200).send({status: "Tag created."});
+    return res.status(200).send({status: "Location created."});
+});
+
+
+router.post('/update_location', async function(req, res) {
+
+    let location = LocationModel;
+    let update = {};
+    let user = await UserModel.findOne({access_token: req.headers.access_token});
+
+    if (!user) {
+        return res.status(400).send({status: "You are not connected."});
+    }
+    if (req.body.name)
+        update.name = req.body.name
+    if (req.body.owner)
+        update.owner = req.body.owner
+    if (req.body.coordinate)
+        update.coordinate = req.body.coordinate
+    if (req.body.address)
+        update.address = req.body.address
+    if (req.body.city)
+        update.city = req.body.city
+    if (req.body.country)
+        update.country = req.body.country
+    if (req.body.description)
+        update.description = req.body.description
+    if (req.body.timetable)
+        update.timetable = req.body.timetable
+    if (req.body.tags_list)
+        update.tags_list = req.body.tags_list
+    if (req.body.price)
+        update.price_range = req.body.price
+    if (req.body.average_time)
+        update.average_time = req.body.average_time
+    await location.updateOne({_id: req.headers.location_id}, update, function(err, raw) {
+        if (err) {
+            return res.status(400).send({status: "Location could not be updated."});            
+        } else {
+            console.log("Location updated: ", raw)
+        }
+    });
+    return res.status(200).send({status: "Location updated."});
 });
 
 
