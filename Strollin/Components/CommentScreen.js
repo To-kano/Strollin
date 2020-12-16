@@ -6,27 +6,7 @@ import Comment from './Comment';
 
 function CommentScreen(props) {
   console.log("props = ", props.navigation.setParams);
-  const DATA = [
-    {
-      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-      pseudo: 'Tony Yo',
-      comment: 'Wow trop bien !',
-      note: '5/5'
-    },
-    {
-      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-      pseudo: 'Tony Hi',
-      comment: 'Bon pour les week-end 4/5',
-      note: '4/5'
-    },
-    {
-      id: '58694a0f-3da1-471f-bd96-145571e29d72',
-      pseudo: 'Tony Dark',
-      comment: 'Pas mal',
-      note: '3,5/5'
-    },
-  ];
-
+  const DATA = require('./test.json');
   return (
     <View style={styles.container}>
       <View>

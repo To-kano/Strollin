@@ -146,6 +146,18 @@ function HomePage(props) {
           </Text>
         </TouchableOpacity>
       </View>
+      <View style={{ flexDirection: 'column' }}>
+        <TouchableOpacity
+          style={styles.newTrip}
+          onPress={() => {
+            props.navigation.navigate('CourseEvaluation');
+          }}
+        >
+          <Text style={{ fontSize: 16, color: '#FFFFFF' }}>
+            Go to Evaluation
+          </Text>
+        </TouchableOpacity>
+      </View>
       <View style={{ flex: 0.10, flexDirection: 'column', margin: '5%' }}>
         <TouchableOpacity
           style={styles.newTrip}
