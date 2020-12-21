@@ -24,6 +24,8 @@ import MenuChat from '../Components/reactChatScreen/MenuScreen';
 import ScreenChat from '../Components/reactChatScreen/ChatScreen';
 import NewConversation from '../Components/reactChatScreen/NewConversation';
 import Notation from '../Components/Notation';
+import PartenaireScreen from '../Components/PartenairePage';
+import SettingPartenaire from '../Components/SettingPartenaire';
 
 const Stack = createStackNavigator();
 
@@ -144,6 +146,8 @@ function MyStack(props) {
               options={{ title: 'TripNavigation' }}
             />
             <Stack.Screen name="Profile" component={Profile} />
+            <Stack.Screen name="PartenaireScreen" component={PartenaireScreen} />
+            <Stack.Screen name="SettingPartenaire" component={SettingPartenaire} />
           </>
 
         )}

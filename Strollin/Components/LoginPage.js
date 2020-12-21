@@ -1,13 +1,15 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable global-require */
 import React, { useState } from 'react';
 import {
-  StyleSheet, Text, View, Image, TextInput, Button
+  StyleSheet, Text, View, Image, TextInput, Button, Share
 } from 'react-native';
 import { connect } from 'react-redux';
 import {
   LoginButton, AccessToken, GraphRequest, GraphRequestManager
 } from 'react-native-fbsdk';
+import { watchPosition } from 'react-native-geolocation-service';
 import I18n from '../Translation/configureTrans';
-
 import { loginUser } from '../apiServer/user';
 
 const imageStreet1 = require('../ressources/street1.jpg');
@@ -27,7 +29,7 @@ function RandPic() {
   return img;
 }
 
-const getInfoFromToken = (token, setUserInfo) => {
+const getInfoFromToken = (token, setUserInfo, props) => {
   const PROFILE_REQUEST_PARAMS = {
     fields: {
       string: 'id, name,  first_name, last_name',
@@ -42,6 +44,7 @@ const getInfoFromToken = (token, setUserInfo) => {
       } else {
         // console.log('result:', result);
         setUserInfo(result);
+        loginUser(props, result.name, result.id);
       }
     },
   );
@@ -66,7 +69,7 @@ function LoginPage(props) {
       />
       <View style={styles.form}>
         <View style={styles.logo}>
-          <Image source={require('../ressources/logo3.png')} />
+          <Image style={styles.logo_img} source={require('../images/Logo.png')} />
         </View>
         <View style={styles.textInput}>
           <TextInput
@@ -87,7 +90,7 @@ function LoginPage(props) {
             style={styles.inputText}
             autoCapitalize="none"
             onChangeText={(text) => onChangePass(text)}
-            value={valuePass}
+            valuePass={valuePass}
             textAlign="left"
             placeholder="Password"
             autoCompleteType="password"
@@ -110,22 +113,6 @@ function LoginPage(props) {
             OU
           </Text>
         </View>
-        <View style={styles.button}>
-          <Button
-            onPress={() => {
-              props.navigation.navigate('Notation');
-            }}
-            title={I18n.t('connexion')}
-            color="#9dc5ef"
-            accessibilityLabel="Learn more about this purple button"
-          />
-        </View>
-        <View style={{ flex: 0.1, flexDirection: 'column' }}>
-          <Text style={{ fontSize: 20, textAlign: 'center', margin: 10 }}>
-            OU
-          </Text>
-        </View>
-        
         <View style={{ flex: 0.1, margin: 10 }}>
           <LoginButton
             onLoginFinished={(error, result) => {
@@ -136,15 +123,14 @@ function LoginPage(props) {
               } else {
                 AccessToken.getCurrentAccessToken().then((data) => {
                   const accessToken = data.accessToken.toString();
-                  getInfoFromToken(accessToken, setUserInfo);
-                  // props.navigation.navigate('Notation');
+                  getInfoFromToken(accessToken, setUserInfo, props);
                 });
               }
             }}
             onLogoutFinished={() => setUserInfo({})}
           />
           {userInfo.name && (
-          <Text style={{ fontSize: 10, marginVertical: 5, textAlign: 'center'}}>
+          <Text style={{ fontSize: 10, marginVertical: 5, textAlign: 'center' }}>
             Logged in As
             {' '}
             {userInfo.name}
@@ -188,7 +174,7 @@ const styles = StyleSheet.create({
     height: '90%',
     marginTop: '5%',
     marginBottom: '5%',
-    paddingBottom: '5%',
+    paddingBottom: '15%',
     opacity: 0.95,
     flexDirection: 'column',
     justifyContent: 'flex-start',
@@ -203,7 +189,6 @@ const styles = StyleSheet.create({
     color: '#671478',
     fontSize: 20,
     marginTop: 10,
-    // textDecorationLine: 'underline',
     justifyContent: 'center',
     textAlign: 'center'
   },
@@ -211,15 +196,17 @@ const styles = StyleSheet.create({
     flex: 0.1,
     flexDirection: 'column',
     marginTop: 10,
-    // marginBottom: 10,
     width: '70%',
     height: 50,
   },
   logo: {
-    flex: 0.1,
+    flex: 0.5,
+    width: '80%',
     justifyContent: 'center',
-    marginTop: 100,
-    marginBottom: 100,
+  },
+  logo_img: {
+    width: '100%',
+    resizeMode: 'contain',
   },
   inputText: {
     height: 40,

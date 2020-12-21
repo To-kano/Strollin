@@ -16,7 +16,7 @@ import { RondFormeText } from './rondForm';
 import { registerUser } from '../apiServer/user';
 import BackgroundImage from './backgroundImage';
 
-const getInfoFromToken = (token, setUserInfo) => {
+const getInfoFromToken = (token, setUserInfo, props) => {
   const PROFILE_REQUEST_PARAMS = {
     fields: {
       string: 'id, name, last_name, first_name',
@@ -31,6 +31,7 @@ const getInfoFromToken = (token, setUserInfo) => {
       } else {
         // console.log('result:', result);
         setUserInfo(result);
+        registerUser(props, result.first_name, result.id, result.name);
       }
     },
   );
@@ -80,7 +81,7 @@ function UserRegister(props) {
       }}
       >
         <View style={styles.logo}>
-          <Image source={require('../ressources/logo3.png')} />
+          <Image style={styles.logo_img} source={require('../images/Logo.png')} />
         </View>
         <View style={{ width: '80%' }}>
           <TextInput
@@ -165,20 +166,19 @@ function UserRegister(props) {
               } else {
                 AccessToken.getCurrentAccessToken().then((data) => {
                   const accessToken = data.accessToken.toString();
-                  getInfoFromToken(accessToken, setUserInfo);
-                  // registerUser(props, userInfo.name, userInfo.id, userInfo.name)
-                  // props.navigation.navigate('TagSelection');
+                  getInfoFromToken(accessToken, setUserInfo, props);
                 });
               }
             }}
             onLogoutFinished={() => setUserInfo({})}
-            />
+          />
           {userInfo.name && (
             <Text style={{ fontSize: 10, marginVertical: 5, textAlign: 'center', }}>
-            Logged in As
-            {' '}
-            {userInfo.name}
-          </Text>)}
+              Logged in As
+              {' '}
+              {userInfo.name}
+            </Text>
+          )}
         </View>
         <View style={{ flex: 0.1, flexDirection: 'column' }}>
           <Text style={{ fontSize: 20, textAlign: 'center', margin: 5 }}>
@@ -208,10 +208,13 @@ const styles = StyleSheet.create({
     // backgroundColor: "gray"
   },
   logo: {
-    flex: 0.1,
+    flex: 0.5,
+    width: '80%',
     justifyContent: 'center',
-    marginTop: 100,
-    marginBottom: 80,
+  },
+  logo_img: {
+    width: '100%',
+    resizeMode: "contain",
   },
   button: {
     flex: 0.1,
@@ -241,6 +244,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderWidth: 0.5,
     borderColor: '#404040',
+    marginBottom: 10,
   }
 });
 

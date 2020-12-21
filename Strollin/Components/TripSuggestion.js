@@ -279,7 +279,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    flex: 0.1,
+    flex: 0.08,
     width: '100%',
   },
   newTrip: {

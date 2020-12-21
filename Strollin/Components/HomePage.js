@@ -95,6 +95,7 @@ function HomePage(props) {
           />
         </TouchableOpacity>
       </View>
+
       {/* <View style={styles.cont}>
         <Text style={{ fontSize: 40 }}> Trending trip: </Text>
       </View> */}
@@ -162,10 +163,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    flex: 0.1,
+    flex: 0.082,
     width: '100%',
   },
   newTrip: {
+    flex: 0.85,
     alignItems: 'center',
     backgroundColor: '#F07323',
     paddingVertical: '5%',
@@ -180,7 +182,7 @@ const styles = StyleSheet.create({
     flex: 0.1,
     backgroundColor: '#FFC300',
     width: '90%',
-    height: '120%',
+    height: '100%',
     borderRadius: 20
   },
 });
