@@ -58,15 +58,15 @@ var UserModelSchema = new Schema({
         default: [],
     },
     score_course: {          // Liste des parcours notés (ID, Note, Date)
-        type: [{String, String, Date}],
+        type: [[String, String, Date]],
         default: [],
     },
     score_location: {        // Liste des lieux notés (ID, Note, Date)
-        type: [{String, String, Date}],
+        type: [[String, String, Date]],
         default: [],
     },
     score_comment: {         // Liste des commentaires notés (ID, Note, Date)
-        type: [{String, String, Date}],
+        type: [[String, String, Date]],
         default: [],
     },
     socket_id: {             // ID du socket IO en cours d'utilisation, vide lorsque l'utilisateur se déconnecte

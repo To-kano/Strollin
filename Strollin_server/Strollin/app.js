@@ -11,6 +11,8 @@ var usersRouter = require('./routes/users');
 var conversationRouter = require('./routes/conversation');
 var messageRouter = require('./routes/message');
 var locationRouter = require('./routes/location');
+var courseRouter = require('./routes/course');
+var commentRouter = require('./routes/comment');
 
 //var algo = require('./Algo/BasicAlgo');
 //var algo = require('./Algo/BasicAlgo2');
@@ -23,7 +25,7 @@ var app = express();
 
 // MongoDB //
 
-var mongoDB = 'mongodb://db:27017/Strollin';
+var mongoDB = 'mongodb://db:270);17/Strollin';
 mongoose.connect(mongoDB, { useNewUrlParser: true });
 
 //Get the default connection
@@ -49,13 +51,15 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// ROUTES //
 
+// ROUTES //
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/conversation', conversationRouter);
 app.use('/message', messageRouter);
 app.use('/location', locationRouter);
+app.use('/course', courseRouter);
+app.use('/comment', commentRouter);
 
 /******/
 
