@@ -25,6 +25,7 @@ import ScreenChat from '../Components/reactChatScreen/ChatScreen';
 import NewConversation from '../Components/reactChatScreen/NewConversation';
 import Notation from '../Components/Notation';
 import Socket from '../Components/Socket';
+import CourseEvaluation from '../Components/CourseEvaluation';
 
 const Stack = createStackNavigator();
 
@@ -119,9 +120,14 @@ function MyStack(props) {
               options={{ title: 'screenchat' }}
             />
             <Stack.Screen
+              name="CourseEvaluation"
+              component={CourseEvaluation}
+              options={{ title: 'screenchat' }}
+            />
+            <Stack.Screen
               name="NewConversation"
               component={NewConversation}
-              options={{ title: 'newConversation' }}
+              options={{ title: 'CourseEvaluation' }}
             />
             <Stack.Screen
               name="TagSelection"
