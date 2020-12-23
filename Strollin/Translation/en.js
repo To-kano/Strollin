@@ -45,7 +45,8 @@ export default {
   friendList: 'Friend list',
   deleteFriend: 'Delete friend',
   addFriend: 'Add friend',
-  feedback: 'Give us a feedback'
+  feedback: 'Give us a feedback',
+  information: 'Information about the place'
 };
 
 // {I18n.t("")}
