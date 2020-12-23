@@ -44,5 +44,6 @@ export default {
   friendList: "Liste d'amis",
   deleteFriend: "Suprimer l'ami",
   addFriend: "Ajouter l'ami",
-  feedback: 'Donnez nous votre avis'
+  feedback: 'Donnez nous votre avis',
+  information: 'Information sur le lieu'
 };
