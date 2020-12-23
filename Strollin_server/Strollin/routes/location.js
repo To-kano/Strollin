@@ -10,6 +10,25 @@ const {
 } = require("../models/user")
 
 
+// NEW_LOCATION
+/**
+ * Create a new location
+ * @param {String} req.headers.access_token
+ * 
+ * @param {String} req.body.name
+ * @param {UserID} req.body.owner (Optional)
+ * @param {[String, String]} req.body.coordinate
+ * @param {String} req.body.address
+ * @param {String} req.body.city (Optional)
+ * @param {String} req.body.country (Optional)
+ * @param {String} req.body.description (Optional)
+ * @param {String} req.body.timetable (Optional)
+ * @param {String} req.body.tags_list (Optional)
+ * @param {String} req.body.price (Optional)
+ * @param {String} req.body.average_time (Optional)
+ * @param {String} req.body.phone (Optional)
+ * @param {String} req.body.website (Optional)
+ */
 router.post('/new_location', async function(req, res) {
 
     let location = null;
@@ -35,13 +54,34 @@ router.post('/new_location', async function(req, res) {
         timetable: req.body.timetable,
         tags_list: req.body.tags_list,
         price_range: req.body.price,
-        average_time: req.body.average_time
+        average_time: req.body.average_time,
+        phone: req.body.phone,
+        website: req.body.website
     });
     await location.save();
     return res.status(200).send({status: "Location created."});
 });
 
 
+// UPDATE_LOCATION
+/**
+ * Update a location's data (at least one body parameter)
+ * @param {String} req.headers.access_token
+ * 
+ * @param {String} req.body.name (Optional)
+ * @param {UserID} req.body.owner (Optional)
+ * @param {[String, String]} req.body.coordinate (Optional)
+ * @param {String} req.body.address (Optional)
+ * @param {String} req.body.city (Optional)
+ * @param {String} req.body.country (Optional)
+ * @param {String} req.body.description (Optional)
+ * @param {String} req.body.timetable (Optional)
+ * @param {String} req.body.tags_list (Optional)
+ * @param {String} req.body.price (Optional)
+ * @param {String} req.body.average_time (Optional)
+ * @param {String} req.body.phone (Optional)
+ * @param {String} req.body.website (Optional)
+ */
 router.post('/update_location', async function(req, res) {
 
     let location = LocationModel;
@@ -73,17 +113,55 @@ router.post('/update_location', async function(req, res) {
         update.price_range = req.body.price
     if (req.body.average_time)
         update.average_time = req.body.average_time
+    if (req.body.phone)
+        update.phone = req.body.phone
+    if (req.body.website)
+        update.website = req.body.website
     await location.updateOne({_id: req.headers.location_id}, update, function(err, raw) {
         if (err) {
-            return res.status(400).send({status: "Location could not be updated."});            
+            console.log("Location could not be updated.")
+            return res.status(400).send({status: false});            
         } else {
             console.log("Location updated: ", raw)
         }
     });
-    return res.status(200).send({status: "Location updated."});
+    return res.status(200).send({status: true});
 });
 
 
+// GET_PLACE
+/**
+ * Get a place data from the Google Place API
+ * @param {String} req.headers.access_token
+ * @param {String} req.headers.place_name
+ */
+router.get('/get_place', async function(req, res) {
+
+    let user = await UserModel.findOne({access_token: req.headers.access_token});
+    if (!user) {
+        return res.status(400).send({status: "You are not connected."});
+    }
+
+    let url = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=" + req.headers.place_name + "&inputtype=textquery&key=AIzaSyC4MiDbDXP5M3gvpyUADaIUO60H7Vjb9Uk"
+    let research = await fetch(url, {method: 'get'})
+    .catch(err => console.error(err));
+
+    url = "https://maps.googleapis.com/maps/api/place/details/json?place_id=" + research.candidates[0].place_id + "&fields=formatted_address,geometry,name,type,opening_hours,website,price_level,rating,review,international_phone_number,user_ratings_total,photo&key=AIzaSyC4MiDbDXP5M3gvpyUADaIUO60H7Vjb9Uk"
+    let result = await fetch(url, {method: 'get'})
+    .catch(err => console.error(err));
+
+    if (result.status === 'OK') {
+        return res.status(200).send({status: true, result})
+    }
+    return res.status(400).send({status: false, error: "Place not found or error occured."})
+});
+
+
+// GET_LOCATIONS
+/**
+ * Get the list of locations in database
+ * @param {String} req.headers.access_token
+ */
 router.get('/get_locations', async function(req, res) {
 
     let user = await UserModel.findOne({access_token: req.headers.access_token});
@@ -100,7 +178,7 @@ router.get('/get_locations', async function(req, res) {
     //     query.owner = req.headers.owner;
     // }
     // if (req.headers.coordinate) {
-    //     query.coordinate = req.headers.coordinate; // A remplacer par une Range de coordinate
+    //     query.coordinate = req.headers.coordinate; // To replace by a range of coordinate
     // }
     // if (req.headers.city) {
     //     query.city = req.headers.city;

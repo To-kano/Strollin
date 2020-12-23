@@ -10,8 +10,14 @@ const {
 } = require("../models/user")
 
 
-// Post
-
+// NEW_TAG
+/**
+ * Create a new tag in the database
+ * @param {String} req.headers.access_token
+ *
+ * @param {String} req.body.name
+ * @param {String} req.body.description (Optional)
+ */
 router.post('/new_tag', async function(req, res) {
 
     let tag = null;
@@ -19,7 +25,7 @@ router.post('/new_tag', async function(req, res) {
 
     if (!user)
         return res.status(400).send({status: "You are not connected."});
-    if (req.body.name && req.body.description) {
+    if (req.body.name) {
         tag = await TagModel.findOne({name: req.body.name});
         if (tag)
             return res.status(400).send({status: "The tag exists already."});
@@ -57,7 +63,7 @@ router.post('/new_tag', async function(req, res) {
 
 // Delete
 
-router.delete('/delete_tag', async function(req, res) {});
+// router.delete('/delete_tag', async function(req, res) {});
 
 
 module.exports = router;

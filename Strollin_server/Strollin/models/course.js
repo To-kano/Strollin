@@ -5,7 +5,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var CourseModelSchema = new Schema({
-    locations: {
+    locations_list: {
         type: [String],
         required: true
     },

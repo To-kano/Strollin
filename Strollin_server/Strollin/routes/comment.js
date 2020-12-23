@@ -18,6 +18,16 @@ const {
 } = require("../models/user")
 
 
+// NEW_COMMENT
+/**
+ * Register a new comment with a score
+ * @param {String} req.headers.access_token
+ * @param {LocationID} req.headers.location_id (if not course_id)
+ * @param {CourseID} req.headers.course_id (if not location_id)
+ * 
+ * @param {String} req.body.message
+ * @param {String} req.body.score
+ */
 router.post('/new_comment', async function(req, res) {
     let comment = null;
     let course = null;
@@ -63,6 +73,15 @@ router.post('/new_comment', async function(req, res) {
     return res.status(200).send({status: true});
 });
 
+
+// EDIT_COMMENT
+/**
+ * Edit a comment's message
+ * @param {String} req.headers.access_token
+ * @param {CommentID} req.headers.comment_id
+ * 
+ * @param {String} req.body.message
+ */
 router.post('/edit_comment', async function(req, res) {
     let user = await UserModel.findOne({access_token: req.headers.access_token});
     let comment = await UserModel.findOne({_id: req.headers.comment_id});
@@ -80,6 +99,13 @@ router.post('/edit_comment', async function(req, res) {
     return res.status(400).send({status: "Comment not edited."});
 });
 
+
+// GET_COMMENT
+/**
+ * Get comment's data
+ * @param {String} req.headers.access_token
+ * @param {[CommentID]} req.headers.comments_list
+ */
 router.get('/get_comment', async function(req, res) {
     let user = await UserModel.findOne({access_token: req.headers.access_token});
     let comments_list = null;
