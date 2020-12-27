@@ -53,5 +53,6 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = (state) => state;
-export default connect(mapStateToProps)(SearchBar);
+//const mapStateToProps = (state) => state;
+//export default connect(mapStateToProps)(SearchBar);
+export default SearchBar

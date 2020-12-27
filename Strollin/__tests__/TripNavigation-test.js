@@ -2,6 +2,9 @@ import React from 'react';
 import {shallow} from 'enzyme';
 import TripNavigation from '../Components/TripNavigation';
 
+import Store from '../Store/configureStore';
+import { Provider } from 'react-redux';
+
 const navigationTest = {
     navigate: (test) => jest.fn()
 }
@@ -93,9 +96,12 @@ const mapTest = {
 describe('TripNavigation', () => {
     describe('Rendering', () => {
         it('should match to snapshot', () => {
-            const component = shallow(<TripNavigation navigation={navigationTest} 
-                dispatch={dispatchtest}
-                map={mapTest} />)
+            const component = shallow(
+            <Provider store={Store}>
+                <TripNavigation navigation={navigationTest}
+                    dispatch={dispatchtest}
+                    map={mapTest} />
+            </Provider>)
             expect(component).toMatchSnapshot()
         });
     });

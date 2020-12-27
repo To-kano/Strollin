@@ -2,6 +2,9 @@ import React from 'react';
 import {shallow} from 'enzyme';
 import HistoryNav from '../Components/HistoryNav';
 
+import Store from '../Store/configureStore';
+import { Provider } from 'react-redux';
+
 const historyNavTest1 = {
     id: "1",
     date: '10/10/2020',
@@ -69,7 +72,11 @@ const navigationTest = {
 describe('HistoryNav', () => {
     describe('Rendering', () => {
         it('should match to snapshot', () => {
-            const component = shallow(<HistoryNav map={mapTest} navigation={navigationTest} />)
+            const component = shallow(
+            <Provider store={Store}>
+                <HistoryNav map={mapTest} navigation={navigationTest} />
+            </Provider>
+            )
             expect(component).toMatchSnapshot()
         });
     });

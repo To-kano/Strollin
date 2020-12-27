@@ -249,5 +249,6 @@ const styles = StyleSheet.create({
   }
 });
 
-const mapStateToProps = (state) => state;
-export default connect(mapStateToProps)(FriendList);
+//const mapStateToProps = (state) => state;
+//export default connect(mapStateToProps)(FriendList);
+export default FriendList

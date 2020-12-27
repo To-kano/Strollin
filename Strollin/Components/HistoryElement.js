@@ -108,5 +108,6 @@ function ElementHistoryNav({ data }) {
   );
 }
 
-const mapStateToProps = (state) => state;
-export default connect(mapStateToProps)(ElementHistoryNav);
+//const mapStateToProps = (state) => state;
+//export default connect(mapStateToProps)(ElementHistoryNav);
+export default ElementHistoryNav

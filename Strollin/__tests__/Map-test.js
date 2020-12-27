@@ -2,6 +2,9 @@ import React from 'react';
 import {shallow} from 'enzyme';
 import Map from '../Components/map';
 
+import Store from '../Store/configureStore';
+import { Provider } from 'react-redux';
+
 const navigationTest = {
     navigate: (test) => jest.fn()
 }
@@ -55,15 +58,18 @@ const waypointTest = [
 describe('Map', () => {
     describe('Rendering', () => {
         it('should match to snapshot', () => {
-            const component = shallow(<Map 
-                navigation={navigationTest}
-                dispatch={dispatchtest}
-                position={positionTest}
-                height={310}
-                width={310}
-                deltaView={deltaviewTest}
-                waypoints={waypointTest}
-                />)
+            const component = shallow(
+            <Provider store={Store}>
+                <Map 
+                    navigation={navigationTest}
+                    dispatch={dispatchtest}
+                    position={positionTest}
+                    height={310}
+                    width={310}
+                    deltaView={deltaviewTest}
+                    waypoints={waypointTest}
+                />
+            </Provider>)
             expect(component).toMatchSnapshot()
         });
     });
