@@ -2,21 +2,16 @@ import React from 'react';
 import {shallow} from 'enzyme';
 import HomePage from '../Components/HomePage';
 
-const dataTest = {
-    name: 'test',
-    budget: '10',
-    period: '10 am to 10 pm',
-    destinations: [
-        '1',
-        '2',
-        '3',
-    ]
+const navigationTest = {
+    navigate: (test) => jest.fn()
 }
+
+const dispatchTest = (test) => jest.fn()
 
 describe('HomePage', () => {
     describe('Rendering', () => {
         it('should match to snapshot', () => {
-            const component = shallow(<HomePage data={dataTest}/>)
+            const component = shallow(<HomePage navigation={navigationTest} dispatch={dispatchTest} />)
             expect(component).toMatchSnapshot()
         });
     });

@@ -6,7 +6,7 @@ import ButtonIcon from './ButtonIcon.js';
 
 function SearchBar(props) {
   const [research, setresearch] = useState('');
-  const { imagePath } = props;
+  //const { imagePath } = props;
   return (
     <View style={styles.container}>
       <View style={styles.horizontalDisplay}>

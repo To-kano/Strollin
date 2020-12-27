@@ -2,21 +2,22 @@ import React from 'react';
 import {shallow} from 'enzyme';
 import ProfileScreen from '../Components/ProfileScreen';
 
-const dataTest = {
-    name: 'test',
-    budget: '10',
-    period: '10 am to 10 pm',
-    destinations: [
-        '1',
-        '2',
-        '3',
-    ]
+const navigationTest = {
+    navigate: (test) => jest.fn(),
+    setOptions: (test) => jest.fn()
+}
+
+const profilTest = {
+    pseudo: "pierre",
+    mail: "test@test.com"
 }
 
 describe('ProfileScreen', () => {
     describe('Rendering', () => {
         it('should match to snapshot', () => {
-            const component = shallow(<ProfileScreen data={dataTest}/>)
+            const component = shallow(<ProfileScreen 
+                navigation={navigationTest}
+                profil={profilTest}/>)
             expect(component).toMatchSnapshot()
         });
     });
