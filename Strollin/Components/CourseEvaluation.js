@@ -5,8 +5,8 @@ import {
 import Stars from 'react-native-stars';
 
 function ratingCompleted(rating, comment) {
-  console.log("rating = " + rating);
-  console.log("comment = " + comment);
+  //console.log("rating = " + rating);
+  //console.log("comment = " + comment);
 }
 
 function CourseEvaluation(props) {

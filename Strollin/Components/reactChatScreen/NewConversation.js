@@ -23,7 +23,7 @@ function GotoChat(props, createConversation) {
 
     props.navigation.navigate('MenuChat');
   } else {
-    console.log('not enough participants');
+    //console.log('not enough participants');
   }
 }
 
@@ -32,7 +32,7 @@ function sortConversation(key) {
   let found = false;
 
   if (key == '') {
-    console.log("nothing in search");
+    //console.log("nothing in search");
     const action = {type: 'SET_SEARCH_FRIEND_LIST', value: store.profil.friends_list};
     Store.dispatch(action);
   } else {
@@ -45,7 +45,7 @@ function sortConversation(key) {
       }
     }
     if (found == false) {
-      console.log("not found in search");
+      //console.log("not found in search");
     }
   }
 }

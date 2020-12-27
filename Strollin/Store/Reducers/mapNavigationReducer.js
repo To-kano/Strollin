@@ -5,7 +5,7 @@ const initialState = {
 
 function mapNavigationReducer(state = initialState, action) {
   let nextState;
-  // console.log("\n\ngalleryReducer:\n")
+  // //console.log("\n\ngalleryReducer:\n")
   switch (action.type) {
     case 'SET_WAYPOINTS':
       nextState = {
@@ -32,7 +32,7 @@ function mapNavigationReducer(state = initialState, action) {
       };
 
       // nextState.historic.concat([history]);
-      console.log('history ', nextState.historic);
+      //console.log('history ', nextState.historic);
 
       return nextState;
     default:

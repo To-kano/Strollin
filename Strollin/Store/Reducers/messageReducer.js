@@ -18,8 +18,8 @@ const EXEMPLE = {
   
   function MessageReducer(state = initialState, action) {
     let nextState = {};
-    // console.log("\n\ngalleryReducer:\n")
-    // console.log(action)
+    // //console.log("\n\ngalleryReducer:\n")
+    // //console.log(action)
     switch (action.type) {
       case 'ADD_MESSAGE':
         nextState = {

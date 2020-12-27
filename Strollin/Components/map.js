@@ -20,11 +20,11 @@ async function updateCoordinates(setUserPosition) {
         latitude: position.coords.latitude,
         longitude: position.coords.longitude,
       };
-      // console.log(position);
+      // //console.log(position);
       setUserPosition(data);
     },
     (error) => {
-      console.log(error.code, error.message);
+      //console.log(error.code, error.message);
     },
     { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
   );
@@ -45,11 +45,11 @@ async function requestGeolocalisationPermission(props) {
     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
       const action = { type: 'SET_PERMISSION', value: true };
       props.dispatch(action);
-      // console.log('You can use the geolocalisation');
+      // //console.log('You can use the geolocalisation');
     } else {
       const action = { type: 'SET_PERMISSION', value: false };
       props.dispatch(action);
-      // console.log('geolocalisation permission denied');
+      // //console.log('geolocalisation permission denied');
     }
   } catch (err) {
     console.warn(err);
@@ -70,7 +70,7 @@ function isNear(userPosition, elementPosition) {
 function Map(props) {
   const [userPosition, setUserPosition] = useState(null);
 
-  //console.log(props.navigate);
+  ////console.log(props.navigate);
   useEffect(() => {
     setLocalRegion({
       ...localRegion,
@@ -159,7 +159,7 @@ function Map(props) {
           onReady={({
             distance, duration, coordinates, fare, waypointOrder
           }) => {
-            console.log('distance ', distance, ' duration ', duration);
+            //console.log('distance ', distance, ' duration ', duration);
           }}
         />
         {waypoint.map((marker) => (

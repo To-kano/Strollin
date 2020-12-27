@@ -19,7 +19,7 @@ function ParseTags(Tags) {
 }
 
 function ProfileScreen(props) {
-  // console.log('json: ', json.Tags)
+  // //console.log('json: ', json.Tags)
   const list = ParseTags(json.Tags);
 
   React.useLayoutEffect(() => {

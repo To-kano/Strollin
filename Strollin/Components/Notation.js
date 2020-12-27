@@ -5,7 +5,7 @@ import {
 import I18n from '../Translation/configureTrans';
 
 function sendMessage(value) {
-  console.log('messageSent');
+  //console.log('messageSent');
 }
 
 function Notation(props) {

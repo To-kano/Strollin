@@ -38,10 +38,10 @@ const getInfoFromToken = (token, setUserInfo) => {
     { token, parameters: PROFILE_REQUEST_PARAMS },
     (error, result) => {
       if (error) {
-        // console.log(`login info has error: ${error}`);
+        // //console.log(`login info has error: ${error}`);
       } else {
         setUserInfo(result);
-        // console.log('result:', result);
+        // //console.log('result:', result);
       }
     },
   );
@@ -54,7 +54,7 @@ function LoginPage(props) {
   const [Img, onChangeImg] = React.useState(RandPic());
   const [userInfo, setUserInfo] = React.useState({});
 
-  // console.log("LoginPage");
+  // //console.log("LoginPage");
 
   return (
     <View style={styles.back}>
@@ -74,7 +74,7 @@ function LoginPage(props) {
             autoCapitalize="none"
             onChangeText={(text) => {
               onChangeText(text);
-              // console.log(text);
+              // //console.log(text);
             }}
             value={value}
             textAlign="left"
@@ -144,9 +144,9 @@ function LoginPage(props) {
           <LoginButton
             onLoginFinished={(error, result) => {
               if (error) {
-                console.log(`login has error: ${result.error}`);
+                //console.log(`login has error: ${result.error}`);
               } else if (result.isCancelled) {
-                console.log('login is cancelled.');
+                //console.log('login is cancelled.');
               } else {
                 access_token.getCurrentaccess_token().then((data) => {
                   const access_token = data.access_token.toString();

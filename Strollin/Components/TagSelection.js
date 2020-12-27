@@ -107,7 +107,7 @@ function TageSelection({ navigation, profil }) {
   //   </TouchableOpacity>
   //   <TouchableOpacity
   //     style={{width: '20%', height: '100%'}}
-  //     onPress={() => console.log('friend')}>
+  //     onPress={() => //console.log('friend')}>
   //     <Image
   //       style={{
   //         marginTop: '10%',
