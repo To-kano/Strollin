@@ -1,5 +1,7 @@
 var express = require('express');
 var router = express.Router();
+const fetch = require('node-fetch');
+const axios = require('axios')
 
 const {
   LocationModel
@@ -14,7 +16,7 @@ const {
 /**
  * Create a new location
  * @param {String} req.headers.access_token
- * 
+ *
  * @param {String} req.body.name
  * @param {UserID} req.body.owner (Optional)
  * @param {[String, String]} req.body.coordinate
@@ -67,7 +69,7 @@ router.post('/new_location', async function(req, res) {
 /**
  * Update a location's data (at least one body parameter)
  * @param {String} req.headers.access_token
- * 
+ *
  * @param {String} req.body.name (Optional)
  * @param {UserID} req.body.owner (Optional)
  * @param {[String, String]} req.body.coordinate (Optional)
@@ -120,7 +122,7 @@ router.post('/update_location', async function(req, res) {
     await location.updateOne({_id: req.headers.location_id}, update, function(err, raw) {
         if (err) {
             console.log("Location could not be updated.")
-            return res.status(400).send({status: false});            
+            return res.status(400).send({status: false});
         } else {
             console.log("Location updated: ", raw)
         }
@@ -135,20 +137,37 @@ router.post('/update_location', async function(req, res) {
  * @param {String} req.headers.access_token
  * @param {String} req.headers.place_name
  */
+async function placeCall(url) {
+  const result = fetch(url, {
+    method: 'GET',
+  })
+    .then((response) => response.json())
+    .then(function (answer){
+      return answer
+    })
+    .catch((error) => {
+      console.error('error :', error);
+    });
+    return result
+}
+
 router.get('/get_place', async function(req, res) {
 
-    let user = await UserModel.findOne({access_token: req.headers.access_token});
+    /*let user = await UserModel.findOne({access_token: req.headers.access_token});
     if (!user) {
         return res.status(400).send({status: "You are not connected."});
-    }
+    }*/
 
     let url = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=" + req.headers.place_name + "&inputtype=textquery&key=AIzaSyC4MiDbDXP5M3gvpyUADaIUO60H7Vjb9Uk"
-    let research = await fetch(url, {method: 'get'})
-    .catch(err => console.error(err));
-
+    let research = await placeCall(url).then((response) => {
+      return response
+    })
+    console.log("_____________________________")
+    console.log(research)
     url = "https://maps.googleapis.com/maps/api/place/details/json?place_id=" + research.candidates[0].place_id + "&fields=formatted_address,geometry,name,type,opening_hours,website,price_level,rating,review,international_phone_number,user_ratings_total,photo&key=AIzaSyC4MiDbDXP5M3gvpyUADaIUO60H7Vjb9Uk"
-    let result = await fetch(url, {method: 'get'})
-    .catch(err => console.error(err));
+    let result = await placeCall(url).then((response) => {
+      return response
+    })
 
     if (result.status === 'OK') {
         return res.status(200).send({status: true, result})
