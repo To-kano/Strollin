@@ -1,0 +1,5 @@
+1: Trouver le lieux qui correspond aux meetup des 2 users
+  -Trouvers des lieux avec des tags en commun
+  - soustraire la distance des deux users et prendre celle la plus proche de 0
+
+Récupérer les listes des 2 users et ajouter le lieux trouver à la fin

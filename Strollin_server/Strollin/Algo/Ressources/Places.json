@@ -4,56 +4,104 @@
 			"Pos": [-12, 24],
 			"Name": "Reset",
       "Dist": 0,
-      "Price": 15
+      "Price": 15,
+      "PopDisp": 8,
+      "PopAg": 3,
+      "AlgDisp": 10,
+      "AlgAg": 7,
+      "TagsDisp": [["BAR", 3], ["VIDEO GAMES", 2]],
+      "Desc": "Description trés detaillé"
 		},
 		{
 			"Tags": ["MEUBLES", "SUEDOIS"],
 			"Pos": [-30, 14],
 			"Name": "Ikea",
       "Dist": 0,
-      "Price": 40
+      "Price": 40,
+      "PopDisp": 8,
+      "PopAg": 3,
+      "AlgDisp": 10,
+      "AlgAg": 7,
+      "TagsDisp": [],
+      "Desc": "Description trés detaillé"
 		},
     {
-			"Tags": ["Restaurant", "Asian Food"],
+			"Tags": ["D&D", "Geek"],
 			"Pos": [-10, 34],
-			"Name": "Mr.Rice",
+			"Name": "Sortiléges",
       "Dist": 0,
-      "Price": 8
+      "Price": 8,
+      "PopDisp": 8,
+      "PopAg": 3,
+      "AlgDisp": 10,
+      "AlgAg": 7,
+      "TagsDisp": [],
+      "Desc": "Description trés detaillé"
 		},
     {
-			"Tags": ["Restaurant", "Asian Food"],
+			"Tags": ["D&D", "Geek"],
 			"Pos": [-12, 34],
-			"Name": "Saporo",
+			"Name": "Cards market",
       "Dist": 0,
-      "Price": 12
+      "Price": 12,
+      "PopDisp": 8,
+      "PopAg": 3,
+      "AlgDisp": 10,
+      "AlgAg": 7,
+      "TagsDisp": [],
+      "Desc": "Description trés detaillé"
 		},
     {
-			"Tags": ["Restaurant", "Asian Food"],
+			"Tags": ["D&D", "Geek"],
 			"Pos": [-5, 34],
-			"Name": "Kodawari Ramen",
+			"Name": "L'antre",
       "Dist": 0,
-      "Price": 15
+      "Price": 15,
+      "PopDisp": 8,
+      "PopAg": 3,
+      "AlgDisp": 10,
+      "AlgAg": 7,
+      "TagsDisp": [],
+      "Desc": "Description trés detaillé"
 		},
     {
 			"Tags": ["Vetements"],
 			"Pos": [-33, 34],
 			"Name": "H&M",
       "Dist": 0,
-      "Price": 20
+      "Price": 20,
+      "PopDisp": 8,
+      "PopAg": 3,
+      "AlgDisp": 10,
+      "AlgAg": 7,
+      "TagsDisp": [],
+      "Desc": "Description trés detaillé"
 		},
     {
 			"Tags": ["Music"],
 			"Pos": [-32, 34],
 			"Name": "OCD",
       "Dist": 0,
-      "Price": 10
+      "Price": 10,
+      "PopDisp": 8,
+      "PopAg": 3,
+      "AlgDisp": 10,
+      "AlgAg": 7,
+      "TagsDisp": [],
+      "Desc": "Description trés detaillé"
 		},
     {
 			"Tags": ["Art"],
 			"Pos": [-32, 34],
 			"Name": "Le louvre",
       "Dist": 0,
-      "Price": 25
+      "Price": 25,
+      "PopDisp": 8,
+      "PopAg": 3,
+      "AlgDisp": 10,
+      "AlgAg": 7,
+      "TagsDisp": [],
+      "Desc": "Description trés detaillé"
 		}
 	]
 }

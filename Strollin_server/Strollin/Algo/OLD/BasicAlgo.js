@@ -12,8 +12,8 @@ function compare(a, b) {
 function IsTagOk(UserTags, Place) {
 
   for (var i = 0; i < Place.Tags.length; i++) {
-    for (var j = 0; j < UserTags.Tags.length; j++) {
-      if (Place.Tags[i] == UserTags.Tags[j])
+    for (var j = 0; j < UserTags.Tags[0].length; j++) {
+      if (Place.Tags[i] == UserTags.Tags[0][j])
         return true;
     }
   }
@@ -49,7 +49,7 @@ function algoTest(UserTags, Places) {
       PlacesArray[i].Dist = DistCalc2D(PlacesArray[i].Pos, TagsJson.Pos)
     }
     PlacesArray.sort(compare)
-    console.log("PlacesArray", PlacesArray);
+    //console.log("PlacesArray", PlacesArray);
 
     resolve(PlacesArray[0])
   });

@@ -75,7 +75,7 @@ router.post('/update_location', async function(req, res) {
         update.average_time = req.body.average_time
     await location.updateOne({_id: req.headers.location_id}, update, function(err, raw) {
         if (err) {
-            return res.status(400).send({status: "Location could not be updated."});            
+            return res.status(400).send({status: "Location could not be updated."});
         } else {
             console.log("Location updated: ", raw)
         }

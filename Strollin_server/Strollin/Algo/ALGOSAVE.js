@@ -83,9 +83,9 @@ function algoTest(UserTags, Places) {
     var UserPos = TagsJson.Pos
 
     //Put all the places corresponding to the user tags in a new array (PlacesArray)
-    for (var i = 0; i < Places.length; i++) {
-      if (IsTagOk(UserTags, Places[i]) == true) {
-        PlacesArray.push(Places[i])
+    for (var i = 0; i < Places.List.length; i++) {
+      if (IsTagOk(UserTags, Places.List[i]) == true) {
+        PlacesArray.push(Places.List[i])
       }
     }
 
@@ -110,11 +110,11 @@ function algoTest(UserTags, Places) {
   });
 }
 
-methods.hello = function(sending)
+methods.hello = function ()
 {
-  console.log("hello: ", sending)
+  //console.log("hello")
   return new Promise((resolve, reject) => {
-    var test = algoTest(TagsJson, sending)
+    var test = algoTest(TagsJson, PlacesJson)
     //console.log("test", test);
     resolve(test)
   });

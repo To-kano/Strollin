@@ -1,0 +1,13 @@
+{
+			"Tags": ["BAR", "VIDEO GAMES"],
+			"Pos": [-12, 24],
+			"Name": "Reset",
+      "Dist": 0,
+      "Price": 15,
+      "PopDisp": 8,
+      "PopAg": 3,
+      "AlgDisp": 10,
+      "AlgAg": 7,
+      "TagsDisp": [["BAR", 8], ["VIDEO GAMES", 5]],
+      "Desc": "Description trés detaillé"
+}

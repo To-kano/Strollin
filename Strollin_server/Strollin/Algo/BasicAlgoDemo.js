@@ -45,32 +45,30 @@ function DistCalc2D(UserPos, PlacePos) {
 function AddTagsDisp(List, UserTags, i) {
   for (var l = 0; l < UserTags.length; l++) {
     //console.log("EX: ", UserTags[l], " : ", List[i].Tags);
-    if (CheckTagsDisp(List, i, UserTags[l]) == false && SingleTagOk(UserTags[l], List[i]) == true) {
+    if (CheckTagsDisp(List, i, UserTags) == false && SingleTagOk(UserTags[l], List[i]) == true) {
       //console.log("herro");
       List[i].TagsDisp.push([UserTags[l], 1])
-      break;
     }
   }
 }
 
-function CheckTagsDisp(List, i, UserTag) {
-
-  var flag = false;
-
+function CheckTagsDisp(List, i, UserTags) {
   for (var j = 0; j < List[i].TagsDisp.length; j++) {
-    if (UserTag == List[i].TagsDisp[j][0]) {
-      List[i].TagsDisp[j][1] += 1
-      flag = true;
+    //console.log("DISP: ", List[i].TagsDisp[j]);
+    for (var k = 0; k < UserTags.length; k++) {
+      //console.log("EX: ", UserTags[k], " : ", List[i].TagsDisp[j][0]);
+      if (UserTags[k] == List[i].TagsDisp[j][0])
+        List[i].TagsDisp[j][1] += 1
+        return true
     }
   }
-  return flag
+  return false
 }
 
 function AddRef(List, UserTags) {
   //console.log("LIST ||||||||||||||||||||||||||- ", List);
   for (var i = 0; i < List.length; i++) {
     AddTagsDisp(List, UserTags, i);
-    console.log("ici ", List[i]);
   }
 
 }
@@ -83,9 +81,9 @@ function algoTest(UserTags, Places) {
     var UserPos = TagsJson.Pos
 
     //Put all the places corresponding to the user tags in a new array (PlacesArray)
-    for (var i = 0; i < Places.length; i++) {
-      if (IsTagOk(UserTags, Places[i]) == true) {
-        PlacesArray.push(Places[i])
+    for (var i = 0; i < Places.List.length; i++) {
+      if (IsTagOk(UserTags, Places.List[i]) == true) {
+        PlacesArray.push(Places.List[i])
       }
     }
 
@@ -110,11 +108,11 @@ function algoTest(UserTags, Places) {
   });
 }
 
-methods.hello = function(sending)
+methods.hello = function ()
 {
-  console.log("hello: ", sending)
+  //console.log("hello")
   return new Promise((resolve, reject) => {
-    var test = algoTest(TagsJson, sending)
+    var test = algoTest(TagsJson, PlacesJson)
     //console.log("test", test);
     resolve(test)
   });
