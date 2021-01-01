@@ -10,6 +10,7 @@ import FaqFR from "views/index-sections/FaqFR.js";
 import SectionQuestionFR from "views/index-sections/SectionQuestionFR.js";
 
 import DescriptionPartFR from "views/index-sections/DescriptionPartFR.js";
+import DemoVideo from "views/index-sections/DemoVideo.js";
 
 function IndexPartFR() {
   document.documentElement.classList.remove("nav-open");
@@ -25,6 +26,7 @@ function IndexPartFR() {
       <IndexHeaderPartFR />
       <div className="main">
         <DescriptionPartFR />
+        <DemoVideo />
         <SectionExamplesPartFR />
         <TemoignagePartFR />
         <ContactFR />
