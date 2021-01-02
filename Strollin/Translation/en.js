@@ -22,7 +22,6 @@ export default {
   chooseTags: 'Choose the tags that fit best your personality',
   heading: 'Heading to',
   carte: 'Carte',
-  step: 'Step',
   logOut: 'Log out',
   newTrip: 'New trip',
   historic: 'historic',
@@ -45,6 +44,10 @@ export default {
   friendList: 'Friend list',
   deleteFriend: 'Delete friend',
   addFriend: 'Add friend',
+  showMap: 'Show map',
+  showStep: 'Show step',
+  Share: 'Share',
+  PublishOnFacebook: 'Publish on Facebook',
   feedback: 'Give us a feedback'
 };
 

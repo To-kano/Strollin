@@ -72,7 +72,7 @@ function HomePage(props) {
             style={{
               marginTop: '10%', height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'
             }}
-            source={require('../ressources/plus.png')}
+            source={require('../ressources/trip.png')}
           />
         </TouchableOpacity>
         <TouchableOpacity
@@ -109,30 +109,32 @@ function HomePage(props) {
           />
         </TouchableOpacity>
       </View>
-      <View>
-        <SearchBar
-          onPress={setSortedTendanceData}
-          imagePath="../images/loupe.png"
-        />
-      </View>
-      <View style={styles.cont}>
+      {/* <View style={styles.cont}>
         <Text style={{ fontSize: 40 }}> Trending trip: </Text>
-      </View>
+      </View> */}
       <View style={styles.fill}>
+        <View style={styles.SearchBar}>
+          <SearchBar
+            onPress={setSortedTendanceData}
+            imagePath="../images/loupe.png"
+          />
+        </View>
         <FlatList
           data={getData()}
           contentContainerStyle={{ flexGrow: 1 }}
           renderItem={({ item }) => (
             <Box
-              style={{ height: '100%' }}
+              style={{ height: '100%', width: '100%' }}
               {...props}
               data={item}
+              // {...item}
+              // navigation={props.navigation}
             />
           )}
           keyExtractor={(item) => item.id}
         />
       </View>
-      <View style={{ flexDirection: 'column' }}>
+      {/* <View style={{ flexDirection: 'column' }}>
         <TouchableOpacity
           style={styles.newTrip}
           onPress={() => {
@@ -157,7 +159,7 @@ function HomePage(props) {
             Go to Evaluation
           </Text>
         </TouchableOpacity>
-      </View>
+      </View>*/}
       <View style={{ flex: 0.10, flexDirection: 'column', margin: '5%' }}>
         <TouchableOpacity
           style={styles.newTrip}
@@ -182,7 +184,7 @@ const styles = StyleSheet.create({
     flex: 1
   },
   fill: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'center',
     flex: 1,
@@ -198,14 +200,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    flex: 0.1,
+    flex: 0.091,
     width: '100%',
   },
   newTrip: {
+    flex: 0.85,
     alignItems: 'center',
     backgroundColor: '#F07323',
     paddingVertical: '5%',
-    paddingHorizontal: '30%',
+    paddingHorizontal: '10%',
     borderRadius: 5,
   },
   cont: {
@@ -216,9 +219,12 @@ const styles = StyleSheet.create({
     flex: 0.1,
     backgroundColor: '#FFC300',
     width: '90%',
-    height: '120%',
+    height: '100%',
     borderRadius: 20
   },
+  SearchBar: {
+    width: '15.5%'
+  }
 });
 
 const mapStateToProps = (state) => state;

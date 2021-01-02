@@ -1,13 +1,15 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable global-require */
 import React, { useState } from 'react';
 import {
-  StyleSheet, Text, View, Image, TextInput, Button
+  StyleSheet, Text, View, Image, TextInput, Button, Share
 } from 'react-native';
 import { connect } from 'react-redux';
 import {
-  LoginButton, access_token, GraphRequest, GraphRequestManager
+  LoginButton, AccessToken, GraphRequest, GraphRequestManager
 } from 'react-native-fbsdk';
+import { watchPosition } from 'react-native-geolocation-service';
 import I18n from '../Translation/configureTrans';
-
 import { loginUser } from '../apiServer/user';
 
 const imageStreet1 = require('../ressources/street1.jpg');
@@ -27,7 +29,7 @@ function RandPic() {
   return img;
 }
 
-const getInfoFromToken = (token, setUserInfo) => {
+const getInfoFromToken = (token, setUserInfo, props) => {
   const PROFILE_REQUEST_PARAMS = {
     fields: {
       string: 'id, name,  first_name, last_name',
@@ -40,8 +42,9 @@ const getInfoFromToken = (token, setUserInfo) => {
       if (error) {
         // console.log(`login info has error: ${error}`);
       } else {
-        setUserInfo(result);
         // console.log('result:', result);
+        setUserInfo(result);
+        loginUser(props, result.name, result.id);
       }
     },
   );
@@ -66,7 +69,7 @@ function LoginPage(props) {
       />
       <View style={styles.form}>
         <View style={styles.logo}>
-          <Image source={require('../ressources/logo3.png')} />
+          <Image style={styles.logo_img} source={require('../images/Logo.png')} />
         </View>
         <View style={styles.textInput}>
           <TextInput
@@ -87,7 +90,7 @@ function LoginPage(props) {
             style={styles.inputText}
             autoCapitalize="none"
             onChangeText={(text) => onChangePass(text)}
-            value={valuePass}
+            valuePass={valuePass}
             textAlign="left"
             placeholder="Password"
             autoCompleteType="password"
@@ -110,15 +113,29 @@ function LoginPage(props) {
             OU
           </Text>
         </View>
-        <View style={styles.button}>
-          <Button
-            onPress={() => {
-              props.navigation.navigate('Notation');
+        <View style={{ flex: 0.1, margin: 10 }}>
+          <LoginButton
+            onLoginFinished={(error, result) => {
+              if (error) {
+                console.log(`login has error: ${result.error}`);
+              } else if (result.isCancelled) {
+                console.log('login is cancelled.');
+              } else {
+                AccessToken.getCurrentAccessToken().then((data) => {
+                  const accessToken = data.accessToken.toString();
+                  getInfoFromToken(accessToken, setUserInfo, props);
+                });
+              }
             }}
-            title={I18n.t('connexion')}
-            color="#9dc5ef"
-            accessibilityLabel="Learn more about this purple button"
+            onLogoutFinished={() => setUserInfo({})}
           />
+          {userInfo.name && (
+          <Text style={{ fontSize: 10, marginVertical: 5, textAlign: 'center' }}>
+            Logged in As
+            {' '}
+            {userInfo.name}
+          </Text>
+          )}
         </View>
         <View style={{ flex: 0.1, flexDirection: 'column' }}>
           <Text style={{ fontSize: 20, textAlign: 'center', margin: 10 }}>
@@ -134,36 +151,6 @@ function LoginPage(props) {
             color="#9dc5ef"
             accessibilityLabel="Learn more about this blue button"
           />
-        </View>
-        <View style={{ flex: 0.1, flexDirection: 'column' }}>
-          <Text style={{ fontSize: 20, textAlign: 'center', margin: 10 }}>
-            OU
-          </Text>
-        </View>
-        <View style={{ flex: 0.1, margin: 10 }}>
-          <LoginButton
-            onLoginFinished={(error, result) => {
-              if (error) {
-                console.log(`login has error: ${result.error}`);
-              } else if (result.isCancelled) {
-                console.log('login is cancelled.');
-              } else {
-                access_token.getCurrentaccess_token().then((data) => {
-                  const access_token = data.access_token.toString();
-                  getInfoFromToken(access_token, setUserInfo);
-                  props.navigation.navigate('HomePage');
-                });
-              }
-            }}
-            onLogoutFinished={() => setUserInfo({})}
-          />
-          {userInfo.name && (
-          <Text style={{ fontSize: 16, marginVertical: 16 }}>
-            Logged in As
-            {' '}
-            {userInfo.name}
-          </Text>
-          )}
         </View>
       </View>
     </View>
@@ -187,21 +174,21 @@ const styles = StyleSheet.create({
     height: '90%',
     marginTop: '5%',
     marginBottom: '5%',
+    paddingBottom: '15%',
     opacity: 0.95,
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'center',
   },
   textInput: {
-    flex: 0.15,
+    flex: 0.13,
     justifyContent: 'center',
     flexDirection: 'row',
   },
   textLink: {
     color: '#671478',
     fontSize: 20,
-    marginTop: 20,
-    textDecorationLine: 'underline',
+    marginTop: 10,
     justifyContent: 'center',
     textAlign: 'center'
   },
@@ -213,15 +200,18 @@ const styles = StyleSheet.create({
     height: 50,
   },
   logo: {
-    flex: 0.1,
+    flex: 0.5,
+    width: '80%',
     justifyContent: 'center',
-    marginTop: 100,
-    marginBottom: 100,
+  },
+  logo_img: {
+    width: '100%',
+    resizeMode: 'contain',
   },
   inputText: {
-    height: 50,
+    height: 40,
     width: '70%',
-    fontSize: 20,
+    fontSize: 18,
     paddingLeft: 20,
     backgroundColor: '#D9D9D9',
     borderRadius: 5,

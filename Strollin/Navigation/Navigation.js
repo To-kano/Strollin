@@ -26,6 +26,8 @@ import NewConversation from '../Components/reactChatScreen/NewConversation';
 import Notation from '../Components/Notation';
 import Socket from '../Components/Socket';
 import CourseEvaluation from '../Components/CourseEvaluation';
+import PartenaireScreen from '../Components/PartenairePage';
+import SettingPartenaire from '../Components/SettingPartenaire';
 
 const Stack = createStackNavigator();
 
@@ -155,6 +157,8 @@ function MyStack(props) {
               component={Socket}
               options={{ title: 'Socket' }}
             />
+            <Stack.Screen name="PartenaireScreen" component={PartenaireScreen} />
+            <Stack.Screen name="SettingPartenaire" component={SettingPartenaire} />
           </>
 
         )}
