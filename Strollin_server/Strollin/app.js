@@ -75,6 +75,7 @@ const {
     TagModel
 } = require("./models/tag")
 
+//gets the tags from tge DB and transform them to a json with the right format
 async function getTags() {
   let query = {};
   let locations_list = null
@@ -82,6 +83,11 @@ async function getTags() {
   let tags = []
   let tagslist = []
   let test = []
+  let update = {}
+  let tmpTagDisp = {}
+  let tagslistarray = []
+  let _id = 0
+  let disp = 0
 
   locations_list = await LocationModel.find(query)
   console.log("locations ///////////////: ", locations_list);
@@ -91,12 +97,14 @@ async function getTags() {
     for (var j = 0; j < locations_list[i].tags_list.length; j++) {
       test = []
       tags[j] = locations_list[i].tags_list[j]._id
-      if (!locations_list[i].tags_list[j].disp) {
-        test.push(locations_list[i].tags_list[j]._id)
-        test.push(0)
-      } else {
+      console.log("whyyyyy: ", locations_list[i].tags_list[j]);
+      if (locations_list[i].tags_list[j].disp) {
         test.push(locations_list[i].tags_list[j]._id)
         test.push(locations_list[i].tags_list[j].disp)
+      } else {
+        console.log("tu existe ?")
+        test.push(locations_list[i].tags_list[j]._id)
+        test.push(0)
       }
       tagslist.push(test)
     }
@@ -111,7 +119,8 @@ async function getTags() {
       AlgDisp: Number(locations_list[i].alg_disp),
       AlgAg: Number(locations_list[i].alg_ag),
       TagsDisp: tagslist,
-      Desc: locations_list[i].description
+      Desc: locations_list[i].description,
+      Id: locations_list[i].location_id
     })
   }
   for (var i = 0; i < true_list.length; i++) {
@@ -120,12 +129,33 @@ async function getTags() {
   const promise1 = algo.data.hello(true_list)
 
   promise1.then((value) => {
+    let location = LocationModel;
+
     console.log("---------------------------------------");
     console.log("\n\n");
     console.log("You are going to: ", value);
     console.log("\n\n");
     console.log("---------------------------------------");
-    pop.data.Popup(value)
+    for (var i = 0; i < value.length; i++) {
+      tagslistarray = []
+      for (var j = 0; j < value[i].TagsDisp.length; j++) {
+        _id = value[i].TagsDisp[j][0]
+        disp = value[i].TagsDisp[j][1]
+        tmpTagDisp = {_id, disp}
+        tagslistarray.push(tmpTagDisp)
+      }
+      console.log("stp marche: ", tagslistarray);
+      update.tags_list = tagslistarray
+      console.log("ID: ", value[i].Id);
+      location.updateOne({name: value[i].Name}, { $set: { tags_list : update.tags_list } }, function(err, raw) {
+          if (err) {
+              return res.status(400).send({status: "Location could not be updated."});
+          } else {
+              console.log("Location updated: ", raw)
+          }
+      })
+    }
+    //pop.data.Popup(value)
   });
 }
 
@@ -135,14 +165,14 @@ getTags();
 
 async function TestLoc() {
   location = new LocationModel({
-      name: "Le louvre2",
+      name: "Le louvre3",
       owner: "qqn",
       coordinate: ["-32", "34"],
       address: "rue descartes",
       city: "Tpurs",
       country: "FR",
       description: "desc",
-      tags_list: [{"_id": "5feceff655b121001e405b8f", "disp": "1"}],
+      tags_list: [{"tag_id": "5feceff655b121001e405b8f", "disp": "3"}],
       price_range: "25"
   });
   await location.save();

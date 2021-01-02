@@ -54,7 +54,7 @@ var LocationModelSchema = new Schema({
         default: [],
     },
     tags_list: {
-        type: [{String, String}], // {tagsID, disp}
+        type: [{}], // {tagsID, disp}
         default: [],
     },
     price_range: {

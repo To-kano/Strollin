@@ -59,7 +59,7 @@ function CheckTagsDisp(List, i, UserTag) {
 
   for (var j = 0; j < List[i].TagsDisp.length; j++) {
     if (UserTag == List[i].TagsDisp[j][0]) {
-      List[i].TagsDisp[j][1] += 1
+      List[i].TagsDisp[j][1]++
       flag = true;
     }
   }
