@@ -75,6 +75,10 @@ const {
     TagModel
 } = require("./models/tag")
 
+const {
+  UserModel
+} = require("./models/user")
+
 //gets the tags from tge DB and transform them to a json with the right format
 async function getTags() {
   let query = {};
@@ -88,6 +92,8 @@ async function getTags() {
   let tagslistarray = []
   let _id = 0
   let disp = 0
+  let User = null
+  let UserTags = []
 
   locations_list = await LocationModel.find(query)
   console.log("locations ///////////////: ", locations_list);
@@ -126,7 +132,9 @@ async function getTags() {
   for (var i = 0; i < true_list.length; i++) {
     console.log("please: ", true_list[i]);
   }
-  const promise1 = algo.data.hello(true_list)
+
+  User = await UserModel.findOne( { _id:  "5fbfc3068901ca001ec0be8f" })
+  const promise1 = algo.data.hello(true_list, User)
 
   promise1.then((value) => {
     let location = LocationModel;

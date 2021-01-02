@@ -110,10 +110,10 @@ function algoTest(UserTags, Places) {
   });
 }
 
-methods.hello = function(sending)
+methods.hello = function(sending, User)
 {
-  console.log("hello: ", sending)
   return new Promise((resolve, reject) => {
+    TagsJson.Tags[0] = User.tags_list
     var test = algoTest(TagsJson, sending)
     //console.log("test", test);
     resolve(test)
