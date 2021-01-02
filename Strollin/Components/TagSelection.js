@@ -2,14 +2,11 @@ import React, { useState } from 'react';
 
 import { connect } from 'react-redux';
 import {
-  StyleSheet, Text, View, Button, ImageBackground, FlatList, Dimensions, TouchableOpacity
+  StyleSheet, Text, View, Button, FlatList, TouchableOpacity
 } from 'react-native';
 
-import { RondFormeText } from './rondForm';
 import I18n from '../Translation/configureTrans';
 import BackgroundImage from './backgroundImage';
-
-const imageLondon = require('../images/london2.jpg');
 
 function Tag({ name }) {
   const [pressed, setpressed] = useState(false);
@@ -138,25 +135,28 @@ function TageSelection({ navigation, profil }) {
     <View style={styles.back}>
       <BackgroundImage />
       <View style={styles.fill}>
-        <Text style={[{ textAlign: 'left', color: 'grey', fontSize: 30 }]}>
+        <Text style={[{ textAlign: 'left', color: 'black', fontSize: 25 }]}>
           {I18n.t('welcome')}
         </Text>
-        <Text style={[{ textAlign: 'center', fontWeight: 'bold', fontSize: 35 }]}>
+        <Text style={[
+          {
+            textAlign: 'center', color: 'black', fontWeight: 'bold', fontSize: 25
+          }
+        ]}
+        >
           {profil.pseudo}
         </Text>
-        <Text
-          style={[
-            {
-              color: 'grey',
-              fontSize: 20,
-              marginTop: 20,
-              fontWeight: 'normal',
-            },
-          ]}
+        <Text style={[{
+          textAlign: 'left',
+          color: 'black',
+          fontSize: 18,
+          marginTop: 18,
+          fontWeight: 'normal',
+        }]}
         >
           {I18n.t('chooseTags')}
         </Text>
-        <View style={{ flex: 2, margin: 10, marginTop: 20 }}>
+        <View style={{ flex: 2, margin: 10, marginTop: 40 }}>
           <FlatList
             data={data}
             renderItem={({ item }) => (
@@ -193,11 +193,11 @@ const styles = StyleSheet.create({
   fill: {
     flexDirection: 'column',
     justifyContent: 'flex-start',
-    // alignItems: 'left',
     flex: 1,
     backgroundColor: '#FFFFFF',
     padding: 5,
-    marginTop: 10,
+    paddingTop: 25,
+    margin: 10,
     width: '95%',
     borderRadius: 5,
     opacity: 0.9,

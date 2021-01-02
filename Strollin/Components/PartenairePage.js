@@ -38,7 +38,7 @@ const getInfoFromToken = (token, setUserInfo, props) => {
   new GraphRequestManager().addRequest(profileRequest).start();
 };
 
-function UserRegister(props) {
+function PartnerRegister(props) {
   const [userEmail, setUserEmail] = useState('');
   const [userPassword, setUserPassword] = useState('');
   const [userConfirmPassWord, setUserConfirmPassword] = useState('');
@@ -87,7 +87,7 @@ function UserRegister(props) {
           <TextInput
             style={styles.inputText}
             autoCapitalize="none"
-            placeholder="Company Name"
+            placeholder="Username"
             value={pseudo}
             onChangeText={(valueText) => {
               // setData(valueText);
@@ -250,4 +250,4 @@ const styles = StyleSheet.create({
 
 // permet de dire au composant quel reducer il a access (tous les reducer dans cette configuration)
 const mapStateToProps = (state) => state;
-export default connect(mapStateToProps)(UserRegister);
+export default connect(mapStateToProps)(PartnerRegister);
