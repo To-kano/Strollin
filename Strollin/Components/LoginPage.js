@@ -128,6 +128,21 @@ function LoginPage(props) {
         <View style={styles.button}>
           <Button
             onPress={() => {
+              props.navigation.navigate('PartnerRegister');
+            }}
+            title="inscription partenaire"
+            color="#9dc5ef"
+            accessibilityLabel="Learn more about this purple button"
+          />
+        </View>
+        <View style={{ flex: 0.1, flexDirection: 'column' }}>
+          <Text style={{ fontSize: 20, textAlign: 'center', margin: 10 }}>
+            OU
+          </Text>
+        </View>
+        <View style={styles.button}>
+          <Button
+            onPress={() => {
               props.navigation.navigate('userRegister');
             }}
             title={I18n.t('noAccount')}

@@ -10,6 +10,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Profile from '../Components/ProfileScreen';
 import ConnectionScreen from '../Components/ConnectionScreen';
 import UserRegister from '../Components/UserRegister';
+import PartnerRegister from '../Components/PartnerRegister';
 import TageSelection from '../Components/TagSelection';
 import LoginPage from '../Components/LoginPage';
 import FriendList from '../Components/FriendList';
@@ -68,6 +69,11 @@ function MyStack(props) {
               name="userRegister"
               component={UserRegister}
               options={{ title: 'inscription' }}
+            />
+            <Stack.Screen
+              name="PartnerRegister"
+              component={PartnerRegister}
+              options={{ title: 'partner inscription' }}
             />
             <Stack.Screen
               name="Notation"
