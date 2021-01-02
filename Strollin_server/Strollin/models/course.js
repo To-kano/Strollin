@@ -35,16 +35,16 @@ var CourseModelSchema = new Schema({
     },
     timetable: {        // Définit les horaires possible en prenant les timetable de la liste des lieux
         type: String,
-        default: {},
+        default: "",
     },
-    comment_list: {
+    comments_list: {
         type: [String],
         default: [],
     },
     tags_list: {
         type: [String],
         default: [],
-    },
+    }
 })
 
 // Compile model from schema

@@ -46,7 +46,7 @@ function DescriptionFR() {
                   </div>
               </div>
           </div>
-          <br/><br/><br/>
+          <br/><br/><hr/><br/>
       </div>
     </>
   );

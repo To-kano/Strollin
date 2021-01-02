@@ -22,7 +22,7 @@ router.post('/new_course', async function(req, res) {
     if (!user)
         return res.status(400).send({status: "You are not connected."});
     course = new CourseModel({
-        location: req.body.locations_list,
+        locations: req.body.locations_list,
         name: req.body.name,
         author: "Strollin",
     });

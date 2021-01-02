@@ -49,7 +49,7 @@ var LocationModelSchema = new Schema({
         type: String,
         default: null,
     },
-    comment_list: {
+    comments_list: {
         type: [String],
         default: [],
     },
@@ -64,6 +64,14 @@ var LocationModelSchema = new Schema({
     average_time: {
         type: String,
         default: ''
+    },
+    phone: {
+        type: String,
+        default: ""
+    },
+    mail: {
+        type: String,
+        default: ""
     },
     pop_disp: {
         type: String,
