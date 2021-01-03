@@ -220,7 +220,11 @@ TAGS RELATED:
 |-|-|-|-|
 | Create a new tag.| access_token: String | name: String<br>description: String (Optional) | None |
 
-- GET tag: ```POST /tags/get_tags```
+- GET tag: ```POST /tags/get_tag```
+
+| Description | Headers | Body | Return |
+|-|-|-|-|
+| Get a list of tag with sort and filter with name search.| access_token: String<br>sort: String (optional)<br>search: String (optional) || [tagObject] (See Schema) |
 
 
 USER RELATED:

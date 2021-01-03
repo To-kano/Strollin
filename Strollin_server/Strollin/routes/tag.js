@@ -44,7 +44,8 @@ router.post('/new_tag', async function(req, res) {
 /**
  * Get a list of tag 
  * @param {String} req.headers.access_token
- * @param {String} req.headers.sort
+ * @param {String} req.headers.sort (optional) (name / number_used)
+ * @param {String} req.headers.search (optional) (substring of name to research)
  */
 router.get('/get_tag', async function(req, res) {
     let user = await UserModel.findOne({access_token: req.headers.access_token});
@@ -57,7 +58,7 @@ router.get('/get_tag', async function(req, res) {
     if (!sort) {
         sort = "name"; 
     }
-    tags = await TagModel.find().sort(sort);
+    tags = await TagModel.find({name: {$regex: req.headers.search}}).sort(sort);
     if (tags) {
         return res.status(200).send({status: true, tags_list: tags});
     }
