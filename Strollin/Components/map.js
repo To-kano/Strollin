@@ -69,6 +69,7 @@ function isNear(userPosition, elementPosition) {
 
 function Map(props) {
   const [userPosition, setUserPosition] = useState(null);
+  const allTime = []
 
   //console.log(props.navigate);
   useEffect(() => {
@@ -85,10 +86,16 @@ function Map(props) {
 
   const [waypoint, setWaypoint] = useState(props.waypoints);
 
+  /*useEffect(() => {
+    console.log("i'm here")
+    console.log(ts)
+  }, [])*/
+
   useEffect(() => {
     if (waypoint.length == []) {
       Tts.setDefaultLanguage('en-US');
       Tts.speak('You have done your navigation');
+      setWaypoint()
       const action = { type: 'ADD_HISTORIC', value: props.waypoints };
       props.dispatch(action);
       //sleep(2000);
@@ -107,6 +114,15 @@ function Map(props) {
 
   const [refMapView, setRefMapView] = useState(React.createRef());
 
+  async function setTimeWaypoint() {
+    let tmp = await Date.now()
+    console.log("________________________")
+    console.log(tmp)
+
+    const action = { type: 'SET_TIME', value: tmp };
+    props.dispatch(action);
+  }
+
   const onUserPositionChange = (data) => {
     const position = {
       latitude: data.coordinate.latitude,
@@ -114,6 +130,7 @@ function Map(props) {
     };
     if (waypoint.length != 0 && isNear(position, waypoint[0])) {
       setWaypoint(waypoint.slice(1, waypoint.length));
+      setTimeWaypoint()
     }
     // if (props.background) {
     // refMapView.current.animateToRegion(localRegion, 500);

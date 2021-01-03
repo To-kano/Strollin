@@ -26,7 +26,7 @@ function ElementHistoryNav({ data }) {
           renderItem={({ item }) => (
             <View style={{ margin: 10 }}>
               <Text>
-                {I18n.t('')}
+                {I18n.t('step')}
                 {item.id}
               </Text>
               <Text>

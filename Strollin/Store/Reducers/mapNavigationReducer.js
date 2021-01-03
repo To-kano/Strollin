@@ -1,7 +1,20 @@
 const initialState = {
   waypoints: [],
-  historic: []
+  historic: [],
+  allTime: []
 };
+
+function setTime(allTime, value) {
+  console.log("okkkkkk")
+  let result = allTime
+  result.push(value)
+  return result
+}
+
+function getTime(allTime) {
+  let result = allTime[allTime.length - 1] - allTime[0]
+  return result
+}
 
 function mapNavigationReducer(state = initialState, action) {
   let nextState;
@@ -13,16 +26,27 @@ function mapNavigationReducer(state = initialState, action) {
         waypoints: action.value,
       };
       return nextState;
+    case 'SET_TIME':
+      nextState = {
+        ...state,
+        allTime: setTime(state.allTime, action.value),
+      };
+      return nextState;
     case 'ADD_HISTORIC':
 
       const day = new Date().getDate(); // Current Date
       const month = new Date().getMonth() + 1; // Current Month
       const year = new Date().getFullYear(); // Current Year
 
+      const time = getTime(state.allTime)
+      const hours = Math.floor(time / 3600);
+      const minutes = Math.floor(time % 3600 / 60);
+      const seconds = Math.floor(time % 3600 % 60);
+
       const history = {
         id: Date.parse(new Date()).toString(),
         date: `${day}/${month}/${year}`,
-        duration: '2 heures',
+        duration: `${hours} heures, ${minutes} minutes, ${seconds} seconds`,
         waypoints: action.value
       };
 
