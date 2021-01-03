@@ -158,7 +158,7 @@ function HomePage(props) {
           </Text>
         </TouchableOpacity>
       </View>
-      <View style={{ flexDirection: 'column' }}>
+      <View style={{ flex: 0.10, flexDirection: 'column', margin: '5%' }}>
         <TouchableOpacity
           style={styles.newTrip}
           onPress={() => {
