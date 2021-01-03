@@ -46,6 +46,21 @@ function TripNavigation(props) {
     };
   }, []);
 
+  useEffect(() => {
+    setTime()
+  }, [])
+
+  async function setTime() {
+    let tmp = await Date.now()
+    console.log(tmp)
+    tmp = Math.floor(tmp/1000)
+
+    const action = { type: 'SET_TIME', value: tmp };
+    props.dispatch(action);
+
+    return tmp
+  }
+
   const { waypoints } = props.map;
 
   const deltaView = {
@@ -122,7 +137,8 @@ function TripNavigation(props) {
           <View style={{ flex: 1 }}>
             <TouchableOpacity
               style={{ flex: 1 }}
-              onPress={() => {
+              onPress={async () => {
+                await setTime()
                 const action = { type: 'ADD_HISTORIC', value: waypoints };
                 props.dispatch(action);
                 props.navigation.navigate('HomePage');
@@ -144,7 +160,7 @@ function TripNavigation(props) {
           </Text>
         </View>
         <View style={{ flex: 1 }}>
-          <Map navigation={props.navigation} height="100%" width={390} deltaView={deltaView} waypoints={waypoints} />
+          <Map navigation={props.navigation} height="100%" width={390} deltaView={deltaView} waypoints={waypoints}/>
         </View>
       </View>
     </View>

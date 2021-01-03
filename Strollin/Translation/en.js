@@ -49,7 +49,8 @@ export default {
   showMap: 'Show map',
   showStep: 'Show step',
   Share: 'Share',
-  PublishOnFacebook: 'Publish on Facebook'
+  PublishOnFacebook: 'Publish on Facebook',
+  id: 'Id'
 };
 
 // {I18n.t("")}

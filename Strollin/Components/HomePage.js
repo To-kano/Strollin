@@ -157,6 +157,20 @@ function HomePage(props) {
             Go to Evaluation
           </Text>
         </TouchableOpacity>
+      </View>
+      <View style={{ flexDirection: 'column' }}>
+        <TouchableOpacity
+          style={styles.newTrip}
+          onPress={() => {
+            props.navigation.navigate('Notation');
+          }}
+        >
+          <Text style={{ fontSize: 16, color: '#FFFFFF' }}>
+            {I18n.t('connexion')}
+          </Text>
+        </TouchableOpacity>
+      </View>
+      <View style={{ flex: 0.10, flexDirection: 'column', margin: '5%' }}>
         <TouchableOpacity
           style={styles.newTrip}
           onPress={() => props.navigation.navigate('TripSuggestion')}
