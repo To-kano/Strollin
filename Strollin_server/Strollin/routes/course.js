@@ -89,7 +89,6 @@ router.get('/get_course', async function(req, res) {
 // NEW_COURSE_TIME
 /**
  * Create a new course for time_spent test
- * @param {String} req.body.time_spent
  * @param {String} req.body.name
  */
 router.post('/new_course_time', async function(req, res) {
@@ -100,7 +99,6 @@ router.post('/new_course_time', async function(req, res) {
         locations: ["test"],
         name: req.body.name,
         author: "Strollin",
-        time_spent: req.body.time_spent
     });
     await course.save();
     return res.status(200).send({status: "Course created."});
