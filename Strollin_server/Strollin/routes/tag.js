@@ -10,8 +10,14 @@ const {
 } = require("../models/user")
 
 
-// Post
-
+// NEW_TAG
+/**
+ * Create a new tag in the database
+ * @param {String} req.headers.access_token
+ *
+ * @param {String} req.body.name
+ * @param {String} req.body.description (Optional)
+ */
 router.post('/new_tag', async function(req, res) {
 
     let tag = null;
@@ -19,7 +25,7 @@ router.post('/new_tag', async function(req, res) {
 
     if (!user)
         return res.status(400).send({status: "You are not connected."});
-    if (req.body.name && req.body.description) {
+    if (req.body.name) {
         tag = await TagModel.findOne({name: req.body.name});
         if (tag)
             return res.status(400).send({status: "The tag exists already."});
@@ -34,30 +40,32 @@ router.post('/new_tag', async function(req, res) {
 });
 
 
-// Get
+// GET_TAG
+/**
+ * Get a list of tag 
+ * @param {String} req.headers.access_token
+ * @param {String} req.headers.sort (optional) (name / number_used)
+ * @param {String} req.headers.search (optional) (substring of name to research)
+ */
+router.get('/get_tag', async function(req, res) {
+    let user = await UserModel.findOne({access_token: req.headers.access_token});
+    let tags = null;
+    let sort = req.headers.sort
 
-// Get tags and sort by name or number of use or...
-
-// router.get('/get_tags', async function(req, res) {
-//     let user = await UserModel.findOne({access_token: req.headers.access_token});
-//     let tags = null;
-
-//     if (user) {
-//         tags = await TagModel.find({_id: {$in: req.headers.tags_list}});
-//         if (tags) {
-//             return res.status(200).send({status: "The tags are found.", tags_list: tags});
-//         }
-//         else {
-//             return res.status(400).send({status: "Tags not found."});
-//         }
-//     }
-//     return res.status(400).send({status: "You are not connected."});
-// });
-
-
-// Delete
-
-router.delete('/delete_tag', async function(req, res) {});
+    if (!user) {
+        return res.status(400).send({status: "You are not connected."});
+    }
+    if (!sort) {
+        sort = "name"; 
+    }
+    tags = await TagModel.find({name: {$regex: req.headers.search}}).sort(sort);
+    if (tags) {
+        return res.status(200).send({status: true, tags_list: tags});
+    }
+    else {
+        return res.status(400).send({status: "Tags not found."});
+    }
+});
 
 
 module.exports = router;

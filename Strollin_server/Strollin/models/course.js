@@ -5,7 +5,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var CourseModelSchema = new Schema({
-    locations: {
+    locations_list: {
         type: [String],
         required: true
     },
@@ -44,7 +44,11 @@ var CourseModelSchema = new Schema({
     tags_list: {
         type: [String],
         default: [],
-    }
+    },
+    time_spent: {
+        type: [String],
+        default: [],
+    },
 })
 
 // Compile model from schema

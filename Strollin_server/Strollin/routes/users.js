@@ -21,7 +21,7 @@ router.post('/name', async function(req, res) {
   if (!user)
     return res.status(400).send({status: "You are not connected."});
 
-    return res.status(400).send({status: "An error occured."});
+  return res.status(400).send({status: "An error occured."});
 });
 */
 
@@ -58,7 +58,7 @@ router.post('/register', async function(req, res) {
   return res.status(400).send({status: "The entry is invalid."});
 });
 
-// ADD REQUEST FRIEND
+// ADD_FRIEND_REQUEST
 /**
  * Register the current user into the other user's friend request list.
  * @param {String} req.headers.access_token
@@ -78,7 +78,8 @@ router.post('/add_friend_request', async function(req, res) {
   return res.status(400).send({status: "The friend user does not exist."});
 });
 
-// ADD FRIEND
+
+// ADD_FRIEND
 /**
  * Confirm a friend request and add in each other friend's list.
  * Remove the friend's request.
@@ -102,7 +103,7 @@ router.post('/add_friend', async function(req, res) {
 });
 
 
-// ADD TAG
+// ADD_TAG
 /**
  * Add tags in the current user's tag list
  * @param {String} req.headers.access_token
@@ -127,7 +128,7 @@ router.post('/add_tag', async function(req, res) {
 });
 
 
-// ADD COURSE HISTORIC
+// ADD_HISTORIC
 /**
  * Add a course into the historic of the user.
  * @param {String} req.headers.access_token
@@ -166,6 +167,7 @@ router.get('/login', async function(req, res) {
   return res.status(400).send({status: "The login or the password is incorrect."});
 });
 
+
 // LOGOUT
 /**
  * Log out an user and delete the access token.
@@ -184,7 +186,7 @@ router.get('/logout', async function(req, res) {
 });
 
 
-// GET_PROFILE
+// GET_OWN_PROFILE
 /**
  * Get the user's profile for the cache.
  * @param {String} req.headers.access_token
@@ -252,7 +254,7 @@ router.get('/get_users_tags', async function(req, res) {
 });
 
 
-// DELETE
+// REMOVE_ACCOUNT
 /**
  * Delete an account.
  * @param {String} req.headers.access_token

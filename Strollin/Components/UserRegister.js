@@ -7,7 +7,7 @@ import {
   StyleSheet, Text, View, Button, ActivityIndicator, Image, TextInput
 } from 'react-native';
 import {
-  LoginButton, access_token, GraphRequest, GraphRequestManager
+  LoginButton, AccessToken, GraphRequest, GraphRequestManager
 } from 'react-native-fbsdk';
 import I18n from '../Translation/configureTrans';
 // import * as actions from './features/registration/action';
@@ -16,10 +16,10 @@ import { RondFormeText } from './rondForm';
 import { registerUser } from '../apiServer/user';
 import BackgroundImage from './backgroundImage';
 
-const getInfoFromToken = (token, setUserInfo) => {
+const getInfoFromToken = (token, setUserInfo, props) => {
   const PROFILE_REQUEST_PARAMS = {
     fields: {
-      string: 'id, name,  first_name, last_name',
+      string: 'id, name, last_name, first_name',
     },
   };
   const profileRequest = new GraphRequest(
@@ -27,10 +27,11 @@ const getInfoFromToken = (token, setUserInfo) => {
     { token, parameters: PROFILE_REQUEST_PARAMS },
     (error, result) => {
       if (error) {
-        //console.log(`login info has error: ${error}`);
+        // console.log(`login info has error: ${error}`);
       } else {
+        // console.log('result:', result);
         setUserInfo(result);
-        //console.log('result:', result);
+        registerUser(props, result.first_name, result.id, result.name);
       }
     },
   );
@@ -73,11 +74,15 @@ function UserRegister(props) {
         margin: 20,
         backgroundColor: 'rgba(255,255,255, 0.95)',
         padding: 10,
+        paddingBottom: '5%',
         justifyContent: 'space-around',
         alignItems: 'center',
         borderRadius: 10
       }}
       >
+        <View style={styles.logo}>
+          <Image style={styles.logo_img} source={require('../images/Logo.png')} />
+        </View>
         <View style={{ width: '80%' }}>
           <TextInput
             style={styles.inputText}
@@ -108,7 +113,7 @@ function UserRegister(props) {
           <TextInput
             style={styles.inputText}
             autoCapitalize="none"
-            placeholder={I18n.t('Password')}
+            placeholder={I18n.t('password')}
             secureTextEntry
             value={userPassword}
             onChangeText={(valueText) => {
@@ -145,41 +150,47 @@ function UserRegister(props) {
           />
         </View>
         <View style={{ flex: 0.1, flexDirection: 'column' }}>
-          <Text style={{ fontSize: 20, textAlign: 'center', margin: 5 }}>
+          <Text style={{ fontSize: 20, textAlign: 'center', padding: 5 }}>
             OU
           </Text>
         </View>
-        <View style={{ flex: 0.1, margin: 20 }}>
+        <View style={{ flex: 0.1, margin: 10 }}>
           <LoginButton
+            publishPermissions={['publish_actions']}
+            readPermissions={['public_profile']}
             onLoginFinished={(error, result) => {
               if (error) {
                 //console.log(`login has error: ${result.error}`);
               } else if (result.isCancelled) {
                 //console.log('login is cancelled.');
               } else {
-                access_token.getCurrentaccess_token().then((data) => {
-                  const access_token = data.access_token.toString();
-                  getInfoFromToken(access_token, setUserInfo);
-                  props.navigation.navigate('TagSelection');
+                AccessToken.getCurrentAccessToken().then((data) => {
+                  const accessToken = data.accessToken.toString();
+                  getInfoFromToken(accessToken, setUserInfo, props);
                 });
               }
             }}
             onLogoutFinished={() => setUserInfo({})}
           />
           {userInfo.name && (
-          <Text style={{ fontSize: 16, marginVertical: 16 }}>
-            Logged in As
-            {' '}
-            {userInfo.name}
-          </Text>
+            <Text style={{ fontSize: 10, marginVertical: 5, textAlign: 'center', }}>
+              Logged in As
+              {' '}
+              {userInfo.name}
+            </Text>
           )}
         </View>
-        <Text style={{ paddingTop: 10 }}>{I18n.t('alreadyAccount')}</Text>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', margin: 10 }}>
+        <View style={{ flex: 0.1, flexDirection: 'column' }}>
+          <Text style={{ fontSize: 20, textAlign: 'center', margin: 5 }}>
+            OU
+          </Text>
+        </View>
+        <Text style={{ paddingTop: 20 }}>{I18n.t('alreadyAccount')}</Text>
+        <View style={styles.button}>
 
           <Button
             title={I18n.t('signIn')}
-            color="black"
+            color="#89B3D9"
             onPress={() => props.navigation.navigate('userLogin')}
           />
         </View>
@@ -197,10 +208,13 @@ const styles = StyleSheet.create({
     // backgroundColor: "gray"
   },
   logo: {
-    flex: 0.1,
+    flex: 0.5,
+    width: '80%',
     justifyContent: 'center',
-    marginTop: 100,
-    marginBottom: 100,
+  },
+  logo_img: {
+    width: '100%',
+    resizeMode: "contain",
   },
   button: {
     flex: 0.1,
@@ -222,14 +236,15 @@ const styles = StyleSheet.create({
     padding: 10
   },
   inputText: {
-    height: 50,
+    height: 40,
     width: '100%',
-    fontSize: 20,
+    fontSize: 16,
     paddingLeft: 20,
     backgroundColor: '#D9D9D9',
     borderRadius: 5,
     borderWidth: 0.5,
     borderColor: '#404040',
+    marginBottom: 10,
   }
 });
 
