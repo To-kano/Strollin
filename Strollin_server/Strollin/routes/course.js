@@ -19,9 +19,10 @@ const {
  * Create a new course
  * @param {String} req.headers.access_token
  * 
- * @param {String} req.body.locations_list
+ * @param {[LocationID]} req.body.locations_list
  * @param {String} req.body.name
  * @param {UserID} req.body.author (Optional)
+ * @param {String} req.body.time_spent (Optional)
  */
 router.post('/new_course', async function(req, res) {
 
@@ -35,10 +36,12 @@ router.post('/new_course', async function(req, res) {
         locations: req.body.locations_list,
         name: req.body.name,
         author: "Strollin",
-        tags_list: []
+        tags_list: [],
+        time_spent: req.body.time_spent
     });
     if (req.body.author)
         course.author = req.body.author;
+
     for (let index = 0; index < locations_list.length; index++) {
         for (let index2 = 0; index2 < locations_list[index].tags_list.length; index2++) {
             tag = locations_list[index].tags_list[index2];
@@ -77,6 +80,48 @@ router.get('/get_course', async function(req, res) {
         return res.status(200).send({status: "Success", courses_list})
     }
     return res.status(400).send({status: "Please send a research's sort."});
+});
+
+
+
+// EXCEPTIONAL ROUTE
+
+// NEW_COURSE_TIME
+/**
+ * Create a new course for time_spent test
+ * @param {String} req.body.time_spent
+ * @param {String} req.body.name
+ */
+router.post('/new_course_time', async function(req, res) {
+
+    let course = null;
+
+    course = new CourseModel({
+        locations: ["test"],
+        name: req.body.name,
+        author: "Strollin",
+        time_spent: req.body.time_spent
+    });
+    await course.save();
+    return res.status(200).send({status: "Course created."});
+});
+
+// ADD_COURSE_TIME
+/**
+ * Add in a course a time_spent test
+ * @param {String} req.headers.course_id
+ * 
+ * @param {String} req.body.time_spent
+ */
+router.post('/add_course_time', async function(req, res) {
+
+    let course = await CourseModel.findOne(req.headers.course_id);
+
+    if (course) {
+        await course.updateOne({$push: {time_spent: req.body.time_spent}});
+        return res.status(200).send({status: "Course created."});
+    }
+    return res.status(400).send({status: "Error"});
 });
 
 

@@ -44,7 +44,11 @@ var CourseModelSchema = new Schema({
     tags_list: {
         type: [String],
         default: [],
-    }
+    },
+    time_spent: {
+        type: [String],
+        default: [],
+    },
 })
 
 // Compile model from schema
