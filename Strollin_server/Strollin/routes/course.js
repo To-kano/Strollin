@@ -18,7 +18,7 @@ const {
 /**
  * Create a new course
  * @param {String} req.headers.access_token
- * 
+ *
  * @param {[LocationID]} req.body.locations_list
  * @param {String} req.body.name
  * @param {UserID} req.body.author (Optional)
@@ -109,13 +109,13 @@ router.post('/new_course_time', async function(req, res) {
 /**
  * Add in a course a time_spent test
  * @param {String} req.headers.course_id
- * 
+ *
  * @param {String} req.body.time_spent
  */
 router.post('/add_course_time', async function(req, res) {
 
-    let course = await CourseModel.findOne(req.headers.course_id);
-
+    let course = await CourseModel.findOne({_id: req.headers.course_id});
+    console.log(req.body)
     if (course) {
         await course.updateOne({$push: {time_spent: req.body.time_spent}});
         return res.status(200).send({status: "Course created."});
@@ -125,4 +125,3 @@ router.post('/add_course_time', async function(req, res) {
 
 
 module.exports = router;
-
