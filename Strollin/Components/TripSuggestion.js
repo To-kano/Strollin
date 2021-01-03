@@ -145,7 +145,7 @@ function TripSuggestion(props) {
             style={{
               marginTop: '10%', height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'
             }}
-            source={require('../ressources/plus.png')}
+            source={require('../ressources/trip.png')}
           />
         </TouchableOpacity>
         <TouchableOpacity
@@ -279,7 +279,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    flex: 0.1,
+    flex: 0.08,
     width: '100%',
   },
   newTrip: {

@@ -47,7 +47,7 @@ function HistoryNav({ navigation, map }) {
             style={{
               marginTop: '10%', height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'
             }}
-            source={require('../ressources/plus.png')}
+            source={require('../ressources/trip.png')}
           />
         </TouchableOpacity>
         <TouchableOpacity
@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    flex: 1,
+    flex: 0.90,
     backgroundColor: '#FFFFFF',
     padding: 5,
     marginTop: 10,
@@ -156,10 +156,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    flex: 0.1,
+    flex: 0.082,
     width: '100%',
   },
   newTrip: {
+    flex: 0.65,
     alignItems: 'center',
     backgroundColor: '#F07323',
     paddingVertical: '5%',

@@ -48,6 +48,8 @@ function SectionExamples() {
           </Row>
         </Container>
       </div>{" "}
+      <br/><hr/><br/>
+
     </>
   );
 }
