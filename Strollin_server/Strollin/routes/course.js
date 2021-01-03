@@ -104,6 +104,7 @@ router.post('/new_course_time', async function(req, res) {
     return res.status(200).send({status: "Course created."});
 });
 
+
 // ADD_COURSE_TIME
 /**
  * Add in a course a time_spent test
