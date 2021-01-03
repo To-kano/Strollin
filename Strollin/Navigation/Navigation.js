@@ -10,6 +10,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Profile from '../Components/ProfileScreen';
 import ConnectionScreen from '../Components/ConnectionScreen';
 import UserRegister from '../Components/UserRegister';
+import PartnerRegister from '../Components/PartnerRegister';
 import TageSelection from '../Components/TagSelection';
 import LoginPage from '../Components/LoginPage';
 import FriendList from '../Components/FriendList';
@@ -26,6 +27,8 @@ import NewConversation from '../Components/reactChatScreen/NewConversation';
 import Notation from '../Components/Notation';
 import Socket from '../Components/Socket';
 import CourseEvaluation from '../Components/CourseEvaluation';
+import PartenaireScreen from '../Components/PartenairePage';
+import SettingPartenaire from '../Components/SettingPartenaire';
 
 const Stack = createStackNavigator();
 
@@ -68,6 +71,11 @@ function MyStack(props) {
               name="userRegister"
               component={UserRegister}
               options={{ title: 'inscription' }}
+            />
+            <Stack.Screen
+              name="PartnerRegister"
+              component={PartnerRegister}
+              options={{ title: 'partner inscription' }}
             />
             <Stack.Screen
               name="Notation"
@@ -155,6 +163,8 @@ function MyStack(props) {
               component={Socket}
               options={{ title: 'Socket' }}
             />
+            <Stack.Screen name="PartenaireScreen" component={PartenaireScreen} />
+            <Stack.Screen name="SettingPartenaire" component={SettingPartenaire} />
           </>
 
         )}

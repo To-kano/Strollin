@@ -9,6 +9,7 @@ import Temoignage from "views/index-sections/Temoignage.js";
 import SectionQuestion from "views/index-sections/SectionQuestion.js";
 import SectionExamples from "views/index-sections/SectionExamples.js";
 import Faq from "views/index-sections/Faq.js";
+import DemoVideo from "views/index-sections/DemoVideo.js";
 
 function Index() {
   document.documentElement.classList.remove("nav-open");
@@ -24,6 +25,7 @@ function Index() {
       <IndexHeader />
       <div className="main">
         <Description />
+        <DemoVideo />
         <SectionExamples />
         <Temoignage />
         <Contact />

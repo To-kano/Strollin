@@ -22,7 +22,6 @@ export default {
   chooseTags: 'Choose the tags that fit best your personality',
   heading: 'Heading to',
   carte: 'Carte',
-  step: 'Step',
   logOut: 'Log out',
   newTrip: 'New trip',
   historic: 'historic',
@@ -46,7 +45,11 @@ export default {
   deleteFriend: 'Delete friend',
   addFriend: 'Add friend',
   feedback: 'Give us a feedback',
-  information: 'Information about the place'
+  information: 'Information about the place',
+  showMap: 'Show map',
+  showStep: 'Show step',
+  Share: 'Share',
+  PublishOnFacebook: 'Publish on Facebook'
 };
 
 // {I18n.t("")}

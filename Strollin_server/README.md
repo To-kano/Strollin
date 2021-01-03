@@ -113,7 +113,7 @@ COURSE RELATED:
 
 | Description | Headers | Body | Return |
 |-|-|-|-|
-| Get a list of courses. Can be sorted by (name | number_used | score) | access_token: String<br>sort: String | | [LocationObject] (See Schema) |
+| Get a list of courses. Can be sorted by (name / number_used / score) | access_token: String<br>sort: String | | [LocationObject] (See Schema) |
 
 
 LOCATION RELATED:
@@ -175,9 +175,6 @@ LOCATION RELATED:
 | Get a list of locations. | access_token: String | | [LocationObject] |
 
 
-- DEL location: ```DEL /location/remove_location```
-
-
 
 MESSAGE RELATED:
 ================
@@ -224,8 +221,6 @@ TAGS RELATED:
 | Create a new tag.| access_token: String | name: String<br>description: String (Optional) | None |
 
 - GET tag: ```POST /tags/get_tags```
-
-- DEL tag: ```DEL /tags/delete_tag```
 
 
 USER RELATED:

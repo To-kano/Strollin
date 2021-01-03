@@ -12,7 +12,7 @@ function Box(props) {
   // console.log("props = ", props);
   return (
     <View style={{
-      justifyContent: 'space-around', flex: 1, marginTop: 20, marginHorizontal: '10%', backgroundColor: 'rgba(255,255,255, 0.9)', borderRadius: 20, width: '80%'
+      justifyContent: 'space-around', flex: 1, marginTop: 20, marginHorizontal: '5%', backgroundColor: 'rgba(255,255,255, 0.9)', borderRadius: 5, width: '90%'
     }}
     >
       <Text style={[{
