@@ -1,253 +1,218 @@
-import React, { useState } from 'react';
-
-import { Input } from 'react-native-elements';
+import React , { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-// import * as actions from './features/registration/action';
 import {
-  StyleSheet, Text, View, Button, ActivityIndicator, Image, TextInput
+  View, StyleSheet, Image, Text, TouchableOpacity,
 } from 'react-native';
-import {
-  LoginButton, AccessToken, GraphRequest, GraphRequestManager
-} from 'react-native-fbsdk';
-import I18n from '../Translation/configureTrans';
-// import * as actions from './features/registration/action';
-
-import { RondFormeText } from './rondForm';
-import { registerUser } from '../apiServer/user';
 import BackgroundImage from './backgroundImage';
+import Store from '../Store/configureStore';
+import { getloc } from '../apiServer/locations';
+import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 
-const getInfoFromToken = (token, setUserInfo, props) => {
-  const PROFILE_REQUEST_PARAMS = {
-    fields: {
-      string: 'id, name, last_name, first_name',
-    },
-  };
-  const profileRequest = new GraphRequest(
-    '/me',
-    { token, parameters: PROFILE_REQUEST_PARAMS },
-    (error, result) => {
-      if (error) {
-        // console.log(`login info has error: ${error}`);
-      } else {
-        // console.log('result:', result);
-        setUserInfo(result);
-        registerUser(props, result.first_name, result.id, result.name);
-      }
-    },
-  );
-  new GraphRequestManager().addRequest(profileRequest).start();
-};
+function PartenaireScreen(props) {
+    const [args, setArgs] = useState(true);
 
-function PartnerRegister(props) {
-  const [userEmail, setUserEmail] = useState('');
-  const [userPassword, setUserPassword] = useState('');
-  const [userConfirmPassWord, setUserConfirmPassword] = useState('');
-  const [pseudo, setPseudo] = useState('');
-  const [userLastName, setUserLastName] = useState('');
-  const [userInfo, setUserInfo] = React.useState({});
+    async function getThings() {
+      const store = Store.getState();
+      const access_Token = store.profil.access_token;
+      await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/get_locations`, {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        access_Token,
+      },
+      method: 'GET',
+      })
+      .then(res => res.json())
+      .then(json => {
+        setArgs(json.locations_list[0])
+      });
+    }
 
-  const [loading, setLoading] = useState(false);
+    useEffect(() => {
+          getThings();
+    }, []);
+    /*test.then((value) => {
+      console.log("value: ",value);
+      setArgs(value);
+    });*/
 
-  // callbackFirstName = (value) => {
-  //  setUserFirstName(value);
-  // };
-
-  console.log('UserRegister');
-
-  if (loading) {
     return (
-      <View style={{ flex: 1 }}>
-        <View style={[styles.center, { flex: 1, marginTop: 20 }]}>
-          <RondFormeText text="Strollin'" size={110} />
+        <View style={styles.back}>
+            <BackgroundImage />
+            <View style={styles.header}>
+                <TouchableOpacity
+                style={{ width: '20%', height: '100%', marginLeft: 15 }}
+                onPress={() => props.navigation.navigate('HomePage')}
+                >
+                <Image
+                    style={{
+                    marginTop: '10%', height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'
+                    }}
+                    source={require('../ressources/home.png')}
+                />
+                </TouchableOpacity>
+                <TouchableOpacity
+                style={{ width: '20%', height: '100%' }}
+                onPress={() => props.navigation.navigate('historicUser')}
+                >
+                <Image
+                    style={{
+                    marginTop: '10%', height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'
+                    }}
+                    source={require('../ressources/trip.png')}
+                />
+                </TouchableOpacity>
+                <TouchableOpacity
+                style={{ width: '20%', height: '100%' }}
+                onPress={() => props.navigation.navigate('TripSuggestion')}
+                >
+                <Image
+                    style={{
+                    marginTop: '10%', height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'
+                    }}
+                    source={require('../ressources/plus.png')}
+                />
+                </TouchableOpacity>
+                <TouchableOpacity
+                style={{ width: '20%', height: '100%' }}
+                onPress={() => props.navigation.navigate('FriendList')}
+                >
+                <Image
+                    style={{
+                    marginTop: '10%', height: '65%', width: '50%', opacity: 0.5, resizeMode: 'stretch'
+                    }}
+                    source={require('../ressources/friend.png')}
+                />
+                </TouchableOpacity>
+                <TouchableOpacity
+                style={{ width: '20%', height: '100%' }}
+                onPress={() => props.navigation.navigate('SettingPartenaire')}
+                >
+                <Image
+                    style={{
+                    marginTop: '10%', height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'
+                    }}
+                    source={require('../ressources/settings.png')}
+                />
+                </TouchableOpacity>
+            </View>
+            <View style={styles.fill}>
+                <View style={styles.logo}>
+                    <Image style={{ resizeMode: 'center' }} source={require('../ressources/profile.png')} />
+                </View>
+                <View style={styles.name}>
+                    <Text style={{ fontSize: 40 }}>
+                        {args.name}
+                    </Text>
+                </View>
+                <View style={styles.infos}>
+                    <View style={styles.textLine}>
+                        <Text style={styles.textInfos}>Popup affiché : </Text>
+                        <Text style={styles.textNumber}>{args.pop_disp}</Text>
+                    </View>
+                    <View style={styles.textLine}>
+                        <Text style={styles.textInfos}>Popup accepté : </Text>
+                        <Text style={styles.textNumber}>{args.pop_ag}</Text>
+                    </View>
+                    <View style={styles.textLine}>
+                        <Text style={styles.textInfos}>Apparu dans l'algorythme : </Text>
+                        <Text style={styles.textNumber}>{args.alg_disp}</Text>
+                    </View>
+                    <View style={styles.textLine}>
+                        <Text style={styles.textInfos}>Accepté dans l'algorythme : </Text>
+                        <Text style={styles.textNumber}>{args.alg_ag}</Text>
+                    </View>
+                    <View style={styles.textLine}>
+                        <Text style={styles.textInfos}>Visiteurs : </Text>
+                        <Text style={styles.textNumber}>{args.alg_ag + args.pop_ag}</Text>
+                    </View>
+                </View>
+            </View>
         </View>
-        <View style={[styles.center, { flex: 1, marginTop: 20 }]}>
-          <ActivityIndicator size={100} color="purple" />
-        </View>
-      </View>
     );
-  }
-  return (
-    <View style={styles.container}>
-      <BackgroundImage />
-      <View style={{
-        flex: 4,
-        margin: 20,
-        backgroundColor: 'rgba(255,255,255, 0.95)',
-        padding: 10,
-        paddingBottom: '5%',
-        justifyContent: 'space-around',
-        alignItems: 'center',
-        borderRadius: 10
-      }}
-      >
-        <View style={styles.logo}>
-          <Image style={styles.logo_img} source={require('../images/Logo.png')} />
-        </View>
-        <View style={{ width: '80%' }}>
-          <TextInput
-            style={styles.inputText}
-            autoCapitalize="none"
-            placeholder="Username"
-            value={pseudo}
-            onChangeText={(valueText) => {
-              // setData(valueText);
-              setPseudo(valueText);
-            }}
-          />
-        </View>
-        <View style={{ width: '80%' }}>
-          <TextInput
-            style={styles.inputText}
-            autoCapitalize="none"
-            keyboardType="email-address"
-            placeholder={I18n.t('email')}
-            value={userEmail}
-            onChangeText={(valueText) => {
-              // setData(valueText);
-              setUserEmail(valueText);
-            }}
-          />
-        </View>
-
-        <View style={{ width: '80%' }}>
-          <TextInput
-            style={styles.inputText}
-            autoCapitalize="none"
-            placeholder={I18n.t('password')}
-            secureTextEntry
-            value={userPassword}
-            onChangeText={(valueText) => {
-              // setData(valueText);
-              setUserPassword(valueText);
-            }}
-          />
-        </View>
-
-        <View style={{ width: '80%' }}>
-          <TextInput
-            style={styles.inputText}
-            autoCapitalize="none"
-            placeholder={I18n.t('confPassword')}
-            secureTextEntry
-            value={userConfirmPassWord}
-            onChangeText={(valueText) => {
-              // setData(valueText);
-              setUserConfirmPassword(valueText);
-            }}
-          />
-        </View>
-        <View style={styles.button}>
-          <Button
-            onPress={() => {
-              if (userPassword === userConfirmPassWord) {
-                registerUser(props, pseudo, userPassword, userEmail);
-              }
-              // props.navigation.navigate('TagSelection');
-            }}
-            buttonStyle={[{ marginBottom: 5, marginTop: 5 }]}
-            title={I18n.t('register')}
-            color="#89B3D9"
-          />
-        </View>
-        <View style={{ flex: 0.1, flexDirection: 'column' }}>
-          <Text style={{ fontSize: 20, textAlign: 'center', padding: 5 }}>
-            OU
-          </Text>
-        </View>
-        <View style={{ flex: 0.1, margin: 10 }}>
-          <LoginButton
-            publishPermissions={['publish_actions']}
-            readPermissions={['public_profile']}
-            onLoginFinished={(error, result) => {
-              if (error) {
-                console.log(`login has error: ${result.error}`);
-              } else if (result.isCancelled) {
-                console.log('login is cancelled.');
-              } else {
-                AccessToken.getCurrentAccessToken().then((data) => {
-                  const accessToken = data.accessToken.toString();
-                  getInfoFromToken(accessToken, setUserInfo, props);
-                });
-              }
-            }}
-            onLogoutFinished={() => setUserInfo({})}
-          />
-          {userInfo.name && (
-            <Text style={{ fontSize: 10, marginVertical: 5, textAlign: 'center', }}>
-              Logged in As
-              {' '}
-              {userInfo.name}
-            </Text>
-          )}
-        </View>
-        <View style={{ flex: 0.1, flexDirection: 'column' }}>
-          <Text style={{ fontSize: 20, textAlign: 'center', margin: 5 }}>
-            OU
-          </Text>
-        </View>
-        <Text style={{ paddingTop: 20 }}>{I18n.t('alreadyAccount')}</Text>
-        <View style={styles.button}>
-
-          <Button
-            title={I18n.t('signIn')}
-            color="#89B3D9"
-            onPress={() => props.navigation.navigate('userLogin')}
-          />
-        </View>
-      </View>
-    </View>
-  );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    // alignItems: 'center',
-    justifyContent: 'center',
-    // backgroundColor: "gray"
-  },
-  logo: {
-    flex: 0.5,
-    width: '80%',
-    justifyContent: 'center',
-  },
-  logo_img: {
-    width: '100%',
-    resizeMode: "contain",
-  },
-  button: {
-    flex: 0.1,
-    flexDirection: 'column',
-    margin: 10,
-    width: '80%',
-    height: 50,
-  },
-  center: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    // backgroundColor: "gray"
-  },
-  horizontal: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    padding: 10
-  },
-  inputText: {
-    height: 40,
-    width: '100%',
-    fontSize: 16,
-    paddingLeft: 20,
-    backgroundColor: '#D9D9D9',
-    borderRadius: 5,
-    borderWidth: 0.5,
-    borderColor: '#404040',
-    marginBottom: 10,
-  }
+    back: {
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        flex: 1,
+    },
+    header: {
+        backgroundColor: '#FFFFFF',
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        flex: 0.08,
+        width: '100%',
+    },
+    fill: {
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        flex: 1,
+        backgroundColor: '#FFFFFF',
+        padding: 5,
+        marginTop: 10,
+        marginBottom: 10,
+        width: '95%',
+        borderRadius: 5,
+        opacity: 0.9,
+    },
+    logo: {
+        flex: 0.1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: '30%',
+    },
+    settings: {
+        justifyContent: 'space-between',
+        flexDirection: 'row',
+        width: '100%',
+    },
+    inputText: {
+        height: 50,
+        width: '100%',
+        fontSize: 20,
+        paddingTop: 10,
+        paddingLeft: 20,
+        paddingRight: 20,
+        backgroundColor: '#D9D9D9',
+        borderRadius: 5,
+        borderWidth: 0.5,
+        borderColor: '#404040',
+    },
+    name: {
+        flex: 0.1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: '30%',
+    },
+    infos: {
+        width: "90%",
+        flex: 1,
+        marginTop: '10%',
+        marginBottom: '50%',
+    },
+    textLine : {
+        marginTop: '3%',
+        flexDirection: "row",
+        justifyContent: 'center'
+    },
+    textInfos : {
+        fontSize: 19,
+        textAlign: "left",
+        width: "75%"
+    },
+    textNumber : {
+        fontSize: 19,
+        fontWeight: "bold",
+        textAlign: "right",
+        width: "25%",
+        textAlignVertical: "bottom"
+    }
 });
 
-// permet de dire au composant quel reducer il a access (tous les reducer dans cette configuration)
 const mapStateToProps = (state) => state;
-export default connect(mapStateToProps)(PartnerRegister);
+export default connect(mapStateToProps)(PartenaireScreen);

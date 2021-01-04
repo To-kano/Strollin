@@ -99,7 +99,7 @@ function HomePage(props) {
         </TouchableOpacity>
         <TouchableOpacity
           style={{ width: '20%', height: '100%' }}
-          onPress={() => props.navigation.navigate('Profile')}
+          onPress={() => props.navigation.navigate('PartenaireScreen')}
         >
           <Image
             style={{

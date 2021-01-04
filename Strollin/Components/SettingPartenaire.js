@@ -1,11 +1,76 @@
-import React from 'react';
+import React , { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import {
-  View, StyleSheet, Image, Text, TouchableOpacity, TextInput 
+  View, StyleSheet, Image, Text, TouchableOpacity, TextInput
 } from 'react-native';
 import BackgroundImage from './backgroundImage';
+import Store from '../Store/configureStore';
+import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 
 function SettingPartenaire(props) {
+
+    const [args, setArgs] = useState(true);
+
+    async function getThings() {
+      const store = Store.getState();
+      const access_Token = store.profil.access_token;
+      await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/get_locations`, {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        access_Token,
+      },
+      method: 'GET',
+      })
+      .then(res => res.json())
+      .then(json => {
+        setArgs(json.locations_list[0])
+      });
+    }
+
+    async function postAdd(body) {
+      const store = Store.getState();
+      const access_Token = store.profil.access_token;
+      const test = JSON.stringify({address: body})
+
+      await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/update_location`, {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        access_Token,
+        location_id: args._id
+      },
+      body: test,
+      method: 'POST',
+      })
+      .then(res => res.json())
+      .then(json => {
+      });
+    }
+
+    async function postDesc(body) {
+      const store = Store.getState();
+      const access_Token = store.profil.access_token;
+      const test = JSON.stringify({description: body})
+
+      await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/update_location`, {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        access_Token,
+        location_id: args._id
+      },
+      body: test,
+      method: 'POST',
+      })
+      .then(res => res.json())
+      .then(json => {
+      });
+    }
+
+    useEffect(() => {
+          getThings();
+    }, []);
 
     return (
         <View style={styles.back}>
@@ -80,10 +145,11 @@ function SettingPartenaire(props) {
                 <View style={styles.textLine}>
                         <Text style={styles.textInfos}>Description : </Text>
                         <TextInput style={styles.textInput}
-                            placeholder='Description de votre commerce'
+                            placeholder="Description de votre commerce"
                             multiline={true}
+                            onChangeText={text => postDesc(text)}
                         >
-                            Commerce de Basile
+                            {args.description}
                         </TextInput>
                     </View>
                     <View style={styles.textLine}>
@@ -100,8 +166,9 @@ function SettingPartenaire(props) {
                         <TextInput style={styles.textInput}
                             placeholder="Adresse de votre commerce"
                             multiline={true}
+                            onChangeText={text => postAdd(text)}
                         >
-                            Adresse de Basile
+                            {args.address}
                         </TextInput>
                     </View>
                 </View>
@@ -174,18 +241,18 @@ const styles = StyleSheet.create({
         marginBottom: '50%',
     },
     textLine : {
-        marginTop: '5%', 
-        flexDirection: "column", 
-        justifyContent: 'center' 
+        marginTop: '5%',
+        flexDirection: "column",
+        justifyContent: 'center'
     },
     textInfos : {
-        fontSize: 19, 
-        textAlign: "left", 
-        width: "100%" 
+        fontSize: 19,
+        textAlign: "left",
+        width: "100%"
     },
     textInput : {
-        fontSize: 17, 
-        textAlign: "left", 
+        fontSize: 17,
+        textAlign: "left",
         width: "100%",
         borderRadius: 5,
         backgroundColor:'white'

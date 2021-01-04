@@ -51,6 +51,7 @@ router.post('/update_location', async function(req, res) {
     if (!user) {
         return res.status(400).send({status: "You are not connected."});
     }
+    console.log("req: ", req.body);
     if (req.body.name)
         update.name = req.body.name
     if (req.body.owner)
