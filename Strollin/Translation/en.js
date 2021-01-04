@@ -44,11 +44,13 @@ export default {
   friendList: 'Friend list',
   deleteFriend: 'Delete friend',
   addFriend: 'Add friend',
+  feedback: 'Give us a feedback',
+  information: 'Information about the place',
   showMap: 'Show map',
   showStep: 'Show step',
   Share: 'Share',
   PublishOnFacebook: 'Publish on Facebook',
-  feedback: 'Give us a feedback'
+  id: 'Id'
 };
 
 // {I18n.t("")}

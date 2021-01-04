@@ -10,8 +10,11 @@ const {
 } = require("../models/user")
 
 
-// Get
-
+// GET_CONVERSATIONS
+/**
+ * Get all conversations of the access token provider
+ * @param {String} req.headers.access_token
+ */
 router.get('/get_conversations', async function(req, res) {
 
     let user = await UserModel.findOne({access_token: req.headers.access_token})

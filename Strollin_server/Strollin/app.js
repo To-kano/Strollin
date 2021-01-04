@@ -25,7 +25,8 @@ var app = express();
 
 // MongoDB //
 
-var mongoDB = 'mongodb://db:270);17/Strollin';
+//var mongoDB = 'mongodb://didier:test@db:27017/Strollin'; //Version Authentification
+var mongoDB = 'mongodb://db:27017/Strollin';
 mongoose.connect(mongoDB, { useNewUrlParser: true });
 
 //Get the default connection

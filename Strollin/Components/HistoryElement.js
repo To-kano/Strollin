@@ -23,8 +23,27 @@ function ElementHistoryNav({ data }) {
       }}
       >
         <View />
-        <View style={{ width: '100%', flexDirection: 'row', flex: 0.6 }}>
-          <View style={{ flex: 1, marginLeft: '5%', marginRight: '5%' }}>
+        <FlatList
+          data={data}
+          renderItem={({ item }) => (
+            <View style={{ margin: 10 }}>
+              <Text>
+                {I18n.t('step')}
+                {item.id}
+              </Text>
+              <Text>
+                {I18n.t('name')}
+                {item.name}
+              </Text>
+              <Text>
+                {I18n.t('address')}
+                {item.address}
+              </Text>
+            </View>
+          )}
+        />
+        <View style={{ width: '100%', flexDirection: 'row', flex: 1 }}>
+          <View style={{ flex: 0.5, marginLeft: '5%', marginRight: '5%' }}>
             <Button
               title={I18n.t('showMap')}
               color="#89B3D9"

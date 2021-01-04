@@ -78,11 +78,6 @@ function MyStack(props) {
               options={{ title: 'partner inscription' }}
             />
             <Stack.Screen
-              name="Notation"
-              component={Notation}
-              options={{ title: 'Notation' }}
-            />
-            <Stack.Screen
               name="Connection"
               component={ConnectionScreen}
               options={{ title: 'connection' }}
@@ -94,6 +89,11 @@ function MyStack(props) {
               name="HomePage"
               component={HomePage}
               options={{ title: 'Homepage' }}
+            />
+            <Stack.Screen
+              name="Notation"
+              component={Notation}
+              options={{ title: 'Notation' }}
             />
             <Stack.Screen
               name="historicUser"

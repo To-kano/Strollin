@@ -69,7 +69,7 @@ var LocationModelSchema = new Schema({
         type: String,
         default: ""
     },
-    mail: {
+    website: {
         type: String,
         default: ""
     },
