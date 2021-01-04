@@ -148,7 +148,8 @@ function HomePage(props) {
           </Text> */}
           <Image
             style={{
-              marginTop: '0%', height: '100%', width: '40%', opacity: 1, resizeMode: 'stretch', tintColor:'white'
+              // marginTop: '0%', height: '100%', width: '40%', opacity: 1, resizeMode: 'stretch', tintColor:'white'
+              marginTop: '0%', height: '100%', width: '56%', opacity: 1, resizeMode: 'stretch', tintColor:'white'
             }}
             source={require('../ressources/chat.png')}
           />
@@ -164,7 +165,8 @@ function HomePage(props) {
           </Text> */}
           <Image
             style={{
-              marginTop: '0%', height: '100%', width: '40%', opacity: 1, resizeMode: 'stretch', tintColor:'white'
+              // marginTop: '0%', height: '100%', width: '40%', opacity: 1, resizeMode: 'stretch', tintColor:'white'
+              marginTop: '0%', height: '100%', width: '56%', opacity: 1, resizeMode: 'stretch', tintColor:'white'
             }}
             source={require('../ressources/plus.png')}
           />
@@ -180,9 +182,27 @@ function HomePage(props) {
           </Text> */}
           <Image
             style={{
-              marginTop: '0%', height: '100%', width: '40%', opacity: 1, resizeMode: 'stretch', tintColor:'white'
+              // marginTop: '0%', height: '100%', width: '40%', opacity: 1, resizeMode: 'stretch', tintColor:'white'
+              marginTop: '0%', height: '100%', width: '56%', opacity: 1, resizeMode: 'stretch', tintColor:'white'
             }}
             source={require('../ressources/rating.png')}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.newTrip}
+          onPress={() => {
+            props.navigation.navigate('Notation');
+          }}
+        >
+          {/* <Text style={{ fontSize: 12, color: '#FFFFFF', textAlign:'center' }}>
+            Go to Evaluation
+          </Text> */}
+          <Image
+            style={{
+              // marginTop: '0%', height: '100%', width: '40%', opacity: 1, resizeMode: 'stretch', tintColor:'white'
+              marginTop: '0%', height: '100%', width: '56%', opacity: 1, resizeMode: 'stretch', tintColor:'white'
+            }}
+            source={require('../ressources/tmp.png')}
           />
         </TouchableOpacity>
       </View>
