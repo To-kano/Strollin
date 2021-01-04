@@ -29,7 +29,7 @@ router.post('/new_tag', async function(req, res) {
         tag = await TagModel.findOne({name: req.body.name});
         if (tag)
             return res.status(400).send({status: "The tag exists already."});
-        tag = new MessageModel({
+        tag = new TagModel({
             name: req.body.name,
             description: req.body.description,
         });
@@ -58,7 +58,11 @@ router.get('/get_tag', async function(req, res) {
     if (!sort) {
         sort = "name"; 
     }
-    tags = await TagModel.find({name: {$regex: req.headers.search}}).sort(sort);
+    if (req.headers.search) {
+        tags = await TagModel.find({name: {$regex: req.headers.search}}).sort(sort);
+    } else {
+        tags = await TagModel.find().sort(sort);
+    }
     if (tags) {
         return res.status(200).send({status: true, tags_list: tags});
     }

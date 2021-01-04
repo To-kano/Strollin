@@ -69,6 +69,7 @@ router.post('/new_location', async function(req, res) {
 /**
  * Update a location's data (at least one body parameter)
  * @param {String} req.headers.access_token
+ * @param {String} req.headers.location_id
  *
  * @param {String} req.body.name (Optional)
  * @param {UserID} req.body.owner (Optional)

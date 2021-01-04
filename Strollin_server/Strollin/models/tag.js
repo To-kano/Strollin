@@ -15,7 +15,7 @@ var TagModelSchema = new Schema({
     },
     number_used: {
         type: String,
-        default: '1'
+        default: '0'
     },
     locations_list: {
         type: [String],

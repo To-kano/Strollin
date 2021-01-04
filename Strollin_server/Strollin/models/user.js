@@ -54,7 +54,7 @@ var UserModelSchema = new Schema({
         default: [],
     },
     course_historic: {             // Historique de parcours (historique de lieu ?)
-        type: [{String, Date}],
+        type: [[String, Date]],
         default: [],
     },
     score_course: {          // Liste des parcours notés (ID, Note, Date)

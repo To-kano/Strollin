@@ -27,6 +27,8 @@ const {
  * 
  * @param {String} req.body.message
  * @param {String} req.body.score
+ * 
+ * TODO : ADD score in location/course
  */
 router.post('/new_comment', async function(req, res) {
     let comment = null;
@@ -57,6 +59,7 @@ router.post('/new_comment', async function(req, res) {
         message: req.body.message,
         author: user._id,
     });
+
     // Save and add ID of the comment in 
     await comment.save(async function(err, obj) {
         if (location) {
@@ -84,7 +87,7 @@ router.post('/new_comment', async function(req, res) {
  */
 router.post('/edit_comment', async function(req, res) {
     let user = await UserModel.findOne({access_token: req.headers.access_token});
-    let comment = await UserModel.findOne({_id: req.headers.comment_id});
+    let comment = await CommentModel.findOne({_id: req.headers.comment_id});
 
     if (!user) {
         return res.status(400).send({status: "You are not connected."});
@@ -116,7 +119,7 @@ router.get('/get_comment', async function(req, res) {
     if (req.headers.comments_list) {
         comments_list = await CommentModel.find({_id: {$in: req.headers.comments_list}});
         if (comments_list) {
-            return res.status(200).send({status: "Comments found."});
+            return res.status(200).send({status: "Comments found.", comments_list});
         }
     }
     return res.status(400).send({status: "Comment not found."});

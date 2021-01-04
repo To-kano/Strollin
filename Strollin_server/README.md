@@ -10,6 +10,13 @@ NOTE:
 
 - Almost all number are exprimed as String.
 
+- All request will return an object as :
+    {
+        status: (true/false)
+        message:
+        eventual object:
+    }
+
 
 INDEX:
 ======
@@ -97,6 +104,7 @@ COURSE RELATED:
 - timetable ```String```
 - comments_list ```[commentID]```
 - tags_list ```[tagID]```
+- time_spent: ```[String]``` (list of time spent to do the course)
 
 <br>
 
@@ -125,7 +133,7 @@ LOCATION RELATED:
 - owner ```String```
 - score ```String```
 - user_score ```[userID]```
-- coordinate ```[Float, Float]```
+- coordinate ```[String, String]```
 - address ```String```
 - city ```String```
 - country ```String```
@@ -133,7 +141,7 @@ LOCATION RELATED:
 - photo ```[String]```
 - timetable ```String```
 - comments_list ```[commentID]```
-- tags_list ```[tagID]```
+- tags_list ```[{tag_id: tagID, disp: String}]```
 - price_range ```[String, String]```
 - average_time ```String```
 - phone ```String```
@@ -318,7 +326,7 @@ USER RELATED:
 | Get an user's profile by its ID.| access_token: String<br>user_id: String | None | profile: {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mail: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;creation_date: Date,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pseudo: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type: String<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;first_name: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;last_name: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tags_list: [tagID],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;friends_list: [userID] |
 
 
-- GET an user's tags: ```GET /users/get_users_tags```
+- GET an user's tags: ```GET /users/get_user_tags```
 
 | Description | Headers | Body | Return |
 |-|-|-|-|

@@ -13,18 +13,6 @@ const {
   CourseModel
 } = require("../models/course")
 
-/* ROUTE MODEL TO COPY PASTE
-router.post('/name', async function(req, res) {
-
-  let user = await UserModel.findOne({access_token: req.headers.access_token});
-
-  if (!user)
-    return res.status(400).send({status: "You are not connected."});
-
-  return res.status(400).send({status: "An error occured."});
-});
-*/
-
 
 // REGISTER
 /**
@@ -39,7 +27,8 @@ router.post('/register', async function(req, res) {
   let token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
   if (mail) {
-    return res.status(400).send({status: "The mail is used already."});
+    console.log("The mail is used already.");
+    return res.status(400).send({status: false});
   }
   if (req.body.mail && req.body.password) {
     user = new UserModel({
@@ -53,9 +42,11 @@ router.post('/register', async function(req, res) {
       user.pseudo = req.body.pseudo
     }
     await user.save();
-    return  res.status(200).send({status: "Account created successfully.", access_token: token});
+    console.log("Account created successfully.");
+    return  res.status(200).send({status: true, access_token: token});
   }
-  return res.status(400).send({status: "The entry is invalid."});
+  console.log("The entry is invalid.");
+  return res.status(400).send({status: false});
 });
 
 // ADD_FRIEND_REQUEST
@@ -69,11 +60,13 @@ router.post('/add_friend_request', async function(req, res) {
   let user = await UserModel.findOne({access_token: req.headers.access_token});
   let friend = await UserModel.findOne({_id: req.body.friend});
 
-  if (!user)
-    return res.status(400).send({status: "You are not connected."});
-  if (friend && !friend.friends_request[user._id] && !user.friends_request[friend._id]) {
+  if (!user) {
+    console.log("You are not connected.");
+    return res.status(400).send({status: false});
+  }
+  if (friend && !friend.friends_request.includes(user._id) && !user.friends_request.includes(friend._id)) {
     await friend.updateOne({$push: {friends_request: user._id}});
-    return  res.status(200).send({status: "Friend requested successfully."});
+    return res.status(200).send({status: "Friend requested successfully."});
   }
   return res.status(400).send({status: "The friend user does not exist."});
 });
@@ -91,9 +84,11 @@ router.post('/add_friend', async function(req, res) {
   let user = await UserModel.findOne({access_token: req.headers.access_token});
   let friend = await UserModel.findOne({_id: req.body.friend});
 
-  if (!user)
-    return res.status(400).send({status: "You are not connected."});
-  if (friend && !friend.friends_list[user._id] && !user.friends_list[friend._id] && user.friends_request[friend._id]) {
+  if (!user) {
+    console.log("You are not connected.");
+    return res.status(400).send({status: false});
+  }
+  if (friend && !friend.friends_list.includes(user._id) && !user.friends_list.includes(friend._id) && user.friends_request.includes(friend._id)) {
     await friend.updateOne({$push: {friends_list: user._id}});
     await user.updateOne({$push: {friends_list: friend._id}});
     await user.updateOne({$pull: {friends_request: friend._id}});
@@ -112,19 +107,20 @@ router.post('/add_friend', async function(req, res) {
 router.post('/add_tag', async function(req, res) {
 
   let user = await UserModel.findOne({access_token: req.headers.access_token});
-  let new_tags = null;
+  let new_tag = null;
   let add_list = req.body.tags_list
 
-  if (user) {
-    for (let index = 0; index < add_list.length; index++) {
-      new_tags = await TagModel.findOne({_id: add_list[index]})
-      if (new_tags && !user.tags_list[new_tags]) {
-        await user.updateOne({$push: {tags_list: tags_list._id}})
-      }
-    }
-    return  res.status(200).send({status: "Tag(s) added successfully."});
+  if (!user) {
+    console.log("You are not connected.");
+    return res.status(400).send({status: false});
   }
-  return res.status(400).send({status: "You are not connected."});
+  for (let index = 0; index < add_list.length; index++) {
+    new_tag = await TagModel.findOne({_id: add_list[index]})
+    if (new_tag && !user.tags_list.includes(new_tag)) {
+      await user.updateOne({$push: {tags_list: new_tag._id}})
+    }
+  }
+  return  res.status(200).send({status: "Tag(s) added successfully."});
 });
 
 
@@ -142,7 +138,9 @@ router.post('/add_historic', async function(req, res) {
   if (!user)
     return res.status(400).send({status: "You are not connected."});
   if (course) {
-    await user.updateOne({$push: {course_historic: {course: course._id, date: Date.now}}})
+    let new_course = [course._id, Date.now()];
+    await user.updateOne({$push: {course_historic: new_course}});
+    return res.status(200).send({status: "Historic added."});
   }
   return res.status(400).send({status: "An error occured."});
 });
@@ -213,7 +211,6 @@ router.get('/get_user_profile', async function(req, res) {
   let user = await UserModel.findOne({access_token: req.headers.access_token});
   let profile = null;
 
-  console.log("user in getuser =", user);
   if (user) {
     profile = await UserModel.findOne({_id: req.headers.user_id}, projection);
     console.log("profile of friends", profile);
@@ -231,7 +228,7 @@ router.get('/get_user_profile', async function(req, res) {
  * @param {String} req.headers.access_token
  * @param {[String]} req.headers.user_id
  */
-router.get('/get_users_tags', async function(req, res) {
+router.get('/get_user_tags', async function(req, res) {
 
   let user = await UserModel.findOne({access_token: req.headers.access_token}, option);
   let all_user_tags = [];
