@@ -1,40 +1,11 @@
-import React , { useState, useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import {
-  View, StyleSheet, Image, Text, TouchableOpacity,
+  View, StyleSheet, Image, Text, TouchableOpacity, 
 } from 'react-native';
 import BackgroundImage from './backgroundImage';
-import Store from '../Store/configureStore';
-import { getloc } from '../apiServer/locations';
-import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 
 function PartenaireScreen(props) {
-    const [args, setArgs] = useState(true);
-
-    async function getThings() {
-      const store = Store.getState();
-      const access_Token = store.profil.access_token;
-      await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/get_locations`, {
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        access_Token,
-      },
-      method: 'GET',
-      })
-      .then(res => res.json())
-      .then(json => {
-        setArgs(json.locations_list[0])
-      });
-    }
-
-    useEffect(() => {
-          getThings();
-    }, []);
-    /*test.then((value) => {
-      console.log("value: ",value);
-      setArgs(value);
-    });*/
 
     return (
         <View style={styles.back}>
@@ -102,29 +73,29 @@ function PartenaireScreen(props) {
                 </View>
                 <View style={styles.name}>
                     <Text style={{ fontSize: 40 }}>
-                        {args.name}
+                        Nom Entreprise {/* nom de l'entreprise */}
                     </Text>
                 </View>
                 <View style={styles.infos}>
                     <View style={styles.textLine}>
                         <Text style={styles.textInfos}>Popup affiché : </Text>
-                        <Text style={styles.textNumber}>{args.pop_disp}</Text>
+                        <Text style={styles.textNumber}>9057</Text>
                     </View>
                     <View style={styles.textLine}>
                         <Text style={styles.textInfos}>Popup accepté : </Text>
-                        <Text style={styles.textNumber}>{args.pop_ag}</Text>
+                        <Text style={styles.textNumber}>4397</Text>
                     </View>
                     <View style={styles.textLine}>
                         <Text style={styles.textInfos}>Apparu dans l'algorythme : </Text>
-                        <Text style={styles.textNumber}>{args.alg_disp}</Text>
+                        <Text style={styles.textNumber}>4918</Text>
                     </View>
                     <View style={styles.textLine}>
                         <Text style={styles.textInfos}>Accepté dans l'algorythme : </Text>
-                        <Text style={styles.textNumber}>{args.alg_ag}</Text>
+                        <Text style={styles.textNumber}>627</Text>
                     </View>
                     <View style={styles.textLine}>
                         <Text style={styles.textInfos}>Visiteurs : </Text>
-                        <Text style={styles.textNumber}>{args.alg_ag + args.pop_ag}</Text>
+                        <Text style={styles.textNumber}>65</Text>
                     </View>
                 </View>
             </View>
@@ -196,19 +167,19 @@ const styles = StyleSheet.create({
         marginBottom: '50%',
     },
     textLine : {
-        marginTop: '3%',
-        flexDirection: "row",
-        justifyContent: 'center'
+        marginTop: '3%', 
+        flexDirection: "row", 
+        justifyContent: 'center' 
     },
     textInfos : {
-        fontSize: 19,
-        textAlign: "left",
-        width: "75%"
+        fontSize: 19, 
+        textAlign: "left", 
+        width: "75%" 
     },
     textNumber : {
-        fontSize: 19,
-        fontWeight: "bold",
-        textAlign: "right",
+        fontSize: 19, 
+        fontWeight: "bold", 
+        textAlign: "right", 
         width: "25%",
         textAlignVertical: "bottom"
     }

@@ -99,7 +99,7 @@ function HomePage(props) {
         </TouchableOpacity>
         <TouchableOpacity
           style={{ width: '20%', height: '100%' }}
-          onPress={() => props.navigation.navigate('PartenaireScreen')}
+          onPress={() => props.navigation.navigate('Profile')}
         >
           <Image
             style={{
@@ -134,7 +134,7 @@ function HomePage(props) {
           keyExtractor={(item) => item.id}
         />
       </View>
-      <View style={{ flex: 0.30, flexDirection: 'column', margin: '5%' }}>
+      <View style={{ flex: 0.1, flexDirection: 'row', margin: '2%' }}>
         <TouchableOpacity
           style={styles.newTrip}
           onPress={() => {
@@ -143,9 +143,31 @@ function HomePage(props) {
             props.navigation.navigate('MenuChat');
           }}
         >
-          <Text style={{ fontSize: 16, color: '#FFFFFF' }}>
+          {/* <Text style={{ fontSize: 12, color: '#FFFFFF', textAlign:'center' }}>
             Go to Chat
-          </Text>
+          </Text> */}
+          <Image
+            style={{
+              marginTop: '0%', height: '100%', width: '40%', opacity: 1, resizeMode: 'stretch', tintColor:'white'
+            }}
+            source={require('../ressources/chat.png')}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.newTrip}
+          onPress={() => props.navigation.navigate('TripSuggestion')}
+        >
+          {/* <Text style={{ fontSize: 12, color: '#FFFFFF', textAlign:'center' }}>
+            {' '}
+            {I18n.t('startNewTrip')}
+            {' '}
+          </Text> */}
+          <Image
+            style={{
+              marginTop: '0%', height: '100%', width: '40%', opacity: 1, resizeMode: 'stretch', tintColor:'white'
+            }}
+            source={require('../ressources/plus.png')}
+          />
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.newTrip}
@@ -153,33 +175,15 @@ function HomePage(props) {
             props.navigation.navigate('CourseEvaluation');
           }}
         >
-          <Text style={{ fontSize: 16, color: '#FFFFFF' }}>
+          {/* <Text style={{ fontSize: 12, color: '#FFFFFF', textAlign:'center' }}>
             Go to Evaluation
-          </Text>
-        </TouchableOpacity>
-      </View>
-      <View style={{ flex: 0.10, flexDirection: 'column', margin: '5%' }}>
-        <TouchableOpacity
-          style={styles.newTrip}
-          onPress={() => {
-            props.navigation.navigate('Notation');
-          }}
-        >
-          <Text style={{ fontSize: 16, color: '#FFFFFF' }}>
-            {I18n.t('connexion')}
-          </Text>
-        </TouchableOpacity>
-      </View>
-      <View style={{ flex: 0.10, flexDirection: 'column', margin: '5%' }}>
-        <TouchableOpacity
-          style={styles.newTrip}
-          onPress={() => props.navigation.navigate('TripSuggestion')}
-        >
-          <Text style={{ fontSize: 16, color: '#FFFFFF' }}>
-            {' '}
-            {I18n.t('startNewTrip')}
-            {' '}
-          </Text>
+          </Text> */}
+          <Image
+            style={{
+              marginTop: '0%', height: '100%', width: '40%', opacity: 1, resizeMode: 'stretch', tintColor:'white'
+            }}
+            source={require('../ressources/rating.png')}
+          />
         </TouchableOpacity>
       </View>
     </View>
@@ -217,9 +221,10 @@ const styles = StyleSheet.create({
     flex: 0.85,
     alignItems: 'center',
     backgroundColor: '#F07323',
-    paddingVertical: '5%',
-    paddingHorizontal: '10%',
-    borderWidth: 1
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    margin:2,
+    borderRadius:5
   },
   cont: {
     marginTop: '5%',

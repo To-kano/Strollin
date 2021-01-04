@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import {
   Button, View, StyleSheet, Image, Text, TouchableOpacity, TextInput
 } from 'react-native';
+import { v4 as uuidv4 } from 'uuid';
 import json from '../ressources/profile.json';
 import I18n from '../Translation/configureTrans';
 import BackgroundImage from './backgroundImage';
@@ -19,9 +20,29 @@ function ParseTags(Tags) {
   return list;
 }
 
+const initialList = [
+  {
+    id: 1,
+    name: 'Foot',
+  },
+  {
+    id: 2,
+    name: 'Tennis',
+  },
+];
+
 function ProfileScreen(props) {
-  // console.log('json: ', json.Tags)
-  const list = ParseTags(json.Tags);
+  const [list, setList] = React.useState(props.profil.tags_list);
+  const [name, setName] = React.useState('');
+
+  function handleChange(event) {
+    setName(event.nativeEvent.text);
+  }
+  function handleAdd() {
+    const newList = list.concat({ name, id: uuidv4() });
+    setList(newList);
+    setName('');
+  }
 
   return (
     <View style={styles.back}>
@@ -114,16 +135,26 @@ function ProfileScreen(props) {
           <View style={styles.textLine}>
               <Text style={styles.textInfos}>{I18n.t('tags')} </Text>
               <TextInput style={styles.textInput}
-                  placeholder="Adresse de votre commerce"
+                  placeholder="Mes tags"
                   multiline={true}
               >
-                  {list}
+                {list.map((item) => (
+                  <Text key={item.id}>{item.name}, </Text>
+                ))}
               </TextInput>
-              <Button
-                title="Changer mes Tags"
-                color="#17A589"
-                onPress={() => props.navigation.navigate('TagSelection')}
-              />
+              <View style={{ flexDirection: "row", height: 40, width: "100%", marginTop:10}}>
+                <TextInput 
+                  style={{width: "69%", backgroundColor:"white", borderRadius:5, marginRight:10}} 
+                  placeholder="Ajouter tag" 
+                  value={name}
+                  onChange={handleChange} />
+                <Button
+                  title="Add Tags"
+                  color="#17A589"
+                  onPress={handleAdd}
+                  // onPress={() => props.navigation.navigate('TagSelection')}
+                />
+              </View>
           </View>
       </View>
     </View>

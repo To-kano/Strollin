@@ -42,15 +42,15 @@ export default {
   confPassword: 'Confirme Password',
   alreadyAccount: 'Already have an account ?',
   friendList: 'Friend list',
+  groupList: 'Group List',
   deleteFriend: 'Delete friend',
   addFriend: 'Add friend',
-  feedback: 'Give us a feedback',
-  information: 'Information about the place',
+  addGroup: 'Add group',
   showMap: 'Show map',
   showStep: 'Show step',
   Share: 'Share',
   PublishOnFacebook: 'Publish on Facebook',
-  id: 'Id'
+  feedback: 'Give us a feedback'
 };
 
 // {I18n.t("")}
