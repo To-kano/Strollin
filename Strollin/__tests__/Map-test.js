@@ -4,6 +4,8 @@ import Map from '../Components/map';
 
 import Store from '../Store/configureStore';
 import { Provider } from 'react-redux';
+import renderer from 'react-test-renderer';
+
 
 const navigationTest = {
     navigate: (test) => jest.fn()
@@ -72,5 +74,20 @@ describe('Map', () => {
             </Provider>)
             expect(component).toMatchSnapshot()
         });
+
+        //test('test render Map', () => {
+        //    renderer.create(
+        //        <Provider store={Store}>
+        //            <Map 
+        //                navigation={navigationTest}
+        //                dispatch={dispatchtest}
+        //                position={positionTest}
+        //                height={310}
+        //                width={310}
+        //                deltaView={deltaviewTest}
+        //                waypoints={waypointTest}
+        //            />
+        //        </Provider>)
+        //  })
     });
 });

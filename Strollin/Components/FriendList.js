@@ -173,6 +173,7 @@ function FriendList(props) {
         <View>
           <Button
             title={I18n.t('addFriend')}
+            id={'testButton'}
             color="#89B3D9"
             onPress={() => {
               addFriend(value, Friend, onChangeFriend);
@@ -183,6 +184,7 @@ function FriendList(props) {
         <View>
           <TextInput
             underlineColorAndroid="black"
+            id={'testTextInput'}
             autoCapitalize="none"
             onChangeText={(text) => {
               onChangeText(text);

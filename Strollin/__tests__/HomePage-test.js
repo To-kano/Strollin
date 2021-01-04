@@ -4,6 +4,8 @@ import HomePage from '../Components/HomePage';
 
 import Store from '../Store/configureStore';
 import { Provider } from 'react-redux';
+import renderer from 'react-test-renderer';
+
 
 const navigationTest = {
     navigate: (test) => jest.fn()
@@ -21,5 +23,13 @@ describe('HomePage', () => {
             )
             expect(component).toMatchSnapshot()
         });
+
+        test('test render HomePage', () => {
+            renderer.create(
+                <Provider store={Store}>
+                    <HomePage navigation={navigationTest} dispatch={dispatchTest} />
+                </Provider>
+                )
+          })
     });
 });

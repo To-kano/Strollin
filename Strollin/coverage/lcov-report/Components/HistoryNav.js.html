@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">14.29% </span>
+                <span class="strong">18.18% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>2/14</span>
+                <span class='fraction'>2/11</span>
             </div>
         
             
@@ -39,14 +39,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/10</span>
+                <span class='fraction'>0/9</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">15.38% </span>
+                <span class="strong">20% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>2/13</span>
+                <span class='fraction'>2/10</span>
             </div>
         
             
@@ -227,7 +227,8 @@
 <a name='L168'></a><a href='#L168'>168</a>
 <a name='L169'></a><a href='#L169'>169</a>
 <a name='L170'></a><a href='#L170'>170</a>
-<a name='L171'></a><a href='#L171'>171</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L171'></a><a href='#L171'>171</a>
+<a name='L172'></a><a href='#L172'>172</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -238,9 +239,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -348,6 +349,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -408,20 +410,20 @@ import I18n from '../Translation/configureTrans';
 import Box from './box';
 &nbsp;
 function <span class="fstat-no" title="function not covered" >HistoryNav(</span>{ navigation, map }) {
-<span class="cstat-no" title="statement not covered" >  React.useLayoutEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    navigation;</span>
-<span class="cstat-no" title="statement not covered" >    navigation.setOptions({</span>
-      // headerRight: () =&gt; (
-      //   &lt;Button
-      //       title="Log Out"
-      //       color="#89B3D9"
-      //       onPress={() =&gt;
-      //         props.navigation.navigate('userLogin')
-      //       }
-      //     /&gt;
-      // ),
-    });
-  }, [navigation]);
+  //React.useLayoutEffect(() =&gt; {
+  //  navigation;
+  //  navigation.setOptions({
+  //    // headerRight: () =&gt; (
+  //    //   &lt;Button
+  //    //       title="Log Out"
+  //    //       color="#89B3D9"
+  //    //       onPress={() =&gt;
+  //    //         props.navigation.navigate('userLogin')
+  //    //       }
+  //    //     /&gt;
+  //    // ),
+  //  });
+  //}, [navigation]);
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  return (</span>
     &lt;View style={styles.back}&gt;
@@ -446,7 +448,7 @@ function <span class="fstat-no" title="function not covered" >HistoryNav(</span>
             style={{
               marginTop: '10%', height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'
             }}
-            source={require('../ressources/plus.png')}
+            source={require('../ressources/trip.png')}
           /&gt;
         &lt;/TouchableOpacity&gt;
         &lt;TouchableOpacity
@@ -542,7 +544,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    flex: 1,
+    flex: 0.90,
     backgroundColor: '#FFFFFF',
     padding: 5,
     marginTop: 10,
@@ -555,10 +557,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    flex: 0.1,
+    flex: 0.082,
     width: '100%',
   },
   newTrip: {
+    flex: 0.65,
     alignItems: 'center',
     backgroundColor: '#F07323',
     paddingVertical: '5%',
@@ -574,7 +577,7 @@ const styles = StyleSheet.create({
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Sun Jan 03 2021 21:28:05 GMT+0100 (Central European Standard Time)
+                at Mon Jan 04 2021 11:37:56 GMT+0100 (Central European Standard Time)
             </div>
         </div>
         <script src="../prettify.js"></script>

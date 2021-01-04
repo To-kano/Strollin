@@ -1,9 +1,13 @@
 import React from 'react';
 import {shallow} from 'enzyme';
+
+
 import HistoryNav from '../Components/HistoryNav';
 
 import Store from '../Store/configureStore';
 import { Provider } from 'react-redux';
+import renderer from 'react-test-renderer';
+
 
 const historyNavTest1 = {
     id: "1",
@@ -79,5 +83,14 @@ describe('HistoryNav', () => {
             )
             expect(component).toMatchSnapshot()
         });
+
+        //test('test render HistoryNav', () => {
+        //    renderer.create(
+        //        <Provider store={Store}>
+        //            <HistoryNav map={mapTest} navigation={navigationTest} />
+        //        </Provider>
+        //        )
+        //  })
+
     });
 });

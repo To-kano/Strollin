@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/11</span>
+                <span class='fraction'>11/11</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/6</span>
+                <span class='fraction'>6/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/2</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/8</span>
+                <span class='fraction'>8/8</span>
             </div>
         
             
@@ -55,7 +55,7 @@
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -88,19 +88,19 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -114,20 +114,20 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { useState } from 'react';
 import { Image } from 'react-native';
 &nbsp;
-function <span class="fstat-no" title="function not covered" >RandPic(</span>) {
-  const nb = <span class="cstat-no" title="statement not covered" >Math.floor(Math.random() * 3) + 1;</span>
-  let img = <span class="cstat-no" title="statement not covered" >'';</span>
+function RandPic() {
+  const nb = Math.floor(Math.random() * 3) + 1;
+  let img = '';
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  if (nb == 1) <span class="cstat-no" title="statement not covered" >img = require('../ressources/street1.jpg');</span></span>
-<span class="cstat-no" title="statement not covered" >  if (nb == 2) <span class="cstat-no" title="statement not covered" >img = require('../ressources/street2.jpeg');</span></span>
-<span class="cstat-no" title="statement not covered" >  if (nb == 3) <span class="cstat-no" title="statement not covered" >img = require('../ressources/plum2.jpg');</span></span>
-<span class="cstat-no" title="statement not covered" >  return img;</span>
+  if (nb == 1) img = require('../ressources/street1.jpg');
+  if (nb == 2) img = require('../ressources/street2.jpeg');
+  if (nb == 3) img = require('../ressources/plum2.jpg');
+  return img;
 }
 &nbsp;
-function <span class="fstat-no" title="function not covered" >BackgroundImage(</span>props) {
-  const [Img, onChangeImg] = <span class="cstat-no" title="statement not covered" >useState(RandPic());</span>
+function BackgroundImage(props) {
+  const [Img, onChangeImg] = useState(RandPic());
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  return (</span>
+  return (
     &lt;Image
       style={{
         width: '100%', height: '100%', resizeMode: 'cover', position: 'absolute'
@@ -145,7 +145,7 @@ export default BackgroundImage;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Sun Jan 03 2021 21:28:05 GMT+0100 (Central European Standard Time)
+                at Mon Jan 04 2021 11:37:56 GMT+0100 (Central European Standard Time)
             </div>
         </div>
         <script src="../prettify.js"></script>

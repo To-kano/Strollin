@@ -4,6 +4,8 @@ import TagSelection from '../Components/TagSelection';
 
 import Store from '../Store/configureStore';
 import { Provider } from 'react-redux';
+import renderer from 'react-test-renderer';
+
 
 
 const navigationTest = {
@@ -26,5 +28,13 @@ describe('TagSelection', () => {
             )
             expect(component).toMatchSnapshot()
         });
+
+        test('test render TagSelection', () => {
+            renderer.create(
+                <Provider store={Store}>
+                    <TagSelection navigation={navigationTest} profil={profilTest} />
+                </Provider>
+                )
+          })
     });
 });

@@ -5,6 +5,9 @@ import TripNavigation from '../Components/TripNavigation';
 import Store from '../Store/configureStore';
 import { Provider } from 'react-redux';
 
+import renderer from 'react-test-renderer';
+
+
 const navigationTest = {
     navigate: (test) => jest.fn()
 }
@@ -104,5 +107,14 @@ describe('TripNavigation', () => {
             </Provider>)
             expect(component).toMatchSnapshot()
         });
+
+        //test('test render TripNavigation', () => {
+        //  renderer.create(
+        //    <Provider store={Store}>
+        //        <TripNavigation navigation={navigationTest}
+        //            dispatch={dispatchtest}
+        //            map={mapTest} />
+        //    </Provider>)
+        //})
     });
 });

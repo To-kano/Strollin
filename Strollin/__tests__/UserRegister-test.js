@@ -5,6 +5,9 @@ import UserRegister from '../Components/UserRegister';
 import Store from '../Store/configureStore';
 import { Provider } from 'react-redux';
 
+import renderer from 'react-test-renderer';
+
+
 const navigationTest = {
     navigate: (test) => jest.fn(),
     setOptions: (test) => jest.fn()
@@ -21,5 +24,12 @@ describe('UserRegister', () => {
             </Provider>)
             expect(component).toMatchSnapshot()
         });
+
+        test('test render UserRegister', () => {
+            renderer.create(
+                <Provider store={Store}>
+                    <UserRegister dispatch={dispatchtest} navigation={navigationTest}/>
+                </Provider>)
+          })
     });
 });

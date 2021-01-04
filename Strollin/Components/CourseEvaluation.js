@@ -40,7 +40,7 @@ function ratingCompleted(rating, comment) {
     });
 }
 
-function CourseEvaluation(props) {
+export function CourseEvaluation(props) {
   const [comment, setComment] = useState('');
   const [rating, setRating] = useState('');
 
@@ -77,6 +77,7 @@ function CourseEvaluation(props) {
       </View>
       <View>
         <TouchableOpacity
+          id={'test'}
           style={styles.newTrip}
           onPress={() => {
             ratingCompleted(rating, comment, );

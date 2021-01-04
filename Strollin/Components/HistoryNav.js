@@ -9,20 +9,20 @@ import I18n from '../Translation/configureTrans';
 import Box from './box';
 
 function HistoryNav({ navigation, map }) {
-  React.useLayoutEffect(() => {
-    navigation;
-    navigation.setOptions({
-      // headerRight: () => (
-      //   <Button
-      //       title="Log Out"
-      //       color="#89B3D9"
-      //       onPress={() =>
-      //         props.navigation.navigate('userLogin')
-      //       }
-      //     />
-      // ),
-    });
-  }, [navigation]);
+  //React.useLayoutEffect(() => {
+  //  navigation;
+  //  navigation.setOptions({
+  //    // headerRight: () => (
+  //    //   <Button
+  //    //       title="Log Out"
+  //    //       color="#89B3D9"
+  //    //       onPress={() =>
+  //    //         props.navigation.navigate('userLogin')
+  //    //       }
+  //    //     />
+  //    // ),
+  //  });
+  //}, [navigation]);
 
   return (
     <View style={styles.back}>

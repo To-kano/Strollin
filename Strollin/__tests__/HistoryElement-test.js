@@ -34,7 +34,7 @@ const historyNavTest = {
 describe('HistoryElement', () => {
     describe('Rendering', () => {
         it('should match to snapshot', () => {
-            const component = shallow(<HistoryElement data={historyNavTest}/>)
+            const component = shallow(<HistoryElement data={historyNavTest.waypoints}/>)
             expect(component).toMatchSnapshot()
         });
     });

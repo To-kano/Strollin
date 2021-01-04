@@ -1,6 +1,6 @@
 
   
-  const setDefaultLanguage = jest.fn();
+  const setDefaultLanguage = (test) =>jest.fn();
   const speak = jest.fn();
   
   export {

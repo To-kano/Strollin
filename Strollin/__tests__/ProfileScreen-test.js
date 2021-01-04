@@ -4,6 +4,8 @@ import ProfileScreen from '../Components/ProfileScreen';
 
 import Store from '../Store/configureStore';
 import { Provider } from 'react-redux';
+import renderer from 'react-test-renderer';
+
 
 const navigationTest = {
     navigate: (test) => jest.fn(),
@@ -27,5 +29,15 @@ describe('ProfileScreen', () => {
             )
             expect(component).toMatchSnapshot()
         });
+
+        test('test render ProfileScreen', () => {
+            renderer.create(
+                <Provider store={Store}>
+                <ProfileScreen 
+                    navigation={navigationTest}
+                    profil={profilTest}/>
+                </Provider>
+                )
+          })
     });
 });

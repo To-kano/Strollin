@@ -4,6 +4,8 @@ import Socket from '../Components/Socket';
 
 import Store from '../Store/configureStore';
 import { Provider } from 'react-redux';
+import renderer from 'react-test-renderer';
+
 
 const profilTest = {
     access_token : "vjwhvjhkvjhwkvhjgdkw"
@@ -20,5 +22,12 @@ describe('Socket', () => {
             </Provider>)
             expect(component).toMatchSnapshot()
         });
+
+        test('test render socket', () => {
+            renderer.create(
+                <Provider store={Store}>
+                    <Socket profil={profilTest} dispatch={dispatchTest}/>
+                </Provider>)
+          })
     });
 });

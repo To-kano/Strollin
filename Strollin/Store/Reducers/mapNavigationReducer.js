@@ -1,7 +1,28 @@
 import { IP_SERVER, PORT_SERVER } from '../../env/Environement';
 
 const initialState = {
-  waypoints: [],
+  waypoints: [
+    {
+      id: '1',
+      latitude: 48.798683,
+      longitude: 2.446183,
+      address: '6 Rue Thomas Edison, 94000 Créteil',
+      name: 'Centre Sportif Marie-Thérèse Eyquem',
+    },
+    {
+      id: '2',
+      latitude: 48.780627,
+      longitude: 2.457364,
+      address: 'Centre commercial Créteil Soleil, 101 Avenue du Général de Gaulle, 94012 Créteil',
+      name: 'Restaurant Flunch Creteil Soleil',
+    }, {
+      id: '3',
+      latitude: 48.790379,
+      longitude: 2.465619,
+      address: '75 Avenue Pierre Brossolette, 94000 Creteil village',
+      name: 'Le Foz Club discothèque',
+    }
+  ],
   historic: [],
   allTime: []
 };
