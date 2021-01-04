@@ -30,9 +30,9 @@ function ratingCompleted(rating, comment) {
     .then((response) => response.json())
     .then(async (answer) => {
       if (answer.status == true) {
-        console.log("comment sent successfully");
+        //console.log("comment sent successfully");
       } else {
-        console.log("answer = ", answer);
+        //console.log("answer = ", answer);
       }
     })
     .catch((error) => {

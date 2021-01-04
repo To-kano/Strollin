@@ -60,7 +60,7 @@ const group = [
   }
 ];
 
-function getFriend(group, friend) {
+export function getFriend(group, friend) {
   const userAdd = [];
   for (let i = 0; i < group.friend.length; i += 1) {
     for (let j = 0; j < friend.length; j += 1) {
@@ -132,7 +132,7 @@ const ItemFriend = ({ friend, func, group }) => (
   </View>
 );
 
-const Item = ({ title, friend, func }) => (
+export const Item = ({ title, friend, func }) => (
   <View style={styles.item}>
     <Text style={styles.title}>{title}</Text>
     <Button
@@ -145,7 +145,7 @@ const Item = ({ title, friend, func }) => (
   </View>
 );
 
-function deleteFriend(title, friend, func) {
+export function deleteFriend(title, friend, func) {
   const userAdd = friend.filter((item) => title != item.name);
 
   //console.log(userAdd);
@@ -153,7 +153,7 @@ function deleteFriend(title, friend, func) {
   func(userAdd);
 }
 
-function addFriend(value, friend, func) {
+export function addFriend(value, friend, func) {
   const userAdd = User.filter((item) => value == item.name);
 
   //console.log(userAdd);
