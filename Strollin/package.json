@@ -61,16 +61,19 @@
     "jest": "^25.4.0",
     "jest-environment-enzyme": "^7.1.2",
     "jest-enzyme": "^7.1.2",
+    "jest-fetch-mock": "^3.0.3",
     "metro-react-native-babel-preset": "^0.59.0",
     "react-dom": "^17.0.1",
     "react-test-renderer": "16.11.0"
   },
   "jest": {
-    "presets": ["react-native"],
+    "presets": [
+      "react-native"
+    ],
     "setupTestFrameworkScriptFile": "jest-enzyme",
     "testEnvironment": "enzyme",
     "testEnvironmentOptions": {
-    "enzymeAdapter": "react16"
-    }  
-}
+      "enzymeAdapter": "react16"
+    }
+  }
 }
