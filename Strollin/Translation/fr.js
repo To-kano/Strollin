@@ -50,5 +50,11 @@ export default {
   showStep : 'Afficher les étapes',
   Share : 'Partager',
   PublishOnFacebook : 'Publier sur Facebook',
-  feedback : 'Donnez nous votre avis'
+  feedback : 'Donnez nous votre avis',
+  by: 'par',
+  feedback: "Donnez nous votre avis",
+  step2: "Etape",
+  or: "OU",
+  UorM: "Nom d'utilisateur ou mail",
+  password2: 'Mot de passe',
 };

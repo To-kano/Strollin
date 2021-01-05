@@ -112,7 +112,7 @@ function TripSuggestion(props) {
     Tts.setDefaultLanguage('en-US');
 
     for (let i = 0; i < waypoints.length; i++) {
-      Tts.speak(`Step ${i + 1}`);
+      Tts.speak(`${I18n.t("step2")} ${i + 1}`);
       Tts.speak(waypoints[i].name);
     }
   }, [waypoints]);
