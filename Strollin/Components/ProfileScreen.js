@@ -19,7 +19,7 @@ function ParseTags(Tags) {
   return list;
 }
 
-function ProfileScreen(props) {
+export function ProfileScreen(props) {
   // //console.log('json: ', json.Tags)
   const list = ParseTags(json.Tags);
 

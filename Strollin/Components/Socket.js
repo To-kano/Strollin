@@ -13,7 +13,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 
 
-const getProfilCache = async (dispatch) => {
+export async function getProfilCache(dispatch) {
   try {
     let jsonValue = await AsyncStorage.getItem('cache_profile');
 
@@ -24,7 +24,7 @@ const getProfilCache = async (dispatch) => {
       dispatch(action);
     }
   } catch (e) {
-    //console.log('echec store profile ', e);
+    console.log('echec store profile ', e);
   }
 };
 

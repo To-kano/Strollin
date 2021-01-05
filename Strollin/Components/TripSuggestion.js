@@ -91,20 +91,20 @@ function getNavigation() {
   return allDestination[rand];
 }
 
-function TripSuggestion(props) {
-  React.useLayoutEffect(() => {
-    props.navigation.setOptions({
-      // headerRight: () => (
-      //   <Button
-      //       title="Log Out"
-      //       color="#89B3D9"
-      //       onPress={() =>
-      //         props.navigation.navigate('userLogin')
-      //       }
-      //     />
-      // ),
-    });
-  }, [props.navigation]);
+export function TripSuggestion(props) {
+  //React.useLayoutEffect(() => {
+  //  props.navigation.setOptions({
+  //    // headerRight: () => (
+  //    //   <Button
+  //    //       title="Log Out"
+  //    //       color="#89B3D9"
+  //    //       onPress={() =>
+  //    //         props.navigation.navigate('userLogin')
+  //    //       }
+  //    //     />
+  //    // ),
+  //  });
+  //}, [props.navigation]);
 
   const [waypoints, setWaypoints] = useState(getNavigation());
 

@@ -14,7 +14,7 @@ const imageFriend = require('../ressources/friend.png');
 // const imageHistory = require('../ressources/history.png');
 const imageProfile = require('../ressources/profile.png');
 
-function setSortedTendanceData(tag) {
+export function setSortedTendanceData(tag) {
   const store = Store.getState();
   var sortedData = [];
   var i = 0;
@@ -37,7 +37,7 @@ function setSortedTendanceData(tag) {
   Store.dispatch(action);
 }
 
-function getData() {
+export function getData() {
   const store = Store.getState();
 
   if (store.tendance.sortedTendanceList.length > 0) {
@@ -47,7 +47,7 @@ function getData() {
   }
 }
 
-function HomePage(props) {
+export function HomePage(props) {
   //console.log('HomePage');
   return (
     <View style={styles.back}>

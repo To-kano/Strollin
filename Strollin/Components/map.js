@@ -13,7 +13,7 @@ import I18n from '../Translation/configureTrans';
 
 // AIzaSyB2twbHyNnN0rJWw4731l9rOjEgANYLrQU
 
-async function updateCoordinates(setUserPosition) {
+export async function updateCoordinates(setUserPosition) {
   Geolocation.getCurrentPosition(
     (position) => {
       const data = {
@@ -30,7 +30,7 @@ async function updateCoordinates(setUserPosition) {
   );
 }
 
-async function requestGeolocalisationPermission(props) {
+export async function requestGeolocalisationPermission(props) {
   try {
     const granted = await PermissionsAndroid.request(
       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
@@ -42,7 +42,7 @@ async function requestGeolocalisationPermission(props) {
         buttonPositive: I18n.t('ok'),
       },
     );
-    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+    if (PermissionsAndroid.RESULTS && granted === PermissionsAndroid.RESULTS.GRANTED) {
       const action = { type: 'SET_PERMISSION', value: true };
       props.dispatch(action);
       // //console.log('You can use the geolocalisation');

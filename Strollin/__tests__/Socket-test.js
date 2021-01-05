@@ -1,10 +1,11 @@
 import React from 'react';
 import {shallow} from 'enzyme';
-import Socket from '../Components/Socket';
+import Socket, { getProfilCache } from '../Components/Socket';
 
 import Store from '../Store/configureStore';
 import { Provider } from 'react-redux';
 import renderer from 'react-test-renderer';
+import { act } from 'react-dom/test-utils';
 
 
 const profilTest = {
@@ -28,6 +29,11 @@ describe('Socket', () => {
                 <Provider store={Store}>
                     <Socket profil={profilTest} dispatch={dispatchTest}/>
                 </Provider>)
+          })
+
+          it('test getProfileCace',async () => {
+
+                await getProfilCache(dispatchTest);
           })
     });
 });

@@ -1,11 +1,14 @@
 import React from 'react';
 import {shallow} from 'enzyme';
-import TagSelection from '../Components/TagSelection';
+import ConnectedTagSelection, {Tag, TagSelection} from '../Components/TagSelection';
 
 import Store from '../Store/configureStore';
 import { Provider } from 'react-redux';
 import renderer from 'react-test-renderer';
 
+import {
+    StyleSheet, Text, View, Button, FlatList, TouchableOpacity
+} from 'react-native';
 
 
 const navigationTest = {
@@ -23,7 +26,7 @@ describe('TagSelection', () => {
         it('should match to snapshot', () => {
             const component = shallow(
             <Provider store={Store}>
-                <TagSelection navigation={navigationTest} profil={profilTest} />
+                <ConnectedTagSelection navigation={navigationTest} profil={profilTest} />
             </Provider>
             )
             expect(component).toMatchSnapshot()
@@ -32,9 +35,52 @@ describe('TagSelection', () => {
         test('test render TagSelection', () => {
             renderer.create(
                 <Provider store={Store}>
-                    <TagSelection navigation={navigationTest} profil={profilTest} />
+                    <ConnectedTagSelection navigation={navigationTest} profil={profilTest} />
                 </Provider>
                 )
           })
+
+          it('handles button', () => {
+
+            const wrapper =  shallow(
+                    <Tag />
+            );
+
+            expect(wrapper.find(Button).length).toBe(1);
+
+            wrapper
+            .find(Button)
+            .at(0)
+            .props()
+            .onPress()
+
+            const wrapper2 =  shallow(
+                <Tag defaultState={true}/>
+            );
+
+            expect(wrapper2.find(Button).length).toBe(1);
+
+            wrapper2
+            .find(Button)
+            .at(0)
+            .props()
+            .onPress()
+
+
+            const wrapper3 =  shallow(
+                <TagSelection 
+                navigation={navigationTest} 
+                profil={profilTest}/>
+            );
+
+            expect(wrapper3.find(TouchableOpacity).length).toBe(1);
+
+            wrapper3
+            .find(TouchableOpacity)
+            .at(0)
+            .props()
+            .onPress()
+      
+          });
     });
 });

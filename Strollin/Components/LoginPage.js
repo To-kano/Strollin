@@ -51,7 +51,7 @@ const getInfoFromToken = (token, setUserInfo, props) => {
   new GraphRequestManager().addRequest(profileRequest).start();
 };
 
-function LoginPage(props) {
+export function LoginPage(props) {
   const [value, onChangeText] = React.useState('');
   const [valuePass, onChangePass] = React.useState('');
   const [Img, onChangeImg] = React.useState(RandPic());

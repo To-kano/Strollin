@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">18.18% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>2/11</span>
+                <span class='fraction'>11/11</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/9</span>
+                <span class='fraction'>9/9</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">20% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>2/10</span>
+                <span class='fraction'>10/10</span>
             </div>
         
             
@@ -55,7 +55,7 @@
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -254,13 +254,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -271,7 +271,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -282,7 +282,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -293,7 +293,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -304,7 +304,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -318,7 +318,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -335,7 +335,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -409,7 +409,7 @@ import BackgroundImage from './backgroundImage';
 import I18n from '../Translation/configureTrans';
 import Box from './box';
 &nbsp;
-function <span class="fstat-no" title="function not covered" >HistoryNav(</span>{ navigation, map }) {
+export function HistoryNav({ navigation, map }) {
   //React.useLayoutEffect(() =&gt; {
   //  navigation;
   //  navigation.setOptions({
@@ -418,20 +418,20 @@ function <span class="fstat-no" title="function not covered" >HistoryNav(</span>
   //    //       title="Log Out"
   //    //       color="#89B3D9"
   //    //       onPress={() =&gt;
-  //    //         props.navigation.navigate('userLogin')
+  //    //         navigation.navigate('userLogin')
   //    //       }
   //    //     /&gt;
   //    // ),
   //  });
   //}, [navigation]);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  return (</span>
+  return (
     &lt;View style={styles.back}&gt;
       &lt;BackgroundImage /&gt;
       &lt;View style={styles.header}&gt;
         &lt;TouchableOpacity
           style={{ width: '20%', height: '100%', marginLeft: 15 }}
-          onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >navigation.navigate('HomePage')}</span>
+          onPress={() =&gt; navigation.navigate('HomePage')}
         &gt;
           &lt;Image
             style={{
@@ -442,7 +442,7 @@ function <span class="fstat-no" title="function not covered" >HistoryNav(</span>
         &lt;/TouchableOpacity&gt;
         &lt;TouchableOpacity
           style={{ width: '20%', height: '100%' }}
-          onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >navigation.navigate('historicUser')}</span>
+          onPress={() =&gt; navigation.navigate('historicUser')}
         &gt;
           &lt;Image
             style={{
@@ -453,7 +453,7 @@ function <span class="fstat-no" title="function not covered" >HistoryNav(</span>
         &lt;/TouchableOpacity&gt;
         &lt;TouchableOpacity
           style={{ width: '20%', height: '100%' }}
-          onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >navigation.navigate('TripSuggestion')}</span>
+          onPress={() =&gt; navigation.navigate('TripSuggestion')}
         &gt;
           &lt;Image
             style={{
@@ -464,7 +464,7 @@ function <span class="fstat-no" title="function not covered" >HistoryNav(</span>
         &lt;/TouchableOpacity&gt;
         &lt;TouchableOpacity
           style={{ width: '20%', height: '100%' }}
-          onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >props.navigation.navigate('FriendList')}</span>
+          onPress={() =&gt; navigation.navigate('FriendList')}
         &gt;
           &lt;Image
             style={{
@@ -475,7 +475,7 @@ function <span class="fstat-no" title="function not covered" >HistoryNav(</span>
         &lt;/TouchableOpacity&gt;
         &lt;TouchableOpacity
           style={{ width: '20%', height: '100%' }}
-          onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >navigation.navigate('Profile')}</span>
+          onPress={() =&gt; navigation.navigate('Profile')}
         &gt;
           &lt;Image
             style={{
@@ -488,8 +488,8 @@ function <span class="fstat-no" title="function not covered" >HistoryNav(</span>
       &lt;View style={styles.fill}&gt;
         &lt;FlatList
           data={map.historic}
-          renderItem={<span class="fstat-no" title="function not covered" >({</span> item }) =&gt; (
-<span class="cstat-no" title="statement not covered" >            &lt;View style={{ padding: 10 }}&gt;</span>
+          renderItem={({ item }) =&gt; (
+            &lt;View style={{ padding: 10 }}&gt;
               &lt;Text&gt;
                 date:
                 {item.date}
@@ -506,7 +506,7 @@ function <span class="fstat-no" title="function not covered" >HistoryNav(</span>
       &lt;View style={{ flex: 0.10, flexDirection: 'column', margin: '5%' }}&gt;
         &lt;TouchableOpacity
           style={styles.newTrip}
-          onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >navigation.navigate('TripSuggestion')}</span>
+          onPress={() =&gt; navigation.navigate('TripSuggestion')}
         &gt;
           &lt;Text style={{ fontSize: 16, color: '#FFFFFF' }}&gt; New trip &lt;/Text&gt;
         &lt;/TouchableOpacity&gt;
@@ -515,7 +515,7 @@ function <span class="fstat-no" title="function not covered" >HistoryNav(</span>
   );
 }
 &nbsp;
-const mapStateToProps = <span class="fstat-no" title="function not covered" >(s</span>tate) =&gt; <span class="cstat-no" title="statement not covered" >state;</span>
+const mapStateToProps = (state) =&gt; state;
 &nbsp;
 export default connect(mapStateToProps)(HistoryNav);
 &nbsp;
@@ -577,7 +577,7 @@ const styles = StyleSheet.create({
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Mon Jan 04 2021 15:58:26 GMT+0100 (Central European Standard Time)
+                at Tue Jan 05 2021 03:02:51 GMT+0100 (Central European Standard Time)
             </div>
         </div>
         <script src="../prettify.js"></script>

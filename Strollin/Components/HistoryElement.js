@@ -7,9 +7,9 @@ import {ShareDialog} from 'react-native-fbsdk';
 import Map from './map';
 import I18n from '../Translation/configureTrans';
 
-function ElementHistoryNav({ data }) {
+function ElementHistoryNav({ data, defaultSate = false }) {
   const messagetext = `Strollin' m'a proposé un trajet ! \nRejoignons nous a ${data[0].name} au ${data[0].address} !`;
-  const [showMap, setShowMap] = useState(false);
+  const [showMap, setShowMap] = useState(defaultSate);
 
   const deltaView = {
     latitudeDelta: 0.1622,
@@ -45,6 +45,7 @@ function ElementHistoryNav({ data }) {
         <View style={{ width: '100%', flexDirection: 'row', flex: 1 }}>
           <View style={{ flex: 0.5, marginLeft: '5%', marginRight: '5%' }}>
             <Button
+              id={"button map"}
               title={I18n.t('showMap')}
               color="#89B3D9"
               onPress={() => setShowMap(!showMap)}
@@ -75,13 +76,14 @@ function ElementHistoryNav({ data }) {
         <View style={{ width: '100%', flexDirection: 'row', flex: 0.4 }}>
           <View style={{ flex: 0.66, marginLeft: '2%', marginRight: '2%' }}>
             <Button
+            id={"button share 1"}
               onPress={() => {
                 const shareLinkContent = {
                   contentType: 'link',
                   contentUrl: 'https://www.google.com',
                   quote: messagetext,
                 };
-                ShareDialog.show(shareLinkContent);
+                //ShareDialog.show(shareLinkContent);
               }}
               title={I18n.t('PublishOnFacebook')}
               color="#3b5998"
@@ -90,6 +92,7 @@ function ElementHistoryNav({ data }) {
           </View>
           <View style={{ flex: 0.33, marginLeft: '2%', marginRight: '2%' }}>
             <Button
+              id={"button share 2"}
               onPress={() => {
                 Share.share({
                   message: messagetext,
@@ -122,6 +125,7 @@ function ElementHistoryNav({ data }) {
       <View style={{ width: '100%', flexDirection: 'row', flex: 0.6 }}>
         <View style={{ flex: 1, marginLeft: '5%', marginRight: '5%' }}>
           <Button
+            id={"button map"}
             title={I18n.t('showStep')}
             color="#89B3D9"
             onPress={() => setShowMap(!showMap)}
@@ -136,13 +140,14 @@ function ElementHistoryNav({ data }) {
       <View style={{ width: '100%', flexDirection: 'row', flex: 0.4 }}>
         <View style={{ flex: 0.66, marginLeft: '2%', marginRight: '2%' }}>
           <Button
+          id={"button share 1"}
             onPress={() => {
-              const shareLinkContent = {
-                contentType: 'link',
-                contentUrl: 'https://www.google.com',
-                quote: messagetext,
-              };
-              ShareDialog.show(shareLinkContent);
+              //const shareLinkContent = {
+              //  contentType: 'link',
+              //  contentUrl: 'https://www.google.com',
+              //  quote: messagetext,
+              //};
+              //ShareDialog.show(shareLinkContent);
             }}
             title={I18n.t('PublishOnFacebook')}
             color="#3b5998"
@@ -151,19 +156,20 @@ function ElementHistoryNav({ data }) {
         </View>
         <View style={{ flex: 0.33, marginLeft: '2%', marginRight: '2%' }}>
           <Button
+          id={"button share 2"}
             onPress={() => {
-              Share.share({
-                message: messagetext,
-                title: "Sortir avec Strollin'",
-                url: 'https://www.google.com',
-              }, {
-                // Android only:
-                dialogTitle: 'Share Strollin travel',
-                // iOS only:
-                excludedActivityTypes: [
-                  'com.apple.UIKit.activity.PostToTwitter'
-                ]
-              });
+              //Share.share({
+              //  message: messagetext,
+              //  title: "Sortir avec Strollin'",
+              //  url: 'https://www.google.com',
+              //}, {
+              //  // Android only:
+              //  dialogTitle: 'Share Strollin travel',
+              //  // iOS only:
+              //  excludedActivityTypes: [
+              //    'com.apple.UIKit.activity.PostToTwitter'
+              //  ]
+              //});
             }}
             title={I18n.t('Share')}
             color="#3b5998"

@@ -1,6 +1,10 @@
 import React from 'react';
 import {shallow} from 'enzyme';
-import TripNavigation from '../Components/TripNavigation';
+import ConnectedTripNavigation, {TripNavigation} from '../Components/TripNavigation';
+
+import {
+  StyleSheet, AppState, View, Text, Button, BackHandler, Image, TouchableOpacity
+} from 'react-native';
 
 import Store from '../Store/configureStore';
 import { Provider } from 'react-redux';
@@ -101,20 +105,80 @@ describe('TripNavigation', () => {
         it('should match to snapshot', () => {
             const component = shallow(
             <Provider store={Store}>
-                <TripNavigation navigation={navigationTest}
+                <ConnectedTripNavigation navigation={navigationTest}
                     dispatch={dispatchtest}
                     map={mapTest} />
             </Provider>)
             expect(component).toMatchSnapshot()
         });
 
-        //test('test render TripNavigation', () => {
-        //  renderer.create(
-        //    <Provider store={Store}>
-        //        <TripNavigation navigation={navigationTest}
-        //            dispatch={dispatchtest}
-        //            map={mapTest} />
-        //    </Provider>)
-        //})
+        it('handles button', async () => {
+
+          const wrapper =  shallow(
+                  <TripNavigation
+                  navigation={navigationTest}
+                  dispatch={dispatchtest}
+                  map={mapTest}
+                   />
+          );
+
+          expect(wrapper.find(TouchableOpacity).length).toBe(6);
+
+          wrapper
+          .find(TouchableOpacity)
+          .at(0)
+          .props()
+          .onPress()
+
+          wrapper
+          .find(TouchableOpacity)
+          .at(1)
+          .props()
+          .onPress()
+
+          wrapper
+          .find(TouchableOpacity)
+          .at(2)
+          .props()
+          .onPress()
+
+          wrapper
+          .find(TouchableOpacity)
+          .at(3)
+          .props()
+          .onPress()
+
+          wrapper
+          .find(TouchableOpacity)
+          .at(4)
+          .props()
+          .onPress()
+
+          
+
+          
+    
+        });
+
+        it("should ouch last button", async () => {
+
+          const wrapper =  shallow(
+            <TripNavigation
+            navigation={navigationTest}
+            dispatch={dispatchtest}
+            map={mapTest}
+             />
+          );
+  
+          return new Promise(resolve => setImmediate(resolve)).then(() => {
+
+              wrapper
+              .find(TouchableOpacity)
+              .at(5)
+              .props()
+              .onPress()  
+          });
+      });
+
     });
 });

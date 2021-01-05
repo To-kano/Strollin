@@ -1,10 +1,18 @@
 import React from 'react';
 import {shallow} from 'enzyme';
-import Map from '../Components/map';
+import Map, {updateCoordinates, requestGeolocalisationPermission} from '../Components/map';
 
 import Store from '../Store/configureStore';
 import { Provider } from 'react-redux';
 import renderer from 'react-test-renderer';
+
+import { act } from 'react-dom/test-utils';
+
+
+import * as utils from 'react-native';
+
+//jest.spyOn(utils, 'PermissionsAndroid');
+//utils.PermissionsAndroid.request.mockImplementation(() => { (type, description) => "ok" });
 
 
 const navigationTest = {
@@ -74,6 +82,18 @@ describe('Map', () => {
             </Provider>)
             expect(component).toMatchSnapshot()
         });
+
+        //it('should updateCoordinates', () => {
+        //    updateCoordinates(dispatchtest)
+        //});
+//
+        //it('should requestGeolocalisationPermission', () => {
+        //    requestGeolocalisationPermission(
+        //        {
+        //            dispatch: dispatchtest
+        //        }
+        //    )
+        //});
 
         //test('test render Map', () => {
         //    renderer.create(
