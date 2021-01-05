@@ -46,7 +46,7 @@ export function UserRegister(props) {
   const [userLastName, setUserLastName] = useState('');
   const [userInfo, setUserInfo] = React.useState({});
 
-  const [loading, setLoading] = useState(false);
+  //const [loading, setLoading] = useState(false);
 
   // callbackFirstName = (value) => {
   //  setUserFirstName(value);
@@ -54,18 +54,18 @@ export function UserRegister(props) {
 
   //console.log('UserRegister');
 
-  if (loading) {
-    return (
-      <View style={{ flex: 1 }}>
-        <View style={[styles.center, { flex: 1, marginTop: 20 }]}>
-          <RondFormeText text="Strollin'" size={110} />
-        </View>
-        <View style={[styles.center, { flex: 1, marginTop: 20 }]}>
-          <ActivityIndicator size={100} color="purple" />
-        </View>
-      </View>
-    );
-  }
+  //if (loading) {
+  //  return (
+  //    <View style={{ flex: 1 }}>
+  //      <View style={[styles.center, { flex: 1, marginTop: 20 }]}>
+  //        <RondFormeText text="Strollin'" size={110} />
+  //      </View>
+  //      <View style={[styles.center, { flex: 1, marginTop: 20 }]}>
+  //        <ActivityIndicator size={100} color="purple" />
+  //      </View>
+  //    </View>
+  //  );
+  //}
   return (
     <View style={styles.container}>
       <BackgroundImage />

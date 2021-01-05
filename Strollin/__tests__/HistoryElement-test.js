@@ -106,7 +106,7 @@ describe('HistoryElement', () => {
                     });
 
                     it('handles share button 3', () => {
-                        const wrapper =  shallow(<HistoryElement data={historyNavTest.waypoints}/>);
+                        const wrapper =  shallow(<HistoryElement data={historyNavTest.waypoints} defaultSate={true} />);
                     
                         expect(wrapper.find({ id: 'button share 1' }).length).toBe(1);
             
@@ -119,7 +119,7 @@ describe('HistoryElement', () => {
                         });
         
                     it('handles share button 4', () => {
-                        const wrapper =  shallow(<HistoryElement data={historyNavTest.waypoints}/>);
+                        const wrapper =  shallow(<HistoryElement data={historyNavTest.waypoints} defaultSate={true} />);
                     
                         expect(wrapper.find({ id: 'button share 2' }).length).toBe(1);
             

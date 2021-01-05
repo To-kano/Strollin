@@ -16,6 +16,11 @@
   ],
   "coveragePathIgnorePatterns": [
 		"/node_modules/",
-		"/jest"
+    "/jest",
+    "/Store/",
+    "/apiServer",
+    "/Translation",
+    "/Components/map.js",
+    "/Components/Socket.js"
 	]
 }

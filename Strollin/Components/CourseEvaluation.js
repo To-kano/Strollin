@@ -17,27 +17,27 @@ function ratingCompleted(rating, comment) {
     score: rating
   });
 
-  fetch(`http://${IP_SERVER}:${PORT_SERVER}/comment/new_comment`, {
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      access_token: store.profil.access_token,
-      course_id: "5fdb7bf7e846ca001ea9389e",
-    },
-    body: bodyRequest,
-    method: 'post',
-  })
-    .then((response) => response.json())
-    .then(async (answer) => {
-      if (answer.status == true) {
-        //console.log("comment sent successfully");
-      } else {
-        //console.log("answer = ", answer);
-      }
-    })
-    .catch((error) => {
-      console.error('error :', error);
-    });
+  //fetch(`http://${IP_SERVER}:${PORT_SERVER}/comment/new_comment`, {
+  //  headers: {
+  //    Accept: 'application/json',
+  //    'Content-Type': 'application/json',
+  //    access_token: store.profil.access_token,
+  //    course_id: "5fdb7bf7e846ca001ea9389e",
+  //  },
+  //  body: bodyRequest,
+  //  method: 'post',
+  //})
+  //  .then((response) => response.json())
+  //  .then(async (answer) => {
+  //    if (answer.status == true) {
+  //      //console.log("comment sent successfully");
+  //    } else {
+  //      //console.log("answer = ", answer);
+  //    }
+  //  })
+  //  .catch((error) => {
+  //    console.error('error :', error);
+  //  });
 }
 
 export function CourseEvaluation(props) {
