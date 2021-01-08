@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1609814398043" clover="3.2.0">
-  <project timestamp="1609814398044" name="All files">
-    <metrics statements="312" coveredstatements="278" conditionals="54" coveredconditionals="37" methods="155" coveredmethods="135" elements="521" coveredelements="450" complexity="0" loc="312" ncloc="312" packages="4" files="41" classes="41"/>
+<coverage generated="1609856512756" clover="3.2.0">
+  <project timestamp="1609856512756" name="All files">
+    <metrics statements="311" coveredstatements="271" conditionals="54" coveredconditionals="33" methods="154" coveredmethods="129" elements="519" coveredelements="433" complexity="0" loc="311" ncloc="311" packages="4" files="41" classes="41"/>
     <package name="Components">
-      <metrics statements="289" coveredstatements="255" conditionals="50" coveredconditionals="33" methods="155" coveredmethods="135"/>
+      <metrics statements="288" coveredstatements="248" conditionals="50" coveredconditionals="29" methods="154" coveredmethods="129"/>
       <file name="ButtonIcon.js" path="/home/pantoine/EIP/Strollin/Strollin/Components/ButtonIcon.js">
         <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
         <line num="6" count="3" type="stmt"/>
@@ -147,7 +147,7 @@
         <line num="240" count="1" type="stmt"/>
       </file>
       <file name="LoginPage.js" path="/home/pantoine/EIP/Strollin/Strollin/Components/LoginPage.js">
-        <metrics statements="34" coveredstatements="22" conditionals="14" coveredconditionals="6" methods="12" coveredmethods="7"/>
+        <metrics statements="34" coveredstatements="22" conditionals="14" coveredconditionals="4" methods="12" coveredmethods="7"/>
         <line num="15" count="1" type="stmt"/>
         <line num="16" count="1" type="stmt"/>
         <line num="17" count="1" type="stmt"/>
@@ -155,8 +155,8 @@
         <line num="23" count="4" type="stmt"/>
         <line num="24" count="4" type="stmt"/>
         <line num="26" count="4" type="cond" truecount="1" falsecount="1"/>
-        <line num="27" count="4" type="cond" truecount="2" falsecount="0"/>
-        <line num="28" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="27" count="4" type="cond" truecount="1" falsecount="1"/>
+        <line num="28" count="4" type="cond" truecount="1" falsecount="1"/>
         <line num="29" count="4" type="stmt"/>
         <line num="32" count="1" type="stmt"/>
         <line num="33" count="0" type="stmt"/>
@@ -302,7 +302,7 @@
         <line num="257" count="1" type="stmt"/>
       </file>
       <file name="UserRegister.js" path="/home/pantoine/EIP/Strollin/Strollin/Components/UserRegister.js">
-        <metrics statements="29" coveredstatements="17" conditionals="10" coveredconditionals="2" methods="13" coveredmethods="8"/>
+        <metrics statements="28" coveredstatements="10" conditionals="10" coveredconditionals="1" methods="12" coveredmethods="2"/>
         <line num="19" count="1" type="stmt"/>
         <line num="20" count="0" type="stmt"/>
         <line num="25" count="0" type="stmt"/>
@@ -310,36 +310,35 @@
         <line num="33" count="0" type="stmt"/>
         <line num="34" count="0" type="stmt"/>
         <line num="38" count="0" type="stmt"/>
-        <line num="42" count="6" type="stmt"/>
-        <line num="43" count="6" type="stmt"/>
-        <line num="44" count="6" type="stmt"/>
-        <line num="45" count="6" type="stmt"/>
-        <line num="46" count="6" type="stmt"/>
-        <line num="47" count="6" type="stmt"/>
-        <line num="69" count="6" type="stmt"/>
-        <line num="94" count="1" type="stmt"/>
-        <line num="107" count="1" type="stmt"/>
-        <line num="121" count="1" type="stmt"/>
-        <line num="135" count="1" type="stmt"/>
-        <line num="142" count="1" type="cond" truecount="1" falsecount="1"/>
-        <line num="143" count="1" type="stmt"/>
-        <line num="162" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="164" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="167" count="0" type="stmt"/>
-        <line num="168" count="0" type="stmt"/>
-        <line num="169" count="0" type="stmt"/>
-        <line num="173" count="0" type="stmt"/>
-        <line num="194" count="1" type="stmt"/>
-        <line num="202" count="1" type="stmt"/>
-        <line num="252" count="1" type="stmt"/>
+        <line num="42" count="2" type="stmt"/>
+        <line num="43" count="2" type="stmt"/>
+        <line num="44" count="2" type="stmt"/>
+        <line num="45" count="2" type="stmt"/>
+        <line num="46" count="2" type="stmt"/>
+        <line num="47" count="2" type="stmt"/>
+        <line num="69" count="2" type="stmt"/>
+        <line num="94" count="0" type="stmt"/>
+        <line num="107" count="0" type="stmt"/>
+        <line num="122" count="0" type="stmt"/>
+        <line num="129" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="130" count="0" type="stmt"/>
+        <line num="149" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="151" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="154" count="0" type="stmt"/>
+        <line num="155" count="0" type="stmt"/>
+        <line num="156" count="0" type="stmt"/>
+        <line num="160" count="0" type="stmt"/>
+        <line num="181" count="0" type="stmt"/>
+        <line num="189" count="1" type="stmt"/>
+        <line num="239" count="1" type="stmt"/>
       </file>
       <file name="backgroundImage.js" path="/home/pantoine/EIP/Strollin/Strollin/Components/backgroundImage.js">
-        <metrics statements="8" coveredstatements="8" conditionals="6" coveredconditionals="6" methods="2" coveredmethods="2"/>
+        <metrics statements="8" coveredstatements="8" conditionals="6" coveredconditionals="5" methods="2" coveredmethods="2"/>
         <line num="5" count="5" type="stmt"/>
         <line num="6" count="5" type="stmt"/>
         <line num="8" count="5" type="cond" truecount="2" falsecount="0"/>
         <line num="9" count="5" type="cond" truecount="2" falsecount="0"/>
-        <line num="10" count="5" type="cond" truecount="2" falsecount="0"/>
+        <line num="10" count="5" type="cond" truecount="1" falsecount="1"/>
         <line num="11" count="5" type="stmt"/>
         <line num="15" count="5" type="stmt"/>
         <line num="17" count="5" type="stmt"/>
@@ -426,7 +425,7 @@
       </file>
       <file name="plum2.jpg" path="/home/pantoine/EIP/Strollin/Strollin/ressources/plum2.jpg">
         <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-        <line num="1" count="2" type="stmt"/>
+        <line num="1" count="1" type="stmt"/>
       </file>
       <file name="plus.png" path="/home/pantoine/EIP/Strollin/Strollin/ressources/plus.png">
         <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
@@ -438,11 +437,11 @@
       </file>
       <file name="street1.jpg" path="/home/pantoine/EIP/Strollin/Strollin/ressources/street1.jpg">
         <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-        <line num="1" count="3" type="stmt"/>
+        <line num="1" count="5" type="stmt"/>
       </file>
       <file name="street2.jpeg" path="/home/pantoine/EIP/Strollin/Strollin/ressources/street2.jpeg">
         <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-        <line num="1" count="3" type="stmt"/>
+        <line num="1" count="2" type="stmt"/>
       </file>
       <file name="trip.png" path="/home/pantoine/EIP/Strollin/Strollin/ressources/trip.png">
         <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
