@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {
   Button, Image, View, StyleSheet, Text, ScrollView, FlatList
 } from 'react-native';
-import Arti from './arti';
+//import Arti from './arti';
 
 const blank = '{"Tags": ["Tech"], "Title": "blank","Link": "","Image": "","Desc": "","Source": "","Autor": "","Date": ""}';
 

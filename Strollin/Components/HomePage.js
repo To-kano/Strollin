@@ -14,13 +14,13 @@ const imageFriend = require('../ressources/friend.png');
 // const imageHistory = require('../ressources/history.png');
 const imageProfile = require('../ressources/profile.png');
 
-function setSortedTendanceData(tag) {
+export function setSortedTendanceData(tag) {
   const store = Store.getState();
   var sortedData = [];
   var i = 0;
   var j = 0;
 
-  console.log("tag = ", tag)
+  //console.log("tag = ", tag)
   for (i in store.tendance.tendanceList) {
     for (j in store.tendance.tendanceList[i].tag) {
       if (store.tendance.tendanceList[i].tag[j] == tag) {
@@ -29,7 +29,7 @@ function setSortedTendanceData(tag) {
       }
     }
   }
-  console.log("sortedData = ", sortedData);
+  //console.log("sortedData = ", sortedData);
   const action = {
     type: 'SET_SORTED_TENDANCE_LIST',
     value: sortedData
@@ -37,7 +37,7 @@ function setSortedTendanceData(tag) {
   Store.dispatch(action);
 }
 
-function getData() {
+export function getData() {
   const store = Store.getState();
 
   if (store.tendance.sortedTendanceList.length > 0) {
@@ -47,8 +47,8 @@ function getData() {
   }
 }
 
-function HomePage(props) {
-  console.log('HomePage');
+export function HomePage(props) {
+  //console.log('HomePage');
   return (
     <View style={styles.back}>
       <BackgroundImage />

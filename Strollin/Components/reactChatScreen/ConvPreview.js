@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 async function GotoChat(props) {
-  console.log('GOING TO CHAT');
+  //console.log('GOING TO CHAT');
   const action = { type: 'SET_CURRENT_CONVERSATION', value: {id: props.conversationID} };
   props.dispatch(action);
   props.navigation.navigate('ScreenChat');
@@ -22,7 +22,7 @@ function getLastMessage(props) {
 }
 
 function ConvPreview(props) {
-  console.log("props.conversation[props.conversationID] = ", props.conversation[props.conversationID]);
+  //console.log("props.conversation[props.conversationID] = ", props.conversation[props.conversationID]);
   return (
     <TouchableOpacity
       style={styles.button}

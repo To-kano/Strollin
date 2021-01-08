@@ -40,7 +40,7 @@ const getInfoFromToken = (token, setUserInfo, props) => {
     { token, parameters: PROFILE_REQUEST_PARAMS },
     (error, result) => {
       if (error) {
-        // console.log(`login info has error: ${error}`);
+        // //console.log(`login info has error: ${error}`);
       } else {
         // console.log('result:', result);
         setUserInfo(result);
@@ -51,13 +51,13 @@ const getInfoFromToken = (token, setUserInfo, props) => {
   new GraphRequestManager().addRequest(profileRequest).start();
 };
 
-function LoginPage(props) {
+export function LoginPage(props) {
   const [value, onChangeText] = React.useState('');
   const [valuePass, onChangePass] = React.useState('');
   const [Img, onChangeImg] = React.useState(RandPic());
   const [userInfo, setUserInfo] = React.useState({});
 
-  // console.log("LoginPage");
+  // //console.log("LoginPage");
 
   return (
     <View style={styles.back}>
@@ -77,7 +77,7 @@ function LoginPage(props) {
             autoCapitalize="none"
             onChangeText={(text) => {
               onChangeText(text);
-              // console.log(text);
+              // //console.log(text);
             }}
             value={value}
             textAlign="left"
@@ -132,9 +132,9 @@ function LoginPage(props) {
           <LoginButton
             onLoginFinished={(error, result) => {
               if (error) {
-                console.log(`login has error: ${result.error}`);
+                //console.log(`login has error: ${result.error}`);
               } else if (result.isCancelled) {
-                console.log('login is cancelled.');
+                //console.log('login is cancelled.');
               } else {
                 AccessToken.getCurrentAccessToken().then((data) => {
                   const accessToken = data.accessToken.toString();

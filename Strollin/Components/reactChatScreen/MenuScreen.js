@@ -27,23 +27,23 @@ function sortConversation(key) {
 
 
   if (key == '' || key == store.profil.pseudo) {
-    console.log("nothing in search or self searched");
+    //console.log("nothing in search or self searched");
     const action = {type: 'SET_SEARCH_CONV_LIST', value: store.conversation.conversationList};
     Store.dispatch(action);
   } else {
     for (let i in store.conversation.conversationList) {
       for (let j in store.conversation[store.conversation.conversationList[i]].participants) {
-        console.log("j = ", j);
-        console.log("compared to ", store.profil.friends_pseudo_list[store.conversation[store.conversation.conversationList[i]].participants[j]]);
+        //console.log("j = ", j);
+        //console.log("compared to ", store.profil.friends_pseudo_list[store.conversation[store.conversation.conversationList[i]].participants[j]]);
         if (key == store.profil.friends_pseudo_list[store.conversation[store.conversation.conversationList[i]].participants[j]]) {
-          console.log("FOUND!")
+          //console.log("FOUND!")
           searchedConv.push(store.conversation.conversationList[i]);
           found = true;
         }
       }
     }
     if (found == false) {
-      console.log("not found in search");
+      //console.log("not found in search");
     } else {
       const action = {type: 'SET_SEARCH_CONV_LIST', value: searchedConv};
       Store.dispatch(action);
@@ -52,7 +52,7 @@ function sortConversation(key) {
 }
 
 function LoginScreen(props) {
-  console.log('Menu Screen');
+  //console.log('Menu Screen');
 
   return (
     <View style={styles.container}>

@@ -4,8 +4,8 @@ const initialState = {
 
 function galleryReducer(state = initialState, action) {
   let nextState;
-  // console.log("\n\ngalleryReducer:\n")
-  // console.log(action)
+  // //console.log("\n\ngalleryReducer:\n")
+  // //console.log(action)
   switch (action.type) {
     case 'SET_GALLERY':
       nextState = {
