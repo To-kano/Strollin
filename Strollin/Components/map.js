@@ -92,17 +92,19 @@ function Map(props) {
   }, [])*/
 
   useEffect(() => {
-    if (waypoint.length == []) {
-      Tts.setDefaultLanguage('en-US');
-      Tts.speak('You have done your navigation');
-      setWaypoint()
-      const action = { type: 'ADD_HISTORIC', value: props.waypoints };
-      props.dispatch(action);
-      //sleep(2000);
-      props.navigation.navigate('HomePage');
-    } else {
-      Tts.setDefaultLanguage('en-US');
-      Tts.speak(`Heading to ${waypoint[0].name}`);
+    if (props.profil.sound) {
+      if (waypoint.length == []) {
+        Tts.setDefaultLanguage('en-US');
+        Tts.speak('You have done your navigation');
+        setWaypoint()
+        const action = { type: 'ADD_HISTORIC', value: props.waypoints };
+        props.dispatch(action);
+        //sleep(2000);
+        props.navigation.navigate('HomePage');
+      } else {
+        Tts.setDefaultLanguage('en-US');
+        Tts.speak(`Heading to ${waypoint[0].name}`);
+      }
     }
   }, [waypoint]);
 

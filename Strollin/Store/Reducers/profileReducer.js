@@ -13,7 +13,8 @@ const initialState = {
   history: [],
   scoreCourse: [],
   scoreLocation: [],
-  scoreComment: []
+  scoreComment: [],
+  sound: true
 };
 
 const storeProfile = async (value) => {
@@ -109,6 +110,13 @@ function profileReducer(state = initialState, action) {
       nextState = {
         ...state,
         group: state.group.filter((item) => action.value.name !== item.name)
+      };
+      return nextState;
+
+    case 'SET_SOUND':
+      nextState = {
+        ...state,
+        sound: action.value
       };
       return nextState;
 
