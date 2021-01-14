@@ -8,8 +8,8 @@ import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 import Store from '../Store/configureStore';
 
 function ratingCompleted(rating, comment) {
-  console.log("rating = " + rating);
-  console.log("comment = " + comment);
+  //console.log("rating = " + rating);
+  //console.log("comment = " + comment);
   const store = Store.getState();
 
   const bodyRequest = JSON.stringify({
@@ -17,30 +17,30 @@ function ratingCompleted(rating, comment) {
     score: rating
   });
 
-  fetch(`http://${IP_SERVER}:${PORT_SERVER}/comment/new_comment`, {
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      access_token: store.profil.access_token,
-      course_id: "5fdb7bf7e846ca001ea9389e",
-    },
-    body: bodyRequest,
-    method: 'post',
-  })
-    .then((response) => response.json())
-    .then(async (answer) => {
-      if (answer.status == true) {
-        console.log("comment sent successfully");
-      } else {
-        console.log("answer = ", answer);
-      }
-    })
-    .catch((error) => {
-      console.error('error :', error);
-    });
+  //fetch(`http://${IP_SERVER}:${PORT_SERVER}/comment/new_comment`, {
+  //  headers: {
+  //    Accept: 'application/json',
+  //    'Content-Type': 'application/json',
+  //    access_token: store.profil.access_token,
+  //    course_id: "5fdb7bf7e846ca001ea9389e",
+  //  },
+  //  body: bodyRequest,
+  //  method: 'post',
+  //})
+  //  .then((response) => response.json())
+  //  .then(async (answer) => {
+  //    if (answer.status == true) {
+  //      //console.log("comment sent successfully");
+  //    } else {
+  //      //console.log("answer = ", answer);
+  //    }
+  //  })
+  //  .catch((error) => {
+  //    console.error('error :', error);
+  //  });
 }
 
-function CourseEvaluation(props) {
+export function CourseEvaluation(props) {
   const [comment, setComment] = useState('');
   const [rating, setRating] = useState('');
 
@@ -77,6 +77,7 @@ function CourseEvaluation(props) {
       </View>
       <View>
         <TouchableOpacity
+          id={'test'}
           style={styles.newTrip}
           onPress={() => {
             ratingCompleted(rating, comment, );

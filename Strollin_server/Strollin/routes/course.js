@@ -31,10 +31,15 @@ router.post('/new_course', async function(req, res) {
     let tag = null;
     let locations_list = null;
 
-    if (!user)
+    if (!user) {
+        console.log()
         return res.status(400).send({status: "You are not connected."});
+    }
     // locations_list = await CourseModel.find({_id: {$in: req.body.locations_list}})
-    // Check if all locations exists
+    // if (req.body.locations_list.length !== locations_list.length) {
+    //     console.log("One of the locations does not exist");
+    //     return res.status(400).send({status: false});
+    // }
     course = new CourseModel({
         locations_list: req.body.locations_list,
         name: req.body.name,
@@ -54,7 +59,7 @@ router.post('/new_course', async function(req, res) {
     //         }
     //     }
     // }
-    await course.save();
+    let new_course = await course.save();
     return res.status(200).send({status: "Course created."});
 });
 
@@ -67,6 +72,7 @@ router.post('/new_course', async function(req, res) {
  */
 router.get('/get_course', async function(req, res) {
     let user = await UserModel.findOne({access_token: req.headers.access_token});
+    let historic = null;
     let courses_list = null;
 
     if (!user)
@@ -74,12 +80,13 @@ router.get('/get_course', async function(req, res) {
     if (req.headers.sort) {
         if (req.headers.sort === "name") {
             courses_list = await CourseModel.find().sort("name");
-        }
-        else if (req.headers.sort === "popularity") {
+        } else if (req.headers.sort === "popularity") {
             courses_list = await CourseModel.find().sort("number_used");
-        }
-        else if (req.headers.sort === "score") {
+        } else if (req.headers.sort === "score") {
             courses_list = await CourseModel.find().sort("score");
+        } else if (req.headers.sort === "tendancy") {
+            historic = await UserModel.find({})
+
         }
         return res.status(200).send({status: "Success", courses_list})
     }

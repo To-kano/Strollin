@@ -8,21 +8,21 @@ import BackgroundImage from './backgroundImage';
 import I18n from '../Translation/configureTrans';
 import Box from './box';
 
-function HistoryNav({ navigation, map }) {
-  React.useLayoutEffect(() => {
-    navigation;
-    navigation.setOptions({
-      // headerRight: () => (
-      //   <Button
-      //       title="Log Out"
-      //       color="#89B3D9"
-      //       onPress={() =>
-      //         props.navigation.navigate('userLogin')
-      //       }
-      //     />
-      // ),
-    });
-  }, [navigation]);
+export function HistoryNav({ navigation, map }) {
+  //React.useLayoutEffect(() => {
+  //  navigation;
+  //  navigation.setOptions({
+  //    // headerRight: () => (
+  //    //   <Button
+  //    //       title="Log Out"
+  //    //       color="#89B3D9"
+  //    //       onPress={() =>
+  //    //         navigation.navigate('userLogin')
+  //    //       }
+  //    //     />
+  //    // ),
+  //  });
+  //}, [navigation]);
 
   return (
     <View style={styles.back}>
@@ -63,7 +63,7 @@ function HistoryNav({ navigation, map }) {
         </TouchableOpacity>
         <TouchableOpacity
           style={{ width: '20%', height: '100%' }}
-          onPress={() => props.navigation.navigate('FriendList')}
+          onPress={() => navigation.navigate('FriendList')}
         >
           <Image
             style={{

@@ -16,11 +16,11 @@ const initialState = {
 
 function geolocalisationReducer(state = initialState, action) {
   let nextState;
-  // console.log("\n\ngalleryReducer:\n")
-  // console.log(action);
+  // //console.log("\n\ngalleryReducer:\n")
+  // //console.log(action);
   switch (action.type) {
     case 'SET_PERMISSION':
-      // console.log("mdr");
+      // //console.log("mdr");
 
       nextState = {
         ...state,
@@ -29,7 +29,7 @@ function geolocalisationReducer(state = initialState, action) {
       };
       return nextState;
     case 'SET_POSITION':
-      // console.log("lol");
+      // //console.log("lol");
       nextState = {
         ...state,
         update: true,
@@ -37,14 +37,14 @@ function geolocalisationReducer(state = initialState, action) {
       };
       return nextState;
     case 'SET_REGION':
-      // console.log("lol");
+      // //console.log("lol");
       nextState = {
         ...state,
         region: action.value
       };
       return nextState;
     case 'SET_REGION_AND_POSITION':
-      // console.log("lol");
+      // //console.log("lol");
       nextState = {
         ...state,
         position: action.value,

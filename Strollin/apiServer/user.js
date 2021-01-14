@@ -18,7 +18,7 @@ async function loginUser(props, newMail, newPassword) {
         const action = { type: 'CONNECTION', value: answer.access_token };
         props.dispatch(action);
       } else {
-        console.log('login user faile: ', answer);
+        //console.log('login user faile: ', answer);
       }
     })
     .catch((error) => {
@@ -44,7 +44,7 @@ async function profileUser(props, access_token) {
         props.dispatch(action);
         setFriendPseudo(props, access_token, answer.profile);
       } else {
-        console.log(answer.status);
+        //console.log(answer.status);
       }
     })
     .catch((error) => {
@@ -55,9 +55,9 @@ async function profileUser(props, access_token) {
 exports.profileUser = profileUser;
 
 async function setFriendPseudo(props, access_token, profile) {
-  console.log("profile = ", profile);
+  //console.log("profile = ", profile);
   for (let i in profile.friends_list) {
-    console.log("boucle for pour fetch");
+    //console.log("boucle for pour fetch");
     fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/get_user_profile`, {
       headers: {
         Accept: 'application/json',
@@ -69,14 +69,14 @@ async function setFriendPseudo(props, access_token, profile) {
     })
       .then((response) => response.json())
       .then(async (answer) => {
-        console.log("answer in friendPseudo func= ", answer);
+        //console.log("answer in friendPseudo func= ", answer);
         if (answer) {
           const action = { type: 'ADD_FRIEND_TO_PSEUDO_LIST', value: {_id: profile.friends_list[i], pseudo: answer.profile.pseudo} };
           props.dispatch(action);
           const action2 = { type: 'ADD_FRIEND_TO_PSEUDO_LIST_REVERSE', value: {_id: profile.friends_list[i], pseudo: answer.profile.pseudo} };
           props.dispatch(action2);
         } else {
-          console.log(answer.status);
+          //console.log(answer.status);
         }
       })
       .catch((error) => {
@@ -121,7 +121,7 @@ async function conversationUser(props, access_token) {
     .then((answer) => answer.json())
     .then(async (answer) => {
       if (answer) {
-        console.log("answer = ", answer);
+        //console.log("answer = ", answer);
         let action;
         for (let i in answer) {
           action = { type: "ADD_CONVERSATION", value: answer[i] };
@@ -132,7 +132,7 @@ async function conversationUser(props, access_token) {
           props.dispatch(action);
         }
       } else {
-        console.log(answer.status);
+        //console.log(answer.status);
       }
     })
     .catch((error) => {
@@ -143,7 +143,7 @@ async function conversationUser(props, access_token) {
 exports.profileUser = conversationUser;
 
 async function registerUser(props, newPseudo, newPassword, newMail) {
-  console.log("registerUser");
+  //console.log("registerUser");
   const bodyRequest = JSON.stringify({
     pseudo: newPseudo,
     password: newPassword,
@@ -160,7 +160,7 @@ async function registerUser(props, newPseudo, newPassword, newMail) {
   })
     .then((response) => response.json())
     .then(async (answer) => {
-      console.log(" answer = " , answer);
+      //console.log(" answer = " , answer);
       if (answer.access_token) {
         await profileUser(props, answer.access_token);
         const action = { type: 'CONNECTION', value: answer.access_token };

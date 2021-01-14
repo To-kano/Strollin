@@ -61,17 +61,17 @@ const group = [
   }
 ];
 
-function getFriend(group, friend) {
+export function getFriend(group, friend) {
   const userAdd = [];
   for (let i = 0; i < group.friend.length; i += 1) {
     for (let j = 0; j < friend.length; j += 1) {
       if (group.friend[i] == friend[j].id) {
         userAdd.push(friend[j]);
-        /* console.log("friend add")
-        console.log(friend[j].name)
-        console.log(userAdd[0].name)
-        console.log(group.name)
-        console.log("           ") */
+        /* //console.log("friend add")
+        //console.log(friend[j].name)
+        //console.log(userAdd[0].name)
+        //console.log(group.name)
+        //console.log("           ") */
       }
     }
   }
@@ -84,11 +84,11 @@ function getFriend(group, friend) {
       if (item == friend[j].id) {
         i = 1
         userTmp.push(friend[j])
-        console.log("friend add")
-        console.log(friend[j].name)
-        console.log(userTmp[0].name)
-        console.log(group.name)
-        console.log("           ")
+        //console.log("friend add")
+        //console.log(friend[j].name)
+        //console.log(userTmp[0].name)
+        //console.log(group.name)
+        //console.log("           ")
       }
     }
     return userTmp
@@ -100,11 +100,11 @@ function getFriend(group, friend) {
   /* for (var j = 0; j < friend.length; j += 1) {
       if (group.friend[i] == friend[j].id) {
         userAdd.prototype.push(friend[j])
-        console.log("friend add")
-        console.log(friend[j].name)
-        console.log(userAdd[0].name)
-        console.log(group.name)
-        console.log("           ")
+        //console.log("friend add")
+        //console.log(friend[j].name)
+        //console.log(userAdd[0].name)
+        //console.log(group.name)
+        //console.log("           ")
       }
     } */
   /* var userAdd = []
@@ -114,8 +114,8 @@ function getFriend(group, friend) {
     })
     userAdd += userTmp
   })
-  console.log("stop")
-  console.log(userAdd[0])
+  //console.log("stop")
+  //console.log(userAdd[0])
   return userAdd */
 }
 
@@ -132,7 +132,7 @@ const ItemFriend = ({ friend, func, group }) => (
   </View>
 );
 
-const Item = ({ title, friend, func }) => (
+export const Item = ({ title, friend, func }) => (
   <View style={{ width: 300, flexDirection: 'row', marginTop: 10}}>
     <Text style={{ fontSize: 18, textAlign: 'center', width: '55%' }}>{title}</Text>
     <Button
@@ -145,18 +145,18 @@ const Item = ({ title, friend, func }) => (
   </View>
 );
 
-function deleteFriend(title, friend, func) {
+export function deleteFriend(title, friend, func) {
   const userAdd = friend.filter((item) => title != item.name);
 
-  console.log(userAdd);
+  //console.log(userAdd);
 
   func(userAdd);
 }
 
-function addFriend(value, friend, func) {
+export function addFriend(value, friend, func) {
   const userAdd = User.filter((item) => value == item.name);
 
-  console.log(userAdd);
+  //console.log(userAdd);
 
   if (userAdd.length > 0) {
     func([...friend, userAdd[0]]);
@@ -234,10 +234,11 @@ function FriendList(props) {
             style={{ backgroundColor: 'white', width: '60%', borderRadius: 5, marginRight: 10}}
             placeholder="Nom de l'ami"
             underlineColorAndroid="black"
+            id={'testTextInput'}
             autoCapitalize="none"
-            onChangeText={(textFriend) => {
-              onChangeText(textFriend);
-              console.log(textFriend);
+            onChangeText={(text) => {
+              onChangeText(text);
+              //console.log(text);
             }}
             value={value}
           />
@@ -381,5 +382,6 @@ textInput : {
 }
 });
 
-const mapStateToProps = (state) => state;
-export default connect(mapStateToProps)(FriendList);
+//const mapStateToProps = (state) => state;
+//export default connect(mapStateToProps)(FriendList);
+export default FriendList
