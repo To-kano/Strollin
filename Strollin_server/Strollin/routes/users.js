@@ -33,7 +33,7 @@ router.post('/register', async function(req, res) {
     console.log("The mail is used already.");
     return res.status(400).send({status: false});
   }
-  if (req.body.mail && req.body.password & req.body.partner) {
+  if (req.body.mail && req.body.password && req.body.partner) {
     user = new UserModel({
       mail: req.body.mail,
       password: req.body.password,
