@@ -13,7 +13,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 
 
-const getProfilCache = async (dispatch) => {
+export async function getProfilCache(dispatch) {
   try {
     let jsonValue = await AsyncStorage.getItem('cache_profile');
 
@@ -39,13 +39,13 @@ function Socket({children, profil, dispatch}) {
 
   if (!profil.access_token) {
     getProfilCache(dispatch);
-    console.log('nav props: ', profil);
+    //console.log('nav props: ', profil);
   }
 
   useEffect(() => {
     if (socket != null) {
       socket.on('receiveMessage', (data) => {
-      console.log("received " + data);
+      //console.log("received " + data);
       
       const action = { type: 'ADD_MESSAGE', value: data };
       Store.dispatch(action);
@@ -58,7 +58,7 @@ function Socket({children, profil, dispatch}) {
 
       });
       socket.on('identification', (data) => {
-        console.log("identification = ", data);
+        //console.log("identification = ", data);
       });
       socket.on('newConversation', (data) => {
         const store = Store.getState();
@@ -77,7 +77,7 @@ function Socket({children, profil, dispatch}) {
 
   useEffect(() => {
     if (profil.access_token) {
-      console.log("access_token = ", profil.access_token);
+      //console.log("access_token = ", profil.access_token);
       socket.emit('login', { access_token: profil.access_token });
       socket.emit('sendMessage', "hey Pierre!");
     }
@@ -85,7 +85,7 @@ function Socket({children, profil, dispatch}) {
   }, [profil.access_token])
 
   const sendMessage = (message) => {
-    console.log('sending message ', message);
+    //console.log('sending message ', message);
   
     
     socket.emit('sendMessage', { access_token: store.profil.access_token, 
@@ -93,7 +93,7 @@ function Socket({children, profil, dispatch}) {
   };
 
   const createConversation = (participantsID) => {
-    console.log('creating conversation', participantsID);
+    //console.log('creating conversation', participantsID);
     let convName = store.profil.pseudo;
   
     for (let i in participantsID) {

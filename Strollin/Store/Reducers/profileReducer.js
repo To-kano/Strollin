@@ -13,7 +13,8 @@ const initialState = {
   history: [],
   scoreCourse: [],
   scoreLocation: [],
-  scoreComment: []
+  scoreComment: [],
+  sound: true
 };
 
 const storeProfile = async (value) => {
@@ -21,7 +22,7 @@ const storeProfile = async (value) => {
     const jsonValue = JSON.stringify(value);
     await AsyncStorage.setItem('cache_profile', jsonValue);
   } catch (e) {
-    console.log('echec store profile ', e);
+    //console.log('echec store profile ', e);
   }
 };
 
@@ -34,7 +35,7 @@ function profileReducer(state = initialState, action) {
         ...state,
         access_token: action.value
       };
-       console.log("profile reducer connection", nextState);
+       //console.log("profile reducer connection", nextState);
       return nextState;
 
     case 'DECONNECTION':
@@ -46,7 +47,7 @@ function profileReducer(state = initialState, action) {
         ...state,
         ...action.value
       };
-       console.log("profile reducer set user", nextState);
+       //console.log("profile reducer set user", nextState);
       //storeProfile(nextState);
       return nextState;
 
@@ -109,6 +110,13 @@ function profileReducer(state = initialState, action) {
       nextState = {
         ...state,
         group: state.group.filter((item) => action.value.name !== item.name)
+      };
+      return nextState;
+
+    case 'SET_SOUND':
+      nextState = {
+        ...state,
+        sound: action.value
       };
       return nextState;
 

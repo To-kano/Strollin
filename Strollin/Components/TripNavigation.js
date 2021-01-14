@@ -11,40 +11,37 @@ import Map from './map';
 
 import { PopUpForm } from './PopUpForm';
 
-function TripNavigation(props) {
-  const [background, setBackground] = useState(false);
-
-  useEffect(() => {
-    const backAction = () => {
-      AndroidPip.enterPictureInPictureMode();
-      setBackground(true);
-      return true;
-    };
-
-    const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      backAction
-    );
-
-    return () => backHandler.remove();
-  }, []);
-
-  useEffect(() => {
-    const handleAppStateChange = (nextAppState) => {
-      if (nextAppState === 'background') {
-        AndroidPip.enterPictureInPictureMode();
-        setBackground(true);
-      } else {
-        setBackground(false);
-      }
-    };
-
-    AppState.addEventListener('change', handleAppStateChange);
-
-    return () => {
-      AppState.removeEventListener('change', handleAppStateChange);
-    };
-  }, []);
+export function TripNavigation(props) {
+  //const [background, setBackground] = useState(false);
+//
+  //useEffect(() => {
+  //  const backAction = () => {
+  //    AndroidPip.enterPictureInPictureMode();
+  //    return true;
+  //  };
+//
+  //  const backHandler = BackHandler.addEventListener(
+  //    'hardwareBackPress',
+  //    backAction
+  //  );
+//
+  //  return () => backHandler.remove();
+  //}, []);
+//
+  //useEffect(() => {
+  //  const handleAppStateChange = (nextAppState) => {
+  //    if (nextAppState === 'background') {
+  //      AndroidPip.enterPictureInPictureMode();
+  //    } else {
+  //    }
+  //  };
+//
+  //  AppState.addEventListener('change', handleAppStateChange);
+//
+  //  return () => {
+  //    AppState.removeEventListener('change', handleAppStateChange);
+  //  };
+  //}, []);
 
   useEffect(() => {
     setTime()

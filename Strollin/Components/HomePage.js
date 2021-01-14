@@ -14,13 +14,13 @@ const imageFriend = require('../ressources/friend.png');
 // const imageHistory = require('../ressources/history.png');
 const imageProfile = require('../ressources/profile.png');
 
-function setSortedTendanceData(tag) {
+export function setSortedTendanceData(tag) {
   const store = Store.getState();
   var sortedData = [];
   var i = 0;
   var j = 0;
 
-  console.log("tag = ", tag)
+  //console.log("tag = ", tag)
   for (i in store.tendance.tendanceList) {
     for (j in store.tendance.tendanceList[i].tag) {
       if (store.tendance.tendanceList[i].tag[j] == tag) {
@@ -29,7 +29,7 @@ function setSortedTendanceData(tag) {
       }
     }
   }
-  console.log("sortedData = ", sortedData);
+  //console.log("sortedData = ", sortedData);
   const action = {
     type: 'SET_SORTED_TENDANCE_LIST',
     value: sortedData
@@ -37,7 +37,7 @@ function setSortedTendanceData(tag) {
   Store.dispatch(action);
 }
 
-function getData() {
+export function getData() {
   const store = Store.getState();
 
   if (store.tendance.sortedTendanceList.length > 0) {
@@ -47,8 +47,8 @@ function getData() {
   }
 }
 
-function HomePage(props) {
-  console.log('HomePage');
+export function HomePage(props) {
+  //console.log('HomePage');
   return (
     <View style={styles.back}>
       <BackgroundImage />
@@ -148,7 +148,8 @@ function HomePage(props) {
           </Text> */}
           <Image
             style={{
-              marginTop: '0%', height: '100%', width: '40%', opacity: 1, resizeMode: 'stretch', tintColor:'white'
+              // marginTop: '0%', height: '100%', width: '40%', opacity: 1, resizeMode: 'stretch', tintColor:'white'
+              marginTop: '0%', height: '100%', width: '56%', opacity: 1, resizeMode: 'stretch', tintColor:'white'
             }}
             source={require('../ressources/chat.png')}
           />
@@ -164,7 +165,8 @@ function HomePage(props) {
           </Text> */}
           <Image
             style={{
-              marginTop: '0%', height: '100%', width: '40%', opacity: 1, resizeMode: 'stretch', tintColor:'white'
+              // marginTop: '0%', height: '100%', width: '40%', opacity: 1, resizeMode: 'stretch', tintColor:'white'
+              marginTop: '0%', height: '100%', width: '56%', opacity: 1, resizeMode: 'stretch', tintColor:'white'
             }}
             source={require('../ressources/plus.png')}
           />
@@ -180,9 +182,27 @@ function HomePage(props) {
           </Text> */}
           <Image
             style={{
-              marginTop: '0%', height: '100%', width: '40%', opacity: 1, resizeMode: 'stretch', tintColor:'white'
+              // marginTop: '0%', height: '100%', width: '40%', opacity: 1, resizeMode: 'stretch', tintColor:'white'
+              marginTop: '0%', height: '100%', width: '56%', opacity: 1, resizeMode: 'stretch', tintColor:'white'
             }}
             source={require('../ressources/rating.png')}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.newTrip}
+          onPress={() => {
+            props.navigation.navigate('Notation');
+          }}
+        >
+          {/* <Text style={{ fontSize: 12, color: '#FFFFFF', textAlign:'center' }}>
+            Go to Evaluation
+          </Text> */}
+          <Image
+            style={{
+              // marginTop: '0%', height: '100%', width: '40%', opacity: 1, resizeMode: 'stretch', tintColor:'white'
+              marginTop: '0%', height: '100%', width: '56%', opacity: 1, resizeMode: 'stretch', tintColor:'white'
+            }}
+            source={require('../ressources/tmp.png')}
           />
         </TouchableOpacity>
       </View>

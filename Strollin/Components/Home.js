@@ -32,6 +32,7 @@ function Home(props) {
   );
 }
 
-const mapStateToProps = (state) => state;
+//const mapStateToProps = (state) => state;
 
-export default connect(mapStateToProps)(Home);
+//export default connect(mapStateToProps)(Home);
+export default Home;

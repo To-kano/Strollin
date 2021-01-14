@@ -20,5 +20,6 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = (state) => state;
-export default connect(mapStateToProps)(ButtonIcon);
+//const mapStateToProps = (state) => state;
+//export default connect(mapStateToProps)(ButtonIcon);
+export default ButtonIcon;
