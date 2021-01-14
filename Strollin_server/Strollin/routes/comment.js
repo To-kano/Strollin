@@ -68,7 +68,7 @@ router.post('/new_comment', async function(req, res) {
         } else if (course) {
             await course.updateOne({$push: {comments_list: obj._id}});
             await user.updateOne({$push: {score_course: [obj._id, req.body.score, Date.now()]}});
-        } else { 
+        } else {
             return res.status(400).send({status: "An error occured."});
         }
     });

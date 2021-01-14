@@ -21,8 +21,8 @@ var UserModelSchema = new Schema({
         type: String,
         required: true,
     },
-    type: {                 // particular ou partner
-        type: String,
+    partner: {              // false: particular / true: partner
+        type: Boolean,
         required: true,
     },
     first_name: {            // Prénom
@@ -37,7 +37,7 @@ var UserModelSchema = new Schema({
         type: String,
         required: true,
     },
-    tags_list: {                 // Liste des tags
+    tags_list: {             // Liste des tags
         type: [String],
         default: [],
     },
