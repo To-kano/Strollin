@@ -99,19 +99,19 @@ async function getTags() {
   let UserTags = []
 
   locations_list = await LocationModel.find(query)
-  console.log("locations ///////////////: ", locations_list);
+  //console.log("locations ///////////////: ", locations_list);
   for (var i = 0; i < locations_list.length; i++) {
     tags = []
     tagslist = []
     for (var j = 0; j < locations_list[i].tags_list.length; j++) {
       test = []
       tags[j] = locations_list[i].tags_list[j]._id
-      console.log("whyyyyy: ", locations_list[i].tags_list[j]);
+      //console.log("whyyyyy: ", locations_list[i].tags_list[j]);
       if (locations_list[i].tags_list[j].disp) {
         test.push(locations_list[i].tags_list[j]._id)
         test.push(locations_list[i].tags_list[j].disp)
       } else {
-        console.log("tu existe ?")
+        //console.log("tu existe ?")
         test.push(locations_list[i].tags_list[j]._id)
         test.push(0)
       }
@@ -132,9 +132,9 @@ async function getTags() {
       Id: locations_list[i].location_id
     })
   }
-  for (var i = 0; i < true_list.length; i++) {
+  /*for (var i = 0; i < true_list.length; i++) {
     console.log("please: ", true_list[i]);
-  }
+  }*/
 
   User = await UserModel.findOne( { _id:  "5fbfc3068901ca001ec0be8f" })
   const promise1 = algo.data.hello(true_list, User)
@@ -155,9 +155,9 @@ async function getTags() {
         tmpTagDisp = {_id, disp}
         tagslistarray.push(tmpTagDisp)
       }
-      console.log("stp marche: ", tagslistarray);
+      //console.log("stp marche: ", tagslistarray);
       update.tags_list = tagslistarray
-      console.log("ID: ", value[i].Id);
+      //console.log("ID: ", value[i].Id);
       location.updateOne({name: value[i].Name}, { $set: { tags_list : update.tags_list } }, function(err, raw) {
           if (err) {
               return res.status(400).send({status: "Location could not be updated."});
@@ -166,7 +166,7 @@ async function getTags() {
           }
       })
     }
-    //pop.data.Popup(value)
+    pop.data.Popup(value)
   });
 }
 
