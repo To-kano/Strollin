@@ -26,7 +26,7 @@ function ElementHistoryNav({ data, defaultSate = false }) {
           <View style={{ flex: 1, marginLeft: '5%', marginRight: '5%' }}>
             <Button
               id={"button map"}
-              title={I18n.t('showMap')}
+              title={I18n.t('HistoryElement.showMap')}
               color="#89B3D9"
               onPress={() => setShowMap(!showMap)}
             />
@@ -38,15 +38,15 @@ function ElementHistoryNav({ data, defaultSate = false }) {
             renderItem={({ item }) => (
               <View style={{ margin: 10 }}>
                 <Text>
-                  {I18n.t('step')}
+                  {I18n.t('HistoryElement.step')}
                   {item.id}
                 </Text>
                 <Text>
-                  {I18n.t('name')}
+                  {I18n.t('HistoryElement.name')}
                   {item.name}
                 </Text>
                 <Text>
-                  {I18n.t('address')}
+                  {I18n.t('HistoryElement.address')}
                   {item.address}
                 </Text>
               </View>
@@ -65,7 +65,7 @@ function ElementHistoryNav({ data, defaultSate = false }) {
                 };
                 //ShareDialog.show(shareLinkContent);
               }}
-              title={I18n.t('PublishOnFacebook')}
+              title={I18n.t('HistoryElement.PublishOnFacebook')}
               color="#3b5998"
               accessibilityLabel="Share"
             />
@@ -87,7 +87,7 @@ function ElementHistoryNav({ data, defaultSate = false }) {
                   ]
                 });
               }}
-              title={I18n.t('Share')}
+              title={I18n.t('HistoryElement.Share')}
               color="#3b5998"
               accessibilityLabel="Share"
             />
@@ -106,7 +106,7 @@ function ElementHistoryNav({ data, defaultSate = false }) {
         <View style={{ flex: 1, marginLeft: '5%', marginRight: '5%' }}>
           <Button
             id={"button map"}
-            title={I18n.t('showStep')}
+            title={I18n.t('HistoryElement.showStep')}
             color="#89B3D9"
             onPress={() => setShowMap(!showMap)}
           />
@@ -129,7 +129,7 @@ function ElementHistoryNav({ data, defaultSate = false }) {
               //};
               //ShareDialog.show(shareLinkContent);
             }}
-            title={I18n.t('PublishOnFacebook')}
+            title={I18n.t('HistoryElement.PublishOnFacebook')}
             color="#3b5998"
             accessibilityLabel="Share"
           />
@@ -151,7 +151,7 @@ function ElementHistoryNav({ data, defaultSate = false }) {
               //  ]
               //});
             }}
-            title={I18n.t('Share')}
+            title={I18n.t('HistoryElement.Share')}
             color="#3b5998"
             accessibilityLabel="Share"
           />

@@ -114,7 +114,7 @@ export function TripSuggestion(props) {
 
     if (props.profil.sound) {
       for (let i = 0; i < waypoints.length; i++) {
-        Tts.speak(`${I18n.t("step2")} ${i + 1}`);
+        Tts.speak(`${I18n.t("TripSuggestion.step")} ${i + 1}`);
         Tts.speak(waypoints[i].name);
       }
     }
@@ -198,7 +198,7 @@ export function TripSuggestion(props) {
           width: '95%'
         }}
         >
-          <Text style={[{ fontSize: 20, opacity: 0.5, margin: 5 }]}>Heading to:</Text>
+          <Text style={[{ fontSize: 20, opacity: 0.5, margin: 5 }]}>{I18n.t('TripSuggestion.headingTo')}</Text>
           <Text style={[{
             textAlign: 'center', fontSize: 22, fontWeight: 'bold', color: '#F07323'
           }]}

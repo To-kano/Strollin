@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { StyleSheet, TextInput, View } from 'react-native';
+import I18n from '../Translation/configureTrans';
 
 import ButtonIcon from './ButtonIcon.js';
 
@@ -13,7 +14,7 @@ function SearchBar(props) {
         <View style={styles.box}>
           <TextInput
             style={styles.textInput}
-            placeholder="Search with tag"
+            placeholder={I18n.t("TendanceSearchBar.searchTag")}
             onChangeText={(text) => setresearch(text)}
             value={research}
           />

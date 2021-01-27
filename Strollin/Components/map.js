@@ -35,11 +35,11 @@ export async function requestGeolocalisationPermission(props) {
     const granted = await PermissionsAndroid.request(
       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
       {
-        title: I18n.t('geoPermission'),
+        title: I18n.t('Map.geoPermission'),
         message: '',
-        buttonNeutral: I18n.t('askLater'),
-        buttonNegative: I18n.t('cancel'),
-        buttonPositive: I18n.t('ok'),
+        buttonNeutral: I18n.t('Map.askLater'),
+        buttonNegative: I18n.t('Map.cancel'),
+        buttonPositive: I18n.t('Map.ok'),
       },
     );
     if (PermissionsAndroid.RESULTS && granted === PermissionsAndroid.RESULTS.GRANTED) {
@@ -194,7 +194,7 @@ function Map(props) {
   }
   return (
     <View>
-      <Text>{I18n.t('noPermission')}</Text>
+      <Text>{I18n.t('Map.noPermission')}</Text>
     </View>
   );
 }
