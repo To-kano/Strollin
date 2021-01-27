@@ -13,43 +13,43 @@ import I18n from '../Translation/configureTrans';
 
 // AIzaSyB2twbHyNnN0rJWw4731l9rOjEgANYLrQU
 
-async function updateCoordinates(setUserPosition) {
+export async function updateCoordinates(setUserPosition) {
   Geolocation.getCurrentPosition(
     (position) => {
       const data = {
         latitude: position.coords.latitude,
         longitude: position.coords.longitude,
       };
-      // console.log(position);
+      // //console.log(position);
       setUserPosition(data);
     },
     (error) => {
-      console.log(error.code, error.message);
+      //console.log(error.code, error.message);
     },
     { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
   );
 }
 
-async function requestGeolocalisationPermission(props) {
+export async function requestGeolocalisationPermission(props) {
   try {
     const granted = await PermissionsAndroid.request(
       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
       {
-        title: I18n.t('geoPermission'),
+        title: I18n.t('Map.geoPermission'),
         message: '',
-        buttonNeutral: I18n.t('askLater'),
-        buttonNegative: I18n.t('cancel'),
-        buttonPositive: I18n.t('ok'),
+        buttonNeutral: I18n.t('Map.askLater'),
+        buttonNegative: I18n.t('Map.cancel'),
+        buttonPositive: I18n.t('Map.ok'),
       },
     );
-    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+    if (PermissionsAndroid.RESULTS && granted === PermissionsAndroid.RESULTS.GRANTED) {
       const action = { type: 'SET_PERMISSION', value: true };
       props.dispatch(action);
-      // console.log('You can use the geolocalisation');
+      // //console.log('You can use the geolocalisation');
     } else {
       const action = { type: 'SET_PERMISSION', value: false };
       props.dispatch(action);
-      // console.log('geolocalisation permission denied');
+      // //console.log('geolocalisation permission denied');
     }
   } catch (err) {
     console.warn(err);
@@ -71,7 +71,7 @@ function Map(props) {
   const [userPosition, setUserPosition] = useState(null);
   const allTime = []
 
-  //console.log(props.navigate);
+  ////console.log(props.navigate);
   useEffect(() => {
     setLocalRegion({
       ...localRegion,
@@ -92,17 +92,19 @@ function Map(props) {
   }, [])*/
 
   useEffect(() => {
-    if (waypoint.length == []) {
-      Tts.setDefaultLanguage('en-US');
-      Tts.speak('You have done your navigation');
-      setWaypoint()
-      const action = { type: 'ADD_HISTORIC', value: props.waypoints };
-      props.dispatch(action);
-      //sleep(2000);
-      props.navigation.navigate('HomePage');
-    } else {
-      Tts.setDefaultLanguage('en-US');
-      Tts.speak(`Heading to ${waypoint[0].name}`);
+    if (props.profil.sound) {
+      if (waypoint.length == []) {
+        Tts.setDefaultLanguage('en-US');
+        Tts.speak('You have done your navigation');
+        setWaypoint()
+        const action = { type: 'ADD_HISTORIC', value: props.waypoints };
+        props.dispatch(action);
+        //sleep(2000);
+        props.navigation.navigate('HomePage');
+      } else {
+        Tts.setDefaultLanguage('en-US');
+        Tts.speak(`Heading to ${waypoint[0].name}`);
+      }
     }
   }, [waypoint]);
 
@@ -176,7 +178,7 @@ function Map(props) {
           onReady={({
             distance, duration, coordinates, fare, waypointOrder
           }) => {
-            console.log('distance ', distance, ' duration ', duration);
+            //console.log('distance ', distance, ' duration ', duration);
           }}
         />
         {waypoint.map((marker) => (
@@ -192,7 +194,7 @@ function Map(props) {
   }
   return (
     <View>
-      <Text>{I18n.t('noPermission')}</Text>
+      <Text>{I18n.t('Map.noPermission')}</Text>
     </View>
   );
 }

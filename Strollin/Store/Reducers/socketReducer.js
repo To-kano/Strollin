@@ -38,8 +38,8 @@ const initialState = {
 
 function SocketReducer(state = initialState, action) {
   let nextState;
-  // console.log("\n\ngalleryReducer:\n")
-  // console.log(action)
+  // //console.log("\n\ngalleryReducer:\n")
+  // //console.log(action)
   switch (action.type) {
     case 'SET_SOCKET':
       nextState = {

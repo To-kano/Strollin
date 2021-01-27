@@ -13,10 +13,10 @@ const getInfoFromToken = (token, setUserInfo) => {
     { token, parameters: PROFILE_REQUEST_PARAMS },
     (error, result) => {
       if (error) {
-        console.log(`login info has error: ${error}`);
+        //console.log(`login info has error: ${error}`);
       } else {
         setUserInfo(result);
-        console.log('result:', result);
+        //console.log('result:', result);
       }
     },
   );

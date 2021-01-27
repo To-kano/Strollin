@@ -5,7 +5,7 @@ import {
 import Comment from './Comment';
 
 function CommentScreen(props) {
-  console.log("props = ", props.navigation.setParams);
+  //console.log("props = ", props.navigation.setParams);
   const DATA = require('./test.json');
   return (
     <View style={styles.container}>

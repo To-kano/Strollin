@@ -8,8 +8,8 @@ import {
 import I18n from '../Translation/configureTrans';
 import BackgroundImage from './backgroundImage';
 
-function Tag({ name }) {
-  const [pressed, setpressed] = useState(false);
+export function Tag({ name, defaultState = false }) {
+  const [pressed, setpressed] = useState(defaultState);
 
   return (
     <View style={{ margin: 5 }}>
@@ -35,7 +35,7 @@ function Tag({ name }) {
   );
 }
 
-function TageSelection({ navigation, profil }) {
+export function TagSelection({ navigation, profil }) {
   const data = [
     {
       id: '1',
@@ -104,7 +104,7 @@ function TageSelection({ navigation, profil }) {
   //   </TouchableOpacity>
   //   <TouchableOpacity
   //     style={{width: '20%', height: '100%'}}
-  //     onPress={() => console.log('friend')}>
+  //     onPress={() => //console.log('friend')}>
   //     <Image
   //       style={{
   //         marginTop: '10%',
@@ -136,7 +136,7 @@ function TageSelection({ navigation, profil }) {
       <BackgroundImage />
       <View style={styles.fill}>
         <Text style={[{ textAlign: 'left', color: 'black', fontSize: 25 }]}>
-          {I18n.t('welcome')}
+          {I18n.t('TagSelection.welcome')}
         </Text>
         <Text style={[
           {
@@ -154,7 +154,7 @@ function TageSelection({ navigation, profil }) {
           fontWeight: 'normal',
         }]}
         >
-          {I18n.t('chooseTags')}
+          {I18n.t('TagSelection.chooseTags')}
         </Text>
         <View style={{ flex: 2, margin: 10, marginTop: 40 }}>
           <FlatList
@@ -170,7 +170,7 @@ function TageSelection({ navigation, profil }) {
             //  // this.NextPage(navigation.getParam('uid'))
             // }
           >
-            <Text style={{ fontSize: 16, color: '#FFFFFF' }}>{I18n.t('next')}</Text>
+            <Text style={{ fontSize: 16, color: '#FFFFFF' }}>{I18n.t('TagSelection.next')}</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -180,7 +180,7 @@ function TageSelection({ navigation, profil }) {
 
 const mapStateToProps = (state) => state;
 
-export default connect(mapStateToProps)(TageSelection);
+export default connect(mapStateToProps)(TagSelection);
 
 const styles = StyleSheet.create({
   back: {

@@ -1,56 +1,130 @@
 export default {
+  /*
   connexion: 'Connexion',
   trendingTrip: 'Trending trip: ',
-  by: 'by',
-  views: 'views',
-  points: 'points',
-  description: 'description',
-  step: 'Step: ',
-  name: 'Name: ',
-  address: 'Adress: ',
   date: 'date: ',
   duration: 'duration: ',
   startNewTrip: 'Start a new trip',
-  confirm: 'Confirm',
-  forgot: 'Forgot Pasword ?',
-  noAccount: 'Dont have an account ?',
-  noPermission: 'No permission',
-  email: 'Email: ',
-  password: 'Password: ',
-  tags: 'Tags: ',
-  welcome: 'Welcome: ',
-  chooseTags: 'Choose the tags that fit best your personality',
-  heading: 'Heading to',
   carte: 'Carte',
-  logOut: 'Log out',
-  newTrip: 'New trip',
-  historic: 'historic',
   jane: "Go to Jane's profile",
-  geoPermission: 'Strollin ask geolocalisation Permission',
-  askLater: 'Ask Me Later',
-  cancel: 'Cancel',
-  ok: 'OK',
-  send: 'Send',
-  next: 'Next',
   endNav: 'End Navigation',
   anotherOneBitesTheDust: 'Another One!',
   letsGo: "Let's go!",
-  register: 'Register',
-  signIn: 'Sign in',
-  firstName: 'First Name',
-  lastName: 'Last Name',
-  confPassword: 'Confirme Password',
-  alreadyAccount: 'Already have an account ?',
-  friendList: 'Friend list',
-  groupList: 'Group List',
-  deleteFriend: 'Delete friend',
-  addFriend: 'Add friend',
-  addGroup: 'Add group',
-  showMap: 'Show map',
-  showStep: 'Show step',
-  Share: 'Share',
-  PublishOnFacebook: 'Publish on Facebook',
-  feedback: 'Give us a feedback'
+  feedback: 'Give us a feedback',
+  firstName: "First Name",
+  lastName: "Last Name",
+  deleteFriend: "Delete friend",
+  feedback: "Give us a feedback",
+  */
+
+  CourseEvaluation: {
+    evaluate: "Evaluate this course!",
+    note: "Note:",
+    yourComment: "Your comment",
+    send: "Send Evaluation"
+  },
+
+  FriendList: {
+    groupList: "Groups list",
+    groupName: "Group name",
+    friendName: "Friend name",
+    addFriend: "Add friend",
+    addGroup: 'Add group',
+    friendList: "Friend list",
+  },
+
+  Gallery: {
+    by: 'by',
+    views: 'views',
+    points: 'points',
+    description: 'description',
+  },
+
+  HistoryElement: {
+    showMap: 'Show map',
+    step: 'Step: ',
+    name: 'Name: ',
+    address: 'Adress: ',
+    showStep: 'Show step',
+    Share: 'Share',
+    PublishOnFacebook: 'Publish on Facebook',
+  },
+
+  Home: {
+    logOut: 'Log out',
+    newTrip: 'New trip',
+    historic: 'historic',
+  },
+
+  LoginPage: {
+    forgot: 'Forgot Pasword ?',
+    confirm: 'Confirm',
+    noAccount: 'Dont have an account ?',
+    or: "OR",
+    password: 'Password',
+    usernameOrEmail: "Username or mail",
+  },
+
+  Map: {
+    geoPermission: 'Strollin ask geolocalisation Permission',
+    askLater: 'Ask Me Later',
+    cancel: 'Cancel',
+    ok: 'OK',
+    noPermission: 'No permission',
+  },
+
+  Notation: {
+    information: "information",
+    send: 'Send',
+  },
+
+  PartenerRegister: {
+    email: "Email",
+    password: "Password",
+    confPassword: "Confirme Password",
+    alreadyAccount: "Already have an account ?",
+    register: "Register",
+    signIn: "Sign in",
+  },
+
+  PopUpForm: {
+    goTo: "do you want to go to",
+  },
+
+  ProfileScreen: {
+    name: 'Name: ',
+    email: 'Email: ',
+    tags: 'Tags: ',
+    myTags: "My tags",
+    addTags: "Add tags"
+  },
+
+  TagSelection: {
+    welcome: 'Welcome: ',
+    chooseTags: 'Choose the tags that fit best your personality',
+    next: 'Next',
+  },
+
+  TendanceSearchBar: {
+    searchTag: 'Search with tag',
+  },
+
+  TripSuggestion: {
+    step: "Step :",
+    headingTo: 'Heading to',
+  },
+
+  UserRegister: {
+    username: "Username",
+    email: "Email",
+    password: "Password",
+    confPassword: "Confirme Password",
+    alreadyAccount: "Already have an account ?",
+    register: "Register",
+    signIn: "Sign in",
+    or: "OR",
+  },
+  
 };
 
 // {I18n.t("")}

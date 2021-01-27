@@ -27,14 +27,14 @@ function addUserData() {
 
 export function register(data: Object) {
   return (dispatch) => {
-    console.log(`login :${data.email}${data.password}`);
+    //console.log(`login :${data.email}${data.password}`);
     dispatch(isLoading(true));
     fire.auth().createUserWithEmailAndPassword(data.email, data.password)
       .then((response) => {
         dispatch(isLoading(false));
-        console.log('responseJSON', response);
-        console.log('responseJSON', response.user.email);
-        console.log('responseJSON', response.user.uid);
+        //console.log('responseJSON', response);
+        //console.log('responseJSON', response.user.email);
+        //console.log('responseJSON', response.user.uid);
         dispatch(loginSuccess({ email: response.user.email, uid: response.user.uid }));
         fire.firestore().collection('userData').doc(response.user.uid).set({
           email: response.user.email,
@@ -42,7 +42,7 @@ export function register(data: Object) {
           status: 'alive'
         });
       }).catch((error) => {
-        console.log('error', error);
+        //console.log('error', error);
         dispatch(isLoading(false));
         dispatch(loginFailed(error));
       });

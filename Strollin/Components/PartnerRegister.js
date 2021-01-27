@@ -100,7 +100,7 @@ function UserRegister(props) {
             style={styles.inputText}
             autoCapitalize="none"
             keyboardType="email-address"
-            placeholder={I18n.t('email')}
+            placeholder={I18n.t('PartenerRegister.email')}
             value={userEmail}
             onChangeText={(valueText) => {
               // setData(valueText);
@@ -113,7 +113,7 @@ function UserRegister(props) {
           <TextInput
             style={styles.inputText}
             autoCapitalize="none"
-            placeholder={I18n.t('password')}
+            placeholder={I18n.t('PartenerRegister.password')}
             secureTextEntry
             value={userPassword}
             onChangeText={(valueText) => {
@@ -127,7 +127,7 @@ function UserRegister(props) {
           <TextInput
             style={styles.inputText}
             autoCapitalize="none"
-            placeholder={I18n.t('confPassword')}
+            placeholder={I18n.t('PartenerRegister.confPassword')}
             secureTextEntry
             value={userConfirmPassWord}
             onChangeText={(valueText) => {
@@ -145,7 +145,7 @@ function UserRegister(props) {
               // props.navigation.navigate('TagSelection');
             }}
             buttonStyle={[{ marginBottom: 5, marginTop: 5 }]}
-            title={I18n.t('register')}
+            title={I18n.t('PartenerRegister.register')}
             color="#89B3D9"
           />
         </View>
@@ -185,11 +185,11 @@ function UserRegister(props) {
             OU
           </Text>
         </View>
-        <Text style={{ paddingTop: 20 }}>{I18n.t('alreadyAccount')}</Text>
+        <Text style={{ paddingTop: 20 }}>{I18n.t('PartenerRegister.alreadyAccount')}</Text>
         <View style={styles.button}>
 
           <Button
-            title={I18n.t('signIn')}
+            title={I18n.t('PartenerRegister.signIn')}
             color="#89B3D9"
             onPress={() => props.navigation.navigate('userLogin')}
           />

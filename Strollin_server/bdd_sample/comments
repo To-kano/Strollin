@@ -1,0 +1,2 @@
+{"_id":{"$oid":"5ff3277dd90060001daaf045"},"user_score":[],"creation_date":{"$date":"2021-01-04T14:30:56.515Z"},"comment_previous":"","comment_next":"","message":"This is my 2nd comment","author":"5ff1a1cc1aa1a8001eb21f47","__v":0}
+{"_id":{"$oid":"5ff4773e765c6f001fff5b71"},"user_score":[],"creation_date":{"$date":"2021-01-05T13:55:15.098Z"},"comment_previous":"","comment_next":"","message":"Look at me!","author":"5ff1a1cc1aa1a8001eb21f47","__v":0}

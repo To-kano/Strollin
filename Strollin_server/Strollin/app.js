@@ -26,7 +26,7 @@ var app = express();
 
 // MongoDB //
 
-//var mongoDB = 'mongodb://didier:test@db:27017/Strollin'; //Version Authentification
+// var mongoDB = 'mongodb://didier:test@db:27017/Strollin'; //Version Authentification
 var mongoDB = 'mongodb://db:27017/Strollin';
 mongoose.connect(mongoDB, { useNewUrlParser: true });
 
@@ -170,7 +170,7 @@ async function getTags() {
   });
 }
 
-getTags();
+//getTags();
 
 //location = LocationModel.findOne({name: req.body.name, address: req.body.address});
 

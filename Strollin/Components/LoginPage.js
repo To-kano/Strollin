@@ -40,7 +40,7 @@ const getInfoFromToken = (token, setUserInfo, props) => {
     { token, parameters: PROFILE_REQUEST_PARAMS },
     (error, result) => {
       if (error) {
-        // console.log(`login info has error: ${error}`);
+        // //console.log(`login info has error: ${error}`);
       } else {
         // console.log('result:', result);
         setUserInfo(result);
@@ -51,13 +51,13 @@ const getInfoFromToken = (token, setUserInfo, props) => {
   new GraphRequestManager().addRequest(profileRequest).start();
 };
 
-function LoginPage(props) {
+export function LoginPage(props) {
   const [value, onChangeText] = React.useState('');
   const [valuePass, onChangePass] = React.useState('');
   const [Img, onChangeImg] = React.useState(RandPic());
   const [userInfo, setUserInfo] = React.useState({});
 
-  // console.log("LoginPage");
+  // //console.log("LoginPage");
 
   return (
     <View style={styles.back}>
@@ -77,11 +77,11 @@ function LoginPage(props) {
             autoCapitalize="none"
             onChangeText={(text) => {
               onChangeText(text);
-              // console.log(text);
+              // //console.log(text);
             }}
             value={value}
             textAlign="left"
-            placeholder="Username or mail"
+            placeholder={I18n.t("LoginPage.usernameOrEmail")}
             autoCompleteType="username"
           />
         </View>
@@ -92,7 +92,7 @@ function LoginPage(props) {
             onChangeText={(text) => onChangePass(text)}
             valuePass={valuePass}
             textAlign="left"
-            placeholder="Password"
+            placeholder={I18n.t("LoginPage.password")}
             autoCompleteType="password"
             secureTextEntry
           />
@@ -103,14 +103,14 @@ function LoginPage(props) {
               loginUser(props, value, valuePass);
               // props.navigation.navigate('HomePage');
             }}
-            title={I18n.t('confirm')}
+            title={I18n.t('LoginPage.confirm')}
             color="#9dc5ef"
             accessibilityLabel="Learn more about this purple button"
           />
         </View>
         <View style={{ flex: 0.1, flexDirection: 'column' }}>
           <Text style={{ fontSize: 20, textAlign: 'center', margin: 10 }}>
-            OU
+            {I18n.t('LoginPage.or')}
           </Text>
         </View>
         <View style={styles.button}>
@@ -118,23 +118,23 @@ function LoginPage(props) {
             onPress={() => {
               props.navigation.navigate('userRegister');
             }}
-            title={I18n.t('noAccount')}
+            title={I18n.t('LoginPage.noAccount')}
             color="#9dc5ef"
             accessibilityLabel="Learn more about this blue button"
           />
         </View>
         <View style={{ flex: 0.1, flexDirection: 'column' }}>
           <Text style={{ fontSize: 20, textAlign: 'center', margin: 10 }}>
-            OU
+            {I18n.t('LoginPage.or')}
           </Text>
         </View>
         <View style={{ flex: 0.1, margin: 10 }}>
           <LoginButton
             onLoginFinished={(error, result) => {
               if (error) {
-                console.log(`login has error: ${result.error}`);
+                //console.log(`login has error: ${result.error}`);
               } else if (result.isCancelled) {
-                console.log('login is cancelled.');
+                //console.log('login is cancelled.');
               } else {
                 AccessToken.getCurrentAccessToken().then((data) => {
                   const accessToken = data.accessToken.toString();

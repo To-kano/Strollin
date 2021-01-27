@@ -6,10 +6,12 @@ import Stars from 'react-native-stars';
 import { connect } from 'react-redux';
 import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 import Store from '../Store/configureStore';
+import I18n from '../Translation/configureTrans';
+
 
 function ratingCompleted(rating, comment) {
-  console.log("rating = " + rating);
-  console.log("comment = " + comment);
+  //console.log("rating = " + rating);
+  //console.log("comment = " + comment);
   const store = Store.getState();
 
   const bodyRequest = JSON.stringify({
@@ -17,40 +19,40 @@ function ratingCompleted(rating, comment) {
     score: rating
   });
 
-  fetch(`http://${IP_SERVER}:${PORT_SERVER}/comment/new_comment`, {
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      access_token: store.profil.access_token,
-      course_id: "5fdb7bf7e846ca001ea9389e",
-    },
-    body: bodyRequest,
-    method: 'post',
-  })
-    .then((response) => response.json())
-    .then(async (answer) => {
-      if (answer.status == true) {
-        console.log("comment sent successfully");
-      } else {
-        console.log("answer = ", answer);
-      }
-    })
-    .catch((error) => {
-      console.error('error :', error);
-    });
+  //fetch(`http://${IP_SERVER}:${PORT_SERVER}/comment/new_comment`, {
+  //  headers: {
+  //    Accept: 'application/json',
+  //    'Content-Type': 'application/json',
+  //    access_token: store.profil.access_token,
+  //    course_id: "5fdb7bf7e846ca001ea9389e",
+  //  },
+  //  body: bodyRequest,
+  //  method: 'post',
+  //})
+  //  .then((response) => response.json())
+  //  .then(async (answer) => {
+  //    if (answer.status == true) {
+  //      //console.log("comment sent successfully");
+  //    } else {
+  //      //console.log("answer = ", answer);
+  //    }
+  //  })
+  //  .catch((error) => {
+  //    console.error('error :', error);
+  //  });
 }
 
-function CourseEvaluation(props) {
+export function CourseEvaluation(props) {
   const [comment, setComment] = useState('');
   const [rating, setRating] = useState('');
 
   return (
     <View style={styles.container}>
       <View>
-        <Text style={{ textAlign: 'center', fontSize: 40 }}> {"Evaluate this course!\n"} </Text>
+        <Text style={{ textAlign: 'center', fontSize: 40 }}> {I18n.t("CourseEvaluation.evaluate")} {"\n"} </Text>
       </View>
       <View>
-        <Text style={{ textAlign: 'center', fontSize: 30 }}> {"Note:"} </Text>
+        <Text style={{ textAlign: 'center', fontSize: 30 }}> {I18n.t("CourseEvaluation.note")} </Text>
         <Stars
           half={true}
           default={1.5}
@@ -67,7 +69,7 @@ function CourseEvaluation(props) {
       <View style={{ alignItems: 'center', justifyContent: 'center'}}>
         <TextInput
           style={styles.textInput}
-          placeholder="Your comment"
+          placeholder={I18n.t("CourseEvaluation.yourComment")}
           onChangeText={(text) => setComment(text)}
           value={comment}
           multiline
@@ -77,13 +79,14 @@ function CourseEvaluation(props) {
       </View>
       <View>
         <TouchableOpacity
+          id={'test'}
           style={styles.newTrip}
           onPress={() => {
             ratingCompleted(rating, comment, );
           }}
         >
           <Text style={{ fontSize: 16, color: '#FFFFFF' }}>
-            Send Evaluation
+            {I18n.t("CourseEvaluation.send")}
           </Text>
         </TouchableOpacity>
       </View>

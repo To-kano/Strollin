@@ -19,7 +19,10 @@ const {
  * Register a new user as normal type
  * @param {String} req.body.mail
  * @param {String} req.body.password
- * @param {String} req.body.pseudo (optionnal)
+ * @param {Boolean} req.body.partner
+ * @param {String} req.body.pseudo (optional)
+ * @param {String} req.body.first_name (optional)
+ * @param {String} req.body.last_name (optional)
  */
 router.post('/register', async function(req, res) {
 
@@ -30,20 +33,22 @@ router.post('/register', async function(req, res) {
     console.log("The mail is used already.");
     return res.status(400).send({status: false});
   }
-  if (req.body.mail && req.body.password) {
+  if (req.body.mail && req.body.password && req.body.partner !== undefined) {
     user = new UserModel({
       mail: req.body.mail,
       password: req.body.password,
       pseudo: "user",
-      type: "normal",
+      partner: req.body.partner,
       access_token: token,
+      first_name: req.body.first_name,
+      last_name: req.body.last_name,
     });
     if (req.body.pseudo != null) {
       user.pseudo = req.body.pseudo
     }
     await user.save();
     console.log("Account created successfully.");
-    return  res.status(200).send({status: true, access_token: token});
+    return res.status(200).send({status: true, access_token: token});
   }
   console.log("The entry is invalid.");
   return res.status(400).send({status: false});

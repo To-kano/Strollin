@@ -17,7 +17,7 @@ function Gallery({ data }) {
     <View style={styles.container}>
       <Text style={styles.title}>{data.title}</Text>
       <Text>
-        {I18n.t('by')}
+        {I18n.t('Gallery.by')}
         {data.account_url}
       </Text>
       <DisplayMedia data={cover} />
@@ -25,17 +25,17 @@ function Gallery({ data }) {
         <Text>
           {data.views}
           {' '}
-          {I18n.t('views')}
+          {I18n.t('Gallery.views')}
         </Text>
         <Text>
           {data.points}
           {' '}
-          {I18n.t('points')}
+          {I18n.t('Gallery.points')}
         </Text>
       </View>
       <Text>
         {' '}
-        {I18n.t('description')}
+        {I18n.t('Gallery.description')}
         {' '}
       </Text>
       <Text>{data.description}</Text>

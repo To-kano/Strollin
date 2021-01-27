@@ -38,7 +38,7 @@ const getInfoFromToken = (token, setUserInfo, props) => {
   new GraphRequestManager().addRequest(profileRequest).start();
 };
 
-function UserRegister(props) {
+export function UserRegister(props) {
   const [userEmail, setUserEmail] = useState('');
   const [userPassword, setUserPassword] = useState('');
   const [userConfirmPassWord, setUserConfirmPassword] = useState('');
@@ -46,26 +46,26 @@ function UserRegister(props) {
   const [userLastName, setUserLastName] = useState('');
   const [userInfo, setUserInfo] = React.useState({});
 
-  const [loading, setLoading] = useState(false);
+  //const [loading, setLoading] = useState(false);
 
   // callbackFirstName = (value) => {
   //  setUserFirstName(value);
   // };
 
-  console.log('UserRegister');
+  //console.log('UserRegister');
 
-  if (loading) {
-    return (
-      <View style={{ flex: 1 }}>
-        <View style={[styles.center, { flex: 1, marginTop: 20 }]}>
-          <RondFormeText text="Strollin'" size={110} />
-        </View>
-        <View style={[styles.center, { flex: 1, marginTop: 20 }]}>
-          <ActivityIndicator size={100} color="purple" />
-        </View>
-      </View>
-    );
-  }
+  //if (loading) {
+  //  return (
+  //    <View style={{ flex: 1 }}>
+  //      <View style={[styles.center, { flex: 1, marginTop: 20 }]}>
+  //        <RondFormeText text="Strollin'" size={110} />
+  //      </View>
+  //      <View style={[styles.center, { flex: 1, marginTop: 20 }]}>
+  //        <ActivityIndicator size={100} color="purple" />
+  //      </View>
+  //    </View>
+  //  );
+  //}
   return (
     <View style={styles.container}>
       <BackgroundImage />
@@ -87,7 +87,7 @@ function UserRegister(props) {
           <TextInput
             style={styles.inputText}
             autoCapitalize="none"
-            placeholder="Username"
+            placeholder={I18n.t("UserRegister.username")}
             value={pseudo}
             onChangeText={(valueText) => {
               // setData(valueText);
@@ -100,7 +100,7 @@ function UserRegister(props) {
             style={styles.inputText}
             autoCapitalize="none"
             keyboardType="email-address"
-            placeholder={I18n.t('email')}
+            placeholder={I18n.t('UserRegister.email')}
             value={userEmail}
             onChangeText={(valueText) => {
               // setData(valueText);
@@ -113,7 +113,7 @@ function UserRegister(props) {
           <TextInput
             style={styles.inputText}
             autoCapitalize="none"
-            placeholder={I18n.t('password')}
+            placeholder={I18n.t('UserRegister.password')}
             secureTextEntry
             value={userPassword}
             onChangeText={(valueText) => {
@@ -127,7 +127,7 @@ function UserRegister(props) {
           <TextInput
             style={styles.inputText}
             autoCapitalize="none"
-            placeholder={I18n.t('confPassword')}
+            placeholder={I18n.t('UserRegister.confPassword')}
             secureTextEntry
             value={userConfirmPassWord}
             onChangeText={(valueText) => {
@@ -145,13 +145,13 @@ function UserRegister(props) {
               // props.navigation.navigate('TagSelection');
             }}
             buttonStyle={[{ marginBottom: 5, marginTop: 5 }]}
-            title={I18n.t('register')}
+            title={I18n.t('UserRegister.register')}
             color="#89B3D9"
           />
         </View>
         <View style={{ flex: 0.1, flexDirection: 'column' }}>
           <Text style={{ fontSize: 20, textAlign: 'center', padding: 5 }}>
-            OU
+          {I18n.t('UserRegister.or')}
           </Text>
         </View>
         <View style={{ flex: 0.1, margin: 10 }}>
@@ -160,9 +160,9 @@ function UserRegister(props) {
             readPermissions={['public_profile']}
             onLoginFinished={(error, result) => {
               if (error) {
-                console.log(`login has error: ${result.error}`);
+                //console.log(`login has error: ${result.error}`);
               } else if (result.isCancelled) {
-                console.log('login is cancelled.');
+                //console.log('login is cancelled.');
               } else {
                 AccessToken.getCurrentAccessToken().then((data) => {
                   const accessToken = data.accessToken.toString();
@@ -182,14 +182,14 @@ function UserRegister(props) {
         </View>
         <View style={{ flex: 0.1, flexDirection: 'column' }}>
           <Text style={{ fontSize: 20, textAlign: 'center', margin: 5 }}>
-            OU
+          {I18n.t('UserRegister.or')}
           </Text>
         </View>
-        <Text style={{ paddingTop: 20 }}>{I18n.t('alreadyAccount')}</Text>
+        <Text style={{ paddingTop: 20 }}>{I18n.t('UserRegister.alreadyAccount')}</Text>
         <View style={styles.button}>
 
           <Button
-            title={I18n.t('signIn')}
+            title={I18n.t('UserRegister.signIn')}
             color="#89B3D9"
             onPress={() => props.navigation.navigate('userLogin')}
           />

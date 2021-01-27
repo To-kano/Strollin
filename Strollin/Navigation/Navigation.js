@@ -8,7 +8,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 // import Home from "../Components/HomeScreen";
 import Profile from '../Components/ProfileScreen';
-import ConnectionScreen from '../Components/ConnectionScreen';
+//import ConnectionScreen from '../Components/ConnectionScreen';
 import UserRegister from '../Components/UserRegister';
 import PartnerRegister from '../Components/PartnerRegister';
 import TageSelection from '../Components/TagSelection';
@@ -43,14 +43,14 @@ const getProfilCache = async (props) => {
       props.dispatch(action);
     }
   } catch (e) {
-    console.log('echec store profile ', e);
+    //console.log('echec store profile ', e);
   }
 };
 
 function MyStack(props) {
   if (!props.profil.access_token) {
     getProfilCache(props);
-    console.log('nav props: ', props.profil);
+    //console.log('nav props: ', props.profil);
   }
   return (
     <NavigationContainer>
@@ -76,11 +76,6 @@ function MyStack(props) {
               name="PartnerRegister"
               component={PartnerRegister}
               options={{ title: 'partner inscription' }}
-            />
-            <Stack.Screen
-              name="Connection"
-              component={ConnectionScreen}
-              options={{ title: 'connection' }}
             />
           </>
         ) : (
@@ -175,3 +170,10 @@ function MyStack(props) {
 
 const mapStateToProps = (state) => state;
 export default connect(mapStateToProps)(MyStack);
+
+
+//<Stack.Screen
+//name="Connection"
+//component={ConnectionScreen}
+//options={{ title: 'connection' }}
+///>

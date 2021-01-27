@@ -15,7 +15,7 @@ async function infoTage(props, access_token) {
         const action = { type: 'SET_USER', value: answer.profile };
         props.dispatch(action);
       } else {
-        console.log(answer.status);
+        //console.log(answer.status);
       }
     })
     .catch((error) => {

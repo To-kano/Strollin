@@ -54,10 +54,11 @@ let jsonDefault = {
 function Notation(props) {
   const [value, onChangeValue] = React.useState("");
   const [jsonObject, onChangeJson] = React.useState(jsonDefault)
-  const [isLoading, setLoading] = React.useState(true);
+  const [isLoading, setLoading] = React.useState(props.defaultState);
+
 
   function sendMessage(value) {
-    console.log("i'm here")
+    //console.log("i'm here")
     const url = `http://${IP_SERVER}:${PORT_SERVER}/location/get_place`
     fetch(url, {
       headers : {
@@ -70,13 +71,13 @@ function Notation(props) {
         onChangeJson(answer.result)
       })
       .then(() => {
-        console.log("doneF")
+        //console.log("doneF")
       })
       .catch((error) => {
         console.error('error :', error);
       })
       .finally(() => setLoading(false));
-      console.log("done")
+      //console.log("done")
 
   }
   /*var days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
@@ -91,7 +92,7 @@ function Notation(props) {
   return (
     <View>
         <View>
-          <Text style={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center' }}>{I18n.t('information')}</Text>
+          <Text style={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center' }}>{I18n.t('Notation.information')}</Text>
           <TextInput
             onChangeText={(text) => onChangeValue(text)}
             value={value}
@@ -101,7 +102,7 @@ function Notation(props) {
             onPress={() => {
               sendMessage(value);
             }}
-            title={I18n.t('send')}
+            title={I18n.t('Notation.send')}
             color="#841584"
           />
         </View>

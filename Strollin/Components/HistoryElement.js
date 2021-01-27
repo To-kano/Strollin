@@ -7,9 +7,9 @@ import {ShareDialog} from 'react-native-fbsdk';
 import Map from './map';
 import I18n from '../Translation/configureTrans';
 
-function ElementHistoryNav({ data }) {
+function ElementHistoryNav({ data, defaultSate = false }) {
   const messagetext = `Strollin' m'a proposé un trajet ! \nRejoignons nous a ${data[0].name} au ${data[0].address} !`;
-  const [showMap, setShowMap] = useState(false);
+  const [showMap, setShowMap] = useState(defaultSate);
 
   const deltaView = {
     latitudeDelta: 0.1622,
@@ -25,7 +25,8 @@ function ElementHistoryNav({ data }) {
         <View style={{ width: '100%', flexDirection: 'row', flex: 1 }}>
           <View style={{ flex: 1, marginLeft: '5%', marginRight: '5%' }}>
             <Button
-              title={I18n.t('showMap')}
+              id={"button map"}
+              title={I18n.t('HistoryElement.showMap')}
               color="#89B3D9"
               onPress={() => setShowMap(!showMap)}
             />
@@ -37,15 +38,15 @@ function ElementHistoryNav({ data }) {
             renderItem={({ item }) => (
               <View style={{ margin: 10 }}>
                 <Text>
-                  {I18n.t('step')}
+                  {I18n.t('HistoryElement.step')}
                   {item.id}
                 </Text>
                 <Text>
-                  {I18n.t('name')}
+                  {I18n.t('HistoryElement.name')}
                   {item.name}
                 </Text>
                 <Text>
-                  {I18n.t('address')}
+                  {I18n.t('HistoryElement.address')}
                   {item.address}
                 </Text>
               </View>
@@ -55,21 +56,23 @@ function ElementHistoryNav({ data }) {
         <View style={{ width: '100%', flexDirection: 'row', flex: 0.4 }}>
           <View style={{ flex: 0.66, marginLeft: '2%', marginRight: '2%' }}>
             <Button
+            id={"button share 1"}
               onPress={() => {
                 const shareLinkContent = {
                   contentType: 'link',
                   contentUrl: 'https://www.google.com',
                   quote: messagetext,
                 };
-                ShareDialog.show(shareLinkContent);
+                //ShareDialog.show(shareLinkContent);
               }}
-              title={I18n.t('PublishOnFacebook')}
+              title={I18n.t('HistoryElement.PublishOnFacebook')}
               color="#3b5998"
               accessibilityLabel="Share"
             />
           </View>
           <View style={{ flex: 0.33, marginLeft: '2%', marginRight: '2%' }}>
             <Button
+              id={"button share 2"}
               onPress={() => {
                 Share.share({
                   message: messagetext,
@@ -84,7 +87,7 @@ function ElementHistoryNav({ data }) {
                   ]
                 });
               }}
-              title={I18n.t('Share')}
+              title={I18n.t('HistoryElement.Share')}
               color="#3b5998"
               accessibilityLabel="Share"
             />
@@ -102,7 +105,8 @@ function ElementHistoryNav({ data }) {
       <View style={{ width: '100%', flexDirection: 'row', flex: 0.6 }}>
         <View style={{ flex: 1, marginLeft: '5%', marginRight: '5%' }}>
           <Button
-            title={I18n.t('showStep')}
+            id={"button map"}
+            title={I18n.t('HistoryElement.showStep')}
             color="#89B3D9"
             onPress={() => setShowMap(!showMap)}
           />
@@ -116,36 +120,38 @@ function ElementHistoryNav({ data }) {
       <View style={{ width: '100%', flexDirection: 'row', flex: 0.4 }}>
         <View style={{ flex: 0.66, marginLeft: '2%', marginRight: '2%' }}>
           <Button
+          id={"button share 1"}
             onPress={() => {
-              const shareLinkContent = {
-                contentType: 'link',
-                contentUrl: 'https://www.google.com',
-                quote: messagetext,
-              };
-              ShareDialog.show(shareLinkContent);
+              //const shareLinkContent = {
+              //  contentType: 'link',
+              //  contentUrl: 'https://www.google.com',
+              //  quote: messagetext,
+              //};
+              //ShareDialog.show(shareLinkContent);
             }}
-            title={I18n.t('PublishOnFacebook')}
+            title={I18n.t('HistoryElement.PublishOnFacebook')}
             color="#3b5998"
             accessibilityLabel="Share"
           />
         </View>
         <View style={{ flex: 0.33, marginLeft: '2%', marginRight: '2%' }}>
           <Button
+          id={"button share 2"}
             onPress={() => {
-              Share.share({
-                message: messagetext,
-                title: "Sortir avec Strollin'",
-                url: 'https://www.google.com',
-              }, {
-                // Android only:
-                dialogTitle: 'Share Strollin travel',
-                // iOS only:
-                excludedActivityTypes: [
-                  'com.apple.UIKit.activity.PostToTwitter'
-                ]
-              });
+              //Share.share({
+              //  message: messagetext,
+              //  title: "Sortir avec Strollin'",
+              //  url: 'https://www.google.com',
+              //}, {
+              //  // Android only:
+              //  dialogTitle: 'Share Strollin travel',
+              //  // iOS only:
+              //  excludedActivityTypes: [
+              //    'com.apple.UIKit.activity.PostToTwitter'
+              //  ]
+              //});
             }}
-            title={I18n.t('Share')}
+            title={I18n.t('HistoryElement.Share')}
             color="#3b5998"
             accessibilityLabel="Share"
           />
@@ -155,5 +161,6 @@ function ElementHistoryNav({ data }) {
   );
 }
 
-const mapStateToProps = (state) => state;
-export default connect(mapStateToProps)(ElementHistoryNav);
+//const mapStateToProps = (state) => state;
+//export default connect(mapStateToProps)(ElementHistoryNav);
+export default ElementHistoryNav

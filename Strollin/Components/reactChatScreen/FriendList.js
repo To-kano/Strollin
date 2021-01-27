@@ -4,20 +4,20 @@ import { Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Store from '../../Store/configureStore';
 
 function addParticipant(props) {
-  console.log('adding participant');
+  //console.log('adding participant');
   const action = { type: 'ADD_PARTICIPANT_TO_CONVERSATION', value: {participant: props.id} };
 
   props.dispatch(action);
-  console.log('participant = ', props.createConversation);
+  //console.log('participant = ', props.createConversation);
 
 }
 
 function deleteParticipant(props) {
-  console.log('deleting participant');
+  //console.log('deleting participant');
   const action = { type: 'DELETE_PARTICIPANT_OF_CONVERSATION', value: {participant: props.id} };
 
   props.dispatch(action);
-  console.log('participant = ', props.createConversation);
+  //console.log('participant = ', props.createConversation);
 }
 
 function FriendList(props) {

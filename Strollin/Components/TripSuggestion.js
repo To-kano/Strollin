@@ -9,6 +9,7 @@ import Map from './map';
 
 import ElementHistoryNav from './HistoryElement';
 import BackgroundImage from './backgroundImage';
+import ButtonSwitch from './ButtonSwitch';
 
 function getNavigation() {
   const destination1 = [
@@ -91,29 +92,31 @@ function getNavigation() {
   return allDestination[rand];
 }
 
-function TripSuggestion(props) {
-  React.useLayoutEffect(() => {
-    props.navigation.setOptions({
-      // headerRight: () => (
-      //   <Button
-      //       title="Log Out"
-      //       color="#89B3D9"
-      //       onPress={() =>
-      //         props.navigation.navigate('userLogin')
-      //       }
-      //     />
-      // ),
-    });
-  }, [props.navigation]);
+export function TripSuggestion(props) {
+  //React.useLayoutEffect(() => {
+  //  props.navigation.setOptions({
+  //    // headerRight: () => (
+  //    //   <Button
+  //    //       title="Log Out"
+  //    //       color="#89B3D9"
+  //    //       onPress={() =>
+  //    //         props.navigation.navigate('userLogin')
+  //    //       }
+  //    //     />
+  //    // ),
+  //  });
+  //}, [props.navigation]);
 
   const [waypoints, setWaypoints] = useState(getNavigation());
 
   useEffect(() => {
     Tts.setDefaultLanguage('en-US');
 
-    for (let i = 0; i < waypoints.length; i++) {
-      Tts.speak(`Step ${i + 1}`);
-      Tts.speak(waypoints[i].name);
+    if (props.profil.sound) {
+      for (let i = 0; i < waypoints.length; i++) {
+        Tts.speak(`${I18n.t("TripSuggestion.step")} ${i + 1}`);
+        Tts.speak(waypoints[i].name);
+      }
     }
   }, [waypoints]);
 
@@ -195,7 +198,7 @@ function TripSuggestion(props) {
           width: '95%'
         }}
         >
-          <Text style={[{ fontSize: 20, opacity: 0.5, margin: 5 }]}>Heading to:</Text>
+          <Text style={[{ fontSize: 20, opacity: 0.5, margin: 5 }]}>{I18n.t('TripSuggestion.headingTo')}</Text>
           <Text style={[{
             textAlign: 'center', fontSize: 22, fontWeight: 'bold', color: '#F07323'
           }]}
@@ -230,7 +233,10 @@ function TripSuggestion(props) {
             <Button
               title="Another One!"
               color="#89B3D9"
-              onPress={() => setWaypoints(getNavigation())}
+              onPress={() => {
+                Tts.stop();
+                setWaypoints(getNavigation());
+              }}
             />
           </View>
           <View style={{ flex: 1, paddingTop: 10, marginRight: 10 }}>
@@ -242,6 +248,22 @@ function TripSuggestion(props) {
                 props.dispatch(action);
                 props.navigation.navigate('TripNavigation');
               }}
+            />
+            <ButtonSwitch
+              iconOn={require('../images/volume.png')}
+              iconOff={require('../images/no-sound.png')}
+              statue={props.profil.sound}
+              onPressOff={() => {
+                Tts.stop();
+                const action = { type: 'SET_SOUND', value: !props.profil.sound };
+                props.dispatch(action);
+              }}
+              onPressOn={() => {
+                Tts.stop();
+                const action = { type: 'SET_SOUND', value: !props.profil.sound };
+                props.dispatch(action);
+              }}
+
             />
           </View>
         </View>
