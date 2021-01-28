@@ -100,7 +100,7 @@ function Map(props) {
         const action = { type: 'ADD_HISTORIC', value: props.waypoints };
         props.dispatch(action);
         //sleep(2000);
-        props.navigation.navigate('HomePage');
+        props.navigation.navigate('CourseEvaluation');
       } else {
         Tts.setDefaultLanguage('en-US');
         Tts.speak(`Heading to ${waypoint[0].name}`);
