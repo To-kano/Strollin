@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {
   Text, View, Button
 } from 'react-native';
+import I18n from '../Translation/configureTrans';
 
 class PopUpForm extends Component {
   render() {
@@ -14,7 +15,7 @@ class PopUpForm extends Component {
           textAlign: 'center', fontSize: 35, fontFamily: 'lobster', color: 'blue'
         }}
         >
-          do you want to go to
+          {I18n.t("PopUpForm.goTo")}
           "
           {this.props.place}
           " ?

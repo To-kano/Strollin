@@ -81,7 +81,7 @@ export function LoginPage(props) {
             }}
             value={value}
             textAlign="left"
-            placeholder="Username or mail"
+            placeholder={I18n.t("LoginPage.usernameOrEmail")}
             autoCompleteType="username"
           />
         </View>
@@ -92,7 +92,7 @@ export function LoginPage(props) {
             onChangeText={(text) => onChangePass(text)}
             valuePass={valuePass}
             textAlign="left"
-            placeholder="Password"
+            placeholder={I18n.t("LoginPage.password")}
             autoCompleteType="password"
             secureTextEntry
           />
@@ -103,14 +103,14 @@ export function LoginPage(props) {
               loginUser(props, value, valuePass);
               // props.navigation.navigate('HomePage');
             }}
-            title={I18n.t('confirm')}
+            title={I18n.t('LoginPage.confirm')}
             color="#9dc5ef"
             accessibilityLabel="Learn more about this purple button"
           />
         </View>
         <View style={{ flex: 0.1, flexDirection: 'column' }}>
           <Text style={{ fontSize: 20, textAlign: 'center', margin: 10 }}>
-            OU
+            {I18n.t('LoginPage.or')}
           </Text>
         </View>
         <View style={styles.button}>
@@ -118,14 +118,14 @@ export function LoginPage(props) {
             onPress={() => {
               props.navigation.navigate('userRegister');
             }}
-            title={I18n.t('noAccount')}
+            title={I18n.t('LoginPage.noAccount')}
             color="#9dc5ef"
             accessibilityLabel="Learn more about this blue button"
           />
         </View>
         <View style={{ flex: 0.1, flexDirection: 'column' }}>
           <Text style={{ fontSize: 20, textAlign: 'center', margin: 10 }}>
-            OU
+            {I18n.t('LoginPage.or')}
           </Text>
         </View>
         <View style={{ flex: 0.1, margin: 10 }}>

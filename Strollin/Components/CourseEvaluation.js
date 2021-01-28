@@ -6,6 +6,8 @@ import Stars from 'react-native-stars';
 import { connect } from 'react-redux';
 import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 import Store from '../Store/configureStore';
+import I18n from '../Translation/configureTrans';
+
 
 function ratingCompleted(rating, comment, props) {
   //console.log("rating = " + rating);
@@ -52,10 +54,10 @@ export function CourseEvaluation(props) {
   return (
     <View style={styles.container}>
       <View>
-        <Text style={{ textAlign: 'center', fontSize: 40 }}> {"Evaluate this course!\n"} </Text>
+        <Text style={{ textAlign: 'center', fontSize: 40 }}> {I18n.t("CourseEvaluation.evaluate")} {"\n"} </Text>
       </View>
       <View>
-        <Text style={{ textAlign: 'center', fontSize: 30 }}> {"Note:"} </Text>
+        <Text style={{ textAlign: 'center', fontSize: 30 }}> {I18n.t("CourseEvaluation.note")} </Text>
         <Stars
           half={true}
           default={1.5}
@@ -72,7 +74,7 @@ export function CourseEvaluation(props) {
       <View style={{ alignItems: 'center', justifyContent: 'center'}}>
         <TextInput
           style={styles.textInput}
-          placeholder="Your comment"
+          placeholder={I18n.t("CourseEvaluation.yourComment")}
           onChangeText={(text) => setComment(text)}
           value={comment}
           multiline
@@ -89,7 +91,7 @@ export function CourseEvaluation(props) {
           }}
         >
           <Text style={{ fontSize: 16, color: '#FFFFFF' }}>
-            Send Evaluation
+            {I18n.t("CourseEvaluation.send")}
           </Text>
         </TouchableOpacity>
       </View>
