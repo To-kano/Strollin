@@ -1,3 +1,4 @@
+import { IP_SERVER, PORT_SERVER } from '../../env/Environement';
 import React, { useState } from "react";
 import {
   Button,
@@ -12,7 +13,6 @@ import {
   Col,
   Label
 } from "reactstrap";
-
 function IndexHeaderFR() {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
@@ -25,8 +25,36 @@ function IndexHeaderFR() {
     if (password != passwordConf) {
       alert(`Password confirmation error!`);
     } else {
-      alert(`Submitting Email: ${email} Username: ${username} Password: ${password}`);
-    }
+      const bodyRequest = JSON.stringify({
+        pseudo: username,
+        password: password,
+        mail: email,
+        partner: false,
+      });
+    
+      fetch(`https://${IP_SERVER}:${PORT_SERVER}/users/register`, {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        method: 'post',
+        body: bodyRequest,
+      })
+      .then((response) => response.json())
+      .then(async (answer) => {
+        console.log(" answer = " , answer);
+        if (answer.access_token) {
+          alert(`Inscription réussi, Email: ${email} Username: ${username} Password: ${password}`);
+        } else {
+          console.log('login user faile: ', answer);
+          alert(`Submission failed`);
+        }
+      })
+      .catch((error) => {
+        console.error('error :', error);
+        alert(`Echec de l'inscription`);
+      });
+      }
   }
   return (
     <>

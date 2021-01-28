@@ -43,14 +43,14 @@ function SectionQuestion() {
 
   return (
     <>
-      <div class="container">
-          <div class="row d-flex justify-content-center">
-                <div class="section-tittle text-center">
+      <div className="container">
+          <div className="row d-flex justify-content-center">
+                <div className="section-tittle text-center">
                     <span style={{fontSize:"50px", fontWeight:"bold"}}><br/>Any questions?<br/><br/></span>
                 </div>
           </div>
           <br/>
-          <div class="row">
+          <div className="row">
             <Container>
               <Row>
               <Col className="mx-auto" lg="100" md="100">
