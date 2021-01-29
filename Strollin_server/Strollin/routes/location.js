@@ -214,6 +214,29 @@ router.get('/get_locations', async function(req, res) {
     return res.status(200).send({status: "List of locations returned.", locations_list});
 });
 
+// GET_LOCATIONS_BY_ID
+/**
+ * Get the list of locations in database
+ * @param {String} req.headers.access_token
+ * @param {LocationID || [LocationID]} req.headers.locations_id_list
+ */
+router.get('/get_locations_by_id', async function(req, res) {
+
+    let user = await UserModel.findOne({access_token: req.headers.access_token});
+    let locations_list = undefined;
+
+    if (!user) {
+        console.log("You are not connected.");
+        return res.status(400).send({status: false});
+    }
+    if (Array.isArray(req.headers.locations_id_list)) {
+        locations_list = await LocationModel.find({_id: {$in: req.headers.locations_id_list}});
+    } else {
+        locations_list = await LocationModel.findOne({_id: req.headers.locations_id_list});
+    }
+    console.log("List of locations returned.")
+    return res.status(200).send({status: true, locations_list});
+});
 
 
 module.exports = router;

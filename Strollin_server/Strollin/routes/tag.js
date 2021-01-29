@@ -33,8 +33,13 @@ router.post('/new_tag', async function(req, res) {
             name: req.body.name,
             description: req.body.description,
         });
-        await tag.save();
-        return  res.status(200).send({status: "Tag created."});
+        let error = await tag.save().catch(error => error);
+        if (error.errors) {
+            console.log("THE DATABASE COULD NOT UPDATE FOR NEXT REASON:\n_______________________\n", error.errors, "\n_______________________");
+            return res.status(400).send({status: false});
+        }
+        console.log("tag created.");
+        return res.status(200).send({status: true});
     }
     return res.status(400).send({status: "An element is missing in the request."});
 });
