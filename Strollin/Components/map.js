@@ -67,7 +67,7 @@ function isNear(userPosition, elementPosition) {
   return false;
 }
 
-function Map(props) {
+async function Map(props) {
   const [userPosition, setUserPosition] = useState(null);
   const allTime = []
 
@@ -84,7 +84,7 @@ function Map(props) {
     longitudeDelta: props.deltaView.longitudeDelta
   });
 
-  const [waypoint, setWaypoint] = useState(props.waypoints);
+  const [destinations, setDestinations] = useState(props.course);
 
   /*useEffect(() => {
     console.log("i'm here")
@@ -93,20 +93,20 @@ function Map(props) {
 
   useEffect(() => {
     if (props.profil.sound) {
-      if (waypoint.length == []) {
+      if (destinations.length == []) {
         Tts.setDefaultLanguage('en-US');
         Tts.speak('You have done your navigation');
-        setWaypoint()
-        const action = { type: 'ADD_HISTORIC', value: props.waypoints };
+        setDestinations()
+        const action = { type: 'ADD_HISTORIC', value: props.course };
         props.dispatch(action);
         //sleep(2000);
         props.navigation.navigate('CourseEvaluation');
       } else {
         Tts.setDefaultLanguage('en-US');
-        Tts.speak(`Heading to ${waypoint[0].name}`);
+        Tts.speak(`Heading to ${destinations[0].name}`);
       }
     }
-  }, [waypoint]);
+  }, [destinations]);
 
   const [magic, setMagic] = useState(1);
 
@@ -116,7 +116,7 @@ function Map(props) {
 
   const [refMapView, setRefMapView] = useState(React.createRef());
 
-  async function setTimeWaypoint() {
+  async function setTimedestinations() {
     let tmp = await Date.now()
     console.log("________________________")
     console.log(tmp)
@@ -130,9 +130,9 @@ function Map(props) {
       latitude: data.coordinate.latitude,
       longitude: data.coordinate.longitude,
     };
-    if (waypoint.length != 0 && isNear(position, waypoint[0])) {
-      setWaypoint(waypoint.slice(1, waypoint.length));
-      setTimeWaypoint()
+    if (destinations.length != 0 && isNear(position, destinations[0])) {
+      setDestinations(destinations.slice(1, destinations.length));
+      setTimedestinations()
     }
     // if (props.background) {
     // refMapView.current.animateToRegion(localRegion, 500);
@@ -167,8 +167,8 @@ function Map(props) {
       >
         <MapViewDirections
           origin={userPosition}
-          destination={waypoint[waypoint.length - 1]}
-          waypoints={waypoint.slice(0, waypoint.length - 1)}
+          destination={destinations[destinations.length - 1]}
+          course={destinations.slice(0, destinations.length - 1)}
           apikey={GOOGLE_MAPS_APIKEY}
           strokeWidth={5}
           timePrecision="now"
@@ -176,12 +176,12 @@ function Map(props) {
           strokeColor="#39A5D6"
           mode="WALKING"
           onReady={({
-            distance, duration, coordinates, fare, waypointOrder
+            distance, duration, coordinates, fare, destinationsOrder
           }) => {
             //console.log('distance ', distance, ' duration ', duration);
           }}
         />
-        {waypoint.map((marker) => (
+        {destinations.map((marker) => (
           <Marker
             key={marker.id}
             coordinate={{ latitude: marker.latitude, longitude: marker.longitude }}

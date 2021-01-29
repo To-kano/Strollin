@@ -25,13 +25,14 @@ function CourseReducer(state = initialState, action) {
   // //console.log("\n\ngalleryReducer:\n")
   // //console.log(action)
   switch (action.type) {
-    case 'ADD_course':
+    case 'ADD_COURSE':
       nextState = {
         ...state,
-        course: [...state.course, action.value]
       };
+
+      nextState[action.value._id] = action.value;
       return nextState;
-    case 'SET_CURRENT_COMMENT':
+    case 'SET_CURRENT_COURSE':
       nextState = {
         ...state,
         currentcourse: action.value
