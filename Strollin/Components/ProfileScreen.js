@@ -115,7 +115,7 @@ function ProfileScreen(props) {
       </View>
       <View style={styles.infos}>
       <View style={styles.textLine}>
-              <Text style={styles.textInfos}>{I18n.t('name')}</Text>
+              <Text style={styles.textInfos}>{I18n.t('ProfileScreen.name')}</Text>
               <TextInput style={styles.textInput}
                   placeholder='Description de votre commerce'
                   multiline={true}
@@ -124,7 +124,7 @@ function ProfileScreen(props) {
               </TextInput>
           </View>
           <View style={styles.textLine}>
-              <Text style={styles.textInfos}>{I18n.t('email')}</Text>
+              <Text style={styles.textInfos}>{I18n.t('ProfileScreen.email')}</Text>
               <TextInput style={styles.textInput}
                   placeholder="Tags rattachez votre commerce"
                   multiline={true}
@@ -133,9 +133,9 @@ function ProfileScreen(props) {
               </TextInput>
           </View>
           <View style={styles.textLine}>
-              <Text style={styles.textInfos}>{I18n.t('tags')} </Text>
+              <Text style={styles.textInfos}>{I18n.t('ProfileScreen.tags')} </Text>
               <TextInput style={styles.textInput}
-                  placeholder="Mes tags"
+                  placeholder={I18n.t('ProfileScreen.myTags')}
                   multiline={true}
               >
                 {list.map((item) => (
@@ -143,9 +143,9 @@ function ProfileScreen(props) {
                 ))}
               </TextInput>
               <View style={{ flexDirection: "row", height: 40, width: "100%", marginTop:10}}>
-                <TextInput 
-                  style={{width: "69%", backgroundColor:"white", borderRadius:5, marginRight:10}} 
-                  placeholder="Ajouter tag" 
+                <TextInput
+                  style={{width: "69%", backgroundColor:"white", borderRadius:5, marginRight:10}}
+                  placeholder={I18n.t('ProfileScreen.addTags')}
                   value={name}
                   onChange={handleChange} />
                 <Button
@@ -226,18 +226,18 @@ infos: {
     marginBottom: '50%',
 },
 textLine : {
-    marginTop: '5%', 
-    flexDirection: "column", 
-    justifyContent: 'center' 
+    marginTop: '5%',
+    flexDirection: "column",
+    justifyContent: 'center'
 },
 textInfos : {
-    fontSize: 19, 
-    textAlign: "left", 
-    width: "100%" 
+    fontSize: 19,
+    textAlign: "left",
+    width: "100%"
 },
 textInput : {
-    fontSize: 17, 
-    textAlign: "left", 
+    fontSize: 17,
+    textAlign: "left",
     width: "100%",
     borderRadius: 5,
     backgroundColor:'white'

@@ -1,3 +1,4 @@
+import { IP_SERVER, PORT_SERVER } from '../../env/Environement';
 import React, { useState } from "react";
 import {
   Button,
@@ -23,9 +24,37 @@ function IndexHeader() {
     evt.preventDefault();
 
     if (password != passwordConf) {
-      alert(`Password confirmation error!`);
+      alert(`Password confirmation error! ip : ${IP_SERVER}:${PORT_SERVER}`);
     } else {
-      alert(`Submitting Email: ${email} Username: ${username} Password: ${password}`);
+      const bodyRequest = JSON.stringify({
+        pseudo: username,
+        password: password,
+        mail: email,
+        partner: false,
+      });
+    
+      fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/register`, {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          },
+          method: 'post',
+          body: bodyRequest,
+        })
+        .then((response) => response.json())
+        .then(async (answer) => {
+          console.log(" answer = " , answer);
+          if (answer.access_token) {
+            alert(`Submitted Email: ${email} Username: ${username} Password: ${password}`);
+          } else {
+            console.log('login user faile: ', answer);
+            alert(`Submission failed`);
+          }
+          })
+        .catch((error) => {
+          console.error('error :', error);
+          alert(`Submission failed`);
+        });
     }
   }
   return (

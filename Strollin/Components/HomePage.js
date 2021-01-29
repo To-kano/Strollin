@@ -156,7 +156,7 @@ export function HomePage(props) {
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.newTrip}
-          onPress={() => props.navigation.navigate('TripSuggestion')}
+          onPress={() => props.navigation.navigate('CourseSettings')}
         >
           {/* <Text style={{ fontSize: 12, color: '#FFFFFF', textAlign:'center' }}>
             {' '}

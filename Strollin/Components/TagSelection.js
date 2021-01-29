@@ -136,7 +136,7 @@ export function TagSelection({ navigation, profil }) {
       <BackgroundImage />
       <View style={styles.fill}>
         <Text style={[{ textAlign: 'left', color: 'black', fontSize: 25 }]}>
-          {I18n.t('welcome')}
+          {I18n.t('TagSelection.welcome')}
         </Text>
         <Text style={[
           {
@@ -154,7 +154,7 @@ export function TagSelection({ navigation, profil }) {
           fontWeight: 'normal',
         }]}
         >
-          {I18n.t('chooseTags')}
+          {I18n.t('TagSelection.chooseTags')}
         </Text>
         <View style={{ flex: 2, margin: 10, marginTop: 40 }}>
           <FlatList
@@ -170,7 +170,7 @@ export function TagSelection({ navigation, profil }) {
             //  // this.NextPage(navigation.getParam('uid'))
             // }
           >
-            <Text style={{ fontSize: 16, color: '#FFFFFF' }}>{I18n.t('next')}</Text>
+            <Text style={{ fontSize: 16, color: '#FFFFFF' }}>{I18n.t('TagSelection.next')}</Text>
           </TouchableOpacity>
         </View>
       </View>

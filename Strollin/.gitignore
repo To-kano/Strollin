@@ -61,3 +61,7 @@ buck-out/
 /ios/Pods/
 
 .vscode
+
+#environement
+env/
+Environement.js

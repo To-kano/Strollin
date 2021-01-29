@@ -148,6 +148,7 @@ async function registerUser(props, newPseudo, newPassword, newMail) {
     pseudo: newPseudo,
     password: newPassword,
     mail: newMail,
+    partner: false,
   });
 
   fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/register`, {

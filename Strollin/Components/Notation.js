@@ -56,7 +56,7 @@ function Notation(props) {
   const [jsonObject, onChangeJson] = React.useState(jsonDefault)
   const [isLoading, setLoading] = React.useState(props.defaultState);
 
-  
+
   function sendMessage(value) {
     //console.log("i'm here")
     const url = `http://${IP_SERVER}:${PORT_SERVER}/location/get_place`
@@ -92,7 +92,7 @@ function Notation(props) {
   return (
     <View>
         <View>
-          <Text style={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center' }}>{I18n.t('information')}</Text>
+          <Text style={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center' }}>{I18n.t('Notation.information')}</Text>
           <TextInput
             onChangeText={(text) => onChangeValue(text)}
             value={value}
@@ -102,7 +102,7 @@ function Notation(props) {
             onPress={() => {
               sendMessage(value);
             }}
-            title={I18n.t('send')}
+            title={I18n.t('Notation.send')}
             color="#841584"
           />
         </View>

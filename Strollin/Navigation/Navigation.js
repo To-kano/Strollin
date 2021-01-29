@@ -27,6 +27,7 @@ import NewConversation from '../Components/reactChatScreen/NewConversation';
 import Notation from '../Components/Notation';
 import Socket from '../Components/Socket';
 import CourseEvaluation from '../Components/CourseEvaluation';
+import CourseSettings from '../Components/CourseSettings';
 import PartenaireScreen from '../Components/PartenairePage';
 import SettingPartenaire from '../Components/SettingPartenaire';
 
@@ -125,12 +126,17 @@ function MyStack(props) {
             <Stack.Screen
               name="CourseEvaluation"
               component={CourseEvaluation}
-              options={{ title: 'screenchat' }}
+              options={{ title: 'course evaluation' }}
+            />
+            <Stack.Screen
+              name="CourseSettings"
+              component={CourseSettings}
+              options={{ title: 'course settings' }}
             />
             <Stack.Screen
               name="NewConversation"
               component={NewConversation}
-              options={{ title: 'CourseEvaluation' }}
+              options={{ title: 'new conversation' }}
             />
             <Stack.Screen
               name="TagSelection"
