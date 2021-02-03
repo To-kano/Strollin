@@ -55,7 +55,8 @@ function IndexHeaderPartFR() {
         console.error('error :', error);
         alert(`Echec de l'inscription`);
       });
-      }
+    }
+    document.getElementById("inscription").reset();
   }
   return (
     <>
