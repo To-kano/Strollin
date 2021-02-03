@@ -1,5 +1,5 @@
 {
-			"Tags": ["BAR", "VIDEO GAMES", "D&D", "Geek", "Music"],
+			"Tags": [["BAR", "VIDEO GAMES", "D&D", "Geek", "Music"], ["BAR", "VIDEO GAMES"]],
       "Pos": [-8, 30],
       "Budget": 30
 }

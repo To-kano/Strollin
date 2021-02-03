@@ -1,5 +1,5 @@
 var PlacesJson = require('./Ressources/Places');
-var TagsJson = require('./Ressources/UserTags');
+var TagsJson = require('./Ressources/UserTags1');
 
 var methods = {}
 

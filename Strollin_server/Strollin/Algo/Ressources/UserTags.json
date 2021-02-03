@@ -1,5 +1,6 @@
 {
 			"Tags": [["5feceec3093568001ee0df47", "5fecdfd6bf23af001f985694", "5fecef528a725b001d831116", "5fecef7a76ed51001d77be7b", "5fece1897abb9b001fb42056"], ["5feceec3093568001ee0df47", "5fecdfd6bf23af001f985694", "5fece1897abb9b001fb42056", "5feceff655b121001e405b8f", "Furniture"]],
       "Pos": [-8, 30],
-      "Budget": 300
+      "Budget": 300,
+      "Temps": 120
 }

@@ -99,19 +99,16 @@ async function getTags() {
   let UserTags = []
 
   locations_list = await LocationModel.find(query)
-  //console.log("locations ///////////////: ", locations_list);
   for (var i = 0; i < locations_list.length; i++) {
     tags = []
     tagslist = []
     for (var j = 0; j < locations_list[i].tags_list.length; j++) {
       test = []
       tags[j] = locations_list[i].tags_list[j]._id
-      //console.log("whyyyyy: ", locations_list[i].tags_list[j]);
       if (locations_list[i].tags_list[j].disp) {
         test.push(locations_list[i].tags_list[j]._id)
         test.push(locations_list[i].tags_list[j].disp)
       } else {
-        //console.log("tu existe ?")
         test.push(locations_list[i].tags_list[j]._id)
         test.push(0)
       }
@@ -129,7 +126,9 @@ async function getTags() {
       AlgAg: Number(locations_list[i].alg_ag),
       TagsDisp: tagslist,
       Desc: locations_list[i].description,
-      Id: locations_list[i].location_id
+      Id: locations_list[i].location_id,
+      Owner: locations_list[i].owner,
+      Time: locations_list[i].average_time
     })
   }
   /*for (var i = 0; i < true_list.length; i++) {
@@ -142,9 +141,10 @@ async function getTags() {
   promise1.then((value) => {
     let location = LocationModel;
 
+    value2 = value.slice(0, 5)
     console.log("---------------------------------------");
     console.log("\n\n");
-    console.log("You are going to: ", value);
+    console.log("You are going to: ", value2);
     console.log("\n\n");
     console.log("---------------------------------------");
     for (var i = 0; i < value.length; i++) {
@@ -155,9 +155,7 @@ async function getTags() {
         tmpTagDisp = {_id, disp}
         tagslistarray.push(tmpTagDisp)
       }
-      //console.log("stp marche: ", tagslistarray);
       update.tags_list = tagslistarray
-      //console.log("ID: ", value[i].Id);
       location.updateOne({name: value[i].Name}, { $set: { tags_list : update.tags_list } }, function(err, raw) {
           if (err) {
               return res.status(400).send({status: "Location could not be updated."});
@@ -166,11 +164,11 @@ async function getTags() {
           }
       })
     }
-    pop.data.Popup(value)
+    pop.data.Popup(value2, true_list, LocationModel)
   });
 }
 
-//getTags();
+getTags();
 
 //location = LocationModel.findOne({name: req.body.name, address: req.body.address});
 

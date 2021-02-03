@@ -44,9 +44,7 @@ function DistCalc2D(UserPos, PlacePos) {
 
 function AddTagsDisp(List, UserTags, i) {
   for (var l = 0; l < UserTags.length; l++) {
-    //console.log("EX: ", UserTags[l], " : ", List[i].Tags);
     if (CheckTagsDisp(List, i, UserTags[l]) == false && SingleTagOk(UserTags[l], List[i]) == true) {
-      //console.log("herro");
       List[i].TagsDisp.push([UserTags[l], 1])
       break;
     }
@@ -67,10 +65,8 @@ function CheckTagsDisp(List, i, UserTag) {
 }
 
 function AddRef(List, UserTags) {
-  //console.log("LIST ||||||||||||||||||||||||||- ", List);
   for (var i = 0; i < List.length; i++) {
     AddTagsDisp(List, UserTags, i);
-    console.log("ici ", List[i]);
   }
 
 }
@@ -95,16 +91,15 @@ function algoTest(UserTags, Places) {
         PlacesArray[i].Dist = DistCalc2D(PlacesArray[i].Pos, UserPos)
       }
       PlacesArray.sort(compare)
-      if (TagsJson.Budget > PlacesArray[0].Price) {
+      if (TagsJson.Budget > PlacesArray[0].Price && TagsJson.Temps > PlacesArray[0].Time) {
         FinalArray.push(PlacesArray[0])
         TagsJson.Budget -= PlacesArray[0].Price
+        TagsJson.Temps -= PlacesArray[0].Time
+        console.log("Temps: ", TagsJson.Temps);
       }
       UserPos = PlacesArray[0].Pos
       PlacesArray.shift()
-      //console.log("PlacesArrayt: ", PlacesArray);
     }
-    //console.log("FinalArray", FinalArray);
-    //console.log("PlacesArray", PlacesArray);
     AddRef(FinalArray, UserTags.Tags[0])
     resolve(FinalArray)
   });
@@ -115,7 +110,6 @@ methods.hello = function(sending, User)
   return new Promise((resolve, reject) => {
     TagsJson.Tags[0] = User.tags_list
     var test = algoTest(TagsJson, sending)
-    //console.log("test", test);
     resolve(test)
   });
 }

@@ -70,7 +70,7 @@ function AddRef(List, UserTags) {
   //console.log("LIST ||||||||||||||||||||||||||- ", List);
   for (var i = 0; i < List.length; i++) {
     AddTagsDisp(List, UserTags, i);
-    console.log("ici ", List[i]);
+    //console.log("ici ", List[i]);
   }
 
 }
