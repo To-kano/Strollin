@@ -17,13 +17,11 @@ const imageProfile = require('../ressources/profile.png');
 export function setSortedTendanceData(tag) {
   const store = Store.getState();
   var sortedData = [];
-  var i = 0;
-  var j = 0;
 
   //console.log("tag = ", tag)
   for (i in store.tendance.tendanceList) {
-    for (j in store.tendance.tendanceList[i].tag) {
-      if (store.tendance.tendanceList[i].tag[j] == tag) {
+    for (j in store.tendance.tendanceList[i]["tags_list"]) {
+      if (store.tendance.tendanceList[i]["tags_list"][j] == tag) {
         sortedData.push(store.tendance.tendanceList[i]);
         break;
       }
@@ -121,17 +119,13 @@ export function HomePage(props) {
         </View>
         <FlatList
           data={getData()}
-          contentContainerStyle={{ flexGrow: 1 }}
           renderItem={({ item }) => (
             <Box
-              style={{ height: '100%', width: '100%' }}
               {...props}
-              data={item}
-              // {...item}
-              // navigation={props.navigation}
+              data={item} 
             />
           )}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item["name"]}
         />
       </View>
       <View style={{ flex: 0.1, flexDirection: 'row', margin: '2%' }}>

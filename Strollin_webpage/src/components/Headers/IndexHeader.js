@@ -32,7 +32,7 @@ function IndexHeader() {
         mail: email,
         partner: false,
       });
-    
+      console.log("bodyrequest = ", bodyRequest)
       fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/register`, {
         headers: {
           Accept: 'application/json',
@@ -56,7 +56,9 @@ function IndexHeader() {
           alert(`Submission failed`);
         });
     }
+    document.getElementById("inscription").reset();
   }
+  
   return (
     <>
       <div
@@ -73,7 +75,7 @@ function IndexHeader() {
               <Col className="mx-auto" lg="4" md="6">
                 <Card className="card-register">
                   <h3 className="form-title text-center">Register now for some bonus!</h3>
-                  <Form className="register-form" onSubmit={handleSubmit}>
+                  <Form className="register-form" onSubmit={handleSubmit} id="inscription">
                   <h4 className="form-letter">Email</h4>
                     <Input type="email" name="email" id="exampleEmail" placeholder="Email" onChange={e => setEmail(e.target.value)} />
                     <h4 className="form-letter">Username</h4>

@@ -2,6 +2,7 @@ import {
   Button, Image, View, StyleSheet, Text, ScrollView, FlatList
 } from 'react-native';
 import React from 'react';
+import Location_List from './locations_list';
 
 function GotoComment(props) {
   props.navigation.setParams({ data: props.data });
@@ -19,28 +20,28 @@ function Box(props) {
         textAlign: 'center', fontSize: 30, color: '#39A5D6', margin: 5
       }]}
       >
-        {props.data.name}
+        {props.data["name"]}
       </Text>
       <Text style={[{ fontSize: 25, marginLeft: '5%' }]}>
-        Budget :
-        {props.data.budget}
+        
+        {"Budget: " + props.data["price_range"][0] + " ~ " + props.data["price_range"][1]}
       </Text>
       <Text style={[{ fontSize: 25, marginLeft: '5%' }]}>
-        Période :
-        {props.data.period}
+        { "Période : " + props.data["timetable"]}
       </Text>
       <Text style={[{ fontSize: 25, marginLeft: '5%' }]}>
-        1/
-        {props.data.destinations[0]}
+        Destinations:
       </Text>
-      <Text style={[{ fontSize: 25, marginLeft: '5%' }]}>
-        2/
-        {props.data.destinations[1]}
-      </Text>
-      <Text style={[{ fontSize: 25, marginLeft: '5%' }]}>
-        3/
-        {props.data.destinations[2]}
-      </Text>
+      <FlatList
+          data={props.data["locations_list"]}
+          renderItem={({ item }) => (
+            <Location_List
+              {...props}
+              data={item}
+            />
+          )}
+        keyExtractor={(item) => item["_id"]}
+      />
       <Button
         title="Commentaires"
         onPress={() => GotoComment(props)}
