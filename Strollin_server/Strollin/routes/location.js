@@ -94,7 +94,6 @@ router.post('/update_location', async function(req, res) {
     if (!user) {
         return res.status(400).send({status: "You are not connected."});
     }
-    console.log("req: ", req.body);
     if (req.body.name)
         update.name = req.body.name
     if (req.body.owner)
@@ -121,15 +120,11 @@ router.post('/update_location', async function(req, res) {
         update.phone = req.body.phone
     if (req.body.website)
         update.website = req.body.website
-    await location.updateOne({_id: req.headers.location_id}, update, function(err, raw) {
-        if (err) {
-            console.log("Location could not be updated.")
-            return res.status(400).send({status: false});
-        } else {
-            console.log("Location updated: ", raw)
-        }
-    });
-    return res.status(200).send({status: true});
+    error = await location.updateOne({_id: req.headers.location_id}, update).catch(error => error);
+    if (error.errors) {
+        return res.status(400).send({status: "Location could not be updated."});
+    }
+    return res.status(200).send({status: "Location updated"});
 });
 
 
@@ -226,16 +221,14 @@ router.get('/get_locations_by_id', async function(req, res) {
     let locations_list = undefined;
 
     if (!user) {
-        console.log("You are not connected.");
-        return res.status(400).send({status: false});
+        return res.status(400).send({status: "You are not connected."});
     }
     if (Array.isArray(req.headers.locations_id_list)) {
         locations_list = await LocationModel.find({_id: {$in: req.headers.locations_id_list}});
     } else {
         locations_list = await LocationModel.findOne({_id: req.headers.locations_id_list});
     }
-    console.log("List of locations returned.")
-    return res.status(200).send({status: true, locations_list});
+    return res.status(200).send({status: "List of locations returned.", locations_list});
 });
 
 

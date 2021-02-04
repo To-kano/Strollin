@@ -37,29 +37,24 @@ router.post('/new_comment', async function(req, res) {
     let user = await UserModel.findOne({access_token: req.headers.access_token});
 
     if (!user) {
-        console.log("You are not connected.");
-        return res.status(400).send({status: false});
+        return res.status(400).send({status: "You are not connected."});
     }
     if (!req.body.message || !req.body.score) {
-        console.log("Required data missing.");
-        return res.status(400).send({status: false});
+        return res.status(400).send({status: "Required data missing."});
     }
 
     if (req.headers.location_id) {
         location = await LocationModel.findOne({_id: req.headers.location_id});
         if (!location) {
-            console.log("The location ID is not valid.");
-            return res.status(400).send({status: false});
+            return res.status(400).send({status: "The location ID is not valid."});
         }
     } else if (req.headers.course_id) {
         course = await CourseModel.findOne({_id: req.headers.course_id});
         if (!course) {
-            console.log("The course ID is not valid.");
-            return res.status(400).send({status: false});
+            return res.status(400).send({status: "The course ID is not valid."});
         }
     } else { 
-        console.log("Please provide a location or a course or previous comment ID.");
-        return res.status(400).send({status: false});
+        return res.status(400).send({status: "Please provide a location or a course or previous comment ID."});
     }
     comment = new CommentModel({
         message: req.body.message,
@@ -69,8 +64,7 @@ router.post('/new_comment', async function(req, res) {
     });
     let error = await comment.save().catch(error => error);
     if (error.errors) {
-        console.log("THE DATABASE COULD NOT UPDATE FOR NEXT REASON:\n_______________________\n", error, "\n_______________________");
-        return res.status(400).send({status: false});
+        return res.status(400).send({status: errors});
     }
 
     // Update the location/course
@@ -78,23 +72,19 @@ router.post('/new_comment', async function(req, res) {
         let new_score = (Number(comment.score) + (Number(location.score) * location.comments_list.length)) / (location.comments_list.length + 1);
         error = await location.updateOne({$push: {comments_list: comment._id}, $set: {score: String(new_score)}}).catch(error => error);
         if (error.errors) {
-            console.log("THE DATABASE COULD NOT UPDATE FOR NEXT REASON:\n_______________________\n", error, "\n_______________________");
-            return res.status(400).send({status: false});
+            return res.status(400).send({status: errors});
         }
     } else if (course) {
         let new_score = (Number(comment.score) + (Number(course.score) * course.comments_list.length)) / (course.comments_list.length + 1);
         let new_used = Number(course.number_used) + 1;
         error = await course.updateOne({$push: {comments_list: comment._id}, $set: {score: String(new_score), number_used: String(new_used)}}).catch(error => error);
         if (error.errors) {
-            console.log("THE DATABASE COULD NOT UPDATE FOR NEXT REASON:\n_______________________\n", error, "\n_______________________");
-            return res.status(400).send({status: false});
+            return res.status(400).send({status: errors});
         }
     } else {
-        console.log("An anomaly occurred. The comment could not be added in the location/course.");
-        return res.status(400).send({status: false});
+        return res.status(400).send({status: "An anomaly occurred. The comment could not be added in the location/course."});
     }
-    console.log("Comment added");
-    return res.status(200).send({status: true});
+    return res.status(200).send({status: "Comment added"});
 });
 
 
@@ -131,8 +121,7 @@ router.post('/edit_comment', async function(req, res) {
     }
     let error = await comment.updateOne(query).catch(error => error);
     if (error.errors) {
-        console.log("THE DATABASE COULD NOT UPDATE FOR NEXT REASON:\n_______________________\n", error, "\n_______________________");
-        return res.status(400).send({status: false});
+        return res.status(400).send({status: errors});
     }
 
     if (comment.location_id) {
@@ -140,8 +129,7 @@ router.post('/edit_comment', async function(req, res) {
         let new_score = (Number(comment.score) - old_score + (Number(location.score) * location.comments_list.length)) / location.comments_list.length;
         error = await location.updateOne({$push: {comments_list: comment._id}, $set: {score: String(new_score)}}).catch(error => error);
         if (error.errors) {
-            console.log("THE DATABASE COULD NOT UPDATE FOR NEXT REASON:\n_______________________\n", error, "\n_______________________");
-            return res.status(400).send({status: false});
+            return res.status(400).send({status: errors});
         }
     } else if (comment.course_id) {
         let course = await CourseModel.findOne({_id: comment.course_id});
@@ -149,8 +137,7 @@ router.post('/edit_comment', async function(req, res) {
         let new_used = Number(course.number_used) + 1;
         error = await course.updateOne({$push: {comments_list: comment._id}, $set: {score: String(new_score), number_used: String(new_used)}}).catch(error => error);
         if (error.errors) {
-            console.log("THE DATABASE COULD NOT UPDATE FOR NEXT REASON:\n_______________________\n", error, "\n_______________________");
-            return res.status(400).send({status: false});
+            return res.status(400).send({status: errors});
         }
     }
     return res.status(200).send({status: "Comment edited."});

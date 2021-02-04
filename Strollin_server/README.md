@@ -12,9 +12,8 @@ NOTE:
 
 - All request will return an object as :
     {
-        status: (true/false)
-        message:
-        eventual object:
+        status: String
+        eventual return: Object
     }
 
 

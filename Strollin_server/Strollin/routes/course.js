@@ -36,20 +36,20 @@ router.post('/new_course', async function(req, res) {
     let locations_list = null;
 
     if (!user) {
-        console.log("You are not connected.");
-        return res.status(400).send({status: false});
+        return res.status(400).send({status: "You are not connected."});
     }
     // locations_list = await CourseModel.find({_id: {$in: req.body.locations_list}})
     // if (req.body.locations_list.length() !== locations_list.length()) {
-    //     console.log("One of the locations does not exist");
-    //     return res.status(400).send({status: false});
+    //     return res.status(400).send({status: "One of the locations does not exist."});
     // }
+    console.log("test");
     course = new CourseModel({
         locations_list: req.body.locations_list,
         name: req.body.name,
         author: "Strollin",
         tags_list: [],
     });
+    console.log("test");
     if (req.body.author)
         course.author = req.body.author;
     if (req.body.time_spent)
@@ -63,7 +63,10 @@ router.post('/new_course', async function(req, res) {
     //         }
     //     }
     // }
-    let new_course = await course.save();
+    let error = await course.save().catch(error => error);
+    if (error.errors) {
+        return res.status(400).send({status: error.errors});
+    }
     return res.status(200).send({status: "Course created."});
 });
 
@@ -105,7 +108,7 @@ router.get('/get_course', async function(req, res) {
             }
             courses_list = await CourseModel.find({_id: {$in: courses_id_list}})
         }
-        return res.status(200).send({status: "Success", courses_list})
+        return res.status(200).send({status: "List of courses returned.", courses_list})
     }
     return res.status(400).send({status: "Please send a research's sort."});
 });
@@ -187,7 +190,6 @@ router.post('/new_course_time', async function(req, res) {
 router.post('/add_course_time', async function(req, res) {
 
     let course = await CourseModel.findOne({_id: req.headers.course_id});
-    console.log(req.body)
     if (course) {
         await course.updateOne({$push: {time_spent: req.body.time_spent}});
         return res.status(200).send({status: "Course created."});

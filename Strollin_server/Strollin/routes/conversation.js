@@ -24,7 +24,7 @@ router.get('/get_conversations', async function(req, res) {
 
     if (user) {
         conversations = await ConversationModel.find({participants: {$in: [id]}})
-        return res.status(200).send(conversations);
+        return res.status(200).send({status: "conversations sent.", conversations: conversations});
     }
     return res.status(400).send({status: "You are not connected."});
 });
