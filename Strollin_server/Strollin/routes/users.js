@@ -248,7 +248,7 @@ router.get('/get_own_profile', async function(req, res) {
  * @param {String} req.headers.user_id
  */
 router.get('/get_user_profile', async function(req, res) {
-  const projection = 'mail creation_date pseudo type first_name last_name tags_list friends_list';
+  const projection = 'mail creation_date pseudo partner first_name last_name tags_list friends_list';
   let user = await UserModel.findOne({access_token: req.headers.access_token});
   let profile = null;
 
