@@ -25,7 +25,7 @@ router.get('/get_message', async function(req, res) {
         message = await MessageModel.findOne({_id: req.headers.message_id});
 
         if (message) {
-            return res.status(200).send(message);
+            return res.status(200).send({status: "Message sent.", message});
         }
         else {
             return res.status(400).send({status: "Message not found."});

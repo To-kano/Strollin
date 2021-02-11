@@ -97,7 +97,7 @@ router.get('/get_course', async function(req, res) {
             let comments_list = await CommentModel.find(
                 {
                     course_id: {$ne: ""},
-                    creation_date: {$gt: (Date.now() - (1000 * 60 * 60 * 24 * 7) )}
+                    creation_date: {$gt: (Date.now() - (1000 * 60 * 60 * 24 * 30) )}
                 }
             );
             let courses_id_list = [];
