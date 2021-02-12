@@ -15,7 +15,7 @@ async function loginUser(props, newMail, newPassword) {
       if (answer.access_token) {
         await profileUser(props, answer.access_token);
         await conversationUser(props, answer.access_token);
-        //await setTendance(props, answer.access_token);
+        await setTendance(props, answer.access_token);
         const action = { type: 'CONNECTION', value: answer.access_token };
         props.dispatch(action);
       } else {
@@ -89,7 +89,7 @@ async function setFriendPseudo(props, access_token, profile) {
 exports.profileUser = setFriendPseudo;
 
 async function setTendance(props, access_token) {
-  fetch(`http://${IP_SERVER}:${PORT_SERVER}/get_course`, {
+  await fetch(`http://${IP_SERVER}:${PORT_SERVER}/course/get_course`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -99,12 +99,13 @@ async function setTendance(props, access_token) {
     method: 'GET',
   }).then((answer) => answer.json())
   .then(async function (answer) {
-    console.log(answer);
+    console.log("answer tendance = ", answer);
     const action = { type: "SET_TENDANCE_LIST", value: answer["courses_list"] }
     props.dispatch(action);
 
     for (i in answer["courses_list"]) {
-      fetch(`http://${IP_SERVER}:${PORT_SERVER}/get_locations_by_id`, {
+      console.log("answer for loop");
+      await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/get_locations_by_id`, {
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
@@ -114,10 +115,12 @@ async function setTendance(props, access_token) {
         method: 'GET',
       }).then((answer) => answer.json())
       .then(async function (answer) {
-        console.log(answer);
         const action = { type: "SET_LOCATION_LIST", value: answer["locations_list"], index: i }
         props.dispatch(action);
       })
+      .catch((error) => {
+        console.error('error :', error);
+      });
     }
 
 
@@ -140,7 +143,7 @@ async function messageUser(props, access_token, message_id) {
   }).then((answer) => answer.json())
   .then(async function (answer) {
 
-    const action = { type: "ADD_MESSAGE", value: answer }
+    const action = { type: "ADD_MESSAGE", value: answer["message"] }
     props.dispatch(action);
 
     return answer;
@@ -161,14 +164,14 @@ async function conversationUser(props, access_token) {
   })
     .then((answer) => answer.json())
     .then(async (answer) => {
-      if (answer) {
+      if (answer["conversations"]) {
         //console.log("answer = ", answer);
         let action;
-        for (let i in answer) {
-          action = { type: "ADD_CONVERSATION", value: answer[i] };
+        for (let i in answer["conversations"]) {
+          action = { type: "ADD_CONVERSATION", value: answer["conversations"][i] };
 
-          for (let y in answer[i].messages_list) {
-             await messageUser(props, access_token, answer[i].messages_list[y]);
+          for (let y in answer["conversations"][i].messages_list) {
+             await messageUser(props, access_token, answer["conversations"][i].messages_list[y]);
           }
           props.dispatch(action);
         }

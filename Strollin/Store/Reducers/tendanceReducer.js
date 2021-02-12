@@ -146,7 +146,7 @@ const EXEMPLE_after_treatment = {
 };
 
 const initialState = {
-  tendanceList: EXEMPLE_after_treatment["tendanceList"],
+  tendanceList: [],//EXEMPLE_after_treatment["tendanceList"],
   sortedTendanceList: []
 };
 

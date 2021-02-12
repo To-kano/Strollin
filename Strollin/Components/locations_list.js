@@ -5,6 +5,7 @@ import React from 'react';
 
 
 function Location_List(props) {
+  console.log("nouvelle page : ", props.data["name"]);
   return (
     <Text style={[{ fontSize: 25, marginLeft: '5%' }]}>
       {"- " + props.data["name"]}
