@@ -235,7 +235,7 @@ router.get('/get_own_profile', async function(req, res) {
   let profile = await UserModel.findOne({access_token: req.headers.access_token}, projection);
 
   if (profile) {
-    return  res.status(200).send({status: "Profile sent." , profile});
+    return  res.status(200).send({status: "Profile sent.", profile});
   }
   return res.status(400).send({status: "You are not connected."});
 });
@@ -255,7 +255,7 @@ router.get('/get_user_profile', async function(req, res) {
   if (user) {
     profile = await UserModel.findOne({_id: req.headers.user_id}, projection);
     if (profile) {
-      return  res.status(200).send({status: "Profile sent." , profile});
+      return  res.status(200).send({status: "Profile sent.", profile});
     }
   }
   return res.status(400).send({status: "You are not connected."});

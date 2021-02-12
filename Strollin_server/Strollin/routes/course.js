@@ -81,8 +81,9 @@ router.get('/get_course', async function(req, res) {
     let user = await UserModel.findOne({access_token: req.headers.access_token});
     let courses_list = undefined;
 
-    if (!user)
+    if (!user) {
         return res.status(400).send({status: "You are not connected."});
+    }
     if (req.headers.sort) {
         if (req.headers.sort === "name") {
             courses_list = await CourseModel.find().sort("name");
@@ -97,7 +98,7 @@ router.get('/get_course', async function(req, res) {
             let comments_list = await CommentModel.find(
                 {
                     course_id: {$ne: ""},
-                    creation_date: {$gt: (Date.now() - (1000 * 60 * 60 * 24 * 30) )}
+                    creation_date: {$gt: (Date.now() - (1000 * 60 * 60 * 24 * 7) )}
                 }
             );
             let courses_id_list = [];
@@ -120,41 +121,41 @@ router.get('/get_course', async function(req, res) {
  * @param {String} req.headers.access_token
  * @param {String} req.headers.sort
  */
-router.get('/get_custom_course', async function(req, res) {
-    let user = await UserModel.findOne({access_token: req.headers.access_token});
-    let courses_list = undefined;
+// router.get('/get_custom_course', async function(req, res) {
+//     let user = await UserModel.findOne({access_token: req.headers.access_token});
+//     let courses_list = undefined;
 
-    if (!user)
-        return res.status(400).send({status: "You are not connected."});
-    if (req.headers.sort) {
-        if (req.headers.sort === "name") {
-            courses_list = await CourseModel.find().sort("name");
-        }
-        else if (req.headers.sort === "popularity") {
-            courses_list = await CourseModel.find().sort("number_used");
-        }
-        else if (req.headers.sort === "score") {
-            courses_list = await CourseModel.find().sort("score");
-        }
-        else if (req.headers.sort === "tendancy") {
-            let comments_list = await CommentModel.find(
-                {
-                    course_id: {$ne: ""},
-                    creation_date: {$gt: (Date.now() - (1000 * 60 * 60 * 24 * 30) )}
-                }
-            );
-            let courses_id_list = [];
-            for (let index = 0; index < comments_list.length(); index++) {
-                if (!courses_id_list.includes(comments_list[index].course_id)) {
-                    courses_id_list.push(comments_list[index].course_id)
-                }
-            }
-            courses_list = await CourseModel.find({_id: {$in: courses_id_list}})
-        }
-        return res.status(200).send({status: "Success", courses_list})
-    }
-    return res.status(400).send({status: "Please send a research's sort."});
-});
+//     if (!user)
+//         return res.status(400).send({status: "You are not connected."});
+//     if (req.headers.sort) {
+//         if (req.headers.sort === "name") {
+//             courses_list = await CourseModel.find().sort("name");
+//         }
+//         else if (req.headers.sort === "popularity") {
+//             courses_list = await CourseModel.find().sort("number_used");
+//         }
+//         else if (req.headers.sort === "score") {
+//             courses_list = await CourseModel.find().sort("score");
+//         }
+//         else if (req.headers.sort === "tendancy") {
+//             let comments_list = await CommentModel.find(
+//                 {
+//                     course_id: {$ne: ""},
+//                     creation_date: {$gt: (Date.now() - (1000 * 60 * 60 * 24 * 7) )}
+//                 }
+//             );
+//             let courses_id_list = [];
+//             for (let index = 0; index < comments_list.length(); index++) {
+//                 if (!courses_id_list.includes(comments_list[index].course_id)) {
+//                     courses_id_list.push(comments_list[index].course_id)
+//                 }
+//             }
+//             courses_list = await CourseModel.find({_id: {$in: courses_id_list}})
+//         }
+//         return res.status(200).send({status: "Success", courses_list})
+//     }
+//     return res.status(400).send({status: "Please send a research's sort."});
+// });
 
 
 

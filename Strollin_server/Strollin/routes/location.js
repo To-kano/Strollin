@@ -218,15 +218,25 @@ router.get('/get_locations', async function(req, res) {
 router.get('/get_locations_by_id', async function(req, res) {
 
     let user = await UserModel.findOne({access_token: req.headers.access_token});
-    let locations_list = undefined;
+    let locations_list = [];
+    let list = req.headers.locations_id_list;
 
     if (!user) {
         return res.status(400).send({status: "You are not connected."});
     }
-    if (Array.isArray(req.headers.locations_id_list)) {
-        locations_list = await LocationModel.find({_id: {$in: req.headers.locations_id_list}});
+    if (typeof list == "string" && list.includes(',')) {
+        list = list.replace(' ', '');
+        list = list.split(',')
+        for (let index = 0; index < list.length; index++) {
+            location = await LocationModel.find({_id: list[index]});
+            if (location) {
+                locations_list.push(location[0]);
+            }
+        }
+    } else if (typeof list == "string") {
+        locations_list = await LocationModel.findOne({_id: list});
     } else {
-        locations_list = await LocationModel.findOne({_id: req.headers.locations_id_list});
+        return res.status(400).send({status: "Parameter provided is invalid."});
     }
     return res.status(200).send({status: "List of locations returned.", locations_list});
 });
