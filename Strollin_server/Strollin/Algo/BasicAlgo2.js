@@ -71,7 +71,20 @@ function AddRef(List, UserTags) {
 
 }
 
-function algoTest(UserTags, Places) {
+function CheckFood(Food, PlaceFood) {
+  if (Food == true)
+    return true;
+  else {
+    if (PlaceFood == "Food") {
+      console.log("FALSE");
+      return false;
+    }
+    else
+      return true
+  }
+}
+
+function algoTest(UserTags, Places, Food) {
   return new Promise((resolve, reject) => {
 
     var PlacesArray = []
@@ -91,7 +104,7 @@ function algoTest(UserTags, Places) {
         PlacesArray[i].Dist = DistCalc2D(PlacesArray[i].Pos, UserPos)
       }
       PlacesArray.sort(compare)
-      if (TagsJson.Budget > PlacesArray[0].Price && TagsJson.Temps > PlacesArray[0].Time) {
+      if (TagsJson.Budget > PlacesArray[0].Price && TagsJson.Temps > PlacesArray[0].Time && CheckFood(Food, PlacesArray[0].City)) {
         FinalArray.push(PlacesArray[0])
         TagsJson.Budget -= PlacesArray[0].Price
         TagsJson.Temps -= PlacesArray[0].Time
@@ -109,7 +122,7 @@ methods.hello = function(sending, User)
 {
   return new Promise((resolve, reject) => {
     TagsJson.Tags[0] = User.tags_list
-    var test = algoTest(TagsJson, sending)
+    var test = algoTest(TagsJson, sending, true)
     resolve(test)
   });
 }

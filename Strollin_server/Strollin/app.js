@@ -128,7 +128,8 @@ async function getTags() {
       Desc: locations_list[i].description,
       Id: locations_list[i].location_id,
       Owner: locations_list[i].owner,
-      Time: locations_list[i].average_time
+      Time: locations_list[i].average_time,
+      City: locations_list[i].city
     })
   }
   /*for (var i = 0; i < true_list.length; i++) {
