@@ -25,92 +25,125 @@ function HistoryNav({ navigation, map }) {
   }, [navigation]);
 
   return (
-    <View style={styles.back}>
-      <BackgroundImage />
-      <View style={styles.header}>
-        <TouchableOpacity
-          style={{ width: '20%', height: '100%', marginLeft: 15 }}
-          onPress={() => navigation.navigate('HomePage')}
-        >
-          <Image
-            style={{
-              marginTop: '10%', height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'
-            }}
-            source={require('../ressources/home.png')}
-          />
+    <View style={styles.view_back}>
+      <View style={styles.view_header}>
+        <TouchableOpacity onPress={() => navigation.navigate('Menu')}>
+          <Image style={styles.img_header} source={require('../images/icons/black/menu.png')}/>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={{ width: '20%', height: '100%' }}
-          onPress={() => navigation.navigate('historicUser')}
-        >
-          <Image
-            style={{
-              marginTop: '10%', height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'
-            }}
-            source={require('../ressources/trip.png')}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{ width: '20%', height: '100%' }}
-          onPress={() => navigation.navigate('TripSuggestion')}
-        >
-          <Image
-            style={{
-              marginTop: '10%', height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'
-            }}
-            source={require('../ressources/plus.png')}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{ width: '20%', height: '100%' }}
-          onPress={() => props.navigation.navigate('FriendList')}
-        >
-          <Image
-            style={{
-              marginTop: '10%', height: '65%', width: '50%', opacity: 0.5, resizeMode: 'stretch'
-            }}
-            source={require('../ressources/friend.png')}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{ width: '20%', height: '100%' }}
-          onPress={() => navigation.navigate('Profile')}
-        >
-          <Image
-            style={{
-              marginTop: '10%', height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'
-            }}
-            source={require('../ressources/profile.png')}
-          />
+        <Text style={styles.text_header}>Historic</Text>
+        <TouchableOpacity>
+          <Image style={styles.img_header} source={require('../images/icons/black/search.png')}/>
         </TouchableOpacity>
       </View>
-      <View style={styles.fill}>
+      <View style={styles.viex_list}>
         <FlatList
+          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
           data={map.historic}
           renderItem={({ item }) => (
-            <View style={{ padding: 10 }}>
-              <Text>
-                date:
-                {item.date}
-              </Text>
-              <Text>
-                duration:
-                {item.duration}
-              </Text>
+            <View style={styles.view_historic}>
+              <View style={styles.view_historicTop}>
+                <View style={styles.view_information}>
+                  <Image style={styles.img_date} source={require('../images/icons/black/calendar.png')}/>
+                  <Text style={styles.text_date}>{item.date}</Text>
+                </View>
+                <View style={styles.view_information}>
+                  <Image style={styles.img_duration} source={require('../images/icons/black/time.png')}/>
+                  <Text style={styles.text_duration}>{item.duration}</Text>
+                </View>
+              </View>
               <ElementHistoryNav data={item.waypoints} />
             </View>
           )}
         />
       </View>
-      <View style={{ flex: 0.10, flexDirection: 'column', margin: '5%' }}>
-        <TouchableOpacity
-          style={styles.newTrip}
-          onPress={() => navigation.navigate('TripSuggestion')}
-        >
-          <Text style={{ fontSize: 16, color: '#FFFFFF' }}> New trip </Text>
-        </TouchableOpacity>
-      </View>
     </View>
+    // <View style={styles.back}>
+    //   <BackgroundImage />
+    //   <View style={styles.header}>
+    //     <TouchableOpacity
+    //       style={{ width: '20%', height: '100%', marginLeft: 15 }}
+    //       onPress={() => navigation.navigate('HomePage')}
+    //     >
+    //       <Image
+    //         style={{
+    //           marginTop: '10%', height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'
+    //         }}
+    //         source={require('../ressources/home.png')}
+    //       />
+    //     </TouchableOpacity>
+    //     <TouchableOpacity
+    //       style={{ width: '20%', height: '100%' }}
+    //       onPress={() => navigation.navigate('historicUser')}
+    //     >
+    //       <Image
+    //         style={{
+    //           marginTop: '10%', height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'
+    //         }}
+    //         source={require('../ressources/trip.png')}
+    //       />
+    //     </TouchableOpacity>
+    //     <TouchableOpacity
+    //       style={{ width: '20%', height: '100%' }}
+    //       onPress={() => navigation.navigate('TripSuggestion')}
+    //     >
+    //       <Image
+    //         style={{
+    //           marginTop: '10%', height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'
+    //         }}
+    //         source={require('../ressources/plus.png')}
+    //       />
+    //     </TouchableOpacity>
+    //     <TouchableOpacity
+    //       style={{ width: '20%', height: '100%' }}
+    //       onPress={() => props.navigation.navigate('FriendList')}
+    //     >
+    //       <Image
+    //         style={{
+    //           marginTop: '10%', height: '65%', width: '50%', opacity: 0.5, resizeMode: 'stretch'
+    //         }}
+    //         source={require('../ressources/friend.png')}
+    //       />
+    //     </TouchableOpacity>
+    //     <TouchableOpacity
+    //       style={{ width: '20%', height: '100%' }}
+    //       onPress={() => navigation.navigate('Profile')}
+    //     >
+    //       <Image
+    //         style={{
+    //           marginTop: '10%', height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'
+    //         }}
+    //         source={require('../ressources/profile.png')}
+    //       />
+    //     </TouchableOpacity>
+    //   </View>
+    //   <View style={styles.fill}>
+    //     <FlatList
+    //       data={map.historic}
+    //       renderItem={({ item }) => (
+    //         <View style={{ padding: 10 }}>
+    //           <Text>
+    //             date:
+    //             {item.date}
+    //           </Text>
+    //           <Text>
+    //             duration:
+    //             {item.duration}
+    //           </Text>
+    //           <ElementHistoryNav data={item.waypoints} />
+    //         </View>
+    //       )}
+    //     />
+    //   </View>
+    //   <View style={{ flex: 0.10, flexDirection: 'column', margin: '5%' }}>
+    //     <TouchableOpacity
+    //       style={styles.newTrip}
+    //       onPress={() => navigation.navigate('TripSuggestion')}
+    //     >
+    //       <Text style={{ fontSize: 16, color: '#FFFFFF' }}> New trip </Text>
+    //     </TouchableOpacity>
+    //   </View>
+    // </View>
   );
 }
 
@@ -119,53 +152,123 @@ const mapStateToProps = (state) => state;
 export default connect(mapStateToProps)(HistoryNav);
 
 const styles = StyleSheet.create({
-  container: {
-    // flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    // justifyContent: 'center',
-    // backgroundColor: "gray"
-  },
-  center: {
+  view_back: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    // backgroundColor: "gray"
-  },
-  back: {
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'center',
+    backgroundColor: '#E1E2E7',
+    paddingTop: '1.8%',
+    paddingLeft: '3.3%',
+    paddingRight: '3.3%',
+    paddingBottom: '0%',
+  },
+  view_header: {
+    flex: 50,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  img_header: {
+    width: 34,
+    resizeMode: 'contain',
+  },
+  text_header: {
+    width: '77.8%',
+    fontWeight: 'bold',
+    fontSize: 28,
+    letterSpacing: 2,
+    textAlign: 'center',
+    color: '#000000',
+  },
+  viex_list: {
+    flex: 757,
+  },
+  view_historic: {
+    flexDirection: 'column',
+    marginBottom: 30,
+  },
+  view_information: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  img_date: {
+    width: 25,
+    height: 25,
+    marginRight: 10,
+  },
+  text_date: {
+    flex: 2,
+    fontSize: 20,
+    fontWeight: 'bold',
+    letterSpacing: 1,
+    color: '#333333',
+  },
+  img_duration: {
+    width: 25,
+    height: 25,
+    marginRight: 10,
+  },
+  text_duration: {
     flex: 1,
+    fontSize: 12,
+    fontWeight: 'bold',
+    letterSpacing: 1,
+    color: '#333333',
+    alignContent: 'flex-end',
+    justifyContent: 'flex-end',
   },
-  fill: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    flex: 0.90,
-    backgroundColor: '#FFFFFF',
-    padding: 5,
-    marginTop: 10,
-    width: '95%',
-    borderRadius: 5,
-    opacity: 0.9,
+  view_historicTop: {
+    flexDirection: 'column',
   },
-  header: {
-    backgroundColor: '#FFFFFF',
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    flex: 0.082,
-    width: '100%',
-  },
-  newTrip: {
-    flex: 0.65,
-    alignItems: 'center',
-    backgroundColor: '#F07323',
-    paddingVertical: '5%',
-    // width: '90%',
-    paddingHorizontal: '38%',
-    borderRadius: 5,
-  }
+
+  // container: {
+  //   // flex: 1,
+  //   backgroundColor: '#fff',
+  //   alignItems: 'center',
+  //   // justifyContent: 'center',
+  //   // backgroundColor: "gray"
+  // },
+  // center: {
+  //   flex: 1,
+  //   backgroundColor: '#fff',
+  //   alignItems: 'center',
+  //   justifyContent: 'center',
+  //   // backgroundColor: "gray"
+  // },
+  // back: {
+  //   flexDirection: 'column',
+  //   justifyContent: 'flex-start',
+  //   alignItems: 'center',
+  //   flex: 1,
+  // },
+  // fill: {
+  //   flexDirection: 'row',
+  //   justifyContent: 'flex-start',
+  //   alignItems: 'center',
+  //   flex: 0.90,
+  //   backgroundColor: '#FFFFFF',
+  //   padding: 5,
+  //   marginTop: 10,
+  //   width: '95%',
+  //   borderRadius: 5,
+  //   opacity: 0.9,
+  // },
+  // header: {
+  //   backgroundColor: '#FFFFFF',
+  //   flexDirection: 'row',
+  //   justifyContent: 'flex-start',
+  //   alignItems: 'center',
+  //   flex: 0.082,
+  //   width: '100%',
+  // },
+  // newTrip: {
+  //   flex: 0.65,
+  //   alignItems: 'center',
+  //   backgroundColor: '#F07323',
+  //   paddingVertical: '5%',
+  //   // width: '90%',
+  //   paddingHorizontal: '38%',
+  //   borderRadius: 5,
+  // }
 });

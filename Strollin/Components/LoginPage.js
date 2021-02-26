@@ -2,7 +2,7 @@
 /* eslint-disable global-require */
 import React, { useState } from 'react';
 import {
-  StyleSheet, Text, View, Image, TextInput, Button, Share
+  StyleSheet, Text, View, Image, TextInput, Button, Share, TouchableOpacity
 } from 'react-native';
 import { connect } from 'react-redux';
 import {
@@ -19,20 +19,10 @@ const imageLogo3 = require('../ressources/logo3.png');
 
 // import '../api/facebook_api/facebook-api'
 
-function RandPic() {
-  const nb = Math.floor(Math.random() * 3) + 1;
-  let img = '';
-
-  if (nb === 1) img = imageStreet1;
-  if (nb === 2) img = imageStreet2;
-  if (nb === 3) img = imagePlum2;
-  return img;
-}
-
 const getInfoFromToken = (token, setUserInfo, props) => {
   const PROFILE_REQUEST_PARAMS = {
     fields: {
-      string: 'id, name,  first_name, last_name',
+      string: 'id, name,  first_name, last_name, email',
     },
   };
   const profileRequest = new GraphRequest(
@@ -42,9 +32,8 @@ const getInfoFromToken = (token, setUserInfo, props) => {
       if (error) {
         // console.log(`login info has error: ${error}`);
       } else {
-        // console.log('result:', result);
         setUserInfo(result);
-        loginUser(props, result.name, result.id);
+        loginUser(props, result.email, result.id);
       }
     },
   );
@@ -54,82 +43,66 @@ const getInfoFromToken = (token, setUserInfo, props) => {
 function LoginPage(props) {
   const [value, onChangeText] = React.useState('');
   const [valuePass, onChangePass] = React.useState('');
-  const [Img, onChangeImg] = React.useState(RandPic());
   const [userInfo, setUserInfo] = React.useState({});
 
-  // console.log("LoginPage");
-
   return (
-    <View style={styles.back}>
-      <Image
-        style={{
-          width: '100%', height: '100%', resizeMode: 'cover', position: 'absolute'
-        }}
-        source={Img}
-      />
-      <View style={styles.form}>
-        <View style={styles.logo}>
-          <Image style={styles.logo_img} source={require('../images/Logo.png')} />
-        </View>
-        <View style={styles.textInput}>
-          <TextInput
-            style={styles.inputText}
-            autoCapitalize="none"
-            onChangeText={(text) => {
-              onChangeText(text);
-              // console.log(text);
-            }}
-            value={value}
-            textAlign="left"
-            placeholder="Username or mail"
-            autoCompleteType="username"
-          />
-        </View>
-        <View style={styles.textInput}>
-          <TextInput
-            style={styles.inputText}
-            autoCapitalize="none"
-            onChangeText={(text) => onChangePass(text)}
-            valuePass={valuePass}
-            textAlign="left"
-            placeholder="Password"
-            autoCompleteType="password"
-            secureTextEntry
-          />
-        </View>
-        <View style={styles.button}>
-          <Button
-            onPress={() => {
-              loginUser(props, value, valuePass);
-              // props.navigation.navigate('HomePage');
-            }}
-            title={I18n.t('confirm')}
-            color="#9dc5ef"
-            accessibilityLabel="Learn more about this purple button"
-          />
-        </View>
-        <View style={{ flex: 0.1, flexDirection: 'column' }}>
-          <Text style={{ fontSize: 20, textAlign: 'center', margin: 10 }}>
-            OU
+    <View style={styles.view_back}>
+      <View style={styles.view_logo}>
+        <Image style={styles.img_logo} source={require('../images/Logo.png')} />
+      </View>
+      <View style={styles.view_signInUp}>
+        <TouchableOpacity>
+          <Text style={styles.text_signIn}>{I18n.t('SIGNIN')}</Text>
+        </TouchableOpacity>
+        <View style={styles.view_separator} />
+        <TouchableOpacity onPress={() => { props.navigation.navigate('userRegister'); }}>
+          <Text style={styles.text_signUp}>{I18n.t('SIGNUP')}</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.view_field}>
+        <Text style={styles.text_field}>
+          {I18n.t('email')}
+          <Text style={styles.text_star}> *</Text>
+        </Text>
+        <TextInput
+          style={styles.textInput_field}
+          autoCapitalize="none"
+          textContentType="emailAddress"
+          autoCompleteType="email"
+          keyboardType="email-address"
+          onChangeText={(text) => { onChangeText(text); }}
+          value={value}
+        />
+      </View>
+      <View style={styles.view_field}>
+        <Text style={styles.text_field}>
+          {I18n.t('password')}
+          <Text style={styles.text_star}> *</Text>
+        </Text>
+        <TextInput
+          style={styles.textInput_field}
+          autoCapitalize="none"
+          textContentType="password"
+          autoCompleteType="password"
+          onChangeText={(text) => onChangePass(text)}
+          valuePass={valuePass}
+          secureTextEntry
+        />
+      </View>
+      <View style={styles.view_bottomButton}>
+        <TouchableOpacity
+          style={styles.button_logIn}
+          onPress={() => { loginUser(props, value, valuePass); }}
+        >
+          <Text style={styles.text_logIn}>
+            {I18n.t('SIGNIN')}
           </Text>
-        </View>
-        <View style={styles.button}>
-          <Button
-            onPress={() => {
-              props.navigation.navigate('userRegister');
-            }}
-            title={I18n.t('noAccount')}
-            color="#9dc5ef"
-            accessibilityLabel="Learn more about this blue button"
-          />
-        </View>
-        <View style={{ flex: 0.1, flexDirection: 'column' }}>
-          <Text style={{ fontSize: 20, textAlign: 'center', margin: 10 }}>
-            OU
-          </Text>
-        </View>
-        <View style={{ flex: 0.1, margin: 10 }}>
+        </TouchableOpacity>
+        <Text style={styles.text_or}>{I18n.t('OR')}</Text>
+        <View style={styles.view_facebook}>
           <LoginButton
+            style={styles.button_facebook}
+            readPermissions={['public_profile', 'email']}
             onLoginFinished={(error, result) => {
               if (error) {
                 console.log(`login has error: ${result.error}`);
@@ -144,13 +117,6 @@ function LoginPage(props) {
             }}
             onLogoutFinished={() => setUserInfo({})}
           />
-          {userInfo.name && (
-          <Text style={{ fontSize: 10, marginVertical: 5, textAlign: 'center' }}>
-            Logged in As
-            {' '}
-            {userInfo.name}
-          </Text>
-          )}
         </View>
       </View>
     </View>
@@ -158,65 +124,114 @@ function LoginPage(props) {
 }
 
 const styles = StyleSheet.create({
-  back: {
-    backgroundColor: 'pink',
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    flex: 1
-  },
-  form: {
-    backgroundColor: '#FFFFFF',
+  view_back: {
     flex: 1,
-    borderWidth: 1,
-    borderRadius: 5,
-    width: '90%',
-    height: '90%',
-    marginTop: '5%',
-    marginBottom: '5%',
-    paddingBottom: '15%',
-    opacity: 0.95,
     flexDirection: 'column',
-    justifyContent: 'flex-start',
     alignItems: 'center',
+    justifyContent: 'flex-start',
+    backgroundColor: '#ffffff',
+    paddingTop: '10%',
+    paddingLeft: '7.5%',
+    paddingRight: '7.5%',
+    paddingBottom: '10%',
   },
-  textInput: {
-    flex: 0.13,
+  view_logo: {
+    flex: 20,
     justifyContent: 'center',
-    flexDirection: 'row',
+    width: '100%',
   },
-  textLink: {
-    color: '#671478',
-    fontSize: 20,
-    marginTop: 10,
-    justifyContent: 'center',
-    textAlign: 'center'
-  },
-  button: {
-    flex: 0.1,
-    flexDirection: 'column',
-    marginTop: 10,
-    width: '70%',
-    height: 50,
-  },
-  logo: {
-    flex: 0.5,
-    width: '80%',
-    justifyContent: 'center',
-  },
-  logo_img: {
+  img_logo: {
+    marginTop: 43,
     width: '100%',
     resizeMode: 'contain',
   },
-  inputText: {
-    height: 40,
-    width: '70%',
+  view_signInUp: {
+    flex: 7,
+    marginTop: 30,
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    width: '100%',
+  },
+  view_separator: {
+    borderLeftWidth: 1,
+    marginTop: 5,
+    marginBottom: 5,
+    borderLeftColor: '#B9B9B9',
+  },
+  text_signIn: {
+    fontWeight: 'bold',
+    fontSize: 16,
+    padding: 12,
+    color: '#0092A7',
+  },
+  text_signUp: {
+    fontWeight: 'bold',
+    fontSize: 16,
+    padding: 12,
+    color: '#B9B9B9',
+  },
+  view_field: {
+    flex: 10,
+    marginTop: 5,
+    flexDirection: 'column',
+    width: '100%',
+  },
+  text_field: {
+    fontWeight: 'bold',
+    color: '#000000',
+    fontSize: 16,
+  },
+  text_star: {
+    fontWeight: 'bold',
+    color: '#FF0000',
+    fontSize: 16,
+  },
+  textInput_field: {
     fontSize: 18,
-    paddingLeft: 20,
-    backgroundColor: '#D9D9D9',
-    borderRadius: 5,
-    borderWidth: 0.5,
-    borderColor: '#404040',
+    height: 40,
+    borderWidth: 1,
+    borderColor: '#B9B9B9',
+    borderRadius: 4,
+    backgroundColor: '#FFFFFF'
+  },
+  view_bottomButton: {
+    flex: 51,
+    width: '100%',
+    alignItems: 'center',
+  },
+  button_logIn: {
+    marginTop: 40,
+    width: '100%',
+  },
+  text_logIn: {
+    width: '100%',
+    borderRadius: 4,
+    padding: 12,
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: '#FFFFFF',
+    backgroundColor: '#0092A7',
+  },
+  text_or: {
+    marginTop: 9,
+    padding: 12,
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  button_facebook: {
+    width: '100%',
+    height: 30,
+  },
+  view_facebook: {
+    marginTop: 9,
+    width: '100%',
+    height: 50,
+    borderRadius: 4,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#1877F2',
+    paddingHorizontal: 10,
   }
 });
 

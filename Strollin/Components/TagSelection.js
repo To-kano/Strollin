@@ -2,34 +2,32 @@ import React, { useState } from 'react';
 
 import { connect } from 'react-redux';
 import {
-  StyleSheet, Text, View, Button, FlatList, TouchableOpacity
+  StyleSheet, Text, View, FlatList, TouchableOpacity, Image,
 } from 'react-native';
 
 import I18n from '../Translation/configureTrans';
-import BackgroundImage from './backgroundImage';
 
 function Tag({ name }) {
   const [pressed, setpressed] = useState(false);
 
   return (
-    <View style={{ margin: 5 }}>
+    <View style={styles.view_tags}>
       {pressed === false && (
-      <Button
-        color="rgba(255,192,203, 1)"
-        title={name}
-        onPress={() => {
-          setpressed(!pressed);
-        }}
-      />
+      <TouchableOpacity
+        style={styles.view_tagOff}
+        onPress={() => { setpressed(!pressed); }}
+      >
+        <Text style={styles.text_tagOff}>{name}</Text>
+      </TouchableOpacity>
       )}
       {pressed === true && (
-      <Button
-        color="rgba(130, 38, 98, 1)"
-        title={name}
-        onPress={() => {
-          setpressed(!pressed);
-        }}
-      />
+      <TouchableOpacity
+        style={styles.view_tagOn}
+        onPress={() => { setpressed(!pressed); }}
+      >
+        <Image style={styles.img_tagOn} source={require('../images/icons/white/checked.png')}/>
+        <Text style={styles.text_tagOn}>{name}</Text>
+      </TouchableOpacity>
       )}
     </View>
   );
@@ -59,122 +57,80 @@ function TageSelection({ navigation, profil }) {
   ];
 
   return (
-  // <View style={styles.header}>
-  //   <TouchableOpacity
-  //     style={{width: '20%', height: '100%', marginLeft: 15}}
-  //     onPress={() => props.navigation.navigate('HomePage')}>
-  //     <Image
-  //       style={{
-  //         marginTop: '10%',
-  //         height: '70%',
-  //         width: '50%',
-  //         opacity: 0.5,
-  //         resizeMode: 'stretch',
-  //       }}
-  //       source={require('../ressources/home.png')}
-  //     />
-  //   </TouchableOpacity>
-  //   <TouchableOpacity
-  //     style={{width: '20%', height: '100%'}}
-  //     onPress={() => props.navigation.navigate('historicUser')}>
-  //     <Image
-  //       style={{
-  //         marginTop: '10%',
-  //         height: '70%',
-  //         width: '50%',
-  //         opacity: 0.5,
-  //         resizeMode: 'stretch',
-  //       }}
-  //       source={require('../ressources/plus.png')}
-  //     />
-  //   </TouchableOpacity>
-  //   <TouchableOpacity
-  //     style={{width: '20%', height: '100%'}}
-  //     onPress={() => props.navigation.navigate('TripSuggestion')}>
-  //     <Image
-  //       style={{
-  //         marginTop: '10%',
-  //         height: '70%',
-  //         width: '50%',
-  //         opacity: 0.5,
-  //         resizeMode: 'stretch',
-  //       }}
-  //       source={require('../ressources/plus.png')}
-  //     />
-  //   </TouchableOpacity>
-  //   <TouchableOpacity
-  //     style={{width: '20%', height: '100%'}}
-  //     onPress={() => console.log('friend')}>
-  //     <Image
-  //       style={{
-  //         marginTop: '10%',
-  //         height: '65%',
-  //         width: '50%',
-  //         opacity: 0.5,
-  //         resizeMode: 'stretch',
-  //       }}
-  //       source={require('../ressources/friend.png')}
-  //     />
-  //   </TouchableOpacity>
-  //   <TouchableOpacity
-  //     style={{width: '20%', height: '100%'}}
-  //     onPress={() => props.navigation.navigate('Profile')}>
-  //     <Image
-  //       style={{
-  //         marginTop: '10%',
-  //         height: '70%',
-  //         width: '50%',
-  //         opacity: 0.5,
-  //         resizeMode: 'stretch',
-  //       }}
-  //       source={require('../ressources/profile.png')}
-  //     />
-  //   </TouchableOpacity>
-  // </View>
-
-    <View style={styles.back}>
-      <BackgroundImage />
-      <View style={styles.fill}>
-        <Text style={[{ textAlign: 'left', color: 'black', fontSize: 25 }]}>
-          {I18n.t('welcome')}
-        </Text>
-        <Text style={[
-          {
-            textAlign: 'center', color: 'black', fontWeight: 'bold', fontSize: 25
-          }
-        ]}
-        >
-          {profil.pseudo}
-        </Text>
-        <Text style={[{
-          textAlign: 'left',
-          color: 'black',
-          fontSize: 18,
-          marginTop: 18,
-          fontWeight: 'normal',
-        }]}
-        >
-          {I18n.t('chooseTags')}
-        </Text>
-        <View style={{ flex: 2, margin: 10, marginTop: 40 }}>
-          <FlatList
-            data={data}
-            renderItem={({ item }) => (
-              <Tag name={item.name} pressed={item.pressed} />
-            )}
-          />
-          <TouchableOpacity
-            style={styles.newTrip}
-            onPress={() => navigation.navigate('Profile')}
-            // onPress={() =>
-            //  // this.NextPage(navigation.getParam('uid'))
-            // }
-          >
-            <Text style={{ fontSize: 16, color: '#FFFFFF' }}>{I18n.t('next')}</Text>
-          </TouchableOpacity>
-        </View>
+    <View style={styles.view_back}>
+      <View style={styles.view_header}>
+        <TouchableOpacity onPress={() => navigation.navigate('Menu')}>
+          <Image style={styles.img_header} source={require('../images/icons/black/menu.png')}/>
+        </TouchableOpacity>
+        <Text style={styles.text_header}>Tags</Text>
+        <TouchableOpacity>
+          <Image style={styles.img_header} source={require('../images/icons/black/search.png')}/>
+        </TouchableOpacity>
       </View>
+      <View style={styles.viex_list}>
+        <Text style={styles.text_field}>
+          Selectionnez vos Tags
+          <Text style={styles.text_star}> *</Text>
+        </Text>
+        <FlatList
+          data={data}
+          renderItem={({ item }) => (
+            <Tag name={item.name} pressed={item.pressed} />
+          )}
+        />
+      </View>
+      <TouchableOpacity
+        style={styles.view_button}
+        onPress={() => {
+          navigation.navigate('Profile');
+        }}
+      >
+        <Text style={styles.text_button}>Confirm my tags</Text>
+      </TouchableOpacity>
     </View>
+    // <View style={styles.back}>
+    //   <BackgroundImage />
+    //   <View style={styles.fill}>
+    //     <Text style={[{ textAlign: 'left', color: 'black', fontSize: 25 }]}>
+    //       {I18n.t('welcome')}
+    //     </Text>
+    //     <Text style={[
+    //       {
+    //         textAlign: 'center', color: 'black', fontWeight: 'bold', fontSize: 25
+    //       }
+    //     ]}
+    //     >
+    //       {profil.pseudo}
+    //     </Text>
+    //     <Text style={[{
+    //       textAlign: 'left',
+    //       color: 'black',
+    //       fontSize: 18,
+    //       marginTop: 18,
+    //       fontWeight: 'normal',
+    //     }]}
+    //     >
+    //       {I18n.t('chooseTags')}
+    //     </Text>
+    //     <View style={{ flex: 2, margin: 10, marginTop: 40 }}>
+    //       <FlatList
+    //         data={data}
+    //         renderItem={({ item }) => (
+    //           <Tag name={item.name} pressed={item.pressed} />
+    //         )}
+    //       />
+    //       <TouchableOpacity
+    //         style={styles.newTrip}
+    //         onPress={() => navigation.navigate('Profile')}
+    //         // onPress={() =>
+    //         //  // this.NextPage(navigation.getParam('uid'))
+    //         // }
+    //       >
+    //         <Text style={{ fontSize: 16, color: '#FFFFFF' }}>{I18n.t('next')}</Text>
+    //       </TouchableOpacity>
+    //     </View>
+    //   </View>
+    // </View>
   );
 }
 
@@ -183,38 +139,140 @@ const mapStateToProps = (state) => state;
 export default connect(mapStateToProps)(TageSelection);
 
 const styles = StyleSheet.create({
-  back: {
+  view_back: {
+    flex: 1,
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#E1E2E7',
+    paddingTop: '1.8%',
+    paddingLeft: '3.3%',
+    paddingRight: '3.3%',
+    paddingBottom: '0%',
   },
-  fill: {
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    flex: 1,
-    backgroundColor: '#FFFFFF',
-    padding: 5,
-    paddingTop: 25,
-    margin: 10,
-    width: '95%',
-    borderRadius: 5,
-    opacity: 0.9,
-  },
-  header: {
-    backgroundColor: '#FFFFFF',
+  view_header: {
+    flex: 50,
     flexDirection: 'row',
-    justifyContent: 'flex-start',
     alignItems: 'center',
-    flex: 0.1,
+    marginBottom: 10,
+  },
+  img_header: {
+    width: 34,
+    resizeMode: 'contain',
+  },
+  text_header: {
+    width: '77.8%',
+    fontWeight: 'bold',
+    fontSize: 28,
+    letterSpacing: 2,
+    textAlign: 'center',
+    color: '#000000',
+  },
+  viex_list: {
+    flex: 703,
     width: '100%',
   },
-  newTrip: {
-    alignItems: 'center',
-    backgroundColor: '#F07323',
-    paddingVertical: '5%',
-    paddingHorizontal: '30%',
-    borderRadius: 5,
+  text_field: {
+    fontWeight: 'bold',
+    color: '#000000',
+    fontSize: 16,
+    marginTop: 15,
+    marginBottom: 12.5,
   },
+  text_star: {
+    fontWeight: 'bold',
+    color: '#FF0000',
+    fontSize: 16,
+  },
+  view_tags: {
+    marginBottom: 9,
+  },
+  view_tagOff: {
+    borderRadius: 25,
+    borderWidth: 3,
+    padding: 9,
+    borderColor: '#000000',
+    backgroundColor: '#E1E2E7',
+  },
+  text_tagOff: {
+    textTransform: 'capitalize',
+    width: '100%',
+    height: 22,
+    fontSize: 16,
+    color: '#000000',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  view_tagOn: {
+    flexDirection: 'row',
+    borderRadius: 25,
+    borderWidth: 3,
+    padding: 9,
+    borderColor: '#0092A7',
+    backgroundColor: '#0092A7',
+  },
+  img_tagOn: {
+    width: 22,
+    height: 22,
+    resizeMode: 'contain',
+  },
+  text_tagOn: {
+    textTransform: 'capitalize',
+    width: '86%',
+    height: 22,
+    fontSize: 16,
+    color: '#ffffff',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  view_button: {
+    flex: 50,
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 12,
+    height: 45,
+    marginTop: 12.5,
+    marginBottom: 12.5,
+    backgroundColor: '#0092A7',
+  },
+  text_button: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#FFFFFF',
+  },
+  // back: {
+  //   flexDirection: 'column',
+  //   justifyContent: 'flex-start',
+  //   alignItems: 'center',
+  //   flex: 1,
+  //   backgroundColor: '#fff',
+  // },
+  // fill: {
+  //   flexDirection: 'column',
+  //   justifyContent: 'flex-start',
+  //   flex: 1,
+  //   backgroundColor: '#FFFFFF',
+  //   padding: 5,
+  //   paddingTop: 25,
+  //   margin: 10,
+  //   width: '95%',
+  //   borderRadius: 5,
+  //   opacity: 0.9,
+  // },
+  // header: {
+  //   backgroundColor: '#FFFFFF',
+  //   flexDirection: 'row',
+  //   justifyContent: 'flex-start',
+  //   alignItems: 'center',
+  //   flex: 0.1,
+  //   width: '100%',
+  // },
+  // newTrip: {
+  //   alignItems: 'center',
+  //   backgroundColor: '#F07323',
+  //   paddingVertical: '5%',
+  //   paddingHorizontal: '30%',
+  //   borderRadius: 5,
+  // },
 });
