@@ -94,7 +94,6 @@ router.post('/update_location', async function(req, res) {
     if (!user) {
         return res.status(400).send({status: "You are not connected."});
     }
-    console.log("req: ", req.body);
     if (req.body.name)
         update.name = req.body.name
     if (req.body.owner)
@@ -121,15 +120,11 @@ router.post('/update_location', async function(req, res) {
         update.phone = req.body.phone
     if (req.body.website)
         update.website = req.body.website
-    await location.updateOne({_id: req.headers.location_id}, update, function(err, raw) {
-        if (err) {
-            console.log("Location could not be updated.")
-            return res.status(400).send({status: false});
-        } else {
-            console.log("Location updated: ", raw)
-        }
-    });
-    return res.status(200).send({status: true});
+    error = await location.updateOne({_id: req.headers.location_id}, update).catch(error => error);
+    if (error.errors) {
+        return res.status(400).send({status: "Location could not be updated."});
+    }
+    return res.status(200).send({status: "Location updated"});
 });
 
 
@@ -214,6 +209,37 @@ router.get('/get_locations', async function(req, res) {
     return res.status(200).send({status: "List of locations returned.", locations_list});
 });
 
+// GET_LOCATIONS_BY_ID
+/**
+ * Get the list of locations in database
+ * @param {String} req.headers.access_token
+ * @param {LocationID || [LocationID]} req.headers.locations_id_list
+ */
+router.get('/get_locations_by_id', async function(req, res) {
+
+    let user = await UserModel.findOne({access_token: req.headers.access_token});
+    let locations_list = [];
+    let list = req.headers.locations_id_list;
+
+    if (!user) {
+        return res.status(400).send({status: "You are not connected."});
+    }
+    if (typeof list == "string" && list.includes(',')) {
+        list = list.replace(' ', '');
+        list = list.split(',')
+        for (let index = 0; index < list.length; index++) {
+            location = await LocationModel.find({_id: list[index]});
+            if (location) {
+                locations_list.push(location[0]);
+            }
+        }
+    } else if (typeof list == "string") {
+        locations_list = await LocationModel.findOne({_id: list});
+    } else {
+        return res.status(400).send({status: "Parameter provided is invalid."});
+    }
+    return res.status(200).send({status: "List of locations returned.", locations_list});
+});
 
 
 module.exports = router;

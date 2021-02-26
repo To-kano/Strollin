@@ -41,6 +41,21 @@ function IndexNavbar() {
       window.removeEventListener("scroll", updateNavbarColor);
     };
   });
+
+  /*function downloadApp() {
+    fetch('http://localhost:8080/employees/download')
+        .then(response => {
+            response.blob().then(blob => {
+                let url = window.URL.createObjectURL(blob);
+                let a = document.createElement('a');
+                a.href = url;
+                a.download = 'employees.json';
+                a.click();
+            });
+            //window.location.href = response.url;
+    });
+  }*/
+
   return (
     <Navbar className={classnames("fixed-top", navbarColor)} expand="lg">
       <Container>
@@ -63,6 +78,13 @@ function IndexNavbar() {
             <span className="navbar-toggler-bar bar2" />
             <span className="navbar-toggler-bar bar3" />
           </button>
+          <NavbarBrand
+            data-placement="bottom"
+            href="/Strollin.apk"
+            title="Download app"
+          >
+            Download App
+          </NavbarBrand>
         </div>
         <Collapse
           className="justify-content-end"

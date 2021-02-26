@@ -63,6 +63,13 @@ function IndexNavbarPartFR() {
             <span className="navbar-toggler-bar bar2" />
             <span className="navbar-toggler-bar bar3" />
           </button>
+          <NavbarBrand
+            data-placement="bottom"
+            href="/Strollin.apk"
+            title="Download app"
+          >
+            Télécharger
+          </NavbarBrand>
         </div>
         <Collapse
           className="justify-content-end"

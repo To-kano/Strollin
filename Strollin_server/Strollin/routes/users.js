@@ -30,8 +30,7 @@ router.post('/register', async function(req, res) {
   let token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
   if (mail) {
-    console.log("The mail is used already.");
-    return res.status(400).send({status: false});
+    return res.status(400).send({status: "The mail is used already."});
   }
   if (req.body.mail && req.body.password && req.body.partner !== undefined) {
     user = new UserModel({
@@ -47,12 +46,52 @@ router.post('/register', async function(req, res) {
       user.pseudo = req.body.pseudo
     }
     await user.save();
-    console.log("Account created successfully.");
-    return res.status(200).send({status: true, access_token: token});
+    return res.status(200).send({status: "Account created successfully.", access_token: token});
   }
-  console.log("The entry is invalid.");
-  return res.status(400).send({status: false});
+  return res.status(400).send({status: "The entry is invalid."});
 });
+
+
+// EDIT_PROFILE
+/**
+ * Edit a comment's message or score
+ * @param {String} req.headers.access_token
+ * 
+ * At least one of below
+ * @param {String} req.body.password
+ * @param {String} req.body.pseudo
+ * @param {String} req.body.first_name
+ * @param {String} req.body.last_name
+ */
+router.post('/edit_profile', async function(req, res) {
+  let user = await UserModel.findOne({access_token: req.headers.access_token});
+
+  if (!user) {
+      return res.status(400).send({status: "You are not connected."});
+  }
+  if (!req.body.password && !req.body.pseudo && !req.body.first_name && !req.body.last_name) {
+      return res.status(400).send({status: "No edit data provided."});
+  }
+  let query = {};
+  if (req.body.password) {
+      query.password = req.body.password;
+  }
+  if (req.body.pseudo) {
+    query.pseudo = req.body.pseudo;
+  }
+  if (req.body.first_name) {
+    query.first_name = req.body.first_name;
+  }
+  if (req.body.last_name) {
+      query.last_name = req.body.last_name;
+  }
+  let error = await user.updateOne(query).catch(error => error);
+  if (error.errors) {
+      return res.status(400).send({status: error.errors});
+  }
+  return res.status(400).send({status: "Profile edited."});
+});
+
 
 // ADD_FRIEND_REQUEST
 /**
@@ -66,8 +105,7 @@ router.post('/add_friend_request', async function(req, res) {
   let friend = await UserModel.findOne({_id: req.body.friend});
 
   if (!user) {
-    console.log("You are not connected.");
-    return res.status(400).send({status: false});
+    return res.status(400).send({status: "You are not connected."});
   }
   if (friend && !friend.friends_request.includes(user._id) && !user.friends_request.includes(friend._id)) {
     await friend.updateOne({$push: {friends_request: user._id}});
@@ -90,8 +128,7 @@ router.post('/add_friend', async function(req, res) {
   let friend = await UserModel.findOne({_id: req.body.friend});
 
   if (!user) {
-    console.log("You are not connected.");
-    return res.status(400).send({status: false});
+    return res.status(400).send({status: "You are not connected."});
   }
   if (friend && !friend.friends_list.includes(user._id) && !user.friends_list.includes(friend._id) && user.friends_request.includes(friend._id)) {
     await friend.updateOne({$push: {friends_list: user._id}});
@@ -116,8 +153,7 @@ router.post('/add_tag', async function(req, res) {
   let add_list = req.body.tags_list
 
   if (!user) {
-    console.log("You are not connected.");
-    return res.status(400).send({status: false});
+    return res.status(400).send({status: "You are not connected."});
   }
   for (let index = 0; index < add_list.length; index++) {
     new_tag = await TagModel.findOne({_id: add_list[index]})
@@ -199,7 +235,7 @@ router.get('/get_own_profile', async function(req, res) {
   let profile = await UserModel.findOne({access_token: req.headers.access_token}, projection);
 
   if (profile) {
-    return  res.status(200).send({status: "Profile sent." , profile});
+    return  res.status(200).send({status: "Profile sent.", profile});
   }
   return res.status(400).send({status: "You are not connected."});
 });
@@ -212,15 +248,14 @@ router.get('/get_own_profile', async function(req, res) {
  * @param {String} req.headers.user_id
  */
 router.get('/get_user_profile', async function(req, res) {
-  const projection = 'mail creation_date pseudo type first_name last_name tags_list friends_list';
+  const projection = 'mail creation_date pseudo partner first_name last_name tags_list friends_list';
   let user = await UserModel.findOne({access_token: req.headers.access_token});
   let profile = null;
 
   if (user) {
     profile = await UserModel.findOne({_id: req.headers.user_id}, projection);
-    console.log("profile of friends", profile);
     if (profile) {
-      return  res.status(200).send({status: "Profile sent." , profile});
+      return  res.status(200).send({status: "Profile sent.", profile});
     }
   }
   return res.status(400).send({status: "You are not connected."});

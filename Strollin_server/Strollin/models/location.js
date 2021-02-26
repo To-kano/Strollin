@@ -13,16 +13,12 @@ var LocationModelSchema = new Schema({
         type: String,
         default: null
     },
-    score: {        // Note du lieu
+    score: {
         type: String,
         default: '0'
     },
-    user_score: {
-        type: [String], //list of User ID that gave score, see user.scoreLocation
-        default: []
-    },
     coordinate: {
-        type: [String, String],
+        type: {},
         required: true,
     },
     address: {
@@ -54,7 +50,7 @@ var LocationModelSchema = new Schema({
         default: [],
     },
     tags_list: {
-        type: [{}], // {tagsID, disp}
+        type: [{}],     // {tag_name, disp}
         default: [],
     },
     price_range: {

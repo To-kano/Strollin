@@ -1,5 +1,5 @@
-{"_id":{"$oid":"5ff31a3ca88c20001fae426f"},"description":"tag1 desc","number_used":"1","locations_list":[],"courses_list":[],"name":"tag1","__v":0}
-{"_id":{"$oid":"5ff31a45a88c20001fae4270"},"description":"tag2 desc","number_used":"1","locations_list":[],"courses_list":[],"name":"tag2","__v":0}
-{"_id":{"$oid":"5ff31a4aa88c20001fae4271"},"description":"tag3 desc","number_used":"1","locations_list":[],"courses_list":[],"name":"tag3","__v":0}
-{"_id":{"$oid":"5ff31a7fa88c20001fae4272"},"description":"tag3 desc","number_used":"1","locations_list":[],"courses_list":[],"name":"tag0","__v":0}
-{"_id":{"$oid":"5ff477a2765c6f001fff5b72"},"description":"Nescafé","number_used":"0","locations_list":[],"courses_list":[],"name":"Nestor","__v":0}
+{"_id":{"$oid":"6009c3171fc13a001ef6e4e9"},"description":"Nescafé","number_used":"0","locations_list":[],"courses_list":[],"name":"Nee","__v":0}
+{"_id":{"$oid":"6009c589805b54001fa7cce6"},"description":"Nescafé","number_used":"0","locations_list":[],"courses_list":[],"name":"Nesse","__v":0}
+{"_id":{"$oid":"6009c5f4f56675001f755c5b"},"description":"Nescafé","number_used":"0","locations_list":[],"courses_list":[],"name":"Nessde","__v":0}
+{"_id":{"$oid":"600c28493202ad001ef3cb8d"},"description":"Onion","number_used":"0","locations_list":[],"courses_list":[],"name":"Neeee","__v":0}
+{"_id":{"$oid":"6012c74bd3101a001ebc275a"},"description":"Onion","number_used":"0","locations_list":[],"courses_list":[],"name":"NNNNN","__v":0}
