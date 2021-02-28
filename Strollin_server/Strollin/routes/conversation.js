@@ -20,9 +20,8 @@ router.get('/get_conversations', async function(req, res) {
     let user = await UserModel.findOne({access_token: req.headers.access_token})
     let conversations = null;
 
-    let id = user._id;
-
     if (user) {
+        let id = user._id;
         conversations = await ConversationModel.find({participants: {$in: [id]}})
         return res.status(200).send({status: "conversations sent.", conversations});
     }

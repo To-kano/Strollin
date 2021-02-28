@@ -201,7 +201,7 @@ router.get('/login', async function(req, res) {
 
   if (user) {
     await user.updateOne({access_token: token});
-    return  res.status(200).send({status: "Log in successfully." , access_token: token});
+    return res.status(200).send({status: "Log in successfully." , access_token: token});
   }
   return res.status(400).send({status: "The login or the password is incorrect."});
 });
@@ -253,14 +253,15 @@ router.get('/get_user_profile', async function(req, res) {
   let user = await UserModel.findOne({access_token: req.headers.access_token});
   let profile = null;
 
-  if (user) {
-    profile = await UserModel.findOne({_id: req.headers.user_id}, projection);
-    if (profile) {
-      profile.creation_date = Date(profile.creation_date)
-      return res.status(200).send({status: "Profile sent.", profile});
-    }
+  if (!user) {
+    return res.status(400).send({status: "You are not connected."});
   }
-  return res.status(400).send({status: "You are not connected."});
+  profile = await UserModel.findOne({_id: req.headers.user_id}, projection);
+  if (profile) {
+    profile.creation_date = Date(profile.creation_date)
+    return res.status(200).send({status: "Profile sent.", profile});
+  }
+  return res.status(400).send({status: "User ID provided is not valid."});
 });
 
 
