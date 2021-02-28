@@ -6,7 +6,7 @@ import Location_List from './locations_list';
 
 function GotoComment(props) {
   props.navigation.setParams({ data: props.data });
-  props.navigation.navigate('CommentScreen');
+  props.navigation.navigate('CommentScreen', { data: props.data});
 }
 
 function randPic() {
