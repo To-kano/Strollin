@@ -91,10 +91,11 @@ router.get('/get_course', async function(req, res) {
             courses_list = await CourseModel.find().sort("score");
         }
         else if (req.headers.sort === "tendency") {
+            let tendency_date = Date.now() - (1000 * 60 * 60 * 24 * 7)
             let comments_list = await CommentModel.find(
                 {
                     course_id: {$ne: ""},
-                    creation_date: {$gt: (Date.now() - (1000 * 60 * 60 * 24 * 7) )}
+                    creation_date: {$gt: tendency_date.toString()}
                 }
             );
             let courses_id_list = [];
@@ -104,6 +105,9 @@ router.get('/get_course', async function(req, res) {
                 }
             }
             courses_list = await CourseModel.find({_id: {$in: courses_id_list}})
+        }
+        for (let i in courses_list) {
+            courses_list[i].creation_date = Date(courses_list[i].creation_date)
         }
         return res.status(200).send({status: "List of courses returned.", courses_list})
     }

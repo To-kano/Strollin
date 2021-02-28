@@ -14,8 +14,8 @@ var UserModelSchema = new Schema({
         required: true,
     },
     creation_date: {         // Date de création (gérer auto)
-        type: Date,
-        default: Date.now,
+        type: String,
+        default: Date.now().toString(),
     },
     pseudo: {               // Nom apparaissant pour l'utilisateur (ex: Auteur de parcours / Messagerie)
         type: String,

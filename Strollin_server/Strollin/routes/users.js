@@ -235,7 +235,8 @@ router.get('/get_own_profile', async function(req, res) {
   let profile = await UserModel.findOne({access_token: req.headers.access_token}, projection);
 
   if (profile) {
-    return  res.status(200).send({status: "Profile sent.", profile});
+    profile.creation_date = Date(profile.creation_date)
+    return res.status(200).send({status: "Profile sent.", profile});
   }
   return res.status(400).send({status: "You are not connected."});
 });
@@ -255,7 +256,8 @@ router.get('/get_user_profile', async function(req, res) {
   if (user) {
     profile = await UserModel.findOne({_id: req.headers.user_id}, projection);
     if (profile) {
-      return  res.status(200).send({status: "Profile sent.", profile});
+      profile.creation_date = Date(profile.creation_date)
+      return res.status(200).send({status: "Profile sent.", profile});
     }
   }
   return res.status(400).send({status: "You are not connected."});
@@ -312,6 +314,11 @@ router.get('/get_user_by_id', async function(req, res) {
   if (given_list) {
       users_list = await UserModel.find({_id: {$in: given_list}, projection});
       if (users_list) {
+          if (projection.includes("creation_date")) {
+              for (let i in users_list) {
+                users_list[i].creation_date = Date(users_list[i].creation_date)
+              }
+          }
           return res.status(200).send({status: "User(s) found.", users_list});
       }
   }

@@ -18,8 +18,8 @@ var CommentModelSchema = new Schema({
         required: true
     },
     creation_date: {
-        type: Date,
-        default: Date.now(),
+        type: String,
+        default: Date.now().toString(),
     },
     location_id: {
         type: String,

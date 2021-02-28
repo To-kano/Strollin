@@ -26,8 +26,8 @@ var CourseModelSchema = new Schema({
         required: true
     },
     creation_date: {
-        type: Date,
-        default: Date.now,
+        type: String,
+        default: Date.now().toString(),
     },
     timetable: {        // Définit les horaires possible en prenant les timetable de la liste des lieux
         type: String,

@@ -161,6 +161,9 @@ router.get('/get_comment', async function(req, res) {
     if (given_list) {
         comments_list = await CommentModel.find({_id: {$in: given_list}});
         if (comments_list) {
+            for (let i in comments_list) {
+                comments_list[i].creation_date = Date(comments_list[i].creation_date)
+            }
             return res.status(200).send({status: "Comments found.", comments_list});
         }
     }
