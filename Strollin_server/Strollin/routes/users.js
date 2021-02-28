@@ -144,7 +144,7 @@ router.post('/add_friend', async function(req, res) {
 /**
  * Add tags in the current user's tag list
  * @param {String} req.headers.access_token
- * @param {[ObjectID]} req.body.tags_list
+ * @param {[String]} req.body.tags_list
  */
 router.post('/add_tag', async function(req, res) {
 
@@ -156,9 +156,9 @@ router.post('/add_tag', async function(req, res) {
     return res.status(400).send({status: "You are not connected."});
   }
   for (let index = 0; index < add_list.length; index++) {
-    new_tag = await TagModel.findOne({_id: add_list[index]})
+    new_tag = await TagModel.findOne({name: add_list[index]})
     if (new_tag && !user.tags_list.includes(new_tag)) {
-      await user.updateOne({$push: {tags_list: new_tag._id}})
+      await user.updateOne({$push: {tags_list: new_tag.name}})
     }
   }
   return  res.status(200).send({status: "Tag(s) added successfully."});
@@ -270,7 +270,7 @@ router.get('/get_user_profile', async function(req, res) {
  */
 router.get('/get_user_tags', async function(req, res) {
 
-  let user = await UserModel.findOne({access_token: req.headers.access_token}, option);
+  let user = await UserModel.findOne({access_token: req.headers.access_token});
   let all_user_tags = [];
   let user_tags = null;
   let user_index = null;
@@ -278,16 +278,44 @@ router.get('/get_user_tags', async function(req, res) {
   if (!user) {
     return res.status(400).send({status: "You are not connected."});
   }
-  for (let index = 0; index < req.headers.user_id.length; index++) {
-    user_index = await UserModel.findOne({_id: req.headers.user_id[index]});
+  user_id = req.headers.user_id.replace(' ', '');
+  user_id = user_id.split(',')
+  for (let index = 0; index < user_id.length; index++) {
+    user_index = await UserModel.findOne({_id: user_id[index]});
     if (user_index) {
-      user_tags = await TagModel.find({_id: {$in: user_index.tags_list}});
+      user_tags = await TagModel.find({name: {$in: user_index.tags_list}});
       if (user_tags) {
         all_user_tags.push(user_tags);
       }
     }
   }
   return  res.status(200).send({status: "User's Tags sent." , all_user_tags});
+});
+
+
+// GET_USER_BY_ID
+/**
+ * Get the user(s) tags.
+ * @param {String} req.headers.access_token
+ * @param {String || [String]} req.headers.users_list
+ * @param {String} req.headers.projection //Fields to return in Object
+ */
+router.get('/get_user_by_id', async function(req, res) {
+  let user = await UserModel.findOne({access_token: req.headers.access_token});
+  const projection = req.headers.projection;
+  let users_list = null;
+
+  if (!user) {
+      return res.status(400).send({status: "You are not connected."});
+  }
+  let given_list = req.headers.users_list.split(',');
+  if (given_list) {
+      users_list = await UserModel.find({_id: {$in: given_list}, projection});
+      if (users_list) {
+          return res.status(200).send({status: "User(s) found.", users_list});
+      }
+  }
+  return res.status(400).send({status: "User(s) not found."});
 });
 
 

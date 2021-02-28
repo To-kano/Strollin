@@ -153,7 +153,7 @@ function Map(props) {
 
     return (
       <MapView
-        style={{ height: props.height, width: props.width + magic }} // showsMyLocationButton do not show if width is not change
+        style={{ height: props.height, width: props.width }} // showsMyLocationButton do not show if width is not change
         ref={refMapView}
         initialRegion={localRegion}
         showsUserLocation

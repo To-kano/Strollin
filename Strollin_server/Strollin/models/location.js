@@ -10,7 +10,7 @@ var LocationModelSchema = new Schema({
         required: true
     },
     owner: {
-        type: String,
+        type: {},
         default: null
     },
     score: {
