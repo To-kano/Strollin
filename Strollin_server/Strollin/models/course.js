@@ -22,7 +22,7 @@ var CourseModelSchema = new Schema({
         default: '0'
     },
     author: {
-        type: String,
+        type: {},
         required: true
     },
     creation_date: {

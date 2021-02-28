@@ -10,7 +10,7 @@ var CommentModelSchema = new Schema({
         default: "",
     },
     author: {
-        type: String,
+        type: {},
         required: true
     },
     score: {

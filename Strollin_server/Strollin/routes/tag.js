@@ -30,7 +30,7 @@ router.post('/new_tag', async function(req, res) {
         if (tag)
             return res.status(400).send({status: "The tag exists already."});
         tag = new TagModel({
-            //name: req.body.name,
+            name: req.body.name,
             description: req.body.description,
         });
         let error = await tag.save().catch(error => error);

@@ -1,5 +1,2 @@
-{"_id":{"$oid":"6009c3171fc13a001ef6e4e9"},"description":"Nescafé","number_used":"0","locations_list":[],"courses_list":[],"name":"Nee","__v":0}
-{"_id":{"$oid":"6009c589805b54001fa7cce6"},"description":"Nescafé","number_used":"0","locations_list":[],"courses_list":[],"name":"Nesse","__v":0}
-{"_id":{"$oid":"6009c5f4f56675001f755c5b"},"description":"Nescafé","number_used":"0","locations_list":[],"courses_list":[],"name":"Nessde","__v":0}
-{"_id":{"$oid":"600c28493202ad001ef3cb8d"},"description":"Onion","number_used":"0","locations_list":[],"courses_list":[],"name":"Neeee","__v":0}
-{"_id":{"$oid":"6012c74bd3101a001ebc275a"},"description":"Onion","number_used":"0","locations_list":[],"courses_list":[],"name":"NNNNN","__v":0}
+{"_id":{"$oid":"603a548afafa2b001e256707"},"description":"un cafe, duh!","number_used":"0","locations_list":[],"courses_list":[],"name":"cafe","__v":0}
+{"_id":{"$oid":"603a549bfafa2b001e256708"},"description":"Oui, c'est un bar","number_used":"0","locations_list":[],"courses_list":[],"name":"bar","__v":0}
