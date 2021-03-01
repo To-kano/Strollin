@@ -34,7 +34,7 @@ router.post('/new_comment', async function(req, res) {
     let comment = null;
     let course = null;
     let location = null;
-    let user = await UserModel.findOne({access_token: req.headers.access_token});
+    let user = await UserModel.findOne({access_token: req.headers.access_token}, "_id pseudo");
 
     if (!user) {
         return res.status(400).send({status: "You are not connected."});
@@ -59,7 +59,7 @@ router.post('/new_comment', async function(req, res) {
     comment = new CommentModel({
         message: req.body.message,
         score: req.body.score,
-        author: user._id,
+        author: user,
         course_id: req.headers.course_id
     });
     let error = await comment.save().catch(error => error);
@@ -148,7 +148,7 @@ router.post('/edit_comment', async function(req, res) {
 /**
  * Get comment's data
  * @param {String} req.headers.access_token
- * @param {[CommentID]} req.headers.comments_list
+ * @param {CommentID || [CommentID]} req.headers.comments_list
  */
 router.get('/get_comment', async function(req, res) {
     let user = await UserModel.findOne({access_token: req.headers.access_token});
@@ -157,9 +157,13 @@ router.get('/get_comment', async function(req, res) {
     if (!user) {
         return res.status(400).send({status: "You are not connected."});
     }
-    if (req.headers.comments_list) {
-        comments_list = await CommentModel.find({_id: {$in: req.headers.comments_list}});
+    let given_list = req.headers.comments_list.split(',');
+    if (given_list) {
+        comments_list = await CommentModel.find({_id: {$in: given_list}});
         if (comments_list) {
+            for (let i in comments_list) {
+                comments_list[i].creation_date = Date(comments_list[i].creation_date)
+            }
             return res.status(200).send({status: "Comments found.", comments_list});
         }
     }

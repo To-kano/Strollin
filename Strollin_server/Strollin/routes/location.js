@@ -24,6 +24,7 @@ const {
  * @param {String} req.body.city (Optional)
  * @param {String} req.body.country (Optional)
  * @param {String} req.body.description (Optional)
+ * @param {[String, String]} req.body.price_range (Optional)
  * @param {String} req.body.timetable (Optional)
  * @param {String} req.body.tags_list (Optional)
  * @param {String} req.body.price (Optional)
@@ -35,6 +36,7 @@ router.post('/new_location', async function(req, res) {
 
     let location = null;
     let user = await UserModel.findOne({access_token: req.headers.access_token});
+    let owner = null;
 
     if (!user) {
         return res.status(400).send({status: "You are not connected."});
@@ -45,9 +47,15 @@ router.post('/new_location', async function(req, res) {
     location = await LocationModel.findOne({name: req.body.name, address: req.body.address});
     if (location)
         return res.status(400).send({status: "The location exists already."});
+    if (req.body.owner) {
+        owner = await UserModel.findOne({_id: req.body.owner}, "_id pseudo");
+        if (!owner) {
+            return res.status(400).send({status: "The owner is not valid"});
+        }
+    }
     location = new LocationModel({
         name: req.body.name,
-        owner: req.body.owner,
+        owner: owner,
         coordinate: req.body.coordinate,
         address: req.body.address,
         city: req.body.city,
@@ -55,7 +63,7 @@ router.post('/new_location', async function(req, res) {
         description: req.body.description,
         timetable: req.body.timetable,
         tags_list: req.body.tags_list,
-        price_range: req.body.price,
+        price_range: req.body.price_range,
         average_time: req.body.average_time,
         phone: req.body.phone,
         website: req.body.website

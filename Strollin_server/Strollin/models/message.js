@@ -14,8 +14,8 @@ var MessageModelSchema = new Schema({
         required: true
     },
     creation_date: {
-        type: Date,
-        default: Date.now()
+        type: String,
+        default: Date.now().toString()
     },
     type: {
         type: String,

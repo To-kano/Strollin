@@ -30,7 +30,7 @@ const {
  */
 router.post('/new_course', async function(req, res) {
 
-    let user = await UserModel.findOne({access_token: req.headers.access_token});
+    let user = await UserModel.findOne({access_token: req.headers.access_token}, "_id pseudo");
     let course = null;
     let tag = null;
     let locations_list = null;
@@ -42,16 +42,12 @@ router.post('/new_course', async function(req, res) {
     // if (req.body.locations_list.length() !== locations_list.length()) {
     //     return res.status(400).send({status: "One of the locations does not exist."});
     // }
-    console.log("test");
     course = new CourseModel({
         locations_list: req.body.locations_list,
         name: req.body.name,
-        author: "Strollin",
+        author: user,
         tags_list: [],
     });
-    console.log("test");
-    if (req.body.author)
-        course.author = req.body.author;
     if (req.body.time_spent)
         course.time_spent = req.body.time_spent
 
@@ -95,10 +91,11 @@ router.get('/get_course', async function(req, res) {
             courses_list = await CourseModel.find().sort("score");
         }
         else if (req.headers.sort === "tendency") {
+            let tendency_date = Date.now() - (1000 * 60 * 60 * 24 * 7)
             let comments_list = await CommentModel.find(
                 {
                     course_id: {$ne: ""},
-                    creation_date: {$gt: (Date.now() - (1000 * 60 * 60 * 24 * 7) )}
+                    creation_date: {$gt: tendency_date.toString()}
                 }
             );
             let courses_id_list = [];
@@ -108,6 +105,9 @@ router.get('/get_course', async function(req, res) {
                 }
             }
             courses_list = await CourseModel.find({_id: {$in: courses_id_list}})
+        }
+        for (let i in courses_list) {
+            courses_list[i].creation_date = Date(courses_list[i].creation_date)
         }
         return res.status(200).send({status: "List of courses returned.", courses_list})
     }

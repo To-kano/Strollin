@@ -172,8 +172,13 @@ function tendanceReducer(state = initialState, action) {
         ...state,
       };
       nextState.tendanceList[action.index]["locations_list"] = action.value
-
-    return nextState;
+      return nextState;
+    case 'SET_COMMENT_LIST':
+      nextState = {
+        ...state,
+      };
+      nextState.tendanceList[action.index]["comments_list"] = action.value
+      return nextState;
     default:
       return state;
   }

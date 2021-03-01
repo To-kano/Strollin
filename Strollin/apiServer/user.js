@@ -121,8 +121,24 @@ async function setTendance(props, access_token) {
       .catch((error) => {
         console.error('error :', error);
       });
-    }
 
+      await fetch(`http://${IP_SERVER}:${PORT_SERVER}/comment/get_comment`, {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          access_token: access_token,
+          comments_list: answer["courses_list"][i]["comments_list"]
+        },
+        method: 'GET',
+      }).then((answer) => answer.json())
+      .then(async function (answer) {
+        const action = { type: "SET_COMMENT_LIST", value: answer["comments_list"], index: i }
+        props.dispatch(action);
+      })
+      .catch((error) => {
+        console.error('error :', error);
+      });
+    }
 
     return answer;
 

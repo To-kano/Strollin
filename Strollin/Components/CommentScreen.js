@@ -4,17 +4,19 @@ import {
 } from 'react-native';
 import Comment from './Comment';
 
+
 function CommentScreen(props) {
-  //console.log("props = ", props.navigation.setParams);
-  const DATA = require('./test.json');
+  console.log("props.data = ", props.route.params.data["comments_list"]);
+
+  //const DATA = require('./test.json');
   return (
     <View style={styles.container}>
       <View>
         <Text style={{ textAlign: 'center', fontSize: 40 }}> {} </Text>
         <FlatList
-          data={DATA}
+          data={props.route.params.data.comments_list}
           contentContainerStyle={{ flexGrow: 0.1 }}
-          renderItem={({ item }) => <Comment id={item.id} comment={item.comment} note={item.note} pseudo={item.pseudo} />}
+          renderItem={({ item }) => <Comment id={item["author"]["pseudo"]} comment={item["message"]} note={item["score"]} pseudo={item.pseudo} />}
           keyExtractor={(item) => item.id}
         />
       </View>

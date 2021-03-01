@@ -144,7 +144,7 @@ router.post('/add_friend', async function(req, res) {
 /**
  * Add tags in the current user's tag list
  * @param {String} req.headers.access_token
- * @param {[ObjectID]} req.body.tags_list
+ * @param {[String]} req.body.tags_list
  */
 router.post('/add_tag', async function(req, res) {
 
@@ -156,9 +156,9 @@ router.post('/add_tag', async function(req, res) {
     return res.status(400).send({status: "You are not connected."});
   }
   for (let index = 0; index < add_list.length; index++) {
-    new_tag = await TagModel.findOne({_id: add_list[index]})
+    new_tag = await TagModel.findOne({name: add_list[index]})
     if (new_tag && !user.tags_list.includes(new_tag)) {
-      await user.updateOne({$push: {tags_list: new_tag._id}})
+      await user.updateOne({$push: {tags_list: new_tag.name}})
     }
   }
   return  res.status(200).send({status: "Tag(s) added successfully."});
@@ -201,7 +201,7 @@ router.get('/login', async function(req, res) {
 
   if (user) {
     await user.updateOne({access_token: token});
-    return  res.status(200).send({status: "Log in successfully." , access_token: token});
+    return res.status(200).send({status: "Log in successfully." , access_token: token});
   }
   return res.status(400).send({status: "The login or the password is incorrect."});
 });
@@ -235,7 +235,8 @@ router.get('/get_own_profile', async function(req, res) {
   let profile = await UserModel.findOne({access_token: req.headers.access_token}, projection);
 
   if (profile) {
-    return  res.status(200).send({status: "Profile sent.", profile});
+    profile.creation_date = Date(profile.creation_date)
+    return res.status(200).send({status: "Profile sent.", profile});
   }
   return res.status(400).send({status: "You are not connected."});
 });
@@ -252,13 +253,15 @@ router.get('/get_user_profile', async function(req, res) {
   let user = await UserModel.findOne({access_token: req.headers.access_token});
   let profile = null;
 
-  if (user) {
-    profile = await UserModel.findOne({_id: req.headers.user_id}, projection);
-    if (profile) {
-      return  res.status(200).send({status: "Profile sent.", profile});
-    }
+  if (!user) {
+    return res.status(400).send({status: "You are not connected."});
   }
-  return res.status(400).send({status: "You are not connected."});
+  profile = await UserModel.findOne({_id: req.headers.user_id}, projection);
+  if (profile) {
+    profile.creation_date = Date(profile.creation_date)
+    return res.status(200).send({status: "Profile sent.", profile});
+  }
+  return res.status(400).send({status: "User ID provided is not valid."});
 });
 
 
@@ -270,7 +273,7 @@ router.get('/get_user_profile', async function(req, res) {
  */
 router.get('/get_user_tags', async function(req, res) {
 
-  let user = await UserModel.findOne({access_token: req.headers.access_token}, option);
+  let user = await UserModel.findOne({access_token: req.headers.access_token});
   let all_user_tags = [];
   let user_tags = null;
   let user_index = null;
@@ -278,16 +281,49 @@ router.get('/get_user_tags', async function(req, res) {
   if (!user) {
     return res.status(400).send({status: "You are not connected."});
   }
-  for (let index = 0; index < req.headers.user_id.length; index++) {
-    user_index = await UserModel.findOne({_id: req.headers.user_id[index]});
+  user_id = req.headers.user_id.replace(' ', '');
+  user_id = user_id.split(',')
+  for (let index = 0; index < user_id.length; index++) {
+    user_index = await UserModel.findOne({_id: user_id[index]});
     if (user_index) {
-      user_tags = await TagModel.find({_id: {$in: user_index.tags_list}});
+      user_tags = await TagModel.find({name: {$in: user_index.tags_list}});
       if (user_tags) {
         all_user_tags.push(user_tags);
       }
     }
   }
   return  res.status(200).send({status: "User's Tags sent." , all_user_tags});
+});
+
+
+// GET_USER_BY_ID
+/**
+ * Get the user(s) tags.
+ * @param {String} req.headers.access_token
+ * @param {String || [String]} req.headers.users_list
+ * @param {String} req.headers.projection //Fields to return in Object
+ */
+router.get('/get_user_by_id', async function(req, res) {
+  let user = await UserModel.findOne({access_token: req.headers.access_token});
+  const projection = req.headers.projection;
+  let users_list = null;
+
+  if (!user) {
+      return res.status(400).send({status: "You are not connected."});
+  }
+  let given_list = req.headers.users_list.split(',');
+  if (given_list) {
+      users_list = await UserModel.find({_id: {$in: given_list}, projection});
+      if (users_list) {
+          if (projection.includes("creation_date")) {
+              for (let i in users_list) {
+                users_list[i].creation_date = Date(users_list[i].creation_date)
+              }
+          }
+          return res.status(200).send({status: "User(s) found.", users_list});
+      }
+  }
+  return res.status(400).send({status: "User(s) not found."});
 });
 
 
