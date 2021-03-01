@@ -12,85 +12,106 @@ import BackgroundImage from './backgroundImage';
 import ButtonSwitch from './ButtonSwitch';
 
 function getNavigation() {
-  const destination1 = [
+
+  const destination = 
+  {
+    "_id":
     {
-      id: '1',
-      latitude: 48.782120,
-      longitude: 2.457256,
-      address: 'Avenue Du Général De Gaulle, Centre Commercial Régional Créteil-Soleil, 94000 Créteil',
-      name: 'UGC Ciné Cité Créteil',
+      "$oid":"5ff32c7640659a00230b1687"
     },
+    "locations_list":["5ff31d40977cba001e801bfa", "5ff47553765c6f001fff5b6f"],
+    "score":"0",
+    "user_score":[],
+    "number_used":"0",
+    "timetable":"",
+    "comments_list":["5ff4773e765c6f001fff5b71"],
+    "tags_list":[],
+    "time_spent":[],
+    "name":"HA HA HA HA!",
+    "author":"Strollin",
+    "creation_date":
     {
-      id: '2',
-      latitude: 48.769907,
-      longitude: 2.490415,
-      address: 'P.A des Petits Carreaux, 94380 Bonneuil-sur-Marne',
-      name: 'Hippopotamus Bonneuil',
-    }, {
-      id: '3',
-      latitude: 48.781282,
-      longitude: 2.456508,
-      address: 'Avenue de la France libre, 94000 Créteil',
-      name: 'Laser Game',
-    }
-  ];
-
-  const destination2 = [
-    {
-      id: '1',
-      latitude: 48.866606,
-      longitude: 2.335573,
-      address: '37 Rue Sainte-Anne, 75001 Paris',
-      name: 'Sapporo',
+      "$date":"2021-01-04T14:55:50.106Z"
     },
-    {
-      id: '2',
-      latitude: 48.869098,
-      longitude: 2.370088,
-      address: '14 Rue de la Fontaine au Roi, 75011 Paris',
-      name: 'Le Paname Art Café',
-    }, {
-      id: '3',
-      latitude: 48.850353,
-      longitude: 2.352838,
-      address: '6 Rue Cochin, 75005 Paris',
-      name: 'La Frange',
-    }
-  ];
+    "__v":0
+  };
 
-  const destination3 = [
-    {
-      id: '1',
-      latitude: 48.798683,
-      longitude: 2.446183,
-      address: '6 Rue Thomas Edison, 94000 Créteil',
-      name: 'Centre Sportif Marie-Thérèse Eyquem',
-    },
-    {
-      id: '2',
-      latitude: 48.780627,
-      longitude: 2.457364,
-      address: 'Centre commercial Créteil Soleil, 101 Avenue du Général de Gaulle, 94012 Créteil',
-      name: 'Restaurant Flunch Creteil Soleil',
-    }, {
-      id: '3',
-      latitude: 48.790379,
-      longitude: 2.465619,
-      address: '75 Avenue Pierre Brossolette, 94000 Creteil village',
-      name: 'Le Foz Club discothèque',
-    }
-  ];
+  return destination;
 
-  const allDestination = [
-    destination1,
-    destination2,
-    destination3
-  ];
 
-  const rand = Math.floor(Math.random() * Math.floor(3));
-
-  return allDestination[rand];
+  //return allDestination[rand];
 }
+
+function getLocation(id) {
+  const location1 =
+  {
+    "_id":"5ff31d40977cba001e801bfa",
+    "owner":"2nd owner",
+    "score":"0",
+    "user_score":[],
+    latitude: 48.798683,
+    longitude: 2.446183,
+    "description":"Peko",
+    "photo":[],
+    "timetable":"test",
+    "comments_list":["5ff3277dd90060001daaf045"],
+    "price_range":["",""],
+    "average_time":"",
+    "phone":"",
+    "website":"",
+    "pop_disp":"0",
+    "pop_ag":"0",
+    "alg_disp":"0",
+    "alg_ag":"0",
+    "name":"Une troisieme Maison",
+    "address":"369, rue Sandvich",
+    "city":"Creteil",
+    "country":"France",
+    "tags_list":[{"_id":{"$oid":"5ff31d40977cba001e801bfb"}}],
+    "__v":0
+  }
+
+  const location2 = 
+  {
+    "_id":"5ff47553765c6f001fff5b6f",
+    "owner":"thisID","score":"0","user_score":[],
+    latitude: 48.780627,
+    longitude: 2.457364,
+    "description":"HAHAHAHA",
+    "photo":[],
+    "timetable":"Du lundi au Vendredi",
+    "comments_list":[],
+    "tags_list":[{"id":"tag1","disp":"0"}],
+    "price_range":["",""],
+    "average_time":"",
+    "phone":"","website":"",
+    "pop_disp":"0",
+    "pop_ag":"0",
+    "alg_disp":"0",
+    "alg_ag":"0",
+    "name":"Ma premiere Maison",
+    "address":"369, rue Sandvich",
+    "city":"Creteil",
+    "country":"France",
+    "__v":0
+  }
+
+  if (id == "5ff47553765c6f001fff5b6f") {
+    return location2;
+  }
+
+  return location1;
+}
+
+function getArrayLocation(idLocations) {
+  let result = [];
+  for (let i = 0; i < idLocations.length; i++) {
+    result.push(getLocation(idLocations[i]));
+  }
+
+  return result
+}
+
 
 export function TripSuggestion(props) {
   //React.useLayoutEffect(() => {
@@ -115,7 +136,7 @@ export function TripSuggestion(props) {
     if (props.profil.sound) {
       for (let i = 0; i < waypoints.length; i++) {
         Tts.speak(`${I18n.t("TripSuggestion.step")} ${i + 1}`);
-        Tts.speak(waypoints[i].name);
+        Tts.speak(waypoints.name);
       }
     }
   }, [waypoints]);
@@ -203,7 +224,7 @@ export function TripSuggestion(props) {
             textAlign: 'center', fontSize: 22, fontWeight: 'bold', color: '#F07323'
           }]}
           >
-            {waypoints[0].name}
+            {waypoints.name}
           </Text>
         </View>
         <View
@@ -219,7 +240,7 @@ export function TripSuggestion(props) {
             width: '95%'
           }}
         >
-          <ElementHistoryNav data={waypoints} />
+          <ElementHistoryNav course={waypoints} locations={getArrayLocation(waypoints.locations_list)}/>
         </View>
         <View style={{
           flex: 0.4,

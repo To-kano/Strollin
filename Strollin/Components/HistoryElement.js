@@ -7,8 +7,49 @@ import {ShareDialog} from 'react-native-fbsdk';
 import Map from './map';
 import I18n from '../Translation/configureTrans';
 
-function ElementHistoryNav({ data, defaultSate = false }) {
-  const messagetext = `Strollin' m'a proposé un trajet ! \nRejoignons nous a ${data[0].name} au ${data[0].address} !`;
+function getLocation() {
+  const location1 =
+  {
+    "_id":{"$oid":"5ff31d40977cba001e801bfa"},
+    "owner":"2nd owner",
+    "score":"0",
+    "user_score":[],
+    latitude: 48.798683,
+    longitude: 2.446183,
+    "description":"Peko",
+    "photo":[],
+    "timetable":"test",
+    "comments_list":["5ff3277dd90060001daaf045"],
+    "price_range":["",""],
+    "average_time":"",
+    "phone":"",
+    "website":"",
+    "pop_disp":"0",
+    "pop_ag":"0",
+    "alg_disp":"0",
+    "alg_ag":"0",
+    "name":"Une troisieme Maison",
+    "address":"369, rue Sandvich",
+    "city":"Creteil",
+    "country":"France",
+    "tags_list":[{"_id":{"$oid":"5ff31d40977cba001e801bfb"}}],
+    "__v":0
+  }
+
+  return location1;
+}
+
+function getArrayLocation(idLocations) {
+  let result = [];
+  for (let i = 0; i < idLocations.length; i++) {
+    result.push(getLocation());
+  }
+
+  return result
+}
+
+function ElementHistoryNav({ course, locations, defaultSate = false }) {
+  const messagetext = `Strollin' m'a proposé un trajet ! \nRejoignons nous a ${getLocation().name} au ${getLocation().address} à ${getLocation().city} !`;
   const [showMap, setShowMap] = useState(defaultSate);
 
   const deltaView = {
@@ -34,12 +75,12 @@ function ElementHistoryNav({ data, defaultSate = false }) {
         </View>
         <View style={{ width: '100%', flexDirection: 'row', flex: 6 }}>
           <FlatList
-            data={data}
+            data={locations}
+            keyExtractor={(item) => item._id}
             renderItem={({ item }) => (
               <View style={{ margin: 10 }}>
                 <Text>
                   {I18n.t('HistoryElement.step')}
-                  {item.id}
                 </Text>
                 <Text>
                   {I18n.t('HistoryElement.name')}
@@ -47,7 +88,7 @@ function ElementHistoryNav({ data, defaultSate = false }) {
                 </Text>
                 <Text>
                   {I18n.t('HistoryElement.address')}
-                  {item.address}
+                  {item.address + " " + item.city}
                 </Text>
               </View>
             )}
@@ -114,7 +155,7 @@ function ElementHistoryNav({ data, defaultSate = false }) {
       </View>
       <View style={{ width: '100%', flexDirection: 'row', flex: 6 }}>
         <View style={{ marginTop: 20, marginBottom: 10, marginLeft: -4 }}>
-          <Map height={310} width={310} deltaView={deltaView} waypoints={data} />
+          <Map height={310} width={310} deltaView={deltaView} course={course} locations={locations}/>
         </View>
       </View>
       <View style={{ width: '100%', flexDirection: 'row', flex: 0.4 }}>
