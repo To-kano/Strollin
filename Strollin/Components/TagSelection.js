@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React , { useState, useEffect } from 'react';
 
 import { connect } from 'react-redux';
 import {
@@ -6,16 +6,43 @@ import {
 } from 'react-native';
 
 import I18n from '../Translation/configureTrans';
+import Store from '../Store/configureStore';
+import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 
 export function Tag({ name, defaultState = false }) {
   const [pressed, setpressed] = useState(defaultState);
+
+  async function postTags(body) {
+    const store = Store.getState();
+    const access_Token = store.profil.access_token;
+
+    var list = [body]
+    const test = JSON.stringify({tags_list: list})
+
+    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/add_tag`, {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      access_Token
+    },
+    body: test,
+    method: 'POST',
+    })
+    .then(res => res.json())
+    .then(json => {
+    });
+  }
 
   return (
     <View style={styles.view_tags}>
       {pressed === false && (
       <TouchableOpacity
         style={styles.view_tagOff}
-        onPress={() => { setpressed(!pressed); }}
+        onPress={() => {
+          console.log("pressed");
+          postTags(name)
+          setpressed(!pressed);
+        }}
       >
         <Text style={styles.text_tagOff}>{name}</Text>
       </TouchableOpacity>
@@ -23,7 +50,10 @@ export function Tag({ name, defaultState = false }) {
       {pressed === true && (
       <TouchableOpacity
         style={styles.view_tagOn}
-        onPress={() => { setpressed(!pressed); }}
+        onPress={() => {
+          console.log("unpressed");
+          setpressed(!pressed);
+         }}
       >
         <Image style={styles.img_tagOn} source={require('../images/icons/white/checked.png')}/>
         <Text style={styles.text_tagOn}>{name}</Text>
@@ -56,6 +86,30 @@ export function TagSelection({ navigation, profil }) {
     },
   ];
 
+  const [args, setArgs] = useState(true);
+
+  async function getThings() {
+    const store = Store.getState();
+    const access_Token = store.profil.access_token;
+    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/tag/get_tag`, {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      access_Token,
+    },
+    method: 'GET',
+    })
+    .then(res => res.json())
+    .then(json => {
+      console.log("heyyyy", json.tags_list);
+      setArgs(json.tags_list)
+    });
+  }
+
+  useEffect(() => {
+        getThings();
+  }, []);
+
   return (
     <View style={styles.view_back}>
       <View style={styles.view_header}>
@@ -73,9 +127,9 @@ export function TagSelection({ navigation, profil }) {
           <Text style={styles.text_star}> *</Text>
         </Text>
         <FlatList
-          data={data}
+          data={args}
           renderItem={({ item }) => (
-            <Tag name={item.name} pressed={item.pressed} />
+            <Tag name={item.name} pressed={item.pressed} tag_id={item._id}/>
           )}
         />
       </View>

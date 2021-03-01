@@ -46,7 +46,7 @@ router.post('/new_tag', async function(req, res) {
 
 // GET_TAG
 /**
- * Get a list of tag 
+ * Get a list of tag
  * @param {String} req.headers.access_token
  * @param {String} req.headers.sort (optional) (name / number_used)
  * @param {String} req.headers.search (optional) (substring of name to research)
@@ -60,7 +60,7 @@ router.get('/get_tag', async function(req, res) {
         return res.status(400).send({status: "You are not connected."});
     }
     if (!sort) {
-        sort = "name"; 
+        sort = "name";
     }
     if (req.headers.search) {
         tags = await TagModel.find({name: {$regex: req.headers.search}}).sort(sort);
@@ -77,4 +77,3 @@ router.get('/get_tag', async function(req, res) {
 
 
 module.exports = router;
-

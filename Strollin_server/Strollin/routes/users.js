@@ -56,7 +56,7 @@ router.post('/register', async function(req, res) {
 /**
  * Edit a comment's message or score
  * @param {String} req.headers.access_token
- * 
+ *
  * At least one of below
  * @param {String} req.body.password
  * @param {String} req.body.pseudo
@@ -69,15 +69,15 @@ router.post('/edit_profile', async function(req, res) {
   if (!user) {
       return res.status(400).send({status: "You are not connected."});
   }
-  if (!req.body.password && !req.body.pseudo && !req.body.first_name && !req.body.last_name) {
+  if (!req.body.password && !req.body.mail && !req.body.first_name && !req.body.last_name) {
       return res.status(400).send({status: "No edit data provided."});
   }
   let query = {};
   if (req.body.password) {
       query.password = req.body.password;
   }
-  if (req.body.pseudo) {
-    query.pseudo = req.body.pseudo;
+  if (req.body.mail) {
+    query.mail = req.body.mail;
   }
   if (req.body.first_name) {
     query.first_name = req.body.first_name;
