@@ -70,7 +70,8 @@ async function setFriendPseudo(props, access_token, profile) {
     })
       .then((response) => response.json())
       .then(async (answer) => {
-        //console.log("answer in friendPseudo func= ", answer);
+        console.log("answer in friendPseudo func= ", answer);
+        console.log("accessToken in friendPseudo func= ", access_token);
         if (answer) {
           const action = { type: 'ADD_FRIEND_TO_PSEUDO_LIST', value: {_id: profile.friends_list[i], pseudo: answer.profile.pseudo} };
           props.dispatch(action);
@@ -100,6 +101,7 @@ async function setTendance(props, access_token) {
   }).then((answer) => answer.json())
   .then(async function (answer) {
     console.log("answer tendance = ", answer);
+    console.log("token tendance = ", access_token);
     const action = { type: "SET_TENDANCE_LIST", value: answer["courses_list"] }
     props.dispatch(action);
 
