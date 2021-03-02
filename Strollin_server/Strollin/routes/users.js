@@ -203,7 +203,7 @@ router.get('/login', async function(req, res) {
 
   if (user) {
     await user.updateOne({access_token: token});
-    return res.status(200).send({status: "Log in successfully." , access_token: token});
+    return res.status(200).send({status: "Log in successfully.", access_token: token});
   }
   return res.status(400).send({status: "The login or the password is incorrect."});
 });

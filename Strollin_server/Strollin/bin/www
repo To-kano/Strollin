@@ -144,6 +144,7 @@ async function sendNewConversation(conversation) {
       }
     }
   }
+  console.log("Conversation sent to all participants.");
 }
 
 async function sendReceiveMessage(message, conversation) {

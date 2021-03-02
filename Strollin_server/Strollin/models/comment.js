@@ -25,6 +25,10 @@ var CommentModelSchema = new Schema({
         type: String,
         required: true,
     },
+    modification_date: {
+        type: Number,
+        required: true,
+    },
     location_id: {
         type: String,
         default: "",
