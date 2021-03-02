@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import AndroidPip from 'react-native-android-pip';
 import I18n from '../Translation/configureTrans';
 import Map from './map';
+import { addUserHistoric } from '../apiServer/user';
 
 import { PopUpForm } from './PopUpForm';
 
@@ -132,6 +133,7 @@ export function TripNavigation({map, dispatch, navigation}) {
               style={{ flex: 1 }}
               onPress={async () => {
                 await setTime()
+                addUserHistoric(profil.access_token, map.course._id);
                 const action = { type: 'ADD_HISTORIC', locations: map.locations, course: map.locations };
                 dispatch(action);
                 navigation.navigate('HomePage');
