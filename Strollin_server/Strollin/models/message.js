@@ -5,6 +5,10 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var MessageModelSchema = new Schema({
+    id: {
+        type: Number,
+        required: true,
+    },
     expeditor: {
         type: String,
         required: true
@@ -15,7 +19,7 @@ var MessageModelSchema = new Schema({
     },
     creation_date: {
         type: String,
-        default: Date.now().toString()
+        required: true,
     },
     type: {
         type: String,
