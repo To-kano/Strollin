@@ -48,12 +48,13 @@ router.post('/new_location', async function(req, res) {
     if (location)
         return res.status(400).send({status: "The location exists already."});
     if (req.body.owner) {
-        owner = await UserModel.findOne({_id: req.body.owner}, "_id pseudo");
+        owner = await UserModel.findOne({id: req.body.owner}, "-_id id pseudo");
         if (!owner) {
             return res.status(400).send({status: "The owner is not valid"});
         }
     }
     location = new LocationModel({
+        id: new Number(Date.now()),
         name: req.body.name,
         owner: owner,
         coordinate: req.body.coordinate,
@@ -128,7 +129,7 @@ router.post('/update_location', async function(req, res) {
         update.phone = req.body.phone
     if (req.body.website)
         update.website = req.body.website
-    error = await location.updateOne({_id: req.headers.location_id}, update).catch(error => error);
+    error = await location.updateOne({id: req.headers.location_id}, update).catch(error => error);
     if (error.errors) {
         return res.status(400).send({status: "Location could not be updated."});
     }
@@ -191,6 +192,7 @@ router.get('/get_locations', async function(req, res) {
     let user = await UserModel.findOne({access_token: req.headers.access_token});
     let locations_list = null;
     let query = {};
+    const projection = {_id: 0};
 
     if (!user) {
         return res.status(400).send({status: "You are not connected."});
@@ -213,7 +215,7 @@ router.get('/get_locations', async function(req, res) {
     // if (req.headers.tags_list) {
     //     query.tags_list = {$in: [req.headers.tags_list]};
     // }
-    locations_list = await LocationModel.find(query)
+    locations_list = await LocationModel.find(query, {projection: projection});
     return res.status(200).send({status: "List of locations returned.", locations_list});
 });
 
@@ -228,21 +230,21 @@ router.get('/get_locations_by_id', async function(req, res) {
     let user = await UserModel.findOne({access_token: req.headers.access_token});
     let locations_list = [];
     let list = req.headers.locations_id_list;
+    const projection = {_id: 0};
 
     if (!user) {
         return res.status(400).send({status: "You are not connected."});
     }
-    if (typeof list == "string" && list.includes(',')) {
-        list = list.replace(' ', '');
+    if (list.includes(',')) {
         list = list.split(',')
         for (let index = 0; index < list.length; index++) {
-            location = await LocationModel.find({_id: list[index]});
+            location = await LocationModel.find({id: list[index]}, {projection: projection});
             if (location) {
                 locations_list.push(location[0]);
             }
         }
     } else if (typeof list == "string") {
-        locations_list = await LocationModel.findOne({_id: list});
+        locations_list = await LocationModel.findOne({id: list}, {projection: projection});
     } else {
         return res.status(400).send({status: "Parameter provided is invalid."});
     }

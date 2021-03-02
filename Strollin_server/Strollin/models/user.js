@@ -5,6 +5,10 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var UserModelSchema = new Schema({
+    id: {
+        type: Number,
+        required: true,
+    },
     mail: {                 // Adresse mail pour login et communication
         type: String,
         required: true,
@@ -15,7 +19,7 @@ var UserModelSchema = new Schema({
     },
     creation_date: {         // Date de création (gérer auto)
         type: String,
-        default: Date.now().toString(),
+        required: true,
     },
     pseudo: {               // Nom apparaissant pour l'utilisateur (ex: Auteur de parcours / Messagerie)
         type: String,

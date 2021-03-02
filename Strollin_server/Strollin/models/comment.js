@@ -5,6 +5,10 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var CommentModelSchema = new Schema({
+    id: {
+        type: Number,
+        required: true,
+    },
     message: {
         type: String,
         default: "",
@@ -19,7 +23,7 @@ var CommentModelSchema = new Schema({
     },
     creation_date: {
         type: String,
-        default: Date.now().toString(),
+        required: true,
     },
     location_id: {
         type: String,

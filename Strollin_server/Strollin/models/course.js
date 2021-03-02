@@ -5,6 +5,10 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var CourseModelSchema = new Schema({
+    id: {
+        type: Number,
+        required: true,
+    },
     locations_list: {
         type: [String],
         required: true
@@ -27,7 +31,7 @@ var CourseModelSchema = new Schema({
     },
     creation_date: {
         type: String,
-        default: Date.now().toString(),
+        required: true,
     },
     timetable: {        // Définit les horaires possible en prenant les timetable de la liste des lieux
         type: String,
