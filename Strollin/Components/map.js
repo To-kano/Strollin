@@ -103,7 +103,7 @@ function isNear(userPosition, elementPosition) {
   return false;
 }
 
-function Map({position, height, width, deltaView, course, locations, profil, dispatch, navigation}) {
+function Map({position, height, width, deltaView, locations, profil, map, dispatch, navigation}) {
   const [userPosition, setUserPosition] = useState(null);
   const allTime = []
 
@@ -121,7 +121,7 @@ function Map({position, height, width, deltaView, course, locations, profil, dis
     longitudeDelta: deltaView.longitudeDelta
   });
 
-  const [destinations, setDestinations] = useState(locations);//props.course);
+  const [destinations, setDestinations] = useState(locations ? locations : map.locations);//props.course);
 
 
   console.log("destination\n", destinations);
@@ -262,7 +262,8 @@ const mapStateToProps = (state) => {
   return (
     {
       position: state.position,
-      profil: state.profil
+      profil: state.profil,
+      map: state.map
     }
   )
 };

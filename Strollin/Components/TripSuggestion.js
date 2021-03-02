@@ -128,18 +128,26 @@ export function TripSuggestion(props) {
   //  });
   //}, [props.navigation]);
 
-  const [waypoints, setWaypoints] = useState(getNavigation());
+  const [course, setCourse] = useState(getNavigation());
 
   useEffect(() => {
     Tts.setDefaultLanguage('en-US');
 
     if (props.profil.sound) {
-      for (let i = 0; i < waypoints.length; i++) {
+      for (let i = 0; i < course.length; i++) {
         Tts.speak(`${I18n.t("TripSuggestion.step")} ${i + 1}`);
-        Tts.speak(waypoints.name);
+        Tts.speak(course.name);
       }
     }
-  }, [waypoints]);
+
+    if (course.locations_list) {
+      setLocations(getArrayLocation(course.locations_list))
+    }
+
+  }, [course]);
+
+  const [locations, setLocations] = useState(null);
+
 
   const deltaView = {
     latitudeDelta: 0.0922,
@@ -224,7 +232,7 @@ export function TripSuggestion(props) {
             textAlign: 'center', fontSize: 22, fontWeight: 'bold', color: '#F07323'
           }]}
           >
-            {waypoints.name}
+            {course.name}
           </Text>
         </View>
         <View
@@ -240,7 +248,7 @@ export function TripSuggestion(props) {
             width: '95%'
           }}
         >
-          <ElementHistoryNav course={waypoints} locations={getArrayLocation(waypoints.locations_list)}/>
+          <ElementHistoryNav course={course} locations={locations}/>
         </View>
         <View style={{
           flex: 0.4,
@@ -256,7 +264,7 @@ export function TripSuggestion(props) {
               color="#89B3D9"
               onPress={() => {
                 Tts.stop();
-                setWaypoints(getNavigation());
+                setCourse(getNavigation());
               }}
             />
           </View>
@@ -265,7 +273,7 @@ export function TripSuggestion(props) {
               title="Let's go!"
               color="#F07323"
               onPress={() => {
-                const action = { type: 'SET_WAYPOINTS', value: waypoints };
+                const action = { type: 'SET_WAYPOINTS', course: course, locations: locations };
                 props.dispatch(action);
                 props.navigation.navigate('TripNavigation');
               }}

@@ -11,7 +11,7 @@ import Map from './map';
 
 import { PopUpForm } from './PopUpForm';
 
-export function TripNavigation(props) {
+export function TripNavigation({map, dispatch, navigation}) {
   //const [background, setBackground] = useState(false);
 //
   //useEffect(() => {
@@ -53,12 +53,12 @@ export function TripNavigation(props) {
     tmp = Math.floor(tmp/1000)
 
     const action = { type: 'SET_TIME', value: tmp };
-    props.dispatch(action);
+    dispatch(action);
 
     return tmp
   }
 
-  const { waypoints } = props.map;
+  const { locations } = map;
 
   const deltaView = {
     latitudeDelta: 0.0922,
@@ -75,7 +75,7 @@ export function TripNavigation(props) {
       <View style={styles.header}>
         <TouchableOpacity
           style={{ width: '20%', height: '100%', marginLeft: 15 }}
-          onPress={() => props.navigation.navigate('HomePage')}
+          onPress={() => navigation.navigate('HomePage')}
         >
           <Image
             style={{
@@ -86,7 +86,7 @@ export function TripNavigation(props) {
         </TouchableOpacity>
         <TouchableOpacity
           style={{ width: '20%', height: '100%' }}
-          onPress={() => props.navigation.navigate('historicUser')}
+          onPress={() => navigation.navigate('historicUser')}
         >
           <Image
             style={{
@@ -97,7 +97,7 @@ export function TripNavigation(props) {
         </TouchableOpacity>
         <TouchableOpacity
           style={{ width: '20%', height: '100%' }}
-          onPress={() => props.navigation.navigate('TripSuggestion')}
+          onPress={() => navigation.navigate('TripSuggestion')}
         >
           <Image
             style={{
@@ -108,7 +108,7 @@ export function TripNavigation(props) {
         </TouchableOpacity>
         <TouchableOpacity
           style={{ width: '20%', height: '100%' }}
-          onPress={() => props.navigation.navigate('FriendList')}
+          onPress={() => navigation.navigate('FriendList')}
         >
           <Image
             style={{
@@ -119,7 +119,7 @@ export function TripNavigation(props) {
         </TouchableOpacity>
         <TouchableOpacity
           style={{ width: '20%', height: '100%' }}
-          onPress={() => props.navigation.navigate('Profile')}
+          onPress={() => navigation.navigate('Profile')}
         >
           <Image
             style={{
@@ -136,9 +136,9 @@ export function TripNavigation(props) {
               style={{ flex: 1 }}
               onPress={async () => {
                 await setTime()
-                const action = { type: 'ADD_HISTORIC', value: waypoints };
-                props.dispatch(action);
-                props.navigation.navigate('HomePage');
+                const action = { type: 'ADD_HISTORIC', value: locations };
+                dispatch(action);
+                navigation.navigate('HomePage');
               }}
             >
               <Image
@@ -153,18 +153,26 @@ export function TripNavigation(props) {
             flex: 6, textAlign: 'center', fontSize: 30, color: '#F07323', fontWeight: 'bold'
           }}
           >
-            {waypoints[0].name}
+            {locations[0].name}
           </Text>
         </View>
         <View style={{ flex: 1 }}>
-          <Map navigation={props.navigation} height="100%" width={390} deltaView={deltaView} waypoints={waypoints}/>
+          <Map navigation={navigation} height="100%" width={390} deltaView={deltaView} locations={locations}/>
         </View>
       </View>
     </View>
   );
 }
 
-const mapStateToProps = (state) => state;
+const mapStateToProps = (state) => {
+  return (
+    {
+      position: state.position,
+      profil: state.profil,
+      map: state.map
+    }
+  )
+};
 export default connect(mapStateToProps)(TripNavigation);
 
 const styles = StyleSheet.create({
