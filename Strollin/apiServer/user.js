@@ -40,6 +40,7 @@ async function profileUser(props, access_token) {
   })
     .then((response) => response.json())
     .then(async (answer) => {
+      console.log("access_token = ", access_token);
       if (answer.profile) {
         const action = { type: 'SET_USER', value: answer.profile };
         props.dispatch(action);

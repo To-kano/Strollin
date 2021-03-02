@@ -27,8 +27,8 @@ function ConversationReducer(state = initialState, action) {
       nextState = {
         ...state,
       };
-      nextState[action.value._id] = action.value;
-      nextState.conversationList = [action.value._id, ...nextState.conversationList]
+      nextState[action.value.id] = action.value;
+      nextState.conversationList = [action.value.id, ...nextState.conversationList]
       return nextState;
     case 'SET_CURRENT_CONVERSATION':
       nextState = {
@@ -41,7 +41,7 @@ function ConversationReducer(state = initialState, action) {
       nextState = {
         ...state,
       };
-      nextState[action.value._id].messages_list = [ ...nextState[action.value._id].messages_list, action.value.message_id];
+      nextState[action.value.id].messages_list = [ ...nextState[action.value.id].messages_list, action.value.message_id];
       return nextState;
       case 'CONVERSATION_TO_TOP':
 
