@@ -136,11 +136,18 @@ export function TripSuggestion(props) {
   useEffect(() => {
     Tts.setDefaultLanguage('en-US');
 
+    async function getCourse() {
+      const result = await getCustomCourse(props.profil.access_token);
+
+      setCourse(result);
+    }
+
     if (!course) {
-      getCustomCourse(props.profil.access_token, setCourse);
+      getCourse();
     }
 
     if (props.profil.sound && course) {
+      console.log("setLocation ", course);
       for (let i = 0; i < course.length; i++) {
         Tts.speak(`${I18n.t("TripSuggestion.step")} ${i + 1}`);
         Tts.speak(course.name);
