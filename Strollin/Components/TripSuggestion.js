@@ -131,7 +131,7 @@ export function TripSuggestion(props) {
   //  });
   //}, [props.navigation]);
 
-  const [course, setCourse] = useState(getNavigation());
+  const [course, setCourse] = useState(null);
 
   useEffect(() => {
     Tts.setDefaultLanguage('en-US');
