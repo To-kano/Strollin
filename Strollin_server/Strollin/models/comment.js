@@ -7,28 +7,28 @@ var Schema = mongoose.Schema;
 var CommentModelSchema = new Schema({
     message: {
         type: String,
-        required: true,
+        default: "",
     },
     author: {
+        type: {},
+        required: true
+    },
+    score: {
         type: String,
         required: true
     },
-    user_score: {
-        type: [String], //list of User ID that gave score, see user.scoreComment
-        default: []
-    },
     creation_date: {
-        type: Date,
-        default: Date.now(),
-    },
-    comment_previous: {
         type: String,
-        default: '',
+        default: Date.now().toString(),
     },
-    comment_next: {
+    location_id: {
         type: String,
-        default: '',
+        default: "",
     },
+    course_id: {
+        type: String,
+        default: "",
+    }
 })
 
 // Compile model from schema

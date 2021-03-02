@@ -14,8 +14,8 @@ var UserModelSchema = new Schema({
         required: true,
     },
     creation_date: {         // Date de création (gérer auto)
-        type: Date,
-        default: Date.now,
+        type: String,
+        default: Date.now().toString(),
     },
     pseudo: {               // Nom apparaissant pour l'utilisateur (ex: Auteur de parcours / Messagerie)
         type: String,
@@ -55,18 +55,6 @@ var UserModelSchema = new Schema({
     },
     course_historic: {             // Historique de parcours (historique de lieu ?)
         type: [[String, Date]],
-        default: [],
-    },
-    score_course: {          // Liste des parcours notés (ID, Note, Date)
-        type: [[String, String, Date]],
-        default: [],
-    },
-    score_location: {        // Liste des lieux notés (ID, Note, Date)
-        type: [[String, String, Date]],
-        default: [],
-    },
-    score_comment: {         // Liste des commentaires notés (ID, Note, Date)
-        type: [[String, String, Date]],
         default: [],
     },
     socket_id: {             // ID du socket IO en cours d'utilisation, vide lorsque l'utilisateur se déconnecte

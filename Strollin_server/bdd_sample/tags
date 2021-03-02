@@ -1,5 +1,2 @@
-{"_id":{"$oid":"5ff31a3ca88c20001fae426f"},"description":"tag1 desc","number_used":"1","locations_list":[],"courses_list":[],"name":"tag1","__v":0}
-{"_id":{"$oid":"5ff31a45a88c20001fae4270"},"description":"tag2 desc","number_used":"1","locations_list":[],"courses_list":[],"name":"tag2","__v":0}
-{"_id":{"$oid":"5ff31a4aa88c20001fae4271"},"description":"tag3 desc","number_used":"1","locations_list":[],"courses_list":[],"name":"tag3","__v":0}
-{"_id":{"$oid":"5ff31a7fa88c20001fae4272"},"description":"tag3 desc","number_used":"1","locations_list":[],"courses_list":[],"name":"tag0","__v":0}
-{"_id":{"$oid":"5ff477a2765c6f001fff5b72"},"description":"Nescafé","number_used":"0","locations_list":[],"courses_list":[],"name":"Nestor","__v":0}
+{"_id":{"$oid":"603a548afafa2b001e256707"},"description":"un cafe, duh!","number_used":"0","locations_list":[],"courses_list":[],"name":"cafe","__v":0}
+{"_id":{"$oid":"603a549bfafa2b001e256708"},"description":"Oui, c'est un bar","number_used":"0","locations_list":[],"courses_list":[],"name":"bar","__v":0}

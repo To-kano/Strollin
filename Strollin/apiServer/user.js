@@ -15,6 +15,7 @@ async function loginUser(props, newMail, newPassword) {
       if (answer.access_token) {
         await profileUser(props, answer.access_token);
         await conversationUser(props, answer.access_token);
+        await setTendance(props, answer.access_token);
         const action = { type: 'CONNECTION', value: answer.access_token };
         props.dispatch(action);
       } else {
@@ -87,6 +88,65 @@ async function setFriendPseudo(props, access_token, profile) {
 
 exports.profileUser = setFriendPseudo;
 
+async function setTendance(props, access_token) {
+  await fetch(`http://${IP_SERVER}:${PORT_SERVER}/course/get_course`, {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      access_token: access_token,
+      sort: 'tendency',
+    },
+    method: 'GET',
+  }).then((answer) => answer.json())
+  .then(async function (answer) {
+    console.log("answer tendance = ", answer);
+    const action = { type: "SET_TENDANCE_LIST", value: answer["courses_list"] }
+    props.dispatch(action);
+
+    for (i in answer["courses_list"]) {
+      console.log("answer for loop");
+      await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/get_locations_by_id`, {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          access_token: access_token,
+          locations_id_list: answer["courses_list"][i]["locations_list"]
+        },
+        method: 'GET',
+      }).then((answer) => answer.json())
+      .then(async function (answer) {
+        const action = { type: "SET_LOCATION_LIST", value: answer["locations_list"], index: i }
+        props.dispatch(action);
+      })
+      .catch((error) => {
+        console.error('error :', error);
+      });
+
+      await fetch(`http://${IP_SERVER}:${PORT_SERVER}/comment/get_comment`, {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          access_token: access_token,
+          comments_list: answer["courses_list"][i]["comments_list"]
+        },
+        method: 'GET',
+      }).then((answer) => answer.json())
+      .then(async function (answer) {
+        const action = { type: "SET_COMMENT_LIST", value: answer["comments_list"], index: i }
+        props.dispatch(action);
+      })
+      .catch((error) => {
+        console.error('error :', error);
+      });
+    }
+
+    return answer;
+
+  })
+}
+
+exports.messageUser = setTendance;
+
 async function messageUser(props, access_token, message_id) {
   fetch(`http://${IP_SERVER}:${PORT_SERVER}/message/get_message`, {
     headers: {
@@ -99,7 +159,7 @@ async function messageUser(props, access_token, message_id) {
   }).then((answer) => answer.json())
   .then(async function (answer) {
 
-    const action = { type: "ADD_MESSAGE", value: answer }
+    const action = { type: "ADD_MESSAGE", value: answer["message"] }
     props.dispatch(action);
 
     return answer;
@@ -120,14 +180,14 @@ async function conversationUser(props, access_token) {
   })
     .then((answer) => answer.json())
     .then(async (answer) => {
-      if (answer) {
+      if (answer["conversations"]) {
         //console.log("answer = ", answer);
         let action;
-        for (let i in answer) {
-          action = { type: "ADD_CONVERSATION", value: answer[i] };
+        for (let i in answer["conversations"]) {
+          action = { type: "ADD_CONVERSATION", value: answer["conversations"][i] };
 
-          for (let y in answer[i].messages_list) {
-             await messageUser(props, access_token, answer[i].messages_list[y]);
+          for (let y in answer["conversations"][i].messages_list) {
+             await messageUser(props, access_token, answer["conversations"][i].messages_list[y]);
           }
           props.dispatch(action);
         }

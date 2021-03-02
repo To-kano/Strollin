@@ -17,25 +17,25 @@ var CourseModelSchema = new Schema({
         type: String,
         default: '0'
     },
-    user_score: {
-        type: [String], //list of User ID that gave score, see user.scoreCourse
-        default: []
-    },
     number_used: {      // Nombre de fois que ce parcours à été utilisé
         type: String,
         default: '0'
     },
     author: {
-        type: String,
+        type: {},
         required: true
     },
     creation_date: {
-        type: Date,
-        default: Date.now,
+        type: String,
+        default: Date.now().toString(),
     },
     timetable: {        // Définit les horaires possible en prenant les timetable de la liste des lieux
         type: String,
         default: "",
+    },
+    price_range: {
+        type: [String, String],
+        default: ['', '']
     },
     comments_list: {
         type: [String],

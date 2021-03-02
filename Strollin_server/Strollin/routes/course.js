@@ -10,6 +10,10 @@ const {
 } = require("../models/user")
 
 const {
+    CommentModel
+} = require("../models/comment")
+
+const {
     TagModel
 } = require("../models/tag")
 
@@ -26,28 +30,24 @@ const {
  */
 router.post('/new_course', async function(req, res) {
 
-    let user = await UserModel.findOne({access_token: req.headers.access_token});
+    let user = await UserModel.findOne({access_token: req.headers.access_token}, "_id pseudo");
     let course = null;
     let tag = null;
     let locations_list = null;
 
     if (!user) {
-        console.log()
         return res.status(400).send({status: "You are not connected."});
     }
     // locations_list = await CourseModel.find({_id: {$in: req.body.locations_list}})
-    // if (req.body.locations_list.length !== locations_list.length) {
-    //     console.log("One of the locations does not exist");
-    //     return res.status(400).send({status: false});
+    // if (req.body.locations_list.length() !== locations_list.length()) {
+    //     return res.status(400).send({status: "One of the locations does not exist."});
     // }
     course = new CourseModel({
         locations_list: req.body.locations_list,
         name: req.body.name,
-        author: "Strollin",
+        author: user,
         tags_list: [],
     });
-    if (req.body.author)
-        course.author = req.body.author;
     if (req.body.time_spent)
         course.time_spent = req.body.time_spent
 
@@ -59,7 +59,10 @@ router.post('/new_course', async function(req, res) {
     //         }
     //     }
     // }
-    let new_course = await course.save();
+    let error = await course.save().catch(error => error);
+    if (error.errors) {
+        return res.status(400).send({status: error.errors});
+    }
     return res.status(200).send({status: "Course created."});
 });
 
@@ -72,26 +75,88 @@ router.post('/new_course', async function(req, res) {
  */
 router.get('/get_course', async function(req, res) {
     let user = await UserModel.findOne({access_token: req.headers.access_token});
-    let historic = null;
-    let courses_list = null;
+    let courses_list = undefined;
 
-    if (!user)
+    if (!user) {
         return res.status(400).send({status: "You are not connected."});
+    }
     if (req.headers.sort) {
         if (req.headers.sort === "name") {
             courses_list = await CourseModel.find().sort("name");
-        } else if (req.headers.sort === "popularity") {
-            courses_list = await CourseModel.find().sort("number_used");
-        } else if (req.headers.sort === "score") {
-            courses_list = await CourseModel.find().sort("score");
-        } else if (req.headers.sort === "tendancy") {
-            historic = await UserModel.find({})
-
         }
-        return res.status(200).send({status: "Success", courses_list})
+        else if (req.headers.sort === "popularity") {
+            courses_list = await CourseModel.find().sort("number_used");
+        }
+        else if (req.headers.sort === "score") {
+            courses_list = await CourseModel.find().sort("score");
+        }
+        else if (req.headers.sort === "tendency") {
+            let tendency_date = Date.now() - (1000 * 60 * 60 * 24 * 7)
+            let comments_list = await CommentModel.find(
+                {
+                    course_id: {$ne: ""},
+                    creation_date: {$gt: tendency_date.toString()}
+                }
+            );
+            let courses_id_list = [];
+            for (let index = 0; index < comments_list.length; index++) {
+                if (!courses_id_list.includes(comments_list[index].course_id)) {
+                    courses_id_list.push(comments_list[index].course_id)
+                }
+            }
+            courses_list = await CourseModel.find({_id: {$in: courses_id_list}})
+        }
+        for (let i in courses_list) {
+            courses_list[i].creation_date = Date(courses_list[i].creation_date)
+        }
+        return res.status(200).send({status: "List of courses returned.", courses_list})
     }
     return res.status(400).send({status: "Please send a research's sort."});
 });
+
+
+// GET_CUSTOM_COURSE
+/**
+ * get a list of courses
+ * @param {String} req.headers.access_token
+ * @param {String} req.headers.sort
+ */
+// router.get('/get_custom_course', async function(req, res) {
+//     let user = await UserModel.findOne({access_token: req.headers.access_token});
+//     let courses_list = undefined;
+
+//     if (!user)
+//         return res.status(400).send({status: "You are not connected."});
+//     if (req.headers.sort) {
+//         if (req.headers.sort === "name") {
+//             courses_list = await CourseModel.find().sort("name");
+//         }
+//         else if (req.headers.sort === "popularity") {
+//             courses_list = await CourseModel.find().sort("number_used");
+//         }
+//         else if (req.headers.sort === "score") {
+//             courses_list = await CourseModel.find().sort("score");
+//         }
+//         else if (req.headers.sort === "tendancy") {
+//             let comments_list = await CommentModel.find(
+//                 {
+//                     course_id: {$ne: ""},
+//                     creation_date: {$gt: (Date.now() - (1000 * 60 * 60 * 24 * 7) )}
+//                 }
+//             );
+//             let courses_id_list = [];
+//             for (let index = 0; index < comments_list.length(); index++) {
+//                 if (!courses_id_list.includes(comments_list[index].course_id)) {
+//                     courses_id_list.push(comments_list[index].course_id)
+//                 }
+//             }
+//             courses_list = await CourseModel.find({_id: {$in: courses_id_list}})
+//         }
+//         return res.status(200).send({status: "Success", courses_list})
+//     }
+//     return res.status(400).send({status: "Please send a research's sort."});
+// });
+
 
 
 
@@ -126,7 +191,6 @@ router.post('/new_course_time', async function(req, res) {
 router.post('/add_course_time', async function(req, res) {
 
     let course = await CourseModel.findOne({_id: req.headers.course_id});
-    console.log(req.body)
     if (course) {
         await course.updateOne({$push: {time_spent: req.body.time_spent}});
         return res.status(200).send({status: "Course created."});

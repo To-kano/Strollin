@@ -33,8 +33,12 @@ router.post('/new_tag', async function(req, res) {
             name: req.body.name,
             description: req.body.description,
         });
-        await tag.save();
-        return  res.status(200).send({status: "Tag created."});
+        let error = await tag.save().catch(error => error);
+        if (error.errors) {
+            let answer = "Error in database transaction:  =>  " + error.message;
+            return res.status(400).send({status: answer});
+        }
+        return res.status(200).send({status: "tag created."});
     }
     return res.status(400).send({status: "An element is missing in the request."});
 });

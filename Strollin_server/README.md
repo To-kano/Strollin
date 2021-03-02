@@ -10,12 +10,7 @@ NOTE:
 
 - Almost all number are exprimed as String.
 
-- All request will return an object as :
-    {
-        status: (true/false)
-        message:
-        eventual object:
-    }
+- All request will return an object as :<br>{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;status: String<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;eventual return: Object<br>}
 
 
 INDEX:
@@ -39,8 +34,6 @@ COMMENT RELATED:
 - author ```userID```
 - user_score ```[userID]```
 - creation_date ```Date```
-- comment_previous ```commentID```
-- comment_next ```commentID```
 
 <br>
 
