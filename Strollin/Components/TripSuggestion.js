@@ -11,6 +11,9 @@ import ElementHistoryNav from './HistoryElement';
 import BackgroundImage from './backgroundImage';
 import ButtonSwitch from './ButtonSwitch';
 
+import {getCustomCourse} from '../apiServer/course';
+import {getLocationByID} from '../apiServer/locations';
+
 function getNavigation() {
 
   const destination = 

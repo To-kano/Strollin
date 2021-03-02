@@ -235,12 +235,10 @@ async function registerUser(props, newPseudo, newPassword, newMail) {
 
 exports.registerUser = registerUser;
 
-async function addUserHistoric(props) {
+async function addUserHistoric(props,  access_token, course) {
   //console.log("registerUser");
   const bodyRequest = JSON.stringify({
-    pseudo: newPseudo,
-    password: newPassword,
-    mail: newMail,
+    course: course
   });
 
   fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/add_historic`, {
@@ -248,17 +246,13 @@ async function addUserHistoric(props) {
       Accept: 'application/json',
       'Content-Type': 'application/json',
     },
+    access_token: access_token,
     method: 'post',
     body: bodyRequest,
   })
     .then((response) => response.json())
     .then(async (answer) => {
-      //console.log(" answer = " , answer);
-      if (answer.access_token) {
-        await profileUser(props, answer.access_token);
-        const action = { type: 'CONNECTION', value: answer.access_token };
-        props.dispatch(action);
-      }
+      console.log(" answer = " , answer);
     })
     .catch((error) => {
       console.error('error :', error);
