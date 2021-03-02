@@ -137,7 +137,7 @@ async function sendNewConversation(conversation) {
 
   if (conversation.participants) {
     for (let i in conversation.participants) {
-      const user = await UserModel.findOne({_id : conversation.participants[i]});
+      const user = await UserModel.findOne({id : conversation.participants[i]});
 
       if (user.socket_id) {
         sio.to(user.socket_id).emit("newConversation", conversation);
@@ -150,7 +150,7 @@ async function sendReceiveMessage(message, conversation) {
 
   if (conversation.participants) {
     for (let i in conversation.participants) {
-      const user = await UserModel.findOne({_id : conversation.participants[i]});
+      const user = await UserModel.findOne({id : conversation.participants[i]});
 
       if (user.socket_id) {
         sio.to(user.socket_id).emit("receiveMessage", message);
@@ -194,7 +194,8 @@ sio.on("connection", async (socket) => {
     console.log("user ", user);
     if (user) {
       let conversation = new ConversationModel ({
-        participants : [...msg.participants, user._id],
+        id: new Number(Date.now()),
+        participants : [...msg.participants, user.id],
         name : msg.name,
       }); 
 
@@ -212,7 +213,7 @@ sio.on("connection", async (socket) => {
   // Event "sendMessage"
   socket.on("sendMessage", async (msg) => {
     console.log("sendMessage event " , msg);
-    const user = await UserModel.findOne({access_token: msg.access_token});
+    const user = await UserModel.findOne({access_token: msg.access_token}, "-_id id pseudo");
     let response = {
       connected: false,
     };
@@ -222,13 +223,15 @@ sio.on("connection", async (socket) => {
 
     console.log("message ", msg);
     if (user) {
-      let conversation = await ConversationModel.findOne({_id : msg.conversation});
+      let conversation = await ConversationModel.findOne({id : msg.conversation});
       console.log("conversation ", conversation);
 
       if (conversation) {
 
         let message = new MessageModel ({
-          expeditor : user._id,
+          id: new Number(Date.now()),
+          creation_date: new Date().toLocaleDateString("fr-FR"),
+          expeditor : user,
           conversation : msg.conversation,
           type : msg.type,
           message: msg.message
@@ -238,7 +241,7 @@ sio.on("connection", async (socket) => {
 
         console.log("messageModel ", message);
 
-        conversation.messages_list = [...conversation.messages_list, message._id]
+        conversation.messages_list = [...conversation.messages_list, message.id]
         await conversation.save();
 
         sendReceiveMessage(message, conversation);

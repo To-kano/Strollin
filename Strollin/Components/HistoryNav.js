@@ -52,7 +52,7 @@ export function HistoryNav({ navigation, map }) {
                   <Text style={styles.text_duration}>{item.duration}</Text>
                 </View>
               </View>
-              <ElementHistoryNav data={item.waypoints} />
+              <ElementHistoryNav course={item.course} locations={item.locations} />
             </View>
           )}
         />
@@ -147,8 +147,14 @@ export function HistoryNav({ navigation, map }) {
   );
 }
 
-const mapStateToProps = (state) => state;
 
+const mapStateToProps = (state) => {
+  return (
+    {
+      map: state.map
+    }
+  )
+};
 export default connect(mapStateToProps)(HistoryNav);
 
 const styles = StyleSheet.create({

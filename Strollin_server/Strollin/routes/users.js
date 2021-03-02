@@ -34,6 +34,8 @@ router.post('/register', async function(req, res) {
   }
   if (req.body.mail && req.body.password && req.body.partner !== undefined) {
     user = new UserModel({
+      id: new Number(Date.now()),
+      creation_date: new Date().toLocaleDateString("fr-FR"),
       mail: req.body.mail,
       password: req.body.password,
       pseudo: "user",
@@ -102,13 +104,13 @@ router.post('/edit_profile', async function(req, res) {
 router.post('/add_friend_request', async function(req, res) {
 
   let user = await UserModel.findOne({access_token: req.headers.access_token});
-  let friend = await UserModel.findOne({_id: req.body.friend});
+  let friend = await UserModel.findOne({id: req.body.friend});
 
   if (!user) {
     return res.status(400).send({status: "You are not connected."});
   }
-  if (friend && !friend.friends_request.includes(user._id) && !user.friends_request.includes(friend._id)) {
-    await friend.updateOne({$push: {friends_request: user._id}});
+  if (friend && !friend.friends_request.includes(user.id) && !user.friends_request.includes(friend.id)) {
+    await friend.updateOne({$push: {friends_request: user.id}});
     return res.status(200).send({status: "Friend requested successfully."});
   }
   return res.status(400).send({status: "The friend user does not exist."});
@@ -125,15 +127,15 @@ router.post('/add_friend_request', async function(req, res) {
 router.post('/add_friend', async function(req, res) {
 
   let user = await UserModel.findOne({access_token: req.headers.access_token});
-  let friend = await UserModel.findOne({_id: req.body.friend});
+  let friend = await UserModel.findOne({id: req.body.friend});
 
   if (!user) {
     return res.status(400).send({status: "You are not connected."});
   }
-  if (friend && !friend.friends_list.includes(user._id) && !user.friends_list.includes(friend._id) && user.friends_request.includes(friend._id)) {
-    await friend.updateOne({$push: {friends_list: user._id}});
-    await user.updateOne({$push: {friends_list: friend._id}});
-    await user.updateOne({$pull: {friends_request: friend._id}});
+  if (friend && !friend.friends_list.includes(user.id) && !user.friends_list.includes(friend.id) && user.friends_request.includes(friend.id)) {
+    await friend.updateOne({$push: {friends_list: user.id}});
+    await user.updateOne({$push: {friends_list: friend.id}});
+    await user.updateOne({$pull: {friends_request: friend.id}});
     return  res.status(200).send({status: "Friend added successfully."});
   }
   return res.status(400).send({status: "An error occured."});
@@ -174,12 +176,12 @@ router.post('/add_tag', async function(req, res) {
 router.post('/add_historic', async function(req, res) {
 
   let user = await UserModel.findOne({access_token: req.headers.access_token});
-  let course = await CourseModel.findOne({_id: req.body.course});
+  let course = await CourseModel.findOne({id: req.body.course});
 
   if (!user)
     return res.status(400).send({status: "You are not connected."});
   if (course) {
-    let new_course = [course._id, Date.now()];
+    let new_course = [course.id, Date.now()];
     await user.updateOne({$push: {course_historic: new_course}});
     return res.status(200).send({status: "Historic added."});
   }
@@ -231,11 +233,10 @@ router.get('/logout', async function(req, res) {
  * @param {String} req.headers.access_token
  */
 router.get('/get_own_profile', async function(req, res) {
-  const projection = '-password -access_token -socket_id -facebook_id' //-param for excluding
+  const projection = '-_id -password -access_token -socket_id -facebook_id' //-param for excluding
   let profile = await UserModel.findOne({access_token: req.headers.access_token}, projection);
 
   if (profile) {
-    profile.creation_date = Date(profile.creation_date)
     return res.status(200).send({status: "Profile sent.", profile});
   }
   return res.status(400).send({status: "You are not connected."});
@@ -249,16 +250,15 @@ router.get('/get_own_profile', async function(req, res) {
  * @param {String} req.headers.user_id
  */
 router.get('/get_user_profile', async function(req, res) {
-  const projection = 'mail creation_date pseudo partner first_name last_name tags_list friends_list';
+  const projection = '-_id id mail creation_date pseudo partner first_name last_name tags_list friends_list';
   let user = await UserModel.findOne({access_token: req.headers.access_token});
   let profile = null;
 
   if (!user) {
     return res.status(400).send({status: "You are not connected."});
   }
-  profile = await UserModel.findOne({_id: req.headers.user_id}, projection);
+  profile = await UserModel.findOne({id: req.headers.user_id}, projection);
   if (profile) {
-    profile.creation_date = Date(profile.creation_date)
     return res.status(200).send({status: "Profile sent.", profile});
   }
   return res.status(400).send({status: "User ID provided is not valid."});
@@ -281,12 +281,11 @@ router.get('/get_user_tags', async function(req, res) {
   if (!user) {
     return res.status(400).send({status: "You are not connected."});
   }
-  user_id = req.headers.user_id.replace(' ', '');
-  user_id = user_id.split(',')
+  user_id = req.headers.user_id.split(',');
   for (let index = 0; index < user_id.length; index++) {
-    user_index = await UserModel.findOne({_id: user_id[index]});
+    user_index = await UserModel.findOne({id: user_id[index]}, {projection: {_id: 0}});
     if (user_index) {
-      user_tags = await TagModel.find({name: {$in: user_index.tags_list}});
+      user_tags = await TagModel.find({name: {$in: user_index.tags_list}}, {projection: {_id: 0}});
       if (user_tags) {
         all_user_tags.push(user_tags);
       }
@@ -313,13 +312,8 @@ router.get('/get_user_by_id', async function(req, res) {
   }
   let given_list = req.headers.users_list.split(',');
   if (given_list) {
-      users_list = await UserModel.find({_id: {$in: given_list}, projection});
+      users_list = await UserModel.find({id: {$in: given_list}, projection});
       if (users_list) {
-          if (projection.includes("creation_date")) {
-              for (let i in users_list) {
-                users_list[i].creation_date = Date(users_list[i].creation_date)
-              }
-          }
           return res.status(200).send({status: "User(s) found.", users_list});
       }
   }

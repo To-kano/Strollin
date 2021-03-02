@@ -237,6 +237,39 @@ async function registerUser(props, newPseudo, newPassword, newMail) {
 
 exports.registerUser = registerUser;
 
+async function addUserHistoric(props) {
+  //console.log("registerUser");
+  const bodyRequest = JSON.stringify({
+    pseudo: newPseudo,
+    password: newPassword,
+    mail: newMail,
+  });
+
+  fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/add_historic`, {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    method: 'post',
+    body: bodyRequest,
+  })
+    .then((response) => response.json())
+    .then(async (answer) => {
+      //console.log(" answer = " , answer);
+      if (answer.access_token) {
+        await profileUser(props, answer.access_token);
+        const action = { type: 'CONNECTION', value: answer.access_token };
+        props.dispatch(action);
+      }
+    })
+    .catch((error) => {
+      console.error('error :', error);
+    });
+}
+
+exports.addUserHistoric = addUserHistoric;
+
+
 async function registerUserTag(props, newPseudo, newPassword, newMail) {
   const bodyRequest = JSON.stringify({
     pseudo: newPseudo,
