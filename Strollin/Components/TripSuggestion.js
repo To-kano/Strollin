@@ -106,10 +106,10 @@ function getLocation(id) {
   return location1;
 }
 
-function getArrayLocation(idLocations) {
+async function getArrayLocation(access_token, idLocations) {
   let result = [];
   for (let i = 0; i < idLocations.length; i++) {
-    result.push(getLocation(idLocations[i]));
+    result.push(await getLocationByID(access_token, idLocations[i]));
   }
 
   return result
@@ -142,6 +142,12 @@ export function TripSuggestion(props) {
       setCourse(result);
     }
 
+    async function getLocations() {
+      const result = await getArrayLocation(props.profil.access_token, course.locations_list)
+
+      setLocations(result);
+    }
+
     if (!course) {
       getCourse();
     }
@@ -155,7 +161,7 @@ export function TripSuggestion(props) {
     }
 
     if (course && course.locations_list) {
-      setLocations(getArrayLocation(course.locations_list))
+      getLocations();
     }
 
   }, [course]);
