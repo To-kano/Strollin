@@ -136,7 +136,7 @@ export function TripNavigation({map, dispatch, navigation}) {
               style={{ flex: 1 }}
               onPress={async () => {
                 await setTime()
-                const action = { type: 'ADD_HISTORIC', value: locations };
+                const action = { type: 'ADD_HISTORIC', locations: map.locations, course: map.locations };
                 dispatch(action);
                 navigation.navigate('HomePage');
               }}

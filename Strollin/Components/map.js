@@ -13,42 +13,6 @@ import I18n from '../Translation/configureTrans';
 
 // AIzaSyB2twbHyNnN0rJWw4731l9rOjEgANYLrQU
 
-
-function getLocation() {
-  const location =
-  {
-    "_id":{"$oid":"5ff31d40977cba001e801bfa"},
-    "owner":"2nd owner",
-    "score":"0",
-    "user_score":[],
-    latitude: 48.798683,
-    longitude: 2.446183,
-    "description":"Peko",
-    "photo":[],
-    "timetable":"test",
-    "comments_list":["5ff3277dd90060001daaf045"],
-    "price_range":["",""],
-    "average_time":"",
-    "phone":"",
-    "website":"",
-    "pop_disp":"0",
-    "pop_ag":"0",
-    "alg_disp":"0",
-    "alg_ag":"0",
-    "name":"Une troisieme Maison",
-    "address":"369, rue Sandvich",
-    "city":"Creteil",
-    "country":"France",
-    "tags_list":[{"_id":{"$oid":"5ff31d40977cba001e801bfb"}}],
-    "__v":0
-  }
-
-  return location;
-}
-
-
-
-
 export async function updateCoordinates(setUserPosition) {
   Geolocation.getCurrentPosition(
     (position) => {
@@ -107,7 +71,7 @@ function Map({position, height, width, deltaView, locations, profil, map, dispat
   const [userPosition, setUserPosition] = useState(null);
   const allTime = []
 
-  console.log("map\n");
+  //console.log("map\n");
   //console.log("position", deltaView, waypoints);
   useEffect(() => {
     setLocalRegion({
@@ -124,9 +88,9 @@ function Map({position, height, width, deltaView, locations, profil, map, dispat
   const [destinations, setDestinations] = useState(locations ? locations : map.locations);//props.course);
 
 
-  console.log("destination\n", destinations);
-  console.log("final\n", destinations[destinations.length - 1]);
-  console.log("parcoure\n", destinations.slice(0, destinations.length - 1));
+  //console.log("destination\n", destinations);
+  //console.log("final\n", destinations[destinations.length - 1]);
+  //console.log("parcoure\n", destinations.slice(0, destinations.length - 1));
 
 
   /*useEffect(() => {
@@ -140,13 +104,13 @@ function Map({position, height, width, deltaView, locations, profil, map, dispat
         Tts.setDefaultLanguage('en-US');
         Tts.speak('You have done your navigation');
         setDestinations()
-        const action = { type: 'ADD_HISTORIC', value: waypoint };
+        const action = { type: 'ADD_HISTORIC', locations: map.locations, course: map.locations };
         dispatch(action);
         //sleep(2000);
         navigation.navigate('CourseEvaluation');
       } else {
         Tts.setDefaultLanguage('en-US');
-        Tts.speak(`Heading to ${getLocation().name}`);
+        Tts.speak(`Heading to ${destinations[0].name}`);
       }
     }
   }, [destinations]);
@@ -248,15 +212,6 @@ function Map({position, height, width, deltaView, locations, profil, map, dispat
     </View>
   );
 }
-
-
-
-
-
-
-
-
-
 
 const mapStateToProps = (state) => {
   return (
