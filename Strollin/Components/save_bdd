@@ -1,0 +1,25 @@
+{
+    _id: ObjectId('6012ca9f6bc32a001d27c5d0'),
+    first_name: '',
+    last_name: '',
+    tags_list: [],
+    friends_list: [
+        '6012cac36bc32a001d27c5d1',
+        '6012d3cd60b750001e72c146'
+    ],
+    friends_request: [],
+    groups: [],
+    course_historic: [],
+    score_course: [],
+    score_location: [],
+    score_comment: [],
+    socket_id: 'zNTTtO5WfnJxFb-OAAAG',
+    facebook_id: '',
+    mail: 'tony.ye@epitech.eu',
+    password: '1234',
+    pseudo: 'Tony',
+    partner: false,
+    access_token: 'bj9xgz69hhnjdfj38tiwhf',
+    creation_date: ISODate('2021-01-28T14:30:55.738Z'),
+    __v: 0
+}

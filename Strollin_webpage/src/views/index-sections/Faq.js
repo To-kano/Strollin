@@ -1,7 +1,29 @@
 import React from "react";
 
-function Faq() {
+function getFaq() {
     var faqData = require('./FaqContent.json');
+    /*await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/get_locations_by_id`, {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          access_token: access_token,
+          locations_id_list: answer["courses_list"][i]["locations_list"]
+        },
+        method: 'GET',
+      }).then((answer) => answer.json())
+      .then(async function (answer) {
+        const action = { type: "SET_LOCATION_LIST", value: answer["locations_list"], index: i }
+        props.dispatch(action);
+      })
+      .catch((error) => {
+        console.error('error :', error);
+      });*/
+    
+    return (faqData);
+}
+
+function Faq() {
+    var faqData = getFaq();
 
     function faqPrinter(obj) {
         let grid = [];

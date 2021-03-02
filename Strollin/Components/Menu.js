@@ -51,7 +51,11 @@ function Menu(props) {
           <Text style={styles.text_navigationIn}>Friends</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => props.navigation.navigate('MenuChat')}
+            onPress={() => {
+             const action = {type: 'SET_SEARCH_CONV_LIST', value: props.conversation.conversationList };
+             props.dispatch(action);
+             props.navigation.navigate('MenuChat');
+           }}
           style={styles.view_navigationIn}
         >
           <Image style={styles.img_navigationIn} source={require('../images/icons/black/chats.png')} />
