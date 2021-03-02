@@ -7,7 +7,7 @@ import Store from '../Store/configureStore';
 import profileReducer from '../Store/Reducers/profileReducer';
 
 const SocketContext = createContext(); 
-const ENDPOINT = 'http://88.165.45.219:3000';//3003 pour Tony
+const ENDPOINT = 'http://88.165.45.219:2000';//3003 pour Tony88.165.45.219
 
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -52,7 +52,7 @@ function Socket({children, profil, dispatch}) {
 
       const action2 = { 
         type: 'ADD_MESSAGE_ID',
-        value: { _id: data.conversation, message_id : data._id}
+        value: { id: data.conversation, message_id : data.id}
       };
       Store.dispatch(action2);
 
@@ -64,7 +64,7 @@ function Socket({children, profil, dispatch}) {
         const store = Store.getState();
 
 
-        console.log("newconv received!");
+        console.log("NEWCONV received!");
         const action = { type: 'ADD_CONVERSATION', value: data };
         Store.dispatch(action);
         const action2 = { type: 'RESET_PARTICIPANT_OF_CONVERSATION'};

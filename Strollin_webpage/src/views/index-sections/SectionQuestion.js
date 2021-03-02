@@ -21,7 +21,6 @@ function SectionQuestion() {
   
   const handleSubmit = (evt) => {
       evt.preventDefault();
-      alert(`Submitting Email: ${email} Question: ${question}`)
 
       /*axios({
         method: "POST", 
@@ -37,7 +36,26 @@ function SectionQuestion() {
             alert("Oops, something went wrong. Try again")
         }
     })*/
+    /*fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/register`, {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          email: email,
+          question: question
+          },
+          method: 'post',
+        })
+        .then((response) => response.json())
+        .then(async (answer) => {
+          console.log(" answer = " , answer);
+          alert(`Success! Submitting Email: ${email} Question: ${question}`)
 
+          })
+        .catch((error) => {
+          console.error('error :', error);
+          alert(`Submission failed`);
+        });
+*/
       return false;
   }
 
