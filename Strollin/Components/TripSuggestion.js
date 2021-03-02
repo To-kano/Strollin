@@ -136,14 +136,18 @@ export function TripSuggestion(props) {
   useEffect(() => {
     Tts.setDefaultLanguage('en-US');
 
-    if (props.profil.sound) {
+    if (!course) {
+      getCustomCourse(props.profil.access_token, setCourse);
+    }
+
+    if (props.profil.sound && course) {
       for (let i = 0; i < course.length; i++) {
         Tts.speak(`${I18n.t("TripSuggestion.step")} ${i + 1}`);
         Tts.speak(course.name);
       }
     }
 
-    if (course.locations_list) {
+    if (course && course.locations_list) {
       setLocations(getArrayLocation(course.locations_list))
     }
 
@@ -183,7 +187,7 @@ export function TripSuggestion(props) {
             textAlign: 'center', fontSize: 22, fontWeight: 'bold', color: '#F07323'
           }]}
           >
-            {course.name}
+            {course ? course.name: ""}
           </Text>
         </View>
         <View
@@ -215,7 +219,8 @@ export function TripSuggestion(props) {
               color="#89B3D9"
               onPress={() => {
                 Tts.stop();
-                setCourse(getNavigation());
+                getCustomCourse(props.profil.access_token, setCourse);
+                //setCourse(getNavigation());
               }}
             />
           </View>

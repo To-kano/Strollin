@@ -19,7 +19,7 @@ function randPic() {
 }
 
 function Box(props) {
-  // //console.log("props = ", props);
+  console.log("props = ", props);
   return (
     <TouchableOpacity
       style={styles.view_box}
