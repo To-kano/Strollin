@@ -2,7 +2,7 @@ import React, { Component, useState, useEffect } from 'react';
 import Tts from 'react-native-tts';
 import { connect } from 'react-redux';
 import {
-  StyleSheet, Text, View, FlatList, Image, PermissionsAndroid, TouchableOpacity,
+  StyleSheet, Text, View, Button , Image, PermissionsAndroid, TouchableOpacity,
 } from 'react-native';
 import I18n from '../Translation/configureTrans';
 import Map from './map';
