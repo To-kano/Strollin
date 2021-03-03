@@ -9,8 +9,9 @@ import I18n from '../Translation/configureTrans';
 import Store from '../Store/configureStore';
 import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 
-export function Tag({ name, defaultState = false }) {
+export function Tag({ name, chosen, defaultState = false }) {
   const [pressed, setpressed] = useState(defaultState);
+  const [args, setArgs] = useState(true);
 
   async function postTags(body) {
     const store = Store.getState();
@@ -33,6 +34,11 @@ export function Tag({ name, defaultState = false }) {
     });
   }
 
+  useEffect(() => {
+    console.log("hola");
+        setpressed(chosen);
+  }, []);
+
   return (
     <View style={styles.view_tags}>
       {pressed === false && (
@@ -47,7 +53,7 @@ export function Tag({ name, defaultState = false }) {
         <Text style={styles.text_tagOff}>{name}</Text>
       </TouchableOpacity>
       )}
-      {pressed === true && (
+      {(pressed === true) && (
       <TouchableOpacity
         style={styles.view_tagOn}
         onPress={() => {
@@ -64,33 +70,54 @@ export function Tag({ name, defaultState = false }) {
 }
 
 export function TagSelection({ navigation, profil }) {
-  const data = [
-    {
-      id: '1',
-      name: 'vidéo game',
-    },
-    {
-      id: '2',
-      name: 'restaurant',
-    },
-    {
-      id: '3',
-      name: 'cinéma',
-    },
-    {
-      id: '4',
-      name: 'magie',
-    }, {
-      id: '5',
-      name: 'compétition',
-    },
-  ];
 
   const [args, setArgs] = useState(true);
+  const [Profargs, setProfArgs] = useState(true);
+  const [array, setArray] = useState(true);
+
+  const store = Store.getState();
+  const access_Token = store.profil.access_token;
+
+  async function buildArray(List, UserList) {
+    var arr = [];
+    var flag = false;
+
+    console.log("hello");
+    for (var i = 0; i < List.length; i++) {
+      for (var j = 0; j < UserList.length; j++) {
+        if (UserList[j] == List[i].name) {
+          console.log("hellot: ", UserList[j])
+          arr.push({name: UserList[j], _id: List[i]._id, pressed: true})
+          flag = true;
+          break;
+        }
+      }
+      if (flag == false)
+        arr.push({name: List[i].name, _id: List[i]._id, pressed: false})
+      flag = false;
+    }
+    console.log("array: ", arr);
+    setArray(arr);
+  }
+
+  async function getUserTags(List) {
+    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/get_own_profile`, {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      access_Token,
+    },
+    method: 'GET',
+    })
+    .then(res => res.json())
+    .then(json => {
+      console.log("########", json.profile.tags_list);
+      setProfArgs(json.profile.tags_list)
+      buildArray(List, json.profile.tags_list);
+    });
+  }
 
   async function getThings() {
-    const store = Store.getState();
-    const access_Token = store.profil.access_token;
     await fetch(`http://${IP_SERVER}:${PORT_SERVER}/tag/get_tag`, {
     headers: {
       Accept: 'application/json',
@@ -101,13 +128,15 @@ export function TagSelection({ navigation, profil }) {
     })
     .then(res => res.json())
     .then(json => {
-      console.log("heyyyy", json.tags_list);
+      console.log("yooooo", json.tags_list);
       setArgs(json.tags_list)
+      getUserTags(json.tags_list);
     });
   }
 
   useEffect(() => {
         getThings();
+        //getUserTags();
   }, []);
 
   return (
@@ -127,9 +156,10 @@ export function TagSelection({ navigation, profil }) {
           <Text style={styles.text_star}> *</Text>
         </Text>
         <FlatList
-          data={args}
+          data={array}
+          keyExtractor={(item) => item._id}
           renderItem={({ item }) => (
-            <Tag name={item.name} pressed={item.pressed} tag_id={item._id}/>
+            <Tag name={item.name} chosen={item.pressed}/>
           )}
         />
       </View>

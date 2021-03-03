@@ -122,7 +122,7 @@ methods.hello = function(sending, User)
 {
   return new Promise((resolve, reject) => {
     TagsJson.Tags[0] = User.tags_list
-    var test = algoTest(TagsJson, sending, true)
+    var test = algoTest(TagsJson, sending, false)
     resolve(test)
   });
 }

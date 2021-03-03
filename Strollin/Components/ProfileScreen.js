@@ -41,10 +41,10 @@ const initialList = [
 function ProfileScreen(props) {
   // const [list, setList] = React.useState(props.profil.tags_list);
   const [args, setArgs] = useState(true);
+  const store = Store.getState();
+  const access_Token = store.profil.access_token;
 
     async function getThings() {
-      const store = Store.getState();
-      const access_Token = store.profil.access_token;
       await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/get_own_profile`, {
       headers: {
         Accept: 'application/json',
@@ -61,8 +61,7 @@ function ProfileScreen(props) {
     }
 
     async function postMail(body) {
-      const store = Store.getState();
-      const access_Token = store.profil.access_token;
+
       const test = JSON.stringify({mail: body})
 
       await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/edit_profile`, {
