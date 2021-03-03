@@ -9,7 +9,11 @@ var MessageModelSchema = new Schema({
         type: Number,
         required: true,
     },
-    expeditor: {
+    expeditor_id: {
+        type: String,
+        required: true
+    },
+    expeditor_pseudo: {
         type: String,
         required: true
     },

@@ -47,7 +47,8 @@ router.post('/new_course', async function(req, res) {
         creation_date: new Date().toLocaleDateString("fr-FR"),
         locations_list: req.body.locations_list,
         name: req.body.name,
-        author: user,
+        author_id: user.id,
+        author_pseudo: user.pseudo,
         tags_list: [],
     });
     if (req.body.time_spent)
@@ -97,7 +98,7 @@ router.get('/get_course', async function(req, res) {
             let comments_list = await CommentModel.find(
                 {
                     course_id: {$ne: ""},
-                    id: {$gt: tendency_date.toString()}
+                    modification_date: {$gt: tendency_date}
                 },
             );
             let courses_id_list = [];
@@ -118,44 +119,42 @@ router.get('/get_course', async function(req, res) {
 /**
  * get a list of courses
  * @param {String} req.headers.access_token
- * @param {String} req.headers.sort
  */
 // router.get('/get_custom_course', async function(req, res) {
-//     let user = await UserModel.findOne({access_token: req.headers.access_token});
-//     let courses_list = undefined;
-
-//     if (!user)
-//         return res.status(400).send({status: "You are not connected."});
-//     if (req.headers.sort) {
-//         if (req.headers.sort === "name") {
-//             courses_list = await CourseModel.find().sort("name");
-//         }
-//         else if (req.headers.sort === "popularity") {
-//             courses_list = await CourseModel.find().sort("number_used");
-//         }
-//         else if (req.headers.sort === "score") {
-//             courses_list = await CourseModel.find().sort("score");
-//         }
-//         else if (req.headers.sort === "tendancy") {
-//             let comments_list = await CommentModel.find(
-//                 {
-//                     course_id: {$ne: ""},
-//                     creation_date: {$gt: (Date.now() - (1000 * 60 * 60 * 24 * 7) )}
-//                 }
-//             );
-//             let courses_id_list = [];
-//             for (let index = 0; index < comments_list.length(); index++) {
-//                 if (!courses_id_list.includes(comments_list[index].course_id)) {
-//                     courses_id_list.push(comments_list[index].course_id)
-//                 }
-//             }
-//             courses_list = await CourseModel.find({id: {$in: courses_id_list}})
-//         }
-//         return res.status(200).send({status: "Success", courses_list})
-//     }
-//     return res.status(400).send({status: "Please send a research's sort."});
 // });
 
+
+// GET_COURSES_BY_ID
+/**
+ * Get the list of locations in database
+ * @param {String} req.headers.access_token
+ * @param {CourseID || [CourseID]} req.headers.courses_id_list
+ */
+router.get('/get_courses_by_id', async function(req, res) {
+
+    let user = await UserModel.findOne({access_token: req.headers.access_token});
+    let courses_list = [];
+    let list = req.headers.courses_id_list;
+    const projection = "-_id";
+
+    if (!user) {
+        return res.status(400).send({status: "You are not connected."});
+    }
+    if (list.includes(',')) {
+        list = list.split(',')
+        for (let index = 0; index < list.length; index++) {
+            course = await CourseModel.find({id: list[index]}, projection);
+            if (course) {
+                courses_list.push(course[0]);
+            }
+        }
+    } else if (typeof list == "string") {
+        courses_list = await CourseModel.findOne({id: list}, projection);
+    } else {
+        return res.status(400).send({status: "Parameter provided is invalid."});
+    }
+    return res.status(200).send({status: "List of courses returned.", courses_list});
+});
 
 
 
