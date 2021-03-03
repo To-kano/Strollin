@@ -14,7 +14,8 @@ const initialState = {
   scoreCourse: [],
   scoreLocation: [],
   scoreComment: [],
-  sound: true
+  sound: true,
+  course_historic: []
 };
 
 const storeProfile = async (value) => {
@@ -54,7 +55,7 @@ function profileReducer(state = initialState, action) {
     case 'ADD_HISTORY':
       nextState = {
         ...state,
-        history: state.history + action.value,
+        course_historic: [action.courseID, ...state.course_historic],
       };
       //storeProfile(nextState);
       return nextState;

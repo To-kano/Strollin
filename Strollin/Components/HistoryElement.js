@@ -87,7 +87,7 @@ function ElementHistoryNav({ course, locations, defaultSate = false }) {
         <View style={{ width: '100%', flexDirection: 'row', flex: 6 }}>
           <FlatList
             data={locations}
-            keyExtractor={(item) => item._id}
+            keyExtractor={(item) => item.id}
             renderItem={({ item }) => (
               <View style={{ margin: 10 }}>
                 <Text>

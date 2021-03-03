@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Tts from 'react-native-tts';
 import { connect } from 'react-redux';
 import {
@@ -117,19 +117,6 @@ async function getArrayLocation(access_token, idLocations) {
 
 
 export function TripSuggestion(props) {
-  //React.useLayoutEffect(() => {
-  //  props.navigation.setOptions({
-  //    // headerRight: () => (
-  //    //   <Button
-  //    //       title="Log Out"
-  //    //       color="#89B3D9"
-  //    //       onPress={() =>
-  //    //         props.navigation.navigate('userLogin')
-  //    //       }
-  //    //     />
-  //    // ),
-  //  });
-  //}, [props.navigation]);
 
   const [course, setCourse] = useState(null);
 

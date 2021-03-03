@@ -106,8 +106,8 @@ function Map({position, height, width, deltaView, locations, profil, map, dispat
         Tts.setDefaultLanguage('en-US');
         Tts.speak('You have done your navigation');
         addUserHistoric(profil.access_token, map.course._id);
-        setDestinations()
-        const action = { type: 'ADD_HISTORIC', locations: map.locations, course: map.locations };
+        setDestinations();
+        const action = { type: 'ADD_HISTORY', courseID: map.course.id };
         dispatch(action);
         //sleep(2000);
         navigation.navigate('CourseEvaluation');

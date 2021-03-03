@@ -134,7 +134,7 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
               onPress={async () => {
                 await setTime()
                 await addUserHistoric(profil.access_token, map.course.id);
-                const action = { type: 'ADD_HISTORIC', locations: map.locations, course: map.locations };
+                const action = { type: 'ADD_HISTORY', courseID: map.course.id };
                 dispatch(action);
                 navigation.navigate('HomePage');
               }}
