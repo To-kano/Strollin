@@ -1,3 +1,4 @@
+
 export default {
   /*
   SIGNIN: 'SIGN IN',
@@ -74,7 +75,11 @@ export default {
     forgot: 'Forgot Pasword ?',
     confirm: 'Confirm',
     noAccount: 'Dont have an account ?',
+    SIGNIN: 'SIGN IN',
+    SIGNUP: 'SIGN UP',
+    OR: 'OU',
     or: 'OR',
+    email: 'Email',
     password: 'Password',
     usernameOrEmail: 'Username or mail',
   },
@@ -137,6 +142,9 @@ export default {
     register: 'Register',
     signIn: 'Sign in',
     or: 'OR',
+    OR: 'OR',
+    SIGNIN: 'SIGN IN',
+    SIGNUP: 'SIGN UP',
   },
 };
 

@@ -52,16 +52,16 @@ export function LoginPage(props) {
       </View>
       <View style={styles.view_signInUp}>
         <TouchableOpacity>
-          <Text style={styles.text_signIn}>{I18n.t('SIGNIN')}</Text>
+          <Text style={styles.text_signIn}>{I18n.t('LoginPage.SIGNIN')}</Text>
         </TouchableOpacity>
         <View style={styles.view_separator} />
         <TouchableOpacity onPress={() => { props.navigation.navigate('userRegister'); }}>
-          <Text style={styles.text_signUp}>{I18n.t('SIGNUP')}</Text>
+          <Text style={styles.text_signUp}>{I18n.t('LoginPage.SIGNUP')}</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.view_field}>
         <Text style={styles.text_field}>
-          {I18n.t('email')}
+          {I18n.t('LoginPage.email')}
           <Text style={styles.text_star}> *</Text>
         </Text>
         <TextInput
@@ -76,7 +76,7 @@ export function LoginPage(props) {
       </View>
       <View style={styles.view_field}>
         <Text style={styles.text_field}>
-          {I18n.t('password')}
+          {I18n.t('LoginPage.password')}
           <Text style={styles.text_star}> *</Text>
         </Text>
         <TextInput
@@ -95,10 +95,10 @@ export function LoginPage(props) {
           onPress={() => { loginUser(props, value, valuePass); }}
         >
           <Text style={styles.text_logIn}>
-            {I18n.t('SIGNIN')}
+            {I18n.t('LoginPage.SIGNIN')}
           </Text>
         </TouchableOpacity>
-        <Text style={styles.text_or}>{I18n.t('OR')}</Text>
+        <Text style={styles.text_or}>{I18n.t('LoginPage.OR')}</Text>
         <View style={styles.view_facebook}>
           <LoginButton
             style={styles.button_facebook}
