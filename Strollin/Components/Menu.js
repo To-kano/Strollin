@@ -37,7 +37,7 @@ function Menu(props) {
           <Text style={styles.text_navigationIn}>Historic</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => props.navigation.navigate('TripSuggestion')}
+          onPress={() => props.navigation.navigate('CourseSettings')}
           style={styles.view_navigationIn}
         >
           <Image style={styles.img_navigationIn} source={require('../images/icons/black/next_trip.png')} />
