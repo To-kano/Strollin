@@ -7,7 +7,7 @@ import Store from '../Store/configureStore';
 import profileReducer from '../Store/Reducers/profileReducer';
 
 const SocketContext = createContext(); 
-const ENDPOINT = 'http://88.165.45.219:2000';//3000 pour Tony
+const ENDPOINT = 'http://88.165.45.219:3000';//3000 pour Tony
 import AsyncStorage from '@react-native-community/async-storage';
 
 

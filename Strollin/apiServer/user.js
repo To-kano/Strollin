@@ -118,6 +118,7 @@ async function setTendance(props, access_token) {
         method: 'GET',
       }).then((answer) => answer.json())
       .then(async function (answer) {
+        console.log("answer get_location = ", answer);
         const action = { type: "SET_LOCATION_LIST", value: answer["locations_list"], index: i }
         props.dispatch(action);
       })

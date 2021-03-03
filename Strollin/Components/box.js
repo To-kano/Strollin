@@ -10,7 +10,7 @@ function GotoComment(props) {
 }
 
 function Box(props) {
-  console.log("props = ", props);
+  console.log("props[name] = ", props.data["locations_list"]);
   return (
     <View style={{
       justifyContent: 'space-around', flex: 1, marginTop: 20, marginHorizontal: '5%', backgroundColor: 'rgba(255,255,255, 0.9)', borderRadius: 5, width: '90%'
@@ -40,7 +40,7 @@ function Box(props) {
               data={item}
             />
           )}
-        keyExtractor={(item) => item["id"]}
+        keyExtractor={(item) => item["name"]}
       />
       <Button
         title="Commentaires"
