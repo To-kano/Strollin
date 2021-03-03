@@ -17,6 +17,7 @@ async function getCustomCourse(access_token) {
     })
 
     answer =  await answer.json();
+    console.log("getCustomCourse result : ", answer)
     console.log("getCustomCourse result : ", answer.courses_list[0])
   //
     //saveNewCourse(answer);

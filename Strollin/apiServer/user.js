@@ -239,17 +239,18 @@ async function registerUser(props, newPseudo, newPassword, newMail) {
 exports.registerUser = registerUser;
 
 async function addUserHistoric(access_token, courseId) {
-  //console.log("registerUser");
+  console.log("add historic course id", courseId);
+  console.log("add historic access_token", access_token);
   const bodyRequest = JSON.stringify({
-    course: courseId
+    course: courseId.toString()
   });
 
   fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/add_historic`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
+      access_token: access_token,
     },
-    access_token: access_token,
     method: 'post',
     body: bodyRequest,
   })

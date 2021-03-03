@@ -12,7 +12,7 @@ import { addUserHistoric } from '../apiServer/user';
 
 import { PopUpForm } from './PopUpForm';
 
-export function TripNavigation({map, dispatch, navigation}) {
+export function TripNavigation({map, profil, dispatch, navigation}) {
   //const [background, setBackground] = useState(false);
 //
   //useEffect(() => {
@@ -133,7 +133,7 @@ export function TripNavigation({map, dispatch, navigation}) {
               style={{ flex: 1 }}
               onPress={async () => {
                 await setTime()
-                addUserHistoric(profil.access_token, map.course._id);
+                await addUserHistoric(profil.access_token, map.course.id);
                 const action = { type: 'ADD_HISTORIC', locations: map.locations, course: map.locations };
                 dispatch(action);
                 navigation.navigate('HomePage');
