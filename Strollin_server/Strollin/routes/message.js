@@ -19,11 +19,11 @@ const {
 router.get('/get_message', async function(req, res) {
     let user = await UserModel.findOne({access_token: req.headers.access_token});
     let message = null;
-    const projection = { _id: 0};
+    const projection = "-_id";
 
     if (user) {
         //message = await MessageModel.find({_id: {$in: req.headers.messages_list}}, null, {sort: {creation_date: -1}}); // To sort by date the messages?
-        message = await MessageModel.findOne({id: req.headers.message_id}, {projection: projection});
+        message = await MessageModel.findOne({id: req.headers.message_id}, projection);
 
         if (message) {
             message.creation_date = Date(message.creation_date)
