@@ -74,9 +74,9 @@ async function setFriendPseudo(props, access_token, profile) {
         console.log("answer in friendPseudo func= ", answer);
         console.log("accessToken in friendPseudo func= ", access_token);
         if (answer) {
-          const action = { type: 'ADD_FRIEND_TO_PSEUDO_LIST', value: {_id: profile.friends_list[i], pseudo: answer.profile.pseudo} };
+          const action = { type: 'ADD_FRIEND_TO_PSEUDO_LIST', value: {id: profile.friends_list[i], pseudo: answer.profile.pseudo} };
           props.dispatch(action);
-          const action2 = { type: 'ADD_FRIEND_TO_PSEUDO_LIST_REVERSE', value: {_id: profile.friends_list[i], pseudo: answer.profile.pseudo} };
+          const action2 = { type: 'ADD_FRIEND_TO_PSEUDO_LIST_REVERSE', value: {id: profile.friends_list[i], pseudo: answer.profile.pseudo} };
           props.dispatch(action2);
         } else {
           //console.log(answer.status);

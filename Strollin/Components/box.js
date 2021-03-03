@@ -40,7 +40,7 @@ function Box(props) {
               data={item}
             />
           )}
-        keyExtractor={(item) => item["_id"]}
+        keyExtractor={(item) => item["id"]}
       />
       <Button
         title="Commentaires"

@@ -22,7 +22,9 @@ import {
 function MessagesItem(props) {
   const [track, setTrack] = useState(null);
 
-  if (props.profil._id != props.message[props.messageID].expeditor) {
+  console.log("profil.id = ", props.profil.id);
+  console.log("message id = ", props.message[props.messageID].expeditor_id);
+  if (props.profil.id != props.message[props.messageID].expeditor_id) {
     return (
     <View>
       <View style={styles.greyDisplay}>
@@ -33,7 +35,7 @@ function MessagesItem(props) {
         </View>
       </View>
       <Text style={styles.expeditor} ellipsizeMode="tail">
-        {props.profil.friends_pseudo_list[props.message[props.messageID].expeditor]}
+        {props.profil.friends_pseudo_list[props.message[props.messageID].expeditor_id]}
       </Text>
     </View>
 

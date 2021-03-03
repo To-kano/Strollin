@@ -63,19 +63,19 @@ function profileReducer(state = initialState, action) {
         ...state,
       };
 
-      nextState[action.value._id] = action.value;
+      nextState[action.value.id] = action.value;
       return nextState;
     case 'ADD_FRIEND_TO_PSEUDO_LIST':
       nextState = {
         ...state,
       };
-      nextState.friends_pseudo_list[action.value._id] = action.value.pseudo;
+      nextState.friends_pseudo_list[action.value.id] = action.value.pseudo;
     return nextState;
     case 'ADD_FRIEND_TO_PSEUDO_LIST_REVERSE':
       nextState = {
         ...state,
       };
-      nextState.friends_pseudo_list[action.value.pseudo] = action.value._id;
+      nextState.friends_pseudo_list[action.value.pseudo] = action.value.id;
     return nextState;
 
     case 'SET_FRIEND_INIT':
