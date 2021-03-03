@@ -55,7 +55,7 @@ function profileReducer(state = initialState, action) {
     case 'ADD_HISTORY':
       nextState = {
         ...state,
-        course_historic: [action.courseID, ...state.course_historic],
+        course_historic: [[action.courseID, new Date().toLocaleDateString("fr-FR")], ...state.course_historic],
       };
       //storeProfile(nextState);
       return nextState;

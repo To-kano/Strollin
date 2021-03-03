@@ -26,7 +26,7 @@ export function HistoryItem({ profil, courseId }) {
 
   useEffect(() => {
     async function getCourse() {
-      const result = await getCourseById(profil.access_token, courseId);
+      const result = await getCourseById(profil.access_token, courseId[0]);
 
       setCourse(result);
     }
