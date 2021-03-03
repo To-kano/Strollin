@@ -114,7 +114,11 @@ export default {
     confirm: 'Confirmer',
     forgot: 'Mot de passe oublié ?',
     noAccount: "Vous n'avez pas de compte ?",
+    SIGNIN: 'SE CONNECTER',
+    SIGNUP: "S'INSCRIRE",
+    OR: 'OU',
     or: 'OU',
+    email: 'Email',
     password: 'Mot de passe',
     usernameOrEmail: "Nom d'utilisateur ou email",
   },
@@ -176,6 +180,9 @@ export default {
     alreadyAccount: 'Vous avez déja un compte ?',
     register: 'Inscription',
     signIn: 'Connection',
-    or: 'OU'
+    or: 'OU',
+    OR: 'OU',
+    SIGNIN: 'SE CONNECTER',
+    SIGNUP: "S'INSCRIRE",
   },
 };

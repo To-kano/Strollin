@@ -144,6 +144,7 @@ async function sendNewConversation(conversation) {
       }
     }
   }
+  console.log("Conversation sent to all participants.");
 }
 
 async function sendReceiveMessage(message, conversation) {
@@ -227,11 +228,11 @@ sio.on("connection", async (socket) => {
       console.log("conversation ", conversation);
 
       if (conversation) {
-
         let message = new MessageModel ({
           id: new Number(Date.now()),
           creation_date: new Date().toLocaleDateString("fr-FR"),
-          expeditor : user,
+          expeditor_id: user.id,
+          expeditor_pseudo: user.pseudo,
           conversation : msg.conversation,
           type : msg.type,
           message: msg.message

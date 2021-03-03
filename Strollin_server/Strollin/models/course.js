@@ -25,8 +25,12 @@ var CourseModelSchema = new Schema({
         type: String,
         default: '0'
     },
-    author: {
-        type: {},
+    author_id: {
+        type: String,
+        required: true
+    },
+    author_pseudo: {
+        type: String,
         required: true
     },
     creation_date: {

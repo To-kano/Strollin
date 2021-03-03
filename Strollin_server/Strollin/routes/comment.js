@@ -59,14 +59,16 @@ router.post('/new_comment', async function(req, res) {
     comment = new CommentModel({
         id: new Number(Date.now()),
         creation_date: new Date().toLocaleDateString("fr-FR"),
+        modification_date: Number(Date.now()),
         message: req.body.message,
         score: req.body.score,
-        author: user,
+        author_id: user.id,
+        author_pseudo: user.pseudo,
         course_id: req.headers.course_id
     });
     let error = await comment.save().catch(error => error);
     if (error.errors) {
-        return res.status(400).send({status: errors});
+        return res.status(400).send({status: error.errors});
     }
 
     // Update the location/course
@@ -74,14 +76,14 @@ router.post('/new_comment', async function(req, res) {
         let new_score = (Number(comment.score) + (Number(location.score) * location.comments_list.length)) / (location.comments_list.length + 1);
         error = await location.updateOne({$push: {comments_list: comment.id}, $set: {score: String(new_score)}}).catch(error => error);
         if (error.errors) {
-            return res.status(400).send({status: errors});
+            return res.status(400).send({status: error.errors});
         }
     } else if (course) {
         let new_score = (Number(comment.score) + (Number(course.score) * course.comments_list.length)) / (course.comments_list.length + 1);
         let new_used = Number(course.number_used) + 1;
         error = await course.updateOne({$push: {comments_list: comment.id}, $set: {score: String(new_score), number_used: String(new_used)}}).catch(error => error);
         if (error.errors) {
-            return res.status(400).send({status: errors});
+            return res.status(400).send({status: error.errors});
         }
     } else {
         return res.status(400).send({status: "An anomaly occurred. The comment could not be added in the location/course."});
@@ -123,7 +125,7 @@ router.post('/edit_comment', async function(req, res) {
     }
     let error = await comment.updateOne(query).catch(error => error);
     if (error.errors) {
-        return res.status(400).send({status: errors});
+        return res.status(400).send({status: error.errors});
     }
 
     if (comment.location_id) {

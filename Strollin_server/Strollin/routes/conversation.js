@@ -17,15 +17,15 @@ const {
  */
 router.get('/get_conversations', async function(req, res) {
 
-    let user = await UserModel.findOne({access_token: req.headers.access_token})
     let conversations = null;
+    let user = await UserModel.findOne({access_token: req.headers.access_token})
 
-    if (user) {
-        let id = user._id;
-        conversations = await ConversationModel.find({participants: {$in: [id]}})
-        return res.status(200).send({status: "conversations sent.", conversations});
+    if (!user) {
+        return res.status(400).send({status: "You are not connected."});
     }
-    return res.status(400).send({status: "You are not connected."});
+    let id = user.id;
+    conversations = await ConversationModel.find({participants: {$in: [id]}})
+    return res.status(200).send({status: "conversations sent.", conversations});
 });
 
 

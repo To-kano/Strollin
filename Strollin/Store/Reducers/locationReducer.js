@@ -11,7 +11,7 @@ function LocationReducer(state = initialState, action) {
         ...state,
       };
 
-      nextState[action.value._id] = action.value;
+      nextState[action.value.id] = action.value;
       return nextState;
     default:
       return state;
