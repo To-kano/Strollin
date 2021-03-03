@@ -20,10 +20,10 @@ async function getLocationByID(access_token, id) {
   })
 
   answer = await answer.json();
-  console.log("getLocationByID result : ", answer.locations_list)
+  console.log("getLocationByID result : ", answer.locations_list[0])
 
   //saveNewLocation(answer);
-  return answer.locations_list;
+  return answer.locations_list[0];
 
 }
 
