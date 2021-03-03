@@ -56,7 +56,7 @@ router.get('/get_tag', async function(req, res) {
     let user = await UserModel.findOne({access_token: req.headers.access_token});
     let tags = null;
     let sort = req.headers.sort;
-    const projection = { _id: 0};
+    const projection = "-_id";
 
     if (!user) {
         return res.status(400).send({status: "You are not connected."});
@@ -65,9 +65,9 @@ router.get('/get_tag', async function(req, res) {
         sort = "name"; 
     }
     if (req.headers.search) {
-        tags = await TagModel.find({name: {$regex: req.headers.search}}, {projection: projection}).sort(sort);
+        tags = await TagModel.find({name: {$regex: req.headers.search}}, projection).sort(sort);
     } else {
-        tags = await TagModel.find({}, {projection: projection}).sort(sort);
+        tags = await TagModel.find({}, projection).sort(sort);
     }
     if (tags) {
         return res.status(200).send({status: true, tags_list: tags});

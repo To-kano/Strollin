@@ -171,17 +171,18 @@ router.post('/add_tag', async function(req, res) {
 /**
  * Add a course into the historic of the user.
  * @param {String} req.headers.access_token
- * @param {ObjectID} req.body.course
+ * @param {String} req.body.course
  */
 router.post('/add_historic', async function(req, res) {
 
   let user = await UserModel.findOne({access_token: req.headers.access_token});
   let course = await CourseModel.findOne({id: req.body.course});
+  console.log(req.headers);
 
   if (!user)
     return res.status(400).send({status: "You are not connected."});
   if (course) {
-    let new_course = [course.id, Date.now()];
+    let new_course = [course.id, new Date().toLocaleDateString("fr-FR")];
     await user.updateOne({$push: {course_historic: new_course}});
     return res.status(200).send({status: "Historic added."});
   }

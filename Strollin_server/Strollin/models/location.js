@@ -21,8 +21,12 @@ var LocationModelSchema = new Schema({
         type: String,
         default: '0'
     },
-    coordinate: {
-        type: {},
+    latitude: {
+        type: Number,
+        required: true,
+    },
+    longitude: {
+        type: Number,
         required: true,
     },
     address: {
