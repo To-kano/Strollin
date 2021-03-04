@@ -47,7 +47,10 @@ router.post('/register', async function(req, res) {
     if (req.body.pseudo != null) {
       user.pseudo = req.body.pseudo
     }
-    await user.save();
+    let error = await user.save().catch(error => error);
+    if (error.errors) {
+      return res.status(400).send({status: "Error in database transaction", error: error});
+    }
     return res.status(200).send({status: "Account created successfully.", access_token: token});
   }
   return res.status(400).send({status: "The entry is invalid."});
@@ -298,27 +301,26 @@ router.get('/get_user_tags', async function(req, res) {
 
 // GET_USER_BY_ID
 /**
- * Get the user(s) tags.
+ * Get the user(s) by ID.
  * @param {String} req.headers.access_token
- * @param {String || [String]} req.headers.users_list
- * @param {String} req.headers.projection //Fields to return in Object
+ * @param {UserID || [UserID]} req.headers.users_list
  */
 router.get('/get_user_by_id', async function(req, res) {
   let user = await UserModel.findOne({access_token: req.headers.access_token});
-  const projection = req.headers.projection;
-  let users_list = null;
+  const projection = "-_id -password -access_token -socket_id -facebook_id";
 
   if (!user) {
       return res.status(400).send({status: "You are not connected."});
   }
   let given_list = req.headers.users_list.split(',');
-  if (given_list) {
-      users_list = await UserModel.find({id: {$in: given_list}, projection});
-      if (users_list) {
-          return res.status(200).send({status: "User(s) found.", users_list});
-      }
+  let users_list = await UserModel.find({id: {$in: given_list}, projection}).catch(error => error);
+  if (users_list.reason) {
+      return res.status(400).send({status: "Error in the parameters.", error: users_list});
+  } else if (users_list.length > 0) {
+      return res.status(200).send({status: "User(s) found.", users_list});
+  } else {
+      return res.status(400).send({status: "User(s) not found.", error: users_list});
   }
-  return res.status(400).send({status: "User(s) not found."});
 });
 
 

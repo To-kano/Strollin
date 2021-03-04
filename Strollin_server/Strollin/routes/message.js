@@ -22,7 +22,6 @@ router.get('/get_message', async function(req, res) {
     const projection = "-_id";
 
     if (user) {
-        //message = await MessageModel.find({_id: {$in: req.headers.messages_list}}, null, {sort: {creation_date: -1}}); // To sort by date the messages?
         message = await MessageModel.findOne({id: req.headers.message_id}, projection);
 
         if (message) {

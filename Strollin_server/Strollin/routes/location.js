@@ -57,7 +57,8 @@ router.post('/new_location', async function(req, res) {
     location = new LocationModel({
         id: new Number(Date.now()),
         name: req.body.name,
-        owner: owner,
+        owner_id: owner.id,
+        owner_pseudo: owner.pseudo,
         coordinate: req.body.coordinate,
         latitude: req.body.latitude,
         longitude: req.body.longitude,
@@ -72,7 +73,10 @@ router.post('/new_location', async function(req, res) {
         phone: req.body.phone,
         website: req.body.website
     });
-    await location.save();
+    let error = await location.save().catch(error => error);
+    if (error.errors) {
+        return res.status(400).send({status: "Error in database transaction", error: error});
+    }
     return res.status(200).send({status: "Location created."});
 });
 
@@ -224,34 +228,26 @@ router.get('/get_locations', async function(req, res) {
 
 // GET_LOCATIONS_BY_ID
 /**
- * Get the list of locations in database
+ * Get location(s) by ID
  * @param {String} req.headers.access_token
  * @param {LocationID || [LocationID]} req.headers.locations_id_list
  */
 router.get('/get_locations_by_id', async function(req, res) {
 
     let user = await UserModel.findOne({access_token: req.headers.access_token});
-    let locations_list = [];
-    let list = req.headers.locations_id_list;
-    const projection = "-_id";
 
     if (!user) {
         return res.status(400).send({status: "You are not connected."});
     }
-    if (list.includes(',')) {
-        list = list.split(',')
-        for (let index = 0; index < list.length; index++) {
-            location = await LocationModel.find({id: list[index]}, projection);
-            if (location) {
-                locations_list.push(location[0]);
-            }
-        }
-    } else if (typeof list == "string") {
-        locations_list = await LocationModel.findOne({id: list}, projection);
+    let given_list = req.headers.locations_id_list.split(',')
+    let locations_list = await LocationModel.find({id: {$in: given_list}}).catch(error => error);
+    if (locations_list.reason) {
+        return res.status(400).send({status: "Error in the parameters.", error: locations_list});
+    } else if (locations_list.length > 0) {
+        return res.status(200).send({status: "Location(s) found.", locations_list});
     } else {
-        return res.status(400).send({status: "Parameter provided is invalid."});
+        return res.status(400).send({status: "Location(s) not found.", error: locations_list});
     }
-    return res.status(200).send({status: "List of locations returned.", locations_list});
 });
 
 

@@ -68,7 +68,7 @@ router.post('/new_comment', async function(req, res) {
     });
     let error = await comment.save().catch(error => error);
     if (error.errors) {
-        return res.status(400).send({status: error.errors});
+        return res.status(400).send({status: "Error in database transaction", error: error});
     }
 
     // Update the location/course
@@ -148,27 +148,27 @@ router.post('/edit_comment', async function(req, res) {
 });
 
 
-// GET_COMMENT
+// GET_COMMENT_BY_ID
 /**
- * Get comment's data
+ * Get the comment(s) by ID.
  * @param {String} req.headers.access_token
  * @param {CommentID || [CommentID]} req.headers.comments_list
  */
-router.get('/get_comment', async function(req, res) {
+router.get('/get_comment_by_id', async function(req, res) {
     let user = await UserModel.findOne({access_token: req.headers.access_token});
-    let comments_list = null;
-
+  
     if (!user) {
         return res.status(400).send({status: "You are not connected."});
     }
     let given_list = req.headers.comments_list.split(',');
-    if (given_list) {
-        comments_list = await CommentModel.find({id: {$in: given_list}});
-        if (comments_list) {
-            return res.status(200).send({status: "Comments found.", comments_list});
-        }
+    let comments_list = await CommentModel.find({id: {$in: given_list}}).catch(error => error);
+    if (comments_list.reason) {
+        return res.status(400).send({status: "Error in the parameters.", error: comments_list});
+    } else if (comments_list.length > 0) {
+        return res.status(200).send({status: "Comment(s) found.", comments_list});
+    } else {
+        return res.status(400).send({status: "Comment(s) not found.", error: comments_list});
     }
-    return res.status(400).send({status: "Comment not found."});
 });
 
 

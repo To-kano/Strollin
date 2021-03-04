@@ -64,7 +64,7 @@ router.post('/new_course', async function(req, res) {
     // }
     let error = await course.save().catch(error => error);
     if (error.errors) {
-        return res.status(400).send({status: error.errors});
+        return res.status(400).send({status: "Error in database transaction", error: error});
     }
     return res.status(200).send({status: "Course created."});
 });
@@ -126,34 +126,25 @@ router.get('/get_course', async function(req, res) {
 
 // GET_COURSES_BY_ID
 /**
- * Get the list of locations in database
+ * Get course(s) by ID
  * @param {String} req.headers.access_token
  * @param {CourseID || [CourseID]} req.headers.courses_id_list
  */
 router.get('/get_courses_by_id', async function(req, res) {
-
     let user = await UserModel.findOne({access_token: req.headers.access_token});
-    let courses_list = [];
-    let list = req.headers.courses_id_list;
-    const projection = "-_id";
-
+  
     if (!user) {
         return res.status(400).send({status: "You are not connected."});
     }
-    if (list.includes(',')) {
-        list = list.split(',')
-        for (let index = 0; index < list.length; index++) {
-            course = await CourseModel.find({id: list[index]}, projection);
-            if (course) {
-                courses_list.push(course[0]);
-            }
-        }
-    } else if (typeof list == "string") {
-        courses_list = await CourseModel.findOne({id: list}, projection);
+    let given_list = req.headers.courses_id_list.split(',');
+    let courses_list = await CourseModel.find({id: {$in: given_list}}).catch(error => error);
+    if (courses_list.reason) {
+        return res.status(400).send({status: "Error in the parameters.", error: courses_list});
+    } else if (courses_list.length > 0) {
+        return res.status(200).send({status: "Course(s) found.", courses_list});
     } else {
-        return res.status(400).send({status: "Parameter provided is invalid."});
+        return res.status(400).send({status: "Course(s) not found.", courses_list});
     }
-    return res.status(200).send({status: "List of courses returned.", courses_list});
 });
 
 

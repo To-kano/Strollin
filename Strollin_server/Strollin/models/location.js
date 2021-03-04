@@ -13,9 +13,13 @@ var LocationModelSchema = new Schema({
         type: String,
         required: true
     },
-    owner: {
-        type: {},
-        default: null
+    owner_id: {
+        type: String,
+        default: ""
+    },
+    owner_pseudo: {
+        type: String,
+        default: ""
     },
     score: {
         type: String,
