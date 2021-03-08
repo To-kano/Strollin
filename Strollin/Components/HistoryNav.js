@@ -3,27 +3,14 @@ import React, { Component } from 'react';
 import {
   Text, View, Image, FlatList, Button, ImageBackground, TouchableOpacity, StyleSheet, Dimensions
 } from 'react-native';
-import ElementHistoryNav from './HistoryElement';
+import HistoryItem from './historyItem';
 import BackgroundImage from './backgroundImage';
 import I18n from '../Translation/configureTrans';
 import Box from './box';
 
-export function HistoryNav({ navigation, map }) {
-  //React.useLayoutEffect(() => {
-  //  navigation;
-  //  navigation.setOptions({
-  //    // headerRight: () => (
-  //    //   <Button
-  //    //       title="Log Out"
-  //    //       color="#89B3D9"
-  //    //       onPress={() =>
-  //    //         navigation.navigate('userLogin')
-  //    //       }
-  //    //     />
-  //    // ),
-  //  });
-  //}, [navigation]);
+export function HistoryNav({ navigation, profil }) {
 
+  console.log("profile = ", profil);
   return (
     <View style={styles.view_back}>
       <View style={styles.view_header}>
@@ -39,21 +26,9 @@ export function HistoryNav({ navigation, map }) {
         <FlatList
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
-          data={map.historic}
+          data={profil.course_historic}
           renderItem={({ item }) => (
-            <View style={styles.view_historic}>
-              <View style={styles.view_historicTop}>
-                <View style={styles.view_information}>
-                  <Image style={styles.img_date} source={require('../images/icons/black/calendar.png')}/>
-                  <Text style={styles.text_date}>{item.date}</Text>
-                </View>
-                <View style={styles.view_information}>
-                  <Image style={styles.img_duration} source={require('../images/icons/black/time.png')}/>
-                  <Text style={styles.text_duration}>{item.duration}</Text>
-                </View>
-              </View>
-              <ElementHistoryNav data={item.waypoints} />
-            </View>
+            <HistoryItem courseId={item}/>
           )}
         />
       </View>
@@ -147,8 +122,14 @@ export function HistoryNav({ navigation, map }) {
   );
 }
 
-const mapStateToProps = (state) => state;
 
+const mapStateToProps = (state) => {
+  return (
+    {
+      profil: state.profil
+    }
+  )
+};
 export default connect(mapStateToProps)(HistoryNav);
 
 const styles = StyleSheet.create({

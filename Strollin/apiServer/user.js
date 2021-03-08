@@ -40,6 +40,7 @@ async function profileUser(props, access_token) {
   })
     .then((response) => response.json())
     .then(async (answer) => {
+      console.log("access_token = ", access_token);
       if (answer.profile) {
         const action = { type: 'SET_USER', value: answer.profile };
         props.dispatch(action);
@@ -70,11 +71,12 @@ async function setFriendPseudo(props, access_token, profile) {
     })
       .then((response) => response.json())
       .then(async (answer) => {
-        //console.log("answer in friendPseudo func= ", answer);
+        console.log("answer in friendPseudo func= ", answer);
+        console.log("accessToken in friendPseudo func= ", access_token);
         if (answer) {
-          const action = { type: 'ADD_FRIEND_TO_PSEUDO_LIST', value: {_id: profile.friends_list[i], pseudo: answer.profile.pseudo} };
+          const action = { type: 'ADD_FRIEND_TO_PSEUDO_LIST', value: {id: profile.friends_list[i], pseudo: answer.profile.pseudo} };
           props.dispatch(action);
-          const action2 = { type: 'ADD_FRIEND_TO_PSEUDO_LIST_REVERSE', value: {_id: profile.friends_list[i], pseudo: answer.profile.pseudo} };
+          const action2 = { type: 'ADD_FRIEND_TO_PSEUDO_LIST_REVERSE', value: {id: profile.friends_list[i], pseudo: answer.profile.pseudo} };
           props.dispatch(action2);
         } else {
           //console.log(answer.status);
@@ -100,6 +102,7 @@ async function setTendance(props, access_token) {
   }).then((answer) => answer.json())
   .then(async function (answer) {
     console.log("answer tendance = ", answer);
+    console.log("token tendance = ", access_token);
     const action = { type: "SET_TENDANCE_LIST", value: answer["courses_list"] }
     props.dispatch(action);
 
@@ -115,6 +118,7 @@ async function setTendance(props, access_token) {
         method: 'GET',
       }).then((answer) => answer.json())
       .then(async function (answer) {
+        console.log("answer get_location = ", answer);
         const action = { type: "SET_LOCATION_LIST", value: answer["locations_list"], index: i }
         props.dispatch(action);
       })
@@ -234,6 +238,34 @@ async function registerUser(props, newPseudo, newPassword, newMail) {
 }
 
 exports.registerUser = registerUser;
+
+async function addUserHistoric(access_token, courseId) {
+  console.log("add historic course id", courseId);
+  console.log("add historic access_token", access_token);
+  const bodyRequest = JSON.stringify({
+    course: courseId.toString()
+  });
+
+  fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/add_historic`, {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      access_token: access_token,
+    },
+    method: 'post',
+    body: bodyRequest,
+  })
+    .then((response) => response.json())
+    .then(async (answer) => {
+      console.log(" answer = " , answer);
+    })
+    .catch((error) => {
+      console.error('error :', error);
+    });
+}
+
+exports.addUserHistoric = addUserHistoric;
+
 
 async function registerUserTag(props, newPseudo, newPassword, newMail) {
   const bodyRequest = JSON.stringify({

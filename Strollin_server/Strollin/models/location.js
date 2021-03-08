@@ -5,6 +5,10 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var LocationModelSchema = new Schema({
+    id: {
+        type: Number,
+        required: true,
+    },
     name: {
         type: String,
         required: true
@@ -17,8 +21,12 @@ var LocationModelSchema = new Schema({
         type: String,
         default: '0'
     },
-    coordinate: {
-        type: {},
+    latitude: {
+        type: Number,
+        required: true,
+    },
+    longitude: {
+        type: Number,
         required: true,
     },
     address: {

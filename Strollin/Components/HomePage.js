@@ -56,6 +56,12 @@ export function HomePage(props) {
           <Image style={styles.img_header} source={require('../images/icons/black/search.png')}/>
         </TouchableOpacity>
       </View>
+      <View style={styles.SearchBar}>
+          <SearchBar
+           onPress={setSortedTendanceData}
+           imagePath='../images/icons/black/search.png'
+          />
+      </View>
       <View style={styles.viex_list}>
         <FlatList
           showsHorizontalScrollIndicator={false}
@@ -67,7 +73,7 @@ export function HomePage(props) {
               data={item}
             />
           )}
-          keyExtractor={(item) => item["name"]}
+          keyExtractor={(item) => item["_id"]}
         />
       </View>
     </View>

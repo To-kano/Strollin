@@ -10,6 +10,7 @@ import tendanceReducer from './Reducers/tendanceReducer';
 import messageReducer from './Reducers/messageReducer';
 import searchReducer from './Reducers/searchReducer';
 import courseReducer from './Reducers/courseReducer';
+import locationReducer from './Reducers/locationReducer';
 
 const rootReducer = combineReducers({
   profil: profileReducer,
@@ -22,7 +23,8 @@ const rootReducer = combineReducers({
   createConversation: createConversation,
   message: messageReducer,
   search: searchReducer,
-  course: courseReducer
+  course: courseReducer,
+  location: locationReducer
 });
 
 export default createStore(rootReducer);
