@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 
+const nodemailer = require('nodemailer');
+
 const {
   UserModel
 } = require("../models/user")
@@ -25,6 +27,12 @@ const {
  * @param {String} req.body.last_name (optional)
  */
 router.post('/register', async function(req, res) {
+
+  if (!req.body.mail) {
+    return res.status(400).send({status: "A valid mail was not provide."});
+  } else  if (!req.body.mail.includes('@')) {
+    return res.status(400).send({status: "A valid mail was not provide."});
+  }
 
   let mail = await UserModel.findOne({mail: req.body.mail});
   let token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
@@ -52,13 +60,65 @@ router.post('/register', async function(req, res) {
     if (req.body.pseudo != null) {
       user.pseudo = req.body.pseudo
     }
+<<<<<<< HEAD
     let error = await user.save().catch(error => error);
     if (error.errors) {
       return res.status(400).send({status: "Error in database transaction", error: error});
     }
+=======
+    await user.save();
+
+    const transporter = nodemailer.createTransport({
+      host: 'smtp-mail.outlook.com', // hostname
+      secureConnection: false, // TLS requires secureConnection to be false
+      port: 587, // port for secure SMTP
+      tls: {
+        ciphers: 'SSLv3',
+      },
+      auth: {
+        user: 'strollinapp@outlook.com',
+        pass: 'Strollin94',
+      },
+    });
+    
+    // create the mail to send
+    const mailOptions = {
+      from: '"Strollin App" <strollinapp@outlook.com>', // sender address (who sends)
+      to: req.body.mail, // list of receivers (who receives)
+      subject: `subscribe the app Strollin `, // Subject line
+      html: `<a href="http://88.165.45.219:3002/users/verify?id=${user.id}">test</a> `,
+    };
+  
+    // send the mail
+    transporter.sendMail(mailOptions, function(error, info) {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('Email sent: ' + info.response);
+      }
+    });
+
+>>>>>>> 311836b3ead634b3e912e4b0fd8d107b28a497cb
     return res.status(200).send({status: "Account created successfully.", access_token: token});
   }
   return res.status(400).send({status: "The entry is invalid."});
+});
+
+
+router.get('/verify', async function(req, res) {
+
+  console.log("verify\n", req.query.id);
+  let user = await UserModel.findOne({id: req.query.id});
+  if (!user) {
+    return res.status(400).send({status: "not valide link"});
+  } else {
+
+    let error = await user.updateOne({verify: true}).catch(error => error);
+    if (error.errors) {
+        return res.status(400).send({status: error.errors});
+    }
+    return res.status(200).send({status: "Account verify successfully."});
+  }
 });
 
 

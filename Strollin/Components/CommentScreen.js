@@ -16,7 +16,7 @@ function CommentScreen(props) {
         <FlatList
           data={props.route.params.data.comments_list}
           contentContainerStyle={{ flexGrow: 0.1 }}
-          renderItem={({ item }) => <Comment id={item["author"]["pseudo"]} comment={item["message"]} note={item["score"]} pseudo={item.pseudo} />}
+          renderItem={({ item }) => <Comment id={item["author_pseudo"]} comment={item["message"]} note={item["score"]} pseudo={item.pseudo} />}
           keyExtractor={(item) => item.id}
         />
       </View>

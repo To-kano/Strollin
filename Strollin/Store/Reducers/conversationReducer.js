@@ -49,12 +49,12 @@ function ConversationReducer(state = initialState, action) {
           ...state,
         };
         for (let i in conversationList) {
-          if (conversationList[i] == action.value._id) {
+          if (conversationList[i] == action.value.id) {
             conversationList.splice(i, 1);
             break;
           }
         }
-        nextState.conversationList = [action.value._id, ...nextState.conversationList]
+        nextState.conversationList = [action.value.id, ...nextState.conversationList]
 
         return nextState;
     default:

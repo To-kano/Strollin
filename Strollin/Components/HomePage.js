@@ -73,7 +73,7 @@ export function HomePage(props) {
               data={item}
             />
           )}
-          keyExtractor={(item) => item["name"]}
+          keyExtractor={(item) => item["_id"]}
         />
       </View>
     </View>

@@ -2,7 +2,7 @@ import Store from '../Store/configureStore';
 
 function saveNewLocation(newLocation) {
     const store = Store.getState();
-    if (!store.location[newLocation._id]) {
+    if (!store.location[newLocation.id]) {
         const action = {
             type: 'ADD_LOCATION',
             value: newLocation

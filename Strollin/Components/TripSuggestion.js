@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Tts from 'react-native-tts';
 import { connect } from 'react-redux';
 import {
@@ -10,6 +10,9 @@ import Map from './map';
 import ElementHistoryNav from './HistoryElement';
 import BackgroundImage from './backgroundImage';
 import ButtonSwitch from './ButtonSwitch';
+
+import {getCustomCourse} from '../apiServer/course';
+import {getLocationByID} from '../apiServer/locations';
 
 function getNavigation() {
 
@@ -103,10 +106,10 @@ function getLocation(id) {
   return location1;
 }
 
-function getArrayLocation(idLocations) {
+async function getArrayLocation(access_token, idLocations) {
   let result = [];
   for (let i = 0; i < idLocations.length; i++) {
-    result.push(getLocation(idLocations[i]));
+    result.push(await getLocationByID(access_token, idLocations[i]));
   }
 
   return result
@@ -114,34 +117,38 @@ function getArrayLocation(idLocations) {
 
 
 export function TripSuggestion(props) {
-  //React.useLayoutEffect(() => {
-  //  props.navigation.setOptions({
-  //    // headerRight: () => (
-  //    //   <Button
-  //    //       title="Log Out"
-  //    //       color="#89B3D9"
-  //    //       onPress={() =>
-  //    //         props.navigation.navigate('userLogin')
-  //    //       }
-  //    //     />
-  //    // ),
-  //  });
-  //}, [props.navigation]);
 
-  const [course, setCourse] = useState(getNavigation());
+  const [course, setCourse] = useState(null);
 
   useEffect(() => {
     Tts.setDefaultLanguage('en-US');
 
-    if (props.profil.sound) {
+    async function getCourse() {
+      const result = await getCustomCourse(props.profil.access_token);
+
+      setCourse(result);
+    }
+
+    async function getLocations() {
+      const result = await getArrayLocation(props.profil.access_token, course.locations_list)
+
+      setLocations(result);
+    }
+
+    if (!course) {
+      getCourse();
+    }
+
+    if (props.profil.sound && course) {
+      console.log("setLocation ", course);
       for (let i = 0; i < course.length; i++) {
         Tts.speak(`${I18n.t("TripSuggestion.step")} ${i + 1}`);
         Tts.speak(course.name);
       }
     }
 
-    if (course.locations_list) {
-      setLocations(getArrayLocation(course.locations_list))
+    if (course && course.locations_list) {
+      getLocations();
     }
 
   }, [course]);
@@ -180,7 +187,7 @@ export function TripSuggestion(props) {
             textAlign: 'center', fontSize: 22, fontWeight: 'bold', color: '#F07323'
           }]}
           >
-            {course.name}
+            {course ? course.name: ""}
           </Text>
         </View>
         <View
@@ -212,7 +219,8 @@ export function TripSuggestion(props) {
               color="#89B3D9"
               onPress={() => {
                 Tts.stop();
-                setCourse(getNavigation());
+                getCustomCourse(props.profil.access_token, setCourse);
+                //setCourse(getNavigation());
               }}
             />
           </View>

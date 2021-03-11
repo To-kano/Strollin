@@ -14,6 +14,7 @@ import I18n from '../Translation/configureTrans';
 
 import { RondFormeText } from './rondForm';
 import { registerUser } from '../apiServer/user';
+import Popup from './Popup';
 
 const getInfoFromToken = (token, setUserInfo, props) => {
   const PROFILE_REQUEST_PARAMS = {
@@ -44,6 +45,9 @@ export function UserRegister(props) {
   const [userLastName, setUserLastName] = useState('');
   const [userInfo, setUserInfo] = React.useState({});
 
+  const [modalVisible, setModalVisible] = useState(false);
+  const [message, setMessage] = useState("");
+
   //const [loading, setLoading] = useState(false);
 
   // callbackFirstName = (value) => {
@@ -71,16 +75,17 @@ export function UserRegister(props) {
       </View>
       <View style={styles.view_signInUp}>
         <TouchableOpacity onPress={() => props.navigation.navigate('userLogin')}>
-          <Text style={styles.text_signIn}>{I18n.t('SIGNIN')}</Text>
+          <Text style={styles.text_signIn}>{I18n.t('UserRegister.SIGNIN')}</Text>
         </TouchableOpacity>
         <View style={styles.view_separator} />
         <TouchableOpacity>
-          <Text style={styles.text_signUp}>{I18n.t('SIGNUP')}</Text>
+          <Text style={styles.text_signUp}>{I18n.t('UserRegister.SIGNUP')}</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.view_field}>
+        <Popup message={message} modalVisible={modalVisible} setModalVisible={setModalVisible} />
         <Text style={styles.text_field}>
-          {I18n.t('username')}
+          {I18n.t('UserRegister.username')}
           <Text style={styles.text_star}> *</Text>
         </Text>
         <TextInput
@@ -94,7 +99,7 @@ export function UserRegister(props) {
       </View>
       <View style={styles.view_field}>
         <Text style={styles.text_field}>
-          {I18n.t('email')}
+          {I18n.t('UserRegister.email')}
           <Text style={styles.text_star}> *</Text>
         </Text>
         <TextInput
@@ -108,7 +113,7 @@ export function UserRegister(props) {
       </View>
       <View style={styles.view_field}>
         <Text style={styles.text_field}>
-          {I18n.t('password')}
+          {I18n.t('UserRegister.password')}
           <Text style={styles.text_star}> *</Text>
         </Text>
         <TextInput
@@ -122,7 +127,7 @@ export function UserRegister(props) {
       </View>
       <View style={styles.view_field}>
         <Text style={styles.text_field}>
-          {I18n.t('confPassword')}
+          {I18n.t('UserRegister.confPassword')}
           <Text style={styles.text_star}> *</Text>
         </Text>
         <TextInput
@@ -139,15 +144,15 @@ export function UserRegister(props) {
           style={styles.button_logIn}
           onPress={() => {
             if (userPassword === userConfirmPassWord) {
-              registerUser(props, pseudo, userPassword, userEmail);
+              registerUser(props, pseudo, userPassword, userEmail, setMessage, setModalVisible);
             }
           }}
         >
           <Text style={styles.text_logIn}>
-            {I18n.t('SIGNUP')}
+            {I18n.t('UserRegister.SIGNUP')}
           </Text>
         </TouchableOpacity>
-        <Text style={styles.text_or}>{I18n.t('OR')}</Text>
+        <Text style={styles.text_or}>{I18n.t('UserRegister.OR')}</Text>
         <View style={styles.view_facebook}>
           <LoginButton
             style={styles.button_facebook}

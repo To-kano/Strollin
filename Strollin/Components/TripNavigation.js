@@ -8,10 +8,11 @@ import { connect } from 'react-redux';
 import AndroidPip from 'react-native-android-pip';
 import I18n from '../Translation/configureTrans';
 import Map from './map';
+import { addUserHistoric } from '../apiServer/user';
 
 import { PopUpForm } from './PopUpForm';
 
-export function TripNavigation({map, dispatch, navigation}) {
+export function TripNavigation({map, profil, dispatch, navigation}) {
   //const [background, setBackground] = useState(false);
 //
   //useEffect(() => {
@@ -132,7 +133,8 @@ export function TripNavigation({map, dispatch, navigation}) {
               style={{ flex: 1 }}
               onPress={async () => {
                 await setTime()
-                const action = { type: 'ADD_HISTORIC', locations: map.locations, course: map.locations };
+                await addUserHistoric(profil.access_token, map.course.id);
+                const action = { type: 'ADD_HISTORY', courseID: map.course.id };
                 dispatch(action);
                 navigation.navigate('HomePage');
               }}

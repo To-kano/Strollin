@@ -6,6 +6,8 @@ import MapViewDirections from 'react-native-maps-directions';
 
 import { connect } from 'react-redux';
 
+import { addUserHistoric } from '../apiServer/user';
+
 import Tts from 'react-native-tts';
 import I18n from '../Translation/configureTrans';
 
@@ -103,8 +105,9 @@ function Map({position, height, width, deltaView, locations, profil, map, dispat
       if (destinations.length == []) {
         Tts.setDefaultLanguage('en-US');
         Tts.speak('You have done your navigation');
-        setDestinations()
-        const action = { type: 'ADD_HISTORIC', locations: map.locations, course: map.locations };
+        addUserHistoric(profil.access_token, map.course._id);
+        setDestinations();
+        const action = { type: 'ADD_HISTORY', courseID: map.course.id };
         dispatch(action);
         //sleep(2000);
         navigation.navigate('CourseEvaluation');
