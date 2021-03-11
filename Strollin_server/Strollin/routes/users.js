@@ -60,13 +60,11 @@ router.post('/register', async function(req, res) {
     if (req.body.pseudo != null) {
       user.pseudo = req.body.pseudo
     }
-<<<<<<< HEAD
+
     let error = await user.save().catch(error => error);
     if (error.errors) {
       return res.status(400).send({status: "Error in database transaction", error: error});
     }
-=======
-    await user.save();
 
     const transporter = nodemailer.createTransport({
       host: 'smtp-mail.outlook.com', // hostname
@@ -98,7 +96,6 @@ router.post('/register', async function(req, res) {
       }
     });
 
->>>>>>> 311836b3ead634b3e912e4b0fd8d107b28a497cb
     return res.status(200).send({status: "Account created successfully.", access_token: token});
   }
   return res.status(400).send({status: "The entry is invalid."});
