@@ -206,7 +206,7 @@ async function conversationUser(props, access_token) {
 
 exports.profileUser = conversationUser;
 
-async function registerUser(props, newPseudo, newPassword, newMail) {
+async function registerUser(props, newPseudo, newPassword, newMail, setMessage, setPopup) {
   //console.log("registerUser");
   const bodyRequest = JSON.stringify({
     pseudo: newPseudo,
@@ -230,6 +230,9 @@ async function registerUser(props, newPseudo, newPassword, newMail) {
         await profileUser(props, answer.access_token);
         const action = { type: 'CONNECTION', value: answer.access_token };
         props.dispatch(action);
+      } else if (answer.status) {
+        setMessage(answer.status);
+        setPopup(true);
       }
     })
     .catch((error) => {
