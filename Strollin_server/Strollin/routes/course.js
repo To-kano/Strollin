@@ -14,6 +14,10 @@ const {
 } = require("../models/comment")
 
 const {
+    LocationModel
+} = require("../models/location")
+
+const {
     TagModel
 } = require("../models/tag")
 
@@ -38,10 +42,13 @@ router.post('/new_course', async function(req, res) {
     if (!user) {
         return res.status(400).send({status: "You are not connected."});
     }
-    // locations_list = await CourseModel.find({id: {$in: req.body.locations_list}})
-    // if (req.body.locations_list.length() !== locations_list.length()) {
-    //     return res.status(400).send({status: "One of the locations does not exist."});
-    // }
+    locations_list = await LocationModel.find({id: {$in: req.body.locations_list}}).catch(error => error)
+    if (locations_list.reason) {
+        return res.status(400).send({status: "Error in the parameters for database transaction.", locations_list});
+    }
+    if (req.body.locations_list.length !== locations_list.length) {
+        return res.status(400).send({status: "One of the locations does not exist."});
+    }
     course = new CourseModel({
         id: new Number(Date.now()),
         creation_date: new Date().toLocaleDateString("fr-FR"),
@@ -64,7 +71,7 @@ router.post('/new_course', async function(req, res) {
     // }
     let error = await course.save().catch(error => error);
     if (error.errors) {
-        return res.status(400).send({status: "Error in database transaction", error: error});
+        return res.status(400).send({status: "Error in database transaction", error});
     }
     return res.status(200).send({status: "Course created."});
 });
@@ -75,6 +82,7 @@ router.post('/new_course', async function(req, res) {
  * get a list of courses
  * @param {String} req.headers.access_token
  * @param {String} req.headers.sort
+ * @param {Number} req.headers.tendency_range (optional)
  */
 router.get('/get_course', async function(req, res) {
     let courses_list = undefined;
@@ -94,7 +102,11 @@ router.get('/get_course', async function(req, res) {
             courses_list = await CourseModel.find({}).sort("score");
         }
         else if (req.headers.sort === "tendency") {
-            let tendency_date = new Number(Date.now() - (1000 * 60 * 60 * 24 * 7));
+            let tendency_range = req.headers.tendency_range;
+            if (!tendency_range || isNaN(tendency_range)) {
+                tendency_range = 30;
+            }
+            let tendency_date = new Number(Date.now() - (1000 * 60 * 60 * 24 * tendency_range));
             let comments_list = await CommentModel.find(
                 {
                     course_id: {$ne: ""},
@@ -139,7 +151,7 @@ router.get('/get_courses_by_id', async function(req, res) {
     let given_list = req.headers.courses_id_list.split(',');
     let courses_list = await CourseModel.find({id: {$in: given_list}}).catch(error => error);
     if (courses_list.reason) {
-        return res.status(400).send({status: "Error in the parameters.", error: courses_list});
+        return res.status(400).send({status: "Error in the parameters for database transaction.", courses_list});
     } else if (courses_list.length > 0) {
         return res.status(200).send({status: "Course(s) found.", courses_list});
     } else {

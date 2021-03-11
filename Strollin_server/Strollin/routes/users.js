@@ -33,6 +33,11 @@ router.post('/register', async function(req, res) {
     return res.status(400).send({status: "The mail is used already."});
   }
   if (req.body.mail && req.body.password && req.body.partner !== undefined) {
+    let password_check = await check_the_password(req.body.password);
+    console.log(password_check);
+    if (password_check == false) {
+      return res.status(400).send({status: "The password must contains 6 characters with at least 1 uppercase, 1 lowercase and 1 digit."});
+    }
     user = new UserModel({
       id: new Number(Date.now()),
       creation_date: new Date().toLocaleDateString("fr-FR"),
@@ -94,7 +99,7 @@ router.post('/edit_profile', async function(req, res) {
   if (error.errors) {
       return res.status(400).send({status: error.errors});
   }
-  return res.status(400).send({status: "Profile edited."});
+  return res.status(200).send({status: "Profile edited."});
 });
 
 
@@ -237,7 +242,7 @@ router.get('/logout', async function(req, res) {
  * @param {String} req.headers.access_token
  */
 router.get('/get_own_profile', async function(req, res) {
-  const projection = '-_id -password -access_token -socket_id -facebook_id' //-param for excluding
+  const projection = '-_id -password -access_token -socket_id -facebook_id -verify' //-param for excluding
   let profile = await UserModel.findOne({access_token: req.headers.access_token}, projection);
 
   if (profile) {
@@ -340,6 +345,16 @@ router.delete('/remove_account', async function(req, res) {
   }
   return res.status(400).send({status: "You are not connected."});
 });
+
+
+/***
+ * OTHER FUNCTION
+***/
+
+async function check_the_password(password) {
+  
+  return true;
+};
 
 
 module.exports = router;
