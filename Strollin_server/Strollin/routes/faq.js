@@ -68,11 +68,11 @@ router.post('/answer_question', async function(req, res) {
 /**
  * Get the question(s) for display FAQ.
  * 
- * @param {String} req.headers.language
+ * @param {String} req.body.language
  */
 router.get('/get_question', async function(req, res) {
 
-    let faqs_list = await FaqModel.find({published: true, language: req.headers.language}, "-_id question answer creation_date").catch(error => error);
+    let faqs_list = await FaqModel.find({published: true, language: req.body.language}, "-_id question answer creation_date").catch(error => error);
     if (faqs_list.reason) {
         return res.status(400).send({status: "Error in the parameters.", error: faqs_list});
     } else if (faqs_list.length > 0) {
