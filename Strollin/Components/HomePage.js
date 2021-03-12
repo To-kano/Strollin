@@ -37,11 +37,6 @@ export function setSortedTendanceData(tag) {
   Store.dispatch(action);
 }
 
-const handleDrawerSlide = (status) => {
-  // outputs a value between 0 and 1
-  console.log(status);
-};
-
 export function getData() {
   const store = Store.getState();
 
@@ -51,15 +46,6 @@ export function getData() {
     return (store.tendance.tendanceList);
   }
 }
-
-function renderDrawer(props) {
-  return (
-    <View>
-      <Text>I am in the drawer!</Text>
-    </View>
-  );
-};
-
 export function HomePage(props) {
 
   const [drawer, setDrawer] = useState(null);
@@ -75,7 +61,7 @@ export function HomePage(props) {
           drawerType="front"
           drawerBackgroundColor="#ddd"
           renderNavigationView={ () => <Menu navigation={props.navigation} name={"Home"} />}
-          onDrawerSlide={handleDrawerSlide}>
+          >
         <View style={styles.view_back}>
           <View style={styles.view_header}>
             <TouchableOpacity onPress={//() => props.navigation.navigate('Menu')

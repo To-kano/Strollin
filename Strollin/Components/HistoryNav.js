@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import {
   Text, View, Image, FlatList, Button, ImageBackground, TouchableOpacity, StyleSheet, Dimensions
 } from 'react-native';
@@ -8,30 +8,50 @@ import BackgroundImage from './backgroundImage';
 import I18n from '../Translation/configureTrans';
 import Box from './box';
 
+import DrawerLayout from 'react-native-gesture-handler/DrawerLayout';
+import Menu from './Menu';
+
+
 export function HistoryNav({ navigation, profil }) {
 
-  console.log("profile = ", profil);
+  const [drawer, setDrawer] = useState(null);
+
+
+  //console.log("profile = ", profil);
   return (
-    <View style={styles.view_back}>
-      <View style={styles.view_header}>
-        <TouchableOpacity onPress={() => navigation.navigate('Menu')}>
-          <Image style={styles.img_header} source={require('../images/icons/black/menu.png')}/>
-        </TouchableOpacity>
-        <Text style={styles.text_header}>Historic</Text>
-        <TouchableOpacity>
-          <Image style={styles.img_header} source={require('../images/icons/black/search.png')}/>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.viex_list}>
-        <FlatList
-          showsHorizontalScrollIndicator={false}
-          showsVerticalScrollIndicator={false}
-          data={profil.course_historic}
-          renderItem={({ item }) => (
-            <HistoryItem courseId={item}/>
-          )}
-        />
-      </View>
+    <View style={{ flex: 1 }}>
+      <DrawerLayout
+          ref={drawer => {
+            setDrawer(drawer);
+          }}
+          drawerWidth={200}
+          drawerPosition={DrawerLayout.positions.Left}
+          drawerType="front"
+          drawerBackgroundColor="#ddd"
+          renderNavigationView={ () => <Menu navigation={navigation} name={"Historic"} />}
+      >
+        <View style={styles.view_back}>
+          <View style={styles.view_header}>
+            <TouchableOpacity onPress={() => drawer.openDrawer()}>
+              <Image style={styles.img_header} source={require('../images/icons/black/menu.png')}/>
+            </TouchableOpacity>
+            <Text style={styles.text_header}>Historic</Text>
+            <TouchableOpacity>
+              <Image style={styles.img_header} source={require('../images/icons/black/search.png')}/>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.viex_list}>
+            <FlatList
+              showsHorizontalScrollIndicator={false}
+              showsVerticalScrollIndicator={false}
+              data={profil.course_historic}
+              renderItem={({ item }) => (
+                <HistoryItem courseId={item}/>
+              )}
+            />
+          </View>
+        </View>
+      </DrawerLayout>
     </View>
   );
 }
