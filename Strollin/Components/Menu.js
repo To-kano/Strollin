@@ -12,8 +12,9 @@ import GestureRecognizer from 'react-native-swipe-gestures';
 function Menu(props) {
 
   const config = {
-    velocityThreshold: 0.2,
-    directionalOffsetThreshold: 100
+    velocityThreshold: 0.05,
+    directionalOffsetThreshold: 80,
+    gestureIsClickThreshold: 0.5
   };
 
   return (

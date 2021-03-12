@@ -28,7 +28,7 @@ export function HistoryNav({ navigation, profil }) {
           drawerPosition={DrawerLayout.positions.Left}
           drawerType="front"
           drawerBackgroundColor="#ddd"
-          renderNavigationView={ () => <Menu navigation={navigation} name={"Historic"} topNav={'HomePage'}/>}
+          renderNavigationView={ () => <Menu navigation={navigation} name={"Historic"} botNav={'HomePage'}/>}
       >
         <View style={styles.view_back}>
           <View style={styles.view_header}>
