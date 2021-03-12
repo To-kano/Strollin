@@ -7,8 +7,33 @@ import I18n from '../Translation/configureTrans';
 import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 
+import GestureRecognizer from 'react-native-swipe-gestures';
+
 function Menu(props) {
+
+  const config = {
+    velocityThreshold: 0.2,
+    directionalOffsetThreshold: 100
+  };
+
   return (
+    <GestureRecognizer
+        onSwipeUp={(state) => {
+          if (props.topNav) {
+            props.navigation.navigate(props.topNav);
+          }
+        }}
+        onSwipeDown={(state) => {
+          if (props.botNav) {
+            props.navigation.navigate(props.botNav);
+          }
+        }}
+        config={config}
+        style={{
+          flex: 1,
+          backgroundColor: "green"
+        }}
+        >
     <View style={styles.view_menu}>
       <View style={styles.view_profile}>
         <Image style={styles.img_profile} source={require('../images/TonyPP.jpg')} />
@@ -84,6 +109,7 @@ function Menu(props) {
         <Text style={styles.text_logOut}>Log Out</Text>
       </TouchableOpacity>
     </View>
+    </GestureRecognizer>
   );
 }
 
@@ -145,7 +171,8 @@ const styles = StyleSheet.create({
   view_navigationIn: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 14.7
+    marginBottom: 14.7,
+    width: 150
   },
   img_navigationIn: {
     width: 30,

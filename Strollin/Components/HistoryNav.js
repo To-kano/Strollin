@@ -24,11 +24,11 @@ export function HistoryNav({ navigation, profil }) {
           ref={drawer => {
             setDrawer(drawer);
           }}
-          drawerWidth={200}
+          drawerWidth={300}
           drawerPosition={DrawerLayout.positions.Left}
           drawerType="front"
           drawerBackgroundColor="#ddd"
-          renderNavigationView={ () => <Menu navigation={navigation} name={"Historic"} />}
+          renderNavigationView={ () => <Menu navigation={navigation} name={"Historic"} topNav={'HomePage'}/>}
       >
         <View style={styles.view_back}>
           <View style={styles.view_header}>

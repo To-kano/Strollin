@@ -56,11 +56,11 @@ export function HomePage(props) {
           ref={drawer => {
             setDrawer(drawer);
           }}
-          drawerWidth={200}
+          drawerWidth={300}
           drawerPosition={DrawerLayout.positions.Left}
           drawerType="front"
           drawerBackgroundColor="#ddd"
-          renderNavigationView={ () => <Menu navigation={props.navigation} name={"Home"} />}
+          renderNavigationView={ () => <Menu navigation={props.navigation} name={"Home"} botNav={'historicUser'}/>}
           >
         <View style={styles.view_back}>
           <View style={styles.view_header}>
