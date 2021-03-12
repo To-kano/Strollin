@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import {
   Text, View, Image, FlatList, Button, ImageBackground, TouchableOpacity, StyleSheet, Dimensions
 } from 'react-native';
@@ -8,117 +8,51 @@ import BackgroundImage from './backgroundImage';
 import I18n from '../Translation/configureTrans';
 import Box from './box';
 
+import DrawerLayout from 'react-native-gesture-handler/DrawerLayout';
+import Menu from './Menu';
+
+
 export function HistoryNav({ navigation, profil }) {
 
-  console.log("profile = ", profil);
+  const [drawer, setDrawer] = useState(null);
+
+
+  //console.log("profile = ", profil);
   return (
-    <View style={styles.view_back}>
-      <View style={styles.view_header}>
-        <TouchableOpacity onPress={() => navigation.navigate('Menu')}>
-          <Image style={styles.img_header} source={require('../images/icons/black/menu.png')}/>
-        </TouchableOpacity>
-        <Text style={styles.text_header}>Historic</Text>
-        <TouchableOpacity>
-          <Image style={styles.img_header} source={require('../images/icons/black/search.png')}/>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.viex_list}>
-        <FlatList
-          showsHorizontalScrollIndicator={false}
-          showsVerticalScrollIndicator={false}
-          data={profil.course_historic}
-          renderItem={({ item }) => (
-            <HistoryItem courseId={item}/>
-          )}
-        />
-      </View>
+    <View style={{ flex: 1 }}>
+      <DrawerLayout
+          ref={drawer => {
+            setDrawer(drawer);
+          }}
+          drawerWidth={300}
+          drawerPosition={DrawerLayout.positions.Left}
+          drawerType="front"
+          drawerBackgroundColor="#ddd"
+          renderNavigationView={ () => <Menu navigation={navigation} name={"Historic"} botNav={'HomePage'}/>}
+      >
+        <View style={styles.view_back}>
+          <View style={styles.view_header}>
+            <TouchableOpacity onPress={() => drawer.openDrawer()}>
+              <Image style={styles.img_header} source={require('../images/icons/black/menu.png')}/>
+            </TouchableOpacity>
+            <Text style={styles.text_header}>Historic</Text>
+            <TouchableOpacity>
+              <Image style={styles.img_header} source={require('../images/icons/black/search.png')}/>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.viex_list}>
+            <FlatList
+              showsHorizontalScrollIndicator={false}
+              showsVerticalScrollIndicator={false}
+              data={profil.course_historic}
+              renderItem={({ item }) => (
+                <HistoryItem courseId={item}/>
+              )}
+            />
+          </View>
+        </View>
+      </DrawerLayout>
     </View>
-    // <View style={styles.back}>
-    //   <BackgroundImage />
-    //   <View style={styles.header}>
-    //     <TouchableOpacity
-    //       style={{ width: '20%', height: '100%', marginLeft: 15 }}
-    //       onPress={() => navigation.navigate('HomePage')}
-    //     >
-    //       <Image
-    //         style={{
-    //           marginTop: '10%', height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'
-    //         }}
-    //         source={require('../ressources/home.png')}
-    //       />
-    //     </TouchableOpacity>
-    //     <TouchableOpacity
-    //       style={{ width: '20%', height: '100%' }}
-    //       onPress={() => navigation.navigate('historicUser')}
-    //     >
-    //       <Image
-    //         style={{
-    //           marginTop: '10%', height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'
-    //         }}
-    //         source={require('../ressources/trip.png')}
-    //       />
-    //     </TouchableOpacity>
-    //     <TouchableOpacity
-    //       style={{ width: '20%', height: '100%' }}
-    //       onPress={() => navigation.navigate('TripSuggestion')}
-    //     >
-    //       <Image
-    //         style={{
-    //           marginTop: '10%', height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'
-    //         }}
-    //         source={require('../ressources/plus.png')}
-    //       />
-    //     </TouchableOpacity>
-    //     <TouchableOpacity
-    //       style={{ width: '20%', height: '100%' }}
-    //       onPress={() => props.navigation.navigate('FriendList')}
-    //     >
-    //       <Image
-    //         style={{
-    //           marginTop: '10%', height: '65%', width: '50%', opacity: 0.5, resizeMode: 'stretch'
-    //         }}
-    //         source={require('../ressources/friend.png')}
-    //       />
-    //     </TouchableOpacity>
-    //     <TouchableOpacity
-    //       style={{ width: '20%', height: '100%' }}
-    //       onPress={() => navigation.navigate('Profile')}
-    //     >
-    //       <Image
-    //         style={{
-    //           marginTop: '10%', height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'
-    //         }}
-    //         source={require('../ressources/profile.png')}
-    //       />
-    //     </TouchableOpacity>
-    //   </View>
-    //   <View style={styles.fill}>
-    //     <FlatList
-    //       data={map.historic}
-    //       renderItem={({ item }) => (
-    //         <View style={{ padding: 10 }}>
-    //           <Text>
-    //             date:
-    //             {item.date}
-    //           </Text>
-    //           <Text>
-    //             duration:
-    //             {item.duration}
-    //           </Text>
-    //           <ElementHistoryNav data={item.waypoints} />
-    //         </View>
-    //       )}
-    //     />
-    //   </View>
-    //   <View style={{ flex: 0.10, flexDirection: 'column', margin: '5%' }}>
-    //     <TouchableOpacity
-    //       style={styles.newTrip}
-    //       onPress={() => navigation.navigate('TripSuggestion')}
-    //     >
-    //       <Text style={{ fontSize: 16, color: '#FFFFFF' }}> New trip </Text>
-    //     </TouchableOpacity>
-    //   </View>
-    // </View>
   );
 }
 
