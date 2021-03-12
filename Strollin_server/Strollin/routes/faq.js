@@ -7,10 +7,9 @@ const {
 
 // CREATE_QUESTION
 /**
- * Create a new question.
+ * Create a new question fr version.
  * @param {String} req.body.mail
  * @param {String} req.body.question
- * @param {String} req.body.language
  */
 router.post('/create_question', async function(req, res) {
 
@@ -30,7 +29,6 @@ router.post('/create_question', async function(req, res) {
     }
     return res.status(200).send({status: "Question created successfully."});
 });
-
 
 // ANSWER_QUESTION
 /**
@@ -64,15 +62,31 @@ router.post('/answer_question', async function(req, res) {
   });
   
 
-// GET_QUESTION
+// GET_QUESTION_FR
 /**
  * Get the question(s) for display FAQ.
  * 
- * @param {String} req.body.language
+ * @param {String} req.headers.language
  */
-router.get('/get_question', async function(req, res) {
+router.get('/get_question_fr', async function(req, res) {
 
-    let faqs_list = await FaqModel.find({published: true, language: req.body.language}, "-_id question answer creation_date").catch(error => error);
+    let faqs_list = await FaqModel.find({published: true, language: 'fr'}, "-_id question answer creation_date").catch(error => error);
+    if (faqs_list.reason) {
+        return res.status(400).send({status: "Error in the parameters.", error: faqs_list});
+    } else if (faqs_list.length > 0) {
+        return res.status(200).send({status: "Faq(s) found.", faqs_list});
+    } else {
+        return res.status(400).send({status: "Faq(s) not found.", error: faqs_list});
+    }
+});
+
+// GET_QUESTION_EN
+/**
+ * Get the question(s) for display FAQ.
+ */
+router.get('/get_question_en', async function(req, res) {
+
+    let faqs_list = await FaqModel.find({published: true, language: 'en'}, "-_id question answer creation_date").catch(error => error);
     if (faqs_list.reason) {
         return res.status(400).send({status: "Error in the parameters.", error: faqs_list});
     } else if (faqs_list.length > 0) {
