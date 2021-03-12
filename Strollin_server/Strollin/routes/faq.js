@@ -10,10 +10,11 @@ const {
  * Create a new question.
  * @param {String} req.body.mail
  * @param {String} req.body.question
+ * @param {String} req.body.language
  */
 router.post('/create_question', async function(req, res) {
 
-    if (!req.body.mail || !req.body.question) {
+    if (!req.body.mail || !req.body.question || !req.body.language) {
         return res.status(400).send({status: "Parameter required is missing."});
     }
     let faq = new FaqModel({
@@ -21,6 +22,7 @@ router.post('/create_question', async function(req, res) {
         creation_date: new Date().toLocaleDateString("fr-FR"),
         author: req.body.mail,
         question: req.body.question,
+        language: req.body.language,
     });
     let error = await faq.save().catch(error => error);
     if (error.errors) {
@@ -65,10 +67,12 @@ router.post('/answer_question', async function(req, res) {
 // GET_QUESTION
 /**
  * Get the question(s) for display FAQ.
+ * 
+ * @param {String} req.headers.language
  */
 router.get('/get_question', async function(req, res) {
 
-    let faqs_list = await FaqModel.find({published: true}, "-_id question answer creation_date").catch(error => error);
+    let faqs_list = await FaqModel.find({published: true, language: req.headers.language}, "-_id question answer creation_date").catch(error => error);
     if (faqs_list.reason) {
         return res.status(400).send({status: "Error in the parameters.", error: faqs_list});
     } else if (faqs_list.length > 0) {

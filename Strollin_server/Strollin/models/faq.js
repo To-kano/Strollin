@@ -29,6 +29,10 @@ var FaqModelSchema = new Schema({
         type: Boolean,
         default: false,
     },
+    language: {
+        type: String,
+        required: true,
+    }
 })
 
 // Compile model from schema
