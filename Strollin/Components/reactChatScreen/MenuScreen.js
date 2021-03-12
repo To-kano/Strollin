@@ -89,7 +89,7 @@ function LoginScreen(props) {
         <FlatList
           data={props.search.searchConvList}
           renderItem={({ item }) => <ConvPreview {...props} conversationID={item} />}
-          keyExtractor={(item) => item}
+          keyExtractor={(item) => String(item)}
         />
       </View>
     </View>

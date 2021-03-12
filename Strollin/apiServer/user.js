@@ -126,7 +126,7 @@ async function setTendance(props, access_token) {
         console.error('error :', error);
       });
 
-      await fetch(`http://${IP_SERVER}:${PORT_SERVER}/comment/get_comment`, {
+      await fetch(`http://${IP_SERVER}:${PORT_SERVER}/comment/get_comment_by_id`, {
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
@@ -138,6 +138,7 @@ async function setTendance(props, access_token) {
       .then(async function (answer) {
         const action = { type: "SET_COMMENT_LIST", value: answer["comments_list"], index: i }
         props.dispatch(action);
+        console.log("got comments");
       })
       .catch((error) => {
         console.error('error :', error);
