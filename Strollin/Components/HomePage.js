@@ -205,6 +205,23 @@ export function HomePage(props) {
             source={require('../ressources/tmp.png')}
           />
         </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.newTrip}
+          onPress={() => {
+            props.navigation.navigate('Position');
+          }}
+        >
+          {/* <Text style={{ fontSize: 12, color: '#FFFFFF', textAlign:'center' }}>
+            Go to Evaluation
+          </Text> */}
+          <Image
+            style={{
+              // marginTop: '0%', height: '100%', width: '40%', opacity: 1, resizeMode: 'stretch', tintColor:'white'
+              marginTop: '0%', height: '100%', width: '56%', opacity: 1, resizeMode: 'stretch', tintColor:'white'
+            }}
+            source={require('../ressources/tmp.png')}
+          />
+        </TouchableOpacity>
       </View>
     </View>
   );

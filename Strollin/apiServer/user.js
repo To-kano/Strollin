@@ -160,6 +160,7 @@ async function registerUser(props, newPseudo, newPassword, newMail) {
   })
     .then((response) => response.json())
     .then(async (answer) => {
+      console.log("okkkk")
       //console.log(" answer = " , answer);
       if (answer.access_token) {
         await profileUser(props, answer.access_token);

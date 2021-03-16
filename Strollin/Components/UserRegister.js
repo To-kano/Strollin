@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Input } from 'react-native-elements';
 import { connect } from 'react-redux';
@@ -38,6 +38,7 @@ const getInfoFromToken = (token, setUserInfo, props) => {
   new GraphRequestManager().addRequest(profileRequest).start();
 };
 
+
 export function UserRegister(props) {
   const [userEmail, setUserEmail] = useState('');
   const [userPassword, setUserPassword] = useState('');
@@ -45,6 +46,13 @@ export function UserRegister(props) {
   const [pseudo, setPseudo] = useState('');
   const [userLastName, setUserLastName] = useState('');
   const [userInfo, setUserInfo] = React.useState({});
+
+  useEffect(() => {
+    if (props.profil.access_token != null) {
+      console.log("ok")
+      props.navigation.navigate('TagSelection');
+    }
+  })
 
   //const [loading, setLoading] = useState(false);
 
@@ -140,10 +148,8 @@ export function UserRegister(props) {
           <Button
             onPress={() => {
               if (userPassword === userConfirmPassWord) {
-                registerUser(props, pseudo, userPassword, userEmail);
-              }
-              // props.navigation.navigate('TagSelection');
-            }}
+                  registerUser(props, pseudo, userPassword, userEmail)
+            }}}
             buttonStyle={[{ marginBottom: 5, marginTop: 5 }]}
             title={I18n.t('UserRegister.register')}
             color="#89B3D9"

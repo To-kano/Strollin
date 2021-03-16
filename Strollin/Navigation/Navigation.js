@@ -25,6 +25,7 @@ import MenuChat from '../Components/reactChatScreen/MenuScreen';
 import ScreenChat from '../Components/reactChatScreen/ChatScreen';
 import NewConversation from '../Components/reactChatScreen/NewConversation';
 import Notation from '../Components/Notation';
+import Position from '../Components/Position';
 import Socket from '../Components/Socket';
 import CourseEvaluation from '../Components/CourseEvaluation';
 import PartenaireScreen from '../Components/PartenairePage';
@@ -66,7 +67,6 @@ function MyStack(props) {
               component={LoginPage}
               options={{ title: 'Loging' }}
             />
-
             <Stack.Screen
               name="userRegister"
               component={UserRegister}
@@ -89,6 +89,11 @@ function MyStack(props) {
               name="Notation"
               component={Notation}
               options={{ title: 'Notation' }}
+            />
+            <Stack.Screen
+              name="Position"
+              component={Position}
+              options={{ title: 'Position' }}
             />
             <Stack.Screen
               name="historicUser"

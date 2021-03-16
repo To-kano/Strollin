@@ -2,15 +2,20 @@ import React, { Component } from 'react';
 import {
   Button, Image, View, StyleSheet, Text, ScrollView, FlatList, TextInput
 } from 'react-native';
+import { useState, useEffect } from 'react';
 import I18n from '../Translation/configureTrans';
 import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 import { connect } from 'react-redux';
+import { requestGeolocalisationPermission, updateCoordinates } from './map_tmp'
+import * as RNLocalize from 'react-native-localize';
 
+const locales = RNLocalize.getLocales();
+let language = "en"
 
 let jsonDefault = {
     html_attributions: [],
     result: {
-        formatted_address: "test",
+        formatted_address: "",
         /*geometry: {
             location: {
                 lat: 48.81208969999999,
@@ -51,18 +56,54 @@ let jsonDefault = {
     status: "OK"
 }
 
-function Notation(props) {
-  const [value, onChangeValue] = React.useState("");
-  const [jsonObject, onChangeJson] = React.useState(jsonDefault)
-  const [isLoading, setLoading] = React.useState(props.defaultState);
+const deltaView = {
+  latitudeDelta: 0.0922,
+  longitudeDelta: 0.0421,
+};
 
+function Notation(props) {
+
+  const [value, onChangeValue] = React.useState(" ");
+  const [jsonObject, onChangeJson] = useState(jsonDefault)
+  const [isLoading, setLoading] = useState(true);
+  const [userPosition, setUserPosition] = useState(null);
+  const [isPermision, setPermision] = useState(false)
+  const [localRegion, setLocalRegion] = useState({
+    latitudeDelta: deltaView.latitudeDelta,
+    longitudeDelta: deltaView.longitudeDelta
+  });
+
+  useEffect(() => {
+    setLocalRegion({
+      ...localRegion,
+      ...userPosition,
+    });
+  }, [userPosition]);
+
+  useEffect(() => {
+      if (Array.isArray(locales)) {
+        language = locales[0].languageTag;
+        console.log(language)
+      }
+      if (props.asked == false) {
+        requestGeolocalisationPermission(props);
+      }
+      if (props.permission == true && userPosition == null) {
+        updateCoordinates(setUserPosition);
+      }
+      if (props.permission && userPosition && localRegion.latitude && localRegion.longitude) {
+        setPermision(true)
+      }
+  })
 
   function sendMessage(value) {
-    //console.log("i'm here")
     const url = `http://${IP_SERVER}:${PORT_SERVER}/location/get_place`
     fetch(url, {
       headers : {
-              place_name : value
+              place_name : value,
+              locationlat: "48.8650988",
+              locationlong: "2.1931007",
+              language: language
       },
       method: 'GET',
     })

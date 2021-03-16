@@ -31,7 +31,7 @@ export default {
     yourComment: "Votre commentaire",
     send: "Envoyer l'évaluation"
   },
-  
+
   FriendList: {
     groupList : 'liste des groupes',
     groupName : 'nom de groupe',
@@ -40,20 +40,20 @@ export default {
     addFriend : "Ajouter l'ami",
     addGroup : "Ajouter le groupe",
   },
-  
+
   Gallery: {
     by : 'par',
     views : 'vues',
     points : 'points',
     description : 'description',
   },
-  
+
   Home: {
     logOut : 'Déconnexion',
     newTrip : 'Nouveau trajet',
     historic : 'historique',
   },
-  
+
   LoginPage: {
     confirm : 'Confirmer',
     forgot : 'Mot de passe oublié ?',
@@ -62,7 +62,7 @@ export default {
     password : 'Mot de passe',
     usernameOrEmail: "Nom d'utilisateur ou email",
   },
-  
+
   Map: {
     geoPermission : "Strollin vous demande l'autorisation d'utiliser la géolocalisation",
     askLater : 'Demandez-moi plus tard',
@@ -70,12 +70,12 @@ export default {
     ok : 'OK',
     noPermission : "Vous n'avez pas la permission",
   },
-  
+
   Notation: {
     information: "information",
     send : 'Envoyer',
   },
-  
+
   PartenerRegister: {
     email: "Email",
     password: "Mot de passe",
@@ -84,11 +84,16 @@ export default {
     register : 'Inscription',
     signIn : 'Connection',
   },
-  
+
   PopUpForm: {
     goTo: "Voulez vous allez à"
   },
-  
+
+  Position: {
+    information: "information",
+    send : 'Envoyer',
+  },
+
   ProfileScreen: {
     name : 'Nom : ',
     email : 'Email : ',
@@ -96,22 +101,22 @@ export default {
     myTags: "Mes tags",
     addTags: "Ajouter des tags"
   },
-  
+
   TagSelection: {
     welcome : 'Bienvenue : ',
     chooseTags : 'Choisissez les tags qui correspondent le mieux à votre personnalité',
     next : 'Suivant',
   },
-  
+
   TendanceSearchBar: {
     searchTag : 'Chercher a partir de tags',
   },
-  
+
   TripSuggestion: {
     step: "Etape :",
     headingTo : 'En route vers',
   },
-  
+
   UserRegister: {
     username: "Nom d'utilisateur",
     email: "Email",
@@ -122,5 +127,5 @@ export default {
     signIn : 'Connection',
     or: 'OU'
   },
-  
+
 };
