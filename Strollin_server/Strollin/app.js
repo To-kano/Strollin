@@ -14,6 +14,8 @@ var locationRouter = require('./routes/location');
 var courseRouter = require('./routes/course');
 var commentRouter = require('./routes/comment');
 var tagRouter = require('./routes/tag');
+var faqRouter = require('./routes/faq')
+var generatorRouter = require('./routes/generator');
 
 //var algo = require('./Algo/BasicAlgo');
 var algo = require('./Algo/BasicAlgo2');
@@ -63,6 +65,8 @@ app.use('/location', locationRouter);
 app.use('/course', courseRouter);
 app.use('/comment', commentRouter);
 app.use('/tag', tagRouter);
+app.use('/faq', faqRouter);
+app.use('/generator', generatorRouter);
 
 /******/
 

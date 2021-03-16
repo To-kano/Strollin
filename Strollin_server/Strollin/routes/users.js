@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 
+const nodemailer = require('nodemailer');
+
 const {
   UserModel
 } = require("../models/user")
@@ -26,6 +28,12 @@ const {
  */
 router.post('/register', async function(req, res) {
 
+  if (!req.body.mail) {
+    return res.status(400).send({status: "A valid mail was not provide."});
+  } else  if (!req.body.mail.includes('@')) {
+    return res.status(400).send({status: "A valid mail was not provide."});
+  }
+
   let mail = await UserModel.findOne({mail: req.body.mail});
   let token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
@@ -33,6 +41,11 @@ router.post('/register', async function(req, res) {
     return res.status(400).send({status: "The mail is used already."});
   }
   if (req.body.mail && req.body.password && req.body.partner !== undefined) {
+    let password_check = await check_the_password(req.body.password);
+    console.log(password_check);
+    if (password_check == false) {
+      return res.status(400).send({status: "The password must contains 6 characters with at least 1 uppercase, 1 lowercase and 1 digit."});
+    }
     user = new UserModel({
       id: new Number(Date.now()),
       creation_date: new Date().toLocaleDateString("fr-FR"),
@@ -47,10 +60,62 @@ router.post('/register', async function(req, res) {
     if (req.body.pseudo != null) {
       user.pseudo = req.body.pseudo
     }
-    await user.save();
+
+    let error = await user.save().catch(error => error);
+    if (error.errors) {
+      return res.status(400).send({status: "Error in database transaction", error: error});
+    }
+
+    const transporter = nodemailer.createTransport({
+      host: 'smtp-mail.outlook.com', // hostname
+      secureConnection: false, // TLS requires secureConnection to be false
+      port: 587, // port for secure SMTP
+      tls: {
+        ciphers: 'SSLv3',
+      },
+      auth: {
+        user: 'strollinapp@outlook.com',
+        pass: 'Strollin94',
+      },
+    });
+    
+    // create the mail to send
+    const mailOptions = {
+      from: '"Strollin App" <strollinapp@outlook.com>', // sender address (who sends)
+      to: req.body.mail, // list of receivers (who receives)
+      subject: `subscribe the app Strollin `, // Subject line
+      html: `<a href="http://88.165.45.219:3002/users/verify?id=${user.id}">test</a> `,
+    };
+  
+    // send the mail
+    transporter.sendMail(mailOptions, function(error, info) {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('Email sent: ' + info.response);
+      }
+    });
+
     return res.status(200).send({status: "Account created successfully.", access_token: token});
   }
   return res.status(400).send({status: "The entry is invalid."});
+});
+
+
+router.get('/verify', async function(req, res) {
+
+  console.log("verify\n", req.query.id);
+  let user = await UserModel.findOne({id: req.query.id});
+  if (!user) {
+    return res.status(400).send({status: "not valide link"});
+  } else {
+
+    let error = await user.updateOne({verify: true}).catch(error => error);
+    if (error.errors) {
+        return res.status(400).send({status: error.errors});
+    }
+    return res.status(200).send({status: "Account verify successfully."});
+  }
 });
 
 
@@ -91,7 +156,7 @@ router.post('/edit_profile', async function(req, res) {
   if (error.errors) {
       return res.status(400).send({status: error.errors});
   }
-  return res.status(400).send({status: "Profile edited."});
+  return res.status(200).send({status: "Profile edited."});
 });
 
 
@@ -234,7 +299,7 @@ router.get('/logout', async function(req, res) {
  * @param {String} req.headers.access_token
  */
 router.get('/get_own_profile', async function(req, res) {
-  const projection = '-_id -password -access_token -socket_id -facebook_id' //-param for excluding
+  const projection = '-_id -password -access_token -socket_id -facebook_id -verify' //-param for excluding
   let profile = await UserModel.findOne({access_token: req.headers.access_token}, projection);
 
   if (profile) {
@@ -298,27 +363,26 @@ router.get('/get_user_tags', async function(req, res) {
 
 // GET_USER_BY_ID
 /**
- * Get the user(s) tags.
+ * Get the user(s) by ID.
  * @param {String} req.headers.access_token
- * @param {String || [String]} req.headers.users_list
- * @param {String} req.headers.projection //Fields to return in Object
+ * @param {UserID || [UserID]} req.headers.users_list
  */
 router.get('/get_user_by_id', async function(req, res) {
   let user = await UserModel.findOne({access_token: req.headers.access_token});
-  const projection = req.headers.projection;
-  let users_list = null;
+  const projection = "-_id -password -access_token -socket_id -facebook_id";
 
   if (!user) {
       return res.status(400).send({status: "You are not connected."});
   }
   let given_list = req.headers.users_list.split(',');
-  if (given_list) {
-      users_list = await UserModel.find({id: {$in: given_list}, projection});
-      if (users_list) {
-          return res.status(200).send({status: "User(s) found.", users_list});
-      }
+  let users_list = await UserModel.find({id: {$in: given_list}, projection}).catch(error => error);
+  if (users_list.reason) {
+      return res.status(400).send({status: "Error in the parameters.", error: users_list});
+  } else if (users_list.length > 0) {
+      return res.status(200).send({status: "User(s) found.", users_list});
+  } else {
+      return res.status(400).send({status: "User(s) not found.", error: users_list});
   }
-  return res.status(400).send({status: "User(s) not found."});
 });
 
 
@@ -338,6 +402,16 @@ router.delete('/remove_account', async function(req, res) {
   }
   return res.status(400).send({status: "You are not connected."});
 });
+
+
+/***
+ * OTHER FUNCTION
+***/
+
+async function check_the_password(password) {
+  
+  return true;
+};
 
 
 module.exports = router;

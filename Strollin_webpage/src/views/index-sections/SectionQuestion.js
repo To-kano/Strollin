@@ -1,3 +1,4 @@
+import { IP_SERVER, PORT_SERVER } from '../../env/Environement';
 import React, { useState } from "react";
 import axios from "axios";
 
@@ -22,40 +23,29 @@ function SectionQuestion() {
   const handleSubmit = (evt) => {
       evt.preventDefault();
 
-      /*axios({
-        method: "POST", 
-        url:"http://localhost:3000/send",
-        data: {
-          email: email,
-          question: question
-        }
-    }).then((response)=>{
-        if (response.data.msg === 'success') {
-            alert("Email sent, awesome!"); 
-        } else if (response.data.msg === 'fail') {
-            alert("Oops, something went wrong. Try again")
-        }
-    })*/
-    /*fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/register`, {
+    const bodyRequest = JSON.stringify({
+      mail: email,
+      question: question,
+      language: "en"
+    });
+    fetch(`http://${IP_SERVER}:${PORT_SERVER}/faq/create_question`, {
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
-          email: email,
-          question: question
           },
+          body: bodyRequest,
           method: 'post',
         })
         .then((response) => response.json())
         .then(async (answer) => {
           console.log(" answer = " , answer);
           alert(`Success! Submitting Email: ${email} Question: ${question}`)
-
           })
         .catch((error) => {
           console.error('error :', error);
           alert(`Submission failed`);
         });
-*/
+
       return false;
   }
 

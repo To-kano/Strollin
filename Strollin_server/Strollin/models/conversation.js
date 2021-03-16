@@ -9,7 +9,7 @@ var ConversationModelSchema = new Schema({
         type: Number,
         required: true,
     },
-    participants: {     // Liste des participants d'une conversation {id, date de sortie}, en cas de liste vide, supression de la conversation.
+    participants: {     // Liste des participants d'une conversation {id, date de sortie}, en cas de liste vide, suppression de la conversation.
         type: [String],
         required: true,
     },

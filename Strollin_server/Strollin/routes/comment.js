@@ -28,14 +28,16 @@ const {
  * @param {String} req.body.message
  * @param {String} req.body.score
  * 
- * TODO : ADD score in location/course
  */
 router.post('/new_comment', async function(req, res) {
     let comment = null;
     let course = null;
     let location = null;
-    let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo");
+    let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo").catch(error => errror);
 
+    if (user.reason) {
+        return res.status(400).send({status: "Error in database transaction", error: user});
+    }
     if (!user) {
         return res.status(400).send({status: "You are not connected."});
     }
@@ -68,7 +70,7 @@ router.post('/new_comment', async function(req, res) {
     });
     let error = await comment.save().catch(error => error);
     if (error.errors) {
-        return res.status(400).send({status: error.errors});
+        return res.status(400).send({status: "Error in database transaction", error: error});
     }
 
     // Update the location/course
@@ -92,83 +94,28 @@ router.post('/new_comment', async function(req, res) {
 });
 
 
-// EDIT_COMMENT
+
+// GET_COMMENT_BY_ID
 /**
- * Edit a comment's message or score
- * @param {String} req.headers.access_token
- * @param {CommentID} req.headers.comment_id
- * 
- * At least one of below
- * @param {String} req.body.message
- * @param {String} req.body.score
- */
-router.post('/edit_comment', async function(req, res) {
-    let user = await UserModel.findOne({access_token: req.headers.access_token});
-    let comment = await CommentModel.findOne({id: req.headers.comment_id});
-
-    if (!user) {
-        return res.status(400).send({status: "You are not connected."});
-    }
-    if (!comment) {
-        return res.status(400).send({status: "Comment not found."});
-    }
-    if (!req.body.message && !req.body.score) {
-        return res.status(400).send({status: "No message or score provided."});
-    }
-    let old_score = Number(comment.score);
-    let query = {creation_date: Date.now()};
-    if (req.body.message) {
-        query.message = req.body.message;
-    }
-    if (req.body.score) {
-        query.message = req.body.score;
-    }
-    let error = await comment.updateOne(query).catch(error => error);
-    if (error.errors) {
-        return res.status(400).send({status: error.errors});
-    }
-
-    if (comment.location_id) {
-        let location = await LocationModel.findOne({id: comment.location_id});
-        let new_score = (Number(comment.score) - old_score + (Number(location.score) * location.comments_list.length)) / location.comments_list.length;
-        error = await location.updateOne({$push: {comments_list: comment.id}, $set: {score: String(new_score)}}).catch(error => error);
-        if (error.errors) {
-            return res.status(400).send({status: errors});
-        }
-    } else if (comment.course_id) {
-        let course = await CourseModel.findOne({id: comment.course_id});
-        let new_score = (Number(comment.score) - old_score + (Number(course.score) * course.comments_list.length)) / course.comments_list.length;
-        let new_used = Number(course.number_used) + 1;
-        error = await course.updateOne({$push: {comments_list: comment.id}, $set: {score: String(new_score), number_used: String(new_used)}}).catch(error => error);
-        if (error.errors) {
-            return res.status(400).send({status: errors});
-        }
-    }
-    return res.status(200).send({status: "Comment edited."});
-});
-
-
-// GET_COMMENT
-/**
- * Get comment's data
+ * Get the comment(s) by ID.
  * @param {String} req.headers.access_token
  * @param {CommentID || [CommentID]} req.headers.comments_list
  */
-router.get('/get_comment', async function(req, res) {
+router.get('/get_comment_by_id', async function(req, res) {
     let user = await UserModel.findOne({access_token: req.headers.access_token});
-    let comments_list = null;
-
+  
     if (!user) {
         return res.status(400).send({status: "You are not connected."});
     }
     let given_list = req.headers.comments_list.split(',');
-    if (given_list) {
-        comments_list = await CommentModel.find({id: {$in: given_list}});
-        if (comments_list) {
-            return res.status(200).send({status: "Comments found.", comments_list});
-        }
+    let comments_list = await CommentModel.find({id: {$in: given_list}}).catch(error => error);
+    if (comments_list.reason) {
+        return res.status(400).send({status: "Error in the parameters.", error: comments_list});
+    } else if (comments_list.length > 0) {
+        return res.status(200).send({status: "Comment(s) found.", comments_list});
+    } else {
+        return res.status(400).send({status: "Comment(s) not found.", error: comments_list});
     }
-    return res.status(400).send({status: "Comment not found."});
 });
 
 
