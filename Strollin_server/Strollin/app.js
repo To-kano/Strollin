@@ -116,7 +116,7 @@ async function getTags() {
     }
     true_list.push({
       Tags: tags,
-      Pos: [Number(locations_list[i].coordinate[0]), Number(locations_list[i].coordinate[1])],
+      Pos: [locations_list[i].latitude, locations_list[i].longitude],
       Name: locations_list[i].name,
       Dist: 0,
       Price: locations_list[i].price_range[0],
@@ -126,7 +126,7 @@ async function getTags() {
       AlgAg: Number(locations_list[i].alg_ag),
       TagsDisp: tagslist,
       Desc: locations_list[i].description,
-      Id: locations_list[i].location_id,
+      Id: locations_list[i].id,
       Owner: locations_list[i].owner,
       Time: locations_list[i].average_time,
       City: locations_list[i].city

@@ -118,14 +118,23 @@ function algoTest(UserTags, Places, Food) {
   });
 }
 
+
+
+
+
 methods.hello = function(sending, User)
 {
   return new Promise((resolve, reject) => {
     TagsJson.Tags[0] = User.tags_list
-    var test = algoTest(TagsJson, sending, false)
+    var test = algoTest(TagsJson, sending, true)
     resolve(test)
   });
 }
+
+
+
+
+
 
 //algoTest(TagsJson, PlacesJson)
 //DistCalc2D([-7,-4], [17,6.5])
