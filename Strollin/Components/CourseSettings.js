@@ -7,9 +7,49 @@ import { connect } from 'react-redux';
 import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 import Store from '../Store/configureStore';
 
-function test(props) {
-  console.log("test success");
-  props.navigation.navigate("TripSuggestion");
+const store = Store.getState();
+const access_Token = store.profil.access_token;
+
+async function getUserTags(props) {
+  await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/get_own_profile`, {
+  headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+    access_Token,
+  },
+  method: 'GET',
+  })
+  .then(res => res.json())
+  .then(json => {
+    console.log("########", json.profile.tags_list);
+    test(props, json.profile.tags_list);
+  });
+}
+
+async function test(props, tags) {
+
+  const time = props.hours * 60 + props.minutes;
+  const coordinate = ["10", "20"];
+
+
+  await fetch(`http://${IP_SERVER}:${PORT_SERVER}/generator/generate_course`, {
+  headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+    access_Token,
+    'time': time,
+    'budget': props.budget,
+    'tags': tags,
+    'coordinate' : coordinate
+  },
+  method: 'GET',
+  })
+  .then(res => res.json())
+  .then(json => {
+    console.log("algo done:   ", json);
+  });
+  //console.log("test success");
+  //props.navigation.navigate("TripSuggestion");
 }
 
 function Back(props) {
@@ -29,7 +69,7 @@ export function CourseSettings(props) {
       <Text style={{ fontSize: 25  }}> {"Select your budget:"} </Text>
       <View style={styles.container}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <TextInput 
+          <TextInput
              style={styles.budgetInput}
              keyboardType='numeric'
              onChangeText={(text)=> setBudget(text)}
@@ -42,7 +82,7 @@ export function CourseSettings(props) {
         <Text style={{ fontSize: 25 }}> {"Select your spending time:"} </Text>
 
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <TextInput 
+          <TextInput
              style={styles.timeInput}
              keyboardType='numeric'
              onChangeText={(text)=> setHours(text)}
@@ -50,7 +90,7 @@ export function CourseSettings(props) {
              maxLength={2}  //setting limit of input
           />
           <Text style={{ fontSize: 25 }}> Hour(s) </Text>
-          <TextInput 
+          <TextInput
              style={styles.timeInput}
              keyboardType='numeric'
              onChangeText={(text)=> setMinutes(text)}
@@ -67,7 +107,7 @@ export function CourseSettings(props) {
           id={'test'}
           style={styles.newTrip}
           onPress={() => {
-            test(props);
+            getUserTags(props);
           }}
         >
           <Text style={{ fontSize: 16, color: '#FFFFFF' }}>

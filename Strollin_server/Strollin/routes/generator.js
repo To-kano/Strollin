@@ -25,7 +25,7 @@ router.get('/generate_course', async function(req, res) {
         return res.status(400).send({status: "Parameter required is missing."});
     }
     let tags = req.headers.tags.split(',');
-    let generated_course = ton_algo_ici;
+    let generated_course = "ton_algo_ici";
     if (generated_course) {
         return res.status(200).send({status: "Result of the generator.", generated_course});
     }
