@@ -9,6 +9,8 @@ import { TouchableHighlight } from 'react-native-gesture-handler';
 
 import GestureRecognizer from 'react-native-swipe-gestures';
 
+import { DrawerActions } from '@react-navigation/native';
+
 function Menu(props) {
 
   const config = {
@@ -16,25 +18,10 @@ function Menu(props) {
     directionalOffsetThreshold: 80,
     gestureIsClickThreshold: 0.5
   };
+  console.log("customDrawer ", props.state.index)
+
 
   return (
-    <GestureRecognizer
-        onSwipeUp={(state) => {
-          if (props.topNav) {
-            props.navigation.navigate(props.topNav);
-          }
-        }}
-        onSwipeDown={(state) => {
-          if (props.botNav) {
-            props.navigation.navigate(props.botNav);
-          }
-        }}
-        config={config}
-        style={{
-          flex: 1,
-          backgroundColor: "green"
-        }}
-        >
     <View style={styles.view_menu}>
       <View style={styles.view_profile}>
         <Image style={styles.img_profile} source={require('../images/TonyPP.jpg')} />
@@ -44,14 +31,22 @@ function Menu(props) {
       <View style={styles.view_navigation}>
         <TouchableOpacity
           onPress={() => props.navigation.navigate('HomePage')}
-          style={[styles.view_navigationIn, props.name == "Home" ? styles.current_page : {}]}
+          style={[styles.view_navigationIn, props.state.index == 0 ? styles.current_page : {}]}
         >
           <Image style={styles.img_navigationIn} source={require('../images/icons/black/home.png')} />
           <Text style={styles.text_navigationIn}>Home</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => props.navigation.navigate('historicUser')}
-          style={[styles.view_navigationIn, props.name == "Historic" ? styles.current_page : {}]}
+          onPress={() => {
+            console.log("navigate");
+            //const jumpToAction = DrawerActions.jumpTo('historicUser', { name: 'Satya' });
+            //props.navigation.dispatch(jumpToAction);
+            props.navigation.navigate('historicUser');
+            props.navigation.dispatch(DrawerActions.openDrawer());
+
+          }
+        }
+          style={[styles.view_navigationIn, props.state.index == 1 ? styles.current_page : {}]}
         >
           <Image style={styles.img_navigationIn} source={require('../images/icons/black/historic.png')} />
           <Text style={styles.text_navigationIn}>Historic</Text>
@@ -110,7 +105,6 @@ function Menu(props) {
         <Text style={styles.text_logOut}>Log Out</Text>
       </TouchableOpacity>
     </View>
-    </GestureRecognizer>
   );
 }
 

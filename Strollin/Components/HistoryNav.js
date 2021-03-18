@@ -20,16 +20,6 @@ export function HistoryNav({ navigation, profil }) {
   //console.log("profile = ", profil);
   return (
     <View style={{ flex: 1 }}>
-      <DrawerLayout
-          ref={drawer => {
-            setDrawer(drawer);
-          }}
-          drawerWidth={300}
-          drawerPosition={DrawerLayout.positions.Left}
-          drawerType="front"
-          drawerBackgroundColor="#ddd"
-          renderNavigationView={ () => <Menu navigation={navigation} name={"Historic"} botNav={'HomePage'}/>}
-      >
         <View style={styles.view_back}>
           <View style={styles.view_header}>
             <TouchableOpacity onPress={() => drawer.openDrawer()}>
@@ -51,7 +41,6 @@ export function HistoryNav({ navigation, profil }) {
             />
           </View>
         </View>
-      </DrawerLayout>
     </View>
   );
 }

@@ -52,16 +52,6 @@ export function HomePage(props) {
 
   return (
     <View style={{ flex: 1 }}>
-      <DrawerLayout
-          ref={drawer => {
-            setDrawer(drawer);
-          }}
-          drawerWidth={300}
-          drawerPosition={DrawerLayout.positions.Left}
-          drawerType="front"
-          drawerBackgroundColor="#ddd"
-          renderNavigationView={ () => <Menu navigation={props.navigation} name={"Home"} topNav={'historicUser'} drawer={drawer}/>}
-          >
         <View style={styles.view_back}>
           <View style={styles.view_header}>
             <TouchableOpacity onPress={//() => props.navigation.navigate('Menu')
@@ -96,7 +86,6 @@ export function HomePage(props) {
           </View>
       
       </View>
-    </DrawerLayout>
     </View>
   );
 }
