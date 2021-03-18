@@ -9,15 +9,9 @@ import {
     DrawerItem,
  } from '@react-navigation/drawer';
 
-// import Home from "../Components/HomeScreen";
 import Profile from '../Components/ProfileScreen';
-// import ConnectionScreen from '../Components/ConnectionScreen';
-//import UserRegister from '../Components/UserRegister';
-//import PartnerRegister from '../Components/PartnerRegister';
-//import TageSelection from '../Components/TagSelection';
-//import LoginPage from '../Components/LoginPage';
+
 import FriendList from '../Components/FriendList';
-import Home from '../Components/Home';
 import HomePage from '../Components/HomePage';
 import TripSuggestion from '../Components/TripSuggestion';
 import TripNavigation from '../Components/TripNavigation';
@@ -35,6 +29,10 @@ import CourseSettings from '../Components/CourseSettings';
 import PartenaireScreen from '../Components/PartenairePage';
 import SettingPartenaire from '../Components/SettingPartenaire';
 
+import Chat from './Chat';
+import Home from './Home';
+import Trip from './Trip';
+
 const Drawer = createDrawerNavigator();
 
 function CustomDrawerContent(props) {
@@ -50,11 +48,11 @@ function MyDrawer() {
         drawerType={'front'}
         drawerContent={(props) => <CustomDrawerContent {...props} />}
     >
-      <Drawer.Screen name="Home" component={HomePage} />
+      <Drawer.Screen name="Home" component={Home} />
       <Drawer.Screen name="historic" component={HistoryNav} />
-      <Drawer.Screen name="New trip" component={TripSuggestion} />
+      <Drawer.Screen name="New trip" component={Trip} />
       <Drawer.Screen name="Friends" component={FriendList} />
-      <Drawer.Screen name="Chats" component={MenuChat} />
+      <Drawer.Screen name="Chat" component={Chat} />
       <Drawer.Screen name="Profile" component={Profile} />
       <Drawer.Screen name="Partenaire" component={PartenaireScreen} />
       <Drawer.Screen name="Settings" component={SettingPartenaire} />

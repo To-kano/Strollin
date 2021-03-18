@@ -5,10 +5,10 @@ const environement = {
 
   exports.environement = environement;
 
-  const IP_SERVER = process.env.IP_SERVER || '88.165.45.219';
+  const IP_SERVER = process.env.IP_SERVER || '89.87.94.17';
 
   exports.IP_SERVER = IP_SERVER;
 
-  const PORT_SERVER = process.env.PORT_SERVER || '2000';//3000 pour Tony
+  const PORT_SERVER = process.env.PORT_SERVER || '4000';//3000 pour Tony
 
   exports.PORT_SERVER = PORT_SERVER;
