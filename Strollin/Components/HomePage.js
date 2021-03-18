@@ -12,6 +12,9 @@ import Store from '../Store/configureStore';
 import DrawerLayout from 'react-native-gesture-handler/DrawerLayout';
 import Menu from './Menu';
 
+import { DrawerActions } from '@react-navigation/native';
+
+
 const imageFriend = require('../ressources/friend.png');
 // const imageHistory = require('../ressources/history.png');
 const imageProfile = require('../ressources/profile.png');
@@ -55,7 +58,7 @@ export function HomePage(props) {
         <View style={styles.view_back}>
           <View style={styles.view_header}>
             <TouchableOpacity onPress={//() => props.navigation.navigate('Menu')
-             () => drawer.openDrawer()
+             () => props.navigation.dispatch(DrawerActions.openDrawer())
             }>
               <Image style={styles.img_header} source={require('../images/icons/black/menu.png')}/>
             </TouchableOpacity>

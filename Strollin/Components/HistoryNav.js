@@ -11,6 +11,8 @@ import Box from './box';
 import DrawerLayout from 'react-native-gesture-handler/DrawerLayout';
 import Menu from './Menu';
 
+import { DrawerActions } from '@react-navigation/native';
+
 
 export function HistoryNav({ navigation, profil }) {
 
@@ -22,7 +24,7 @@ export function HistoryNav({ navigation, profil }) {
     <View style={{ flex: 1 }}>
         <View style={styles.view_back}>
           <View style={styles.view_header}>
-            <TouchableOpacity onPress={() => drawer.openDrawer()}>
+            <TouchableOpacity onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
               <Image style={styles.img_header} source={require('../images/icons/black/menu.png')}/>
             </TouchableOpacity>
             <Text style={styles.text_header}>Historic</Text>
