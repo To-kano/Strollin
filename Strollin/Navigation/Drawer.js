@@ -50,8 +50,14 @@ function MyDrawer() {
         drawerType={'front'}
         drawerContent={(props) => <CustomDrawerContent {...props} />}
     >
-      <Drawer.Screen name="HomePage" component={HomePage} />
-      <Drawer.Screen name="historicUser" component={HistoryNav} />
+      <Drawer.Screen name="Home" component={HomePage} />
+      <Drawer.Screen name="historic" component={HistoryNav} />
+      <Drawer.Screen name="New trip" component={TripSuggestion} />
+      <Drawer.Screen name="Friends" component={FriendList} />
+      <Drawer.Screen name="Chats" component={MenuChat} />
+      <Drawer.Screen name="Profile" component={Profile} />
+      <Drawer.Screen name="Partenaire" component={PartenaireScreen} />
+      <Drawer.Screen name="Settings" component={SettingPartenaire} />
     </Drawer.Navigator>
   );
 }
