@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var algo = require('../Algo/BasicAlgo2');
 
 const {
     UserModel
@@ -25,7 +26,9 @@ router.get('/generate_course', async function(req, res) {
         return res.status(400).send({status: "Parameter required is missing."});
     }
     let tags = req.headers.tags.split(',');
-    let generated_course = "ton_algo_ici";
+    console.log("lets goooooo");
+    let generated_course = algo.data.test();
+    console.log("vourse: ", generated_course);
     if (generated_course) {
         return res.status(200).send({status: "Result of the generator.", generated_course});
     }

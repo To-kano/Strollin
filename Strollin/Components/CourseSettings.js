@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet, View, FlatList, Text, TouchableOpacity, TextInput, Input
 } from 'react-native';
@@ -6,11 +6,13 @@ import Stars from 'react-native-stars';
 import { connect } from 'react-redux';
 import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 import Store from '../Store/configureStore';
+import { requestGeolocalisationPermission, updateCoordinates } from './map'
 
 const store = Store.getState();
 const access_Token = store.profil.access_token;
 
-async function getUserTags(props) {
+async function getUserTags(pos, budget, hours, minutes) {
+  console.log("token: ", access_Token);
   await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/get_own_profile`, {
   headers: {
     Accept: 'application/json',
@@ -22,15 +24,18 @@ async function getUserTags(props) {
   .then(res => res.json())
   .then(json => {
     console.log("########", json.profile.tags_list);
-    test(props, json.profile.tags_list);
+    test(pos, budget, hours, minutes, json.profile.tags_list);
   });
 }
 
-async function test(props, tags) {
+async function test(pos, budget, hours, minutes, tags) {
 
-  const time = props.hours * 60 + props.minutes;
+  const time = hours * 60 + minutes;
   const coordinate = ["10", "20"];
 
+  console.log("time: ", time);
+  console.log("pos: ", pos);
+  console.log("budget: ", budget);
 
   await fetch(`http://${IP_SERVER}:${PORT_SERVER}/generator/generate_course`, {
   headers: {
@@ -38,7 +43,7 @@ async function test(props, tags) {
     'Content-Type': 'application/json',
     access_Token,
     'time': time,
-    'budget': props.budget,
+    'budget': budget,
     'tags': tags,
     'coordinate' : coordinate
   },
@@ -60,6 +65,21 @@ export function CourseSettings(props) {
   const [hours, setHours] = useState('0');
   const [minutes, setMinutes] = useState('0');
   const [budget, setBudget] = useState('0');
+  const [pos, setPos] = useState('0');
+
+  useEffect(() => {
+    //console.log("ntm: ", props.position.permission);
+      if (props.position.asked == false) {
+        requestGeolocalisationPermission(props.dispatch);
+      }
+      if (props.position.permission == true && pos == '0') {
+        updateCoordinates(setPos);
+      }
+      if (props.permission && pos && localRegion.latitude && localRegion.longitude) {
+        console.log("3");
+        setPermision(true)
+      }
+  })
 
   return (
     <View style={styles.container}>
@@ -107,7 +127,7 @@ export function CourseSettings(props) {
           id={'test'}
           style={styles.newTrip}
           onPress={() => {
-            getUserTags(props);
+            getUserTags(pos, budget, hours, minutes);
           }}
         >
           <Text style={{ fontSize: 16, color: '#FFFFFF' }}>
@@ -133,7 +153,15 @@ export function CourseSettings(props) {
   );
 }
 
-const mapStateToProps = (state) => state;
+const mapStateToProps = (state) => {
+  return (
+    {
+      position: state.position,
+      profil: state.profil,
+      map: state.map
+    }
+  )
+};
 export default connect(mapStateToProps)(CourseSettings);
 
 const styles = StyleSheet.create({
