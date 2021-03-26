@@ -5,24 +5,32 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var LocationModelSchema = new Schema({
+    id: {
+        type: Number,
+        required: true,
+    },
     name: {
         type: String,
         required: true
     },
-    owner: {
+    owner_id: {
         type: String,
-        default: null
+        default: ""
     },
-    score: {        // Note du lieu
+    owner_pseudo: {
+        type: String,
+        default: ""
+    },
+    score: {
         type: String,
         default: '0'
     },
-    user_score: {
-        type: [String], //list of User ID that gave score, see user.scoreLocation
-        default: []
+    latitude: {
+        type: Number,
+        required: true,
     },
-    coordinate: {
-        type: [String, String],
+    longitude: {
+        type: Number,
         required: true,
     },
     address: {
@@ -54,7 +62,7 @@ var LocationModelSchema = new Schema({
         default: [],
     },
     tags_list: {
-        type: [{}], // {tagsID, disp}
+        type: [{}],     // {tag_name, disp}
         default: [],
     },
     price_range: {

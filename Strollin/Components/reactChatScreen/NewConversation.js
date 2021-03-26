@@ -86,7 +86,7 @@ function NewConversation(props) {
         <FlatList
           data={props.search.searchFriendList}
           renderItem={({ item }) => <FriendList {...props} id={item} />}
-          keyExtractor={(item) => item}
+          keyExtractor={(item) => String(item)}
         />
       </View>
     </View>

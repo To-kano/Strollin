@@ -19,11 +19,13 @@ const {
  *
  * @param {String} req.body.name
  * @param {UserID} req.body.owner (Optional)
- * @param {[String, String]} req.body.coordinate
+ * @param {Number} req.body.latitude
+ * @param {Number} req.body.longitude
  * @param {String} req.body.address
  * @param {String} req.body.city (Optional)
  * @param {String} req.body.country (Optional)
  * @param {String} req.body.description (Optional)
+ * @param {[String, String]} req.body.price_range (Optional)
  * @param {String} req.body.timetable (Optional)
  * @param {String} req.body.tags_list (Optional)
  * @param {String} req.body.price (Optional)
@@ -35,32 +37,46 @@ router.post('/new_location', async function(req, res) {
 
     let location = null;
     let user = await UserModel.findOne({access_token: req.headers.access_token});
+    let owner = null;
 
     if (!user) {
         return res.status(400).send({status: "You are not connected."});
     }
-    if (!req.body.name || !req.body.coordinate || !req.body.address) {
+    if (!req.body.name || !req.body.latitude || !req.body.longitude || !req.body.address) {
         return res.status(400).send({status: "Required data missing"});
     }
     location = await LocationModel.findOne({name: req.body.name, address: req.body.address});
     if (location)
         return res.status(400).send({status: "The location exists already."});
+    if (req.body.owner) {
+        owner = await UserModel.findOne({id: req.body.owner}, "-_id id pseudo");
+        if (!owner) {
+            return res.status(400).send({status: "The owner is not valid"});
+        }
+    }
     location = new LocationModel({
+        id: new Number(Date.now()),
         name: req.body.name,
-        owner: req.body.owner,
+        owner_id: owner.id,
+        owner_pseudo: owner.pseudo,
         coordinate: req.body.coordinate,
+        latitude: req.body.latitude,
+        longitude: req.body.longitude,
         address: req.body.address,
         city: req.body.city,
         country: req.body.country,
         description: req.body.description,
         timetable: req.body.timetable,
         tags_list: req.body.tags_list,
-        price_range: req.body.price,
+        price_range: req.body.price_range,
         average_time: req.body.average_time,
         phone: req.body.phone,
         website: req.body.website
     });
-    await location.save();
+    let error = await location.save().catch(error => error);
+    if (error.errors) {
+        return res.status(400).send({status: "Error in database transaction", error: error});
+    }
     return res.status(200).send({status: "Location created."});
 });
 
@@ -73,7 +89,8 @@ router.post('/new_location', async function(req, res) {
  *
  * @param {String} req.body.name (Optional)
  * @param {UserID} req.body.owner (Optional)
- * @param {[String, String]} req.body.coordinate (Optional)
+ * @param {Number} req.body.latitude (Optional)
+ * @param {Number} req.body.longitude (Optional)
  * @param {String} req.body.address (Optional)
  * @param {String} req.body.city (Optional)
  * @param {String} req.body.country (Optional)
@@ -94,7 +111,6 @@ router.post('/update_location', async function(req, res) {
     if (!user) {
         return res.status(400).send({status: "You are not connected."});
     }
-    console.log("req: ", req.body);
     if (req.body.name)
         update.name = req.body.name
     if (req.body.owner)
@@ -121,15 +137,11 @@ router.post('/update_location', async function(req, res) {
         update.phone = req.body.phone
     if (req.body.website)
         update.website = req.body.website
-    await location.updateOne({_id: req.headers.location_id}, update, function(err, raw) {
-        if (err) {
-            console.log("Location could not be updated.")
-            return res.status(400).send({status: false});
-        } else {
-            console.log("Location updated: ", raw)
-        }
-    });
-    return res.status(200).send({status: true});
+    error = await location.updateOne({id: req.headers.location_id}, update).catch(error => error);
+    if (error.errors) {
+        return res.status(400).send({status: "Location could not be updated."});
+    }
+    return res.status(200).send({status: "Location updated"});
 });
 
 
@@ -224,10 +236,33 @@ router.get('/get_locations', async function(req, res) {
     // if (req.headers.tags_list) {
     //     query.tags_list = {$in: [req.headers.tags_list]};
     // }
-    locations_list = await LocationModel.find(query)
+    locations_list = await LocationModel.find(query, "-_id");
     return res.status(200).send({status: "List of locations returned.", locations_list});
 });
 
+// GET_LOCATIONS_BY_ID
+/**
+ * Get location(s) by ID
+ * @param {String} req.headers.access_token
+ * @param {LocationID || [LocationID]} req.headers.locations_id_list
+ */
+router.get('/get_locations_by_id', async function(req, res) {
+
+    let user = await UserModel.findOne({access_token: req.headers.access_token});
+
+    if (!user) {
+        return res.status(400).send({status: "You are not connected."});
+    }
+    let given_list = req.headers.locations_id_list.split(',')
+    let locations_list = await LocationModel.find({id: {$in: given_list}}).catch(error => error);
+    if (locations_list.reason) {
+        return res.status(400).send({status: "Error in the parameters.", error: locations_list});
+    } else if (locations_list.length > 0) {
+        return res.status(200).send({status: "Location(s) found.", locations_list});
+    } else {
+        return res.status(400).send({status: "Location(s) not found.", error: locations_list});
+    }
+});
 
 
 module.exports = router;

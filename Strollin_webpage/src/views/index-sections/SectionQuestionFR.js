@@ -1,4 +1,7 @@
+import { IP_SERVER, PORT_SERVER } from '../../env/Environement';
 import React, { useState } from "react";
+import axios from "axios";
+
 import {
   Button,
   Card,
@@ -19,20 +22,43 @@ function SectionQuestionFR() {
   
   const handleSubmit = (evt) => {
       evt.preventDefault();
-      alert(`Submitting Email: ${email} Question: ${question}`)
+
+    const bodyRequest = JSON.stringify({
+      mail: email,
+      question: question,
+      language: "fr"
+    });
+    fetch(`http://${IP_SERVER}:${PORT_SERVER}/faq/create_question`, {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          },
+          body: bodyRequest,
+          method: 'post',
+        })
+        .then((response) => response.json())
+        .then(async (answer) => {
+          console.log(" answer = " , answer);
+          alert(`Success! Submitting Email: ${email} Question: ${question}`)
+          })
+        .catch((error) => {
+          console.error('error :', error);
+          alert(`Submission failed`);
+        });
+
       return false;
   }
 
   return (
     <>
-      <div class="container">
-          <div class="row d-flex justify-content-center">
-                <div class="section-tittle text-center">
-                    <span style={{fontSize:"50px", fontWeight:"bold"}}><br/>Des questions?<br/><br/></span>
+      <div className="container">
+          <div className="row d-flex justify-content-center">
+                <div className="section-tittle text-center">
+                    <span style={{fontSize:"50px", fontWeight:"bold"}}><br/>Any questions?<br/><br/></span>
                 </div>
           </div>
           <br/>
-          <div class="row">
+          <div className="row">
             <Container>
               <Row>
               <Col className="mx-auto" lg="100" md="100">
@@ -41,8 +67,8 @@ function SectionQuestionFR() {
                       <h4 className="form-letter">Email</h4>
                       <Input type="email" name="email" id="exampleEmail" placeholder="Email" onChange={e => setEmail(e.target.value)} />
                       <h4 className="form-letter">Question</h4>
-                      <textarea style={{ height: "400px", width: "640px"}} type="question" name="question" id="exampleQuestion" placeholder="Votre question" onChange={e => setQuestion(e.target.value)}/>
-                      <Input style={{backgroundColor: '#5cb85c', color: 'white', fontSize: '15px', fontWeight: 'bold' }} type="submit" value="Envoyer la question"/>
+                      <textarea style={{ height: "400px", width: "640px"}} type="question" name="question" id="exampleQuestion" placeholder="Your question" onChange={e => setQuestion(e.target.value)}/>
+                      <Input style={{backgroundColor: '#5cb85c', color: 'white', fontSize: '15px', fontWeight: 'bold' }} type="submit" value="Send question"/>
                     </Form>
                   </Card>
                 </Col>

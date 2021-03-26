@@ -63,6 +63,13 @@ function IndexNavbarPart() {
             <span className="navbar-toggler-bar bar2" />
             <span className="navbar-toggler-bar bar3" />
           </button>
+          <NavbarBrand
+            data-placement="bottom"
+            href="/Strollin.apk"
+            title="Download app"
+          >
+            Download App
+          </NavbarBrand>
         </div>
         <Collapse
           className="justify-content-end"
@@ -110,7 +117,7 @@ function IndexNavbarPart() {
                 title="FR"
               >
               <img src={require("./../../assets/img/franceIcon.jpg")} style={{ width: 30, height: 18}}/>
-              </NavbarBrand>
+            </NavbarBrand>
               <button
                 aria-expanded={navbarCollapse}
                 className={classnames("navbar-toggler navbar-toggler", {

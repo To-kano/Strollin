@@ -11,6 +11,7 @@ import SectionQuestionFR from "views/index-sections/SectionQuestionFR.js";
 
 import DescriptionFR from "views/index-sections/DescriptionFR.js";
 import DemoVideo from "views/index-sections/DemoVideo.js";
+import TutorialApkFR from "views/index-sections/TutorialApkFR.js";
 
 
 function IndexFR() {
@@ -30,6 +31,7 @@ function IndexFR() {
         <DemoVideo />
         <SectionExamplesFR />
         <TemoignageFR />
+        <TutorialApkFR/>
         <ContactFR />
         <FaqFR />
         <SectionQuestionFR />

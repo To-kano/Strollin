@@ -1,28 +1,79 @@
 import { IP_SERVER, PORT_SERVER } from '../../env/Environement';
 
 const initialState = {
-  waypoints: [
+  locations: [
     {
-      id: '1',
+      "_id":"5ff31d40977cba001e801bfa",
+      "owner":"2nd owner",
+      "score":"0",
+      "user_score":[],
       latitude: 48.798683,
       longitude: 2.446183,
-      address: '6 Rue Thomas Edison, 94000 Créteil',
-      name: 'Centre Sportif Marie-Thérèse Eyquem',
+      "description":"Peko",
+      "photo":[],
+      "timetable":"test",
+      "comments_list":["5ff3277dd90060001daaf045"],
+      "price_range":["",""],
+      "average_time":"",
+      "phone":"",
+      "website":"",
+      "pop_disp":"0",
+      "pop_ag":"0",
+      "alg_disp":"0",
+      "alg_ag":"0",
+      "name":"Une troisieme Maison",
+      "address":"369, rue Sandvich",
+      "city":"Creteil",
+      "country":"France",
+      "tags_list":[{"_id":{"$oid":"5ff31d40977cba001e801bfb"}}],
+      "__v":0
     },
     {
-      id: '2',
+      "_id":"5ff47553765c6f001fff5b6f",
+      "owner":"thisID","score":"0","user_score":[],
       latitude: 48.780627,
       longitude: 2.457364,
-      address: 'Centre commercial Créteil Soleil, 101 Avenue du Général de Gaulle, 94012 Créteil',
-      name: 'Restaurant Flunch Creteil Soleil',
-    }, {
-      id: '3',
-      latitude: 48.790379,
-      longitude: 2.465619,
-      address: '75 Avenue Pierre Brossolette, 94000 Creteil village',
-      name: 'Le Foz Club discothèque',
+      "description":"HAHAHAHA",
+      "photo":[],
+      "timetable":"Du lundi au Vendredi",
+      "comments_list":[],
+      "tags_list":[{"id":"tag1","disp":"0"}],
+      "price_range":["",""],
+      "average_time":"",
+      "phone":"","website":"",
+      "pop_disp":"0",
+      "pop_ag":"0",
+      "alg_disp":"0",
+      "alg_ag":"0",
+      "name":"Ma premiere Maison",
+      "address":"369, rue Sandvich",
+      "city":"Creteil",
+      "country":"France",
+      "__v":0
     }
   ],
+  course: 
+  {
+    "_id":
+    {
+      "$oid":"5ff32c7640659a00230b1687"
+    },
+    "locations_list":["5ff31d40977cba001e801bfa", "5ff47553765c6f001fff5b6f"],
+    "score":"0",
+    "user_score":[],
+    "number_used":"0",
+    "timetable":"",
+    "comments_list":["5ff4773e765c6f001fff5b71"],
+    "tags_list":[],
+    "time_spent":[],
+    "name":"HA HA HA HA!",
+    "author":"Strollin",
+    "creation_date":
+    {
+      "$date":"2021-01-04T14:55:50.106Z"
+    },
+    "__v":0
+  },
   historic: [],
   allTime: []
 };
@@ -67,7 +118,8 @@ function mapNavigationReducer(state = initialState, action) {
     case 'SET_WAYPOINTS':
       nextState = {
         ...state,
-        waypoints: action.value,
+        locations: action.locations,
+        course: action.course
       };
       return nextState;
     case 'SET_TIME':
@@ -91,7 +143,8 @@ function mapNavigationReducer(state = initialState, action) {
         id: Date.parse(new Date()).toString(),
         date: `${day}/${month}/${year}`,
         duration: `${hours} heures, ${minutes} minutes, ${seconds} seconds`,
-        waypoints: action.value
+        locations: action.locations,
+        course: action.course
       };
 
       nextState = {

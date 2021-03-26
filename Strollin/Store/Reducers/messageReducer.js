@@ -1,7 +1,7 @@
 const EXEMPLE = {
     MessageList: [
       {
-        _id: 'uskfdsfsd',
+        id: 'uskfdsfsd',
         participants: ['userId1TEST', 'userId2TEST'],
         name: "",
         messages_list: ["message_id", "message_id"],
@@ -26,7 +26,7 @@ const EXEMPLE = {
           ...state,
         };
 
-        nextState[action.value._id] = action.value;
+        nextState[action.value.id] = action.value;
         return nextState;
       default:
         return state;

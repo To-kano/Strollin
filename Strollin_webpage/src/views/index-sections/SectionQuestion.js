@@ -1,3 +1,4 @@
+import { IP_SERVER, PORT_SERVER } from '../../env/Environement';
 import React, { useState } from "react";
 import axios from "axios";
 
@@ -21,36 +22,43 @@ function SectionQuestion() {
   
   const handleSubmit = (evt) => {
       evt.preventDefault();
-      alert(`Submitting Email: ${email} Question: ${question}`)
 
-      /*axios({
-        method: "POST", 
-        url:"http://localhost:3000/send",
-        data: {
-          email: email,
-          question: question
-        }
-    }).then((response)=>{
-        if (response.data.msg === 'success') {
-            alert("Email sent, awesome!"); 
-        } else if (response.data.msg === 'fail') {
-            alert("Oops, something went wrong. Try again")
-        }
-    })*/
+    const bodyRequest = JSON.stringify({
+      mail: email,
+      question: question,
+      language: "en"
+    });
+    fetch(`http://${IP_SERVER}:${PORT_SERVER}/faq/create_question`, {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          },
+          body: bodyRequest,
+          method: 'post',
+        })
+        .then((response) => response.json())
+        .then(async (answer) => {
+          console.log(" answer = " , answer);
+          alert(`Success! Submitting Email: ${email} Question: ${question}`)
+          })
+        .catch((error) => {
+          console.error('error :', error);
+          alert(`Submission failed`);
+        });
 
       return false;
   }
 
   return (
     <>
-      <div class="container">
-          <div class="row d-flex justify-content-center">
-                <div class="section-tittle text-center">
+      <div className="container">
+          <div className="row d-flex justify-content-center">
+                <div className="section-tittle text-center">
                     <span style={{fontSize:"50px", fontWeight:"bold"}}><br/>Any questions?<br/><br/></span>
                 </div>
           </div>
           <br/>
-          <div class="row">
+          <div className="row">
             <Container>
               <Row>
               <Col className="mx-auto" lg="100" md="100">
