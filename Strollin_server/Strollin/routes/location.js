@@ -160,16 +160,19 @@ router.get('/get_place', async function(req, res) {
         return res.status(400).send({status: "You are not connected."});
     }*/
 
-    let url = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=" + req.headers.place_name + "&inputtype=textquery&key=AIzaSyC4MiDbDXP5M3gvpyUADaIUO60H7Vjb9Uk"
+    console.log(req.headers)
+    let url = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=" + req.headers.place_name + "&locationbias=point:" + req.headers.locationlat + "," + req.headers.locationlong + "&inputtype=textquery&key=AIzaSyC4MiDbDXP5M3gvpyUADaIUO60H7Vjb9Uk"
     let research = await placeCall(url).then((response) => {
       return response
     })
     console.log("_____________________________")
+    console.log(url)
     console.log(research)
-    url = "https://maps.googleapis.com/maps/api/place/details/json?place_id=" + research.candidates[0].place_id + "&fields=formatted_address,geometry,name,type,opening_hours,website,price_level,rating,review,international_phone_number,user_ratings_total,photo&key=AIzaSyC4MiDbDXP5M3gvpyUADaIUO60H7Vjb9Uk"
+    url = "https://maps.googleapis.com/maps/api/place/details/json?place_id=" + research.candidates[0].place_id + "&language=" + req.headers.language + "&fields=formatted_address,geometry,name,type,opening_hours,website,price_level,rating,review,international_phone_number,user_ratings_total,photo&key=AIzaSyC4MiDbDXP5M3gvpyUADaIUO60H7Vjb9Uk"
     let result = await placeCall(url).then((response) => {
       return response
     })
+    console.log(url)
 
     if (result.status === 'OK') {
         return res.status(200).send({status: true, result})
@@ -177,6 +180,17 @@ router.get('/get_place', async function(req, res) {
     return res.status(400).send({status: false, error: "Place not found or error occured."})
 });
 
+router.get('/get_location_position', async function(req, res) {
+    let url = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=" + req.headers.place_name + "&inputtype=textquery&fields=formatted_address,geometry&key=AIzaSyDWnNbYqihMAkObSa_KDJ11YNBD4ffpNBk&language=" + req.headers.language
+    let result = await placeCall(url).then((response) => {
+      return response.candidates[0]
+    })
+    console.log(result)
+    if (result) {
+        return res.status(200).send({status: true, result})
+    }
+    return res.status(400).send({status: false, error: "Place not found or error occured."})
+});
 
 // GET_LOCATIONS
 /**
