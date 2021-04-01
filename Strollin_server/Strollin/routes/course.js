@@ -37,13 +37,16 @@ router.post('/new_course', async function(req, res) {
     let course = null;
     let tag = null;
     let locations_list = null;
-    let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo");
+    let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo").catch(error => error);
 
     if (!user) {
         return res.status(400).send({status: "You are not connected."});
     }
+    if (user.reason) {
+        return res.status(400).send({status: "Error in database transaction:\n", error: user});
+    }
     locations_list = await LocationModel.find({id: {$in: req.body.locations_list}}).catch(error => error)
-    if (locations_list.reason) {
+    if (locations_list && locations_list.reason) {
         return res.status(400).send({status: "Error in the parameters for database transaction.", locations_list});
     }
     if (req.body.locations_list.length !== locations_list.length) {
@@ -61,17 +64,19 @@ router.post('/new_course', async function(req, res) {
     if (req.body.time_spent)
         course.time_spent = req.body.time_spent
 
-    // for (let index = 0; index < locations_list.length; index++) {
-    //     for (let index2 = 0; index2 < locations_list[index].tags_list.length; index2++) {
-    //         tag = locations_list[index].tags_list[index2];
-    //         if (!course.tags_list.includes(tag)) {
-    //             course.tags_list.push(tag)
-    //         }
-    //     }
-    // }
+    //Get tags from locations
+    for (let index = 0; index < locations_list.length; index++) {
+        for (let index2 = 0; index2 < locations_list[index].tags_list.length; index2++) {
+            tag = locations_list[index].tags_list[index2];
+            if (!course.tags_list.includes(tag.id)) {
+                course.tags_list.push(tag.id)
+            }
+        }
+    }
+
     let error = await course.save().catch(error => error);
     if (error.errors) {
-        return res.status(400).send({status: "Error in database transaction", error});
+        return res.status(400).send({status: "Error in database transaction:\n", error});
     }
     return res.status(200).send({status: "Course created."});
 });
@@ -86,20 +91,24 @@ router.post('/new_course', async function(req, res) {
  */
 router.get('/get_course', async function(req, res) {
     let courses_list = undefined;
-    let user = await UserModel.findOne({access_token: req.headers.access_token});
+    let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo").catch(error => error);
 
     if (!user) {
         return res.status(400).send({status: "You are not connected."});
     }
+    if (user.reason) {
+        return res.status(400).send({status: "Error in database transaction:\n", error: user});
+    }
+
     if (req.headers.sort) {
         if (req.headers.sort === "name") {
-            courses_list = await CourseModel.find({}).sort("name");
+            courses_list = await CourseModel.find({}).sort("name").catch(error => error);
         }
         else if (req.headers.sort === "popularity") {
-            courses_list = await CourseModel.find({}).sort("number_used");
+            courses_list = await CourseModel.find({}).sort("number_used").catch(error => error);
         }
         else if (req.headers.sort === "score") {
-            courses_list = await CourseModel.find({}).sort("score");
+            courses_list = await CourseModel.find({}).sort("score").catch(error => error);
         }
         else if (req.headers.sort === "tendency") {
             let tendency_range = req.headers.tendency_range;
@@ -112,14 +121,40 @@ router.get('/get_course', async function(req, res) {
                     course_id: {$ne: ""},
                     modification_date: {$gt: tendency_date}
                 },
-            );
-            let courses_id_list = [];
+            ).catch(error => error);
+            if (comments_list && comments_list.reason) {
+                return res.status(400).send({status: "Error in database transaction:\n", error: comments_list});
+            }
+            let course_dict = {};
             for (let index = 0; index < comments_list.length; index++) {
-                if (!courses_id_list.includes(comments_list[index].course_id)) {
-                    courses_id_list.push(comments_list[index].course_id)
+                if (!(comments_list[index].course_id in course_dict)) {
+                    course_dict[comments_list[index].course_id] = 1;
+                } else {
+                    course_dict[comments_list[index].course_id] += 1
                 }
             }
-            courses_list = await CourseModel.find({id: {$in: courses_id_list}})
+            courses_list = [];
+            let course = undefined;
+            let highest_key = undefined;
+            let highest_value = 0;
+            while (Object.entries(course_dict).length !== 0) {
+                highest_value = 0;
+                for (const [key, value] of Object.entries(course_dict)) {
+                    if (highest_value < value) {
+                        highest_value = value;
+                        highest_key = key;
+                    }
+                }
+                course = await CourseModel.find({id: highest_key}).catch(error => error);
+                if (course && course.reason) {
+                    return res.status(400).send({status: "Error in database transaction:\n", error: course});
+                }
+                courses_list.push(course);
+                delete course_dict[highest_key];
+            }
+        }
+        if (courses_list && courses_list.reason) {
+            return res.status(400).send({status: "Error in database transaction:\n", error: comments_list});
         }
         return res.status(200).send({status: "List of courses returned.", courses_list})
     }
@@ -143,11 +178,15 @@ router.get('/get_course', async function(req, res) {
  * @param {CourseID || [CourseID]} req.headers.courses_id_list
  */
 router.get('/get_courses_by_id', async function(req, res) {
-    let user = await UserModel.findOne({access_token: req.headers.access_token});
-  
+    let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo").catch(error => error);
+
     if (!user) {
         return res.status(400).send({status: "You are not connected."});
     }
+    if (user.reason) {
+        return res.status(400).send({status: "Error in database transaction:\n", error: user});
+    }
+
     let given_list = req.headers.courses_id_list.split(',');
     let courses_list = await CourseModel.find({id: {$in: given_list}}).catch(error => error);
     if (courses_list.reason) {

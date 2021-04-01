@@ -53,9 +53,9 @@ var LocationModelSchema = new Schema({
         type: [String],
         default: [],
     },
-    timetable: {        // Définit les horaires possible en prenant les timetable de la liste des lieux
+    timetable: {
         type: String,
-        default: null,
+        default: "",
     },
     comments_list: {
         type: [String],
