@@ -5,6 +5,10 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var CourseModelSchema = new Schema({
+    id: {
+        type: Number,
+        required: true,
+    },
     locations_list: {
         type: [String],
         required: true
@@ -17,25 +21,29 @@ var CourseModelSchema = new Schema({
         type: String,
         default: '0'
     },
-    user_score: {
-        type: [String], //list of User ID that gave score, see user.scoreCourse
-        default: []
-    },
     number_used: {      // Nombre de fois que ce parcours à été utilisé
         type: String,
         default: '0'
     },
-    author: {
+    author_id: {
+        type: String,
+        required: true
+    },
+    author_pseudo: {
         type: String,
         required: true
     },
     creation_date: {
-        type: Date,
-        default: Date.now,
+        type: String,
+        required: true,
     },
     timetable: {        // Définit les horaires possible en prenant les timetable de la liste des lieux
         type: String,
         default: "",
+    },
+    price_range: {
+        type: [String, String],
+        default: ['', '']
     },
     comments_list: {
         type: [String],

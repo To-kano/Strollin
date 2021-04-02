@@ -5,30 +5,42 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var CommentModelSchema = new Schema({
-    message: {
-        type: String,
+    id: {
+        type: Number,
         required: true,
     },
-    author: {
+    message: {
+        type: String,
+        default: "",
+    },
+    author_id: {
         type: String,
         required: true
     },
-    user_score: {
-        type: [String], //list of User ID that gave score, see user.scoreComment
-        default: []
+    author_pseudo: {
+        type: String,
+        required: true
+    },
+    score: {
+        type: String,
+        required: true
     },
     creation_date: {
-        type: Date,
-        default: Date.now(),
-    },
-    comment_previous: {
         type: String,
-        default: '',
+        required: true,
     },
-    comment_next: {
+    modification_date: {
+        type: Number,
+        required: true,
+    },
+    location_id: {
         type: String,
-        default: '',
+        default: "",
     },
+    course_id: {
+        type: String,
+        default: "",
+    }
 })
 
 // Compile model from schema

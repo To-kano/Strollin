@@ -1,7 +1,7 @@
 const EXEMPLE = {
   conversationList: [
     {
-      _id: 'uskfdsfsd',
+      id: 'uskfdsfsd',
       participants: ['userId1TEST', 'userId2TEST'],
       name: "",
       messages_list: ["message_id", "message_id"],
@@ -32,7 +32,7 @@ function searchReducer(state = initialState, action) {
       nextState = {
         ...state,
       };
-      nextState.searchConvList = [action.value._id ,...nextState.searchConvList]
+      nextState.searchConvList = [action.value.id ,...nextState.searchConvList]
 
         return nextState;
     case 'SET_SEARCH_CONV_LIST':

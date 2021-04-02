@@ -9,7 +9,7 @@ import Store from '../Store/configureStore';
 import I18n from '../Translation/configureTrans';
 
 
-function ratingCompleted(rating, comment) {
+function ratingCompleted(rating, comment, props) {
   //console.log("rating = " + rating);
   //console.log("comment = " + comment);
   const store = Store.getState();
@@ -24,7 +24,7 @@ function ratingCompleted(rating, comment) {
   //    Accept: 'application/json',
   //    'Content-Type': 'application/json',
   //    access_token: store.profil.access_token,
-  //    course_id: "5fdb7bf7e846ca001ea9389e",
+  //    course_id: store.course.currentCourse[id],
   //  },
   //  body: bodyRequest,
   //  method: 'post',
@@ -40,6 +40,11 @@ function ratingCompleted(rating, comment) {
   //  .catch((error) => {
   //    console.error('error :', error);
   //  });
+  props.navigation.navigate('HomePage');
+}
+
+function skipRating(props) {
+  props.navigation.navigate('HomePage');
 }
 
 export function CourseEvaluation(props) {
@@ -82,11 +87,24 @@ export function CourseEvaluation(props) {
           id={'test'}
           style={styles.newTrip}
           onPress={() => {
-            ratingCompleted(rating, comment, );
+            ratingCompleted(rating, comment, props);
           }}
         >
           <Text style={{ fontSize: 16, color: '#FFFFFF' }}>
             {I18n.t("CourseEvaluation.send")}
+          </Text>
+        </TouchableOpacity>
+      </View>
+      <View>
+        <TouchableOpacity
+          id={'test'}
+          style={styles.newTrip}
+          onPress={() => {
+            skipRating(props);
+          }}
+        >
+          <Text style={{ fontSize: 16, color: '#FFFFFF' }}>
+            Skip Rating
           </Text>
         </TouchableOpacity>
       </View>

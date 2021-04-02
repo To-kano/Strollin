@@ -1,2 +1,2 @@
-{"_id":{"$oid":"5ff3277dd90060001daaf045"},"user_score":[],"creation_date":{"$date":"2021-01-04T14:30:56.515Z"},"comment_previous":"","comment_next":"","message":"This is my 2nd comment","author":"5ff1a1cc1aa1a8001eb21f47","__v":0}
-{"_id":{"$oid":"5ff4773e765c6f001fff5b71"},"user_score":[],"creation_date":{"$date":"2021-01-05T13:55:15.098Z"},"comment_previous":"","comment_next":"","message":"Look at me!","author":"5ff1a1cc1aa1a8001eb21f47","__v":0}
+{"_id":{"$oid":"603e4a16cf400a001f2d1ebc"},"message":"Génial ce parcours","location_id":"","course_id":"1614694018172","id":1614694934840,"creation_date":"02/03/2021","score":"4","author":{"id":1614619038355,"pseudo":"Vangnex"},"__v":0}
+{"_id":{"$oid":"603e4a1ccf400a001f2d1ebd"},"message":"Tu veux plaisanter ?","location_id":"","course_id":"1614694018172","id":1614694940611,"creation_date":"02/03/2021","score":"2","author":{"id":1614619038355,"pseudo":"Vangnex"},"__v":0}

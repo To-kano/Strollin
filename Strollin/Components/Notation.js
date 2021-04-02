@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 import I18n from '../Translation/configureTrans';
 import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 import { connect } from 'react-redux';
-import { requestGeolocalisationPermission, updateCoordinates } from './map_tmp'
+import { requestGeolocalisationPermission, updateCoordinates } from './map'
 import * as RNLocalize from 'react-native-localize';
 
 const locales = RNLocalize.getLocales();
@@ -80,21 +80,19 @@ function Notation(props) {
     });
   }, [userPosition]);
 
-  useEffect(() => {
-      if (Array.isArray(locales)) {
-        language = locales[0].languageTag;
-        console.log(language)
-      }
-      if (props.asked == false) {
-        requestGeolocalisationPermission(props);
-      }
-      if (props.permission == true && userPosition == null) {
-        updateCoordinates(setUserPosition);
-      }
-      if (props.permission && userPosition && localRegion.latitude && localRegion.longitude) {
-        setPermision(true)
-      }
-  })
+    if (Array.isArray(locales)) {
+      language = locales[0].languageTag;
+      console.log(language)
+    }
+    if (props.position.asked == false) {
+      requestGeolocalisationPermission(props.dispatch);
+    }
+    if (props.position.permission == true && userPosition == null) {
+      updateCoordinates(setUserPosition);
+    }
+    if (props.position.permission && userPosition && localRegion.latitude && localRegion.longitude) {
+      setPermision(true)
+    }
 
   function sendMessage(value) {
     const url = `http://${IP_SERVER}:${PORT_SERVER}/location/get_place`

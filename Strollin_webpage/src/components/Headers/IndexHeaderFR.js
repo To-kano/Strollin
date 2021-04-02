@@ -1,3 +1,4 @@
+import { IP_SERVER, PORT_SERVER } from '../../env/Environement';
 import React, { useState } from "react";
 import {
   Button,
@@ -12,7 +13,6 @@ import {
   Col,
   Label
 } from "reactstrap";
-
 function IndexHeaderFR() {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
@@ -25,8 +25,37 @@ function IndexHeaderFR() {
     if (password != passwordConf) {
       alert(`Password confirmation error!`);
     } else {
-      alert(`Submitting Email: ${email} Username: ${username} Password: ${password}`);
+      const bodyRequest = JSON.stringify({
+        pseudo: username,
+        password: password,
+        mail: email,
+        partner: false,
+      });
+    
+      fetch(`https://${IP_SERVER}:${PORT_SERVER}/users/register`, {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        method: 'post',
+        body: bodyRequest,
+      })
+      .then((response) => response.json())
+      .then(async (answer) => {
+        console.log(" answer = " , answer);
+        if (answer.access_token) {
+          alert(`Inscription réussi, Email: ${email} Username: ${username} Password: ${password}`);
+        } else {
+          console.log('login user faile: ', answer);
+          alert(`Submission failed`);
+        }
+      })
+      .catch((error) => {
+        console.error('error :', error);
+        alert(`Echec de l'inscription`);
+      });
     }
+    document.getElementById("inscription").reset();
   }
   return (
     <>
@@ -44,7 +73,7 @@ function IndexHeaderFR() {
               <Col className="mx-auto" lg="4" md="6">
                 <Card className="card-register">
                   <h3 className="form-title text-center">Inscrivez-vous pour des bonus</h3>
-                  <Form className="register-form" onSubmit={handleSubmit}>
+                  <Form className="register-form" onSubmit={handleSubmit} id="inscription">
                   <h4 className="form-letter">Email</h4>
                     <Input type="email" name="email" id="exampleEmail" placeholder="Email" onChange={e => setEmail(e.target.value)} />
                     <h4 className="form-letter">Pseudo</h4>

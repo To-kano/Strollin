@@ -1,10 +1,24 @@
 export default {
   /*
+  SIGNIN: 'SIGN IN',
+  SIGNUP: 'SIGN UP',
+  OR: 'OR',
+  username: 'Username',
   connexion: 'Connexion',
   trendingTrip: 'Trending trip: ',
   date: 'date: ',
   duration: 'duration: ',
   startNewTrip: 'Start a new trip',
+  confirm: 'Confirm',
+  forgot: 'Forgot Pasword ?',
+  noAccount: 'Dont have an account ?',
+  noPermission: 'No permission',
+  email: 'Email ',
+  password: 'Password ',
+  tags: 'Tags ',
+  welcome: 'Welcome: ',
+  chooseTags: 'Choose the tags that fit best your personality',
+  heading: 'Heading to',
   carte: 'Carte',
   jane: "Go to Jane's profile",
   endNav: 'End Navigation',
@@ -18,19 +32,19 @@ export default {
   */
 
   CourseEvaluation: {
-    evaluate: "Evaluate this course!",
-    note: "Note:",
-    yourComment: "Your comment",
-    send: "Send Evaluation"
+    evaluate: 'Evaluate this course!',
+    note: 'Note:',
+    yourComment: 'Your comment',
+    send: 'Send Evaluation'
   },
 
   FriendList: {
-    groupList: "Groups list",
-    groupName: "Group name",
-    friendName: "Friend name",
-    addFriend: "Add friend",
+    groupList: 'Groups list',
+    groupName: 'Group name',
+    friendName: 'Friend name',
+    addFriend: 'Add friend',
     addGroup: 'Add group',
-    friendList: "Friend list",
+    friendList: 'Friend list',
   },
 
   Gallery: {
@@ -60,9 +74,13 @@ export default {
     forgot: 'Forgot Pasword ?',
     confirm: 'Confirm',
     noAccount: 'Dont have an account ?',
-    or: "OR",
+    SIGNIN: 'SIGN IN',
+    SIGNUP: 'SIGN UP',
+    OR: 'OU',
+    or: 'OR',
+    email: 'Email',
     password: 'Password',
-    usernameOrEmail: "Username or mail",
+    usernameOrEmail: 'Username or mail',
   },
 
   Map: {
@@ -74,21 +92,21 @@ export default {
   },
 
   Notation: {
-    information: "information",
+    information: 'information',
     send: 'Send',
   },
 
   PartenerRegister: {
-    email: "Email",
-    password: "Password",
-    confPassword: "Confirme Password",
-    alreadyAccount: "Already have an account ?",
-    register: "Register",
-    signIn: "Sign in",
+    email: 'Email',
+    password: 'Password',
+    confPassword: 'Confirme Password',
+    alreadyAccount: 'Already have an account ?',
+    register: 'Register',
+    signIn: 'Sign in',
   },
 
   PopUpForm: {
-    goTo: "do you want to go to",
+    goTo: 'do you want to go to',
   },
 
   Position: {
@@ -100,8 +118,8 @@ export default {
     name: 'Name: ',
     email: 'Email: ',
     tags: 'Tags: ',
-    myTags: "My tags",
-    addTags: "Add tags"
+    myTags: 'My tags',
+    addTags: 'Add tags'
   },
 
   TagSelection: {
@@ -115,19 +133,22 @@ export default {
   },
 
   TripSuggestion: {
-    step: "Step :",
+    step: 'Step :',
     headingTo: 'Heading to',
   },
 
   UserRegister: {
-    username: "Username",
-    email: "Email",
-    password: "Password",
-    confPassword: "Confirme Password",
-    alreadyAccount: "Already have an account ?",
-    register: "Register",
-    signIn: "Sign in",
-    or: "OR",
+    username: 'Username',
+    email: 'Email',
+    password: 'Password',
+    confPassword: 'Confirme Password',
+    alreadyAccount: 'Already have an account ?',
+    register: 'Register',
+    signIn: 'Sign in',
+    or: 'OR',
+    OR: 'OR',
+    SIGNIN: 'SIGN IN',
+    SIGNUP: 'SIGN UP',
   },
 
 };
