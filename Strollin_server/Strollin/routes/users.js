@@ -1,6 +1,22 @@
 var express = require('express');
 var router = express.Router();
 
+var multer  = require('multer');
+
+const Storage = multer.diskStorage({
+  destination(req, file, callback) {
+      callback(null, path.join(__dirname, '../uploads/'));
+  },
+  filename(req, file, callback) {
+      callback(null, new Date().toISOString() + '_' + file.originalname);
+  },
+});
+
+const upload = multer({
+  storage: Storage,
+  limits: { fieldSize: 25 * 1024 * 1024 },
+});
+
 const nodemailer = require('nodemailer');
 
 const {
@@ -204,6 +220,13 @@ router.post('/add_friend', async function(req, res) {
     return  res.status(200).send({status: "Friend added successfully."});
   }
   return res.status(400).send({status: "An error occured."});
+});
+
+
+router.post('/add_image_profile', upload.single('uploaded_file'), function (req, res) {
+  // req.file is the name of your file in the form above, here 'uploaded_file'
+  // req.body will hold the text fields, if there were any 
+  console.log(req.file, req.body)
 });
 
 

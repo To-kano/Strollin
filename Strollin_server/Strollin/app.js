@@ -86,8 +86,7 @@ const {
   UserModel
 } = require("./models/user")
 
-
-algo.data.test() //remoce this line to hide thomas prints
+algo.data.test() //remove this line to hide thomas prints
 //location = LocationModel.findOne({name: req.body.name, address: req.body.address});
 
 async function TestLoc() {

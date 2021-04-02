@@ -12,6 +12,9 @@ import Store from '../Store/configureStore';
 import DrawerLayout from 'react-native-gesture-handler/DrawerLayout';
 import Menu from './Menu';
 
+import { DrawerActions } from '@react-navigation/native';
+
+
 const imageFriend = require('../ressources/friend.png');
 // const imageHistory = require('../ressources/history.png');
 const imageProfile = require('../ressources/profile.png');
@@ -52,20 +55,10 @@ export function HomePage(props) {
 
   return (
     <View style={{ flex: 1 }}>
-      <DrawerLayout
-          ref={drawer => {
-            setDrawer(drawer);
-          }}
-          drawerWidth={300}
-          drawerPosition={DrawerLayout.positions.Left}
-          drawerType="front"
-          drawerBackgroundColor="#ddd"
-          renderNavigationView={ () => <Menu navigation={props.navigation} name={"Home"} topNav={'historicUser'}/>}
-          >
         <View style={styles.view_back}>
           <View style={styles.view_header}>
             <TouchableOpacity onPress={//() => props.navigation.navigate('Menu')
-             () => drawer.openDrawer()
+             () => props.navigation.dispatch(DrawerActions.openDrawer())
             }>
               <Image style={styles.img_header} source={require('../images/icons/black/menu.png')}/>
             </TouchableOpacity>
@@ -96,7 +89,6 @@ export function HomePage(props) {
           </View>
       
       </View>
-    </DrawerLayout>
     </View>
   );
 }

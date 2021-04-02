@@ -250,5 +250,17 @@ router.get('/get_locations_by_id', async function(req, res) {
     }
 });
 
+/*router.get('/get_location_position', async function(req, res) {
+    let url = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=" + req.headers.place_name + "&inputtype=textquery&fields=formatted_address,geometry&key=AIzaSyDWnNbYqihMAkObSa_KDJ11YNBD4ffpNBk&language=" + req.headers.language
+    let result = await placeCall(url).then((response) => {
+      return response.candidates[0]
+    })
+    console.log(result)
+    if (result) {
+        return res.status(200).send({status: true, result})
+    }
+    return res.status(400).send({status: false, error: "Place not found or error occured."})
+});*/
+
 
 module.exports = router;

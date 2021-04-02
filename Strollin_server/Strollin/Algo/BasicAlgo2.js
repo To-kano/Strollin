@@ -217,7 +217,84 @@ async function getTags() {
   });
 }
 
+async function checkPlace(location, list) {
 
+  for (var i = 0; i < list.length; i++) {
+      return false;
+  }
+  return true;
+}
+
+async function formatPlaces(data) {
+
+  let locations_list = null
+
+  locations_list = await LocationModel.find({})
+  //console.log("list: ", locations_list);
+  let array = [];
+  let flag = false;
+
+  for (var i = 0; i < data.length; i++) {
+    let location = new LocationModel({
+        id: "",
+        name: "",
+        owner_id: "",
+        owner_pseudo: "",
+        coordinate: "",
+        latitude: "",
+        longitude: "",
+        address: "oui",
+        city: "oui",
+        country: "oui",
+        description: "",
+        timetable: "",
+        tags_list: "",
+        price_range: "",
+        average_time: "",
+        phone: "",
+        website: ""
+    });
+    location.id = new Number(Date.now());
+    location.name = data[i].name;
+    location.latitude = data[i].geometry.location.lat;
+    location.longitude = data[i].geometry.location.lng;
+    location.tags_list = {_id: data[i].types, disp: 0};
+    //console.log("location: ", location);
+    flag = await checkPlace(location, locations_list)
+    if (flag == true) {
+      //console.log("pushing");
+      let error = await location.save().catch(error => error);
+      if (error.errors) {
+          console.log({status: "Error in database transaction", error: error});
+      }
+    }
+  }
+}
+
+
+async function getPlaces(place_name) {
+  const https = require('https');
+  let url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=AIzaSyD6AVcufnom-RKQJeG8tlxAWhAOKor0-uo&location=48.8650988,2.1931007&radius=10000"
+
+  https.get(url, (resp) => {
+    let data = '';
+
+    // A chunk of data has been received.
+    resp.on('data', (chunk) => {
+      data += chunk;
+    });
+
+    // The whole response has been received. Print out the result.
+    resp.on('end', () => {
+      data = JSON.parse(data)
+      //console.log(data);
+      formatPlaces(data.results);
+    });
+  }).on("error", (err) => {
+    console.log("Error: " + err.message);
+  });
+
+}
 
 hello = function(sending, User)
 {
@@ -229,8 +306,9 @@ hello = function(sending, User)
 }
 
 methods.test = function() {
+  console.log("------------------------------------------------------------------");
   return new Promise((resolve, reject) => {
-    var test = getTags();
+    var test = getPlaces("Coop");
     resolve(test)
   });
 }
