@@ -27,7 +27,7 @@ router.get('/generate_course', async function(req, res) {
     }
     let tags = req.headers.tags.split(',');
     console.log("lets goooooo");
-    const promise2 = algo.data.test();
+    const promise2 = algo.data.test(req.headers.time , req.headers.budget , req.headers.tags , req.headers.coordinate);
     promise2.then((value) => {
       let generated_course = value;
       console.log("vourse: ", generated_course);

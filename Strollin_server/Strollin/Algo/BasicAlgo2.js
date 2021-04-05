@@ -24,8 +24,8 @@ function compare(a, b) {
 function IsTagOk(UserTags, Place) {
 
   for (var i = 0; i < Place.Tags.length; i++) {
-    for (var j = 0; j < UserTags.Tags[0].length; j++) {
-      if (Place.Tags[i] == UserTags.Tags[0][j])
+    for (var j = 0; j < UserTags.length; j++) {
+      if (Place.Tags[i] == UserTags[j])
         return true;
     }
   }
@@ -96,19 +96,24 @@ function CheckFood(Food, PlaceFood) {
   }
 }
 
-function algoTest(UserTags, Places, Food) {
+function algoTest(UserTags, Places, Food, time, budget, tags, coordinate) {
   return new Promise((resolve, reject) => {
 
     var PlacesArray = []
     var FinalArray = []
     var UserPos = TagsJson.Pos
+    var tagsArray = tags.split(",");
+    var budgetNb = parseInt(budget, 10);
+    var timeNb = parseInt(time, 10);
 
+    //console.log("TAGS ------------------------: ", UserTags);
     //Put all the places corresponding to the user tags in a new array (PlacesArray)
     for (var i = 0; i < Places.length; i++) {
-      if (IsTagOk(UserTags, Places[i]) == true) {
+      if (IsTagOk(tagsArray, Places[i]) == true) {
         PlacesArray.push(Places[i])
       }
     }
+    //console.log("VALID: ", PlacesArray);
 
     //Calculate the closest place compared to the previous place
     for (var cpt = 0; cpt < 10 && PlacesArray.length > 0; cpt++) {
@@ -116,28 +121,28 @@ function algoTest(UserTags, Places, Food) {
         PlacesArray[i].Dist = DistCalc2D(PlacesArray[i].Pos, UserPos)
       }
       PlacesArray.sort(compare)
-      if (TagsJson.Budget > PlacesArray[0].Price && TagsJson.Temps > PlacesArray[0].Time && CheckFood(Food, PlacesArray[0].City)) {
+      if (budgetNb > PlacesArray[0].Price && timeNb > PlacesArray[0].Time && CheckFood(Food, PlacesArray[0].City)) {
         FinalArray.push(PlacesArray[0])
-        TagsJson.Budget -= PlacesArray[0].Price
-        TagsJson.Temps -= PlacesArray[0].Time
-        console.log("Temps: ", TagsJson.Temps);
+        budgetNb -= PlacesArray[0].Price
+        timeNb -= PlacesArray[0].Time
+        console.log("Temps: ", timeNb);
       }
       UserPos = PlacesArray[0].Pos
       PlacesArray.shift()
     }
-    AddRef(FinalArray, UserTags.Tags[0])
+    AddRef(FinalArray, tagsArray)
     resolve(FinalArray)
   });
 }
 
 //gets the tags from tge DB and transform them to a json with the right format
-async function getTags() {
+async function getTags(time, budget, tags, coordinate) {
   let query = {};
   let locations_list = null
   let true_list = []
-  let tags = []
   let tagslist = []
   let test = []
+  let tagsMod = []
   let update = {}
   let tmpTagDisp = {}
   let tagslistarray = []
@@ -148,11 +153,11 @@ async function getTags() {
 
   locations_list = await LocationModel.find(query)
   for (var i = 0; i < locations_list.length; i++) {
-    tags = []
+    tagsMod = []
     tagslist = []
     for (var j = 0; j < locations_list[i].tags_list.length; j++) {
       test = []
-      tags[j] = locations_list[i].tags_list[j]._id
+      tagsMod[j] = locations_list[i].tags_list[j]._id
       if (locations_list[i].tags_list[j].disp) {
         test.push(locations_list[i].tags_list[j]._id)
         test.push(locations_list[i].tags_list[j].disp)
@@ -163,7 +168,7 @@ async function getTags() {
       tagslist.push(test)
     }
     true_list.push({
-      Tags: tags,
+      Tags: tagsMod,
       Pos: [locations_list[i].latitude, locations_list[i].longitude],
       Name: locations_list[i].name,
       Dist: 0,
@@ -185,7 +190,7 @@ async function getTags() {
   }*/
 
   User = await UserModel.findOne( { _id:  "5fbfc3068901ca001ec0be8f" })
-  const promise1 = hello(true_list, User)
+  const promise1 = hello(true_list, User, time, budget, tags, coordinate)
   return promise1;
   /*promise1.then((value) => {
     let location = LocationModel;
@@ -297,18 +302,18 @@ async function getPlaces(place_name) {
 
 }
 
-hello = function(sending, User)
+hello = function(sending, User, time, budget, tags, coordinate)
 {
   return new Promise((resolve, reject) => {
     TagsJson.Tags[0] = User.tags_list
-    var test = algoTest(TagsJson, sending, true)
+    var test = algoTest(TagsJson, sending, false, time, budget, tags, coordinate)
     resolve(test)
   });
 }
 
-methods.test = function() {
+methods.test = function(time, budget, tags, coordinate) {
   console.log("------------------------------------------------------------------");
-  const promise1 = getTags();
+  const promise1 = getTags(time, budget, tags, coordinate);
   return promise1;
   /*promise1.then((value) => {
     console.log("VALEUUUUUUUUUUUUUUR: ", value);
