@@ -186,8 +186,8 @@ async function getTags() {
 
   User = await UserModel.findOne( { _id:  "5fbfc3068901ca001ec0be8f" })
   const promise1 = hello(true_list, User)
-
-  promise1.then((value) => {
+  return promise1;
+  /*promise1.then((value) => {
     let location = LocationModel;
 
     value2 = value.slice(0, 5)
@@ -196,6 +196,7 @@ async function getTags() {
     console.log("You are going to: ", value2);
     console.log("\n\n");
     console.log("---------------------------------------");
+    //Pop Up ALgo
     for (var i = 0; i < value.length; i++) {
       tagslistarray = []
       for (var j = 0; j < value[i].TagsDisp.length; j++) {
@@ -214,7 +215,7 @@ async function getTags() {
       })
     }
     pop.data.Popup(value2, true_list, LocationModel)
-  });
+  });*/
 }
 
 async function checkPlace(location, list) {
@@ -307,10 +308,11 @@ hello = function(sending, User)
 
 methods.test = function() {
   console.log("------------------------------------------------------------------");
-  return new Promise((resolve, reject) => {
-    var test = getPlaces("Coop");
-    resolve(test)
-  });
+  const promise1 = getTags();
+  return promise1;
+  /*promise1.then((value) => {
+    console.log("VALEUUUUUUUUUUUUUUR: ", value);
+  });*/
 }
 
 

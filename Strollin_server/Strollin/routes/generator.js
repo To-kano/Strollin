@@ -27,12 +27,15 @@ router.get('/generate_course', async function(req, res) {
     }
     let tags = req.headers.tags.split(',');
     console.log("lets goooooo");
-    let generated_course = algo.data.test();
-    console.log("vourse: ", generated_course);
-    if (generated_course) {
-        return res.status(200).send({status: "Result of the generator.", generated_course});
-    }
-    return res.status(400).send({status: "An error occured during the generation of the course"});
+    const promise2 = algo.data.test();
+    promise2.then((value) => {
+      let generated_course = value;
+      console.log("vourse: ", generated_course);
+      if (generated_course) {
+          return res.status(200).send({status: "Result of the generator.", generated_course});
+      }
+      return res.status(400).send({status: "An error occured during the generation of the course"});
+    })
 });
 
 

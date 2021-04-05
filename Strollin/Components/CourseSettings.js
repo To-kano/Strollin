@@ -12,6 +12,8 @@ const store = Store.getState();
 const access_Token = store.profil.access_token;
 
 async function getUserTags(pos, budget, hours, minutes) {
+  const store = Store.getState();
+  const access_Token = store.profil.access_token;
   console.log("token: ", access_Token);
   await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/get_own_profile`, {
   headers: {
@@ -23,6 +25,7 @@ async function getUserTags(pos, budget, hours, minutes) {
   })
   .then(res => res.json())
   .then(json => {
+    console.log("ici ?: ", json);
     console.log("########", json.profile.tags_list);
     test(pos, budget, hours, minutes, json.profile.tags_list);
   });
