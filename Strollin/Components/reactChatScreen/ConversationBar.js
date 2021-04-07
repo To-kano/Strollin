@@ -105,45 +105,45 @@ function selectImage(setImage, props) {
   });
 }
 
-function ConversationBar(props) {
-  const [research, setresearch] = useState('');
-  const [image, setImage] = useState(null);
-  
-  return (
-    <View style={styles.container}>
-      {image && (
-          <Image
-            source={{ uri: image.uri }}
-            style={{ width: 200, height: 200 }}
-          />
-        )}
-      <View style={styles.horizontalDisplay}>
-        <ButtonIcon
-          icon={require('../../images/picture.png')}
-          onPress={() => {
-            selectImage(setImage, props);
-            console.log("image = ", image)
-          }}
-        />
-        <View style={styles.box}>
-          <TextInput
-            style={styles.textInput}
-            placeholder="Your message"
-            onChangeText={(text) => setresearch(text)}
-            value={research}
-          />
-        </View>
-        <ButtonIcon
-          icon={require('../../images/send.png')}
-          onPress={() => {
-            props.onPress(research);
-            setresearch('');
-          }}
-        />
-      </View>
-    </View>
-  );
-}
+//function ConversationBar(props) {
+//  const [research, setresearch] = useState('');
+//  const [image, setImage] = useState(null);
+//  
+//  return (
+//    <View style={styles.container}>
+//      {image && (
+//          <Image
+//            source={{ uri: image.uri }}
+//            style={{ width: 200, height: 200 }}
+//          />
+//        )}
+//      <View style={styles.horizontalDisplay}>
+//        <ButtonIcon
+//          icon={require('../../images/picture.png')}
+//          onPress={() => {
+//            selectImage(setImage, props);
+//            console.log("image = ", image)
+//          }}
+//        />
+//        <View style={styles.box}>
+//          <TextInput
+//            style={styles.textInput}
+//            placeholder="Your message"
+//            onChangeText={(text) => setresearch(text)}
+//            value={research}
+//          />
+//        </View>
+//        <ButtonIcon
+//          icon={require('../../images/send.png')}
+//          onPress={() => {
+//            props.onPress(research);
+//            setresearch('');
+//          }}
+//        />
+//      </View>
+//    </View>
+//  );
+//}
 
 const styles = StyleSheet.create({
   container: {
@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
 //export default connect(mapStateToProps)(ConversationBar);
 
 
-const SERVER_URL = 'http://88.165.45.219:3000/users/add_image_profile';
+const SERVER_URL = 'http://88.165.45.219:3002';
 
 const createFormData = (photo, body = {}) => {
   const data = new FormData();
@@ -185,8 +185,6 @@ const createFormData = (photo, body = {}) => {
     data.append(key, body[key]);
   });
 
-  console.log("form data ", data._parts);
-
   return data;
 };
 
@@ -195,7 +193,7 @@ const App = () => {
 
   const handleChoosePhoto = () => {
     launchImageLibrary({ noData: true }, (response) => {
-       console.log(response);
+      // console.log(response);
       if (response) {
         setPhoto(response);
       }
@@ -203,8 +201,12 @@ const App = () => {
   };
 
   const handleUploadPhoto = () => {
-    fetch(`http://88.165.45.219:3000/users/add_image_profile`, {
+    console.log("launch fetch");
+    fetch(`${SERVER_URL}/upload`, {
       method: 'POST',
+      //headers: new Headers({
+      //  'Content-Type': 'application/x-www-form-urlencoded', //Specifying the Content-Type
+      //}),
       body: createFormData(photo, { userId: '123' }),
     })
       .then((response) => response.json())
