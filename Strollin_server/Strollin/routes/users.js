@@ -1,18 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-var multer  = require('multer');
 
-const storage = multer.diskStorage({
-  destination(req, file, callback) {
-    callback(null, __dirname + '/../public/images');
-  },
-  filename(req, file, callback) {
-    callback(null, `${file.fieldname}_${Date.now()}_${file.originalname}`);
-  },
-});
-
-const upload = multer({ storage });
 
 const nodemailer = require('nodemailer');
 
@@ -225,6 +214,19 @@ router.post('/add_friend', async function(req, res) {
 //  // req.body will hold the text fields, if there were any 
 //  console.log(req.file, req.body)
 //});
+
+const multer  = require('multer');
+
+const storage = multer.diskStorage({
+  destination(req, file, callback) {
+    callback(null, __dirname + '/../public/images');
+  },
+  filename(req, file, callback) {
+    callback(null, `${file.fieldname}_${Date.now()}_${file.originalname}`);
+  },
+});
+
+const upload = multer({ storage });
 
 router.post('/add_image_profile', upload.array('photo', 3), (req, res) => {
   console.log('file', req.files);
