@@ -20,41 +20,46 @@ import {
 // }
 
 function MessagesItem(props) {
-  const [track, setTrack] = useState(null);
+  const [isImage, setIsImage] = useState(false);
 
-  console.log("profil.id = ", props.profil.id);
-  console.log("message id = ", props.message[props.messageID].expeditor_id);
   if (props.profil.id != props.message[props.messageID].expeditor_id) {
-    return (
-    <View>
-      <View style={styles.greyDisplay}>
-        <View style={styles.box}>
-          <Text style={styles.message}>
-            {props.message[props.messageID].message}
-          </Text>
+    if (isImage) {
+      console.log("");
+    } else {
+      return (
+      <View>
+        <View style={styles.greyDisplay}>
+          <View style={styles.box}>
+            <Text style={styles.message}>
+              {props.message[props.messageID].message}
+            </Text>
+          </View>
         </View>
+        <Text style={styles.expeditor} ellipsizeMode="tail">
+          {props.profil.friends_pseudo_list[props.message[props.messageID].expeditor_id]}
+        </Text>
       </View>
-      <Text style={styles.expeditor} ellipsizeMode="tail">
-        {props.profil.friends_pseudo_list[props.message[props.messageID].expeditor_id]}
-      </Text>
-    </View>
-
+      );
+    }
+  }
+  if (isImage) {
+    console.log("");
+  } else {
+    return (
+      <View>
+        <View style={styles.blueDisplay}>
+          <View style={styles.box}>
+            <Text style={styles.message}>
+              {props.message[props.messageID].message}
+            </Text>
+          </View>
+        </View>
+        <Text style={styles.expeditorUser} ellipsizeMode="tail">
+          {props.profil.pseudo}
+        </Text>
+      </View>
     );
   }
-  return (
-    <View>
-      <View style={styles.blueDisplay}>
-        <View style={styles.box}>
-          <Text style={styles.message}>
-            {props.message[props.messageID].message}
-          </Text>
-        </View>
-      </View>
-      <Text style={styles.expeditorUser} ellipsizeMode="tail">
-        {props.profil.pseudo}
-      </Text>
-    </View>
-  );
 }
 
 const styles = StyleSheet.create({

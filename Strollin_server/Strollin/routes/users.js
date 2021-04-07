@@ -3,19 +3,16 @@ var router = express.Router();
 
 var multer  = require('multer');
 
-const Storage = multer.diskStorage({
+const storage = multer.diskStorage({
   destination(req, file, callback) {
-      callback(null, path.join(__dirname, '../uploads/'));
+    callback(null, __dirname + '/../public/images');
   },
   filename(req, file, callback) {
-      callback(null, new Date().toISOString() + '_' + file.originalname);
+    callback(null, `${file.fieldname}_${Date.now()}_${file.originalname}`);
   },
 });
 
-const upload = multer({
-  storage: Storage,
-  limits: { fieldSize: 25 * 1024 * 1024 },
-});
+const upload = multer({ storage });
 
 const nodemailer = require('nodemailer');
 
@@ -223,12 +220,20 @@ router.post('/add_friend', async function(req, res) {
 });
 
 
-router.post('/add_image_profile', upload.single('uploaded_file'), function (req, res) {
-  // req.file is the name of your file in the form above, here 'uploaded_file'
-  // req.body will hold the text fields, if there were any 
-  console.log(req.file, req.body)
-});
+//router.post('/add_image_profile', upload.single('uploaded_file'), function (req, res) {
+//  // req.file is the name of your file in the form above, here 'uploaded_file'
+//  // req.body will hold the text fields, if there were any 
+//  console.log(req.file, req.body)
+//});
 
+router.post('/add_image_profile', upload.array('photo', 3), (req, res) => {
+  console.log('file', req.files);
+  console.log('body', req.body);
+  console.log('path', __dirname + '/../public/images');
+  res.status(200).json({
+    message: 'success!',
+  });
+});
 
 // ADD_TAG
 /**
