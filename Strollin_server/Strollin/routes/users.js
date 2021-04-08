@@ -17,6 +17,10 @@ const {
   CourseModel
 } = require("../models/course")
 
+const {
+  ImageModel
+} = require("../models/image")
+
 
 // REGISTER
 /**
@@ -228,12 +232,27 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-router.post('/add_image_profile', upload.array('image', 3), (req, res) => {
+router.post('/add_image_profile', upload.array('image', 3), async (req, res) => {
   console.log('file', req.files);
   console.log('body', req.body);
   console.log('path', __dirname + '/../public/images');
+
+  let image = new ImageModel({
+    id: new Number(Date.now()),
+    author: "lol",
+    uri: req.files[0].filename,
+    mimetype: req.files[0].mimetype
+  });
+
+  let error = await image.save().catch(error => error);
+    if (error.errors) {
+      return res.status(400).send({status: "Error in upload", error: error});
+    }
+
+
+
   res.status(200).json({
-    message: 'success!',
+    image: req.files[0].filename,
   });
 });
 
