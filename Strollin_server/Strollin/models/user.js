@@ -73,6 +73,14 @@ var UserModelSchema = new Schema({
         type: Boolean,
         default: false
     },
+    log_attempt: {
+        type: Number,
+        default: 0,
+    },
+    log_security: {
+        type: Number,
+        default: 0,
+    },
 })
 
 

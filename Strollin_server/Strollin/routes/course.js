@@ -232,8 +232,8 @@ router.post('/add_course_time', async function(req, res) {
 
     let course = await CourseModel.findOne({id: req.headers.course_id});
     if (course) {
-        await course.updateOne({$push: {time_spent: req.body.time_spent}});
-        return res.status(200).send({status: "Course created."});
+        await CourseModel.updateOne({id: course.id}, {$push: {time_spent: req.body.time_spent}});
+        return res.status(200).send({status: "Course time spent added."});
     }
     return res.status(400).send({status: "Error"});
 });

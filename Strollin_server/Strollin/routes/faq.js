@@ -54,7 +54,7 @@ router.post('/answer_question', async function(req, res) {
         answer: req.body.answer,
         published: req.body.published
     };
-    let error = await question.updateOne(query).catch(error => error);
+    let error = await FaqModel.updateOne({id: question.id}, query).catch(error => error);
     if (error.errors) {
         return res.status(400).send({status: "Error in database transaction:\n", error: error.errors});
     }

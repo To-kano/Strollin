@@ -129,7 +129,7 @@ router.get('/verify', async function(req, res) {
     return res.status(400).send({status: "Error in database transaction:\n", error: user});
   } else {
 
-    let error = await user.updateOne({verify: true}).catch(error => error);
+    let error = await UserModel.updateOne({id: user.id}, {verify: true}).catch(error => error);
     if (error.errors) {
         return res.status(400).send({status: "Error in database transaction:\n", error: error});
     }
@@ -150,7 +150,7 @@ router.get('/verify', async function(req, res) {
  * @param {String} req.body.last_name
  */
 router.post('/edit_profile', async function(req, res) {
-  let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo").catch(error => error);
+  let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id").catch(error => error);
 
   if (!user) {
       return res.status(400).send({status: "You are not connected."});
@@ -175,7 +175,7 @@ router.post('/edit_profile', async function(req, res) {
   if (req.body.last_name) {
       query.last_name = req.body.last_name;
   }
-  let error = await user.updateOne(query).catch(error => error);
+  let error = await UserModel.updateOne({id: user.id}, query).catch(error => error);
   if (error.errors) {
       return res.status(400).send({status: "Error in database transaction:\n", error: error.errors});
   }
@@ -191,7 +191,7 @@ router.post('/edit_profile', async function(req, res) {
  */
 router.post('/add_friend_request', async function(req, res) {
 
-  let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo").catch(error => error);
+  let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo friends_request friends_list").catch(error => error);
 
   if (!user) {
       return res.status(400).send({status: "You are not connected."});
@@ -200,17 +200,20 @@ router.post('/add_friend_request', async function(req, res) {
       return res.status(400).send({status: "Error in database transaction:\n", error: user});
   }
 
-  let friend = await UserModel.findOne({id: req.body.friend}).catch(error => error);
-  if (friend.reason) {
+  let friend = await UserModel.findOne({id: req.body.friend}, "-_id id pseudo friends_request friends_list").catch(error => error);
+  if (!friend) {
+    return res.status(400).send({status: "The user does not exist."});
+  } else if (friend.reason) {
     return res.status(400).send({status: "Error in database transaction:\n", error: friend});
-  } else if (friend && !friend.friends_request.includes(user.id) && !user.friends_request.includes(friend.id)) {
-    let error = await friend.updateOne({$push: {friends_request: user.id}}).catch(error => error);
+  } else if (friend.friends_request.includes(user.id) || friend.friends_list.includes(user.id) || user.friends_request.includes(friend.id) || user.friends_list.includes(friend.id)) {
+    return res.status(400).send({status: "The friend request exists already or you are already friends."});
+  } else {
+    let error = await UserModel.updateOne({id: friend.id}, {$push: {friends_request: user.id}}).catch(error => error);
     if (error.errors) {
       return res.status(400).send({status: "Error in database transaction:\n", error: error});
     }
     return res.status(200).send({status: "Friend requested successfully."});
   }
-  return res.status(400).send({status: "The friend user does not exist."});
 });
 
 
@@ -222,7 +225,7 @@ router.post('/add_friend_request', async function(req, res) {
  * @param {ObjectID} req.body.friend (id from the user in request friend list)
  */
 router.post('/add_friend', async function(req, res) {
-  let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo").catch(error => error);
+  let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo friends_request friends_list").catch(error => error);
 
   if (!user) {
       return res.status(400).send({status: "You are not connected."});
@@ -230,28 +233,33 @@ router.post('/add_friend', async function(req, res) {
   if (user.reason) {
       return res.status(400).send({status: "Error in database transaction:\n", error: user});
   }
-  let friend = await UserModel.findOne({id: req.body.friend}).catch (error => error);
-  if (friend.reason) {
+
+  let friend = await UserModel.findOne({id: req.body.friend}, "-_id id pseudo friends_request friends_list").catch (error => error);
+  if (!friend) {
+    return res.status(400).send({status: "The user does not exist."});
+  } else if (friend.reason) {
     return res.status(400).send({status: "Error in database transaction:\n", error: friend});
-  } else if (friend && !friend.friends_list.includes(user.id) && !user.friends_list.includes(friend.id) && user.friends_request.includes(friend.id)) {
-    let error = await friend.updateOne({$push: {friends_list: user.id}}).catch (error => error);
+  } else if (friend.friends_list.includes(user.id) && user.friends_list.includes(friend.id)) {
+    return res.status(400).send({status: "You are already friends."});
+  } else if (!user.friends_request.includes(friend.id)) {
+    return res.status(400).send({status: "The friend request does not exist."});
+  } else {
+    let error = await UserModel.updateOne({id: friend.id}, {$push: {friends_list: user.id}}).catch (error => error);
     if (error.errors) {
       return res.status(400).send({status: "Error in database transaction:\n", error: error});
     }
 
-    error = await user.updateOne({$push: {friends_list: friend.id}}).catch (error => error);
+    error = await UserModel.updateOne({id: user.id}, {$push: {friends_list: friend.id}}).catch (error => error);
     if (error.errors) {
       return res.status(400).send({status: "Error in database transaction:\n", error: error});
     }
 
-    error = await user.updateOne({$pull: {friends_request: friend.id}}).catch (error => error);
+    error = await UserModel.updateOne({id: user.id}, {$pull: {friends_request: friend.id}}).catch (error => error);
     if (error.errors) {
       return res.status(400).send({status: "Error in database transaction:\n", error: error});
     }
-
     return res.status(200).send({status: "Friend added successfully."});
   }
-  return res.status(400).send({status: "An error occured."});
 });
 
 
@@ -271,7 +279,7 @@ router.post('/add_image_profile', upload.single('uploaded_file'), function (req,
 router.post('/add_tag', async function(req, res) {
   let new_tag = null;
   let add_list = req.body.tags_list
-  let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo").catch(error => error);
+  let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo tags_list").catch(error => error);
 
   if (!user) {
       return res.status(400).send({status: "You are not connected."});
@@ -281,12 +289,12 @@ router.post('/add_tag', async function(req, res) {
   }
 
   for (let index = 0; index < add_list.length; index++) {
-    new_tag = await (await TagModel.findOne({name: add_list[index]})).catch(error => error);
-    if (new_tag.reason) {
+    new_tag = await TagModel.findOne({name: add_list[index]}).catch(error => error);
+    if (new_tag && new_tag.reason) {
       return res.status(400).send({status: "Error in database transaction:\n", error: new_tag});
     }
-    if (new_tag && !user.tags_list.includes(new_tag)) {
-      let error = await user.updateOne({$push: {tags_list: new_tag.name}});
+    if (new_tag && !user.tags_list.includes(new_tag.name)) {
+      let error = await UserModel.updateOne({id: user.id}, {$push: {tags_list: new_tag.name}});
       if (error.errors) {
         return res.status(400).send({status: "Error in database transaction:\n", error: error});
       }
@@ -304,24 +312,27 @@ router.post('/add_tag', async function(req, res) {
  */
 router.post('/add_historic', async function(req, res) {
 
-  let course = await CourseModel.findOne({id: req.body.course});
   let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo").catch(error => error);
-
   if (!user) {
       return res.status(400).send({status: "You are not connected."});
   }
   if (user.reason) {
       return res.status(400).send({status: "Error in database transaction:\n", error: user});
   }
-  if (course) {
+
+  let course = await CourseModel.findOne({id: req.body.course}).catch(error => error);
+  if (!course) {
+    return res.status(400).send({status: "The course does not exist."});
+  } else if (course.reason) {
+    return res.status(400).send({status: "Error in database transaction:\n", error: user});
+  } else {
     let new_course = [course.id, new Date().toLocaleDateString("fr-FR")];
-    let error = await user.updateOne({$push: {course_historic: new_course}}).catch(error => error);
+    let error = await UserModel.updateOne({id: user.id}, {$push: {course_historic: new_course}}).catch(error => error);
     if (error.errors) {
       return res.status(400).send({status: "Error in database transaction:\n", error: error});
     }
     return res.status(200).send({status: "Historic added."});
   }
-  return res.status(400).send({status: "An error occured."});
 });
 
 
@@ -342,7 +353,7 @@ router.get('/login', async function(req, res) {
   } else if (user && user.reason) {
     return res.status(400).send({status: "Error in database transaction:\n", error: user});
   } else {
-    let error = await user.updateOne({access_token: token}).catch(error => error);
+    let error = await UserModel.updateOne({id: user.id}, {access_token: token}).catch(error => error);
     if (error.errors) {
       return res.status(400).send({status: "Error in database transaction:\n", error: error});
     }
@@ -366,7 +377,7 @@ router.get('/logout', async function(req, res) {
   } else if (user && user.reason) {
     return res.status(400).send({status: "Error in database transaction:\n", error: user});
   } else {
-    let error = await user.updateOne({access_token: token}).catch(error => error);
+    let error = await UserModel.updateOne({id: user.id}, {access_token: token}).catch(error => error);
     if (error.errors) {
       return res.status(400).send({status: "Error in database transaction:\n", error: error});
     }
@@ -481,13 +492,14 @@ router.get('/get_user_by_id', async function(req, res) {
     return res.status(400).send({status: "Error in database transaction:\n", error: user});
   }
   let given_list = req.headers.users_list.split(',');
-  let users_list = await UserModel.find({id: {$in: given_list}, projection}).catch(error => error);
+  let users_list = await UserModel.find({id: {$in: given_list}}, projection).catch(error => error);
+  console.log(users_list);
   if (users_list && users_list.reason) {
     return res.status(400).send({status: "Error in database transaction:\n", error: users_list});
-  } else if (users_list.length > 0) {
+  } else if (users_list && users_list.length > 0) {
     return res.status(200).send({status: "User(s) found.", users_list});
   } else {
-    return res.status(400).send({status: "User(s) not found.", error: users_list});
+    return res.status(400).send({status: "User(s) not found."});
   }
 });
 
@@ -508,7 +520,7 @@ router.delete('/remove_account', async function(req, res) {
   if (user.reason) {
     return res.status(400).send({status: "Error in database transaction:\n", error: user});
   }
-  let error = await user.remove().catch(error => error);
+  let error = await UserModel.remove({id: user.id}).catch(error => error);
   if (error.errors) {
     return res.status(400).send({status: "Error in database transaction:\n", error: user});
   }
@@ -521,8 +533,27 @@ router.delete('/remove_account', async function(req, res) {
 ***/
 
 async function check_the_password(password) {
-  
-  return true;
+  let pass_lenght = false;
+  let pass_lowcase = false;
+  let pass_upcase = false;
+  let pass_number = false;
+
+  if (password.length >= 8) {
+    pass_lenght = true;
+  }
+  for (let index in password) {
+    if (password[index] >= '0' && password[index] <= '9') {
+      pass_number = true;
+    } else if (password[index] >= 'a' && password[index] <= 'z') {
+      pass_lowcase = true;
+    } else if (password[index] >= 'A' && password[index] <= 'Z') {
+      pass_upcase = true;
+    }
+  }
+  if (pass_lenght && pass_lowcase && pass_upcase && pass_number) {
+    return true;
+  }
+  return false;
 };
 
 

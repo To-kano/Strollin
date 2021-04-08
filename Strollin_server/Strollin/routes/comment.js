@@ -97,14 +97,14 @@ router.post('/new_comment', async function(req, res) {
         // Update the location/course
         if (location) {
             let new_score = (Number(comment.score) + (Number(location.score) * location.comments_list.length)) / (location.comments_list.length + 1);
-            error = await location.updateOne({$push: {comments_list: comment.id}, $set: {score: String(new_score)}}).catch(error => error);
+            error = await LocationModel.updateOne({id: location.id}, {$push: {comments_list: comment.id}, $set: {score: String(new_score)}}).catch(error => error);
             if (error.errors) {
                 return res.status(400).send({status: "Error in database transaction:\n", error: error});
             }
         } else if (course) {
             let new_score = (Number(comment.score) + (Number(course.score) * course.comments_list.length)) / (course.comments_list.length + 1);
             let new_used = Number(course.number_used) + 1;
-            error = await course.updateOne({$push: {comments_list: comment.id}, $set: {score: String(new_score), number_used: String(new_used)}}).catch(error => error);
+            error = await CourseModel.updateOne({id: course.id}, {$push: {comments_list: comment.id}, $set: {score: String(new_score), number_used: String(new_used)}}).catch(error => error);
             if (error.errors) {
                 return res.status(400).send({status: "Error in database transaction:\n", error: error});
             }
@@ -122,7 +122,7 @@ router.post('/new_comment', async function(req, res) {
             message: req.body.message,
             score: req.body.score,
         };
-        let error = await comment.updateOne({$set: update}).catch(error => error);
+        let error = await CommentModel.updateOne({id: comment.id}, {$set: update}).catch(error => error);
         if (error.errors) {
             return res.status(400).send({status: "Error in database transaction:\n", error: error});
         }
@@ -130,14 +130,14 @@ router.post('/new_comment', async function(req, res) {
         // Update the location/course
         if (location) {
             let new_score = (Number(comment.score) - old_score + (Number(location.score) * location.comments_list.length)) / (location.comments_list.length);
-            error = await location.updateOne({$set: {score: String(new_score)}}).catch(error => error);
+            error = await LocationModel.updateOne({id: location.id}, {$set: {score: String(new_score)}}).catch(error => error);
             if (error.errors) {
                 return res.status(400).send({status: "Error in database transaction:\n", error: error});
             }
         } else if (course) {
             let new_score = (Number(req.body.score) - old_score + (Number(course.score) * course.comments_list.length)) / (course.comments_list.length);
             let new_used = Number(course.number_used) + 1;
-            error = await course.updateOne({$set: {score: String(new_score), number_used: String(new_used)}}).catch(error => error);
+            error = await CourseModel.updateOne({id: course.id}, {$set: {score: String(new_score), number_used: String(new_used)}}).catch(error => error);
             if (error.errors) {
                 return res.status(400).send({status: "Error in database transaction:\n", error: error});
             }

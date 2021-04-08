@@ -124,15 +124,23 @@ router.post('/new_location', async function(req, res) {
  */
 router.post('/update_location', async function(req, res) {
 
-    let location = LocationModel;
     let update = {};
     let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo").catch(error => error);
+    let location = undefined;
 
     if (!user) {
         return res.status(400).send({status: "You are not connected."});
     }
     if (user.reason) {
         return res.status(400).send({status: "Error in database transaction:\n", error: user});
+    }
+
+    location = await LocationModel.findOne({id: req.headers.location_id}, "-_id").catch(error => error);
+    if (!location) {
+        return res.status(400).send({status: "The location does not exist."});
+    }
+    if (location.reason) {
+        return res.status(400).send({status: "Error in database transaction:\n", error: location});
     }
 
     if (req.body.name) {
@@ -182,7 +190,7 @@ router.post('/update_location', async function(req, res) {
     if (req.body.website) {
         update.website = req.body.website
     }
-    error = await location.updateOne({id: req.headers.location_id}, update).catch(error => error);
+    error = await LocationModel.updateOne({id: location.id}, {id: req.headers.location_id}, update).catch(error => error);
     if (error.errors) {
         return res.status(400).send({status: "Location could not be updated."});
     }
