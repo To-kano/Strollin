@@ -32,10 +32,13 @@ async function getUserTags(pos, budget, hours, minutes) {
 }
 
 async function test(pos, budget, hours, minutes, tags) {
-
+  const store = Store.getState();
+  const access_Token = store.profil.access_token;
   const time = hours * 60 + minutes;
-  const coordinate = ["10", "20"];
+  const coordinate = [];
 
+  coordinate[0] = pos.latitude;
+  coordinate[1] = pos.longitude;
   console.log("time: ", time);
   console.log("pos: ", pos);
   console.log("budget: ", budget);

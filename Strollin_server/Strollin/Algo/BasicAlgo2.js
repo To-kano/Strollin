@@ -101,11 +101,15 @@ function algoTest(UserTags, Places, Food, time, budget, tags, coordinate) {
 
     var PlacesArray = []
     var FinalArray = []
-    var UserPos = TagsJson.Pos
+    var UserPos = []
     var tagsArray = tags.split(",");
     var budgetNb = parseInt(budget, 10);
     var timeNb = parseInt(time, 10);
 
+    UserPos[0] = parseFloat(coordinate[0]);
+    UserPos[1] = parseFloat(coordinate[1]);
+
+    console.log("POs: ", UserPos);
     //console.log("TAGS ------------------------: ", UserTags);
     //Put all the places corresponding to the user tags in a new array (PlacesArray)
     for (var i = 0; i < Places.length; i++) {
@@ -113,7 +117,7 @@ function algoTest(UserTags, Places, Food, time, budget, tags, coordinate) {
         PlacesArray.push(Places[i])
       }
     }
-    //console.log("VALID: ", PlacesArray);
+    console.log("VALID: ", PlacesArray);
 
     //Calculate the closest place compared to the previous place
     for (var cpt = 0; cpt < 10 && PlacesArray.length > 0; cpt++) {
@@ -226,7 +230,8 @@ async function getTags(time, budget, tags, coordinate) {
 async function checkPlace(location, list) {
 
   for (var i = 0; i < list.length; i++) {
-      return false;
+      if (location.name == list[i].name && location.latitude == list[i].latitude && location.longitude == list[i].longitude)
+        return false;
   }
   return true;
 }
@@ -260,15 +265,20 @@ async function formatPlaces(data) {
         phone: "",
         website: ""
     });
+    location.tags_list = [];
     location.id = new Number(Date.now());
     location.name = data[i].name;
     location.latitude = data[i].geometry.location.lat;
     location.longitude = data[i].geometry.location.lng;
-    location.tags_list = {_id: data[i].types, disp: 0};
+    for (var j = 0; j < data[i].types.length; j++) {
+      location.tags_list.push({_id: data[i].types[j], disp: 0});
+      data[i].types[j]
+    }
+
     //console.log("location: ", location);
     flag = await checkPlace(location, locations_list)
     if (flag == true) {
-      //console.log("pushing");
+      console.log("pushing");
       let error = await location.save().catch(error => error);
       if (error.errors) {
           console.log({status: "Error in database transaction", error: error});
@@ -278,9 +288,9 @@ async function formatPlaces(data) {
 }
 
 
-async function getPlaces(place_name) {
+async function getPlaces(coordinate) {
   const https = require('https');
-  let url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=AIzaSyD6AVcufnom-RKQJeG8tlxAWhAOKor0-uo&location=48.8650988,2.1931007&radius=10000"
+  let url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=AIzaSyD6AVcufnom-RKQJeG8tlxAWhAOKor0-uo&location=" + coordinate[0] + "," + coordinate[1] + "&radius=100000&rankedby=location"
 
   https.get(url, (resp) => {
     let data = '';
@@ -304,11 +314,17 @@ async function getPlaces(place_name) {
 
 hello = function(sending, User, time, budget, tags, coordinate)
 {
-  return new Promise((resolve, reject) => {
-    TagsJson.Tags[0] = User.tags_list
-    var test = algoTest(TagsJson, sending, false, time, budget, tags, coordinate)
-    resolve(test)
-  });
+  var coordinateArr = coordinate.split(",");
+  getPlaces(coordinateArr);
+
+  //promise1.then((value) => {
+    console.log("coordiante: ", coordinateArr);
+    return new Promise((resolve, reject) => {
+      TagsJson.Tags[0] = User.tags_list
+      var test = algoTest(TagsJson, sending, false, time, budget, tags, coordinateArr)
+      resolve(test)
+    });
+  //})
 }
 
 methods.test = function(time, budget, tags, coordinate) {
