@@ -18,7 +18,7 @@ function Menu(props) {
     directionalOffsetThreshold: 80,
     gestureIsClickThreshold: 0.5
   };
-  console.log("customDrawer ", props.state)
+//  console.log("customDrawer ", props.state)
 
 
   return (

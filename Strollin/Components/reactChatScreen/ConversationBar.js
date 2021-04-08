@@ -6,10 +6,14 @@ import { StyleSheet, TextInput, View, Image, Alert, Text, Button } from 'react-n
 import socketIOClient from 'socket.io-client';
 import {launchImageLibrary} from 'react-native-image-picker';
 import ButtonIcon from '../ButtonIcon.js';
+import {contextSocket} from '../Socket';
 
 function ConversationBar(props) {
   const [research, setresearch] = useState('');
   const [image, setImage] = useState(null);
+  const [imageName, setImageName] = useState(null);
+  const {sendImage} = contextSocket();
+
 
   const createFormData = (image, body = {}) => {
     const data = new FormData();
@@ -24,14 +28,11 @@ function ConversationBar(props) {
       data.append(key, body[key]);
     });
   
-    console.log("form data ", data._parts);
-  
     return data;
   };
 
   const handleChooseImage = () => {
     launchImageLibrary({ noData: true }, (response) => {
-       console.log(response);
       if (response) {
         setImage(response);
       }
@@ -45,8 +46,11 @@ function ConversationBar(props) {
     })
       .then((response) => response.json())
       .then((response) => {
-        console.log('response', response);
         setImage(null);
+        if (response["image"]) {
+          setImageName(response["image"]);
+          sendImage(response["image"]);
+        }
       })
       .catch((error) => {
         console.log('error', error);
@@ -62,9 +66,15 @@ function ConversationBar(props) {
         <>
           <Image
             source={{ uri: image.uri }}
-            style={{ width: 300, height: 300 }}
+            style={{ width: 300, height: 300, borderRadius: 15, marginLeft: "20%" }}
           />
-          <Button title="Discard Image" onPress={cancelImage} />
+          <Button title="Send Image" 
+            onPress={() => {
+              if (image) {
+                handleUploadImage();
+              }
+            }} />
+          <Button title="Erase Image" onPress={cancelImage} />
         </>
       )}
       <View style={styles.horizontalDisplay}>
@@ -85,7 +95,6 @@ function ConversationBar(props) {
           onPress={() => {
             props.onPress(research);
             setresearch('');
-            handleUploadImage();
           }}
         />
       </View>
