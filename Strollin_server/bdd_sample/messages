@@ -1,0 +1,4 @@
+{"_id":{"$oid":"603fb61b9ff59d001e4261ba"},"id":1614788123419,"creation_date":"03/03/2021","expeditor":{"id":1614786348983,"pseudo":"Tony"},"conversation":"1614788117114","type":"message","message":"Salut","__v":0}
+{"_id":{"$oid":"603fb7066a13b6001ecbee3b"},"id":1614788358454,"creation_date":"03/03/2021","expeditor":{"id":1614786348983,"pseudo":"Tony"},"conversation":"1614788353168","type":"message","message":"Jojo","__v":0}
+{"_id":{"$oid":"603fb9d10d150b001e81754c"},"id":1614789073627,"creation_date":"03/03/2021","expeditor_id":"1614786348983","expeditor_pseudo":"Tony","conversation":"1614789068822","type":"message","message":"Salt","__v":0}
+{"_id":{"$oid":"603fb9e20d150b001e81754d"},"id":1614789090078,"creation_date":"03/03/2021","expeditor_id":"1614786348983","expeditor_pseudo":"Tony","conversation":"1614789068822","type":"message","message":"Tumeurs","__v":0}
