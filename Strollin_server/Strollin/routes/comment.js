@@ -189,7 +189,7 @@ router.get('/get_comment_by_id', async function(req, res) {
     let given_list = req.headers.comments_list.split(',');
     let comments_list = await CommentModel.find({id: {$in: given_list}}).catch(error => error);
     if (comments_list.reason) {
-        return res.status(400).send({status: "Error in the parameters.", error: comments_list});
+        return res.status(400).send({status: "Error in database transaction.", error: comments_list});
     } else if (comments_list.length > 0) {
         return res.status(200).send({status: "Comment(s) found.", comments_list});
     } else {
