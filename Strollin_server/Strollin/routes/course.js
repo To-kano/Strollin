@@ -64,8 +64,11 @@ router.post('/new_course', async function(req, res) {
     if (req.body.time_spent)
         course.time_spent = req.body.time_spent
 
-    //Get tags from locations
+    //Get tags from locations and price range
+    let min_price = 0;
+    let max_price = 0;
     for (let index = 0; index < locations_list.length; index++) {
+        price_range
         for (let index2 = 0; index2 < locations_list[index].tags_list.length; index2++) {
             tag = locations_list[index].tags_list[index2];
             if (!course.tags_list.includes(tag.id)) {
@@ -145,7 +148,7 @@ router.get('/get_course', async function(req, res) {
                         highest_key = key;
                     }
                 }
-                course = await CourseModel.find({id: highest_key}).catch(error => error);
+                course = await CourseModel.findOne({id: highest_key}).catch(error => error);
                 if (course && course.reason) {
                     return res.status(400).send({status: "Error in database transaction:\n", error: course});
                 }
@@ -154,7 +157,7 @@ router.get('/get_course', async function(req, res) {
             }
         }
         if (courses_list && courses_list.reason) {
-            return res.status(400).send({status: "Error in database transaction:\n", error: comments_list});
+            return res.status(400).send({status: "Error in database transaction:\n", error: courses_list});
         }
         return res.status(200).send({status: "List of courses returned.", courses_list})
     }
