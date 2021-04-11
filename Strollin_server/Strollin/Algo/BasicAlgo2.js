@@ -117,7 +117,7 @@ function algoTest(UserTags, Places, Food, time, budget, tags, coordinate) {
         PlacesArray.push(Places[i])
       }
     }
-    console.log("VALID: ", PlacesArray);
+    //console.log("VALID: ", PlacesArray);
 
     //Calculate the closest place compared to the previous place
     for (var cpt = 0; cpt < 10 && PlacesArray.length > 0; cpt++) {
@@ -129,7 +129,7 @@ function algoTest(UserTags, Places, Food, time, budget, tags, coordinate) {
         FinalArray.push(PlacesArray[0])
         budgetNb -= PlacesArray[0].Price
         timeNb -= PlacesArray[0].Time
-        console.log("Temps: ", timeNb);
+        //console.log("Temps: ", timeNb);
       }
       UserPos = PlacesArray[0].Pos
       PlacesArray.shift()
@@ -176,7 +176,7 @@ async function getTags(time, budget, tags, coordinate) {
       Pos: [locations_list[i].latitude, locations_list[i].longitude],
       Name: locations_list[i].name,
       Dist: 0,
-      Price: locations_list[i].price_range[0],
+      Price: Number(locations_list[i].price_range[0]),
       PopDisp: Number(locations_list[i].pop_disp),
       PopAg: Number(locations_list[i].pop_ag),
       AlgDisp: Number(locations_list[i].alg_disp),
@@ -185,7 +185,7 @@ async function getTags(time, budget, tags, coordinate) {
       Desc: locations_list[i].description,
       Id: locations_list[i].id,
       Owner: locations_list[i].owner,
-      Time: locations_list[i].average_time,
+      Time: Number(locations_list[i].average_time),
       City: locations_list[i].city
     })
   }
@@ -260,8 +260,8 @@ async function formatPlaces(data) {
         description: "",
         timetable: "",
         tags_list: "",
-        price_range: "",
-        average_time: "",
+        price_range: [ "20" ],
+        average_time: "20",
         phone: "",
         website: ""
     });

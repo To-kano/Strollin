@@ -30,7 +30,7 @@ router.get('/generate_course', async function(req, res) {
     const promise2 = algo.data.test(req.headers.time , req.headers.budget , req.headers.tags , req.headers.coordinate);
     promise2.then((value) => {
       let generated_course = value;
-      console.log("vourse: ", generated_course);
+      console.log("course: ", generated_course);
       if (generated_course) {
           return res.status(200).send({status: "Result of the generator.", generated_course});
       }
