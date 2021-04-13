@@ -17,16 +17,21 @@ const {
  */
 router.get('/generate_course', async function(req, res) {
 
-    let user = await UserModel.findOne({access_token: req.headers.access_token});
+    let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo").catch(error => error);
+
     if (!user) {
         return res.status(400).send({status: "You are not connected."});
     }
+    if (user.reason) {
+        return res.status(400).send({status: "Error in database transaction:\n", error: user});
+    }
 
+    console.log("lets goooooo", req.headers.time , req.headers.budget , " TAgs: ", req.headers.tags , req.headers.coordinate);
     if (!req.headers.coordinate || !req.headers.time || !req.headers.budget || !req.headers.tags) {
         return res.status(400).send({status: "Parameter required is missing."});
     }
     let tags = req.headers.tags.split(',');
-    console.log("lets goooooo");
+
     const promise2 = algo.data.test(req.headers.time , req.headers.budget , req.headers.tags , req.headers.coordinate);
     promise2.then((value) => {
       let generated_course = value;

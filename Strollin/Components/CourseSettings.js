@@ -27,6 +27,7 @@ async function getUserTags(pos, budget, hours, minutes) {
   .then(json => {
     console.log("ici ?: ", json);
     console.log("########", json.profile.tags_list);
+    console.log("mail: ", json.profile.mail);
     test(pos, budget, hours, minutes, json.profile.tags_list);
   });
 }
@@ -42,6 +43,7 @@ async function test(pos, budget, hours, minutes, tags) {
   console.log("time: ", time);
   console.log("pos: ", pos);
   console.log("budget: ", budget);
+  console.log("tags: ", tags);
 
   await fetch(`http://${IP_SERVER}:${PORT_SERVER}/generator/generate_course`, {
   headers: {

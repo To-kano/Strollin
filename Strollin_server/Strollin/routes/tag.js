@@ -19,28 +19,35 @@ const {
  * @param {String} req.body.description (Optional)
  */
 router.post('/new_tag', async function(req, res) {
-
     let tag = null;
-    let user = await UserModel.findOne({access_token: req.headers.access_token});
+    let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo").catch(error => error);
 
-    if (!user)
+    if (!user) {
         return res.status(400).send({status: "You are not connected."});
-    if (req.body.name) {
-        tag = await TagModel.findOne({name: req.body.name});
-        if (tag)
-            return res.status(400).send({status: "The tag exists already."});
-        tag = new TagModel({
-            id: new Number(Date.now()),
-            name: req.body.name,
-            description: req.body.description,
-        });
-        let error = await tag.save().catch(error => error);
-        if (error.errors) {
-            return res.status(400).send({status: "Error in database transaction", error: error});
-        }
-        return res.status(200).send({status: "tag created."});
     }
-    return res.status(400).send({status: "An element is missing in the request."});
+    if (user.reason) {
+        return res.status(400).send({status: "Error in database transaction:\n", error: user});
+    }
+
+    if (req.body.name) {
+        return res.status(400).send({status: "An element is missing in the request."});
+    }
+    tag = await TagModel.findOne({name: req.body.name}).catch(error => error);
+    if (tag && tag.reason) {
+        return res.status(400).send({status: "Error in database transaction:\n", error: tag});
+    } else if (tag) {
+        return res.status(400).send({status: "The tag exists already."});
+    }
+    tag = new TagModel({
+        id: new Number(Date.now()),
+        name: req.body.name,
+        description: req.body.description,
+    });
+    let error = await tag.save().catch(error => error);
+    if (error.errors) {
+        return res.status(400).send({status: "Error in database transaction:\n", error: error});
+    }
+    return res.status(200).send({status: "tag created."});
 });
 
 
@@ -52,26 +59,30 @@ router.post('/new_tag', async function(req, res) {
  * @param {String} req.headers.search (optional) (substring of name to research)
  */
 router.get('/get_tag', async function(req, res) {
-    let user = await UserModel.findOne({access_token: req.headers.access_token});
     let tags = null;
     let sort = req.headers.sort;
-    const projection = "-_id";
+    let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo").catch(error => error);
 
     if (!user) {
         return res.status(400).send({status: "You are not connected."});
     }
+    if (user.reason) {
+        return res.status(400).send({status: "Error in database transaction:\n", error: user});
+    }
+
     if (!sort) {
         sort = "name";
     }
     if (req.headers.search) {
-        tags = await TagModel.find({name: {$regex: req.headers.search}}, projection).sort(sort);
+        tags = await TagModel.find({name: {$regex: req.headers.search}}, "-_id").sort(sort).catch(error => error);
     } else {
-        tags = await TagModel.find({}, projection).sort(sort);
+        tags = await TagModel.find({}, "-_id").sort(sort).catch(error => error);
     }
-    if (tags) {
+    if (tags && tags.reason) {
+        return res.status(400).send({status: "Error in database transaction:\n", error: user});
+    } else if (tags) {
         return res.status(200).send({status: true, tags_list: tags});
-    }
-    else {
+    } else {
         return res.status(400).send({status: "Tags not found."});
     }
 });
@@ -84,11 +95,15 @@ router.get('/get_tag', async function(req, res) {
  * @param {TagID || [TagID]} req.headers.tags_list
  */
 router.get('/get_tag_by_id', async function(req, res) {
-    let user = await UserModel.findOne({access_token: req.headers.access_token});
-  
+    let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo").catch(error => error);
+
     if (!user) {
         return res.status(400).send({status: "You are not connected."});
     }
+    if (user.reason) {
+        return res.status(400).send({status: "Error in database transaction:\n", error: user});
+    }
+
     let given_list = req.headers.tags_list.split(',');
     let tags_list = await TagModel.find({id: {$in: given_list}}).catch(error => error);
     if (tags_list.reason) {
