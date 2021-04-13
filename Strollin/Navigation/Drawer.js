@@ -29,6 +29,7 @@ import CourseSettings from '../Components/CourseSettings';
 import PartenaireScreen from '../Components/PartenairePage';
 import SettingPartenaire from '../Components/SettingPartenaire';
 import Personal_trip from '../Components/Personal_trip';
+import TagSelection from '../Components/TagSelection';
 
 import Chat from './Chat';
 import Home from './Home';
