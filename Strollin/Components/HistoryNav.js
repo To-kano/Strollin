@@ -3,58 +3,50 @@ import React, { useState } from 'react';
 import {
   Text, View, Image, FlatList, Button, ImageBackground, TouchableOpacity, StyleSheet, Dimensions
 } from 'react-native';
+import DrawerLayout from 'react-native-gesture-handler/DrawerLayout';
+import { DrawerActions } from '@react-navigation/native';
 import HistoryItem from './historyItem';
 import BackgroundImage from './backgroundImage';
 import I18n from '../Translation/configureTrans';
 import Box from './box';
 
-import DrawerLayout from 'react-native-gesture-handler/DrawerLayout';
 import Menu from './Menu';
 
-import { DrawerActions } from '@react-navigation/native';
-
-
 export function HistoryNav({ navigation, profil }) {
-
   const [drawer, setDrawer] = useState(null);
 
-
-  //console.log("profile = ", profil);
+  // console.log("profile = ", profil);
   return (
-    <View style={{ flex: 1 }}>
-        <View style={styles.view_back}>
-          <View style={styles.view_header}>
-            <TouchableOpacity onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
-              <Image style={styles.img_header} source={require('../images/icons/black/menu.png')}/>
-            </TouchableOpacity>
-            <Text style={styles.text_header}>Historic</Text>
-            <TouchableOpacity>
-              <Image style={styles.img_header} source={require('../images/icons/black/search.png')}/>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.viex_list}>
-            <FlatList
-              showsHorizontalScrollIndicator={false}
-              showsVerticalScrollIndicator={false}
-              data={profil.course_historic}
-              renderItem={({ item }) => (
-                <HistoryItem courseId={item}/>
-              )}
-            />
-          </View>
-        </View>
+    <View style={styles.view_back}>
+      <View style={styles.view_header}>
+        {/* <TouchableOpacity onPress={() => navigation.navigate('Menu')}> */}
+        <TouchableOpacity onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
+          <Image style={styles.img_header} source={require('../images/icons/black/menu.png')} />
+        </TouchableOpacity>
+        <Text style={styles.text_header}>
+          {I18n.t('Header.historic')}
+          {'   '}
+        </Text>
+      </View>
+      <View style={styles.viex_list}>
+        <FlatList
+          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
+          data={profil.course_historic}
+          renderItem={({ item }) => (
+            <HistoryItem courseId={item} />
+          )}
+        />
+      </View>
     </View>
   );
 }
 
-
-const mapStateToProps = (state) => {
-  return (
-    {
-      profil: state.profil
-    }
-  )
-};
+const mapStateToProps = (state) => (
+  {
+    profil: state.profil
+  }
+);
 export default connect(mapStateToProps)(HistoryNav);
 
 const styles = StyleSheet.create({
@@ -80,7 +72,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   text_header: {
-    width: '77.8%',
+    width: '87.6%',
     fontWeight: 'bold',
     fontSize: 28,
     letterSpacing: 2,
