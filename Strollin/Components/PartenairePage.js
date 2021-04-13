@@ -1,11 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {
-  View, StyleSheet, Image, Text, TouchableOpacity, 
+  View, StyleSheet, Image, Text, TouchableOpacity,
 } from 'react-native';
 import BackgroundImage from './backgroundImage';
 
 function PartenaireScreen(props) {
+  console.log(props.map.locations, "\n\n\n", props.profil, "\n\n\n", props.route)
 
     return (
         <View style={styles.back}>
@@ -167,19 +168,19 @@ const styles = StyleSheet.create({
         marginBottom: '50%',
     },
     textLine : {
-        marginTop: '3%', 
-        flexDirection: "row", 
-        justifyContent: 'center' 
+        marginTop: '3%',
+        flexDirection: "row",
+        justifyContent: 'center'
     },
     textInfos : {
-        fontSize: 19, 
-        textAlign: "left", 
-        width: "75%" 
+        fontSize: 19,
+        textAlign: "left",
+        width: "75%"
     },
     textNumber : {
-        fontSize: 19, 
-        fontWeight: "bold", 
-        textAlign: "right", 
+        fontSize: 19,
+        fontWeight: "bold",
+        textAlign: "right",
         width: "25%",
         textAlignVertical: "bottom"
     }

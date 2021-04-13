@@ -32,6 +32,8 @@ import CourseEvaluation from '../Components/CourseEvaluation';
 import CourseSettings from '../Components/CourseSettings';
 import PartenaireScreen from '../Components/PartenairePage';
 import SettingPartenaire from '../Components/SettingPartenaire';
+import Personal_trip from '../Components/Personal_trip';
+
 
 const Stack = createStackNavigator();
 
@@ -260,6 +262,14 @@ function MyStack(props) {
                 title: 'Menu',
                 ...TransitionPresets.SlideFromRightIOS,
                 gestureDirection: 'horizontal-inverted',
+              }}
+            />
+            <Stack.Screen
+              name="Personal_trip"
+              component={Personal_trip}
+              options={{
+                title: 'Personal_trip',
+                ...TransitionPresets.SlideFromRightIOS,
               }}
             />
           </>
