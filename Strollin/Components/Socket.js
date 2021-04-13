@@ -7,8 +7,7 @@ import Store from '../Store/configureStore';
 import profileReducer from '../Store/Reducers/profileReducer';
 
 const SocketContext = createContext(); 
-const ENDPOINT = 'http://88.165.45.219:3000';//3003 pour Tony
-
+const ENDPOINT = 'http://88.165.45.219:3000';//3000 pour Tony
 import AsyncStorage from '@react-native-community/async-storage';
 
 
@@ -45,14 +44,14 @@ function Socket({children, profil, dispatch}) {
   useEffect(() => {
     if (socket != null) {
       socket.on('receiveMessage', (data) => {
-      //console.log("received " + data);
+      console.log("received msg" + JSON.stringify(data));
       
       const action = { type: 'ADD_MESSAGE', value: data };
       Store.dispatch(action);
 
       const action2 = { 
         type: 'ADD_MESSAGE_ID',
-        value: { _id: data.conversation, message_id : data._id}
+        value: { id: data.conversation, message_id : data.id}
       };
       Store.dispatch(action2);
 
@@ -64,7 +63,6 @@ function Socket({children, profil, dispatch}) {
         const store = Store.getState();
 
 
-        console.log("newconv received!");
         const action = { type: 'ADD_CONVERSATION', value: data };
         Store.dispatch(action);
         const action2 = { type: 'RESET_PARTICIPANT_OF_CONVERSATION'};
@@ -92,6 +90,13 @@ function Socket({children, profil, dispatch}) {
       conversation: store.conversation.currentConversation, type: "message", message: message});
   };
 
+  const sendImage = (image) => {
+    console.log('sending image', image);
+  
+    socket.emit('sendMessage', { access_token: store.profil.access_token, 
+      conversation: store.conversation.currentConversation, type: "image", message: image});
+  };
+
   const createConversation = (participantsID) => {
     console.log('creating conversation', participantsID);
     let convName = store.profil.pseudo;
@@ -105,7 +110,7 @@ function Socket({children, profil, dispatch}) {
   };
 
   return (
-    <SocketContext.Provider value={{ socket, sendMessage, createConversation }}>
+    <SocketContext.Provider value={{ socket, sendMessage, createConversation, sendImage }}>
       {children}
     </SocketContext.Provider>
   );

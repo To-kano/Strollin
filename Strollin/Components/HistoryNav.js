@@ -1,34 +1,27 @@
 import { connect } from 'react-redux';
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import {
   Text, View, Image, FlatList, Button, ImageBackground, TouchableOpacity, StyleSheet, Dimensions
 } from 'react-native';
-import ElementHistoryNav from './HistoryElement';
+import DrawerLayout from 'react-native-gesture-handler/DrawerLayout';
+import { DrawerActions } from '@react-navigation/native';
+import HistoryItem from './historyItem';
 import BackgroundImage from './backgroundImage';
 import I18n from '../Translation/configureTrans';
 import Box from './box';
 
-export function HistoryNav({ navigation, map }) {
-  //React.useLayoutEffect(() => {
-  //  navigation;
-  //  navigation.setOptions({
-  //    // headerRight: () => (
-  //    //   <Button
-  //    //       title="Log Out"
-  //    //       color="#89B3D9"
-  //    //       onPress={() =>
-  //    //         navigation.navigate('userLogin')
-  //    //       }
-  //    //     />
-  //    // ),
-  //  });
-  //}, [navigation]);
+import Menu from './Menu';
 
+export function HistoryNav({ navigation, profil }) {
+  const [drawer, setDrawer] = useState(null);
+
+  // console.log("profile = ", profil);
   return (
     <View style={styles.view_back}>
       <View style={styles.view_header}>
-        <TouchableOpacity onPress={() => navigation.navigate('Menu')}>
-          <Image style={styles.img_header} source={require('../images/icons/black/menu.png')}/>
+        {/* <TouchableOpacity onPress={() => navigation.navigate('Menu')}> */}
+        <TouchableOpacity onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
+          <Image style={styles.img_header} source={require('../images/icons/black/menu.png')} />
         </TouchableOpacity>
         <Text style={styles.text_header}>
           {I18n.t('Header.historic')}
@@ -39,116 +32,21 @@ export function HistoryNav({ navigation, map }) {
         <FlatList
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
-          data={map.historic}
+          data={profil.course_historic}
           renderItem={({ item }) => (
-            <View style={styles.view_historic}>
-              <View style={styles.view_historicTop}>
-                <View style={styles.view_information}>
-                  <Image style={styles.img_date} source={require('../images/icons/black/calendar.png')}/>
-                  <Text style={styles.text_date}>{item.date}</Text>
-                </View>
-                <View style={styles.view_information}>
-                  <Image style={styles.img_duration} source={require('../images/icons/black/time.png')}/>
-                  <Text style={styles.text_duration}>{item.duration}</Text>
-                </View>
-              </View>
-              <ElementHistoryNav data={item.waypoints} />
-            </View>
+            <HistoryItem courseId={item} />
           )}
         />
       </View>
     </View>
-    // <View style={styles.back}>
-    //   <BackgroundImage />
-    //   <View style={styles.header}>
-    //     <TouchableOpacity
-    //       style={{ width: '20%', height: '100%', marginLeft: 15 }}
-    //       onPress={() => navigation.navigate('HomePage')}
-    //     >
-    //       <Image
-    //         style={{
-    //           marginTop: '10%', height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'
-    //         }}
-    //         source={require('../ressources/home.png')}
-    //       />
-    //     </TouchableOpacity>
-    //     <TouchableOpacity
-    //       style={{ width: '20%', height: '100%' }}
-    //       onPress={() => navigation.navigate('historicUser')}
-    //     >
-    //       <Image
-    //         style={{
-    //           marginTop: '10%', height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'
-    //         }}
-    //         source={require('../ressources/trip.png')}
-    //       />
-    //     </TouchableOpacity>
-    //     <TouchableOpacity
-    //       style={{ width: '20%', height: '100%' }}
-    //       onPress={() => navigation.navigate('TripSuggestion')}
-    //     >
-    //       <Image
-    //         style={{
-    //           marginTop: '10%', height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'
-    //         }}
-    //         source={require('../ressources/plus.png')}
-    //       />
-    //     </TouchableOpacity>
-    //     <TouchableOpacity
-    //       style={{ width: '20%', height: '100%' }}
-    //       onPress={() => props.navigation.navigate('FriendList')}
-    //     >
-    //       <Image
-    //         style={{
-    //           marginTop: '10%', height: '65%', width: '50%', opacity: 0.5, resizeMode: 'stretch'
-    //         }}
-    //         source={require('../ressources/friend.png')}
-    //       />
-    //     </TouchableOpacity>
-    //     <TouchableOpacity
-    //       style={{ width: '20%', height: '100%' }}
-    //       onPress={() => navigation.navigate('Profile')}
-    //     >
-    //       <Image
-    //         style={{
-    //           marginTop: '10%', height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'
-    //         }}
-    //         source={require('../ressources/profile.png')}
-    //       />
-    //     </TouchableOpacity>
-    //   </View>
-    //   <View style={styles.fill}>
-    //     <FlatList
-    //       data={map.historic}
-    //       renderItem={({ item }) => (
-    //         <View style={{ padding: 10 }}>
-    //           <Text>
-    //             date:
-    //             {item.date}
-    //           </Text>
-    //           <Text>
-    //             duration:
-    //             {item.duration}
-    //           </Text>
-    //           <ElementHistoryNav data={item.waypoints} />
-    //         </View>
-    //       )}
-    //     />
-    //   </View>
-    //   <View style={{ flex: 0.10, flexDirection: 'column', margin: '5%' }}>
-    //     <TouchableOpacity
-    //       style={styles.newTrip}
-    //       onPress={() => navigation.navigate('TripSuggestion')}
-    //     >
-    //       <Text style={{ fontSize: 16, color: '#FFFFFF' }}> New trip </Text>
-    //     </TouchableOpacity>
-    //   </View>
-    // </View>
   );
 }
 
-const mapStateToProps = (state) => state;
-
+const mapStateToProps = (state) => (
+  {
+    profil: state.profil
+  }
+);
 export default connect(mapStateToProps)(HistoryNav);
 
 const styles = StyleSheet.create({

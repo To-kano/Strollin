@@ -44,7 +44,7 @@ function ChatScreen(props) {
               messageID={item}
               />
             )}
-            keyExtractor={(item) => item}
+            keyExtractor={(item) => String(item)}
           />
         </View>
         <ConversationBar

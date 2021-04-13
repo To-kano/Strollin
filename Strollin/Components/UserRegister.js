@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Input } from 'react-native-elements';
 import { connect } from 'react-redux';
@@ -14,6 +14,7 @@ import I18n from '../Translation/configureTrans';
 
 import { RondFormeText } from './rondForm';
 import { registerUser } from '../apiServer/user';
+import Popup from './Popup';
 
 const getInfoFromToken = (token, setUserInfo, props) => {
   const PROFILE_REQUEST_PARAMS = {
@@ -36,6 +37,7 @@ const getInfoFromToken = (token, setUserInfo, props) => {
   new GraphRequestManager().addRequest(profileRequest).start();
 };
 
+
 export function UserRegister(props) {
   const [userEmail, setUserEmail] = useState('');
   const [userPassword, setUserPassword] = useState('');
@@ -43,6 +45,15 @@ export function UserRegister(props) {
   const [pseudo, setPseudo] = useState('');
   const [userLastName, setUserLastName] = useState('');
   const [userInfo, setUserInfo] = React.useState({});
+
+  const [modalVisible, setModalVisible] = useState(false);
+  const [message, setMessage] = useState("");
+  useEffect(() => {
+    if (props.profil.access_token != null) {
+      console.log("ok")
+      props.navigation.navigate('TagSelection');
+    }
+  })
 
   //const [loading, setLoading] = useState(false);
 
@@ -79,6 +90,7 @@ export function UserRegister(props) {
         </TouchableOpacity>
       </View>
       <View style={styles.view_field}>
+        <Popup message={message} modalVisible={modalVisible} setModalVisible={setModalVisible} />
         <Text style={styles.text_field}>
           {I18n.t('UserRegister.username')}
           <Text style={styles.text_star}> *</Text>
@@ -139,7 +151,7 @@ export function UserRegister(props) {
           style={styles.button_logIn}
           onPress={() => {
             if (userPassword === userConfirmPassWord) {
-              registerUser(props, pseudo, userPassword, userEmail);
+              registerUser(props, pseudo, userPassword, userEmail, setMessage, setModalVisible);
             }
           }}
         >

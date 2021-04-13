@@ -21,7 +21,7 @@ const EXEMPLE_non_traité = {
       ],
       "tags_list": [],
       "time_spent": [],
-      "_id": "60141df8457c17001fed9aa1",
+      "id": "60141df8457c17001fed9aa1",
       "name": "Cinéma",
       "author": "It's me !",
       "creation_date": "2021-01-29T14:38:48.530Z",
@@ -34,11 +34,11 @@ const location_ex = {
   "status": 'true',
   "locations_list": [ 
     {
-      "_id": "14334G",
+      "id": "14334G",
       "name": "Tour Eiffel"
     },
     {
-      "_id": "1afzzeqf",
+      "id": "1afzzeqf",
       "name": "Macdo"
     },
   ]
@@ -48,11 +48,11 @@ const EXEMPLE_after_treatment = {
     {
       "locations_list": [
         {
-          "_id": "14334G",
+          "id": "14334G",
           "name": "Gaumont & Pathé"
         },
         {
-          "_id": "1afzzeqf",
+          "id": "1afzzeqf",
           "name": "Macdo"
         },
       ],
@@ -71,7 +71,7 @@ const EXEMPLE_after_treatment = {
       ],
       "tags_list": ["cinema", "pathé", "macdo"],
       "time_spent": [],
-      "_id": "60141df8457c17001fed9aa1",
+      "id": "60141df8457c17001fed9aa1",
       "name": "Cinéma",
       "author": "It's me !",
       "creation_date": "2021-01-29T14:38:48.530Z",
@@ -81,11 +81,11 @@ const EXEMPLE_after_treatment = {
     {
       "locations_list": [
         {
-          "_id": "14334G",
+          "id": "14334G",
           "name": "Tour Eiffel"
         },
         {
-          "_id": "1afzzeqf",
+          "id": "1afzzeqf",
           "name": "Macdo"
         },
       ],
@@ -104,7 +104,7 @@ const EXEMPLE_after_treatment = {
       ],
       "tags_list": ["eiffel", "tour", "macdo"],
       "time_spent": [],
-      "_id": "60141df8457c17001fed9aa1",
+      "id": "60141df8457c17001fed9aa1",
       "name": "Eiffel visite",
       "author": "It's me !",
       "creation_date": "2021-01-29T14:38:48.530Z",
@@ -113,11 +113,11 @@ const EXEMPLE_after_treatment = {
     {
       "locations_list": [
         {
-          "_id": "14334G",
+          "id": "14334G",
           "name": "Grec"
         },
         {
-          "_id": "1afzzeqf",
+          "id": "1afzzeqf",
           "name": "Macdo"
         },
       ],
@@ -136,7 +136,7 @@ const EXEMPLE_after_treatment = {
       ],
       "tags_list": ["restaurant", "bouffe", "macdo"],
       "time_spent": [],
-      "_id": "60141df8457c17001fed9aa1",
+      "id": "60141df8457c17001fed9aa1",
       "name": "Full bouffe!",
       "author": "It's me !",
       "creation_date": "2021-01-29T14:38:48.530Z",
@@ -172,8 +172,13 @@ function tendanceReducer(state = initialState, action) {
         ...state,
       };
       nextState.tendanceList[action.index]["locations_list"] = action.value
-
-    return nextState;
+      return nextState;
+    case 'SET_COMMENT_LIST':
+      nextState = {
+        ...state,
+      };
+      nextState.tendanceList[action.index]["comments_list"] = action.value
+      return nextState;
     default:
       return state;
   }

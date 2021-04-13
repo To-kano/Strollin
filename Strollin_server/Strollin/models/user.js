@@ -5,6 +5,10 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var UserModelSchema = new Schema({
+    id: {
+        type: Number,
+        required: true,
+    },
     mail: {                 // Adresse mail pour login et communication
         type: String,
         required: true,
@@ -14,8 +18,8 @@ var UserModelSchema = new Schema({
         required: true,
     },
     creation_date: {         // Date de création (gérer auto)
-        type: Date,
-        default: Date.now,
+        type: String,
+        required: true,
     },
     pseudo: {               // Nom apparaissant pour l'utilisateur (ex: Auteur de parcours / Messagerie)
         type: String,
@@ -64,6 +68,10 @@ var UserModelSchema = new Schema({
     facebook_id: {           // ID de facebook pour la connexion facebook ?
         type: String,
         default: "",
+    },
+    verify: {
+        type: Boolean,
+        default: false
     },
 })
 

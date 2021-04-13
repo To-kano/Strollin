@@ -34,8 +34,6 @@ COMMENT RELATED:
 - author ```userID```
 - user_score ```[userID]```
 - creation_date ```Date```
-- comment_previous ```commentID```
-- comment_next ```commentID```
 
 <br>
 

@@ -148,6 +148,11 @@ export default {
     goTo: 'Voulez vous allez à'
   },
 
+  Position: {
+    information: "information",
+    send : 'Envoyer',
+  },
+
   ProfileScreen: {
     name: 'Nom',
     email: 'Email',

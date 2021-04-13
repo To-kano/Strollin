@@ -175,7 +175,7 @@ function SettingPartenaire(props) {
               <Image style={styles.img_location} source={require('../images/icons/white/location.png')} />
               <Text style={styles.text_location}>Adresse de l entreprise</Text>
             </View>
-            <Text style={styles.text_name}>Nom entreprise</Text>
+            <Text style={styles.text_name}>{args.name}</Text>
           </View>
         </ImageBackground>
       </TouchableOpacity>
@@ -198,6 +198,7 @@ function SettingPartenaire(props) {
           <TextInput
             style={styles.textInput_number}
             placeholder="Adresse du commerce"
+            onChangeText={(text) => postAdd(text)}
           />
         </View>
       </View>

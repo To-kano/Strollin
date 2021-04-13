@@ -38,6 +38,7 @@ const initialList = [
 
 function PartenaireScreen(props) {
   const [list, setList] = React.useState(initialList);
+  console.log(props.map.locations, "\n\n\n", props.profil, "\n\n\n", props.route)
 
   return (
     <View style={styles.view_back}>

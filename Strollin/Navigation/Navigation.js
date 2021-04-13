@@ -25,12 +25,18 @@ import MenuChat from '../Components/reactChatScreen/MenuScreen';
 import ScreenChat from '../Components/reactChatScreen/ChatScreen';
 import NewConversation from '../Components/reactChatScreen/NewConversation';
 import Notation from '../Components/Notation';
+import Position from '../Components/Position';
 import Menu from '../Components/Menu';
 import Socket from '../Components/Socket';
 import CourseEvaluation from '../Components/CourseEvaluation';
 import CourseSettings from '../Components/CourseSettings';
 import PartenaireScreen from '../Components/PartenairePage';
 import SettingPartenaire from '../Components/SettingPartenaire';
+import Personal_trip from '../Components/Personal_trip';
+
+
+
+import MyDrawer from './Drawer'
 
 const Stack = createStackNavigator();
 
@@ -71,7 +77,6 @@ function MyStack(props) {
                 animationEnabled: false,
               }}
             />
-
             <Stack.Screen
               name="userRegister"
               component={UserRegister}
@@ -100,6 +105,30 @@ function MyStack(props) {
         ) : (
           <>
             <Stack.Screen
+              name="drawer"
+              component={MyDrawer}
+            />
+          </>
+
+        )}
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
+
+const mapStateToProps = (state) => state;
+export default connect(mapStateToProps)(MyStack);
+
+
+//<Stack.Screen
+//name="Connection"
+//component={ConnectionScreen}
+//options={{ title: 'connection' }}
+///>
+
+
+/*<>
+            <Stack.Screen
               name="HomePage"
               component={HomePage}
               options={{
@@ -114,6 +143,11 @@ function MyStack(props) {
                 title: 'Notation',
                 ...TransitionPresets.SlideFromRightIOS,
               }}
+            />
+            <Stack.Screen
+              name="Position"
+              component={Position}
+              options={{ title: 'Position' }}
             />
             <Stack.Screen
               name="historicUser"
@@ -260,20 +294,4 @@ function MyStack(props) {
                 gestureDirection: 'horizontal-inverted',
               }}
             />
-          </>
-
-        )}
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
-}
-
-const mapStateToProps = (state) => state;
-export default connect(mapStateToProps)(MyStack);
-
-
-//<Stack.Screen
-//name="Connection"
-//component={ConnectionScreen}
-//options={{ title: 'connection' }}
-///>
+          </>*/

@@ -110,6 +110,11 @@ export default {
     goTo: 'do you want to go to',
   },
 
+  Position: {
+    information: "information",
+    send: 'Send',
+  },
+
   ProfileScreen: {
     name: 'Name',
     email: 'Email',

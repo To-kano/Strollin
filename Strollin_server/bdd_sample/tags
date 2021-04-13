@@ -1,5 +1,4 @@
-{"_id":{"$oid":"6009c3171fc13a001ef6e4e9"},"description":"Nescafé","number_used":"0","locations_list":[],"courses_list":[],"name":"Nee","__v":0}
-{"_id":{"$oid":"6009c589805b54001fa7cce6"},"description":"Nescafé","number_used":"0","locations_list":[],"courses_list":[],"name":"Nesse","__v":0}
-{"_id":{"$oid":"6009c5f4f56675001f755c5b"},"description":"Nescafé","number_used":"0","locations_list":[],"courses_list":[],"name":"Nessde","__v":0}
-{"_id":{"$oid":"600c28493202ad001ef3cb8d"},"description":"Onion","number_used":"0","locations_list":[],"courses_list":[],"name":"Neeee","__v":0}
-{"_id":{"$oid":"6012c74bd3101a001ebc275a"},"description":"Onion","number_used":"0","locations_list":[],"courses_list":[],"name":"NNNNN","__v":0}
+{"_id":{"$oid":"603fb08ca25eab001fa8ee9b"},"description":"Nom Miam Mogu","number_used":"0","locations_list":[],"courses_list":[],"id":1614786700022,"name":"restaurant","__v":0}
+{"_id":{"$oid":"603fb09ca25eab001fa8ee9e"},"description":"Nestor! Nescafé!","number_used":"0","locations_list":[],"courses_list":[],"id":1614786716959,"name":"cafe","__v":0}
+{"_id":{"$oid":"603fb0a7a25eab001fa8ee9f"},"description":"Oui c'est un bar","number_used":"0","locations_list":[],"courses_list":[],"id":1614786727962,"name":"bar","__v":0}
+{"_id":{"$oid":"603fb0b9a25eab001fa8eea0"},"description":"cinema pas chez toi","number_used":"0","locations_list":[],"courses_list":[],"id":1614786745554,"name":"cinema","__v":0}
