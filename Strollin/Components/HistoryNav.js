@@ -30,10 +30,10 @@ export function HistoryNav({ navigation, map }) {
         <TouchableOpacity onPress={() => navigation.navigate('Menu')}>
           <Image style={styles.img_header} source={require('../images/icons/black/menu.png')}/>
         </TouchableOpacity>
-        <Text style={styles.text_header}>Historic</Text>
-        <TouchableOpacity>
-          <Image style={styles.img_header} source={require('../images/icons/black/search.png')}/>
-        </TouchableOpacity>
+        <Text style={styles.text_header}>
+          {I18n.t('Header.historic')}
+          {'   '}
+        </Text>
       </View>
       <View style={styles.viex_list}>
         <FlatList
@@ -174,7 +174,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   text_header: {
-    width: '77.8%',
+    width: '87.6%',
     fontWeight: 'bold',
     fontSize: 28,
     letterSpacing: 2,

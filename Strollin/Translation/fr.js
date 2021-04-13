@@ -149,15 +149,15 @@ export default {
   },
 
   ProfileScreen: {
-    name: 'Nom : ',
-    email: 'Email : ',
-    tags: 'Tags : ',
+    name: 'Nom',
+    email: 'Email',
+    tags: 'Tags',
     myTags: 'Mes tags',
     addTags: 'Ajouter des tags'
   },
 
   TagSelection: {
-    welcome: 'Bienvenue : ',
+    welcome: 'Bienvenue',
     chooseTags: 'Choisissez les tags qui correspondent le mieux à votre personnalité',
     next: 'Suivant',
   },
@@ -169,6 +169,7 @@ export default {
   TripSuggestion: {
     step: 'Etape :',
     headingTo: 'En route vers',
+    lets_go: "C'est parti !"
   },
 
   UserRegister: {
@@ -184,4 +185,40 @@ export default {
     SIGNIN: 'SE CONNECTER',
     SIGNUP: "S'INSCRIRE",
   },
+
+  Tags: {
+    select_our_tags: 'Selectionnez vos Tags',
+    confirm_my_tags: 'Confirmer mes Tags',
+  },
+
+  Partner: {
+    number_of_popup: 'Nombre de popup',
+    number_of_accepted_popup: 'Nombre de popup accepté',
+    appearances_in_the_algorithm: "Apparition dans l'algorythme",
+    acceptance_in_the_algorithm: "Acceptation dans l'algorythme",
+    number_of_visitors: 'Nombre de visiteurs',
+    appearance_by_tags: 'Apparence par tags',
+  },
+
+  SettingsPartner: {
+    shop_name: 'Nom du commerce',
+    shop_address: 'Adresse du commerce',
+    shop_tags: 'Tags du commerce',
+    choose_my_shop_tag: 'Choisir les Tags du commerce'
+  },
+
+  Header: {
+    search_tag: 'Rechercher un Tag',
+    add_friend: 'Ajouter un ami',
+    partner: 'Partenaire',
+    profile: 'Profil',
+    home: 'Home',
+    historic: 'Historique',
+    new_trip: 'New Trip',
+    settings: 'Paramètres',
+    tags: 'Tags',
+    friends: 'Amis',
+    chats: 'Messages',
+    rating: 'Notation',
+  }
 };

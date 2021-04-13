@@ -131,7 +131,10 @@ export function TripSuggestion(props) {
         <TouchableOpacity onPress={() => props.navigation.navigate('Menu')}>
           <Image style={styles.img_header} source={require('../images/icons/black/menu.png')}/>
         </TouchableOpacity>
-        <Text style={styles.text_header}>New Trip    </Text>
+        <Text style={styles.text_header}>
+          {I18n.t('Header.new_trip')}
+          {'    '}
+        </Text>
       </View>
       <View style={styles.viex_list}>
         <ElementHistoryNav data={waypoints} />
@@ -144,7 +147,9 @@ export function TripSuggestion(props) {
           props.navigation.navigate('TripNavigation');
         }}
       >
-        <Text style={styles.text_button}>Let's Go !</Text>
+        <Text style={styles.text_button}>
+          {I18n.t('TripSuggestion.lets_go')}
+        </Text>
       </TouchableOpacity>
     </View>
     // <View style={styles.back}>

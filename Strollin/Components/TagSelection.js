@@ -2,10 +2,49 @@ import React, { useState } from 'react';
 
 import { connect } from 'react-redux';
 import {
-  StyleSheet, Text, View, FlatList, TouchableOpacity, Image,
+  StyleSheet, Text, View, FlatList, TouchableOpacity, Image, TextInput,
 } from 'react-native';
 
 import I18n from '../Translation/configureTrans';
+import { getTimeZone } from 'react-native-localize';
+
+export function Header({ navigation, defaultState = false }) {
+  const [pressed, setpressed] = useState(defaultState);
+
+  if (pressed === false) {
+    return (
+      <View style={styles.view_header}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Menu')}
+        >
+          <Image style={styles.img_header} source={require('../images/icons/black/menu.png')} />
+        </TouchableOpacity>
+        <Text style={styles.text_header}>
+          {I18n.t('Header.tags')}
+        </Text>
+        <TouchableOpacity
+          onPress={() => { setpressed(!pressed); }}
+        >
+          <Image style={styles.img_header} source={require('../images/icons/black/search.png')} />
+        </TouchableOpacity>
+      </View>
+    );
+  }
+  return (
+    <View style={styles.view_header}>
+      <TextInput
+        style={styles.textInput_header}
+        placeholder={I18n.t('Header.search_tag')}
+      />
+      <TouchableOpacity
+        // onPress={setSortedTendanceData}
+        onPress={() => { setpressed(!pressed); }}
+      >
+        <Image style={styles.img_header} source={require('../images/icons/black/search.png')} />
+      </TouchableOpacity>
+    </View>
+  );
+}
 
 export function Tag({ name, defaultState = false }) {
   const [pressed, setpressed] = useState(defaultState);
@@ -58,18 +97,10 @@ export function TagSelection({ navigation, profil }) {
 
   return (
     <View style={styles.view_back}>
-      <View style={styles.view_header}>
-        <TouchableOpacity onPress={() => navigation.navigate('Menu')}>
-          <Image style={styles.img_header} source={require('../images/icons/black/menu.png')}/>
-        </TouchableOpacity>
-        <Text style={styles.text_header}>Tags</Text>
-        <TouchableOpacity>
-          <Image style={styles.img_header} source={require('../images/icons/black/search.png')}/>
-        </TouchableOpacity>
-      </View>
+      <Header navigation={navigation} />
       <View style={styles.viex_list}>
         <Text style={styles.text_field}>
-          Selectionnez vos Tags
+          {I18n.t('Tags.select_our_tags')}
           <Text style={styles.text_star}> *</Text>
         </Text>
         <FlatList
@@ -85,7 +116,9 @@ export function TagSelection({ navigation, profil }) {
           navigation.navigate('Profile');
         }}
       >
-        <Text style={styles.text_button}>Confirm my tags</Text>
+        <Text style={styles.text_button}>
+          {I18n.t('Tags.confirm_my_tags')}
+        </Text>
       </TouchableOpacity>
     </View>
     // <View style={styles.back}>
@@ -155,6 +188,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 10,
+  },
+  textInput_header: {
+    height: 40,
+    width: '85%',
+    borderRadius: 21,
+    marginRight: 12.5,
+    paddingLeft: 12.5,
+    backgroundColor: '#FFFFFF',
   },
   img_header: {
     width: 34,

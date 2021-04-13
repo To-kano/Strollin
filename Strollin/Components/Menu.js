@@ -27,56 +27,63 @@ function Menu(props) {
           style={styles.view_navigationIn}
         >
           <Image style={styles.img_navigationIn} source={require('../images/icons/black/home.png')} />
-          <Text style={styles.text_navigationIn}>Home</Text>
+          <Text style={styles.text_navigationIn}>{I18n.t('Header.home')}</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => props.navigation.navigate('historicUser')}
           style={styles.view_navigationIn}
         >
           <Image style={styles.img_navigationIn} source={require('../images/icons/black/historic.png')} />
-          <Text style={styles.text_navigationIn}>Historic</Text>
+          <Text style={styles.text_navigationIn}>{I18n.t('Header.historic')}</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => props.navigation.navigate('TripSuggestion')}
           style={styles.view_navigationIn}
         >
           <Image style={styles.img_navigationIn} source={require('../images/icons/black/next_trip.png')} />
-          <Text style={styles.text_navigationIn}>New Trip</Text>
+          <Text style={styles.text_navigationIn}>{I18n.t('Header.new_trip')}</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => props.navigation.navigate('FriendList')}
           style={styles.view_navigationIn}
         >
           <Image style={styles.img_navigationIn} source={require('../images/icons/black/friends.png')} />
-          <Text style={styles.text_navigationIn}>Friends</Text>
+          <Text style={styles.text_navigationIn}>{I18n.t('Header.friends')}</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => props.navigation.navigate('MenuChat')}
           style={styles.view_navigationIn}
         >
           <Image style={styles.img_navigationIn} source={require('../images/icons/black/chats.png')} />
-          <Text style={styles.text_navigationIn}>Chats</Text>
+          <Text style={styles.text_navigationIn}>{I18n.t('Header.chats')}</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => props.navigation.navigate('Profile')}
           style={styles.view_navigationIn}
         >
           <Image style={styles.img_navigationIn} source={require('../images/icons/black/profile.png')} />
-          <Text style={styles.text_navigationIn}>Profile</Text>
+          <Text style={styles.text_navigationIn}>{I18n.t('Header.profile')}</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => props.navigation.navigate('PartenaireScreen')}
           style={styles.view_navigationIn}
         >
           <Image style={styles.img_navigationIn} source={require('../images/icons/black/partner.png')} />
-          <Text style={styles.text_navigationIn}>Partner</Text>
+          <Text style={styles.text_navigationIn}>{I18n.t('Header.partner')}</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => props.navigation.navigate('SettingPartenaire')}
           style={styles.view_navigationIn}
         >
           <Image style={styles.img_navigationIn} source={require('../images/icons/black/settings.png')} />
-          <Text style={styles.text_navigationIn}>Settings</Text>
+          <Text style={styles.text_navigationIn}>{I18n.t('Header.settings')}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => props.navigation.navigate('CourseEvaluation')}
+          style={styles.view_navigationIn}
+        >
+          <Image style={styles.img_navigationIn} source={require('../images/icons/black/settings.png')} />
+          <Text style={styles.text_navigationIn}>Notation</Text>
         </TouchableOpacity>
       </View>
       <TouchableOpacity

@@ -166,7 +166,10 @@ function MyStack(props) {
             <Stack.Screen
               name="CourseEvaluation"
               component={CourseEvaluation}
-              options={{ title: 'course evaluation' }}
+              options={{
+                title: 'course evaluation' ,
+                ...TransitionPresets.SlideFromRightIOS,
+              }}
             />
             <Stack.Screen
               name="CourseSettings"

@@ -56,7 +56,10 @@ function ProfileScreen(props) {
         <TouchableOpacity onPress={() => props.navigation.navigate('Menu')}>
           <Image style={styles.img_header} source={require('../images/icons/black/menu.png')} />
         </TouchableOpacity>
-        <Text style={styles.text_header}>Profile    </Text>
+        <Text style={styles.text_header}>
+          {I18n.t('Header.profile')}
+          {'   '}
+        </Text>
       </View>
       <View style={styles.view_profileTop}>
         <Image style={styles.img_profileTop} source={require('../images/TonyPP.jpg')} />
@@ -66,7 +69,7 @@ function ProfileScreen(props) {
       <View style={styles.view_email}>
         <Text style={styles.text_description}>
           {' '}
-          {I18n.t('email')}
+          {I18n.t('ProfileScreen.email')}
         </Text>
         <TextInput
           style={styles.text_email}

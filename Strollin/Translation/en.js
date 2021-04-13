@@ -111,9 +111,9 @@ export default {
   },
 
   ProfileScreen: {
-    name: 'Name: ',
-    email: 'Email: ',
-    tags: 'Tags: ',
+    name: 'Name',
+    email: 'Email',
+    tags: 'Tags',
     myTags: 'My tags',
     addTags: 'Add tags'
   },
@@ -131,6 +131,7 @@ export default {
   TripSuggestion: {
     step: 'Step :',
     headingTo: 'Heading to',
+    lets_go: "Let's go !"
   },
 
   UserRegister: {
@@ -146,6 +147,35 @@ export default {
     SIGNIN: 'SIGN IN',
     SIGNUP: 'SIGN UP',
   },
+
+  Tags: {
+    select_our_tags: 'Select out Tags',
+    confirm_my_tags: 'Confirm my Tags',
+  },
+
+  Partner: {
+    number_of_popup: 'Number of popup',
+    number_of_accepted_popup: 'Number of accepted popup',
+    appearances_in_the_algorithm: "Appearances in the algorithm",
+    acceptance_in_the_algorithm: "Acceptance in the algorithm",
+    number_of_visitors: 'Number of visitors',
+    appearance_by_tags: 'Appearance by tags',
+  },
+
+  Header: {
+    search_tag: 'Search a Tag',
+    add_friend: 'Add Friend',
+    partner: 'Partner',
+    profile: 'Profile',
+    home: 'Home',
+    historic: 'Historic',
+    new_trip: 'New Trip',
+    settings: 'Settings',
+    tags: 'Tags',
+    friends: 'Friends',
+    chats: 'Chats',
+    rating: 'Rating',
+  }
 };
 
 // {I18n.t("")}

@@ -1,32 +1,27 @@
 import React, { useState } from 'react';
 import {
-  StyleSheet, Text, View, Image, TextInput, TouchableOpacity, FlatList,
+  StyleSheet, Text, View, Image, TouchableOpacity, FlatList,
 } from 'react-native';
+import { connect } from 'react-redux';
 import Box from './box';
 import I18n from '../Translation/configureTrans';
-import BackgroundImage from './backgroundImage';
 import SearchBar from './TendanceSearchBar';
-import { connect } from 'react-redux';
 import Store from '../Store/configureStore';
-
-const imageFriend = require('../ressources/friend.png');
-// const imageHistory = require('../ressources/history.png');
-const imageProfile = require('../ressources/profile.png');
 
 export function setSortedTendanceData(tag) {
   const store = Store.getState();
-  var sortedData = [];
+  const sortedData = [];
 
-  //console.log("tag = ", tag)
+  // console.log("tag = ", tag)
   for (i in store.tendance.tendanceList) {
-    for (j in store.tendance.tendanceList[i]["tags_list"]) {
-      if (store.tendance.tendanceList[i]["tags_list"][j] == tag) {
+    for (j in store.tendance.tendanceList[i].tags_list) {
+      if (store.tendance.tendanceList[i].tags_list[j] == tag) {
         sortedData.push(store.tendance.tendanceList[i]);
         break;
       }
     }
   }
-  //console.log("sortedData = ", sortedData);
+  // console.log("sortedData = ", sortedData);
   const action = {
     type: 'SET_SORTED_TENDANCE_LIST',
     value: sortedData
@@ -39,24 +34,47 @@ export function getData() {
 
   if (store.tendance.sortedTendanceList.length > 0) {
     return (store.tendance.sortedTendanceList);
-  } else {
-    return (store.tendance.tendanceList);
   }
+  return (store.tendance.tendanceList);
+}
+
+export function Header({ props, defaultState = false }) {
+  const [pressed, setpressed] = useState(defaultState);
+
+  if (pressed === false) {
+    return (
+      <View style={styles.view_header}>
+        <TouchableOpacity
+          onPress={() => props.navigation.navigate('Menu')}
+        >
+          <Image style={styles.img_header} source={require('../images/icons/black/menu.png')} />
+        </TouchableOpacity>
+        <Text style={styles.text_header}>
+          {I18n.t('Header.home')}
+        </Text>
+        <TouchableOpacity
+          onPress={() => { setpressed(!pressed); }}
+        >
+          <Image style={styles.img_header} source={require('../images/icons/black/search.png')} />
+        </TouchableOpacity>
+      </View>
+    );
+  }
+  return (
+    <View style={styles.view_header}>
+      <SearchBar
+        onPress={() => { setSortedTendanceData(); setpressed(!pressed); }}
+        imagePath="../images/icons/black/search.png"
+      />
+    </View>
+  );
 }
 
 export function HomePage(props) {
   return (
     <View style={styles.view_back}>
-      <View style={styles.view_header}>
-        <TouchableOpacity onPress={() => props.navigation.navigate('Menu')}>
-          <Image style={styles.img_header} source={require('../images/icons/black/menu.png')}/>
-        </TouchableOpacity>
-        <Text style={styles.text_header}>Home</Text>
-        <TouchableOpacity>
-          <Image style={styles.img_header} source={require('../images/icons/black/search.png')}/>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.viex_list}>
+      <Header props={props} />
+      <View style={styles.view_list}>
         <FlatList
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
@@ -67,7 +85,7 @@ export function HomePage(props) {
               data={item}
             />
           )}
-          keyExtractor={(item) => item["name"]}
+          keyExtractor={(item) => item.name}
         />
       </View>
     </View>
@@ -229,6 +247,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 10,
   },
+  textInput_header: {
+    height: 40,
+    width: '85%',
+    borderRadius: 21,
+    marginRight: 12.5,
+    paddingLeft: 12.5,
+    backgroundColor: '#FFFFFF',
+  },
   img_header: {
     width: 34,
     resizeMode: 'contain',
@@ -241,7 +267,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#000000',
   },
-  viex_list: {
+  view_list: {
     flex: 757,
   }
 });
