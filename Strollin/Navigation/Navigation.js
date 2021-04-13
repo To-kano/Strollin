@@ -35,6 +35,9 @@ import SettingPartenaire from '../Components/SettingPartenaire';
 import Personal_trip from '../Components/Personal_trip';
 
 
+
+import MyDrawer from './Drawer'
+
 const Stack = createStackNavigator();
 
 const getProfilCache = async (props) => {
@@ -101,6 +104,30 @@ function MyStack(props) {
           </>
         ) : (
           <>
+            <Stack.Screen
+              name="drawer"
+              component={MyDrawer}
+            />
+          </>
+
+        )}
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
+
+const mapStateToProps = (state) => state;
+export default connect(mapStateToProps)(MyStack);
+
+
+//<Stack.Screen
+//name="Connection"
+//component={ConnectionScreen}
+//options={{ title: 'connection' }}
+///>
+
+
+/*<>
             <Stack.Screen
               name="HomePage"
               component={HomePage}
@@ -264,28 +291,4 @@ function MyStack(props) {
                 gestureDirection: 'horizontal-inverted',
               }}
             />
-            <Stack.Screen
-              name="Personal_trip"
-              component={Personal_trip}
-              options={{
-                title: 'Personal_trip',
-                ...TransitionPresets.SlideFromRightIOS,
-              }}
-            />
-          </>
-
-        )}
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
-}
-
-const mapStateToProps = (state) => state;
-export default connect(mapStateToProps)(MyStack);
-
-
-//<Stack.Screen
-//name="Connection"
-//component={ConnectionScreen}
-//options={{ title: 'connection' }}
-///>
+          </>*/

@@ -138,7 +138,7 @@ function SettingPartenaire(props) {
                 </View>
                 <View style={styles.name}>
                     <Text style={{ fontSize: 40 }}>
-                        Nom Entreprise {/* nom de l'entreprise */}
+                        {args.name}
                     </Text>
                 </View>
                 <View style={styles.infos}>

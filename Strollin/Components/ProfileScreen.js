@@ -1,4 +1,4 @@
-import React from 'react';
+import React , { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import {
   View, StyleSheet, Image, Text, TouchableOpacity, TextInput
@@ -7,6 +7,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { FlatList } from 'react-native-gesture-handler';
 import json from '../ressources/profile.json';
 import I18n from '../Translation/configureTrans';
+import Store from '../Store/configureStore';
+import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 
 function ParseTags(Tags) {
   let list = Tags[0];
@@ -38,6 +40,49 @@ const initialList = [
 
 function ProfileScreen(props) {
   // const [list, setList] = React.useState(props.profil.tags_list);
+  const [args, setArgs] = useState(true);
+  const store = Store.getState();
+  const access_Token = store.profil.access_token;
+
+    async function getThings() {
+      await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/get_own_profile`, {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        access_Token,
+      },
+      method: 'GET',
+      })
+      .then(res => res.json())
+      .then(json => {
+        //console.log(json.profile);
+        setArgs(json.profile)
+      });
+    }
+
+    async function postMail(body) {
+
+      const test = JSON.stringify({mail: body})
+
+      await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/edit_profile`, {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        access_Token,
+        location_id: args._id
+      },
+      body: test,
+      method: 'POST',
+      })
+      .then(res => res.json())
+      .then(json => {
+      });
+    }
+
+    useEffect(() => {
+          getThings();
+    }, []);
+
   const [list, setList] = React.useState(initialList);
   const [name, setName] = React.useState('');
 
@@ -61,7 +106,7 @@ function ProfileScreen(props) {
       <View style={styles.view_profileTop}>
         <Image style={styles.img_profileTop} source={require('../images/TonyPP.jpg')} />
         {/* <Image  style={styles.img_profileTop} source={require('')}/> */}
-        <Text style={styles.text_profileTop}>{props.profil.pseudo}</Text>
+        <Text style={styles.text_profileTop}>{args.pseudo}</Text>
       </View>
       <View style={styles.view_email}>
         <Text style={styles.text_description}>
@@ -74,8 +119,9 @@ function ProfileScreen(props) {
           textContentType="emailAddress"
           autoCompleteType="email"
           keyboardType="email-address"
+          onChangeText={text => postMail(text)}
         >
-          {props.profil.mail}
+          {args.mail}
         </TextInput>
       </View>
       <View style={styles.view_tag}>
@@ -85,11 +131,11 @@ function ProfileScreen(props) {
           style={styles.view_tagIn}
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
-          data={list}
+          data={args.tags_list}
           contentContainerStyle={{ flexGrow: 1 }}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <Text style={styles.text_tagIn}>{item.name}</Text>
+            <Text style={styles.text_tagIn}>{item}</Text>
           )}
         />
       </View>

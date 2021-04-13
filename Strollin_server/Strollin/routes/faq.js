@@ -25,7 +25,7 @@ router.post('/create_question', async function(req, res) {
     });
     let error = await faq.save().catch(error => error);
     if (error.errors) {
-        return res.status(400).send({status: "Error in database transaction", error: error.errors});
+        return res.status(400).send({status: "Error in database transaction:\n", error: error.errors});
     }
     return res.status(200).send({status: "Question created successfully."});
 });
@@ -54,9 +54,9 @@ router.post('/answer_question', async function(req, res) {
         answer: req.body.answer,
         published: req.body.published
     };
-    let error = await question.updateOne(query).catch(error => error);
+    let error = await FaqModel.updateOne({id: question.id}, query).catch(error => error);
     if (error.errors) {
-        return res.status(400).send({status: "Error in database transaction", error: error.errors});
+        return res.status(400).send({status: "Error in database transaction:\n", error: error.errors});
     }
     return res.status(200).send({status: "Question answered."});
   });

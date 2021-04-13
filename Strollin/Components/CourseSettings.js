@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet, View, FlatList, Text, TouchableOpacity, TextInput, Input
 } from 'react-native';
@@ -6,10 +6,63 @@ import Stars from 'react-native-stars';
 import { connect } from 'react-redux';
 import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 import Store from '../Store/configureStore';
+import { requestGeolocalisationPermission, updateCoordinates } from './map'
 
-function test(props) {
-  console.log("test success");
-  props.navigation.navigate("TripSuggestion");
+const store = Store.getState();
+const access_Token = store.profil.access_token;
+
+async function getUserTags(pos, budget, hours, minutes) {
+  const store = Store.getState();
+  const access_Token = store.profil.access_token;
+  console.log("token: ", access_Token);
+  await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/get_own_profile`, {
+  headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+    access_Token,
+  },
+  method: 'GET',
+  })
+  .then(res => res.json())
+  .then(json => {
+    console.log("ici ?: ", json);
+    console.log("########", json.profile.tags_list);
+    console.log("mail: ", json.profile.mail);
+    test(pos, budget, hours, minutes, json.profile.tags_list);
+  });
+}
+
+async function test(pos, budget, hours, minutes, tags) {
+  const store = Store.getState();
+  const access_Token = store.profil.access_token;
+  const time = hours * 60 + minutes;
+  const coordinate = [];
+
+  coordinate[0] = pos.latitude;
+  coordinate[1] = pos.longitude;
+  console.log("time: ", time);
+  console.log("pos: ", pos);
+  console.log("budget: ", budget);
+  console.log("tags: ", tags);
+
+  await fetch(`http://${IP_SERVER}:${PORT_SERVER}/generator/generate_course`, {
+  headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+    access_Token,
+    'time': time,
+    'budget': budget,
+    'tags': tags,
+    'coordinate' : coordinate
+  },
+  method: 'GET',
+  })
+  .then(res => res.json())
+  .then(json => {
+    console.log("algo done:   ", json);
+  });
+  //console.log("test success");
+  //props.navigation.navigate("TripSuggestion");
 }
 
 function Back(props) {
@@ -20,6 +73,21 @@ export function CourseSettings(props) {
   const [hours, setHours] = useState('0');
   const [minutes, setMinutes] = useState('0');
   const [budget, setBudget] = useState('0');
+  const [pos, setPos] = useState('0');
+
+  useEffect(() => {
+    //console.log("ntm: ", props.position.permission);
+      if (props.position.asked == false) {
+        requestGeolocalisationPermission(props.dispatch);
+      }
+      if (props.position.permission == true && pos == '0') {
+        updateCoordinates(setPos);
+      }
+      if (props.permission && pos && localRegion.latitude && localRegion.longitude) {
+        console.log("3");
+        setPermision(true)
+      }
+  })
 
   return (
     <View style={styles.container}>
@@ -29,7 +97,7 @@ export function CourseSettings(props) {
       <Text style={{ fontSize: 25  }}> {"Select your budget:"} </Text>
       <View style={styles.container}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <TextInput 
+          <TextInput
              style={styles.budgetInput}
              keyboardType='numeric'
              onChangeText={(text)=> setBudget(text)}
@@ -42,7 +110,7 @@ export function CourseSettings(props) {
         <Text style={{ fontSize: 25 }}> {"Select your spending time:"} </Text>
 
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <TextInput 
+          <TextInput
              style={styles.timeInput}
              keyboardType='numeric'
              onChangeText={(text)=> setHours(text)}
@@ -50,7 +118,7 @@ export function CourseSettings(props) {
              maxLength={2}  //setting limit of input
           />
           <Text style={{ fontSize: 25 }}> Hour(s) </Text>
-          <TextInput 
+          <TextInput
              style={styles.timeInput}
              keyboardType='numeric'
              onChangeText={(text)=> setMinutes(text)}
@@ -67,7 +135,7 @@ export function CourseSettings(props) {
           id={'test'}
           style={styles.newTrip}
           onPress={() => {
-            test(props);
+            getUserTags(pos, budget, hours, minutes);
           }}
         >
           <Text style={{ fontSize: 16, color: '#FFFFFF' }}>
@@ -93,7 +161,15 @@ export function CourseSettings(props) {
   );
 }
 
-const mapStateToProps = (state) => state;
+const mapStateToProps = (state) => {
+  return (
+    {
+      position: state.position,
+      profil: state.profil,
+      map: state.map
+    }
+  )
+};
 export default connect(mapStateToProps)(CourseSettings);
 
 const styles = StyleSheet.create({

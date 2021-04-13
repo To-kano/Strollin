@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 
+
+
 const nodemailer = require('nodemailer');
 
 const {
@@ -15,6 +17,10 @@ const {
   CourseModel
 } = require("../models/course")
 
+const {
+  ImageModel
+} = require("../models/image")
+
 
 // REGISTER
 /**
@@ -28,16 +34,16 @@ const {
  */
 router.post('/register', async function(req, res) {
 
-  if (!req.body.mail) {
-    return res.status(400).send({status: "A valid mail was not provide."});
-  } else  if (!req.body.mail.includes('@')) {
-    return res.status(400).send({status: "A valid mail was not provide."});
+  if (!req.body.mail || !req.body.mail.includes('@')) {
+    return res.status(400).send({status: "A valid mail was not provided."});
   }
 
-  let mail = await UserModel.findOne({mail: req.body.mail});
+  let mail = await UserModel.findOne({mail: req.body.mail}).catch(error => error);
   let token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
-  if (mail) {
+  if (mail && mail.reason) {
+    return res.status(400).send({status: "Error in database transaction:\n", error: mail});
+  } else if (mail) {
     return res.status(400).send({status: "The mail is used already."});
   }
   if (req.body.mail && req.body.password && req.body.partner !== undefined) {
@@ -51,7 +57,6 @@ router.post('/register', async function(req, res) {
       creation_date: new Date().toLocaleDateString("fr-FR"),
       mail: req.body.mail,
       password: req.body.password,
-      pseudo: "user",
       partner: req.body.partner,
       access_token: token,
       first_name: req.body.first_name,
@@ -59,11 +64,13 @@ router.post('/register', async function(req, res) {
     });
     if (req.body.pseudo != null) {
       user.pseudo = req.body.pseudo
+    } else {
+      user.pseudo = "user" + String(user.id);
     }
 
     let error = await user.save().catch(error => error);
     if (error.errors) {
-      return res.status(400).send({status: "Error in database transaction", error: error});
+      return res.status(400).send({status: "Error in database transaction:\n", error: error});
     }
 
     const transporter = nodemailer.createTransport({
@@ -78,7 +85,7 @@ router.post('/register', async function(req, res) {
         pass: 'Strollin94',
       },
     });
-    
+
     // create the mail to send
     const mailOptions = {
       from: '"Strollin App" <strollinapp@outlook.com>', // sender address (who sends)
@@ -86,7 +93,7 @@ router.post('/register', async function(req, res) {
       subject: `subscribe the app Strollin `, // Subject line
       html: `<a href="http://88.165.45.219:3002/users/verify?id=${user.id}">test</a> `,
     };
-  
+
     // send the mail
     transporter.sendMail(mailOptions, function(error, info) {
       if (error) {
@@ -105,16 +112,18 @@ router.post('/register', async function(req, res) {
 router.get('/verify', async function(req, res) {
 
   console.log("verify\n", req.query.id);
-  let user = await UserModel.findOne({id: req.query.id});
+  let user = await UserModel.findOne({id: req.query.id}).catch(error => error);
   if (!user) {
-    return res.status(400).send({status: "not valide link"});
+    return res.status(400).send({status: "not valid link"});
+  } else if (user.reason) {
+    return res.status(400).send({status: "Error in database transaction:\n", error: user});
   } else {
 
-    let error = await user.updateOne({verify: true}).catch(error => error);
+    let error = await UserModel.updateOne({id: user.id}, {verify: true}).catch(error => error);
     if (error.errors) {
-        return res.status(400).send({status: error.errors});
+        return res.status(400).send({status: "Error in database transaction:\n", error: error});
     }
-    return res.status(200).send({status: "Account verify successfully."});
+    return res.status(200).send({status: "Account verified successfully."});
   }
 });
 
@@ -123,7 +132,7 @@ router.get('/verify', async function(req, res) {
 /**
  * Edit a comment's message or score
  * @param {String} req.headers.access_token
- * 
+ *
  * At least one of below
  * @param {String} req.body.password
  * @param {String} req.body.pseudo
@@ -131,11 +140,15 @@ router.get('/verify', async function(req, res) {
  * @param {String} req.body.last_name
  */
 router.post('/edit_profile', async function(req, res) {
-  let user = await UserModel.findOne({access_token: req.headers.access_token});
+  let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id").catch(error => error);
 
   if (!user) {
       return res.status(400).send({status: "You are not connected."});
   }
+  if (user.reason) {
+      return res.status(400).send({status: "Error in database transaction:\n", error: user});
+  }
+
   if (!req.body.password && !req.body.pseudo && !req.body.first_name && !req.body.last_name) {
       return res.status(400).send({status: "No edit data provided."});
   }
@@ -143,8 +156,8 @@ router.post('/edit_profile', async function(req, res) {
   if (req.body.password) {
       query.password = req.body.password;
   }
-  if (req.body.pseudo) {
-    query.pseudo = req.body.pseudo;
+  if (req.body.mail) {
+    query.mail = req.body.mail;
   }
   if (req.body.first_name) {
     query.first_name = req.body.first_name;
@@ -152,9 +165,9 @@ router.post('/edit_profile', async function(req, res) {
   if (req.body.last_name) {
       query.last_name = req.body.last_name;
   }
-  let error = await user.updateOne(query).catch(error => error);
+  let error = await UserModel.updateOne({id: user.id}, query).catch(error => error);
   if (error.errors) {
-      return res.status(400).send({status: error.errors});
+      return res.status(400).send({status: "Error in database transaction:\n", error: error.errors});
   }
   return res.status(200).send({status: "Profile edited."});
 });
@@ -168,17 +181,29 @@ router.post('/edit_profile', async function(req, res) {
  */
 router.post('/add_friend_request', async function(req, res) {
 
-  let user = await UserModel.findOne({access_token: req.headers.access_token});
-  let friend = await UserModel.findOne({id: req.body.friend});
+  let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo friends_request friends_list").catch(error => error);
 
   if (!user) {
-    return res.status(400).send({status: "You are not connected."});
+      return res.status(400).send({status: "You are not connected."});
   }
-  if (friend && !friend.friends_request.includes(user.id) && !user.friends_request.includes(friend.id)) {
-    await friend.updateOne({$push: {friends_request: user.id}});
+  if (user.reason) {
+      return res.status(400).send({status: "Error in database transaction:\n", error: user});
+  }
+
+  let friend = await UserModel.findOne({id: req.body.friend}, "-_id id pseudo friends_request friends_list").catch(error => error);
+  if (!friend) {
+    return res.status(400).send({status: "The user does not exist."});
+  } else if (friend.reason) {
+    return res.status(400).send({status: "Error in database transaction:\n", error: friend});
+  } else if (friend.friends_request.includes(user.id) || friend.friends_list.includes(user.id) || user.friends_request.includes(friend.id) || user.friends_list.includes(friend.id)) {
+    return res.status(400).send({status: "The friend request exists already or you are already friends."});
+  } else {
+    let error = await UserModel.updateOne({id: friend.id}, {$push: {friends_request: user.id}}).catch(error => error);
+    if (error.errors) {
+      return res.status(400).send({status: "Error in database transaction:\n", error: error});
+    }
     return res.status(200).send({status: "Friend requested successfully."});
   }
-  return res.status(400).send({status: "The friend user does not exist."});
 });
 
 
@@ -190,22 +215,86 @@ router.post('/add_friend_request', async function(req, res) {
  * @param {ObjectID} req.body.friend (id from the user in request friend list)
  */
 router.post('/add_friend', async function(req, res) {
-
-  let user = await UserModel.findOne({access_token: req.headers.access_token});
-  let friend = await UserModel.findOne({id: req.body.friend});
+  let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo friends_request friends_list").catch(error => error);
 
   if (!user) {
-    return res.status(400).send({status: "You are not connected."});
+      return res.status(400).send({status: "You are not connected."});
   }
-  if (friend && !friend.friends_list.includes(user.id) && !user.friends_list.includes(friend.id) && user.friends_request.includes(friend.id)) {
-    await friend.updateOne({$push: {friends_list: user.id}});
-    await user.updateOne({$push: {friends_list: friend.id}});
-    await user.updateOne({$pull: {friends_request: friend.id}});
-    return  res.status(200).send({status: "Friend added successfully."});
+  if (user.reason) {
+      return res.status(400).send({status: "Error in database transaction:\n", error: user});
   }
-  return res.status(400).send({status: "An error occured."});
+
+  let friend = await UserModel.findOne({id: req.body.friend}, "-_id id pseudo friends_request friends_list").catch (error => error);
+  if (!friend) {
+    return res.status(400).send({status: "The user does not exist."});
+  } else if (friend.reason) {
+    return res.status(400).send({status: "Error in database transaction:\n", error: friend});
+  } else if (friend.friends_list.includes(user.id) && user.friends_list.includes(friend.id)) {
+    return res.status(400).send({status: "You are already friends."});
+  } else if (!user.friends_request.includes(friend.id)) {
+    return res.status(400).send({status: "The friend request does not exist."});
+  } else {
+    let error = await UserModel.updateOne({id: friend.id}, {$push: {friends_list: user.id}}).catch (error => error);
+    if (error.errors) {
+      return res.status(400).send({status: "Error in database transaction:\n", error: error});
+    }
+
+    error = await UserModel.updateOne({id: user.id}, {$push: {friends_list: friend.id}}).catch (error => error);
+    if (error.errors) {
+      return res.status(400).send({status: "Error in database transaction:\n", error: error});
+    }
+
+    error = await UserModel.updateOne({id: user.id}, {$pull: {friends_request: friend.id}}).catch (error => error);
+    if (error.errors) {
+      return res.status(400).send({status: "Error in database transaction:\n", error: error});
+    }
+    return res.status(200).send({status: "Friend added successfully."});
+  }
 });
 
+
+//router.post('/add_image_profile', upload.single('uploaded_file'), function (req, res) {
+//  // req.file is the name of your file in the form above, here 'uploaded_file'
+//  // req.body will hold the text fields, if there were any
+//  console.log(req.file, req.body)
+//});
+
+const multer  = require('multer');
+
+const storage = multer.diskStorage({
+  destination(req, file, callback) {
+    callback(null, __dirname + '/../public/images');
+  },
+  filename(req, file, callback) {
+    callback(null, `${file.fieldname}_${Date.now()}_${file.originalname}`);
+  },
+});
+
+const upload = multer({ storage });
+
+router.post('/add_image_profile', upload.array('image', 3), async (req, res) => {
+  console.log('file', req.files);
+  console.log('body', req.body);
+  console.log('path', __dirname + '/../public/images');
+
+  let image = new ImageModel({
+    id: new Number(Date.now()),
+    author: "lol",
+    uri: req.files[0].filename,
+    mimetype: req.files[0].mimetype
+  });
+
+  let error = await image.save().catch(error => error);
+    if (error.errors) {
+      return res.status(400).send({status: "Error in upload", error: error});
+    }
+
+
+
+  res.status(200).json({
+    image: req.files[0].filename,
+  });
+});
 
 // ADD_TAG
 /**
@@ -214,21 +303,30 @@ router.post('/add_friend', async function(req, res) {
  * @param {[String]} req.body.tags_list
  */
 router.post('/add_tag', async function(req, res) {
-
-  let user = await UserModel.findOne({access_token: req.headers.access_token});
   let new_tag = null;
   let add_list = req.body.tags_list
+  let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo tags_list").catch(error => error);
 
   if (!user) {
-    return res.status(400).send({status: "You are not connected."});
+      return res.status(400).send({status: "You are not connected."});
   }
+  if (user.reason) {
+      return res.status(400).send({status: "Error in database transaction:\n", error: user});
+  }
+
   for (let index = 0; index < add_list.length; index++) {
-    new_tag = await TagModel.findOne({name: add_list[index]})
-    if (new_tag && !user.tags_list.includes(new_tag)) {
-      await user.updateOne({$push: {tags_list: new_tag.name}})
+    new_tag = await TagModel.findOne({name: add_list[index]}).catch(error => error);
+    if (new_tag && new_tag.reason) {
+      return res.status(400).send({status: "Error in database transaction:\n", error: new_tag});
+    }
+    if (new_tag && !user.tags_list.includes(new_tag.name)) {
+      let error = await UserModel.updateOne({id: user.id}, {$push: {tags_list: new_tag.name}});
+      if (error.errors) {
+        return res.status(400).send({status: "Error in database transaction:\n", error: error});
+      }
     }
   }
-  return  res.status(200).send({status: "Tag(s) added successfully."});
+  return res.status(200).send({status: "Tag(s) added successfully."});
 });
 
 
@@ -240,18 +338,27 @@ router.post('/add_tag', async function(req, res) {
  */
 router.post('/add_historic', async function(req, res) {
 
-  let user = await UserModel.findOne({access_token: req.headers.access_token});
-  let course = await CourseModel.findOne({id: req.body.course});
-  console.log(req.headers);
+  let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo").catch(error => error);
+  if (!user) {
+      return res.status(400).send({status: "You are not connected."});
+  }
+  if (user.reason) {
+      return res.status(400).send({status: "Error in database transaction:\n", error: user});
+  }
 
-  if (!user)
-    return res.status(400).send({status: "You are not connected."});
-  if (course) {
+  let course = await CourseModel.findOne({id: req.body.course}).catch(error => error);
+  if (!course) {
+    return res.status(400).send({status: "The course does not exist."});
+  } else if (course.reason) {
+    return res.status(400).send({status: "Error in database transaction:\n", error: user});
+  } else {
     let new_course = [course.id, new Date().toLocaleDateString("fr-FR")];
-    await user.updateOne({$push: {course_historic: new_course}});
+    let error = await UserModel.updateOne({id: user.id}, {$push: {course_historic: new_course}}).catch(error => error);
+    if (error.errors) {
+      return res.status(400).send({status: "Error in database transaction:\n", error: error});
+    }
     return res.status(200).send({status: "Historic added."});
   }
-  return res.status(400).send({status: "An error occured."});
 });
 
 
@@ -264,14 +371,23 @@ router.post('/add_historic', async function(req, res) {
  */
 router.get('/login', async function(req, res) {
 
-  let user = await UserModel.findOne({mail: req.headers.mail, password: req.headers.password});
+  let user = await UserModel.findOne({mail: req.headers.mail, password: req.headers.password}).catch(error => error);
   let token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+  let error = undefined;
+  var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 
-  if (user) {
-    await user.updateOne({access_token: token});
+  console.log(ip);
+  if (!user) {
+    return res.status(400).send({status: "The login or the password is incorrect."});
+  } else if (user && user.reason) {
+    return res.status(400).send({status: "Error in database transaction:\n", error: user});
+  } else {
+    error = await UserModel.updateOne({id: user.id}, {access_token: token}).catch(error => error);
+    if (error.errors) {
+      return res.status(400).send({status: "Error in database transaction:\n", error: error});
+    }
     return res.status(200).send({status: "Log in successfully.", access_token: token});
   }
-  return res.status(400).send({status: "The login or the password is incorrect."});
 });
 
 
@@ -282,14 +398,20 @@ router.get('/login', async function(req, res) {
  */
 router.get('/logout', async function(req, res) {
 
-  let user = await UserModel.findOne({access_token: req.headers.access_token});
+  let user = await UserModel.findOne({access_token: req.headers.access_token}).catch(error => error);
   let token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
-  if (user) {
-    await user.updateOne({access_token: token});
-    return  res.status(200).send({status: "Log out successfully."});
+  if (!user) {
+    return res.status(400).send({status: "You are already log out."});
+  } else if (user && user.reason) {
+    return res.status(400).send({status: "Error in database transaction:\n", error: user});
+  } else {
+    let error = await UserModel.updateOne({id: user.id}, {access_token: token}).catch(error => error);
+    if (error.errors) {
+      return res.status(400).send({status: "Error in database transaction:\n", error: error});
+    }
+    return res.status(200).send({status: "Log out successfully."});
   }
-  return res.status(400).send({status: "You are already log out."});
 });
 
 
@@ -300,12 +422,15 @@ router.get('/logout', async function(req, res) {
  */
 router.get('/get_own_profile', async function(req, res) {
   const projection = '-_id -password -access_token -socket_id -facebook_id -verify' //-param for excluding
-  let profile = await UserModel.findOne({access_token: req.headers.access_token}, projection);
+  let profile = await UserModel.findOne({access_token: req.headers.access_token}, projection).catch(error => error);
 
-  if (profile) {
+  if (!profile) {
+      return res.status(400).send({status: "You are not connected."});
+  } else if (profile.reason) {
+      return res.status(400).send({status: "Error in database transaction:\n", error: profile});
+  } else {
     return res.status(200).send({status: "Profile sent.", profile});
   }
-  return res.status(400).send({status: "You are not connected."});
 });
 
 
@@ -317,17 +442,23 @@ router.get('/get_own_profile', async function(req, res) {
  */
 router.get('/get_user_profile', async function(req, res) {
   const projection = '-_id id mail creation_date pseudo partner first_name last_name tags_list friends_list';
-  let user = await UserModel.findOne({access_token: req.headers.access_token});
-  let profile = null;
+  let profile = undefined;
+  let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo").catch(error => error);
 
   if (!user) {
-    return res.status(400).send({status: "You are not connected."});
+      return res.status(400).send({status: "You are not connected."});
   }
-  profile = await UserModel.findOne({id: req.headers.user_id}, projection);
-  if (profile) {
-    return res.status(200).send({status: "Profile sent.", profile});
+  if (user.reason) {
+      return res.status(400).send({status: "Error in database transaction:\n", error: user});
   }
-  return res.status(400).send({status: "User ID provided is not valid."});
+  profile = await UserModel.findOne({id: req.headers.user_id}, projection).catch(error => error);
+  if (!profile) {
+    return res.status(400).send({status: "User ID provided is not valid."});
+  }
+  if (profile.reason) {
+      return res.status(400).send({status: "Error in database transaction:\n", error: profile});
+  }
+  return res.status(200).send({status: "Profile sent.", profile});
 });
 
 
@@ -339,19 +470,31 @@ router.get('/get_user_profile', async function(req, res) {
  */
 router.get('/get_user_tags', async function(req, res) {
 
-  let user = await UserModel.findOne({access_token: req.headers.access_token});
   let all_user_tags = [];
-  let user_tags = null;
-  let user_index = null;
+  let user_tags = undefined;
+  let user_index = undefined;
+  let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo").catch(error => error);
 
   if (!user) {
     return res.status(400).send({status: "You are not connected."});
   }
+  if (user.reason) {
+    return res.status(400).send({status: "Error in database transaction:\n", error: user});
+  }
   user_id = req.headers.user_id.split(',');
   for (let index = 0; index < user_id.length; index++) {
-    user_index = await UserModel.findOne({id: user_id[index]}, {projection: {_id: 0}});
+    user_index = await UserModel.findOne({id: user_id[index]}, {projection: {_id: 0}}).catch(error => error);
+    if (!user_index) {
+      return res.status(400).send({status: "A user ID is not valid"});
+    }
+    if (user_index.reason) {
+      return res.status(400).send({status: "Error in database transaction:\n", error: user_index});
+    }
     if (user_index) {
-      user_tags = await TagModel.find({name: {$in: user_index.tags_list}}, {projection: {_id: 0}});
+      user_tags = await TagModel.find({name: {$in: user_index.tags_list}}, {projection: {_id: 0}}).catch(error => error);
+      if (user_tags && user_tags.reason) {
+        return res.status(400).send({status: "Error in database transaction:\n", error: user_tags});
+      }
       if (user_tags) {
         all_user_tags.push(user_tags);
       }
@@ -368,20 +511,24 @@ router.get('/get_user_tags', async function(req, res) {
  * @param {UserID || [UserID]} req.headers.users_list
  */
 router.get('/get_user_by_id', async function(req, res) {
-  let user = await UserModel.findOne({access_token: req.headers.access_token});
   const projection = "-_id -password -access_token -socket_id -facebook_id";
+  let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo").catch(error => error);
 
   if (!user) {
-      return res.status(400).send({status: "You are not connected."});
+    return res.status(400).send({status: "You are not connected."});
+  }
+  if (user.reason) {
+    return res.status(400).send({status: "Error in database transaction:\n", error: user});
   }
   let given_list = req.headers.users_list.split(',');
-  let users_list = await UserModel.find({id: {$in: given_list}, projection}).catch(error => error);
-  if (users_list.reason) {
-      return res.status(400).send({status: "Error in the parameters.", error: users_list});
-  } else if (users_list.length > 0) {
-      return res.status(200).send({status: "User(s) found.", users_list});
+  let users_list = await UserModel.find({id: {$in: given_list}}, projection).catch(error => error);
+  console.log(users_list);
+  if (users_list && users_list.reason) {
+    return res.status(400).send({status: "Error in database transaction:\n", error: users_list});
+  } else if (users_list && users_list.length > 0) {
+    return res.status(200).send({status: "User(s) found.", users_list});
   } else {
-      return res.status(400).send({status: "User(s) not found.", error: users_list});
+    return res.status(400).send({status: "User(s) not found."});
   }
 });
 
@@ -394,13 +541,19 @@ router.get('/get_user_by_id', async function(req, res) {
  */
 router.delete('/remove_account', async function(req, res) {
 
-  let user = await UserModel.findOne({access_token: req.headers.access_token, password: req.headers.password});
+  let user = await UserModel.findOne({access_token: req.headers.access_token, password: req.headers.password}).catch(error => error);
 
-  if (user) {
-    await user.remove();
-    return res.status(200).send({status: "Account successfully deleted."});
+  if (!user) {
+    return res.status(400).send({status: "You are not connected."});
   }
-  return res.status(400).send({status: "You are not connected."});
+  if (user.reason) {
+    return res.status(400).send({status: "Error in database transaction:\n", error: user});
+  }
+  let error = await UserModel.remove({id: user.id}).catch(error => error);
+  if (error.errors) {
+    return res.status(400).send({status: "Error in database transaction:\n", error: user});
+  }
+  return res.status(200).send({status: "Account successfully deleted."});
 });
 
 
@@ -409,8 +562,27 @@ router.delete('/remove_account', async function(req, res) {
 ***/
 
 async function check_the_password(password) {
-  
-  return true;
+  let pass_lenght = false;
+  let pass_lowcase = false;
+  let pass_upcase = false;
+  let pass_number = false;
+
+  if (password.length >= 8) {
+    pass_lenght = true;
+  }
+  for (let index in password) {
+    if (password[index] >= '0' && password[index] <= '9') {
+      pass_number = true;
+    } else if (password[index] >= 'a' && password[index] <= 'z') {
+      pass_lowcase = true;
+    } else if (password[index] >= 'A' && password[index] <= 'Z') {
+      pass_upcase = true;
+    }
+  }
+  if (pass_lenght && pass_lowcase && pass_upcase && pass_number) {
+    return true;
+  }
+  return false;
 };
 
 

@@ -23,7 +23,6 @@ export default {
   feedback : 'Donnez nous votre avis',
   by: 'par',
   feedback: "Donnez nous votre avis",
-
   SIGNIN: 'SE CONNECTER',
   SIGNUP: "S'INSCRIRE",
   OR: 'OU',
