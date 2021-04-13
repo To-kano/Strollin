@@ -5,6 +5,7 @@ import {
 } from 'react-native';
 import BackgroundImage from './backgroundImage';
 import Store from '../Store/configureStore';
+import { DrawerActions } from '@react-navigation/native';
 import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 import I18n from '../Translation/configureTrans';
 
@@ -152,7 +153,7 @@ function SettingPartenaire(props) {
   return (
     <View style={styles.view_back}>
       <View style={styles.view_header}>
-        <TouchableOpacity onPress={() => props.navigation.navigate('Menu')}>
+        <TouchableOpacity onPress={() => props.navigation.dispatch(DrawerActions.openDrawer())}>
           <Image style={styles.img_header} source={require('../images/icons/black/menu.png')} />
         </TouchableOpacity>
         <Text style={styles.text_header}>

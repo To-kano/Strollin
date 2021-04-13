@@ -3,7 +3,9 @@ import {
   Text, View, FlatList, TouchableOpacity, TextInput, StyleSheet, Image
 } from 'react-native';
 // import { connect } from 'react-redux';
+import { DrawerActions } from '@react-navigation/native';
 import I18n from '../Translation/configureTrans';
+
 // import BackgroundImage from './backgroundImage';
 // import stylesHomepage from '../../styles/homepage'
 // import stylesGeneric from '../../styles/genericStyle'
@@ -215,7 +217,8 @@ export function Header({ props, defaultState = false }) {
     return (
       <View style={styles.view_header}>
         <TouchableOpacity
-          onPress={() => props.navigation.navigate('Menu')}
+          onPress={() => props.navigation.dispatch(DrawerActions.openDrawer())}
+          // onPress={() => props.navigation.navigate('Menu')}
         >
           <Image style={styles.img_header} source={require('../images/icons/black/menu.png')} />
         </TouchableOpacity>

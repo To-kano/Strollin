@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import {
   StyleSheet, Text, View, FlatList, TouchableOpacity, Image, TextInput,
 } from 'react-native';
-
+import { DrawerActions } from '@react-navigation/native';
 import { getTimeZone } from 'react-native-localize';
 import I18n from '../Translation/configureTrans';
 import Store from '../Store/configureStore';
@@ -17,7 +17,8 @@ export function Header({ navigation, defaultState = false }) {
     return (
       <View style={styles.view_header}>
         <TouchableOpacity
-          onPress={() => navigation.navigate('Menu')}
+          onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
+          // onPress={() => navigation.navigate('Menu')}
         >
           <Image style={styles.img_header} source={require('../images/icons/black/menu.png')} />
         </TouchableOpacity>
