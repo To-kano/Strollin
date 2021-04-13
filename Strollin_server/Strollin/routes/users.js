@@ -374,7 +374,9 @@ router.get('/login', async function(req, res) {
   let user = await UserModel.findOne({mail: req.headers.mail, password: req.headers.password}).catch(error => error);
   let token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
   let error = undefined;
+  var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 
+  console.log(ip);
   if (!user) {
     return res.status(400).send({status: "The login or the password is incorrect."});
   } else if (user && user.reason) {
