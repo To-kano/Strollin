@@ -244,6 +244,7 @@ async function formatPlaces(data) {
   //console.log("list: ", locations_list);
   let array = [];
   let flag = false;
+  var tmp = [];
 
   for (var i = 0; i < data.length; i++) {
     let location = new LocationModel({
@@ -252,19 +253,27 @@ async function formatPlaces(data) {
         owner_id: "",
         owner_pseudo: "",
         coordinate: "",
+        score: "",
         latitude: "",
         longitude: "",
-        address: "oui",
-        city: "oui",
-        country: "oui",
+        address: " ",
+        city: " ",
+        country: " ",
         description: "",
         timetable: "",
         tags_list: "",
-        price_range: [ "20" ],
-        average_time: "20",
+        price_range: [ "0", "0", "0" ],
+        average_time: "15",
         phone: "",
         website: ""
     });
+    tmp = data[i].vicinity.split(", ")
+    console.log("TMP: ", tmp);
+    if (tmp.length > 1) {
+      location.address = tmp[0]
+      location.city = tmp[1]
+    }
+    location.score = data[i].rating
     location.tags_list = [];
     location.id = new Number(Date.now());
     location.name = data[i].name;
