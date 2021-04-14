@@ -32,6 +32,7 @@ const {
  * @param {String} req.body.average_time (Optional)
  * @param {String} req.body.phone (Optional)
  * @param {String} req.body.website (Optional)
+ * @param {Boolean} req.body.food (Optional)
  */
 router.post('/new_location', async function(req, res) {
 
@@ -92,7 +93,8 @@ router.post('/new_location', async function(req, res) {
         price_range: req.body.price_range,
         average_time: req.body.average_time,
         phone: req.body.phone,
-        website: req.body.website
+        website: req.body.website,
+        food: req.body.food
     });
     let error = await location.save().catch(error => error);
     if (error.errors) {
@@ -121,6 +123,7 @@ router.post('/new_location', async function(req, res) {
  * @param {String} req.body.average_time (Optional)
  * @param {String} req.body.phone (Optional)
  * @param {String} req.body.website (Optional)
+ * @param {Boolean} req.body.food (Optional)
  */
 router.post('/update_location', async function(req, res) {
 
