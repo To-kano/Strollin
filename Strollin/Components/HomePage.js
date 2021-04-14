@@ -22,7 +22,7 @@ export function setSortedTendanceData(tag) {
   const store = Store.getState();
   const sortedData = [];
 
-  // console.log("tag = ", tag)
+  console.log("tag = ", tag)
   for (i in store.tendance.tendanceList) {
     for (j in store.tendance.tendanceList[i].tags_list) {
       if (store.tendance.tendanceList[i].tags_list[j] == tag) {
@@ -73,7 +73,7 @@ export function Header({ props, defaultState = false }) {
   return (
     <View style={styles.view_header}>
       <SearchBar
-        onPress={() => { setSortedTendanceData(); setpressed(!pressed); }}
+        onPress={(data) => { setSortedTendanceData(data); setpressed(!pressed); }}
         imagePath="../images/icons/black/search.png"
       />
     </View>
