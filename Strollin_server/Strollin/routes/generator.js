@@ -43,6 +43,62 @@ router.get('/generate_course', async function(req, res) {
     })
 });
 
+// GENERATE_POPUP
+/**
+ * Generate a pop-up.
+ * @param {String} req.headers.access_token
+ * @param {CourseObject} req.headers.course
+ * @param {[String]} req.headers.coordinate
+ */
+router.get('/generate_popup', async function(req, res) {
+
+    let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo").catch(error => error);
+    let popup = undefined;
+
+    if (!user) {
+        return res.status(400).send({status: "You are not connected."});
+    }
+    if (user.reason) {
+        return res.status(400).send({status: "Error in database transaction:\n", error: user});
+    }
+
+    if (!req.headers.coordinate || !req.headers.course) {
+        return res.status(400).send({status: "Parameter required is missing."});
+    }
+
+    // ACTION ICI
+
+    return res.status(200).send({status: "Result of the pop-up generator.", popup});
+});
+
+
+// POPUP ANSWER
+/**
+ * Answer to pop-up.
+ * @param {String} req.headers.access_token
+ * @param {Boolean} req.headers.answer
+ * @param {LocationObject} req.headers.popup
+ */
+router.get('/popup_answer', async function(req, res) {
+
+    let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo").catch(error => error);
+    let popup = undefined;
+
+    if (!user) {
+        return res.status(400).send({status: "You are not connected."});
+    }
+    if (user.reason) {
+        return res.status(400).send({status: "Error in database transaction:\n", error: user});
+    }
+
+    if (!req.headers.answer || !req.headers.popup) {
+        return res.status(400).send({status: "Parameter required is missing."});
+    }
+
+    // ACTION ICI
+
+    return res.status(200).send({status: "Result.", popup});
+});
 
 
 module.exports = router;
