@@ -67,9 +67,11 @@ router.post('/new_course', async function(req, res) {
     //Get tags from locations and price range
     let min_price = 0;
     let max_price = 0;
+    let avg_price = 0;
     for (let index = 0; index < locations_list.length; index++) {
-        min_price += Number(locations_list[index].price_range[0].match(/\d+/g).map(Number));;
+        min_price += Number(locations_list[index].price_range[0].match(/\d+/g).map(Number));
         max_price += Number(locations_list[index].price_range[1].match(/\d+/g).map(Number));
+        avg_price += Number(locations_list[index].price_range[2].match(/\d+/g).map(Number));
         for (let index2 = 0; index2 < locations_list[index].tags_list.length; index2++) {
             tag = locations_list[index].tags_list[index2];
             if (!course.tags_list.includes(tag.id)) {
@@ -77,7 +79,7 @@ router.post('/new_course', async function(req, res) {
             }
         }
     }
-    course.price_range = [min_price.toString(), max_price.toString()];
+    course.price_range = [min_price.toString(), max_price.toString(), avg_price.toString()];
 
     let error = await course.save().catch(error => error);
     if (error.errors) {
