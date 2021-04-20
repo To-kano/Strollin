@@ -26,7 +26,7 @@ const {
 
 // REGISTER
 /**
- * Register a new user as normal type
+ * Register a new user
  * @param {String} req.body.mail
  * @param {String} req.body.password
  * @param {Boolean} req.body.partner
