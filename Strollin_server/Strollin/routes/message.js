@@ -32,7 +32,7 @@ router.get('/get_message', async function(req, res) {
         return res.status(400).send({status: "Error in database transaction:\n", error: message});
     } else if (message) {
         message.creation_date = Date(message.creation_date)
-        return res.status(200).send({status: "Message sent.", message});
+        return res.status(200).send({status: "Message found.", message});
     } else {
         return res.status(400).send({status: "Message not found."});
     }
