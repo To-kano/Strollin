@@ -90,9 +90,9 @@ function Map({
     longitudeDelta: deltaView.longitudeDelta
   });
 
-  const [waypoint, setWaypoint] = useState(props.waypoints);
+  //const [waypoint, setWaypoint] = useState(props.waypoints);
   const [destinations, setDestinations] = useState(locations || map.locations);// props.course);
-  console.log(waypoint);
+  //console.log(waypoint);
   /* useEffect(() => {
 
   //console.log("destination\n", destinations);
@@ -136,7 +136,7 @@ function Map({
     console.log(tmp);
 
     const action = { type: 'SET_TIME', value: tmp };
-    props.dispatch(action);
+    dispatch(action);
   }
 
   const onUserPositionChange = (data) => {
