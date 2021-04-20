@@ -13,7 +13,37 @@ import I18n from '../Translation/configureTrans';
 const store = Store.getState();
 const access_Token = store.profil.access_token;
 
-async function getUserTags(pos, budget, hours, minutes) {
+async function PopUpReq(pos, course) {
+  const store = Store.getState();
+  const access_Token = store.profil.access_token;
+  console.log("pos: ", pos);
+  console.log("token: ", access_Token);
+  console.log("course: ", course);
+  const coordinate = [];
+
+  coordinate[0] = pos.latitude;
+  coordinate[1] = pos.longitude;
+
+  await fetch(`http://${IP_SERVER}:${PORT_SERVER}/generator/generate_popup`, {
+  headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+    access_Token,
+    course: course,
+    coordinate: coordinate
+  },
+  method: 'GET',
+  })
+  .then(res => res.json())
+  .then(json => {
+    console.log("JJJJJJJJJJJJSSSSSSSSSSSSSSSSOOOOOOOOOONNNNNNNNNn: ", json);
+  });
+
+}
+
+
+
+async function getUserTags(pos, budget, hours, minutes, props) {
   const store = Store.getState();
   const access_Token = store.profil.access_token;
   console.log("token: ", access_Token);
@@ -30,11 +60,11 @@ async function getUserTags(pos, budget, hours, minutes) {
     console.log("ici ?: ", json);
     console.log("########", json.profile.tags_list);
     console.log("mail: ", json.profile.mail);
-    test(pos, budget, hours, minutes, json.profile.tags_list);
+    test(pos, budget, hours, minutes, json.profile.tags_list, props);
   });
 }
 
-async function test(pos, budget, hours, minutes, tags) {
+async function test(pos, budget, hours, minutes, tags, props) {
   const store = Store.getState();
   const access_Token = store.profil.access_token;
   const time = hours * 60 + minutes;
@@ -62,6 +92,8 @@ async function test(pos, budget, hours, minutes, tags) {
   .then(res => res.json())
   .then(json => {
     console.log("algo done:   ", json);
+    PopUpReq(pos, json.generated_course)
+    //props.navigation.navigate("TripSuggestion");
   });
   //console.log("test success");
   //props.navigation.navigate("TripSuggestion");
@@ -155,7 +187,7 @@ export function CourseSettings(props) {
         id="test"
         style={styles.view_newTrip}
         onPress={() => {
-          getUserTags(pos, budget, hours, minutes);
+          getUserTags(pos, budget, hours, minutes, props);
         }}
       >
         <Text style={styles.text_newTrip}>

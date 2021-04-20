@@ -169,15 +169,6 @@ router.get('/get_course', async function(req, res) {
 });
 
 
-// GET_CUSTOM_COURSE
-/**
- * get a list of courses
- * @param {String} req.headers.access_token
- */
-// router.get('/get_custom_course', async function(req, res) {
-// });
-
-
 // GET_COURSES_BY_ID
 /**
  * Get course(s) by ID

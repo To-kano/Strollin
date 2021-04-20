@@ -95,7 +95,7 @@ async function setTendance(props, access_token) {
       'Content-Type': 'application/json',
       access_token: access_token,
       sort: 'tendency',
-      tendancy_range: 10000
+      tendency_range: 5000
     },
     method: 'GET',
   }).then((answer) => answer.json())
