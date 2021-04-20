@@ -215,9 +215,11 @@ export default {
   Header: {
     search_tag: 'Rechercher un Tag',
     add_friend: 'Ajouter un ami',
+    friend_list: "Liste d'amis",
     partner: 'Partenaire',
     profile: 'Profil',
     home: 'Home',
+    options: 'Vos options',
     historic: 'Historique',
     new_trip: 'New Trip',
     settings: 'Paramètres',

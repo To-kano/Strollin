@@ -122,7 +122,6 @@ function Menu(props) {
         config={config}
         style={{
           flex: 1,
-          backgroundColor: 'green',
           width: 30
         }}
       />
@@ -136,20 +135,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   current_page: {
-    backgroundColor: 'red'
+    width: '150%',
+    backgroundColor: '#CFEAEE',
+    borderRadius: 4,
   },
   view_menu: {
     flex: 1,
     flexDirection: 'column',
     width: '100%',
     padding: 30,
-    shadowColor: '#000000',
-    shadowOffset: {
-      width: 0,
-      height: 10,
-    },
-    shadowOpacity: 0.10,
-    elevation: 10,
     backgroundColor: '#FFFFFF',
   },
   view_close: {

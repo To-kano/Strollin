@@ -173,6 +173,7 @@ export default {
     partner: 'Partner',
     profile: 'Profile',
     home: 'Home',
+    options: 'Trip options',
     historic: 'Historic',
     new_trip: 'New Trip',
     settings: 'Settings',
