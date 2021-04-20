@@ -96,7 +96,7 @@ function CheckFood(Food, PlaceFood) {
   }
 }
 
-function algoTest(UserTags, Places, Food, time, budget, tags, coordinate) {
+function algoTest(Places, Food, time, budget, tags, coordinate) {
   return new Promise((resolve, reject) => {
 
     var PlacesArray = []
@@ -193,8 +193,7 @@ async function getTags(time, budget, tags, coordinate) {
     console.log("please: ", true_list[i]);
   }*/
 
-  User = await UserModel.findOne( { _id:  "5fbfc3068901ca001ec0be8f" })
-  const promise1 = hello(true_list, User, time, budget, tags, coordinate)
+  const promise1 = hello(true_list, time, budget, tags, coordinate)
   return promise1;
 }
 
@@ -316,7 +315,7 @@ async function getPlaces(coordinate) {
 
 }
 
-hello = function(sending, User, time, budget, tags, coordinate)
+hello = function(sending, time, budget, tags, coordinate)
 {
   var coordinateArr = coordinate.split(",");
   getPlaces(coordinateArr);
@@ -324,8 +323,7 @@ hello = function(sending, User, time, budget, tags, coordinate)
   //promise1.then((value) => {
     console.log("coordiante: ", coordinateArr);
     return new Promise((resolve, reject) => {
-      TagsJson.Tags[0] = User.tags_list
-      var test = algoTest(TagsJson, sending, false, time, budget, tags, coordinateArr)
+      var test = algoTest(sending, false, time, budget, tags, coordinateArr)
       resolve(test)
     });
   //})
