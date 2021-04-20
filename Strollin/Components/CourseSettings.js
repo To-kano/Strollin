@@ -91,7 +91,7 @@ async function test(pos, budget, hours, minutes, tags, props) {
   .then(json => {
     console.log("algo done:   ", json);
     PopUpReq(pos, json.generated_course)
-    //props.navigation.navigate("TripSuggestion");
+    props.navigation.navigate("TripSuggestion");
   });
   //console.log("test success");
   //props.navigation.navigate("TripSuggestion");
