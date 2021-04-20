@@ -25,10 +25,9 @@ const {
  * @param {String} req.body.city (Optional)
  * @param {String} req.body.country (Optional)
  * @param {String} req.body.description (Optional)
- * @param {[String, String]} req.body.price_range (Optional)
+ * @param {[String, String, String]} req.body.price_range (Optional)
  * @param {String} req.body.timetable (Optional)
  * @param {[String]} req.body.tags_list (Optional)
- * @param {String} req.body.price (Optional)
  * @param {String} req.body.average_time (Optional)
  * @param {String} req.body.phone (Optional)
  * @param {String} req.body.website (Optional)
@@ -118,8 +117,8 @@ router.post('/new_location', async function(req, res) {
  * @param {String} req.body.city (Optional)
  * @param {String} req.body.country (Optional)
  * @param {String} req.body.description (Optional)
+ * @param {String} req.body.price_range (Optional)
  * @param {String} req.body.timetable (Optional)
- * @param {String} req.body.price (Optional)
  * @param {String} req.body.average_time (Optional)
  * @param {String} req.body.phone (Optional)
  * @param {String} req.body.website (Optional)
@@ -181,8 +180,8 @@ router.post('/update_location', async function(req, res) {
     if (req.body.timetable) {
         update.timetable = req.body.timetable
     }
-    if (req.body.price) {
-        update.price_range = req.body.price
+    if (req.body.price_range) {
+        update.price_range = req.body.price_range
     }
     if (req.body.average_time) {
         update.average_time = req.body.average_time
@@ -223,10 +222,13 @@ async function placeCall(url) {
 
 router.get('/get_place', async function(req, res) {
 
-    /*let user = await UserModel.findOne({access_token: req.headers.access_token});
-    if (!user) {
-        return res.status(400).send({status: "You are not connected."});
-    }*/
+    // let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo").catch(error => error);
+    // if (!user) {
+    //     return res.status(400).send({status: "You are not connected."});
+    // }
+    // if (user.reason) {
+    //     return res.status(400).send({status: "Error in database transaction:\n", error: user});
+    // }
 
     let url = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=" + req.headers.place_name + "&inputtype=textquery&key=AIzaSyC4MiDbDXP5M3gvpyUADaIUO60H7Vjb9Uk"
     let research = await placeCall(url).then((response) => {
@@ -253,7 +255,7 @@ router.get('/get_place', async function(req, res) {
  */
 router.get('/get_locations', async function(req, res) {
 
-    let locations_list = null;
+    let locations_list = undefined;
     let query = {};
     let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo").catch(error => error);
 
