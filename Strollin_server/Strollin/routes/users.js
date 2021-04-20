@@ -132,14 +132,14 @@ router.get('/verify', async function(req, res) {
 
 // EDIT_PROFILE
 /**
- * Edit a comment's message or score
+ * Edit a user's information
  * @param {String} req.headers.access_token
  *
  * At least one of below
- * @param {String} req.body.password
- * @param {String} req.body.pseudo
- * @param {String} req.body.first_name
- * @param {String} req.body.last_name
+ * @param {String} req.body.password (Optional)
+ * @param {String} req.body.pseudo (Optional)
+ * @param {String} req.body.first_name (Optional)
+ * @param {String} req.body.last_name (Optional)
  */
 router.post('/edit_profile', async function(req, res) {
   let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id").catch(error => error);
@@ -585,6 +585,7 @@ router.delete('/remove_account', async function(req, res) {
   }
   return res.status(200).send({status: "Account successfully deleted."});
 });
+
 
 
 /***
