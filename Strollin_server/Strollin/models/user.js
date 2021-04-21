@@ -73,6 +73,10 @@ var UserModelSchema = new Schema({
         type: Boolean,
         default: false
     },
+    //image: {
+    //    type: Number,
+    //    default: 0
+    //}
 })
 
 
