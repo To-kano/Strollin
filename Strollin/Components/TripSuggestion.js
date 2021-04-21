@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import {
   StyleSheet, Text, View, Button , Image, PermissionsAndroid, TouchableOpacity,
 } from 'react-native';
+import { DrawerActions } from '@react-navigation/native';
 import I18n from '../Translation/configureTrans';
 import Map from './map';
 
@@ -16,7 +17,7 @@ import {getLocationByID} from '../apiServer/locations';
 
 function getNavigation() {
 
-  const destination = 
+  const destination =
   {
     "_id":
     {
@@ -74,7 +75,7 @@ function getLocation(id) {
     "__v":0
   }
 
-  const location2 = 
+  const location2 =
   {
     "_id":"5ff47553765c6f001fff5b6f",
     "owner":"thisID","score":"0","user_score":[],
@@ -164,10 +165,13 @@ export function TripSuggestion(props) {
   return (
     <View style={styles.view_back}>
       <View style={styles.view_header}>
-        <TouchableOpacity onPress={() => props.navigation.navigate('Menu')}>
+        <TouchableOpacity onPress={() => props.navigation.dispatch(DrawerActions.openDrawer())}>
           <Image style={styles.img_header} source={require('../images/icons/black/menu.png')}/>
         </TouchableOpacity>
-        <Text style={styles.text_header}>New Trip    </Text>
+        <Text style={styles.text_header}>
+          {I18n.t('Header.new_trip')}
+          {'    '}
+        </Text>
       </View>
       <View style={styles.fill}>
         <View style={{
@@ -261,7 +265,9 @@ export function TripSuggestion(props) {
           props.navigation.navigate('TripNavigation');
         }}
       >
-        <Text style={styles.text_button}>Let's Go !</Text>
+        <Text style={styles.text_button}>
+          {I18n.t('TripSuggestion.lets_go')}
+        </Text>
       </TouchableOpacity>
     </View>
   );

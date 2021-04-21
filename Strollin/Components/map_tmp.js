@@ -7,8 +7,6 @@ import MapViewDirections from 'react-native-maps-directions';
 import { connect } from 'react-redux';
 
 import Tts from 'react-native-tts';
-import { addUserHistoric } from '../apiServer/user';
-
 import I18n from '../Translation/configureTrans';
 
 // apiKey AIzaSyDGvC3HkeGolvgvOevKuaE_6LmS9MPjlvE
@@ -26,13 +24,13 @@ export async function updateCoordinates(setUserPosition) {
       setUserPosition(data);
     },
     (error) => {
-      // console.log(error.code, error.message);
+      //console.log(error.code, error.message);
     },
     { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
   );
 }
-//
-export async function requestGeolocalisationPermission(dispatch) {
+
+export async function requestGeolocalisationPermission(props) {
   try {
     const granted = await PermissionsAndroid.request(
       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
@@ -46,11 +44,11 @@ export async function requestGeolocalisationPermission(dispatch) {
     );
     if (PermissionsAndroid.RESULTS && granted === PermissionsAndroid.RESULTS.GRANTED) {
       const action = { type: 'SET_PERMISSION', value: true };
-      dispatch(action);
+      props.dispatch(action);
       // //console.log('You can use the geolocalisation');
     } else {
       const action = { type: 'SET_PERMISSION', value: false };
-      dispatch(action);
+      props.dispatch(action);
       // //console.log('geolocalisation permission denied');
     }
   } catch (err) {
@@ -69,15 +67,11 @@ function isNear(userPosition, elementPosition) {
   return false;
 }
 
-function Map({
-  position, height, width, deltaView, locations, profil, map, dispatch, navigation
-}) {
+function Map(props) {
   const [userPosition, setUserPosition] = useState(null);
-  const allTime = [];
+  const allTime = []
 
-  /// /console.log(props.navigate);
-  // console.log("map\n");
-  // console.log("position", deltaView, waypoints);
+  ////console.log(props.navigate);
   useEffect(() => {
     setLocalRegion({
       ...localRegion,
@@ -86,41 +80,33 @@ function Map({
   }, [userPosition]);
 
   const [localRegion, setLocalRegion] = useState({
-    latitudeDelta: deltaView.latitudeDelta,
-    longitudeDelta: deltaView.longitudeDelta
+    latitudeDelta: props.deltaView.latitudeDelta,
+    longitudeDelta: props.deltaView.longitudeDelta
   });
 
-  //const [waypoint, setWaypoint] = useState(props.waypoints);
-  const [destinations, setDestinations] = useState(locations || map.locations);// props.course);
-  //console.log(waypoint);
-  /* useEffect(() => {
-
-  //console.log("destination\n", destinations);
-  //console.log("final\n", destinations[destinations.length - 1]);
-  //console.log("parcoure\n", destinations.slice(0, destinations.length - 1));
+  const [waypoint, setWaypoint] = useState(props.waypoints);
 
   /*useEffect(() => {
     console.log("i'm here")
     console.log(ts)
-  }, []) */
+  }, [])*/
 
   useEffect(() => {
-    if (profil.sound) {
-      if (destinations.length == []) {
+    if (props.profil.sound) {
+      if (waypoint.length == []) {
         Tts.setDefaultLanguage('en-US');
         Tts.speak('You have done your navigation');
-        addUserHistoric(profil.access_token, map.course._id);
-        setDestinations();
-        const action = { type: 'ADD_HISTORY', courseID: map.course.id };
-        dispatch(action);
-        // sleep(2000);
-        navigation.navigate('CourseEvaluation');
+        setWaypoint()
+        const action = { type: 'ADD_HISTORIC', value: props.waypoints };
+        props.dispatch(action);
+        //sleep(2000);
+        props.navigation.navigate('HomePage');
       } else {
         Tts.setDefaultLanguage('en-US');
-        Tts.speak(`Heading to ${destinations[0].name}`);
+        Tts.speak(`Heading to ${waypoint[0].name}`);
       }
     }
-  }, [destinations]);
+  }, [waypoint]);
 
   const [magic, setMagic] = useState(1);
 
@@ -128,15 +114,15 @@ function Map({
     setMagic(0);
   };
 
-  // const [refMapView, setRefMapView] = useState(React.createRef());
+  const [refMapView, setRefMapView] = useState(React.createRef());
 
-  async function setTimedestinations() {
-    const tmp = await Date.now();
-    console.log('________________________');
-    console.log(tmp);
+  async function setTimeWaypoint() {
+    let tmp = await Date.now()
+    console.log("________________________")
+    console.log(tmp)
 
     const action = { type: 'SET_TIME', value: tmp };
-    dispatch(action);
+    props.dispatch(action);
   }
 
   const onUserPositionChange = (data) => {
@@ -144,9 +130,9 @@ function Map({
       latitude: data.coordinate.latitude,
       longitude: data.coordinate.longitude,
     };
-    if (destinations.length != 0 && isNear(position, destinations[0])) {
-      setDestinations(destinations.slice(1, destinations.length));
-      setTimedestinations();
+    if (waypoint.length != 0 && isNear(position, waypoint[0])) {
+      setWaypoint(waypoint.slice(1, waypoint.length));
+      setTimeWaypoint()
     }
     // if (props.background) {
     // refMapView.current.animateToRegion(localRegion, 500);
@@ -154,21 +140,21 @@ function Map({
     setUserPosition(position);
   };
 
-  if (position.asked == false) {
-    requestGeolocalisationPermission(dispatch);
+  if (props.position.asked == false) {
+    requestGeolocalisationPermission(props);
   }
-  //
-  if (position.permission == true && userPosition == null) {
+
+  if (props.position.permission == true && userPosition == null) {
     updateCoordinates(setUserPosition);
   }
-  //
-  if (position.permission && userPosition && localRegion.latitude && localRegion.longitude) {
+
+  if (props.position.permission && userPosition && localRegion.latitude && localRegion.longitude) {
     const GOOGLE_MAPS_APIKEY = 'AIzaSyDGvC3HkeGolvgvOevKuaE_6LmS9MPjlvE';
-    //
+
     return (
       <MapView
-      // ref={refMapView}
-        style={{ height, width: width + magic }} // showsMyLocationButton dont show if width is not change
+        style={{ height: props.height, width: props.width + magic }} // showsMyLocationButton do not show if width is not change
+        ref={refMapView}
         initialRegion={localRegion}
         showsUserLocation
         showsCompass
@@ -177,32 +163,32 @@ function Map({
         onUserLocationChange={(data) => {
           onUserPositionChange(data.nativeEvent);
         }}
+        onRegionChange={(region) => {}}
       >
-
         <MapViewDirections
           origin={userPosition}
-          destination={destinations[destinations.length - 1]}
-            // destination={getLocation()}
-          waypoints={destinations.slice(0, destinations.length - 1)}
-            // waypoints={destinations.slice(0, destinations.length - 1)}
+          destination={waypoint[waypoint.length - 1]}
+          waypoints={waypoint.slice(0, waypoint.length - 1)}
           apikey={GOOGLE_MAPS_APIKEY}
           strokeWidth={5}
           timePrecision="now"
           resetOnChange={false}
           strokeColor="#39A5D6"
           mode="WALKING"
+          onReady={({
+            distance, duration, coordinates, fare, waypointOrder
+          }) => {
+            //console.log('distance ', distance, ' duration ', duration);
+          }}
         />
-
-        {destinations.map((marker) => (
+        {waypoint.map((marker) => (
           <Marker
             key={marker.id}
             coordinate={{ latitude: marker.latitude, longitude: marker.longitude }}
             title={marker.name}
-            description={marker.address}
-            image={require('../images/logo/marker_small.png')}
+            description="Destination"
           />
         ))}
-
       </MapView>
     );
   }
@@ -213,15 +199,5 @@ function Map({
   );
 }
 
-const mapStateToProps = (state) => (
-  {
-    position: state.position,
-    profil: state.profil,
-    map: state.map
-  }
-);
-
-// const mapStateToProps = (state) => state;
+const mapStateToProps = (state) => state;
 export default connect(mapStateToProps)(Map);
-
-// export default Map;

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { Button } from 'react-native';
 
-import { 
+import {
     createDrawerNavigator,
     DrawerContentScrollView,
     DrawerItemList,
@@ -28,6 +28,8 @@ import CourseEvaluation from '../Components/CourseEvaluation';
 import CourseSettings from '../Components/CourseSettings';
 import PartenaireScreen from '../Components/PartenairePage';
 import SettingPartenaire from '../Components/SettingPartenaire';
+import Personal_trip from '../Components/Personal_trip';
+import TagSelection from '../Components/TagSelection';
 
 import Chat from './Chat';
 import Home from './Home';
@@ -56,6 +58,7 @@ function MyDrawer() {
       <Drawer.Screen name="Profile" component={Profile} />
       <Drawer.Screen name="Partenaire" component={PartenaireScreen} />
       <Drawer.Screen name="Settings" component={SettingPartenaire} />
+      <Drawer.Screen name="Personal_trip" component={Personal_trip} />
     </Drawer.Navigator>
   );
 }

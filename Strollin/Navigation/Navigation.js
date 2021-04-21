@@ -11,7 +11,7 @@ import Profile from '../Components/ProfileScreen';
 // import ConnectionScreen from '../Components/ConnectionScreen';
 import UserRegister from '../Components/UserRegister';
 import PartnerRegister from '../Components/PartnerRegister';
-import TageSelection from '../Components/TagSelection';
+import TagSelection from '../Components/TagSelection';
 import LoginPage from '../Components/LoginPage';
 import FriendList from '../Components/FriendList';
 import Home from '../Components/Home';
@@ -25,12 +25,15 @@ import MenuChat from '../Components/reactChatScreen/MenuScreen';
 import ScreenChat from '../Components/reactChatScreen/ChatScreen';
 import NewConversation from '../Components/reactChatScreen/NewConversation';
 import Notation from '../Components/Notation';
+import Position from '../Components/Position';
 import Menu from '../Components/Menu';
 import Socket from '../Components/Socket';
 import CourseEvaluation from '../Components/CourseEvaluation';
 import CourseSettings from '../Components/CourseSettings';
 import PartenaireScreen from '../Components/PartenairePage';
 import SettingPartenaire from '../Components/SettingPartenaire';
+import Personal_trip from '../Components/Personal_trip';
+
 
 
 import MyDrawer from './Drawer'
@@ -74,7 +77,6 @@ function MyStack(props) {
                 animationEnabled: false,
               }}
             />
-
             <Stack.Screen
               name="userRegister"
               component={UserRegister}
@@ -143,6 +145,11 @@ export default connect(mapStateToProps)(MyStack);
               }}
             />
             <Stack.Screen
+              name="Position"
+              component={Position}
+              options={{ title: 'Position' }}
+            />
+            <Stack.Screen
               name="historicUser"
               component={HistoryNav}
               options={{
@@ -193,7 +200,10 @@ export default connect(mapStateToProps)(MyStack);
             <Stack.Screen
               name="CourseEvaluation"
               component={CourseEvaluation}
-              options={{ title: 'course evaluation' }}
+              options={{
+                title: 'course evaluation' ,
+                ...TransitionPresets.SlideFromRightIOS,
+              }}
             />
             <Stack.Screen
               name="CourseSettings"

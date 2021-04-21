@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Input } from 'react-native-elements';
 import { connect } from 'react-redux';
@@ -37,6 +37,7 @@ const getInfoFromToken = (token, setUserInfo, props) => {
   new GraphRequestManager().addRequest(profileRequest).start();
 };
 
+
 export function UserRegister(props) {
   const [userEmail, setUserEmail] = useState('');
   const [userPassword, setUserPassword] = useState('');
@@ -47,6 +48,12 @@ export function UserRegister(props) {
 
   const [modalVisible, setModalVisible] = useState(false);
   const [message, setMessage] = useState("");
+  useEffect(() => {
+    if (props.profil.access_token != null) {
+      console.log("ok")
+      props.navigation.navigate('TagSelection');
+    }
+  })
 
   //const [loading, setLoading] = useState(false);
 

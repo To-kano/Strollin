@@ -20,6 +20,7 @@
     "firebase": "^7.14.1",
     "i18n-js": "^3.7.1",
     "lodash.memoize": "^4.1.2",
+    "popup-ui": "^1.2.2",
     "react": "17.0.1",
     "react-native": "^0.64.0",
     "react-native-android-pip": "^1.0.1",

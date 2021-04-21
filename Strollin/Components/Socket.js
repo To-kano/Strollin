@@ -44,7 +44,7 @@ function Socket({children, profil, dispatch}) {
   useEffect(() => {
     if (socket != null) {
       socket.on('receiveMessage', (data) => {
-      //console.log("received " + data);
+      console.log("received msg" + JSON.stringify(data));
       
       const action = { type: 'ADD_MESSAGE', value: data };
       Store.dispatch(action);
@@ -63,8 +63,6 @@ function Socket({children, profil, dispatch}) {
         const store = Store.getState();
 
 
-        console.log("NEWCONV received!");
-        console.log("data = ", data);
         const action = { type: 'ADD_CONVERSATION', value: data };
         Store.dispatch(action);
         const action2 = { type: 'RESET_PARTICIPANT_OF_CONVERSATION'};
@@ -92,6 +90,13 @@ function Socket({children, profil, dispatch}) {
       conversation: store.conversation.currentConversation, type: "message", message: message});
   };
 
+  const sendImage = (image) => {
+    console.log('sending image', image);
+  
+    socket.emit('sendMessage', { access_token: store.profil.access_token, 
+      conversation: store.conversation.currentConversation, type: "image", message: image});
+  };
+
   const createConversation = (participantsID) => {
     console.log('creating conversation', participantsID);
     let convName = store.profil.pseudo;
@@ -105,7 +110,7 @@ function Socket({children, profil, dispatch}) {
   };
 
   return (
-    <SocketContext.Provider value={{ socket, sendMessage, createConversation }}>
+    <SocketContext.Provider value={{ socket, sendMessage, createConversation, sendImage }}>
       {children}
     </SocketContext.Provider>
   );
