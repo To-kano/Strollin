@@ -126,7 +126,6 @@ COURSE RELATED:
 - locations_list `[locationID]`
 - name `String`
 - score `String`
-- user_score `[UserID]`
 - number_used `String` : number of usage of the course
 - author_id `UserID`
 - author_pseudo `String`
@@ -145,7 +144,7 @@ COURSE RELATED:
 
 | Description | Headers | Body | Return |
 |-|-|-|-|
-| Add a course to the database. | access_token: String | locations_list: [LocationID]<br>name: String<br>author: UserID (optional)<br>time_spent: String | |
+| Add a course to the database. | access_token: String | locations_list: [LocationID]<br>name: String | |
 
 
 - GET course: `GET /course/get_course`
@@ -296,6 +295,13 @@ LOCATION RELATED:
 | Description | Headers | Body | Return |
 |-|-|-|-|
 | Get a list of all locations. | access_token: String | | [LocationObject] |
+
+
+- GET location: `GET /location/get_partner_location`
+
+| Description | Headers | Body | Return |
+|-|-|-|-|
+| Get the location of the partner. | access_token: String | | LocationObject |
 
 
 - GET get location by ID: `GET /location/get_location_by_id`

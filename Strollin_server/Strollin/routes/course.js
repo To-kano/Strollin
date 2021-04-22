@@ -29,8 +29,6 @@ const {
  *
  * @param {[LocationID]} req.body.locations_list
  * @param {String} req.body.name
- * @param {UserID} req.body.author (Optional)
- * @param {String} req.body.time_spent (Optional)
  */
 router.post('/new_course', async function(req, res) {
 
@@ -61,8 +59,6 @@ router.post('/new_course', async function(req, res) {
         author_pseudo: user.pseudo,
         tags_list: [],
     });
-    if (req.body.time_spent)
-        course.time_spent = req.body.time_spent
 
     //Get tags from locations and price range
     let min_price = 0;
