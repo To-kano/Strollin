@@ -16,7 +16,6 @@ async function loginUser(props, newMail, newPassword) {
         console.log("AccessToken: ", answer.access_token);
         await profileUser(props, answer.access_token);
         await conversationUser(props, answer.access_token);
-        await setTendance(props, answer.access_token);
         const action = { type: 'CONNECTION', value: answer.access_token };
         props.dispatch(action);
       } else {
@@ -45,6 +44,7 @@ async function profileUser(props, access_token) {
         const action = { type: 'SET_USER', value: answer.profile };
         props.dispatch(action);
         setFriendPseudo(props, access_token, answer.profile);
+        await setTendance(props, access_token);
       } else {
         //console.log(answer.status);
       }
@@ -200,12 +200,12 @@ async function conversationUser(props, access_token) {
 
 exports.profileUser = conversationUser;
 
-async function registerUser(props, newPseudo, newPassword, newMail, setMessage, setPopup) {
+async function registerUser(props, newPseudo, newPassword, newMail, setMessage, setPopup, partner) {
   const bodyRequest = JSON.stringify({
     pseudo: newPseudo,
     password: newPassword,
     mail: newMail,
-    partner: false,
+    partner: partner,
   });
 
   fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/register`, {
