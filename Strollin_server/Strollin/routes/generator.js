@@ -18,6 +18,7 @@ const {
 router.get('/generate_course', async function(req, res) {
 
     let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo").catch(error => error);
+    let course_model = undefined;
 
     if (!user) {
         return res.status(400).send({status: "You are not connected."});
@@ -26,7 +27,7 @@ router.get('/generate_course', async function(req, res) {
         return res.status(400).send({status: "Error in database transaction:\n", error: user});
     }
 
-    console.log("lets EEEE", req.headers.time , req.headers.budget , " TAgs: ", req.headers.tags , req.headers.coordinate);
+    console.log("lets EEEE", req.headers.time , req.headers.budget , " Tags: ", req.headers.tags , req.headers.coordinate);
     if (!req.headers.coordinate || !req.headers.time || !req.headers.budget || !req.headers.tags) {
         return res.status(400).send({status: "Parameter required is missing."});
     }
@@ -37,7 +38,22 @@ router.get('/generate_course', async function(req, res) {
       let generated_course = value;
       console.log("course: ", generated_course);
       if (generated_course) {
-          return res.status(200).send({status: "Result of the generator.", generated_course});
+        course = {locations_list: [], name: "", tags_list: []}
+        for (let index in generated_course) {
+            course.locations_list.push(generated_course[index].Id);
+            if (index == 0) {
+                course.name += generated_course[index].Name;
+            } else {
+                course.name += " / " + generated_course[index].Name;
+            }
+            for (let index2 in generated_course.Tags) {
+                let tag = generated_course[index].Tags[index2];
+                if (!course.tags_list.includes(tag)) {
+                    course.tags_list.push(tag)
+                }
+            }
+        }
+        return res.status(200).send({status: "Result of the generator.", course});
       }
       return res.status(400).send({status: "An error occured during the generation of the course"});
     })
@@ -107,3 +123,22 @@ router.get('/popup_answer', async function(req, res) {
 
 
 module.exports = router;
+
+
+// let done =  {"generated_course": [
+//         {
+//             "AlgAg": 0,
+//             "AlgDisp": 0,
+//             "City": "oui",
+//             "Desc": "",
+//             "Dist": 0.006075163571461594,
+//             "Id": 1618336950173,
+//             "Name": "Hôpital Henri-Mondor Ap-Hp",
+//             "PopAg": 0,
+//             "PopDisp": 0,
+//             "Pos": [Array],
+//             "Price": 20,
+//             "Tags": [Array],
+//             "TagsDisp": [Array],
+//             "Time": 20
+//         }]
