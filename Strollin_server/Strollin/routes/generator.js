@@ -47,13 +47,13 @@ router.get('/generate_course', async function(req, res) {
                 course.name += " / " + generated_course[index].Name;
             }
             for (let index2 in generated_course.Tags) {
-                let tag = generated_course[index].Tags[index2];
+                tags = generated_course[index].Tags[index2];
                 if (!course.tags_list.includes(tag)) {
                     course.tags_list.push(tag)
                 }
             }
         }
-        return res.status(200).send({status: "Result of the generator.", course});
+        return res.status(200).send({status: "Result of the generator.", generate_course, course});
       }
       return res.status(400).send({status: "An error occured during the generation of the course"});
     })
