@@ -53,7 +53,7 @@ router.get('/generate_course', async function(req, res) {
                 }
             }
         }
-        return res.status(200).send({status: "Result of the generator.", generate_course, course});
+        return res.status(200).send({status: "Result of the generator.", generated_course, course});
       }
       return res.status(400).send({status: "An error occured during the generation of the course"});
     })
