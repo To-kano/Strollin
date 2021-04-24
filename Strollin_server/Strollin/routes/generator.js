@@ -38,14 +38,9 @@ router.get('/generate_course', async function(req, res) {
       let generated_course = value;
       console.log("course: ", generated_course);
       if (generated_course) {
-        course = {locations_list: [], name: "", tags_list: []}
+        course = {locations_list: [], name: (generated_course[0].Name + " => " + generated_course[generated_course.length()].Name), tags_list: []}
         for (let index in generated_course) {
             course.locations_list.push(generated_course[index].Id);
-            if (index == 0) {
-                course.name += generated_course[index].Name;
-            } else {
-                course.name += " / " + generated_course[index].Name;
-            }
             for (let index2 in generated_course.Tags) {
                 tags = generated_course[index].Tags[index2];
                 if (!course.tags_list.includes(tag)) {
