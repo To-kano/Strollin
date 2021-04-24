@@ -59,10 +59,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // ROUTES //
 
-app.use((req, res, next) => {
-  console.log(`${req.method} ${req.originalUrl}`) 
-  next()
-})
+// app.use((req, res, next) => {
+//   console.log(`${req.method} ${req.originalUrl} ${res.statusCode}`) 
+//   next()
+// })
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);

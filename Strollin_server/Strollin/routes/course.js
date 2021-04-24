@@ -73,8 +73,8 @@ router.post('/new_course', async function(req, res) {
         // avg_price += Number(locations_list[index].price_range[2].match(/\d+/g).map(Number));
         for (let index2 = 0; index2 < locations_list[index].tags_list.length; index2++) {
             tag = locations_list[index].tags_list[index2];
-            if (!course.tags_list.includes(tag.id)) {
-                course.tags_list.push(tag.id)
+            if (!course.tags_list.includes(tag._id || tag.id)) {
+                course.tags_list.push(tag._id || tag.id)
             }
         }
     }
