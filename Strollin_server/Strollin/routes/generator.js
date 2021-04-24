@@ -38,7 +38,7 @@ router.get('/generate_course', async function(req, res) {
       let generated_course = value;
       console.log("course: ", generated_course);
       if (generated_course) {
-        course = {locations_list: [], name: (generated_course[0].Name + " => " + generated_course[generated_course.length()].Name), tags_list: []}
+        course = {locations_list: [], name: (generated_course[0].Name + " => " + generated_course[generated_course.length - 1].Name), tags_list: []}
         for (let index in generated_course) {
             course.locations_list.push(generated_course[index].Id);
             for (let index2 in generated_course.Tags) {
