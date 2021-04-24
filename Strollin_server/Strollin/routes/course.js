@@ -65,12 +65,18 @@ router.post('/new_course', async function(req, res) {
     let max_price = 0;
     let avg_price = 0;
     for (let index = 0; index < locations_list.length; index++) {
-        min_price += Number(locations_list[index].price_range[0]);
-        max_price += Number(locations_list[index].price_range[1]);
-        avg_price += Number(locations_list[index].price_range[2]);
-        // min_price += Number(locations_list[index].price_range[0].match(/\d+/g).map(Number));
-        // max_price += Number(locations_list[index].price_range[1].match(/\d+/g).map(Number));
-        // avg_price += Number(locations_list[index].price_range[2].match(/\d+/g).map(Number));
+        if (!Number(locations_list[index].price_range[0]).isNaN()) {
+            min_price += Number(locations_list[index].price_range[0]);
+            // min_price += Number(locations_list[index].price_range[0].match(/\d+/g).map(Number));
+        }
+        if (!Number(locations_list[index].price_range[1]).isNaN()) {
+            max_price += Number(locations_list[index].price_range[1]);
+            // max_price += Number(locations_list[index].price_range[1].match(/\d+/g).map(Number));
+        }
+        if (!Number(locations_list[index].price_range[2]).isNaN()) {
+            avg_price += Number(locations_list[index].price_range[2]);
+            // avg_price += Number(locations_list[index].price_range[2].match(/\d+/g).map(Number));
+        }
         for (let index2 = 0; index2 < locations_list[index].tags_list.length; index2++) {
             tag = locations_list[index].tags_list[index2];
             if (!course.tags_list.includes(tag._id || tag.id)) {
