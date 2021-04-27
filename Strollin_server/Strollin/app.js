@@ -29,8 +29,8 @@ var app = express();
 // MongoDB //
 
 // var mongoDB = 'mongodb://didier:test@db:27017/Strollin'; //Version Authentification
-// var mongoDB = 'mongodb://127.0.0.1:27017/Strollin';
-var mongoDB = 'mongodb://db:27017/Strollin';
+ var mongoDB = 'mongodb://127.0.0.1:27017/Strollin';
+//var mongoDB = 'mongodb://db:27017/Strollin';
 mongoose.connect(mongoDB, { useNewUrlParser: true });
 
 //Get the default connection
@@ -112,7 +112,7 @@ async function TestLoc() {
 
 //TestLoc();
 
-tag = new TagModel({
+let tag = new TagModel({
     name: "Art",
     description: "desc",
 });
