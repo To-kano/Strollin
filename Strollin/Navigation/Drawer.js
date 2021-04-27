@@ -31,6 +31,8 @@ import SettingPartenaire from '../Components/SettingPartenaire';
 import Personal_trip from '../Components/Personal_trip';
 import TagSelection from '../Components/TagSelection';
 
+import ChangeImageProfileForm from '../Components/ChangeImageProfileForm';
+
 import Chat from './Chat';
 import Home from './Home';
 import Trip from './Trip';
@@ -55,7 +57,7 @@ function MyDrawer() {
       <Drawer.Screen name="New trip" component={Trip} />
       <Drawer.Screen name="Friends" component={FriendList} />
       <Drawer.Screen name="Chat" component={Chat} />
-      <Drawer.Screen name="Profile" component={Profile} />
+      <Drawer.Screen name="Profile" component={ChangeImageProfileForm} />
       <Drawer.Screen name="Partenaire" component={PartenaireScreen} />
       <Drawer.Screen name="Settings" component={SettingPartenaire} />
       <Drawer.Screen name="Personal_trip" component={Personal_trip} />
