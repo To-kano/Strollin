@@ -2,6 +2,8 @@ import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 
 
 async function getImageId(id) {
+
+    console.log("id getImageId : ", id);
     let answer = await fetch(`http://${IP_SERVER}:${PORT_SERVER}/image/id`, {
         headers: {
             Accept: 'application/json',
