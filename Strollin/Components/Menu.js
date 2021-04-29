@@ -11,6 +11,8 @@ import { DrawerActions } from '@react-navigation/native';
 import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 import I18n from '../Translation/configureTrans';
 
+import ImageProfile from './ImageProfile';
+
 function Menu(props) {
   const config = {
     velocityThreshold: 0.05,
@@ -23,7 +25,7 @@ function Menu(props) {
     <View style={styles.horizontal}>
       <View style={styles.view_menu}>
         <View style={styles.view_profile}>
-          <Image style={styles.img_profile} source={require('../images/TonyPP.jpg')} />
+          <ImageProfile style={styles.img_profile} />
           <Text style={styles.text_profile}>{props.profil.pseudo}</Text>
           <Text style={styles.text_grade}>Traveler</Text>
         </View>

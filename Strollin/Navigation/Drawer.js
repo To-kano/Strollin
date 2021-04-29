@@ -31,6 +31,8 @@ import SettingPartenaire from '../Components/SettingPartenaire';
 import Personal_trip from '../Components/Personal_trip';
 import TagSelection from '../Components/TagSelection';
 
+import ChangeImageProfileForm from '../Components/ChangeImageProfileForm';
+
 import Chat from './Chat';
 import Home from './Home';
 import Trip from './Trip';

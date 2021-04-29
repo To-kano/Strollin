@@ -10,7 +10,7 @@ var ImageModelSchema = new Schema({
         required: true,
     },
     author: {     // user's id of the image.
-        type: [String],
+        type: String,
         required: true,
     },
     uri: {             // Name of file to look in public
