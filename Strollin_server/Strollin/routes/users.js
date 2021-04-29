@@ -274,12 +274,15 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-router.post('/add_image_profile', upload.array('image', 3), async (req, res) => {
+router.post('/set_image_profile', upload.array('image', 3), async (req, res) => {
   console.log('file', req.files);
   console.log('body', req.body);
   console.log('path', __dirname + '/../public/images');
 
-  let user = await UserModel.findOne({ access_token: req.headers.access_token }).catch(error => error);
+  let user = await UserModel.findOne({ access_token: req.body.access_token }).catch(error => error);
+
+  console.log('headers: ', req.headers);
+  console.log('user: ', user);
 
   if (user) {
 
@@ -295,7 +298,7 @@ router.post('/add_image_profile', upload.array('image', 3), async (req, res) => 
       return res.status(400).send({ status: "Error in upload", error: error });
     } else {
 
-      await UserModel.updateOne({ access_token: req.headers.access_token }, { id_image_profile: image.id }).catch(error => error);
+      await UserModel.updateOne({ access_token: req.body.access_token }, { id_image_profile: image.id }).catch(error => error);
 
 
       res.status(200).json({

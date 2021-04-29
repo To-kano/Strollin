@@ -11,7 +11,7 @@ var UserModelSchema = new Schema({
     },
     id_image_profile: {
         type: Number,
-        required: false,
+        default: 0,
     },
     mail: {                 // Adresse mail pour login et communication
         type: String,

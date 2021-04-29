@@ -4,29 +4,31 @@ import ButtonIcon from './ButtonIcon.js';
 import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 
 
-//import { connect } from 'react-redux';
+import { connect } from 'react-redux';
 import { StyleSheet, Image,Button, View } from 'react-native';
 
-function ChangeImageProfileForm() {
+import { uploadImageProfile } from '../apiServer/image';
+
+function ChangeImageProfileForm({profil, dispatch}) {
 
     const [image, setImage] = useState(null);
 
-    const createFormData = (image, body = {}) => {
-        const data = new FormData();
-      
-        data.append('image', {
-          name: image.fileName,
-          type: image.type,
-          uri: Platform.OS === 'ios' ? image.uri.replace('file://', '') : image.uri,
-        });
-      
-        Object.keys(body).forEach((key) => {
-          data.append(key, body[key]);
-        });
-      
-        return data;
-    };
-
+    //const createFormData = (image, body = {}) => {
+    //    const data = new FormData();
+    //  
+    //    data.append('image', {
+    //      name: image.fileName,
+    //      type: image.type,
+    //      uri: Platform.OS === 'ios' ? image.uri.replace('file://', '') : image.uri,
+    //    });
+    //  
+    //    Object.keys(body).forEach((key) => {
+    //      data.append(key, body[key]);
+    //    });
+    //  
+    //    return data;
+    //};
+//
     const handleChooseImage = () => {
         launchImageLibrary({ noData: true }, (response) => {
             if (response) {
@@ -35,26 +37,25 @@ function ChangeImageProfileForm() {
         });
     };
 
-    const handleUploadImage = () => {
-        fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/add_image_profile`, {
-            method: 'POST',
-            body: createFormData(image, { userId: '123' }),
-        })
-            .then((response) => response.json())
-            .then((response) => {
-                setImage(null);
-                if (response["image"]) {
-                    setImageName(response["image"]);
-                    sendImage(response["image"]);
-                }
-            })
-            .catch((error) => {
-                console.log('error', error);
-            });
-    };
-    const cancelImage = () => {
-        setImage(null);
-    };
+    //const handleUploadImage = () => {
+    //    fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/add_image_profile`, {
+    //        method: 'POST',
+    //        access_token: access_token,
+//
+    //        body: createFormData(image, { userId: '123' }),
+    //    })
+    //        .then((response) => response.json())
+    //        .then((response) => {
+    //            setImage(null);
+    //            if (response["image"]) {
+    //                setImageName(response["image"]);
+    //                sendImage(response["image"]);
+    //            }
+    //        })
+    //        .catch((error) => {
+    //            console.log('error', error);
+    //        });
+    //};
 
     return (
         <View>
@@ -64,13 +65,18 @@ function ChangeImageProfileForm() {
                         source={{ uri: image.uri }}
                         style={{ width: 300, height: 300, borderRadius: 15, marginLeft: "20%" }}
                     />
-                    <Button title="Change profile image"
+                    <Button title="set image profile"
                         onPress={() => {
                             if (image) {
-                                handleUploadImage();
+                                uploadImageProfile(profil.access_token, image).then((answer) => {
+                                    if (answer.image) {
+                                        const action = { type: 'SET_IMAGE_PROFILE', value: answer.image?.id };
+                                        dispatch(action);
+                                    }
+                                });
                             }
                         }} />
-                    <Button title="Cancel" onPress={cancelImage} />
+                    <Button title="Cancel" onPress={() => {setImage(null)}} />
                 </>
             )}
 
@@ -92,6 +98,6 @@ const styles = StyleSheet.create({
     },
 });
 
-//const mapStateToProps = (state) => state;
-//export default connect(mapStateToProps)(ButtonIcon);
-export default ChangeImageProfileForm;
+const mapStateToProps = (state) => state;
+export default connect(mapStateToProps)(ChangeImageProfileForm);
+//export default ChangeImageProfileForm;

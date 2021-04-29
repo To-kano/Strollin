@@ -7,7 +7,7 @@ const {
 
 
 /* GET home page. */
-router.get('/id', function (req, res, next) {
+router.get('/id', async function (req, res, next) {
 
     let image = await ImageModel.findOne({ id: req.headers.id }).catch(error => error);
 
