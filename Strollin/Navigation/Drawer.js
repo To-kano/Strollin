@@ -57,7 +57,7 @@ function MyDrawer() {
       <Drawer.Screen name="New trip" component={Trip} />
       <Drawer.Screen name="Friends" component={FriendList} />
       <Drawer.Screen name="Chat" component={Chat} />
-      <Drawer.Screen name="Profile" component={ChangeImageProfileForm} />
+      <Drawer.Screen name="Profile" component={Profile} />
       <Drawer.Screen name="Partenaire" component={PartenaireScreen} />
       <Drawer.Screen name="Settings" component={SettingPartenaire} />
       <Drawer.Screen name="Personal_trip" component={Personal_trip} />

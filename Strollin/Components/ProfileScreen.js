@@ -11,6 +11,11 @@ import Store from '../Store/configureStore';
 import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 import { DrawerActions } from '@react-navigation/native';
 
+import ImageProfile from './ImageProfile';
+
+import Popup from './Popup';
+import ChangeImageProfileForm from './ChangeImageProfileForm';
+
 function ParseTags(Tags) {
   let list = Tags[0];
 
@@ -42,6 +47,9 @@ const initialList = [
 function ProfileScreen(props) {
   // const [list, setList] = React.useState(props.profil.tags_list);
   const [args, setArgs] = useState(true);
+
+  const [modalVisible, setModalVisible] = useState(false);
+
   const store = Store.getState();
   const access_Token = store.profil.access_token;
 
@@ -101,14 +109,19 @@ function ProfileScreen(props) {
       <View style={styles.view_header}>
         <TouchableOpacity onPress={() => props.navigation.dispatch(DrawerActions.openDrawer())}>
           <Image style={styles.img_header} source={require('../images/icons/black/menu.png')} />
-        </TouchableOpacity>
+          </TouchableOpacity>
         <Text style={styles.text_header}>
           {I18n.t('Header.profile')}
           {'   '}
         </Text>
       </View>
       <View style={styles.view_profileTop}>
-        <Image style={styles.img_profileTop} source={require('../images/TonyPP.jpg')} />
+        <TouchableOpacity onPress={() => setModalVisible(true)}>
+          <ImageProfile style={styles.img_profileTop} />
+        </TouchableOpacity>
+        <Popup message={"Choose your profile picture"} modalVisible={modalVisible} setModalVisible={setModalVisible}>
+          <ChangeImageProfileForm/>
+        </Popup>
         {/* <Image  style={styles.img_profileTop} source={require('')}/> */}
         <Text style={styles.text_profileTop}>{args.pseudo}</Text>
       </View>

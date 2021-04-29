@@ -275,14 +275,14 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 router.post('/set_image_profile', upload.array('image', 3), async (req, res) => {
-  console.log('file', req.files);
-  console.log('body', req.body);
-  console.log('path', __dirname + '/../public/images');
+  //console.log('file', req.files);
+  //console.log('body', req.body);
+  //console.log('path', __dirname + '/../public/images');
 
   let user = await UserModel.findOne({ access_token: req.body.access_token }).catch(error => error);
 
-  console.log('headers: ', req.headers);
-  console.log('user: ', user);
+  //console.log('headers: ', req.headers);
+  //console.log('user: ', user);
 
   if (user) {
 

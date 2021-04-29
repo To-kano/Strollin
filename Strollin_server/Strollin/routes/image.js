@@ -11,7 +11,7 @@ router.get('/id', async function (req, res, next) {
 
     let image = await ImageModel.findOne({ id: req.headers.id }).catch(error => error);
 
-    console.log("header: ", req.headers);
+    //console.log("header: ", req.headers);
 
     if (image) {
 

@@ -21,14 +21,17 @@ function ChangeImageProfileForm({profil, dispatch}) {
     };
 
     return (
-        <View>
+        <View style={{
+            //backgroundColor: "red",
+            alignItems: 'center',
+            }} >
             {image && (
                 <>
                     <Image
                         source={{ uri: image.uri }}
-                        style={{ width: 300, height: 300, borderRadius: 15, marginLeft: "20%" }}
+                        style={{ width: 250, height: 250, borderRadius: 15}}
                     />
-                    <Button title="set image profile"
+                    <Button title="OK"
                         onPress={() => {
                             if (image) {
                                 uploadImageProfile(profil.access_token, image).then((answer) => {
@@ -39,14 +42,16 @@ function ChangeImageProfileForm({profil, dispatch}) {
                                 });
                             }
                         }} />
-                    <Button title="Cancel" onPress={() => {setImage(null)}} />
+                    <Button title="Remove" onPress={() => {setImage(null)}} />
                 </>
             )}
 
-            <ButtonIcon
-                icon={require('../images/picture.png')}
+            {!image && (
+                <Button
+                title="Photo"
                 onPress={handleChooseImage}
             />
+            )}
         </View>
     )
 }
