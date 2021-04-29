@@ -59,10 +59,68 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // ROUTES //
 
-// app.use((req, res, next) => {
-//   console.log(`${req.method} ${req.originalUrl} ${res.statusCode}`) 
-//   next()
-// })
+let stats = {
+  success: 0,
+  failure: 0,
+  unknown: 0,
+  total: 0,
+  users: 0,
+  conversation: 0,
+  message: 0,
+  location: 0,
+  course: 0,
+  comment: 0,
+  tag: 0,
+  faq: 0,
+  generator: 0,
+  other: 0,
+}
+
+app.use((req, res, next) => {
+  let model = req.originalUrl.split('/')[1];
+  switch (model) {
+    case "users":
+      stats.users += 1;
+      break;
+    case "conversation":
+      stats.conversation += 1;
+      break;
+    case "message":
+      stats.message += 1;
+      break;
+    case "location":
+      stats.location += 1;
+      break;
+    case "course":
+      stats.course += 1;
+      break;
+    case "comment":
+      stats.comment += 1;
+      break;
+    case "tag":
+      stats.tag += 1;
+      break;
+    case "faq":
+      stats.faq += 1;
+      break;
+    case "generator":
+      stats.generator += 1;
+      break;
+    default:
+      stats.other += 1;
+      break;
+  }
+  if (res.statusCode == 200) {
+    stats.success += 1;
+  } else if (res.statusCode == 400) {
+    stats.failure += 1;
+  } else {
+    stats.unknown += 1;
+  }
+  stats.total += 1;
+  //console.log("REQUESTS STATISTIC:\n \nRequests by route:\n\t- comment:\t" + stats.comment + "\n\t- conversation:\t" + stats.conversation + "\n\t- course:\t" + stats.course + "\n\t- faq:\t\t" + stats.faq + "\n\t- generator:\t" + stats.generator + "\n\t- location:\t" + stats.location + "\n\t- message:\t" + stats.message + "\n\t- tag:\t\t" + stats.tag + "\n\t- users:\t" + stats.users + "\n\t- other:\t" + stats.other + "\n \nRequest by answer:\n\t- Success:\t" + stats.success + "\n\t- Failure:\t" + stats.failure + "\n\t- Unknown:\t" + stats.unknown + "\n \nTotal Request:\t" + stats.total);
+  next()
+})
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
@@ -91,7 +149,8 @@ const {
 
 const {
   UserModel
-} = require("./models/user")
+} = require("./models/user");
+const { fail } = require('assert');
 
 //location = LocationModel.findOne({name: req.body.name, address: req.body.address});
 

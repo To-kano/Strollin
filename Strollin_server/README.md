@@ -29,6 +29,7 @@ INDEX:
 - [MESSAGE RELATED](#MESSAGE-RELATED)
 - [TAGS RELATED](#TAGS-RELATED)
 - [USER RELATED](#USER-RELATED)
+- [GENERATOR RELATED](#GENERATOR-RELATED)
 
 <br>
 
@@ -151,7 +152,14 @@ COURSE RELATED:
 
 | Description | Headers | Body | Return |
 |-|-|-|-|
-| Get a list of courses. Can be sorted by name, number_used, score, tendency (tendency_range is at 30 days by default)) | access_token: String<br>sort: String<br>tendency_range: Number (Optional) | | [CourseObject] (See Schema) |
+| Get a list of courses. Can be sorted by name, number_used, score, tendency (tendency_range is at 30 days by default) | access_token: String<br>sort: String<br>tendency_range: Number (Optional) | | [CourseObject] (See Schema) |
+
+
+- GET course: `GET /course/get_user_historic`
+
+| Description | Headers | Body | Return |
+|-|-|-|-|
+| Get a list of course in the historic of the user. Size is the number of course to return max | access_token: String<br>size: Number (default: 10) | | [CourseObject] (See Schema) |
 
 
 - GET get course by ID: `GET /course/get_course_by_id`
@@ -508,3 +516,9 @@ USER RELATED:
 - DEL user's friend: `DEL /users/remove_friend`
 
 - DEL user's tags: `DEL /users/remove_tags`
+
+
+
+GENERATOR RELATED:
+==================
+

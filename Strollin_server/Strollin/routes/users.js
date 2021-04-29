@@ -355,7 +355,7 @@ router.post('/add_historic', async function(req, res) {
     return res.status(400).send({status: "Error in database transaction:\n", error: user});
   } else {
     let new_course = [course.id, new Date().toLocaleDateString("fr-FR")];
-    let error = await UserModel.updateOne({id: user.id}, {$push: {course_historic: new_course}}).catch(error => error);
+    let error = await UserModel.updateOne({id: user.id}, {$push: {course_historic: {$each: [new_course], $position: 0}}}).catch(error => error);
     if (error.errors) {
       return res.status(400).send({status: "Error in database transaction:\n", error: error});
     }
@@ -530,7 +530,7 @@ router.get('/get_user_tags', async function(req, res) {
       }
     }
   }
-  return  res.status(200).send({status: "User's Tags sent." , all_user_tags});
+  return res.status(200).send({status: "User's Tags sent." , all_user_tags});
 });
 
 
