@@ -186,7 +186,7 @@ export function UserRegister(props) {
             }}
           >
             <Text style={styles.text_logIn}>
-              {"Become Partner"}
+              {I18n.t('UserRegister.PartnerPage')}
             </Text>
           </TouchableOpacity>
         </View>

@@ -1,6 +1,9 @@
 import { IP_SERVER, PORT_SERVER } from '../../env/Environement';
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
+import CoursePreviewItem from './CoursePreviewItem';
+import ImageItem from './ImageItem';
+import CourseItem from './CourseItem';
 
 // import {GetTrackById} from '../APIserver/Track';
 //
@@ -21,14 +24,17 @@ import {
 //  setTrack(answer);
 // }
 
+
 function MessagesItem(props) {
 
+  
   if (props.profil.id != props.message[props.messageID].expeditor_id) {
     if (props.message[props.messageID]["type"] == "image") {
+      
       return (
       <View>
-          <Image
-            source={{ uri: `http://${IP_SERVER}:${PORT_SERVER}/images/` + props.message[props.messageID].message }}
+          <ImageItem
+            imageId={ props.message[props.messageID].message }
             style={{ width: 300, height: 300, borderRadius: 15, marginLeft: "1%" }}
           />
           <Text style={styles.expeditor} ellipsizeMode="tail">
@@ -36,7 +42,9 @@ function MessagesItem(props) {
         </Text>
       </View>
       );
-    } else {
+    } else if (props.message[props.messageID]["type"] == "course") {
+       <CourseItem navigation={props.navigation} id={props.message[props.messageID].message} pseudo={props.profil.friends_pseudo_list[props.message[props.messageID].expeditor_id]} style={{ width: 300, height: 300, borderRadius: 15, marginLeft: "1%" }}/>
+    } else if (props.message[props.messageID]["type"] == "message") {
       return (
       <View>
         <View style={styles.greyDisplay}>
@@ -52,35 +60,41 @@ function MessagesItem(props) {
       </View>
       );
     }
-  }
-  if (props.message[props.messageID]["type"] == "image") {
-    return (
-      <View>
-        <Image
-          source={{ uri: `http://${IP_SERVER}:${PORT_SERVER}/images/` + props.message[props.messageID].message }}
-          style={{ width: 300, height: 300, borderRadius: 15, marginLeft: "18%" }}
-        />
-        <Text style={styles.expeditorUser} ellipsizeMode="tail">
-          {props.profil.pseudo}
-        </Text>
-      </View>
-    );
-  } else {
-    return (
-      <View>
-        <View style={styles.blueDisplay}>
-          <View style={styles.box}>
-            <Text style={styles.message}>
-              {props.message[props.messageID].message}
-            </Text>
-          </View>
+  } else if (props.profil.id == props.message[props.messageID].expeditor_id) {
+    if (props.message[props.messageID]["type"] == "image") {
+      return (
+        <View>
+          <ImageItem
+            imageId={ props.message[props.messageID].message }
+            style={{ width: 300, height: 300, borderRadius: 15, marginLeft: "18%" }}
+          />
+          <Text style={styles.expeditorUser} ellipsizeMode="tail">
+            {props.profil.pseudo}
+          </Text>
         </View>
-        <Text style={styles.expeditorUser} ellipsizeMode="tail">
-          {props.profil.pseudo}
-        </Text>
-      </View>
-    );
+      );
+    } else if (props.message[props.messageID]["type"] == "course") {
+      return (
+       <CourseItem navigation={props.navigation} id={props.message[props.messageID].message} pseudo={props.profil.pseudo} style={{ width: 300, height: 300, borderRadius: 15, marginLeft: "18%" }}/>
+      );
+    } else if (props.message[props.messageID]["type"] == "message") {
+      return (
+        <View>
+          <View style={styles.blueDisplay}>
+            <View style={styles.box}>
+              <Text style={styles.message}>
+                {props.message[props.messageID].message}
+              </Text>
+            </View>
+          </View>
+          <Text style={styles.expeditorUser} ellipsizeMode="tail">
+            {props.profil.pseudo}
+          </Text>
+        </View>
+      );
+    }
   }
+
 }
 
 const styles = StyleSheet.create({

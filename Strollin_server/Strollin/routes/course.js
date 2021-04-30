@@ -232,6 +232,7 @@ router.get('/get_courses_by_id', async function(req, res) {
     }
 
     let given_list = req.headers.courses_id_list.split(',');
+    console.log("given list = ", given_list);
     let courses_list = await CourseModel.find({id: {$in: given_list}}).catch(error => error);
     if (courses_list.reason) {
         return res.status(400).send({status: "Error in the parameters for database transaction.", courses_list});
