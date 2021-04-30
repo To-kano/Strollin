@@ -64,3 +64,5 @@ async function uploadImage(access_token, image) {
     answer = await answer.json();
     return answer;
 }
+
+exports.uploadImage = uploadImage;
