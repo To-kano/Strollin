@@ -16,6 +16,7 @@ var commentRouter = require('./routes/comment');
 var tagRouter = require('./routes/tag');
 var faqRouter = require('./routes/faq')
 var generatorRouter = require('./routes/generator');
+var imageRouter = require('./routes/image');
 
 //var algo = require('./Algo/BasicAlgo');
 var algo = require('./Algo/BasicAlgo2');
@@ -29,8 +30,8 @@ var app = express();
 // MongoDB //
 
 // var mongoDB = 'mongodb://didier:test@db:27017/Strollin'; //Version Authentification
-// var mongoDB = 'mongodb://127.0.0.1:27017/Strollin';
-var mongoDB = 'mongodb://db:27017/Strollin';
+ var mongoDB = 'mongodb://127.0.0.1:27017/Strollin';
+//var mongoDB = 'mongodb://db:27017/Strollin';
 mongoose.connect(mongoDB, { useNewUrlParser: true });
 
 //Get the default connection
@@ -135,6 +136,7 @@ app.use('/comment', commentRouter);
 app.use('/tag', tagRouter);
 app.use('/faq', faqRouter);
 app.use('/generator', generatorRouter);
+app.use('/image', imageRouter);
 
 /******/
 
@@ -174,7 +176,7 @@ async function TestLoc() {
 
 //TestLoc();
 
-tag = new TagModel({
+let tag = new TagModel({
     name: "Art",
     description: "desc",
 });
