@@ -76,6 +76,10 @@ let stats = {
   other: 0,
 }
 
+setInterval(function() {
+  console.log("REQUESTS STATISTIC:\n \nRequests by route:\n\t- comment:\t" + stats.comment + "\n\t- conversation:\t" + stats.conversation + "\n\t- course:\t" + stats.course + "\n\t- faq:\t\t" + stats.faq + "\n\t- generator:\t" + stats.generator + "\n\t- location:\t" + stats.location + "\n\t- message:\t" + stats.message + "\n\t- tag:\t\t" + stats.tag + "\n\t- users:\t" + stats.users + "\n\t- other:\t" + stats.other + "\n \nRequest by answer:\n\t- Success:\t" + stats.success + "\n\t- Failure:\t" + stats.failure + "\n\t- Unknown:\t" + stats.unknown + "\n \nTotal Request:\t" + stats.total);
+}, (1000 * 10))
+
 app.use((req, res, next) => {
   let model = req.originalUrl.split('/')[1];
   switch (model) {
@@ -118,7 +122,6 @@ app.use((req, res, next) => {
     stats.unknown += 1;
   }
   stats.total += 1;
-  //console.log("REQUESTS STATISTIC:\n \nRequests by route:\n\t- comment:\t" + stats.comment + "\n\t- conversation:\t" + stats.conversation + "\n\t- course:\t" + stats.course + "\n\t- faq:\t\t" + stats.faq + "\n\t- generator:\t" + stats.generator + "\n\t- location:\t" + stats.location + "\n\t- message:\t" + stats.message + "\n\t- tag:\t\t" + stats.tag + "\n\t- users:\t" + stats.users + "\n\t- other:\t" + stats.other + "\n \nRequest by answer:\n\t- Success:\t" + stats.success + "\n\t- Failure:\t" + stats.failure + "\n\t- Unknown:\t" + stats.unknown + "\n \nTotal Request:\t" + stats.total);
   next()
 })
 
