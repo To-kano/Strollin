@@ -1,7 +1,7 @@
 import React from 'react';
 import {  Alert, Modal, StyleSheet, Text, Pressable, View } from 'react-native';
 
-function Popup({message, modalVisible, setModalVisible}) {
+function Popup({message, modalVisible, setModalVisible, children}) {
 
   return (
     <Modal
@@ -16,6 +16,7 @@ function Popup({message, modalVisible, setModalVisible}) {
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <Text style={styles.modalText}>{message}</Text>
+            {children}
             <Pressable
               style={[styles.button, styles.buttonClose]}
               onPress={() => setModalVisible(!modalVisible)}

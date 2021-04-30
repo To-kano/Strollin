@@ -104,7 +104,7 @@ async function setTendance(props, access_token) {
     const action = { type: "SET_TENDANCE_LIST", value: answer["courses_list"] }
     props.dispatch(action);
 
-    for (i in answer["courses_list"]) {
+    for (let i in answer["courses_list"]) {
       await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/get_locations_by_id`, {
         headers: {
           Accept: 'application/json',
