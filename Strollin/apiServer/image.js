@@ -53,3 +53,14 @@ async function uploadImageProfile(access_token, image) {
 }
 
 exports.uploadImageProfile = uploadImageProfile;
+
+
+async function uploadImage(access_token, image) {
+    let answer = await fetch(`http://${IP_SERVER}:${PORT_SERVER}/image/upload`, {
+        method: 'POST',
+        body: createFormData(image, {access_token}),
+    })
+
+    answer = await answer.json();
+    return answer;
+}
