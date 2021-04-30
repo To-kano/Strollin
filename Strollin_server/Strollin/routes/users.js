@@ -50,11 +50,10 @@ router.post('/register', async function (req, res) {
   }
   if (req.body.mail && req.body.password && req.body.partner !== undefined) {
     let password_check = await check_the_password(req.body.password);
-    console.log(password_check);
-    if (password_check == false) {
-      return res.status(400).send({ status: "The password must contains 6 characters with at least 1 uppercase, 1 lowercase and 1 digit." });
-    }
-    let user = new UserModel({
+    // if (password_check == false) {
+    //   return res.status(400).send({status: "The password must contains 6 characters with at least 1 uppercase, 1 lowercase and 1 digit."});
+    // }
+    user = new UserModel({
       id: new Number(Date.now()),
       creation_date: new Date().toLocaleDateString("fr-FR"),
       mail: req.body.mail,

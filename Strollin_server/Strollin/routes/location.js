@@ -11,6 +11,10 @@ const {
     UserModel
 } = require("../models/user")
 
+const {
+    TagModel
+} = require("../models/tag")
+
 
 // NEW_LOCATION
 /**
@@ -192,7 +196,62 @@ router.post('/update_location', async function(req, res) {
     if (req.body.website) {
         update.website = req.body.website
     }
-    error = await LocationModel.updateOne({id: location.id}, {id: req.headers.location_id}, update).catch(error => error);
+    error = await LocationModel.updateOne({id: location.id}, update).catch(error => error);
+    if (error.errors) {
+        return res.status(400).send({status: "Location could not be updated."});
+    }
+    return res.status(200).send({status: "Location updated"});
+});
+
+
+// ADD_LOCATION_TAG
+/**
+ * Update a location's tag
+ * @param {String} req.headers.access_token
+ * @param {String} req.headers.location_id
+ *
+ * @param {String} req.body.tags_list
+ */
+router.post('/add_location_tag', async function(req, res) {
+
+    let update = {};
+    let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo").catch(error => error);
+    let location = undefined;
+
+    if (!user) {
+        return res.status(400).send({status: "You are not connected."});
+    }
+    if (user.reason) {
+        return res.status(400).send({status: "Error in database transaction:\n", error: user});
+    }
+
+    location = await LocationModel.findOne({id: req.headers.location_id}, "-_id").catch(error => error);
+    if (!location) {
+        return res.status(400).send({status: "The location does not exist."});
+    }
+    if (location.reason) {
+        return res.status(400).send({status: "Error in database transaction:\n", error: location});
+    }
+
+    if (!req.body.tags_list) {
+        return res.status(400).send({status: "No tag provided"});
+    }
+
+    let tags = req.body.tags_list.split(',');
+    let tag = undefined;
+
+    for (let index = 0; index < tags.length ; index++) {
+        tag = undefined;
+        tag = await TagModel.findOne({name: tags[index]}).catch(error => error);
+        if (!tag) {
+            return res.status(400).send({status: "A tag does not exists"});
+        }
+        if (tag.reason) {
+            return res.status(400).send({status: "Error in database transaction:\n", error: tag});
+        }
+    }
+
+    error = await LocationModel.updateOne({id: location.id}, {$push: {tags_list: {$each: tags}}}).catch(error => error);
     if (error.errors) {
         return res.status(400).send({status: "Location could not be updated."});
     }
