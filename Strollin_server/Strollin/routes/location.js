@@ -273,6 +273,35 @@ router.get('/get_locations', async function(req, res) {
 });
 
 
+// GET_PARTNER_LOCATION
+/**
+ * Get the location of the partner
+ * @param {String} req.headers.access_token
+ */
+router.get('/get_partner_location', async function(req, res) {
+
+    let location = undefined;
+    let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo partner").catch(error => error);
+
+    if (!user) {
+        return res.status(400).send({status: "You are not connected."});
+    }
+    if (user.reason) {
+        return res.status(400).send({status: "Error in database transaction:\n", error: user});
+    }
+    if (user.partner == false) {
+        return res.status(400).send({status: "You are not a partner."});
+    }
+    location = await LocationModel.findOne({owner_id: user.id}, "-_id").catch(error => error);
+    if (!location) {
+        return res.status(400).send({status: "You have no location registered."});
+    } else if (location.reason) {
+        return res.status(400).send({status: "Error in database transaction:\n", error: location});
+    }
+    return res.status(200).send({status: "Location returned.", location});
+});
+
+
 // GET_LOCATIONS_BY_ID
 /**
  * Get location(s) by ID

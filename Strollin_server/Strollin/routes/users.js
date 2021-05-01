@@ -132,14 +132,14 @@ router.get('/verify', async function(req, res) {
 
 // EDIT_PROFILE
 /**
- * Edit a comment's message or score
+ * Edit a user's information
  * @param {String} req.headers.access_token
  *
  * At least one of below
- * @param {String} req.body.password
- * @param {String} req.body.pseudo
- * @param {String} req.body.first_name
- * @param {String} req.body.last_name
+ * @param {String} req.body.password (Optional)
+ * @param {String} req.body.pseudo (Optional)
+ * @param {String} req.body.first_name (Optional)
+ * @param {String} req.body.last_name (Optional)
  */
 router.post('/edit_profile', async function(req, res) {
   let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id").catch(error => error);
@@ -552,7 +552,6 @@ router.get('/get_user_by_id', async function(req, res) {
   }
   let given_list = req.headers.users_list.split(',');
   let users_list = await UserModel.find({id: {$in: given_list}}, projection).catch(error => error);
-  console.log(users_list);
   if (users_list && users_list.reason) {
     return res.status(400).send({status: "Error in database transaction:\n", error: users_list});
   } else if (users_list && users_list.length > 0) {
@@ -585,6 +584,7 @@ router.delete('/remove_account', async function(req, res) {
   }
   return res.status(200).send({status: "Account successfully deleted."});
 });
+
 
 
 /***

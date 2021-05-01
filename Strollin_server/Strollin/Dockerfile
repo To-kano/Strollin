@@ -6,7 +6,10 @@ RUN npm install --global pm2
 
 COPY ./package*.json ./
 
-RUN npm install 
+RUN npm install
+
+# ENV PM2_PUBLIC_KEY asccvivffh2e936
+# ENV PM2_SECRET_KEY w2y37fq4923613e
 
 #--production
 

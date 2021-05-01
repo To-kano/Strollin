@@ -56,6 +56,8 @@ function PopupAlgo(TagsJson, Sponsors, Destinations) {
   }
 }
 
+//List: List of Places
+//Destination: Course
 methods.Popup = function (Destinations, List, LocationModel) {
   let location = LocationModel;
   var res;
@@ -65,6 +67,7 @@ methods.Popup = function (Destinations, List, LocationModel) {
     if (List[i].Owner != 'qqn')
       List.splice(i, i)
   }
+  console.log("List: ", List);
   while(1) {
     res = PopupAlgo(TagsJson, List, Destinations)
     if (res != false)

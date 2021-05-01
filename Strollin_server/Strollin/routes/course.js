@@ -29,8 +29,6 @@ const {
  *
  * @param {[LocationID]} req.body.locations_list
  * @param {String} req.body.name
- * @param {UserID} req.body.author (Optional)
- * @param {String} req.body.time_spent (Optional)
  */
 router.post('/new_course', async function(req, res) {
 
@@ -61,21 +59,28 @@ router.post('/new_course', async function(req, res) {
         author_pseudo: user.pseudo,
         tags_list: [],
     });
-    if (req.body.time_spent)
-        course.time_spent = req.body.time_spent
 
     //Get tags from locations and price range
     let min_price = 0;
     let max_price = 0;
     let avg_price = 0;
     for (let index = 0; index < locations_list.length; index++) {
-        min_price += Number(locations_list[index].price_range[0].match(/\d+/g).map(Number));
-        max_price += Number(locations_list[index].price_range[1].match(/\d+/g).map(Number));
-        avg_price += Number(locations_list[index].price_range[2].match(/\d+/g).map(Number));
+        if (!isNaN(Number(locations_list[index].price_range[0]))) {
+            min_price += Number(locations_list[index].price_range[0]);
+            // min_price += Number(locations_list[index].price_range[0].match(/\d+/g).map(Number));
+        }
+        if (!isNaN(Number(!locations_list[index].price_range[1]))) {
+            max_price += Number(locations_list[index].price_range[1]);
+            // max_price += Number(locations_list[index].price_range[1].match(/\d+/g).map(Number));
+        }
+        if (!isNaN(Number(locations_list[index].price_range[2]))) {
+            avg_price += Number(locations_list[index].price_range[2]);
+            // avg_price += Number(locations_list[index].price_range[2].match(/\d+/g).map(Number));
+        }
         for (let index2 = 0; index2 < locations_list[index].tags_list.length; index2++) {
             tag = locations_list[index].tags_list[index2];
-            if (!course.tags_list.includes(tag.id)) {
-                course.tags_list.push(tag.id)
+            if (!course.tags_list.includes(tag._id || tag.id)) {
+                course.tags_list.push(tag._id || tag.id)
             }
         }
     }
@@ -85,7 +90,7 @@ router.post('/new_course', async function(req, res) {
     if (error.errors) {
         return res.status(400).send({status: "Error in database transaction:\n", error});
     }
-    return res.status(200).send({status: "Course created."});
+    return res.status(200).send({status: "Course created.", course});
 });
 
 

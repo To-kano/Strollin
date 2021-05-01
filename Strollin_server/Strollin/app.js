@@ -29,7 +29,7 @@ var app = express();
 // MongoDB //
 
 // var mongoDB = 'mongodb://didier:test@db:27017/Strollin'; //Version Authentification
-//var mongoDB = 'mongodb://127.0.0.1:27017/Strollin';
+// var mongoDB = 'mongodb://127.0.0.1:27017/Strollin';
 var mongoDB = 'mongodb://db:27017/Strollin';
 mongoose.connect(mongoDB, { useNewUrlParser: true });
 
@@ -58,6 +58,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 // ROUTES //
+
+// app.use((req, res, next) => {
+//   console.log(`${req.method} ${req.originalUrl} ${res.statusCode}`)
+//   next()
+// })
+
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/conversation', conversationRouter);

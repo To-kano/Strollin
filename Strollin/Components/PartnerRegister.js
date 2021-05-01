@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Input } from 'react-native-elements';
 import { connect } from 'react-redux';
 // import * as actions from './features/registration/action';
 import {
-  StyleSheet, Text, View, Button, ActivityIndicator, Image, TextInput
+  StyleSheet, Text, View, TouchableOpacity, ActivityIndicator, Image, TextInput
 } from 'react-native';
 import {
   LoginButton, AccessToken, GraphRequest, GraphRequestManager
@@ -14,12 +14,12 @@ import I18n from '../Translation/configureTrans';
 
 import { RondFormeText } from './rondForm';
 import { registerUser } from '../apiServer/user';
-import BackgroundImage from './backgroundImage';
+import Popup from './Popup';
 
 const getInfoFromToken = (token, setUserInfo, props) => {
   const PROFILE_REQUEST_PARAMS = {
     fields: {
-      string: 'id, name, last_name, first_name',
+      string: 'id, name, last_name, first_name, email',
     },
   };
   const profileRequest = new GraphRequest(
@@ -29,16 +29,16 @@ const getInfoFromToken = (token, setUserInfo, props) => {
       if (error) {
         // console.log(`login info has error: ${error}`);
       } else {
-        // console.log('result:', result);
         setUserInfo(result);
-        registerUser(props, result.first_name, result.id, result.name);
+        registerUser(props, result.name, result.id, result.email);
       }
     },
   );
   new GraphRequestManager().addRequest(profileRequest).start();
 };
 
-function UserRegister(props) {
+
+export function UserRegister(props) {
   const [userEmail, setUserEmail] = useState('');
   const [userPassword, setUserPassword] = useState('');
   const [userConfirmPassWord, setUserConfirmPassword] = useState('');
@@ -46,153 +46,130 @@ function UserRegister(props) {
   const [userLastName, setUserLastName] = useState('');
   const [userInfo, setUserInfo] = React.useState({});
 
-  const [loading, setLoading] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [message, setMessage] = useState("");
+  useEffect(() => {
+    if (props.profil.access_token != null) {
+      console.log("ok")
+      props.navigation.navigate('TagSelection');
+    }
+  })
+
+  //const [loading, setLoading] = useState(false);
 
   // callbackFirstName = (value) => {
   //  setUserFirstName(value);
   // };
 
-  console.log('UserRegister');
+  //console.log('UserRegister');
 
-  if (loading) {
-    return (
-      <View style={{ flex: 1 }}>
-        <View style={[styles.center, { flex: 1, marginTop: 20 }]}>
-          <RondFormeText text="Strollin'" size={110} />
-        </View>
-        <View style={[styles.center, { flex: 1, marginTop: 20 }]}>
-          <ActivityIndicator size={100} color="purple" />
-        </View>
-      </View>
-    );
-  }
+  //if (loading) {
+  //  return (
+  //    <View style={{ flex: 1 }}>
+  //      <View style={[styles.center, { flex: 1, marginTop: 20 }]}>
+  //        <RondFormeText text="Strollin'" size={110} />
+  //      </View>
+  //      <View style={[styles.center, { flex: 1, marginTop: 20 }]}>
+  //        <ActivityIndicator size={100} color="purple" />
+  //      </View>
+  //    </View>
+  //  );
+  //}
   return (
-    <View style={styles.container}>
-      <BackgroundImage />
-      <View style={{
-        flex: 4,
-        margin: 20,
-        backgroundColor: 'rgba(255,255,255, 0.95)',
-        padding: 10,
-        paddingBottom: '5%',
-        justifyContent: 'space-around',
-        alignItems: 'center',
-        borderRadius: 10
-      }}
-      >
-        <View style={styles.logo}>
-          <Image style={styles.logo_img} source={require('../images/Logo.png')} />
-        </View>
-        <View style={{ width: '80%' }}>
-          <TextInput
-            style={styles.inputText}
-            autoCapitalize="none"
-            placeholder="Company Name"
-            value={pseudo}
-            onChangeText={(valueText) => {
-              // setData(valueText);
-              setPseudo(valueText);
-            }}
-          />
-        </View>
-        <View style={{ width: '80%' }}>
-          <TextInput
-            style={styles.inputText}
-            autoCapitalize="none"
-            keyboardType="email-address"
-            placeholder={I18n.t('PartenerRegister.email')}
-            value={userEmail}
-            onChangeText={(valueText) => {
-              // setData(valueText);
-              setUserEmail(valueText);
-            }}
-          />
-        </View>
-
-        <View style={{ width: '80%' }}>
-          <TextInput
-            style={styles.inputText}
-            autoCapitalize="none"
-            placeholder={I18n.t('PartenerRegister.password')}
-            secureTextEntry
-            value={userPassword}
-            onChangeText={(valueText) => {
-              // setData(valueText);
-              setUserPassword(valueText);
-            }}
-          />
-        </View>
-
-        <View style={{ width: '80%' }}>
-          <TextInput
-            style={styles.inputText}
-            autoCapitalize="none"
-            placeholder={I18n.t('PartenerRegister.confPassword')}
-            secureTextEntry
-            value={userConfirmPassWord}
-            onChangeText={(valueText) => {
-              // setData(valueText);
-              setUserConfirmPassword(valueText);
-            }}
-          />
-        </View>
-        <View style={styles.button}>
-          <Button
-            onPress={() => {
-              if (userPassword === userConfirmPassWord) {
-                registerUser(props, pseudo, userPassword, userEmail);
-              }
-              // props.navigation.navigate('TagSelection');
-            }}
-            buttonStyle={[{ marginBottom: 5, marginTop: 5 }]}
-            title={I18n.t('PartenerRegister.register')}
-            color="#89B3D9"
-          />
-        </View>
-        <View style={{ flex: 0.1, flexDirection: 'column' }}>
-          <Text style={{ fontSize: 20, textAlign: 'center', padding: 5 }}>
-            OU
+    <View style={styles.view_back}>
+      <View style={styles.view_logo}>
+        <Image style={styles.img_logo} source={require('../images/Logo.png')} />
+      </View>
+      <View style={styles.view_signInUp}>
+        <TouchableOpacity onPress={() => props.navigation.navigate('userLogin')}>
+          <Text style={styles.text_signIn}>{I18n.t('UserRegister.SIGNIN')}</Text>
+        </TouchableOpacity>
+        <View style={styles.view_separator} />
+        <TouchableOpacity>
+          <Text style={styles.text_signUp}>{I18n.t('UserRegister.SIGNUP')}</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.view_field}>
+        <Popup message={message} modalVisible={modalVisible} setModalVisible={setModalVisible} />
+        <Text style={styles.text_field}>
+          {"Company Name"}
+          <Text style={styles.text_star}> *</Text>
+        </Text>
+        <TextInput
+          style={styles.textInput_field}
+          autoCapitalize="none"
+          textContentType="username"
+          autoCompleteType="username"
+          onChangeText={(valueText) => { setPseudo(valueText); }}
+          value={pseudo}
+        />
+      </View>
+      <View style={styles.view_field}>
+        <Text style={styles.text_field}>
+          {I18n.t('UserRegister.email')}
+          <Text style={styles.text_star}> *</Text>
+        </Text>
+        <TextInput
+          style={styles.textInput_field}
+          autoCapitalize="none"
+          textContentType="emailAddress"
+          autoCompleteType="email"
+          onChangeText={(valueText) => { setUserEmail(valueText); }}
+          value={userEmail}
+        />
+      </View>
+      <View style={styles.view_field}>
+        <Text style={styles.text_field}>
+          {I18n.t('UserRegister.password')}
+          <Text style={styles.text_star}> *</Text>
+        </Text>
+        <TextInput
+          style={styles.textInput_field}
+          autoCapitalize="none"
+          textContentType="password"
+          onChangeText={(valueText) => { setUserPassword(valueText); }}
+          value={userPassword}
+          secureTextEntry
+        />
+      </View>
+      <View style={styles.view_field}>
+        <Text style={styles.text_field}>
+          {I18n.t('UserRegister.confPassword')}
+          <Text style={styles.text_star}> *</Text>
+        </Text>
+        <TextInput
+          style={styles.textInput_field}
+          autoCapitalize="none"
+          textContentType="password"
+          onChangeText={(valueText) => { setUserConfirmPassword(valueText); }}
+          value={userConfirmPassWord}
+          secureTextEntry
+        />
+      </View>
+      <View style={styles.view_bottomButton}>
+        <TouchableOpacity
+          style={styles.button_logIn}
+          onPress={() => {
+            if (userPassword === userConfirmPassWord) {
+              registerUser(props, pseudo, userPassword, userEmail, setMessage, setModalVisible, true);
+            }
+          }}
+        >
+          <Text style={styles.text_logIn}>
+            {I18n.t('UserRegister.SIGNUP')}
           </Text>
-        </View>
-        <View style={{ flex: 0.1, margin: 10 }}>
-          <LoginButton
-            publishPermissions={['publish_actions']}
-            readPermissions={['public_profile']}
-            onLoginFinished={(error, result) => {
-              if (error) {
-                console.log(`login has error: ${result.error}`);
-              } else if (result.isCancelled) {
-                console.log('login is cancelled.');
-              } else {
-                AccessToken.getCurrentAccessToken().then((data) => {
-                  const accessToken = data.accessToken.toString();
-                  getInfoFromToken(accessToken, setUserInfo, props);
-                });
-              }
-            }}
-            onLogoutFinished={() => setUserInfo({})}
-          />
-          {userInfo.name && (
-            <Text style={{ fontSize: 10, marginVertical: 5, textAlign: 'center', }}>
-              Logged in As
-              {' '}
-              {userInfo.name}
-            </Text>
-          )}
-        </View>
-        <View style={{ flex: 0.1, flexDirection: 'column' }}>
-          <Text style={{ fontSize: 20, textAlign: 'center', margin: 5 }}>
-            OU
+        </TouchableOpacity>
+        <View style={styles.view_bottomButton}>
+        <TouchableOpacity
+          style={styles.button_logIn}
+          onPress={() => {
+            props.navigation.navigate('userRegister');
+          }}
+        >
+          <Text style={styles.text_logIn}>
+            {"REGULAR ACCOUNT"}
           </Text>
-        </View>
-        <Text style={{ paddingTop: 20 }}>{I18n.t('PartenerRegister.alreadyAccount')}</Text>
-        <View style={styles.button}>
-
-          <Button
-            title={I18n.t('PartenerRegister.signIn')}
-            color="#89B3D9"
-            onPress={() => props.navigation.navigate('userLogin')}
-          />
+        </TouchableOpacity>
         </View>
       </View>
     </View>
@@ -200,51 +177,114 @@ function UserRegister(props) {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  view_back: {
     flex: 1,
-    backgroundColor: '#fff',
-    // alignItems: 'center',
-    justifyContent: 'center',
-    // backgroundColor: "gray"
-  },
-  logo: {
-    flex: 0.5,
-    width: '80%',
-    justifyContent: 'center',
-  },
-  logo_img: {
-    width: '100%',
-    resizeMode: "contain",
-  },
-  button: {
-    flex: 0.1,
     flexDirection: 'column',
-    margin: 10,
-    width: '80%',
-    height: 50,
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    backgroundColor: '#ffffff',
+    paddingTop: '10%',
+    paddingLeft: '7.5%',
+    paddingRight: '7.5%',
+    paddingBottom: '10%',
   },
-  center: {
-    flex: 1,
-    backgroundColor: '#fff',
+  view_logo: {
+    flex: 20,
+    justifyContent: 'center',
+    width: '100%',
+  },
+  img_logo: {
+    marginTop: 43,
+    width: '100%',
+    resizeMode: 'contain',
+  },
+  view_signInUp: {
+    flex: 7,
+    marginTop: 30,
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    width: '100%',
+  },
+  view_separator: {
+    borderLeftWidth: 1,
+    marginTop: 5,
+    marginBottom: 5,
+    borderLeftColor: '#B9B9B9',
+  },
+  text_signIn: {
+    fontWeight: 'bold',
+    fontSize: 16,
+    padding: 12,
+    color: '#B9B9B9',
+  },
+  text_signUp: {
+    fontWeight: 'bold',
+    fontSize: 16,
+    padding: 12,
+    color: '#0092A7',
+  },
+  view_field: {
+    flex: 10,
+    marginTop: 5,
+    flexDirection: 'column',
+    width: '100%',
+  },
+  text_field: {
+    fontWeight: 'bold',
+    color: '#000000',
+    fontSize: 16,
+  },
+  text_star: {
+    fontWeight: 'bold',
+    color: '#FF0000',
+    fontSize: 16,
+  },
+  textInput_field: {
+    fontSize: 18,
+    height: 40,
+    borderWidth: 1,
+    borderColor: '#B9B9B9',
+    borderRadius: 4,
+    backgroundColor: '#FFFFFF'
+  },
+  view_bottomButton: {
+    flex: 32,
+    width: '100%',
+    alignItems: 'center',
+  },
+  button_logIn: {
+    marginTop: 30,
+    width: '100%',
+  },
+  text_logIn: {
+    width: '100%',
+    borderRadius: 4,
+    padding: 12,
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: '#FFFFFF',
+    backgroundColor: '#0092A7',
+  },
+  text_or: {
+    marginTop: 9,
+    padding: 12,
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  button_facebook: {
+    width: '100%',
+    height: 30,
+  },
+  view_facebook: {
+    marginTop: 9,
+    width: '100%',
+    height: 50,
+    borderRadius: 4,
     alignItems: 'center',
     justifyContent: 'center',
-    // backgroundColor: "gray"
-  },
-  horizontal: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    padding: 10
-  },
-  inputText: {
-    height: 40,
-    width: '100%',
-    fontSize: 16,
-    paddingLeft: 20,
-    backgroundColor: '#D9D9D9',
-    borderRadius: 5,
-    borderWidth: 0.5,
-    borderColor: '#404040',
-    marginBottom: 10,
+    backgroundColor: '#1877F2',
+    paddingHorizontal: 10,
   }
 });
 

@@ -9,6 +9,7 @@ import json from '../ressources/profile.json';
 import I18n from '../Translation/configureTrans';
 import Store from '../Store/configureStore';
 import { IP_SERVER, PORT_SERVER } from '../env/Environement';
+import { DrawerActions } from '@react-navigation/native';
 
 function ParseTags(Tags) {
   let list = Tags[0];
@@ -98,7 +99,7 @@ function ProfileScreen(props) {
   return (
     <View style={styles.view_back}>
       <View style={styles.view_header}>
-        <TouchableOpacity onPress={() => props.navigation.navigate('Menu')}>
+        <TouchableOpacity onPress={() => props.navigation.dispatch(DrawerActions.openDrawer())}>
           <Image style={styles.img_header} source={require('../images/icons/black/menu.png')} />
         </TouchableOpacity>
         <Text style={styles.text_header}>

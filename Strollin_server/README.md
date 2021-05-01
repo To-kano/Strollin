@@ -54,7 +54,7 @@ COMMENT RELATED:
 
 **SCHEMA:**
 
-- id `String`
+- id `Number`
 - message `String`
 - author_id `UserID`
 - author_pseudo `String`
@@ -92,7 +92,7 @@ CONVERSATION RELATED:
 
 **SCHEMA:**
 
-- id `String`
+- id `Number`
 - participants `[userID]`
 - name `String`
 - messages_list `[messageID]`
@@ -122,11 +122,10 @@ COURSE RELATED:
 
 **SCHEMA:**
 
-- id `String`
+- id `Number`
 - locations_list `[locationID]`
 - name `String`
 - score `String`
-- user_score `[UserID]`
 - number_used `String` : number of usage of the course
 - author_id `UserID`
 - author_pseudo `String`
@@ -145,7 +144,7 @@ COURSE RELATED:
 
 | Description | Headers | Body | Return |
 |-|-|-|-|
-| Add a course to the database. | access_token: String | locations_list: [LocationID]<br>name: String<br>author: UserID (optional)<br>time_spent: String | |
+| Add a course to the database. | access_token: String | locations_list: [LocationID]<br>name: String | |
 
 
 - GET course: `GET /course/get_course`
@@ -168,7 +167,7 @@ FAQ RELATED:
 
 **SCHEMA:**
 
-- id `String`
+- id `Number`
 - author `String`
 - question `String`
 - creation_date `String`
@@ -238,7 +237,7 @@ LOCATION RELATED:
 
 **SCHEMA:**
 
-- id `String`
+- id `Number`
 - name `String`
 - owner_id `UserID`
 - owner_pseudo `String`
@@ -298,6 +297,13 @@ LOCATION RELATED:
 | Get a list of all locations. | access_token: String | | [LocationObject] |
 
 
+- GET location: `GET /location/get_partner_location`
+
+| Description | Headers | Body | Return |
+|-|-|-|-|
+| Get the location of the partner. | access_token: String | | LocationObject |
+
+
 - GET get location by ID: `GET /location/get_location_by_id`
 
 | Description | Headers | Body | Return |
@@ -311,7 +317,7 @@ MESSAGE RELATED:
 
 **SCHEMA:**
 
-- id `String`
+- id `Number`
 - expeditor_id `userID`
 - expeditor_pseudo `String`
 - conversation `conversationID`
@@ -343,7 +349,7 @@ TAGS RELATED:
 
 **SCHEMA:**
 
-- id `String`
+- id `Number`
 - name `String`
 - description `String`
 - number_used `String`
@@ -380,7 +386,7 @@ USER RELATED:
 
 **SCHEMA:**
 
-- id `String`
+- id `Number`
 - mail `String`
 - password `String`
 - creation_date `String`
@@ -416,6 +422,13 @@ USER RELATED:
 | Check and set to true the variable "verify". | id: String | | |
 
 
+- UPDATE user's information: `POST /users/edit_profile`
+
+| Description | Headers | Body | Return |
+|-|-|-|-|
+| Edit user's information. | access_token: String | password: String (optional)<br>pseudo: String (optional)<br>first_name: String (optional)<br>last_name: String (optional) | |
+
+
 - ADD a request friend: `POST /users/add_friend_request`
 
 | Description | Headers | Body | Return |
@@ -427,7 +440,7 @@ USER RELATED:
 
 | Description | Headers | Body | Return |
 |-|-|-|-|
-| For friend request acception. | access_token: String | friend: userID | None |
+| Add to "friends_list" a user from the "friends_request". | access_token: String | friend: userID | None |
 
 
 - ADD new tags in user's tags: `POST /users/add_tag`
@@ -448,7 +461,7 @@ USER RELATED:
 
 | Description | Headers | Body | Return |
 |-|-|-|-|
-| Log in an user to get a valid token | mail: String<br>password: String | None | access_token: String |
+| Log in an user to get a valid token. | mail: String<br>password: String | None | access_token: String |
 
 
 - GET log out: `GET /users/logout`
@@ -462,14 +475,14 @@ USER RELATED:
 
 | Description | Headers | Body | Return |
 |-|-|-|-|
-| Get the current user's profile.| access_token: String | None | profile: {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mail: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;creation_date: Date,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pseudo: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type: String<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;first_name: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;last_name: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tags_list: [tagID],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;friends_list: [userID],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;friends_request: [userID],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;groups: [[group_name, userID1, userID2, ...]],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;course_historic: [courseID],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;score_course: [{courseID, score, Date}],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;score_location: [{locationID, score, Date}],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;score_comment: [{commentID, score, Date}]<br>} |
+| Get the current user's profile.| access_token: String | None | profile: {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id: UserID,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mail: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;creation_date: Date,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pseudo: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;partner: Boolean<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;first_name: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;last_name: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tags_list: [tagID],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;friends_list: [userID],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;friends_request: [userID],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;groups: [[group_name, userID1, userID2, ...]],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;course_historic: [courseID]<br>} |
 
 
 - GET an user's profile: `GET /users/get_user_profile`
 
 | Description | Headers | Body | Return |
 |-|-|-|-|
-| Get an user's profile by its ID.| access_token: String<br>user_id: String | None | profile: {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mail: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;creation_date: Date,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pseudo: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type: String<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;first_name: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;last_name: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tags_list: [tagID],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;friends_list: [userID]<br>} |
+| Get an user's profile by its ID.| access_token: String<br>user_id: String | None | profile: {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id: UserID,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mail: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;creation_date: Date,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pseudo: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;partner: Boolean<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;first_name: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;last_name: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tags_list: [tagID],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;friends_list: [userID]<br>} |
 
 
 - GET an user's tags: `GET /users/get_user_tags`
