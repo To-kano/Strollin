@@ -132,7 +132,7 @@ function Map({position, height, width, deltaView, locations, profil, map, dispat
     console.log(tmp)
 
     const action = { type: 'SET_TIME', value: tmp };
-    props.dispatch(action);
+    dispatch(action);
   }
 
   const onUserPositionChange = (data) => {

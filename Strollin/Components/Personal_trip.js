@@ -13,6 +13,10 @@ const locales = RNLocalize.getLocales();
 import MapView, { Marker } from "react-native-maps";
 import MapViewDirections from 'react-native-maps-directions';
 import { Popup, Toast, Root } from 'popup-ui'
+import Store from '../Store/configureStore';
+import {getCustomCourse} from '../apiServer/course';
+const store = Store.getState();
+
 
 let language = "en"
 let finalJson = []
@@ -20,6 +24,47 @@ var myLoop = []
 let jsonDefault = {}
 
 let jsonTest = []
+let jsonTmp = {}
+let jsonTest2 = {
+  "_id": "0",
+  "id": "0",
+  "owner" : {
+    "id": "0",
+    "pseudo": "",
+  },
+  "owner_id": "",
+  "owner_pseudo": "",
+  "score": "0",
+  "user_score": [],
+  "latitude": 0,
+  "longitude": 0,
+  "description": "",
+  "photo": [],
+  "timetable": "",
+  "comments_list": [  ],
+  "price_range": [ ],
+  "average_time": "",
+  "phone": "",
+  "website": "",
+  "pop_disp": "",
+  "pop_ag": "",
+  "alg_disp": "",
+  "alg_ag": "",
+  "name": "",
+  "address": "",
+  "city": "",
+  "country": "",
+  "tags_list": [],
+  "coordinate": [],
+  "__v": 0
+}
+
+let locationPush = {
+  "locations_list" : [
+
+  ],
+  "status" : "ok"
+}
 
 const deltaView = {
   latitudeDelta: 0.0922,
@@ -27,6 +72,27 @@ const deltaView = {
 };
 
 function Personal_trip(props) {
+
+  function getJsonPush() {
+    finalJson.forEach(json => {
+      jsonTmp = jsonTest2
+      jsonTmp.coordinate.push = json.geometry.location.lat.toString(10)
+      jsonTmp.coordinate.push = json.geometry.location.lng.toString(10)
+      for (var comment in json.review) {
+        jsonTmp.comments_list.push(comment.text)
+      }
+      for (var tag in json.types) {
+        jsonTmp.tags_list.push(tag)
+      }
+      jsonTmp.phone = json.international_phone_number
+      jsonTmp.website = json.website
+      jsonTmp.name = json.name
+      jsonTmp.adress = json.formatted_address
+      console.log("cheeeeeeeeeh\n\n" + jsonTmp)
+      locationPush.locations_list.push(jsonTmp)
+    });
+  }
+
   const [region, setRegion] = useState({
       latitude: 48.8650988,
       longitude: 2.1931007,
@@ -44,6 +110,7 @@ function Personal_trip(props) {
   });
   const [maps, setMaps] = useState(false)
   const [final, setFinal] = useState(false)
+  const [finalCourse, setCourse] = useState([])
 
   useEffect(() => {
     setLocalRegion({
@@ -52,19 +119,24 @@ function Personal_trip(props) {
     });
   }, [userPosition]);
 
-    if (Array.isArray(locales)) {
-      language = locales[0].languageTag;
-      console.log(language)
-    }
-    if (props.asked == false) {
-      requestGeolocalisationPermission(props.dispatch);
-    }
-    if (props.permission == true && userPosition == null) {
-      updateCoordinates(setUserPosition);
-    }
-    if (props.permission && userPosition && localRegion.latitude && localRegion.longitude) {
-      setPermision(true)
-    }
+  useEffect(() => {
+    const courseSend = getCustomCourse(store.profil.access_token);
+    setCourse(courseSend)
+  }, [])
+
+  if (Array.isArray(locales)) {
+    language = locales[0].languageTag;
+    console.log(language)
+  }
+  if (props.asked == false) {
+    requestGeolocalisationPermission(Store.dispatch);
+  }
+  if (props.permission == true && userPosition == null) {
+    updateCoordinates(setUserPosition);
+  }
+  if (props.permission && userPosition && localRegion.latitude && localRegion.longitude) {
+    setPermision(true)
+  }
 
   function setLocationMaps() {
     let jsonTmp = {
@@ -173,15 +245,16 @@ function Personal_trip(props) {
             renderItem={({ item }) => <Text> {item.name} {"\n"} </Text>}
             keyExtractor={(item) => item.id}
           />
-          {/*<TouchableOpacity
-            onPress={() => {
-              const action = { type: 'SET_WAYPOINTS', value: finalJson };
-              props.dispatch(action);
+          <TouchableOpacity
+            onPress={async () => {
+              await getJsonPush()
+              const action = { type: 'SET_WAYPOINTS', course: finalCourse, locations: locationPush.locations_list };
+              Store.dispatch(action);
               props.navigation.navigate('TripNavigation');
             }}
           >
             <Text>Let's Go !</Text>
-          </TouchableOpacity>*/}
+          </TouchableOpacity>
           </View>
           : (
         <View>

@@ -4,9 +4,51 @@ import {
   View, StyleSheet, Image, Text, TouchableOpacity,
 } from 'react-native';
 import BackgroundImage from './backgroundImage';
+import { useState, useEffect } from 'react';
+import { IP_SERVER, PORT_SERVER } from '../env/Environement';
+
+
+function searchUser(locations_list, setUser, props) {
+  let location = locations_list.find((location) => {
+    console.log("ok", location.owner, "      ", props.profil.id)
+    return location.owner.id == props.profil.id
+  })
+  setUser(location)
+}
 
 function PartenaireScreen(props) {
-  console.log(props.map.locations, "\n\n\n", props.profil, "\n\n\n", props.route)
+//  console.log(props.map.locations, "\n\n\n", props.profil, "\n\n\n", props.route)
+  var i = false
+  const [locationUser, setUser] = useState({
+      "owner": "",
+      "pop_disp": "0",
+      "pop_ag": "0",
+      "alg_disp": "0",
+      "alg_ag": "0",
+      "__v": 0
+  })
+  console.log(locationUser)
+
+  useEffect(() => {
+    if (!i) {
+      const url = `http://${IP_SERVER}:${PORT_SERVER}/location/get_locations`
+      fetch(url, {
+        headers : {
+          acess_token: props.profil.access_token,
+        },
+        method: 'GET',
+      })
+        .then((response) => response.json())
+        .then((answer) => {
+          searchUser(answer.locations_list, setUser, props)
+        })
+        .catch((error) => {
+          console.error('error :', error);
+        }).finally(() => {i == true});
+
+    }
+  }, []);
+
 
     return (
         <View style={styles.back}>
@@ -80,19 +122,19 @@ function PartenaireScreen(props) {
                 <View style={styles.infos}>
                     <View style={styles.textLine}>
                         <Text style={styles.textInfos}>Popup affiché : </Text>
-                        <Text style={styles.textNumber}>9057</Text>
+                        <Text style={styles.textNumber}>{locationUser.pop_disp}</Text>
                     </View>
                     <View style={styles.textLine}>
                         <Text style={styles.textInfos}>Popup accepté : </Text>
-                        <Text style={styles.textNumber}>4397</Text>
+                        <Text style={styles.textNumber}>{locationUser.pop_ag}</Text>
                     </View>
                     <View style={styles.textLine}>
                         <Text style={styles.textInfos}>Apparu dans l'algorythme : </Text>
-                        <Text style={styles.textNumber}>4918</Text>
+                        <Text style={styles.textNumber}>{locationUser.alg_disp}</Text>
                     </View>
                     <View style={styles.textLine}>
                         <Text style={styles.textInfos}>Accepté dans l'algorythme : </Text>
-                        <Text style={styles.textNumber}>627</Text>
+                        <Text style={styles.textNumber}>{locationUser.alg_ag}</Text>
                     </View>
                     <View style={styles.textLine}>
                         <Text style={styles.textInfos}>Visiteurs : </Text>

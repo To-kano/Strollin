@@ -11,7 +11,7 @@ import { requestGeolocalisationPermission, updateCoordinates } from './map'
 const store = Store.getState();
 const access_Token = store.profil.access_token;
 
-async function getUserTags(pos, budget, hours, minutes) {
+async function getUserTags(props, pos, budget, hours, minutes) {
   const store = Store.getState();
   const access_Token = store.profil.access_token;
   console.log("token: ", access_Token);
@@ -32,7 +32,7 @@ async function getUserTags(pos, budget, hours, minutes) {
   });
 }
 
-async function test(pos, budget, hours, minutes, tags) {
+async function test(props, pos, budget, hours, minutes, tags) {
   const store = Store.getState();
   const access_Token = store.profil.access_token;
   const time = hours * 60 + minutes;
@@ -62,7 +62,6 @@ async function test(pos, budget, hours, minutes, tags) {
     console.log("algo done:   ", json);
   });
   //console.log("test success");
-  //props.navigation.navigate("TripSuggestion");
 }
 
 function Back(props) {
@@ -135,7 +134,8 @@ export function CourseSettings(props) {
           id={'test'}
           style={styles.newTrip}
           onPress={() => {
-            getUserTags(pos, budget, hours, minutes);
+            getUserTags(props, pos, budget, hours, minutes);
+            props.navigation.navigate("TripSuggestion");
           }}
         >
           <Text style={{ fontSize: 16, color: '#FFFFFF' }}>

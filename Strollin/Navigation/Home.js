@@ -8,7 +8,7 @@ import Profile from '../Components/ProfileScreen';
 // import ConnectionScreen from '../Components/ConnectionScreen';
 import UserRegister from '../Components/UserRegister';
 import PartnerRegister from '../Components/PartnerRegister';
-import TageSelection from '../Components/TagSelection';
+import TagSelection from '../Components/TagSelection';
 import LoginPage from '../Components/LoginPage';
 import FriendList from '../Components/FriendList';
 import HomePage from '../Components/HomePage';
@@ -37,7 +37,7 @@ function Home() {
             screenOptions={{
             headerShown: false,
             }}
-            
+
         >
             <Stack.Screen
                   name="HomePage"
@@ -46,6 +46,10 @@ function Home() {
             <Stack.Screen
                   name="CommentScreen"
                   component={CommentScreen}
+            />
+            <Stack.Screen
+                  name="TagSelection"
+                  component={TagSelection}
             />
         </Stack.Navigator>
     );
