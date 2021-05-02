@@ -34,9 +34,11 @@ function IsTagUnique(Place, Destinations) {
 //Check if the place contains tags coresponding with those of the user
 function IsTagOk(UserTags, Place, Destinations) {
 
+  console.log("usreTags: ", UserTags);
+
   for (var i = 0; i < Place.Tags.length; i++) {
-    for (var j = 0; j < UserTags.Tags[0].length; j++) {
-      if (Place.Tags[i] == UserTags.Tags[0][j]) {
+    for (var j = 0; j < UserTags.length; j++) {
+      if (Place.Tags[i] == UserTags[j]) {
         if (IsTagUnique(Place, Destinations) == true) {
           return true;
         }
@@ -46,11 +48,11 @@ function IsTagOk(UserTags, Place, Destinations) {
   return false
 }
 
-function PopupAlgo(TagsJson, Sponsors, Destinations) {
-  var UserPos = TagsJson.Pos;
+function PopupAlgo(tags, Sponsors, Destinations, UserPos) {
 
   for (var i = 0; i < Sponsors.length; i++) {
-    if (IsTagOk(TagsJson, Sponsors[i], Destinations) == true && DistCalc2D(UserPos, Sponsors[i].Pos) < 100) {
+    if (IsTagOk(tags, Sponsors[i], Destinations) == true /*&& DistCalc2D(UserPos, Sponsors[i].Pos) < 100*/) {
+      console.log("je passe par la");
       return(Sponsors[i])
     }
   }
@@ -58,18 +60,24 @@ function PopupAlgo(TagsJson, Sponsors, Destinations) {
 
 //List: List of Places
 //Destination: Course
-methods.Popup = function (Destinations, List, LocationModel) {
+methods.Popup = function (Destinations, List, LocationModel, tags, coordinate) {
   let location = LocationModel;
   var res;
-  var UserPos = TagsJson.Pos;
+  var UserPos = coordinate.split(',');
+  let partner = [];
+  let j = 0;
 
+  console.log("positionnnn: ", coordinate);
   for (var i = 0; i < List.length; i++) {
-    if (List[i].Owner != 'qqn')
-      List.splice(i, i)
+    console.log("oui");
+    if (List[i].Owner == 'qqn') {
+      partner[j] = List[i]
+      j++
+    }
   }
-  console.log("List: ", List);
+  console.log("List: ", partner);
   while(1) {
-    res = PopupAlgo(TagsJson, List, Destinations)
+    res = PopupAlgo(tags, partner, Destinations, UserPos)
     if (res != false)
       console.log("lets go to ", res);
       res.Dist = DistCalc2D(UserPos, res.Pos);

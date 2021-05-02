@@ -2,11 +2,13 @@ import { IP_SERVER, PORT_SERVER } from '../../env/Environement';
 
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { StyleSheet, TextInput, View, Image, Alert, Text, Button } from 'react-native';
+import { StyleSheet, TextInput, View, Image, Alert, Text, Button, TouchableOpacity } from 'react-native';
 import socketIOClient from 'socket.io-client';
 import {launchImageLibrary} from 'react-native-image-picker';
 import ButtonIcon from '../ButtonIcon.js';
 import {contextSocket} from '../Socket';
+import { uploadImage } from '../../apiServer/image';
+import Store from '../../Store/configureStore';
 
 function ConversationBar(props) {
   const [research, setresearch] = useState('');
@@ -15,21 +17,9 @@ function ConversationBar(props) {
   const {sendImage} = contextSocket();
 
 
-  const createFormData = (image, body = {}) => {
-    const data = new FormData();
-  
-    data.append('image', {
-      name: image.fileName,
-      type: image.type,
-      uri: Platform.OS === 'ios' ? image.uri.replace('file://', '') : image.uri,
-    });
-  
-    Object.keys(body).forEach((key) => {
-      data.append(key, body[key]);
-    });
-  
-    return data;
-  };
+  const goToCourseScreen= () => {
+    props.navigation.navigate("SendCourseScreen")
+  }
 
   const handleChooseImage = () => {
     launchImageLibrary({ noData: true }, (response) => {
@@ -39,23 +29,6 @@ function ConversationBar(props) {
     });
   };
 
-  const handleUploadImage = () => {
-    fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/add_image_profile`, {
-      method: 'POST',
-      body: createFormData(image, { userId: '123' }),
-    })
-      .then((response) => response.json())
-      .then((response) => {
-        setImage(null);
-        if (response["image"]) {
-          setImageName(response["image"]);
-          sendImage(response["image"]);
-        }
-      })
-      .catch((error) => {
-        console.log('error', error);
-      });
-  };
   const cancelImage = () => {
     setImage(null);
   };
@@ -69,15 +42,31 @@ function ConversationBar(props) {
             style={{ width: 300, height: 300, borderRadius: 15, marginLeft: "20%" }}
           />
           <Button title="Send Image" 
-            onPress={() => {
+            onPress={async () => {
               if (image) {
-                handleUploadImage();
+                const store = Store.getState();
+                const response = await uploadImage(store.profil.access_token, image);
+                console.log("response image = ", response);
+                if (response) {
+                  setImage(null);
+                  setImageName(response["image"]);
+                  sendImage(response["image"]["id"]);
+                }
               }
             }} />
           <Button title="Erase Image" onPress={cancelImage} />
         </>
       )}
       <View style={styles.horizontalDisplay}>
+          
+        <TouchableOpacity onPress={() => {
+          goToCourseScreen(props);
+        }}>
+          <Image
+            source={require('../../images/logo/marker_small.png')}
+            style={{ width: 25, height: 35}}
+          />
+        </TouchableOpacity>
         <ButtonIcon
           icon={require('../../images/picture.png')}
           onPress={handleChooseImage}

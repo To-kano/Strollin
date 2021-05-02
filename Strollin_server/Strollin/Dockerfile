@@ -8,8 +8,8 @@ COPY ./package*.json ./
 
 RUN npm install
 
-# ENV PM2_PUBLIC_KEY asccvivffh2e936
-# ENV PM2_SECRET_KEY w2y37fq4923613e
+ENV PM2_PUBLIC_KEY asccvivffh2e936
+ENV PM2_SECRET_KEY w2y37fq4923613e
 
 #--production
 

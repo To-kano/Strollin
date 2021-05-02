@@ -3,7 +3,7 @@ import {
   StyleSheet, Text, View, Image, TouchableOpacity, FlatList,
 } from 'react-native';
 import { connect } from 'react-redux';
-import Box from './box';
+import TendenceCourseItem from './TendenceCourseItem';
 import I18n from '../Translation/configureTrans';
 import SearchBar from './TendanceSearchBar';
 import Store from '../Store/configureStore';
@@ -90,7 +90,7 @@ export function HomePage(props) {
           showsVerticalScrollIndicator={false}
           data={getData()}
           renderItem={({ item }) => (
-            <Box
+            <TendenceCourseItem
               {...props}
               data={item}
             />
@@ -127,7 +127,7 @@ export function HomePage(props) {
               showsVerticalScrollIndicator={false}
               data={getData()}
               renderItem={({ item }) => (
-                <Box
+                <TendenceCourseItem
                   {...props}
                   data={item}
                 />

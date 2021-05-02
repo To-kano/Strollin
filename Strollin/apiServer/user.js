@@ -16,6 +16,8 @@ async function loginUser(props, newMail, newPassword) {
         console.log("AccessToken: ", answer.access_token);
         await profileUser(props, answer.access_token);
         await conversationUser(props, answer.access_token);
+        await setTendance(props, answer.access_token);
+        await setCourseHistoric(props, answer.access_token);
         const action = { type: 'CONNECTION', value: answer.access_token };
         props.dispatch(action);
       } else {
@@ -103,7 +105,7 @@ async function setTendance(props, access_token) {
     const action = { type: "SET_TENDANCE_LIST", value: answer["courses_list"] }
     props.dispatch(action);
 
-    for (i in answer["courses_list"]) {
+    for (let i in answer["courses_list"]) {
       await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/get_locations_by_id`, {
         headers: {
           Accept: 'application/json',
@@ -145,6 +147,28 @@ async function setTendance(props, access_token) {
 }
 
 exports.messageUser = setTendance;
+
+async function setCourseHistoric(props, access_token) {
+  fetch(`http://${IP_SERVER}:${PORT_SERVER}/course/get_user_historic`, {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      access_token: access_token,
+      size: 10
+    },
+    method: 'GET',
+  })
+    .then((response) => response.json())
+    .then(async (answer) => {
+      const action = { type: 'SET_COURSE_OBJECT_HISTORIC', value: answer.course_historic };
+      props.dispatch(action);
+    })
+    .catch((error) => {
+      console.error('error :', error);
+    });
+}
+
+exports.messageUser = setCourseHistoric;
 
 async function messageUser(props, access_token, message_id) {
   fetch(`http://${IP_SERVER}:${PORT_SERVER}/message/get_message`, {
@@ -222,6 +246,7 @@ async function registerUser(props, newPseudo, newPassword, newMail, setMessage, 
       //console.log(" answer = " , answer);
       if (answer.access_token) {
         await profileUser(props, answer.access_token);
+        await setTendance(props, answer.access_token);
         const action = { type: 'CONNECTION', value: answer.access_token };
         props.dispatch(action);
       } else if (answer.status) {
@@ -238,7 +263,7 @@ exports.registerUser = registerUser;
 
 async function addUserHistoric(access_token, courseId) {
   const bodyRequest = JSON.stringify({
-    course: courseId.toString()
+    course: courseId
   });
 
   fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/add_historic`, {

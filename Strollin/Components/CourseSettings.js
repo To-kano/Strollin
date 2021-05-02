@@ -90,8 +90,15 @@ async function test(pos, budget, hours, minutes, tags, props) {
   .then(res => res.json())
   .then(json => {
     console.log("algo done:   ", json);
-    PopUpReq(pos, json.generated_course)
+    PopUpReq(pos, json.generated_course);
+    const action = {
+      type: 'ADD_COURSE',
+      value: json.course
+    };
+    Store.dispatch(action);
     props.navigation.navigate("TripSuggestion");
+  }).catch((error) => {
+    console.error('error :', error);
   });
   //console.log("test success");
   //props.navigation.navigate("TripSuggestion");
