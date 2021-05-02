@@ -18,7 +18,7 @@ const {
 router.get('/generate_course', async function(req, res) {
 
     let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo").catch(error => error);
-    let course_model = undefined;
+    let course = undefined;
 
     if (!user) {
         return res.status(400).send({status: "You are not connected."});
@@ -118,23 +118,4 @@ router.get('/popup_answer', async function(req, res) {
 
 
 module.exports = router;
-
-
-// let done =  {"generated_course": [
-//         {
-//             "AlgAg": 0,
-//             "AlgDisp": 0,
-//             "City": "oui",
-//             "Desc": "",
-//             "Dist": 0.006075163571461594,
-//             "Id": 1618336950173,
-//             "Name": "Hôpital Henri-Mondor Ap-Hp",
-//             "PopAg": 0,
-//             "PopDisp": 0,
-//             "Pos": [Array],
-//             "Price": 20,
-//             "Tags": [Array],
-//             "TagsDisp": [Array],
-//             "Time": 20
-//         }]
 

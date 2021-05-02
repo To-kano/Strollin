@@ -562,3 +562,40 @@ The object User represents the users of the application Strollin and the partner
 GENERATOR RELATED:
 ==================
 
+Generator course is not a model but it is used for the algorithm of Strollin and interact with the database. The algorithm will return an object containing:
+
+- AlgAg: Number,
+- AlgDisp: Number,
+- City: String,
+- Desc: String,
+- Dist: Number,
+- Id: Number,
+- Name: String,
+- PopAg: Number,
+- PopDisp: Number,
+- Pos: [Number],
+- Price: Number,
+- Tags: [String],
+- TagsDisp: [Number],
+- Time: Number
+
+
+- GET a generated course: `GET /generator/generate_course`
+
+| Description | Headers | Body | Return |
+|-|-|-|-|
+| Generate a course according to the given parameters. Will automatically create locations in database if new locations are found. | access_token: String<br>time: String<br>budget: String<br>tags: [String]<br>coordinate: [String] | | generated_course: [AlgorithmObject]<br>course: PartialCourseObject (Not created in database) |
+
+
+- GET a generated popup: `GET /generator/generate_popup`
+
+| Description | Headers | Body | Return |
+|-|-|-|-|
+| Generate a popup of a location owned by a partner. | access_token: String<br>coordinate: [String] | course: CourseID | popup: LocationObject |
+
+
+- GET popup answer: `GET /generator/popup_answer`
+
+| Description | Headers | Body | Return |
+|-|-|-|-|
+| Answer of the user for the previously generated popup. | access_token: String<br>anwser: Boolean<br>popup: LocationObject | | WIP |
