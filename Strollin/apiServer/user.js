@@ -46,6 +46,7 @@ async function profileUser(props, access_token) {
         const action = { type: 'SET_USER', value: answer.profile };
         props.dispatch(action);
         setFriendPseudo(props, access_token, answer.profile);
+        await setTendance(props, access_token);
       } else {
         //console.log(answer.status);
       }

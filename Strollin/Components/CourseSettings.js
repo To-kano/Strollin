@@ -18,7 +18,7 @@ async function PopUpReq(pos, course) {
   console.log("token: ", access_Token);
   console.log("course: ", course);
   const coordinate = [];
-
+  const test = JSON.stringify({course: course})
   coordinate[0] = pos.latitude;
   coordinate[1] = pos.longitude;
 
@@ -27,10 +27,10 @@ async function PopUpReq(pos, course) {
     Accept: 'application/json',
     'Content-Type': 'application/json',
     access_Token,
-    course: course,
     coordinate: coordinate
   },
-  method: 'GET',
+  body: test,
+  method: 'POST',
   })
   .then(res => res.json())
   .then(json => {
