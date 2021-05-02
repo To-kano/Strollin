@@ -11,6 +11,8 @@ import { DrawerActions } from '@react-navigation/native';
 import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 import I18n from '../Translation/configureTrans';
 
+import ImageProfile from './ImageProfile';
+
 function Menu(props) {
   const config = {
     velocityThreshold: 0.05,
@@ -23,7 +25,7 @@ function Menu(props) {
     <View style={styles.horizontal}>
       <View style={styles.view_menu}>
         <View style={styles.view_profile}>
-          <Image style={styles.img_profile} source={require('../images/TonyPP.jpg')} />
+          <ImageProfile style={styles.img_profile} />
           <Text style={styles.text_profile}>{props.profil.pseudo}</Text>
           <Text style={styles.text_grade}>Traveler</Text>
         </View>
@@ -91,13 +93,13 @@ function Menu(props) {
             <Image style={styles.img_navigationIn} source={require('../images/icons/black/settings.png')} />
             <Text style={styles.text_navigationIn}>{props.state.routeNames[7]}</Text>
           </TouchableOpacity>
-          <TouchableOpacity
+          {/*<TouchableOpacity
             onPress={() => props.navigation.navigate('Personal_trip')}
             style={[styles.view_navigationIn, props.name == 'Personal_trip' ? styles.current_page : {}]}
           >
             <Image style={styles.img_navigationIn} source={require('../images/icons/black/next_trip.png')} />
             <Text style={styles.text_navigationIn}>Personal_trip</Text>
-          </TouchableOpacity>
+          </TouchableOpacity>*/}
         </View>
         <TouchableOpacity
           onPress={() => props.navigation.navigate('userLogin')}

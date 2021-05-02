@@ -8,6 +8,8 @@ import { SceneView } from 'react-navigation';
 import { DrawerActions } from '@react-navigation/native';
 import { ScrollView } from 'react-native-gesture-handler';
 import I18n from '../Translation/configureTrans';
+import { useState, useEffect } from 'react';
+import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 
 function randPic() {
   const rand = (Math.floor(Math.random() * 2) + 1);
@@ -16,6 +18,14 @@ function randPic() {
     return (require('../ressources/street2.jpg'));
   }
   return (require('../ressources/street1.jpg'));
+}
+
+function searchUser(locations_list, setUser, props) {
+  let location = locations_list.find((location) => {
+    console.log("ok", location.owner, "      ", props.profil.id)
+    return location.owner.id == props.profil.id
+  })
+  setUser(location)
 }
 
 const initialList = [
@@ -38,13 +48,45 @@ const initialList = [
 ];
 
 function PartenaireScreen(props) {
+
+  var i = false
+  const [locationUser, setUser] = useState({
+      "owner": "",
+      "pop_disp": "0",
+      "pop_ag": "0",
+      "alg_disp": "0",
+      "alg_ag": "0",
+      "__v": 0
+  })
+  console.log(locationUser)
+
+  useEffect(() => {
+    if (!i) {
+      const url = `http://${IP_SERVER}:${PORT_SERVER}/location/get_locations`
+      fetch(url, {
+        headers : {
+          acess_token: props.profil.access_token,
+        },
+        method: 'GET',
+      })
+        .then((response) => response.json())
+        .then((answer) => {
+          searchUser(answer.locations_list, setUser, props)
+        })
+        .catch((error) => {
+          console.error('error :', error);
+        }).finally(() => {i == true});
+
+    }
+  }, []);
+
   const [list, setList] = React.useState(initialList);
   console.log(props.map.locations, "\n\n\n", props.profil, "\n\n\n", props.route)
 
   return (
     <View style={styles.view_back}>
       <View style={styles.view_header}>
-          
+
         <TouchableOpacity onPress={() => props.navigation.dispatch(DrawerActions.openDrawer())}>
           <Image style={styles.img_header} source={require('../images/icons/black/menu.png')} />
         </TouchableOpacity>
@@ -82,7 +124,7 @@ function PartenaireScreen(props) {
             {I18n.t('Partner.number_of_popup')}
           </Text>
           <View style={styles.view_number}>
-            <Text style={styles.text_number}>9057</Text>
+            <Text style={styles.text_number}>{locationUser.pop_disp}</Text>
           </View>
         </View>
         <View style={styles.view_stat}>
@@ -90,7 +132,7 @@ function PartenaireScreen(props) {
             {I18n.t('Partner.number_of_accepted_popup')}
           </Text>
           <View style={styles.view_number}>
-            <Text style={styles.text_number}>53</Text>
+            <Text style={styles.text_number}>{locationUser.pop_ag}</Text>
           </View>
         </View>
         <View style={styles.view_stat}>
@@ -98,7 +140,7 @@ function PartenaireScreen(props) {
             {I18n.t('Partner.appearances_in_the_algorithm')}
           </Text>
           <View style={styles.view_number}>
-            <Text style={styles.text_number}>1061</Text>
+            <Text style={styles.text_number}>{locationUser.alg_disp}</Text>
           </View>
         </View>
         <View style={styles.view_stat}>
@@ -106,7 +148,7 @@ function PartenaireScreen(props) {
             {I18n.t('Partner.acceptance_in_the_algorithm')}
           </Text>
           <View style={styles.view_number}>
-            <Text style={styles.text_number}>322</Text>
+            <Text style={styles.text_number}>{locationUser.alg_ag}</Text>
           </View>
         </View>
         <View style={styles.view_stat}>

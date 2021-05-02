@@ -12,7 +12,7 @@ function CommentScreen(props) {
   return (
     <View style={styles.container}>
       <View>
-        <Text style={{ textAlign: 'center', fontSize: 40 }}> {} </Text>
+        <Text style={{ textAlign: 'center', fontSize: 40 }}> Comments </Text>
         <FlatList
           data={props.route.params.data.comments_list}
           contentContainerStyle={{ flexGrow: 0.1 }}

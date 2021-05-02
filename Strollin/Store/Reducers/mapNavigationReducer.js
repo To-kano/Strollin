@@ -52,7 +52,7 @@ const initialState = {
       "__v":0
     }
   ],
-  course: 
+  course:
   {
     "_id":
     {
@@ -79,7 +79,6 @@ const initialState = {
 };
 
 function setTime(allTime, value) {
-  console.log("okkkkkk")
   let result = allTime
   result.push(value)
   return result

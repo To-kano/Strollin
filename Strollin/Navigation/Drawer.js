@@ -21,7 +21,7 @@ import Comment from '../Components/Comment';
 import MenuChat from '../Components/reactChatScreen/MenuScreen';
 import ScreenChat from '../Components/reactChatScreen/ChatScreen';
 import NewConversation from '../Components/reactChatScreen/NewConversation';
-import Notation from '../Components/Notation';
+//import Notation from '../Components/Notation';
 import Menu from '../Components/Menu';
 import Socket from '../Components/Socket';
 import CourseEvaluation from '../Components/CourseEvaluation';
@@ -30,6 +30,8 @@ import PartenaireScreen from '../Components/PartenairePage';
 import SettingPartenaire from '../Components/SettingPartenaire';
 import Personal_trip from '../Components/Personal_trip';
 import TagSelection from '../Components/TagSelection';
+
+import ChangeImageProfileForm from '../Components/ChangeImageProfileForm';
 
 import Chat from './Chat';
 import Home from './Home';
@@ -58,7 +60,11 @@ function MyDrawer() {
       <Drawer.Screen name="Profile" component={Profile} />
       <Drawer.Screen name="Partenaire" component={PartenaireScreen} />
       <Drawer.Screen name="Settings" component={SettingPartenaire} />
-      <Drawer.Screen name="Personal_trip" component={Personal_trip} />
+      {/*<Drawer.Screen name="Personal_trip" component={Personal_trip} />
+      <Drawer.Screen
+            name="TripNavigation"
+            component={TripNavigation}
+      />*/}
     </Drawer.Navigator>
   );
 }

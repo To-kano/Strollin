@@ -37,10 +37,10 @@ function ChatScreen(props) {
       </View>
       <View style={styles.box}>
         <View>
-          <FlatList
+          <FlatList ListHeaderComponent={ <View style={{ margin: 30 }} /> }
             data={props.conversation[props.conversation.currentConversation].messages_list}
             renderItem={({ item }) => (
-              <MessagesItem
+              <MessagesItem navigation={props.navigation}
               messageID={item}
               />
             )}
@@ -50,6 +50,7 @@ function ChatScreen(props) {
         <ConversationBar
           onPress={sendMessage}
           imagePath="../../images/send.png"
+          navigation={props.navigation}
         />
       </View>
     </View>

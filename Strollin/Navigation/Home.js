@@ -47,7 +47,10 @@ function Home() {
                   name="CommentScreen"
                   component={CommentScreen}
             />
-            <Stack.Screen name="TagSelection" component={TagSelection} />
+            <Stack.Screen
+                  name="TagSelection"
+                  component={TagSelection}
+            />
         </Stack.Navigator>
     );
 }
