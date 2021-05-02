@@ -201,11 +201,11 @@ function PartenaireScreen(props) {
     //         <Text style={styles.textNumber}>4397</Text>
     //       </View>
     //       <View style={styles.textLine}>
-    //         <Text style={styles.textInfos}>Apparu dans l'algorythme : </Text>
+    //         <Text style={styles.textInfos}>Apparu dans l'algorithme : </Text>
     //         <Text style={styles.textNumber}>4918</Text>
     //       </View>
     //       <View style={styles.textLine}>
-    //         <Text style={styles.textInfos}>Accepté dans l'algorythme : </Text>
+    //         <Text style={styles.textInfos}>Accepté dans l'algorithme : </Text>
     //         <Text style={styles.textNumber}>627</Text>
     //       </View>
     //       <View style={styles.textLine}>
