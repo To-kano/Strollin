@@ -6,9 +6,9 @@ import MapViewDirections from 'react-native-maps-directions';
 
 import { connect } from 'react-redux';
 
+import Tts from 'react-native-tts';
 import { addUserHistoric } from '../apiServer/user';
 
-import Tts from 'react-native-tts';
 import I18n from '../Translation/configureTrans';
 
 // apiKey AIzaSyDGvC3HkeGolvgvOevKuaE_6LmS9MPjlvE
@@ -26,7 +26,7 @@ export async function updateCoordinates(setUserPosition) {
       setUserPosition(data);
     },
     (error) => {
-      //console.log(error.code, error.message);
+      // console.log(error.code, error.message);
     },
     { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
   );
@@ -69,12 +69,15 @@ function isNear(userPosition, elementPosition) {
   return false;
 }
 
-function Map({position, height, width, deltaView, locations, profil, map, dispatch, navigation}) {
+function Map({
+  position, height, width, deltaView, locations, profil, map, dispatch, navigation
+}) {
   const [userPosition, setUserPosition] = useState(null);
-  const allTime = []
+  const allTime = [];
 
-  //console.log("map\n");
-  //console.log("position", deltaView, waypoints);
+  /// /console.log(props.navigate);
+  // console.log("map\n");
+  // console.log("position", deltaView, waypoints);
   useEffect(() => {
     setLocalRegion({
       ...localRegion,
@@ -87,18 +90,19 @@ function Map({position, height, width, deltaView, locations, profil, map, dispat
     longitudeDelta: deltaView.longitudeDelta
   });
 
-  const [destinations, setDestinations] = useState(locations ? locations : map.locations);//props.course);
-
+  //const [waypoint, setWaypoint] = useState(props.waypoints);
+  const [destinations, setDestinations] = useState(locations || map.locations);// props.course);
+  //console.log(waypoint);
+  /* useEffect(() => {
 
   //console.log("destination\n", destinations);
   //console.log("final\n", destinations[destinations.length - 1]);
   //console.log("parcoure\n", destinations.slice(0, destinations.length - 1));
 
-
   /*useEffect(() => {
     console.log("i'm here")
     console.log(ts)
-  }, [])*/
+  }, []) */
 
   useEffect(() => {
     if (profil.sound) {
@@ -109,7 +113,7 @@ function Map({position, height, width, deltaView, locations, profil, map, dispat
         setDestinations();
         const action = { type: 'ADD_HISTORY', courseID: map.course.id };
         dispatch(action);
-        //sleep(2000);
+        // sleep(2000);
         navigation.navigate('CourseEvaluation');
       } else {
         Tts.setDefaultLanguage('en-US');
@@ -124,12 +128,12 @@ function Map({position, height, width, deltaView, locations, profil, map, dispat
     setMagic(0);
   };
 
-  //const [refMapView, setRefMapView] = useState(React.createRef());
+  // const [refMapView, setRefMapView] = useState(React.createRef());
 
   async function setTimedestinations() {
-    let tmp = await Date.now()
-    console.log("________________________")
-    console.log(tmp)
+    const tmp = await Date.now();
+    console.log('________________________');
+    console.log(tmp);
 
     const action = { type: 'SET_TIME', value: tmp };
     dispatch(action);
@@ -142,7 +146,7 @@ function Map({position, height, width, deltaView, locations, profil, map, dispat
     };
     if (destinations.length != 0 && isNear(position, destinations[0])) {
       setDestinations(destinations.slice(1, destinations.length));
-      setTimedestinations()
+      setTimedestinations();
     }
     // if (props.background) {
     // refMapView.current.animateToRegion(localRegion, 500);
@@ -153,18 +157,18 @@ function Map({position, height, width, deltaView, locations, profil, map, dispat
   if (position.asked == false) {
     requestGeolocalisationPermission(dispatch);
   }
-//
+  //
   if (position.permission == true && userPosition == null) {
-      updateCoordinates(setUserPosition);
-    }
-//
+    updateCoordinates(setUserPosition);
+  }
+  //
   if (position.permission && userPosition && localRegion.latitude && localRegion.longitude) {
     const GOOGLE_MAPS_APIKEY = 'AIzaSyDGvC3HkeGolvgvOevKuaE_6LmS9MPjlvE';
-//
+    //
     return (
       <MapView
-        style={{ height: height, width: width + magic }} // showsMyLocationButton do not show if width is not change
-        //ref={refMapView}
+      // ref={refMapView}
+        style={{ height, width: width + magic }} // showsMyLocationButton dont show if width is not change
         initialRegion={localRegion}
         showsUserLocation
         showsCompass
@@ -173,40 +177,33 @@ function Map({position, height, width, deltaView, locations, profil, map, dispat
         onUserLocationChange={(data) => {
           onUserPositionChange(data.nativeEvent);
         }}
-        //onRegionChange={(region) => {}}
-        >
+      >
 
-          <MapViewDirections
-            origin={userPosition}
-            destination={destinations[destinations.length - 1]}
-            //destination={getLocation()}
-            waypoints={destinations.slice(0, destinations.length - 1)}
-            //waypoints={destinations.slice(0, destinations.length - 1)}
-            apikey={GOOGLE_MAPS_APIKEY}
-            strokeWidth={5}
-            timePrecision="now"
-            resetOnChange={false}
-            strokeColor="#39A5D6"
-            mode="WALKING"
-            //onReady={({
-            //  distance, duration, coordinates, fare, destinationsOrder
-            //}) => {
-            //  //console.log('distance ', distance, ' duration ', duration);
-            //}}
+        <MapViewDirections
+          origin={userPosition}
+          destination={destinations[destinations.length - 1]}
+            // destination={getLocation()}
+          waypoints={destinations.slice(0, destinations.length - 1)}
+            // waypoints={destinations.slice(0, destinations.length - 1)}
+          apikey={GOOGLE_MAPS_APIKEY}
+          strokeWidth={5}
+          timePrecision="now"
+          resetOnChange={false}
+          strokeColor="#39A5D6"
+          mode="WALKING"
+        />
+
+        {destinations.map((marker) => (
+          <Marker
+            key={marker.id}
+            coordinate={{ latitude: marker.latitude, longitude: marker.longitude }}
+            title={marker.name}
+            description={marker.address}
+            image={require('../images/logo/marker_small.png')}
           />
+        ))}
 
-            {destinations.map((marker) => (
-              <Marker
-                key={marker._id}
-                coordinate={{ latitude: marker.latitude, longitude: marker.longitude }}
-                title={marker.name}
-                description="Destination"
-              />
-            ))}
-
-
-
-        </MapView>
+      </MapView>
     );
   }
   return (
@@ -216,17 +213,15 @@ function Map({position, height, width, deltaView, locations, profil, map, dispat
   );
 }
 
-const mapStateToProps = (state) => {
-  return (
-    {
-      position: state.position,
-      profil: state.profil,
-      map: state.map
-    }
-  )
-};
+const mapStateToProps = (state) => (
+  {
+    position: state.position,
+    profil: state.profil,
+    map: state.map
+  }
+);
 
-//const mapStateToProps = (state) => state;
+// const mapStateToProps = (state) => state;
 export default connect(mapStateToProps)(Map);
 
-//export default Map;
+// export default Map;

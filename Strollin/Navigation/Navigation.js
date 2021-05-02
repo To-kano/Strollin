@@ -11,7 +11,7 @@ import Profile from '../Components/ProfileScreen';
 // import ConnectionScreen from '../Components/ConnectionScreen';
 import UserRegister from '../Components/UserRegister';
 import PartnerRegister from '../Components/PartnerRegister';
-import TageSelection from '../Components/TagSelection';
+import TagSelection from '../Components/TagSelection';
 import LoginPage from '../Components/LoginPage';
 import FriendList from '../Components/FriendList';
 import Home from '../Components/Home';
@@ -200,7 +200,10 @@ export default connect(mapStateToProps)(MyStack);
             <Stack.Screen
               name="CourseEvaluation"
               component={CourseEvaluation}
-              options={{ title: 'course evaluation' }}
+              options={{
+                title: 'course evaluation' ,
+                ...TransitionPresets.SlideFromRightIOS,
+              }}
             />
             <Stack.Screen
               name="CourseSettings"

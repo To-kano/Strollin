@@ -96,7 +96,7 @@ function CheckFood(Food, PlaceFood) {
   }
 }
 
-function algoTest(UserTags, Places, Food, time, budget, tags, coordinate) {
+function algoTest(Places, Food, time, budget, tags, coordinate) {
   return new Promise((resolve, reject) => {
 
     var PlacesArray = []
@@ -193,29 +193,24 @@ async function getTags(time, budget, tags, coordinate) {
     console.log("please: ", true_list[i]);
   }*/
 
-  User = await UserModel.findOne( { _id:  "5fbfc3068901ca001ec0be8f" })
-  const promise1 = hello(true_list, User, time, budget, tags, coordinate)
+  const promise1 = hello(true_list, time, budget, tags, coordinate)
   return promise1;
-  /*promise1.then((value) => {
+}
+
+async function PopUpAlgo(course) {
     let location = LocationModel;
 
-    value2 = value.slice(0, 5)
-    console.log("---------------------------------------");
-    console.log("\n\n");
-    console.log("You are going to: ", value2);
-    console.log("\n\n");
-    console.log("---------------------------------------");
     //Pop Up ALgo
-    for (var i = 0; i < value.length; i++) {
+    for (var i = 0; i < course.length; i++) {
       tagslistarray = []
-      for (var j = 0; j < value[i].TagsDisp.length; j++) {
-        _id = value[i].TagsDisp[j][0]
-        disp = value[i].TagsDisp[j][1]
+      for (var j = 0; j < course[i].TagsDisp.length; j++) {
+        _id = course[i].TagsDisp[j][0]
+        disp = course[i].TagsDisp[j][1]
         tmpTagDisp = {_id, disp}
         tagslistarray.push(tmpTagDisp)
       }
       update.tags_list = tagslistarray
-      location.updateOne({name: value[i].Name}, { $set: { tags_list : update.tags_list } }, function(err, raw) {
+      location.updateOne({name: course[i].Name}, { $set: { tags_list : update.tags_list } }, function(err, raw) {
           if (err) {
               return res.status(400).send({status: "Location could not be updated."});
           } else {
@@ -224,7 +219,6 @@ async function getTags(time, budget, tags, coordinate) {
       })
     }
     pop.data.Popup(value2, true_list, LocationModel)
-  });*/
 }
 
 async function checkPlace(location, list) {
@@ -244,6 +238,7 @@ async function formatPlaces(data) {
   //console.log("list: ", locations_list);
   let array = [];
   let flag = false;
+  var tmp = [];
 
   for (var i = 0; i < data.length; i++) {
     let location = new LocationModel({
@@ -252,19 +247,27 @@ async function formatPlaces(data) {
         owner_id: "",
         owner_pseudo: "",
         coordinate: "",
+        score: "",
         latitude: "",
         longitude: "",
-        address: "oui",
-        city: "oui",
-        country: "oui",
+        address: " ",
+        city: " ",
+        country: " ",
         description: "",
         timetable: "",
         tags_list: "",
-        price_range: [ "20" ],
-        average_time: "20",
+        price_range: [ "0", "0", "0" ],
+        average_time: "15",
         phone: "",
         website: ""
     });
+    tmp = data[i].vicinity.split(", ")
+    console.log("TMP: ", tmp);
+    if (tmp.length > 1) {
+      location.address = tmp[0]
+      location.city = tmp[1]
+    }
+    location.score = data[i].rating
     location.tags_list = [];
     location.id = new Number(Date.now());
     location.name = data[i].name;
@@ -312,7 +315,7 @@ async function getPlaces(coordinate) {
 
 }
 
-hello = function(sending, User, time, budget, tags, coordinate)
+hello = function(sending, time, budget, tags, coordinate)
 {
   var coordinateArr = coordinate.split(",");
   getPlaces(coordinateArr);
@@ -320,8 +323,7 @@ hello = function(sending, User, time, budget, tags, coordinate)
   //promise1.then((value) => {
     console.log("coordiante: ", coordinateArr);
     return new Promise((resolve, reject) => {
-      TagsJson.Tags[0] = User.tags_list
-      var test = algoTest(TagsJson, sending, false, time, budget, tags, coordinateArr)
+      var test = algoTest(sending, false, time, budget, tags, coordinateArr)
       resolve(test)
     });
   //})
@@ -336,7 +338,14 @@ methods.test = function(time, budget, tags, coordinate) {
   });*/
 }
 
-
+methods.pop = function(coordinate, tags, course) {
+  console.log("------------------------------------------------------------------");
+  const promise1 = PopUpAlgo(course)
+  return promise1;
+  /*promise1.then((value) => {
+    console.log("VALEUUUUUUUUUUUUUUR: ", value);
+  });*/
+}
 
 
 //algoTest(TagsJson, PlacesJson)

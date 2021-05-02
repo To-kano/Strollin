@@ -3,116 +3,113 @@ import {
   Button, Image, View, StyleSheet, Text, ScrollView, FlatList, TextInput, TouchableOpacity,
 } from 'react-native';
 import { connect } from 'react-redux';
-import I18n from '../Translation/configureTrans';
-import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 
 import GestureRecognizer from 'react-native-swipe-gestures';
 
 import { DrawerActions } from '@react-navigation/native';
+import { IP_SERVER, PORT_SERVER } from '../env/Environement';
+import I18n from '../Translation/configureTrans';
+
+import ImageProfile from './ImageProfile';
 
 function Menu(props) {
-
   const config = {
     velocityThreshold: 0.05,
     directionalOffsetThreshold: 80,
     gestureIsClickThreshold: 0.5
   };
-//  console.log("customDrawer ", props.state)
-
+  //  console.log("customDrawer ", props.state)
 
   return (
     <View style={styles.horizontal}>
-
       <View style={styles.view_menu}>
-      <View style={styles.view_profile}>
-        <Image style={styles.img_profile} source={require('../images/TonyPP.jpg')} />
-        <Text style={styles.text_profile}>{props.profil.pseudo}</Text>
-        <Text style={styles.text_grade}>Traveler</Text>
-      </View>
-      <View style={styles.view_navigation}>
-        <TouchableOpacity
-          onPress={() => props.navigation.navigate(props.state.routeNames[0])}
-          style={[styles.view_navigationIn, props.state.index == 0 ? styles.current_page : {}]}
-        >
-          <Image style={styles.img_navigationIn} source={require('../images/icons/black/home.png')} />
-          <Text style={styles.text_navigationIn}>{props.state.routeNames[0]}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            console.log("navigate");
-            props.navigation.navigate(props.state.routeNames[1]);
-          }
-        }
-          style={[styles.view_navigationIn, props.state.index == 1 ? styles.current_page : {}]}
-        >
-          <Image style={styles.img_navigationIn} source={require('../images/icons/black/historic.png')} />
-          <Text style={styles.text_navigationIn}>{props.state.routeNames[1]}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => props.navigation.navigate(props.state.routeNames[2])}
-          style={[styles.view_navigationIn, props.state.index == 2 ? styles.current_page : {}]}
-        >
-          <Image style={styles.img_navigationIn} source={require('../images/icons/black/next_trip.png')} />
-          <Text style={styles.text_navigationIn}>{props.state.routeNames[2]}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => props.navigation.navigate(props.state.routeNames[3])}
-          style={[styles.view_navigationIn, props.state.index == 3 ? styles.current_page : {}]}
-        >
-          <Image style={styles.img_navigationIn} source={require('../images/icons/black/friends.png')} />
-          <Text style={styles.text_navigationIn}>{props.state.routeNames[3]}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
+        <View style={styles.view_profile}>
+          <ImageProfile style={styles.img_profile} />
+          <Text style={styles.text_profile}>{props.profil.pseudo}</Text>
+          <Text style={styles.text_grade}>Traveler</Text>
+        </View>
+        <View style={styles.view_navigation}>
+          <TouchableOpacity
+            onPress={() => props.navigation.navigate(props.state.routeNames[0])}
+            style={[styles.view_navigationIn, props.state.index == 0 ? styles.current_page : {}]}
+          >
+            <Image style={styles.img_navigationIn} source={require('../images/icons/black/home.png')} />
+            <Text style={styles.text_navigationIn}>{props.state.routeNames[0]}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
             onPress={() => {
-             const action = {type: 'SET_SEARCH_CONV_LIST', value: props.conversation.conversationList };
-             props.dispatch(action);
-             props.navigation.navigate(props.state.routeNames[4]);
-           }}
-          style={[styles.view_navigationIn, props.state.index == 4 ? styles.current_page : {}]}
-        >
-          <Image style={styles.img_navigationIn} source={require('../images/icons/black/chats.png')} />
-          <Text style={styles.text_navigationIn}>{props.state.routeNames[4]}</Text>
-        </TouchableOpacity>
+              console.log('navigate');
+              props.navigation.navigate(props.state.routeNames[1]);
+            }}
+            style={[styles.view_navigationIn, props.state.index == 1 ? styles.current_page : {}]}
+          >
+            <Image style={styles.img_navigationIn} source={require('../images/icons/black/historic.png')} />
+            <Text style={styles.text_navigationIn}>{props.state.routeNames[1]}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => props.navigation.navigate(props.state.routeNames[2])}
+            style={[styles.view_navigationIn, props.state.index == 2 ? styles.current_page : {}]}
+          >
+            <Image style={styles.img_navigationIn} source={require('../images/icons/black/next_trip.png')} />
+            <Text style={styles.text_navigationIn}>{props.state.routeNames[2]}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => props.navigation.navigate(props.state.routeNames[3])}
+            style={[styles.view_navigationIn, props.state.index == 3 ? styles.current_page : {}]}
+          >
+            <Image style={styles.img_navigationIn} source={require('../images/icons/black/friends.png')} />
+            <Text style={styles.text_navigationIn}>{props.state.routeNames[3]}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              const action = { type: 'SET_SEARCH_CONV_LIST', value: props.conversation.conversationList };
+              props.dispatch(action);
+              props.navigation.navigate(props.state.routeNames[4]);
+            }}
+            style={[styles.view_navigationIn, props.state.index == 4 ? styles.current_page : {}]}
+          >
+            <Image style={styles.img_navigationIn} source={require('../images/icons/black/chats.png')} />
+            <Text style={styles.text_navigationIn}>{props.state.routeNames[4]}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => props.navigation.navigate(props.state.routeNames[5])}
+            style={[styles.view_navigationIn, props.state.index == 5 ? styles.current_page : {}]}
+          >
+            <Image style={styles.img_navigationIn} source={require('../images/icons/black/profile.png')} />
+            <Text style={styles.text_navigationIn}>{props.state.routeNames[5]}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => props.navigation.navigate(props.state.routeNames[6])}
+            style={[styles.view_navigationIn, props.state.index == 6 ? styles.current_page : {}]}
+          >
+            <Image style={styles.img_navigationIn} source={require('../images/icons/black/partner.png')} />
+            <Text style={styles.text_navigationIn}>{props.state.routeNames[6]}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => props.navigation.navigate(props.state.routeNames[7])}
+            style={[styles.view_navigationIn, props.state.index == 7 ? styles.current_page : {}]}
+          >
+            <Image style={styles.img_navigationIn} source={require('../images/icons/black/settings.png')} />
+            <Text style={styles.text_navigationIn}>{props.state.routeNames[7]}</Text>
+          </TouchableOpacity>
+          {/*<TouchableOpacity
+            onPress={() => props.navigation.navigate('Personal_trip')}
+            style={[styles.view_navigationIn, props.name == 'Personal_trip' ? styles.current_page : {}]}
+          >
+            <Image style={styles.img_navigationIn} source={require('../images/icons/black/next_trip.png')} />
+            <Text style={styles.text_navigationIn}>Personal_trip</Text>
+          </TouchableOpacity>*/}
+        </View>
         <TouchableOpacity
-          onPress={() => props.navigation.navigate(props.state.routeNames[5])}
-          style={[styles.view_navigationIn, props.state.index == 5 ? styles.current_page : {}]}
+          onPress={() => props.navigation.navigate('userLogin')}
+          style={styles.view_logOut}
         >
-          <Image style={styles.img_navigationIn} source={require('../images/icons/black/profile.png')} />
-          <Text style={styles.text_navigationIn}>{props.state.routeNames[5]}</Text>
+          <Text style={styles.text_logOut}>Log Out</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => props.navigation.navigate(props.state.routeNames[6])}
-          style={[styles.view_navigationIn, props.state.index == 6 ? styles.current_page : {}]}
-        >
-          <Image style={styles.img_navigationIn} source={require('../images/icons/black/partner.png')} />
-          <Text style={styles.text_navigationIn}>{props.state.routeNames[6]}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => props.navigation.navigate(props.state.routeNames[7])}
-          style={[styles.view_navigationIn, props.state.index == 7 ? styles.current_page : {}]}
-        >
-          <Image style={styles.img_navigationIn} source={require('../images/icons/black/settings.png')} />
-          <Text style={styles.text_navigationIn}>{props.state.routeNames[7]}</Text>
-        </TouchableOpacity>
-        {/*<TouchableOpacity
-          onPress={() => props.navigation.navigate('Personal_trip')}
-          style={[styles.view_navigationIn, props.name == "Personal_trip" ? styles.current_page : {}]}
-        >
-          <Image style={styles.img_navigationIn} source={require('../images/icons/black/next_trip.png')} />
-          <Text style={styles.text_navigationIn}>Personal_trip</Text>
-        </TouchableOpacity>*/}
       </View>
-      <TouchableOpacity
-        onPress={() => props.navigation.navigate('userLogin')}
-        style={styles.view_logOut}
-      >
-        <Text style={styles.text_logOut}>Log Out</Text>
-      </TouchableOpacity>
-    </View>
-    <GestureRecognizer
+      <GestureRecognizer
         onSwipeDown={(state) => {
-
           if (props.state.index > 0) {
             props.navigation.navigate(props.state.routeNames[props.state.index - 1]);
             props.navigation.dispatch(DrawerActions.openDrawer());
@@ -127,11 +124,12 @@ function Menu(props) {
         config={config}
         style={{
           flex: 1,
-          backgroundColor: "green",
+          backgroundColor: 'green',
           width: 30
         }}
-        />
-    </View>)
+      />
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({

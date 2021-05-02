@@ -11,7 +11,37 @@ import { requestGeolocalisationPermission, updateCoordinates } from './map'
 const store = Store.getState();
 const access_Token = store.profil.access_token;
 
-async function getUserTags(props, pos, budget, hours, minutes) {
+async function PopUpReq(pos, course) {
+  const store = Store.getState();
+  const access_Token = store.profil.access_token;
+  console.log("pos: ", pos);
+  console.log("token: ", access_Token);
+  console.log("course: ", course);
+  const coordinate = [];
+
+  coordinate[0] = pos.latitude;
+  coordinate[1] = pos.longitude;
+
+  await fetch(`http://${IP_SERVER}:${PORT_SERVER}/generator/generate_popup`, {
+  headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+    access_Token,
+    course: course,
+    coordinate: coordinate
+  },
+  method: 'GET',
+  })
+  .then(res => res.json())
+  .then(json => {
+    console.log("JJJJJJJJJJJJSSSSSSSSSSSSSSSSOOOOOOOOOONNNNNNNNNn: ", json);
+  });
+
+}
+
+
+
+async function getUserTags(pos, budget, hours, minutes, props) {
   const store = Store.getState();
   const access_Token = store.profil.access_token;
   console.log("token: ", access_Token);
@@ -28,11 +58,11 @@ async function getUserTags(props, pos, budget, hours, minutes) {
     console.log("ici ?: ", json);
     console.log("########", json.profile.tags_list);
     console.log("mail: ", json.profile.mail);
-    test(pos, budget, hours, minutes, json.profile.tags_list);
+    test(pos, budget, hours, minutes, json.profile.tags_list, props);
   });
 }
 
-async function test(props, pos, budget, hours, minutes, tags) {
+async function test(pos, budget, hours, minutes, tags, props) {
   const store = Store.getState();
   const access_Token = store.profil.access_token;
   const time = hours * 60 + minutes;
@@ -60,6 +90,15 @@ async function test(props, pos, budget, hours, minutes, tags) {
   .then(res => res.json())
   .then(json => {
     console.log("algo done:   ", json);
+    PopUpReq(pos, json.generated_course);
+    const action = {
+      type: 'ADD_COURSE',
+      value: json.course
+    };
+    Store.dispatch(action);
+    props.navigation.navigate("TripSuggestion");
+  }).catch((error) => {
+    console.error('error :', error);
   });
   //console.log("test success");
 }
@@ -134,8 +173,7 @@ export function CourseSettings(props) {
           id={'test'}
           style={styles.newTrip}
           onPress={() => {
-            getUserTags(props, pos, budget, hours, minutes);
-            props.navigation.navigate("TripSuggestion");
+            getUserTags(pos, budget, hours, minutes, props);
           }}
         >
           <Text style={{ fontSize: 16, color: '#FFFFFF' }}>

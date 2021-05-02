@@ -29,8 +29,6 @@ const {
  *
  * @param {[LocationID]} req.body.locations_list
  * @param {String} req.body.name
- * @param {UserID} req.body.author (Optional)
- * @param {String} req.body.time_spent (Optional)
  */
 router.post('/new_course', async function(req, res) {
 
@@ -61,29 +59,38 @@ router.post('/new_course', async function(req, res) {
         author_pseudo: user.pseudo,
         tags_list: [],
     });
-    if (req.body.time_spent)
-        course.time_spent = req.body.time_spent
 
     //Get tags from locations and price range
     let min_price = 0;
     let max_price = 0;
+    let avg_price = 0;
     for (let index = 0; index < locations_list.length; index++) {
-        min_price += Number(locations_list[index].price_range[0].match(/\d+/g).map(Number));;
-        max_price += Number(locations_list[index].price_range[1].match(/\d+/g).map(Number));
+        if (!isNaN(Number(locations_list[index].price_range[0]))) {
+            min_price += Number(locations_list[index].price_range[0]);
+            // min_price += Number(locations_list[index].price_range[0].match(/\d+/g).map(Number));
+        }
+        if (!isNaN(Number(!locations_list[index].price_range[1]))) {
+            max_price += Number(locations_list[index].price_range[1]);
+            // max_price += Number(locations_list[index].price_range[1].match(/\d+/g).map(Number));
+        }
+        if (!isNaN(Number(locations_list[index].price_range[2]))) {
+            avg_price += Number(locations_list[index].price_range[2]);
+            // avg_price += Number(locations_list[index].price_range[2].match(/\d+/g).map(Number));
+        }
         for (let index2 = 0; index2 < locations_list[index].tags_list.length; index2++) {
             tag = locations_list[index].tags_list[index2];
-            if (!course.tags_list.includes(tag.id)) {
-                course.tags_list.push(tag.id)
+            if (!course.tags_list.includes(tag._id || tag.id)) {
+                course.tags_list.push(tag._id || tag.id)
             }
         }
     }
-    course.price_range = [min_price.toString(), max_price.toString()];
+    course.price_range = [min_price.toString(), max_price.toString(), avg_price.toString()];
 
     let error = await course.save().catch(error => error);
     if (error.errors) {
         return res.status(400).send({status: "Error in database transaction:\n", error});
     }
-    return res.status(200).send({status: "Course created."});
+    return res.status(200).send({status: "Course created.", course});
 });
 
 
@@ -167,14 +174,46 @@ router.get('/get_course', async function(req, res) {
 });
 
 
-// GET_CUSTOM_COURSE
+// GET_USER_HISTORIC
 /**
- * get a list of courses
+ * Get the user's course historic and return a list of Course Object
  * @param {String} req.headers.access_token
+ * @param {Number} req.headers.size
  */
-// router.get('/get_custom_course', async function(req, res) {
-// });
+router.get('/get_user_historic', async function(req, res) {
 
+    let course_historic = [];
+    let course = undefined;
+    let size = undefined;
+    let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo course_historic").catch(error => error);
+  
+    if (!user) {
+        return res.status(400).send({status: "You are not connected."});
+    }
+    if (user.reason) {
+        return res.status(400).send({status: "Error in database transaction:\n", error: user});
+    }
+    if (!req.headers.size || req.headers.size <= 0) {
+        size = 10;
+    } else {
+        size = req.headers.size;
+    }
+    for (let index = 0; index < size && index < user.course_historic.length; index++) {
+        course = undefined;
+        course = await CourseModel.findOne({id: user.course_historic[index][0]}).catch(error => error);
+        console.log(course);
+        if (!course) {
+            console.log("Course not found.");
+            size += 1;
+        } else if (course.reason) {
+            return res.status(400).send({status: "Error in database transaction:\n", error: course});
+        } else {
+            course_historic.push(course)
+        }
+    }
+    return res.status(200).send({status: "Course historic sent." , course_historic});
+});
+  
 
 // GET_COURSES_BY_ID
 /**
@@ -193,6 +232,7 @@ router.get('/get_courses_by_id', async function(req, res) {
     }
 
     let given_list = req.headers.courses_id_list.split(',');
+    console.log("given list = ", given_list);
     let courses_list = await CourseModel.find({id: {$in: given_list}}).catch(error => error);
     if (courses_list.reason) {
         return res.status(400).send({status: "Error in the parameters for database transaction.", courses_list});

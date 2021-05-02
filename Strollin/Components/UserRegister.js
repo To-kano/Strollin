@@ -151,7 +151,7 @@ export function UserRegister(props) {
           style={styles.button_logIn}
           onPress={() => {
             if (userPassword === userConfirmPassWord) {
-              registerUser(props, pseudo, userPassword, userEmail, setMessage, setModalVisible);
+              registerUser(props, pseudo, userPassword, userEmail, setMessage, setModalVisible, false);
             }
           }}
         >
@@ -159,7 +159,6 @@ export function UserRegister(props) {
             {I18n.t('UserRegister.SIGNUP')}
           </Text>
         </TouchableOpacity>
-        <Text style={styles.text_or}>{I18n.t('UserRegister.OR')}</Text>
         <View style={styles.view_facebook}>
           <LoginButton
             style={styles.button_facebook}
@@ -178,6 +177,18 @@ export function UserRegister(props) {
             }}
             onLogoutFinished={() => setUserInfo({})}
           />
+        </View>
+        <View style={styles.view_bottomButton}>
+          <TouchableOpacity
+            style={styles.button_logIn}
+            onPress={() => {
+              props.navigation.navigate('PartnerRegister');
+            }}
+          >
+            <Text style={styles.text_logIn}>
+              {I18n.t('UserRegister.PartnerPage')}
+            </Text>
+          </TouchableOpacity>
         </View>
       </View>
     </View>

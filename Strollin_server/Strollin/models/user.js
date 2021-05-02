@@ -9,6 +9,10 @@ var UserModelSchema = new Schema({
         type: Number,
         required: true,
     },
+    id_image_profile: {
+        type: Number,
+        default: 0,
+    },
     mail: {                 // Adresse mail pour login et communication
         type: String,
         required: true,
@@ -58,7 +62,7 @@ var UserModelSchema = new Schema({
         default: [],
     },
     course_historic: {             // Historique de parcours (historique de lieu ?)
-        type: [[String, Date]],
+        type: [[String, String]],
         default: [],
     },
     socket_id: {             // ID du socket IO en cours d'utilisation, vide lorsque l'utilisateur se déconnecte

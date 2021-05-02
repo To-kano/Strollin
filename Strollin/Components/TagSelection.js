@@ -1,13 +1,53 @@
-import React , { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { connect } from 'react-redux';
 import {
-  StyleSheet, Text, View, FlatList, TouchableOpacity, Image,
+  StyleSheet, Text, View, FlatList, TouchableOpacity, Image, TextInput,
 } from 'react-native';
-
+import { DrawerActions } from '@react-navigation/native';
+import { getTimeZone } from 'react-native-localize';
 import I18n from '../Translation/configureTrans';
 import Store from '../Store/configureStore';
 import { IP_SERVER, PORT_SERVER } from '../env/Environement';
+
+export function Header({ navigation, defaultState = false }) {
+  const [pressed, setpressed] = useState(defaultState);
+
+  if (pressed === false) {
+    return (
+      <View style={styles.view_header}>
+        <TouchableOpacity
+          onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
+          // onPress={() => navigation.navigate('Menu')}
+        >
+          <Image style={styles.img_header} source={require('../images/icons/black/menu.png')} />
+        </TouchableOpacity>
+        <Text style={styles.text_header}>
+          {I18n.t('Header.tags')}
+        </Text>
+        <TouchableOpacity
+          onPress={() => { setpressed(!pressed); }}
+        >
+          <Image style={styles.img_header} source={require('../images/icons/black/search.png')} />
+        </TouchableOpacity>
+      </View>
+    );
+  }
+  return (
+    <View style={styles.view_header}>
+      <TextInput
+        style={styles.textInput_header}
+        placeholder={I18n.t('Header.search_tag')}
+      />
+      <TouchableOpacity
+        // onPress={setSortedTendanceData}
+        onPress={() => { setpressed(!pressed); }}
+      >
+        <Image style={styles.img_header} source={require('../images/icons/black/search.png')} />
+      </TouchableOpacity>
+    </View>
+  );
+}
 
 export function Tag({ name, chosen, defaultState = false }) {
   const [pressed, setpressed] = useState(defaultState);
@@ -17,26 +57,26 @@ export function Tag({ name, chosen, defaultState = false }) {
     const store = Store.getState();
     const access_Token = store.profil.access_token;
 
-    var list = [body]
-    const test = JSON.stringify({tags_list: list})
+    const list = [body];
+    const test = JSON.stringify({ tags_list: list });
 
     await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/add_tag`, {
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      access_Token
-    },
-    body: test,
-    method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        access_Token
+      },
+      body: test,
+      method: 'POST',
     })
-    .then(res => res.json())
-    .then(json => {
-    });
+      .then((res) => res.json())
+      .then((json) => {
+      });
   }
 
   useEffect(() => {
-    console.log("hola");
-        setpressed(chosen);
+    console.log('hola');
+    setpressed(chosen);
   }, []);
 
   return (
@@ -45,8 +85,7 @@ export function Tag({ name, chosen, defaultState = false }) {
       <TouchableOpacity
         style={styles.view_tagOff}
         onPress={() => {
-          console.log("pressed");
-          postTags(name)
+          postTags(name);
           setpressed(!pressed);
         }}
       >
@@ -57,11 +96,11 @@ export function Tag({ name, chosen, defaultState = false }) {
       <TouchableOpacity
         style={styles.view_tagOn}
         onPress={() => {
-          console.log("unpressed");
+          console.log('unpressed');
           setpressed(!pressed);
-         }}
+        }}
       >
-        <Image style={styles.img_tagOn} source={require('../images/icons/white/checked.png')}/>
+        <Image style={styles.img_tagOn} source={require('../images/icons/white/checked.png')} />
         <Text style={styles.text_tagOn}>{name}</Text>
       </TouchableOpacity>
       )}
@@ -70,7 +109,6 @@ export function Tag({ name, chosen, defaultState = false }) {
 }
 
 export function TagSelection({ navigation, profil }) {
-
   const [args, setArgs] = useState(true);
   const [Profargs, setProfArgs] = useState(true);
   const [array, setArray] = useState(true);
@@ -79,87 +117,78 @@ export function TagSelection({ navigation, profil }) {
   const access_Token = store.profil.access_token;
 
   async function buildArray(List, UserList) {
-    var arr = [];
-    var flag = false;
+    const arr = [];
+    let flag = false;
 
-    console.log("hello");
-    for (var i = 0; i < List.length; i++) {
-      for (var j = 0; j < UserList.length; j++) {
+    console.log('hello');
+    for (let i = 0; i < List.length; i++) {
+      for (let j = 0; j < UserList.length; j++) {
         if (UserList[j] == List[i].name) {
-          console.log("hellot: ", UserList[j])
-          arr.push({name: UserList[j], _id: List[i]._id, pressed: true})
+          console.log('hellot: ', UserList[j]);
+          arr.push({ name: UserList[j], _id: List[i]._id, pressed: true });
           flag = true;
           break;
         }
       }
-      if (flag == false)
-        arr.push({name: List[i].name, _id: List[i]._id, pressed: false})
+      if (flag == false) arr.push({ name: List[i].name, _id: List[i]._id, pressed: false });
       flag = false;
     }
-    console.log("array: ", arr);
+    console.log('array: ', arr);
     setArray(arr);
   }
 
   async function getUserTags(List) {
     await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/get_own_profile`, {
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      access_Token,
-    },
-    method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        access_Token,
+      },
+      method: 'GET',
     })
-    .then(res => res.json())
-    .then(json => {
-      console.log("########", json.profile.tags_list);
-      setProfArgs(json.profile.tags_list)
-      buildArray(List, json.profile.tags_list);
-    });
+      .then((res) => res.json())
+      .then((json) => {
+        console.log('########', json.profile.tags_list);
+        setProfArgs(json.profile.tags_list);
+        buildArray(List, json.profile.tags_list);
+      });
   }
 
   async function getThings() {
     await fetch(`http://${IP_SERVER}:${PORT_SERVER}/tag/get_tag`, {
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      access_Token,
-    },
-    method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        access_Token,
+      },
+      method: 'GET',
     })
-    .then(res => res.json())
-    .then(json => {
-      console.log("yooooo", json.tags_list);
-      setArgs(json.tags_list)
-      getUserTags(json.tags_list);
-    });
+      .then((res) => res.json())
+      .then((json) => {
+        console.log('yooooo', json.tags_list);
+        setArgs(json.tags_list);
+        getUserTags(json.tags_list);
+      });
   }
 
   useEffect(() => {
-        getThings();
-        //getUserTags();
+    getThings();
+    // getUserTags();
   }, []);
 
   return (
     <View style={styles.view_back}>
-      <View style={styles.view_header}>
-        <TouchableOpacity onPress={() => navigation.navigate('Menu')}>
-          <Image style={styles.img_header} source={require('../images/icons/black/menu.png')}/>
-        </TouchableOpacity>
-        <Text style={styles.text_header}>Tags</Text>
-        <TouchableOpacity>
-          <Image style={styles.img_header} source={require('../images/icons/black/search.png')}/>
-        </TouchableOpacity>
-      </View>
+      <Header navigation={navigation} />
       <View style={styles.viex_list}>
         <Text style={styles.text_field}>
-          Selectionnez vos Tags
+          {I18n.t('Tags.select_our_tags')}
           <Text style={styles.text_star}> *</Text>
         </Text>
         <FlatList
           data={array}
           keyExtractor={(item) => item._id}
           renderItem={({ item }) => (
-            <Tag name={item.name} chosen={item.pressed}/>
+            <Tag name={item.name} chosen={item.pressed} />
           )}
         />
       </View>
@@ -169,7 +198,9 @@ export function TagSelection({ navigation, profil }) {
           navigation.navigate('Profile');
         }}
       >
-        <Text style={styles.text_button}>Confirm my tags</Text>
+        <Text style={styles.text_button}>
+          {I18n.t('Tags.confirm_my_tags')}
+        </Text>
       </TouchableOpacity>
     </View>
     // <View style={styles.back}>
@@ -239,6 +270,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 10,
+  },
+  textInput_header: {
+    height: 40,
+    width: '85%',
+    borderRadius: 21,
+    marginRight: 12.5,
+    paddingLeft: 12.5,
+    backgroundColor: '#FFFFFF',
   },
   img_header: {
     width: 34,

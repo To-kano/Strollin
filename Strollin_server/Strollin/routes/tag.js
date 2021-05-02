@@ -114,6 +114,5 @@ router.get('/get_tag_by_id', async function(req, res) {
         return res.status(400).send({status: "Tag(s) not found.", error: tags_list});
     }
 });
-  
 
 module.exports = router;

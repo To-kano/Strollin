@@ -36,7 +36,7 @@ function profileReducer(state = initialState, action) {
         ...state,
         access_token: action.value
       };
-       //console.log("profile reducer connection", nextState);
+      //console.log("profile reducer connection", nextState);
       return nextState;
 
     case 'DECONNECTION':
@@ -48,7 +48,7 @@ function profileReducer(state = initialState, action) {
         ...state,
         ...action.value
       };
-       //console.log("profile reducer set user", nextState);
+      //console.log("profile reducer set user", nextState);
       //storeProfile(nextState);
       return nextState;
 
@@ -66,18 +66,24 @@ function profileReducer(state = initialState, action) {
 
       nextState[action.value.id] = action.value;
       return nextState;
+    case 'SET_IMAGE_PROFILE':
+      nextState = {
+        ...state,
+        id_image_profile : action.value
+      };
+      return nextState;
     case 'ADD_FRIEND_TO_PSEUDO_LIST':
       nextState = {
         ...state,
       };
       nextState.friends_pseudo_list[action.value.id] = action.value.pseudo;
-    return nextState;
+      return nextState;
     case 'ADD_FRIEND_TO_PSEUDO_LIST_REVERSE':
       nextState = {
         ...state,
       };
       nextState.friends_pseudo_list[action.value.pseudo] = action.value.id;
-    return nextState;
+      return nextState;
 
     case 'SET_FRIEND_INIT':
       nextState = {
