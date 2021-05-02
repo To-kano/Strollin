@@ -340,6 +340,13 @@ The object Location represents the locations used in courses. It is also used fo
 | Get the location of the partner. | access_token: String | | location: LocationObject |
 
 
+- GET location: `GET /location/get_partner_location`
+
+| Description | Headers | Body | Return |
+|-|-|-|-|
+| Get the location of the partner. | access_token: String | | LocationObject |
+
+
 - GET get location by ID: `GET /location/get_location_by_id`
 
 | Description | Headers | Body | Return |
@@ -468,6 +475,13 @@ The object User represents the users of the application Strollin and the partner
 | Description | Headers | Body | Return |
 |-|-|-|-|
 | Check and set to true the variable "verify". | id: String | | None |
+
+
+- UPDATE user's information: `POST /users/edit_profile`
+
+| Description | Headers | Body | Return |
+|-|-|-|-|
+| Edit user's information. | access_token: String | password: String (optional)<br>pseudo: String (optional)<br>first_name: String (optional)<br>last_name: String (optional) | |
 
 
 - UPDATE user's information: `POST /users/edit_profile`

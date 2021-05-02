@@ -92,7 +92,7 @@ export function UserRegister(props) {
       <View style={styles.view_field}>
         <Popup message={message} modalVisible={modalVisible} setModalVisible={setModalVisible} />
         <Text style={styles.text_field}>
-          {"Company Name"}
+          {I18n.t('UserRegister.companyName')}
           <Text style={styles.text_star}> *</Text>
         </Text>
         <TextInput

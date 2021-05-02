@@ -5,6 +5,9 @@ const {
     ImageModel
 } = require("../models/image")
 
+const {
+  UserModel
+} = require("../models/user")
 
 /* GET home page. */
 router.get('/id', async function (req, res, next) {
@@ -15,7 +18,7 @@ router.get('/id', async function (req, res, next) {
 
     if (image) {
 
-        //console.log("image get: ", image);
+        console.log("image get: ", image);
 
         res.status(200).json({
             image: image,

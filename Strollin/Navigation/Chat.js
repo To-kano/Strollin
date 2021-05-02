@@ -28,6 +28,7 @@ import CourseEvaluation from '../Components/CourseEvaluation';
 import CourseSettings from '../Components/CourseSettings';
 import PartenaireScreen from '../Components/PartenairePage';
 import SettingPartenaire from '../Components/SettingPartenaire';
+import SendCourseScreen from '../Components/reactChatScreen/SendCourseScreen';
 
 
 const Stack = createStackNavigator();
@@ -39,7 +40,7 @@ function Trip() {
             screenOptions={{
             headerShown: false,
             }}
-            
+
         >
             <Stack.Screen
                   name="MenuChat"
@@ -52,6 +53,10 @@ function Trip() {
             <Stack.Screen
                   name="NewConversation"
                   component={NewConversation}
+            />
+            <Stack.Screen
+                  name="SendCourseScreen"
+                  component={SendCourseScreen}
             />
         </Stack.Navigator>
     );

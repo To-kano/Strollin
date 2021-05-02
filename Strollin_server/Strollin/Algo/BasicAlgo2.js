@@ -147,7 +147,7 @@ async function getTags(time, budget, tags, coordinate) {
   let tagslist = []
   let test = []
   let tagsMod = []
-  let update = {}
+
   let tmpTagDisp = {}
   let tagslistarray = []
   let _id = 0
@@ -197,8 +197,12 @@ async function getTags(time, budget, tags, coordinate) {
   return promise1;
 }
 
-async function PopUpAlgo(course) {
+async function PopUpAlgo(course, coordinate, tags) {
     let location = LocationModel;
+    let update = {}
+    let query = {};
+    let true_list = []
+    let tagsMod = []
 
     //Pop Up ALgo
     for (var i = 0; i < course.length; i++) {
@@ -218,7 +222,43 @@ async function PopUpAlgo(course) {
           }
       })
     }
-    pop.data.Popup(value2, true_list, LocationModel)
+    console.log("update: ", update, "tagslistarray: ", tagslistarray);
+
+    locations_list = await LocationModel.find(query)
+    for (var i = 0; i < locations_list.length; i++) {
+      tagsMod = []
+      tagslist = []
+      for (var j = 0; j < locations_list[i].tags_list.length; j++) {
+        test = []
+        tagsMod[j] = locations_list[i].tags_list[j]._id
+        if (locations_list[i].tags_list[j].disp) {
+          test.push(locations_list[i].tags_list[j]._id)
+          test.push(locations_list[i].tags_list[j].disp)
+        } else {
+          test.push(locations_list[i].tags_list[j]._id)
+          test.push(0)
+        }
+        tagslist.push(test)
+      }
+      true_list.push({
+        Tags: tagsMod,
+        Pos: [locations_list[i].latitude, locations_list[i].longitude],
+        Name: locations_list[i].name,
+        Dist: 0,
+        Price: Number(locations_list[i].price_range[0]),
+        PopDisp: Number(locations_list[i].pop_disp),
+        PopAg: Number(locations_list[i].pop_ag),
+        AlgDisp: Number(locations_list[i].alg_disp),
+        AlgAg: Number(locations_list[i].alg_ag),
+        TagsDisp: tagslist,
+        Desc: locations_list[i].description,
+        Id: locations_list[i].id,
+        Owner: locations_list[i].owner_pseudo,
+        Time: Number(locations_list[i].average_time),
+        City: locations_list[i].city
+      })
+    }
+    pop.data.Popup(course, true_list, LocationModel, tags, coordinate)
 }
 
 async function checkPlace(location, list) {
@@ -340,7 +380,7 @@ methods.test = function(time, budget, tags, coordinate) {
 
 methods.pop = function(coordinate, tags, course) {
   console.log("------------------------------------------------------------------");
-  const promise1 = PopUpAlgo(course)
+  const promise1 = PopUpAlgo(course, coordinate, tags)
   return promise1;
   /*promise1.then((value) => {
     console.log("VALEUUUUUUUUUUUUUUR: ", value);

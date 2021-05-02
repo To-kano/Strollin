@@ -62,12 +62,13 @@ router.get('/generate_course', async function(req, res) {
  *
  * @param {CourseObject} req.body.course
  */
-router.get('/generate_popup', async function(req, res) {
+router.post('/generate_popup', async function(req, res) {
 
     let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo tags_list").catch(error => error);
 
     let popup = undefined;
 
+    console.log("heyyyyy: ", req.body.course, " : ", req.headers.coordinate);
     if (!user) {
         return res.status(400).send({status: "You are not connected."});
     }
@@ -80,8 +81,7 @@ router.get('/generate_popup', async function(req, res) {
     }
 
     // ACTION ICI
-    console.log("course: ", req.headers.course[0]);
-    const promise = algo.data.pop(req.headers.coordinate, user.tags_list, req.headers.course);
+    const promise = algo.data.pop(req.headers.coordinate, user.tags_list, req.body.course);
     promise.then((value) => {
     })
     return res.status(200).send({status: "Result of the pop-up generator.", popup});
