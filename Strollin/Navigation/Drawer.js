@@ -60,11 +60,11 @@ function MyDrawer() {
       <Drawer.Screen name="Profile" component={Profile} />
       <Drawer.Screen name="Partenaire" component={PartenaireScreen} />
       <Drawer.Screen name="Settings" component={SettingPartenaire} />
-      {/*<Drawer.Screen name="Personal_trip" component={Personal_trip} />
+      <Drawer.Screen name="Personal_trip" component={Personal_trip} />
       <Drawer.Screen
             name="TripNavigation"
             component={TripNavigation}
-      />*/}
+      />
     </Drawer.Navigator>
   );
 }
