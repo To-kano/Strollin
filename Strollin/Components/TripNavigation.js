@@ -43,8 +43,10 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
   //    AppState.removeEventListener('change', handleAppStateChange);
   //  };
   //}, []);
+  console.log("\n\n", locations)
 
   useEffect(() => {
+    console.log("\n\n", locations)
     setTime();
   }, []);
 

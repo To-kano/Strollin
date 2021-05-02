@@ -40,7 +40,7 @@ function Trip() {
             screenOptions={{
             headerShown: false,
             }}
-            
+
         >
             <Stack.Screen
                   name="MenuChat"

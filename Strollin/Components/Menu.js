@@ -93,13 +93,13 @@ function Menu(props) {
             <Image style={styles.img_navigationIn} source={require('../images/icons/black/settings.png')} />
             <Text style={styles.text_navigationIn}>{props.state.routeNames[7]}</Text>
           </TouchableOpacity>
-          <TouchableOpacity
+          {/*<TouchableOpacity
             onPress={() => props.navigation.navigate('Personal_trip')}
             style={[styles.view_navigationIn, props.name == 'Personal_trip' ? styles.current_page : {}]}
           >
             <Image style={styles.img_navigationIn} source={require('../images/icons/black/next_trip.png')} />
             <Text style={styles.text_navigationIn}>Personal_trip</Text>
-          </TouchableOpacity>
+          </TouchableOpacity>*/}
         </View>
         <TouchableOpacity
           onPress={() => props.navigation.navigate('userLogin')}

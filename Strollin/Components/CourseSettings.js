@@ -101,7 +101,6 @@ async function test(pos, budget, hours, minutes, tags, props) {
     console.error('error :', error);
   });
   //console.log("test success");
-  //props.navigation.navigate("TripSuggestion");
 }
 
 function Back(props) {
