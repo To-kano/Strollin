@@ -20,14 +20,6 @@ function randPic() {
   return (require('../ressources/street1.jpg'));
 }
 
-function searchUser(locations_list, setUser, props) {
-  let location = locations_list.find((location) => {
-    console.log("ok", location.owner, "      ", props.profil.id)
-    return location.owner.id == props.profil.id
-  })
-  setUser(location)
-}
-
 const initialList = [
   {
     id: 1,
@@ -62,16 +54,19 @@ function PartenaireScreen(props) {
 
   useEffect(() => {
     if (!i) {
-      const url = `http://${IP_SERVER}:${PORT_SERVER}/location/get_locations`
+      const url = `http://${IP_SERVER}:${PORT_SERVER}/location/get_partner_location`
       fetch(url, {
         headers : {
-          acess_token: props.profil.access_token,
+          access_token: props.profil.access_token,
         },
         method: 'GET',
       })
         .then((response) => response.json())
         .then((answer) => {
-          searchUser(answer.locations_list, setUser, props)
+          console.log("answer.location_list", answer);
+          if (answer.location) {
+            setUser(answer.location);
+          }
         })
         .catch((error) => {
           console.error('error :', error);
