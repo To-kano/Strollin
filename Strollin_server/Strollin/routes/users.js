@@ -254,7 +254,7 @@ router.post('/edit_profile', async function (req, res) {
 // });
 
 
-// ADD_FRIEND (PROVISOIRE)
+// ADD_FRIEND (BETA VERSION)
 /**
  * Add friend by mail.
  * @param {String} req.headers.access_token
