@@ -181,8 +181,11 @@ export function TripSuggestion(props) {
         Tts.speak(course.name);
       }
     }
-
-    if (course && course.locations_list) {
+    console.log("course in trip = ", course);
+    if (course && course["converted"]) {
+      setLocations(course.locations_list);
+    } else if (course && course.locations_list) {
+      console.log("entered in getLocation");
       getLocations();
     }
 
@@ -199,7 +202,7 @@ export function TripSuggestion(props) {
   return (
     <View style={styles.view_back}>
       <View style={styles.view_header}>
-        <TouchableOpacity onPress={() => props.navigation.navigate('Menu')}>
+        <TouchableOpacity onPress={() => props.navigation.dispatch(DrawerActions.openDrawer())}>
           <Image style={styles.img_header} source={require('../images/icons/black/menu.png')}/>
         </TouchableOpacity>
         <Text style={styles.text_header}>New Trip</Text>

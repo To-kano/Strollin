@@ -118,6 +118,8 @@ async function setTendance(props, access_token) {
       .then(async function (answer) {
         const action = { type: "SET_LOCATION_LIST", value: answer["locations_list"], index: i }
         props.dispatch(action);
+        const action2 = { type: "SET_CONVERTED_LOCATION", index: i }
+        props.dispatch(action2);
       })
       .catch((error) => {
         console.error('error :', error);

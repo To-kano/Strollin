@@ -171,6 +171,7 @@ export default {
 
   Header: {
     search_tag: 'Search a Tag',
+    friend_list: "Friend List",
     add_friend: 'Add Friend',
     partner: 'Partner',
     profile: 'Profile',
@@ -183,6 +184,7 @@ export default {
     friends: 'Friends',
     chats: 'Chats',
     rating: 'Rating',
+    comment: 'Comment',
   }
 };
 

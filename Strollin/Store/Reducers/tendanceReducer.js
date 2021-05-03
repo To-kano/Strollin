@@ -148,7 +148,7 @@ const EXEMPLE_after_treatment = {
 const initialState = {
   tendanceList: [],//EXEMPLE_after_treatment["tendanceList"],
   sortedTendanceList: [],
-  currentCommentsList: []
+  selectedTendanceCourse: []
 };
 
 function tendanceReducer(state = initialState, action) {
@@ -174,17 +174,23 @@ function tendanceReducer(state = initialState, action) {
       };
       nextState.tendanceList[action.index]["locations_list"] = action.value
       return nextState;
+    case 'SET_CONVERTED_LOCATION':
+      nextState = {
+        ...state,        
+      };
+      nextState.tendanceList[action.index]["converted"] = true;
+      return nextState;
     case 'SET_COMMENT_LIST':
       nextState = {
         ...state,
       };
-      nextState.tendanceList[action.index]["comments_list"] = action.value
+      nextState.tendanceList[action.index]["comments_list"] = action.value;
       return nextState;
     case 'SET_COMMENTS_DISPLAY':
       nextState = {
         ...state,
       };
-      nextState.currentCommentsList = action.value
+      nextState.selectedTendanceCourse = action.value
       return nextState;
     default:
       return state;

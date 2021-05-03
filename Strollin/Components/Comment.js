@@ -7,13 +7,12 @@ function Comment(props) {
   // //console.log('props = ', props);
   return (
     <View style={{
-      justifyContent: 'space-around', flex: 1, marginTop: 20, marginHorizontal: '10%', backgroundColor: 'rgba(255,255,255, 0.9)', borderRadius: 20, width: '80%'
+      justifyContent: 'space-around', flex: 1, marginTop: 20, marginHorizontal: '10%', backgroundColor: 'rgba(255,255,255, 0.9)', borderRadius: 20, width: 300, height: 200
     }}
     >
-      <Text style={[{ fontSize: 35 }]}>{props.id}</Text>
-      <Text />
-      <Text style={[{ fontSize: 25 }]}>{props.comment}</Text>
-      <Text style={[{ fontSize: 25 }]}>
+      <Text style={[{ fontSize: 35, marginHorizontal: '5%' }]}>{props.id}</Text>
+      <Text style={[{ fontSize: 25, marginHorizontal: '5%' }]}>{props.comment}</Text>
+      <Text style={[{ fontSize: 25, marginHorizontal: '5%' }]}>
         Note:
         {' '}
         {props.note}
@@ -50,6 +49,12 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     textAlign: 'left',
     width: '80%'
-  }
+  },
+  view_box: {
+    flex: 1,
+    backgroundColor: '#000000',
+    borderRadius: 12,
+    marginBottom: 30,
+  },
 
 });

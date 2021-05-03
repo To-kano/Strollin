@@ -229,5 +229,6 @@ export default {
     friends: 'Amis',
     chats: 'Messages',
     rating: 'Notation',
+    comment: 'Commentaire',
   }
 };

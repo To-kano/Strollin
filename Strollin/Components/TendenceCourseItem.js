@@ -7,9 +7,7 @@ import { connect } from 'react-redux';
 import Store from '../Store/configureStore';
 
 function GotoComment(props) {
-  console.log('props.data comment : ', props.data);
   // props.navigation.setParams({ data: props.data });
-  const store = Store.getState();
   const action = {type: 'SET_COMMENTS_DISPLAY', value: props.data};
   props.dispatch(action);
   props.navigation.navigate('CommentScreen');
@@ -46,7 +44,6 @@ function TendenceCourseItem(props) {
             <Image style={styles.img_information} source={require('../images/icons/white/marker.png')}/>
             <FlatList
               data={props.data["locations_list"]}
-              horizontal={true}
               renderItem={({ item }) => (
                 <Location_List
                   {...props}
@@ -74,8 +71,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#000000',
     borderRadius: 12,
-    width: 330,
-    height: 235,
     marginBottom: 30,
   },
   img_boxBack: {
@@ -94,7 +89,6 @@ const styles = StyleSheet.create({
   },
   view_information: {
     flexDirection: 'row',
-    alignItems: 'center',
   },
   img_information: {
     width: 25,
