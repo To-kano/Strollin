@@ -174,49 +174,94 @@ router.post('/edit_profile', async function (req, res) {
 });
 
 
-// ADD_FRIEND_REQUEST
+// // ADD_FRIEND_REQUEST
+// /**
+//  * Register the current user into the other user's friend request list.
+//  * @param {String} req.headers.access_token
+//  * @param {ObjectID} req.body.friend (ID of the user you want to request)
+//  */
+// router.post('/add_friend_request', async function (req, res) {
+
+//   let user = await UserModel.findOne({ access_token: req.headers.access_token }, "-_id id pseudo friends_request friends_list").catch(error => error);
+
+//   if (!user) {
+//     return res.status(400).send({ status: "You are not connected." });
+//   }
+//   if (user.reason) {
+//     return res.status(400).send({ status: "Error in database transaction:\n", error: user });
+//   }
+
+//   let friend = await UserModel.findOne({ id: req.body.friend }, "-_id id pseudo friends_request friends_list").catch(error => error);
+//   if (!friend) {
+//     return res.status(400).send({ status: "The user does not exist." });
+//   } else if (friend.reason) {
+//     return res.status(400).send({ status: "Error in database transaction:\n", error: friend });
+//   } else if (friend.friends_request.includes(user.id) || friend.friends_list.includes(user.id) || user.friends_request.includes(friend.id) || user.friends_list.includes(friend.id)) {
+//     return res.status(400).send({ status: "The friend request exists already or you are already friends." });
+//   } else {
+//     let error = await UserModel.updateOne({ id: friend.id }, { $push: { friends_request: user.id } }).catch(error => error);
+//     if (error.errors) {
+//       return res.status(400).send({ status: "Error in database transaction:\n", error: error });
+//     }
+//     return res.status(200).send({ status: "Friend requested successfully." });
+//   }
+// });
+
+
+// // ADD_FRIEND
+// /**
+//  * Confirm a friend request and add in each other friend's list.
+//  * Remove the friend's request.
+//  * @param {String} req.headers.access_token
+//  * @param {ObjectID} req.body.friend (id from the user in request friend list)
+//  */
+// router.post('/add_friend', async function (req, res) {
+//   let user = await UserModel.findOne({ access_token: req.headers.access_token }, "-_id id pseudo friends_request friends_list").catch(error => error);
+
+//   if (!user) {
+//     return res.status(400).send({ status: "You are not connected." });
+//   }
+//   if (user.reason) {
+//     return res.status(400).send({ status: "Error in database transaction:\n", error: user });
+//   }
+
+//   let friend = await UserModel.findOne({ id: req.body.friend }, "-_id id pseudo friends_request friends_list").catch(error => error);
+//   if (!friend) {
+//     return res.status(400).send({ status: "The user does not exist." });
+//   } else if (friend.reason) {
+//     return res.status(400).send({ status: "Error in database transaction:\n", error: friend });
+//   } else if (friend.friends_list.includes(user.id) && user.friends_list.includes(friend.id)) {
+//     return res.status(400).send({ status: "You are already friends." });
+//   } else if (!user.friends_request.includes(friend.id)) {
+//     return res.status(400).send({ status: "The friend request does not exist." });
+//   } else {
+//     let error = await UserModel.updateOne({ id: friend.id }, { $push: { friends_list: user.id } }).catch(error => error);
+//     if (error.errors) {
+//       return res.status(400).send({ status: "Error in database transaction:\n", error: error });
+//     }
+
+//     error = await UserModel.updateOne({ id: user.id }, { $push: { friends_list: friend.id } }).catch(error => error);
+//     if (error.errors) {
+//       return res.status(400).send({ status: "Error in database transaction:\n", error: error });
+//     }
+
+//     error = await UserModel.updateOne({ id: user.id }, { $pull: { friends_request: friend.id } }).catch(error => error);
+//     if (error.errors) {
+//       return res.status(400).send({ status: "Error in database transaction:\n", error: error });
+//     }
+//     return res.status(200).send({ status: "Friend added successfully." });
+//   }
+// });
+
+
+// ADD_FRIEND (PROVISOIRE)
 /**
- * Register the current user into the other user's friend request list.
+ * Add friend by mail.
  * @param {String} req.headers.access_token
- * @param {ObjectID} req.body.friend (ID of the user you want to request)
- */
-router.post('/add_friend_request', async function (req, res) {
-
-  let user = await UserModel.findOne({ access_token: req.headers.access_token }, "-_id id pseudo friends_request friends_list").catch(error => error);
-
-  if (!user) {
-    return res.status(400).send({ status: "You are not connected." });
-  }
-  if (user.reason) {
-    return res.status(400).send({ status: "Error in database transaction:\n", error: user });
-  }
-
-  let friend = await UserModel.findOne({ id: req.body.friend }, "-_id id pseudo friends_request friends_list").catch(error => error);
-  if (!friend) {
-    return res.status(400).send({ status: "The user does not exist." });
-  } else if (friend.reason) {
-    return res.status(400).send({ status: "Error in database transaction:\n", error: friend });
-  } else if (friend.friends_request.includes(user.id) || friend.friends_list.includes(user.id) || user.friends_request.includes(friend.id) || user.friends_list.includes(friend.id)) {
-    return res.status(400).send({ status: "The friend request exists already or you are already friends." });
-  } else {
-    let error = await UserModel.updateOne({ id: friend.id }, { $push: { friends_request: user.id } }).catch(error => error);
-    if (error.errors) {
-      return res.status(400).send({ status: "Error in database transaction:\n", error: error });
-    }
-    return res.status(200).send({ status: "Friend requested successfully." });
-  }
-});
-
-
-// ADD_FRIEND
-/**
- * Confirm a friend request and add in each other friend's list.
- * Remove the friend's request.
- * @param {String} req.headers.access_token
- * @param {ObjectID} req.body.friend (id from the user in request friend list)
+ * @param {ObjectID} req.body.friend_mail
  */
 router.post('/add_friend', async function (req, res) {
-  let user = await UserModel.findOne({ access_token: req.headers.access_token }, "-_id id pseudo friends_request friends_list").catch(error => error);
+  let user = await UserModel.findOne({ access_token: req.headers.access_token }, "-_id id pseudo friends_list").catch(error => error);
 
   if (!user) {
     return res.status(400).send({ status: "You are not connected." });
@@ -225,15 +270,13 @@ router.post('/add_friend', async function (req, res) {
     return res.status(400).send({ status: "Error in database transaction:\n", error: user });
   }
 
-  let friend = await UserModel.findOne({ id: req.body.friend }, "-_id id pseudo friends_request friends_list").catch(error => error);
+  let friend = await UserModel.findOne({ mail: req.body.friend_mail }, "-_id id pseudo friends_list").catch(error => error);
   if (!friend) {
     return res.status(400).send({ status: "The user does not exist." });
   } else if (friend.reason) {
     return res.status(400).send({ status: "Error in database transaction:\n", error: friend });
-  } else if (friend.friends_list.includes(user.id) && user.friends_list.includes(friend.id)) {
+  } else if (friend.friends_list.includes(user.id) || user.friends_list.includes(friend.id)) {
     return res.status(400).send({ status: "You are already friends." });
-  } else if (!user.friends_request.includes(friend.id)) {
-    return res.status(400).send({ status: "The friend request does not exist." });
   } else {
     let error = await UserModel.updateOne({ id: friend.id }, { $push: { friends_list: user.id } }).catch(error => error);
     if (error.errors) {
@@ -244,21 +287,16 @@ router.post('/add_friend', async function (req, res) {
     if (error.errors) {
       return res.status(400).send({ status: "Error in database transaction:\n", error: error });
     }
-
-    error = await UserModel.updateOne({ id: user.id }, { $pull: { friends_request: friend.id } }).catch(error => error);
-    if (error.errors) {
-      return res.status(400).send({ status: "Error in database transaction:\n", error: error });
-    }
     return res.status(200).send({ status: "Friend added successfully." });
   }
 });
 
 
-//router.post('/add_image_profile', upload.single('uploaded_file'), function (req, res) {
-//  // req.file is the name of your file in the form above, here 'uploaded_file'
-//  // req.body will hold the text fields, if there were any
-//  console.log(req.file, req.body)
-//});
+router.post('/add_image_profile', upload.single('uploaded_file'), function (req, res) {
+ // req.file is the name of your file in the form above, here 'uploaded_file'
+ // req.body will hold the text fields, if there were any
+ console.log(req.file, req.body)
+});
 
 const multer = require('multer');
 

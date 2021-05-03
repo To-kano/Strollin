@@ -8,11 +8,11 @@ NOTE:
 
 - Where full URLs are provided in responses they will be rendered as if service is running on 'http://' + IP_SERVER + ':' + PORT_SERVER + '/'.
 
-- All request will return an object as :<br>{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;status: String<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;eventual return: Object<br>}
+- All request will return an object as :<br>{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;status: String<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;eventual return: Object (See in requests for details)<br>}
 
 - All documents in the database has a variable "id" (Some Exceptions). Do not use "_id" given by MongoDB.
 
-- The document show some type as "ObjectID" which represent the "id" of a model. (Example: `UserID` represent user.id)
+- This document show some type as "ObjectID" which represent the "id" of a model. (Example: `UserID` represent user.id)
 
 - In case of error during a request with the database transaction, the returned object will always contains a "status" and a "error" variable.
 
@@ -484,14 +484,8 @@ The object User represents the users of the application Strollin and the partner
 | Edit user's information. | access_token: String | password: String (optional)<br>pseudo: String (optional)<br>first_name: String (optional)<br>last_name: String (optional) | |
 
 
-- UPDATE user's information: `POST /users/edit_profile`
 
-| Description | Headers | Body | Return |
-|-|-|-|-|
-| Edit user's information. | access_token: String | password: String (optional)<br>pseudo: String (optional)<br>first_name: String (optional)<br>last_name: String (optional) | |
-
-
-- ADD a request friend: `POST /users/add_friend_request`
+<!-- - ADD a request friend: `POST /users/add_friend_request`
 
 | Description | Headers | Body | Return |
 |-|-|-|-|
@@ -502,7 +496,14 @@ The object User represents the users of the application Strollin and the partner
 
 | Description | Headers | Body | Return |
 |-|-|-|-|
-| Add to "friends_list" a user from the "friends_request". | access_token: String | friend: userID | None |
+| Add to "friends_list" a user from the "friends_request". | access_token: String | friend: userID | None | -->
+
+
+- ADD a friend: `POST /users/add_friend` (Beta Version)
+
+| Description | Headers | Body | Return |
+|-|-|-|-|
+| Add to "friends_list" a user by mail. | access_token: String | friend_mail: String | None |
 
 
 - ADD new tags in user's tags: `POST /users/add_tag`
@@ -576,7 +577,7 @@ The object User represents the users of the application Strollin and the partner
 GENERATOR RELATED:
 ==================
 
-Generator course is not a model but it is used for the algorithm of Strollin and interact with the database. The algorithm will return an object containing:
+Generator course is not a model but it is used for the algorithm of Strollin and interact with the database. The algorithm will return an array of object containing:
 
 - AlgAg: Number,
 - AlgDisp: Number,
