@@ -258,6 +258,7 @@ router.post('/edit_profile', async function (req, res) {
 /**
  * Add friend by mail.
  * @param {String} req.headers.access_token
+ * 
  * @param {ObjectID} req.body.friend_mail
  */
 router.post('/add_friend', async function (req, res) {
@@ -352,6 +353,7 @@ router.post('/set_image_profile', upload.array('image', 3), async (req, res) => 
 /**
  * Add tags in the current user's tag list
  * @param {String} req.headers.access_token
+ * 
  * @param {[String]} req.body.tags_list
  */
 router.post('/add_tag', async function (req, res) {
@@ -411,6 +413,42 @@ router.post('/add_historic', async function (req, res) {
     }
     return res.status(200).send({ status: "Historic added." });
   }
+});
+
+
+
+// REMOVE_FRIEND
+/**
+ * Delete an friend from friend_list.
+ * @param {String} req.headers.access_token
+ * 
+ * @param {String} req.body.friend_id
+ */
+router.post('/remove_friend', async function (req, res) {
+
+  let user = await UserModel.findOne({ access_token: req.headers.access_token}).catch(error => error);
+
+  if (!user) {
+    return res.status(400).send({ status: "You are not connected." });
+  }
+  if (user.reason) {
+    return res.status(400).send({ status: "Error in database transaction:\n", error: user });
+  }
+  let friend = await UserModel.findOne({ id: req.body.friend_id }, "-_id id pseudo friends_list").catch(error => error);
+  if (!friend) {
+    return res.status(400).send({ status: "The friend does not exist." });
+  } else if (friend.reason) {
+    return res.status(400).send({ status: "Error in database transaction:\n", error: friend });
+  }
+  let error = await UserModel.updateOne({ id: user.id }, { $pull: { friends_list: friend.id }}).catch(error => error);
+  if (error.errors) {
+    return res.status(400).send({ status: "Error in database transaction:\n", error: user });
+  }
+  error = await UserModel.updateOne({ id: friend.id }, { $pull: { friends_list: user.id }}).catch(error => error);
+  if (error.errors) {
+    return res.status(400).send({ status: "Error in database transaction:\n", error: user });
+  }
+  return res.status(200).send({ status: "Friend successfully removed." });
 });
 
 
@@ -584,6 +622,31 @@ router.get('/get_user_tags', async function (req, res) {
 });
 
 
+// GET_USERS
+/**
+ * Get the list of users
+ * @param {String} req.headers.access_token
+ */
+router.get('/get_users', async function(req, res) {
+
+  let users_list = undefined;
+  const projection = '-_id id mail creation_date pseudo partner first_name last_name tags_list friends_list';
+  let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo").catch(error => error);
+
+  if (!user) {
+      return res.status(400).send({status: "You are not connected."});
+  }
+  if (user.reason) {
+      return res.status(400).send({status: "Error in database transaction:\n", error: user});
+  }
+  users_list = await UserModel.find({}, projection).catch(error => error);
+  if (users_list.reason) {
+      return res.status(400).send({status: "Error in database transaction:\n", error: users_list});
+  }
+  return res.status(200).send({status: "List of users returned.", users_list});
+});
+
+
 // GET_USER_BY_ID
 /**
  * Get the user(s) by ID.
@@ -634,6 +697,7 @@ router.delete('/remove_account', async function (req, res) {
   }
   return res.status(200).send({ status: "Account successfully deleted." });
 });
+
 
 
 
