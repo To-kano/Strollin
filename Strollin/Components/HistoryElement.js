@@ -70,82 +70,140 @@ function ElementHistoryNav({ course, locations, defaultSate = false }) {
 
   if (showMap === false) {
     return (
-      <View style={{
-        margin: 1, flex: 0.9, alignItems: 'center', justifyContent: 'space-evenly'
-      }}
-      >
-        <View style={{ width: '100%', flexDirection: 'row', flex: 1 }}>
-          <View style={{ flex: 1, marginLeft: '5%', marginRight: '5%' }}>
-            <Button
-              id={"button map"}
-              title={I18n.t('HistoryElement.showMap')}
-              color="#89B3D9"
-              onPress={() => setShowMap(!showMap)}
-            />
-          </View>
-        </View>
-        <View style={{ width: '100%', flexDirection: 'row', flex: 6 }}>
-          <FlatList
-            data={locations}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item }) => (
-              <View style={{ margin: 10 }}>
-                <Text>
-                  {I18n.t('HistoryElement.step')}
-                </Text>
-                <Text>
-                  {I18n.t('HistoryElement.name')}
-                  {item.name}
-                </Text>
-                <Text>
-                  {I18n.t('HistoryElement.address')}
-                  {item.address + " " + item.city}
-                </Text>
-              </View>
-            )}
-          />
-        </View>
-        <View style={{ width: '100%', flexDirection: 'row', flex: 0.4 }}>
-          <View style={{ flex: 0.66, marginLeft: '2%', marginRight: '2%' }}>
-            <Button
-            id={"button share 1"}
-              onPress={() => {
-                const shareLinkContent = {
-                  contentType: 'link',
-                  contentUrl: 'https://www.google.com',
-                  quote: messagetext,
-                };
-                //ShareDialog.show(shareLinkContent);
-              }}
-              title={I18n.t('HistoryElement.PublishOnFacebook')}
-              color="#3b5998"
-              accessibilityLabel="Share"
-            />
-          </View>
-          <View style={{ flex: 0.33, marginLeft: '2%', marginRight: '2%' }}>
-            <Button
-              id={"button share 2"}
-              onPress={() => {
-                Share.share({
-                  message: messagetext,
-                  title: "Sortir avec Strollin'",
-                  url: 'https://www.google.com',
-                }, {
-                  // Android only:
-                  dialogTitle: 'Share Strollin travel',
-                  // iOS only:
-                  excludedActivityTypes: [
-                    'com.apple.UIKit.activity.PostToTwitter'
-                  ]
-                });
-              }}
-              title={I18n.t('HistoryElement.Share')}
-              color="#3b5998"
-              accessibilityLabel="Share"
-            />
-          </View>
-        </View>
+      <View style={styles.view_back}>
+        <FlatList
+          style={styles.view_list}
+          data={locations}
+          renderItem={({ item }) => (
+            <View style={styles.view_box}>
+              <ImageBackground
+                style={styles.img_boxBack}
+                imageStyle={styles.img_boxBack}
+                source={randPic()}
+              >
+                <View style={styles.view_boxIn}>
+                  <View style={styles.view_information}>
+                    <Image style={styles.img_information} source={require('../images/icons/white/marker.png')} />
+                    <Text style={styles.text_information}>{item.address}, {item.city}</Text>
+                  </View>
+                  <Text style={styles.text_name}>{item.name}</Text>
+                  <View style={styles.view_share}>
+                    <TouchableOpacity
+                      onPress={() => {
+                        Share.share({
+                          message: `Strollin' m'a proposé un trajet ! \nRejoignons nous a ${item.name} au ${item.address} !`,
+                          title: "Sortir avec Strollin'",
+                          url: 'https://www.google.com',
+                        }, {
+                        // Android only:
+                          dialogTitle: 'Share Strollin travel',
+                          // iOS only:
+                          excludedActivityTypes: [
+                            'com.apple.UIKit.activity.PostToTwitter'
+                          ]
+                        });
+                      }}
+                      accessibilityLabel="Share"
+                    >
+                      <Image style={styles.img_share} source={require('../images/icons/white/share.png')} />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => {
+                        const shareLinkContent = {
+                          contentType: 'link',
+                          contentUrl: 'https://www.google.com',
+                          quote: `Strollin' m'a proposé un trajet ! \nRejoignons nous a ${item.name} au ${item.address} !`,
+                        };
+                        ShareDialog.show(shareLinkContent);
+                      }}
+                      accessibilityLabel="Share"
+                    >
+                      <Image style={styles.img_share} source={require('../images/icons/white/facebook.png')} />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </ImageBackground>
+            </View>
+          )}
+        />
       </View>
+
+      // <View style={{
+      //   margin: 1, flex: 0.9, alignItems: 'center', justifyContent: 'space-evenly'
+      // }}
+      // >
+      //   <View style={{ width: '100%', flexDirection: 'row', flex: 1 }}>
+      //     <View style={{ flex: 1, marginLeft: '5%', marginRight: '5%' }}>
+      //       <Button
+      //         id={"button map"}
+      //         title={I18n.t('HistoryElement.showMap')}
+      //         color="#89B3D9"
+      //         onPress={() => setShowMap(!showMap)}
+      //       />
+      //     </View>
+      //   </View>
+      //   <View style={{ width: '100%', flexDirection: 'row', flex: 6 }}>
+      //     <FlatList
+      //       data={locations}
+      //       keyExtractor={(item) => item.id}
+      //       renderItem={({ item }) => (
+      //         <View style={{ margin: 10 }}>
+      //           <Text>
+      //             {I18n.t('HistoryElement.step')}
+      //           </Text>
+      //           <Text>
+      //             {I18n.t('HistoryElement.name')}
+      //             {item.name}
+      //           </Text>
+      //           <Text>
+      //             {I18n.t('HistoryElement.address')}
+      //             {item.address + " " + item.city}
+      //           </Text>
+      //         </View>
+      //       )}
+      //     />
+      //   </View>
+      //   <View style={{ width: '100%', flexDirection: 'row', flex: 0.4 }}>
+      //     <View style={{ flex: 0.66, marginLeft: '2%', marginRight: '2%' }}>
+      //       <Button
+      //       id={"button share 1"}
+      //         onPress={() => {
+      //           const shareLinkContent = {
+      //             contentType: 'link',
+      //             contentUrl: 'https://www.google.com',
+      //             quote: messagetext,
+      //           };
+      //           //ShareDialog.show(shareLinkContent);
+      //         }}
+      //         title={I18n.t('HistoryElement.PublishOnFacebook')}
+      //         color="#3b5998"
+      //         accessibilityLabel="Share"
+      //       />
+      //     </View>
+      //     <View style={{ flex: 0.33, marginLeft: '2%', marginRight: '2%' }}>
+      //       <Button
+      //         id={"button share 2"}
+      //         onPress={() => {
+      //           Share.share({
+      //             message: messagetext,
+      //             title: "Sortir avec Strollin'",
+      //             url: 'https://www.google.com',
+      //           }, {
+      //             // Android only:
+      //             dialogTitle: 'Share Strollin travel',
+      //             // iOS only:
+      //             excludedActivityTypes: [
+      //               'com.apple.UIKit.activity.PostToTwitter'
+      //             ]
+      //           });
+      //         }}
+      //         title={I18n.t('HistoryElement.Share')}
+      //         color="#3b5998"
+      //         accessibilityLabel="Share"
+      //       />
+      //     </View>
+      //   </View>
+      // </View>
 
     // <View style={{
     //   margin: 1, flex: 0.9, alignItems: 'center', justifyContent: 'space-evenly'
@@ -334,6 +392,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   text_information: {
+    textTransform: 'capitalize',
     color: '#FFFFFF',
     fontSize: 12,
     paddingRight: 50,
@@ -348,6 +407,7 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
   },
   text_name: {
+    textTransform: 'capitalize',
     fontSize: 20,
     letterSpacing: 2,
     fontWeight: 'bold',

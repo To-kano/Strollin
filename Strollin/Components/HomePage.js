@@ -81,6 +81,7 @@ export function Header({ props, defaultState = false }) {
 }
 
 export function HomePage(props) {
+  console.log('HomePage.js:84')
   return (
     <View style={styles.view_back}>
       <Header props={props} />
@@ -91,8 +92,8 @@ export function HomePage(props) {
           data={getData()}
           renderItem={({ item }) => (
             <Box
-              {...props}
               data={item}
+              {...props}
             />
           )}
           keyExtractor={(item) => item.name}

@@ -4,19 +4,19 @@ import { StyleSheet, Image, TouchableHighlight } from 'react-native';
 
 function ButtonSwitch({statue, iconOn, iconOff, onPressOn, onPressOff}) {
 
-    if (statue) {
-        return (
-          <TouchableHighlight onPress={onPressOn}>
-            <Image source={iconOn} style={styles.icon} />
-          </TouchableHighlight>
-        );
-    } else {
-        return (
-            <TouchableHighlight onPress={onPressOff}>
-              <Image source={iconOff} style={styles.icon} />
-            </TouchableHighlight>
-        );
-    }
+  if (statue) {
+    return (
+      <TouchableHighlight onPress={onPressOn}>
+        <Image source={iconOn} style={styles.icon} />
+      </TouchableHighlight>
+    );
+  } else {
+    return (
+        <TouchableHighlight onPress={onPressOff}>
+          <Image source={iconOff} style={styles.icon} />
+        </TouchableHighlight>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -24,8 +24,7 @@ const styles = StyleSheet.create({
     width: 35,
     height: 35,
     resizeMode: 'contain',
-    backgroundColor: 'white',
-    borderColor: 'gray'
+    backgroundColor: '#E1E2E7',
   },
 });
 

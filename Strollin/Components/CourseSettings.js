@@ -92,7 +92,7 @@ async function test(pos, budget, hours, minutes, tags, props) {
   .then(res => res.json())
   .then(json => {
     console.log("algo done:   ", json);
-    PopUpReq(pos, json.generated_course)
+    PopUpReq(pos, json.generated_course);
     props.navigation.navigate("TripSuggestion");
   });
   //console.log("test success");

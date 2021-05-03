@@ -165,111 +165,151 @@ export function TripSuggestion(props) {
   return (
     <View style={styles.view_back}>
       <View style={styles.view_header}>
-        <TouchableOpacity onPress={() => props.navigation.dispatch(DrawerActions.openDrawer())}>
+        <TouchableOpacity onPress={() => props.navigation.navigate('Menu')}>
           <Image style={styles.img_header} source={require('../images/icons/black/menu.png')}/>
         </TouchableOpacity>
-        <Text style={styles.text_header}>
-          {I18n.t('Header.new_trip')}
-          {'    '}
-        </Text>
-      </View>
-      <View style={styles.fill}>
-        <View style={{
-          justifyContent: 'space-around',
-          marginTop: 10,
-          paddingLeft: 5,
-          paddingBottom: 10,
-          backgroundColor: '#FFFFFF',
-          borderRadius: 5,
-          borderColor: '#BABABA',
-          borderWidth: 1,
-          width: '95%'
-        }}
-        >
-          <Text style={[{ fontSize: 20, opacity: 0.5, margin: 5 }]}>{I18n.t('TripSuggestion.headingTo')}</Text>
-          <Text style={[{
-            textAlign: 'center', fontSize: 22, fontWeight: 'bold', color: '#F07323'
-          }]}
-          >
-            {course ? course.name: ""}
-          </Text>
-        </View>
-        <View
-          style={{
-            flex: 3,
-            marginTop: 15,
-            justifyContent: 'space-around',
-            paddingLeft: 5,
-            backgroundColor: '#FFFFFF',
-            borderRadius: 5,
-            borderColor: '#BABABA',
-            borderWidth: 1,
-            width: '95%'
+        <Text style={styles.text_header}>New Trip</Text>
+        <ButtonSwitch
+          iconOn={require('../images/volume.png')}
+          iconOff={require('../images/no-sound.png')}
+          statue={props.profil.sound}
+          onPressOff={() => {
+            Tts.stop();
+            const action = { type: 'SET_SOUND', value: !props.profil.sound };
+            props.dispatch(action);
           }}
-        >
-          <ElementHistoryNav course={course} locations={locations}/>
-        </View>
-        <View style={{
-          flex: 0.4,
-          flexDirection: 'row',
-          justifyContent: 'space-around',
-          alignItems: 'center',
-          padding: 10,
-        }}
-        >
-          <View style={{ flex: 1, paddingTop: 10, marginRight: 10 }}>
-            <Button
-              title="Another One!"
-              color="#89B3D9"
-              onPress={() => {
-                Tts.stop();
-                getCustomCourse(props.profil.access_token, setCourse);
-                //setCourse(getNavigation());
-              }}
-            />
-          </View>
-          <View style={{ flex: 1, paddingTop: 10, marginRight: 10 }}>
-            <Button
-              title="Let's go!"
-              color="#F07323"
-              onPress={() => {
-                const action = { type: 'SET_WAYPOINTS', course: course, locations: locations };
-                props.dispatch(action);
-                props.navigation.navigate('TripNavigation');
-              }}
-            />
-            <ButtonSwitch
-              iconOn={require('../images/volume.png')}
-              iconOff={require('../images/no-sound.png')}
-              statue={props.profil.sound}
-              onPressOff={() => {
-                Tts.stop();
-                const action = { type: 'SET_SOUND', value: !props.profil.sound };
-                props.dispatch(action);
-              }}
-              onPressOn={() => {
-                Tts.stop();
-                const action = { type: 'SET_SOUND', value: !props.profil.sound };
-                props.dispatch(action);
-              }}
-
-            />
-          </View>
-        </View>
+          onPressOn={() => {
+            Tts.stop();
+            const action = { type: 'SET_SOUND', value: !props.profil.sound };
+            props.dispatch(action);
+          }}
+        />
+      </View>
+      <View style={styles.viex_list}>
+        <ElementHistoryNav course={course} locations={locations}/>
       </View>
       <TouchableOpacity
         style={styles.view_button}
         onPress={() => {
-          const action = { type: 'SET_WAYPOINTS', value: waypoints };
+          const action = { type: 'SET_WAYPOINTS', course: course, locations: locations };
           props.dispatch(action);
           props.navigation.navigate('TripNavigation');
+          // const action = { type: 'SET_WAYPOINTS', value: waypoints };
+          // props.dispatch(action);
+          // props.navigation.navigate('TripNavigation');
         }}
       >
-        <Text style={styles.text_button}>
-          {I18n.t('TripSuggestion.lets_go')}
-        </Text>
+        <Text style={styles.text_button}>Let's Go !</Text>
       </TouchableOpacity>
     </View>
+
+    // <View style={styles.view_back}>
+    //   <View style={styles.view_header}>
+    //     <TouchableOpacity onPress={() => props.navigation.dispatch(DrawerActions.openDrawer())}>
+    //       <Image style={styles.img_header} source={require('../images/icons/black/menu.png')}/>
+    //     </TouchableOpacity>
+    //     <Text style={styles.text_header}>
+    //       {I18n.t('Header.new_trip')}
+    //       {'    '}
+    //     </Text>
+    //   </View>
+    //   <View style={styles.fill}>
+    //     <View style={{
+    //       justifyContent: 'space-around',
+    //       marginTop: 10,
+    //       paddingLeft: 5,
+    //       paddingBottom: 10,
+    //       backgroundColor: '#FFFFFF',
+    //       borderRadius: 5,
+    //       borderColor: '#BABABA',
+    //       borderWidth: 1,
+    //       width: '95%'
+    //     }}
+    //     >
+    //       <Text style={[{ fontSize: 20, opacity: 0.5, margin: 5 }]}>{I18n.t('TripSuggestion.headingTo')}</Text>
+    //       <Text style={[{
+    //         textAlign: 'center', fontSize: 22, fontWeight: 'bold', color: '#F07323'
+    //       }]}
+    //       >
+    //         {course ? course.name: ""}
+    //       </Text>
+    //     </View>
+    //     <View
+    //       style={{
+    //         flex: 3,
+    //         marginTop: 15,
+    //         justifyContent: 'space-around',
+    //         paddingLeft: 5,
+    //         backgroundColor: '#FFFFFF',
+    //         borderRadius: 5,
+    //         borderColor: '#BABABA',
+    //         borderWidth: 1,
+    //         width: '95%'
+    //       }}
+    //     >
+    //       <ElementHistoryNav course={course} locations={locations}/>
+    //     </View>
+    //     <View style={{
+    //       flex: 0.4,
+    //       flexDirection: 'row',
+    //       justifyContent: 'space-around',
+    //       alignItems: 'center',
+    //       padding: 10,
+    //     }}
+    //     >
+    //       <View style={{ flex: 1, paddingTop: 10, marginRight: 10 }}>
+    //         <Button
+    //           title="Another One!"
+    //           color="#89B3D9"
+    //           onPress={() => {
+    //             Tts.stop();
+    //             getCustomCourse(props.profil.access_token, setCourse);
+    //             //setCourse(getNavigation());
+    //           }}
+    //         />
+    //       </View>
+    //       <View style={{ flex: 1, paddingTop: 10, marginRight: 10 }}>
+    //         <Button
+    //           title="Let's go!"
+    //           color="#F07323"
+    //           onPress={() => {
+    //             const action = { type: 'SET_WAYPOINTS', course: course, locations: locations };
+    //             props.dispatch(action);
+    //             props.navigation.navigate('TripNavigation');
+    //           }}
+    //         />
+    //         <ButtonSwitch
+    //           iconOn={require('../images/volume.png')}
+    //           iconOff={require('../images/no-sound.png')}
+    //           statue={props.profil.sound}
+    //           onPressOff={() => {
+    //             Tts.stop();
+    //             const action = { type: 'SET_SOUND', value: !props.profil.sound };
+    //             props.dispatch(action);
+    //           }}
+    //           onPressOn={() => {
+    //             Tts.stop();
+    //             const action = { type: 'SET_SOUND', value: !props.profil.sound };
+    //             props.dispatch(action);
+    //           }}
+
+    //         />
+    //       </View>
+    //     </View>
+    //   </View>
+    //   <TouchableOpacity
+    //     style={styles.view_button}
+    //     onPress={() => {
+    //       const action = { type: 'SET_WAYPOINTS', value: waypoints };
+    //       props.dispatch(action);
+    //       props.navigation.navigate('TripNavigation');
+    //     }}
+    //   >
+    //     <Text style={styles.text_button}>
+    //       {I18n.t('TripSuggestion.lets_go')}
+    //     </Text>
+    //   </TouchableOpacity>
+    // </View>
   );
 }
 
@@ -300,7 +340,8 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   text_header: {
-    width: '87.6%',
+    width: '77.8%',
+    // width: '87.6%',
     fontWeight: 'bold',
     fontSize: 28,
     letterSpacing: 2,
@@ -309,7 +350,7 @@ const styles = StyleSheet.create({
   },
   viex_list: {
     flex: 712,
-    backgroundColor: 'red'
+    width: '100%',
   },
   view_button: {
     flex: 50,
