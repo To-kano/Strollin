@@ -27,12 +27,12 @@ const getInfoFromToken = (token, setUserInfo, props, setMessage, setModalVisible
     { token, parameters: PROFILE_REQUEST_PARAMS },
     (error, result) => {
       if (error) {
-        // console.log(`login info has error: ${error}`);
+        console.log(`login info has error: ${error}`);
       } else {
         console.log("registered as : ", result.name, ' via facebook');
 
         setUserInfo(result);
-        registerUser(props, result.name, "Facebook1235", result.email, setMessage, setModalVisible);
+        registerUser(props, result.name, "Facebook1235", result.email, setMessage, setModalVisible, false);
       }
     },
   );
@@ -153,7 +153,7 @@ export function UserRegister(props) {
           style={styles.button_logIn}
           onPress={() => {
             if (userPassword === userConfirmPassWord) {
-              registerUser(props, pseudo, userPassword, userEmail, setMessage, setModalVisible);
+              registerUser(props, pseudo, userPassword, userEmail, setMessage, setModalVisible, false);
             }
           }}
         >
@@ -161,7 +161,6 @@ export function UserRegister(props) {
             {I18n.t('UserRegister.SIGNUP')}
           </Text>
         </TouchableOpacity>
-        <Text style={styles.text_or}>{I18n.t('UserRegister.OR')}</Text>
         <View style={styles.view_facebook}>
           <LoginButton
             style={styles.button_facebook}
@@ -180,6 +179,18 @@ export function UserRegister(props) {
             }}
             onLogoutFinished={() => setUserInfo({})}
           />
+        </View>
+        <View style={styles.view_bottomButton}>
+          <TouchableOpacity
+            style={styles.button_logIn}
+            onPress={() => {
+              props.navigation.navigate('PartnerRegister');
+            }}
+          >
+            <Text style={styles.text_logIn}>
+              {I18n.t('UserRegister.PartnerPage')}
+            </Text>
+          </TouchableOpacity>
         </View>
       </View>
     </View>

@@ -67,7 +67,7 @@ var LocationModelSchema = new Schema({
     },
     price_range: {
         type: [String, String, String],
-        default: ['0', '0', '0']
+        default: ['', '', '']
     },
     average_time: {
         type: String,

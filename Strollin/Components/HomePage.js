@@ -3,7 +3,7 @@ import {
   StyleSheet, Text, View, Image, TouchableOpacity, FlatList,
 } from 'react-native';
 import { connect } from 'react-redux';
-import Box from './box';
+import TendenceCourseItem from './TendenceCourseItem';
 import I18n from '../Translation/configureTrans';
 import SearchBar from './TendanceSearchBar';
 import Store from '../Store/configureStore';
@@ -81,7 +81,6 @@ export function Header({ props, defaultState = false }) {
 }
 
 export function HomePage(props) {
-  console.log('HomePage.js:84')
   return (
     <View style={styles.view_back}>
       <Header props={props} />
@@ -91,9 +90,10 @@ export function HomePage(props) {
           showsVerticalScrollIndicator={false}
           data={getData()}
           renderItem={({ item }) => (
-            <Box
-              data={item}
+            <TendenceCourseItem
               {...props}
+              data={item}
+              // {...props}
             />
           )}
           keyExtractor={(item) => item.name}
@@ -128,7 +128,7 @@ export function HomePage(props) {
               showsVerticalScrollIndicator={false}
               data={getData()}
               renderItem={({ item }) => (
-                <Box
+                <TendenceCourseItem
                   {...props}
                   data={item}
                 />

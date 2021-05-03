@@ -9,7 +9,7 @@ import AndroidPip from 'react-native-android-pip';
 import I18n from '../Translation/configureTrans';
 import Map from './map';
 import { addUserHistoric } from '../apiServer/user';
-
+import Store from '../Store/configureStore';
 import { PopUpForm } from './PopUpForm';
 
 export function TripNavigation({map, profil, dispatch, navigation}) {
@@ -43,8 +43,10 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
   //    AppState.removeEventListener('change', handleAppStateChange);
   //  };
   //}, []);
+  console.log("\n\n", locations)
 
   useEffect(() => {
+    console.log("\n\n", locations)
     setTime();
   }, []);
 
@@ -77,11 +79,18 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
         <Text style={styles.text_header}>   My Trip</Text>
         <TouchableOpacity
           onPress={async () => {
-            await setTime()
-            await addUserHistoric(profil.access_token, map.course.id);
-            const action = { type: 'ADD_HISTORY', courseID: map.course.id };
+            const store = Store.getState();
+            addUserHistoric(store.profil.access_token, store.course.currentCourse.id);
+            const action = { type: 'ADD_HISTORY', courseID: store.course.currentCourse.id };
             dispatch(action);
-            navigation.navigate('HomePage');
+            const action2 = { type: 'ADD_COURSE_OBJECT_HISTORIC', value: store.course.currentCourse };
+            dispatch(action2);
+            navigation.navigate('CourseEvaluation');
+            // await setTime()
+            // await addUserHistoric(profil.access_token, map.course.id);
+            // const action = { type: 'ADD_HISTORY', courseID: map.course.id };
+            // dispatch(action);
+            // navigation.navigate('HomePage');
             // await setTime();
             // const action = { type: 'ADD_HISTORIC', value: waypoints };
             // props.dispatch(action);

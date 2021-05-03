@@ -20,7 +20,7 @@ async function PopUpReq(pos, course) {
   console.log("token: ", access_Token);
   console.log("course: ", course);
   const coordinate = [];
-
+  const test = JSON.stringify({course: course})
   coordinate[0] = pos.latitude;
   coordinate[1] = pos.longitude;
 
@@ -29,10 +29,10 @@ async function PopUpReq(pos, course) {
     Accept: 'application/json',
     'Content-Type': 'application/json',
     access_Token,
-    course: course,
     coordinate: coordinate
   },
-  method: 'GET',
+  body: test,
+  method: 'POST',
   })
   .then(res => res.json())
   .then(json => {
@@ -93,10 +93,16 @@ async function test(pos, budget, hours, minutes, tags, props) {
   .then(json => {
     console.log("algo done:   ", json);
     PopUpReq(pos, json.generated_course);
+    const action = {
+      type: 'ADD_COURSE',
+      value: json.course
+    };
+    Store.dispatch(action);
     props.navigation.navigate("TripSuggestion");
+  }).catch((error) => {
+    console.error('error :', error);
   });
   //console.log("test success");
-  //props.navigation.navigate("TripSuggestion");
 }
 
 function Back(props) {

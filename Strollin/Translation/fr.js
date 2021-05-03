@@ -189,6 +189,8 @@ export default {
     OR: 'OU',
     SIGNIN: 'SE CONNECTER',
     SIGNUP: "S'INSCRIRE",
+    PartnerPage: "Devenir Partenaire",
+    companyName: "Nom d'entreprise"
   },
 
   Tags: {

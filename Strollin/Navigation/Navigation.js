@@ -103,13 +103,21 @@ function MyStack(props) {
             /> */}
           </>
         ) : (
-          <>
-            <Stack.Screen
-              name="drawer"
-              component={MyDrawer}
-            />
-          </>
-
+          props.profil.partner == true ? (
+            <>
+              <Stack.Screen
+                name="partner"
+                component={PartenaireScreen}
+              />
+            </>
+          ) : (
+            <>
+              <Stack.Screen
+                name="normal user"
+                component={MyDrawer}
+              />
+            </>
+          )
         )}
       </Stack.Navigator>
     </NavigationContainer>

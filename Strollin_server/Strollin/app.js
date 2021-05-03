@@ -16,6 +16,7 @@ var commentRouter = require('./routes/comment');
 var tagRouter = require('./routes/tag');
 var faqRouter = require('./routes/faq')
 var generatorRouter = require('./routes/generator');
+var imageRouter = require('./routes/image');
 
 //var algo = require('./Algo/BasicAlgo');
 var algo = require('./Algo/BasicAlgo2');
@@ -29,8 +30,8 @@ var app = express();
 // MongoDB //
 
 // var mongoDB = 'mongodb://didier:test@db:27017/Strollin'; //Version Authentification
-var mongoDB = 'mongodb://127.0.0.1:27017/Strollin';
-//var mongoDB = 'mongodb://db:27017/Strollin';
+//var mongoDB = 'mongodb://127.0.0.1:27017/Strollin';
+var mongoDB = 'mongodb://db:27017/Strollin';
 mongoose.connect(mongoDB, { useNewUrlParser: true });
 
 //Get the default connection
@@ -58,6 +59,73 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 // ROUTES //
+
+let stats = {
+  success: 0,
+  failure: 0,
+  unknown: 0,
+  total: 0,
+  users: 0,
+  conversation: 0,
+  message: 0,
+  location: 0,
+  course: 0,
+  comment: 0,
+  tag: 0,
+  faq: 0,
+  generator: 0,
+  other: 0,
+}
+
+setInterval(function() {
+  console.log("REQUESTS STATISTIC:\n \nRequests by route:\n\t- comment:\t" + stats.comment + "\n\t- conversation:\t" + stats.conversation + "\n\t- course:\t" + stats.course + "\n\t- faq:\t\t" + stats.faq + "\n\t- generator:\t" + stats.generator + "\n\t- location:\t" + stats.location + "\n\t- message:\t" + stats.message + "\n\t- tag:\t\t" + stats.tag + "\n\t- users:\t" + stats.users + "\n\t- other:\t" + stats.other + "\n \nRequest by answer:\n\t- Success:\t" + stats.success + "\n\t- Failure:\t" + stats.failure + "\n\t- Unknown:\t" + stats.unknown + "\n \nTotal Request:\t" + stats.total);
+}, (1000 * 60 * 60))
+
+app.use((req, res, next) => {
+  let model = req.originalUrl.split('/')[1];
+  switch (model) {
+    case "users":
+      stats.users += 1;
+      break;
+    case "conversation":
+      stats.conversation += 1;
+      break;
+    case "message":
+      stats.message += 1;
+      break;
+    case "location":
+      stats.location += 1;
+      break;
+    case "course":
+      stats.course += 1;
+      break;
+    case "comment":
+      stats.comment += 1;
+      break;
+    case "tag":
+      stats.tag += 1;
+      break;
+    case "faq":
+      stats.faq += 1;
+      break;
+    case "generator":
+      stats.generator += 1;
+      break;
+    default:
+      stats.other += 1;
+      break;
+  }
+  if (res.statusCode == 200) {
+    stats.success += 1;
+  } else if (res.statusCode == 400) {
+    stats.failure += 1;
+  } else {
+    stats.unknown += 1;
+  }
+  stats.total += 1;
+  next()
+})
+
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/conversation', conversationRouter);
@@ -68,6 +136,7 @@ app.use('/comment', commentRouter);
 app.use('/tag', tagRouter);
 app.use('/faq', faqRouter);
 app.use('/generator', generatorRouter);
+app.use('/image', imageRouter);
 
 /******/
 
@@ -85,7 +154,8 @@ const {
 
 const {
   UserModel
-} = require("./models/user")
+} = require("./models/user");
+const { fail } = require('assert');
 
 //location = LocationModel.findOne({name: req.body.name, address: req.body.address});
 
@@ -106,7 +176,7 @@ async function TestLoc() {
 
 //TestLoc();
 
-tag = new TagModel({
+let tag = new TagModel({
     name: "Art",
     description: "desc",
 });

@@ -14,6 +14,8 @@ import ButtonSwitch from './ButtonSwitch';
 
 import {getCustomCourse} from '../apiServer/course';
 import {getLocationByID} from '../apiServer/locations';
+import Store from '../Store/configureStore';
+import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 
 function getNavigation() {
 
@@ -107,6 +109,37 @@ function getLocation(id) {
   return location1;
 }
 
+
+async function registerCourse(access_token) {
+  console.log("trying to register course....");
+
+  const store = Store.getState();
+  const bodyRequest = JSON.stringify({
+    locations_list: store.course.course[0].locations_list,
+    name: store.course.course[0].name
+  });
+  await fetch(`http://${IP_SERVER}:${PORT_SERVER}/course/new_course`, {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      'access_token': access_token,
+    },
+    method: 'post',
+    body: bodyRequest,
+    })
+    .then(res => res.json())
+    .then(json => {
+      console.log("course registered = ", json.course);
+      const action = {
+        type: 'SET_CURRENT_COURSE',
+        value: json.course
+      };
+      Store.dispatch(action);
+    }).catch((error) => {
+      console.error('error :', error);
+    });
+}
+
 async function getArrayLocation(access_token, idLocations) {
   let result = [];
   for (let i = 0; i < idLocations.length; i++) {
@@ -118,15 +151,16 @@ async function getArrayLocation(access_token, idLocations) {
 
 
 export function TripSuggestion(props) {
-
   const [course, setCourse] = useState(null);
 
   useEffect(() => {
     Tts.setDefaultLanguage('en-US');
 
     async function getCourse() {
-      const result = await getCustomCourse(props.profil.access_token);
-
+      //const result = await getCustomCourse(props.profil.access_token);
+      const store = Store.getState();
+      const result = store.course.course[0];
+      console.log("course =  ", result);
       setCourse(result);
     }
 
@@ -193,7 +227,11 @@ export function TripSuggestion(props) {
         onPress={() => {
           const action = { type: 'SET_WAYPOINTS', course: course, locations: locations };
           props.dispatch(action);
+          registerCourse(props.profil.access_token);
           props.navigation.navigate('TripNavigation');
+          // const action = { type: 'SET_WAYPOINTS', course: course, locations: locations };
+          // props.dispatch(action);
+          // props.navigation.navigate('TripNavigation');
           // const action = { type: 'SET_WAYPOINTS', value: waypoints };
           // props.dispatch(action);
           // props.navigation.navigate('TripNavigation');

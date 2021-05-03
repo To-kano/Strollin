@@ -151,6 +151,8 @@ export default {
     OR: 'OR',
     SIGNIN: 'SIGN IN',
     SIGNUP: 'SIGN UP',
+    PartnerPage: "Become Partner",
+    companyName: "Company Name"
   },
 
   Tags: {
