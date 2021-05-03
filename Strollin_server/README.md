@@ -520,6 +520,16 @@ The object User represents the users of the application Strollin and the partner
 | Add existing course in user's historic list with the current date. | access_token: String | course: courseID | None |
 
 
+- DEL user's friend: `POST /users/remove_friend`
+
+| Description | Headers | Body | Return |
+|-|-|-|-|
+| Remove a friend from the friends list. It will remove your id from the friend's friends list | access_token: String | friend_id: UserID | |
+
+
+- DEL user's tags: `POST /users/remove_tags`
+
+
 - GET log in: `GET /users/login`
 
 | Description | Headers | Body | Return |
@@ -555,6 +565,13 @@ The object User represents the users of the application Strollin and the partner
 | Get tags of users provided in array of userID.| access_token: String<br>user_id: String | None | all_user_tags: [TagObject] (See [TAG RELATED](#TAG-RELATED)) |
 
 
+- GET get users: `GET /user/get_users`
+
+| Description | Headers | Body | Return |
+|-|-|-|-|
+| Get user's data. | access_token: String | | users_list: [UserObject] (see Schema) |
+
+
 - GET get user by ID: `GET /user/get_user_by_id`
 
 | Description | Headers | Body | Return |
@@ -568,9 +585,6 @@ The object User represents the users of the application Strollin and the partner
 |-|-|-|-|
 | Delete an user's account.| access_token: String<br>password: String | None | None |
 
-- DEL user's friend: `DEL /users/remove_friend`
-
-- DEL user's tags: `DEL /users/remove_tags`
 
 
 
