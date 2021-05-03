@@ -56,9 +56,10 @@ export function Header({ props, defaultState = false }) {
   return (
     <View style={styles.view_header}>
       <TouchableOpacity
-        onPress={() => props.navigation.dispatch(DrawerActions.openDrawer())}
+        onPress={() => props.navigation.goBack()}
+        // onPress={() => props.navigation.dispatch(DrawerActions.openDrawer())}
       >
-        <Image style={styles.img_header} source={require('../../images/icons/black/menu.png')} />
+        <Image style={styles.img_header} source={require('../../images/icons/black/return.png')} />
       </TouchableOpacity>
       <Text style={styles.text_header}>
         {I18n.t('Header.friend_list')}

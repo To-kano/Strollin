@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import {
   Text, View, FlatList, TouchableOpacity, TextInput, StyleSheet, Image
 } from 'react-native';
+import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 // import { connect } from 'react-redux';
 import { DrawerActions } from '@react-navigation/native';
 import I18n from '../Translation/configureTrans';
@@ -252,10 +253,52 @@ export function Header({ props, defaultState = false }) {
 
 export function addFriend(friend) {
   console.log('add friend function', friend);
+  // fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/add_friend_request`, {
+  //  headers: {
+  //    Accept: 'application/json',
+  //    'Content-Type': 'application/json',
+  //    access_token: store.profil.access_token,
+  //    course_id: store.course.currentCourse[id],
+  //  },
+  //  body: bodyRequest,
+  //  method: 'post',
+  // })
+  //  .then((response) => response.json())
+  //  .then(async (answer) => {
+  //    if (answer.status == true) {
+  //      //console.log("comment sent successfully");
+  //    } else {
+  //      //console.log("answer = ", answer);
+  //    }
+  //  })
+  //  .catch((error) => {
+  //    console.error('error :', error);
+  //  });
 }
 
 export function DeleteFriend(id) {
   console.log('delete friend function', id);
+  // fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/remove_friend`, {
+  //  headers: {
+  //    Accept: 'application/json',
+  //    'Content-Type': 'application/json',
+  //    access_token: store.profil.access_token,
+  //    course_id: store.course.currentCourse[id],
+  //  },
+  //  body: bodyRequest,
+  //  method: 'post',
+  // })
+  //  .then((response) => response.json())
+  //  .then(async (answer) => {
+  //    if (answer.status == true) {
+  //      //console.log("comment sent successfully");
+  //    } else {
+  //      //console.log("answer = ", answer);
+  //    }
+  //  })
+  //  .catch((error) => {
+  //    console.error('error :', error);
+  //  });
 }
 
 export function FriendObject(props) {
@@ -312,6 +355,7 @@ export function FriendObject(props) {
 }
 
 function FriendList(props) {
+  console.log(props);
   return (
     <View style={styles.view_back}>
       <Header props={props} />
