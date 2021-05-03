@@ -3,10 +3,12 @@ import {
   StyleSheet, View, FlatList, Text
 } from 'react-native';
 import Comment from './Comment';
-
+import { connect } from 'react-redux';
+import Store from '../Store/configureStore';
 
 function CommentScreen(props) {
-  console.log("props.data = ", props.route.params.data["comments_list"]);
+  const store = Store.getState();
+  console.log("store.tendance.currentCommentsList = ", store.tendance.currentCommentsList);
 
   //const DATA = require('./test.json');
   return (
@@ -14,7 +16,7 @@ function CommentScreen(props) {
       <View>
         <Text style={{ textAlign: 'center', fontSize: 40 }}> Comments </Text>
         <FlatList
-          data={props.route.params.data.comments_list}
+          data={store.tendance.currentCommentsList.comments_list}
           contentContainerStyle={{ flexGrow: 0.1 }}
           renderItem={({ item }) => <Comment id={item["author_pseudo"]} comment={item["message"]} note={item["score"]} pseudo={item.pseudo} />}
           keyExtractor={(item) => String(item.id)}
@@ -24,7 +26,8 @@ function CommentScreen(props) {
   );
 }
 
-export default CommentScreen;
+const mapStateToProps = (state) => state;
+export default connect(mapStateToProps)(CommentScreen);
 
 const styles = StyleSheet.create({
   back: {

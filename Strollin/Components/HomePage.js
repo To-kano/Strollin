@@ -93,7 +93,6 @@ export function HomePage(props) {
             <TendenceCourseItem
               {...props}
               data={item}
-              // {...props}
             />
           )}
           keyExtractor={(item) => item.name}

@@ -17,6 +17,7 @@ function goToHome(props) {
 
 
 function NewConversation(props) {
+  console.log('friendlist: ', props.profil.friends_list)
   const action = {type: 'SET_SEARCH_FRIEND_LIST', value: props.profil.friends_list};
   props.dispatch(action);
   props.navigation.navigate('NewConversation');

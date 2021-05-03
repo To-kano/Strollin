@@ -14,7 +14,8 @@ function Comment(props) {
       <Text />
       <Text style={[{ fontSize: 25 }]}>{props.comment}</Text>
       <Text style={[{ fontSize: 25 }]}>
-        Note :
+        Note:
+        {' '}
         {props.note}
       </Text>
     </View>

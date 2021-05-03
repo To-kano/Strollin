@@ -3,9 +3,15 @@ import {
 } from 'react-native';
 import React from 'react';
 import Location_List from './locations_list';
+import { connect } from 'react-redux';
+import Store from '../Store/configureStore';
 
 function GotoComment(props) {
-  props.navigation.setParams({ data: props.data });
+  console.log('props.data comment : ', props.data);
+  // props.navigation.setParams({ data: props.data });
+  const store = Store.getState();
+  const action = {type: 'SET_COMMENTS_DISPLAY', value: props.data};
+  props.dispatch(action);
   props.navigation.navigate('CommentScreen');
 }
 
@@ -34,7 +40,7 @@ function TendenceCourseItem(props) {
           <View style={styles.view_information}>
             <Image style={styles.img_buget} source={require('../images/icons/white/money.png')}/>
             <Text style={styles.text_budget}>{props.data["price_range"][0] + " ~ " + props.data["price_range"][1]}</Text>
-            <Text style={styles.text_budget}>{ "Période : " + props.data["timetable"]}</Text>
+            {/* <Text style={styles.text_budget}>{ "Période : " + props.data["timetable"]}</Text> */}
           </View>
           <View style={styles.view_information}>
             <Image style={styles.img_information} source={require('../images/icons/white/marker.png')}/>
@@ -60,7 +66,8 @@ function TendenceCourseItem(props) {
   );
 }
 
-export default TendenceCourseItem;
+const mapStateToProps = (state) => state;
+export default connect(mapStateToProps)(TendenceCourseItem);
 
 const styles = StyleSheet.create({
   view_box: {

@@ -88,7 +88,7 @@ async function setFriendPseudo(props, access_token, profile) {
   }
 }
 
-exports.profileUser = setFriendPseudo;
+exports.setFriendPseudo = setFriendPseudo;
 
 async function setTendance(props, access_token) {
   await fetch(`http://${IP_SERVER}:${PORT_SERVER}/course/get_course`, {
@@ -222,7 +222,7 @@ async function conversationUser(props, access_token) {
     });
 }
 
-exports.profileUser = conversationUser;
+exports.conversationUser = conversationUser;
 
 async function registerUser(props, newPseudo, newPassword, newMail, setMessage, setPopup, partner) {
   const bodyRequest = JSON.stringify({

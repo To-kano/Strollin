@@ -53,6 +53,8 @@ function sortConversation(key) {
 }
 
 export function Header({ props, defaultState = false }) {
+  const {createConversation} = contextSocket();
+
   return (
     <View style={styles.view_header}>
       <TouchableOpacity
@@ -64,18 +66,16 @@ export function Header({ props, defaultState = false }) {
       <Text style={styles.text_header}>
         {I18n.t('Header.friend_list')}
       </Text>
-      {/* <TouchableOpacity
-        onPress={() => { NewConversation(props); }}
+      <TouchableOpacity
+        onPress={() => { GotoChat(props, createConversation); }}
       >
-        <Image style={styles.img_header} source={require('../../images/icons/black/addChat.png')} />
-      </TouchableOpacity> */}
+        <Image style={styles.img_header} source={require('../../images/create_button.png')} />
+      </TouchableOpacity>
     </View>
   );
 }
 
 function NewConversation(props) {
-  const {createConversation} = contextSocket();
-
   return (
     <View style={styles.view_back}>
       <Header props={props} />
@@ -84,7 +84,7 @@ function NewConversation(props) {
       />
       <View style={styles.view_list}>
         <FlatList
-          ata={props.search.searchFriendList}
+          data={props.search.searchFriendList}
           renderItem={({ item }) => <FriendList {...props} id={item} />}
           keyExtractor={(item) => String(item)}
         />
@@ -163,8 +163,8 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   text_header: {
-    // width: '77.8%',
-    width: '87.6%',
+    width: '77.8%',
+    // width: '87.6%',
     fontWeight: 'bold',
     fontSize: 28,
     letterSpacing: 2,
@@ -173,6 +173,7 @@ const styles = StyleSheet.create({
   },
   view_list: {
     flex: 697,
+    width: '100%',
   }
   // container: {
   //   flex: 1,

@@ -53,19 +53,21 @@ export default connect(mapStateToProps)(FriendList);
 const styles = StyleSheet.create({
   button: {
     alignItems: 'center',
-    backgroundColor: '#DDDDDD',
+    // backgroundColor: '#DDDDDD',
     padding: 10,
+    width: '100%',
     borderColor: "#000000"
   },
   selected_button: {
     alignItems: 'center',
     backgroundColor: '#595959',
     padding: 10,
-    borderColor: "#000000"
-
+    borderColor: "#000000",
+    width: '100%',
   },
   previewTitle: {
     fontWeight: '800',
+    width: '100%',
     fontSize: 20
   },
   previewContent: {

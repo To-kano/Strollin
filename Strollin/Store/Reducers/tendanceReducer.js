@@ -147,7 +147,8 @@ const EXEMPLE_after_treatment = {
 
 const initialState = {
   tendanceList: [],//EXEMPLE_after_treatment["tendanceList"],
-  sortedTendanceList: []
+  sortedTendanceList: [],
+  currentCommentsList: []
 };
 
 function tendanceReducer(state = initialState, action) {
@@ -178,6 +179,12 @@ function tendanceReducer(state = initialState, action) {
         ...state,
       };
       nextState.tendanceList[action.index]["comments_list"] = action.value
+      return nextState;
+    case 'SET_COMMENTS_DISPLAY':
+      nextState = {
+        ...state,
+      };
+      nextState.currentCommentsList = action.value
       return nextState;
     default:
       return state;
