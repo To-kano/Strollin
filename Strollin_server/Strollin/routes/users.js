@@ -292,11 +292,11 @@ router.post('/add_friend', async function (req, res) {
 });
 
 
-router.post('/add_image_profile', upload.single('uploaded_file'), function (req, res) {
- // req.file is the name of your file in the form above, here 'uploaded_file'
- // req.body will hold the text fields, if there were any
- console.log(req.file, req.body)
-});
+// router.post('/add_image_profile', upload.single('uploaded_file'), function (req, res) {
+//  // req.file is the name of your file in the form above, here 'uploaded_file'
+//  // req.body will hold the text fields, if there were any
+//  console.log(req.file, req.body)
+// });
 
 const multer = require('multer');
 
