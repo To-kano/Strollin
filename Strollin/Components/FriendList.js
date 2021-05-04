@@ -207,31 +207,6 @@ export function Header({ props, defaultState = false }) {
   );
 }
 
-export function addFriend(friend) {
-  console.log('add friend function', friend);
-  // fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/add_friend_request`, {
-  //  headers: {
-  //    Accept: 'application/json',
-  //    'Content-Type': 'application/json',
-  //    access_token: store.profil.access_token,
-  //    course_id: store.course.currentCourse[id],
-  //  },
-  //  body: bodyRequest,
-  //  method: 'post',
-  // })
-  //  .then((response) => response.json())
-  //  .then(async (answer) => {
-  //    if (answer.status == true) {
-  //      //console.log("comment sent successfully");
-  //    } else {
-  //      //console.log("answer = ", answer);
-  //    }
-  //  })
-  //  .catch((error) => {
-  //    console.error('error :', error);
-  //  });
-}
-
 async function AddFriend(props, store, mail) {
   const bodyRequest = JSON.stringify({
     friend_mail: mail
@@ -369,28 +344,31 @@ function FriendList(props) {
 
   return (
     <View style={styles.view_back}>
-      <Header props={props} />
-      <View style={styles.view_switchPage}>
+      {/* <Header props={props} /> */}
+      <View style={styles.view_header}>
         <TouchableOpacity
-          onPress={() => { setpressed(!pressed); }}
+          onPress={() => props.navigation.dispatch(DrawerActions.openDrawer())}
+          // onPress={() => props.navigation.navigate('Menu')}
         >
-          {pressed === true &&
-            <Text style={styles.text_switchPageOn}>Amis</Text>
-          }
-          {pressed === false &&
-            <Text style={styles.text_switchPageOff}>Amis</Text>
-          }
+          <Image style={styles.img_header} source={require('../images/icons/black/menu.png')} />
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => { setpressed(!pressed); }}
-        >
-          {pressed === false &&
-            <Text style={styles.text_switchPageOn}>Tous</Text>
-          }
-          {pressed === true &&
-            <Text style={styles.text_switchPageOff}>Tous</Text>
-          }
-        </TouchableOpacity>
+        <Text style={styles.text_header}>
+          {I18n.t('Header.friends')}
+        </Text>
+        {pressed === true && 
+          <TouchableOpacity
+            onPress={() => { setpressed(!pressed); }}
+          >
+            <Image style={styles.img_header} source={require('../images/icons/black/addFriend.png')} />
+          </TouchableOpacity>
+        }
+        {pressed === false && 
+          <TouchableOpacity
+            onPress={() => { setpressed(!pressed); }}
+          >
+            <Image style={styles.img_header} source={require('../images/icons/black/friends.png')} />
+          </TouchableOpacity>
+        }
       </View>
       {pressed === true &&
         <View style={styles.view_list}>

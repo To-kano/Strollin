@@ -181,6 +181,7 @@ const styles = StyleSheet.create({
   },
   view_list: {
     flex: 757,
+    width: '100%',
   }
 });
 

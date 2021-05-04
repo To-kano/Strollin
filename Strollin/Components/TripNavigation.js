@@ -102,7 +102,7 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
       </View>
       <View style={styles.view_destination}>
         <Image style={styles.img_header} source={require('../images/icons/black/next_trip.png')} />
-        <Text style={styles.text_destination}>{locations[0].name}</Text>
+        <Text numberOfLines={1}  style={styles.text_destination}>{locations[0].name}</Text>
       </View>
       <View style={styles.view_map}>
         <Map 
