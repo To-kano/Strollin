@@ -34,7 +34,7 @@ function ConversationBar(props) {
   };
   
   return (
-    <View style={styles.container}>
+    <View style={styles.view_conversationBar}>
       {image && (
         <>
           <Image
@@ -57,58 +57,65 @@ function ConversationBar(props) {
           <Button title="Erase Image" onPress={cancelImage} />
         </>
       )}
-      <View style={styles.horizontalDisplay}>
-          
-        <TouchableOpacity onPress={() => {
-          goToCourseScreen(props);
-        }}>
-          <Image
-            source={require('../../images/logo/marker_small.png')}
-            style={{ width: 25, height: 35}}
-          />
+      <View style={styles.view_horizontalDisplay}>
+        <TouchableOpacity style={styles.imgView_conversationBar} onPress={() => { goToCourseScreen(props); }}>
+          <Image style={styles.img_conversationBar} source={require('../../images/logo/marker_small_tchat.png')} />
         </TouchableOpacity>
-        <ButtonIcon
-          icon={require('../../images/picture.png')}
-          onPress={handleChooseImage}
+        <TouchableOpacity style={styles.imgView_conversationBar} onPress={handleChooseImage}>
+          <Image style={styles.img_conversationBar} source={require('../../images/icons/black/addPicture.png')} />
+        </TouchableOpacity>
+        <TextInput
+          style={styles.textInput_conversationBar}
+          placeholder="Message.."
+          onChangeText={(text) => setresearch(text)}
+          value={research}
         />
-        <View style={styles.box}>
-          <TextInput
-            style={styles.textInput}
-            placeholder="Your message"
-            onChangeText={(text) => setresearch(text)}
-            value={research}
-          />
-        </View>
-        <ButtonIcon
-          icon={require('../../images/send.png')}
+        <TouchableOpacity
+          style={styles.imgView_conversationBar}
           onPress={() => {
             props.onPress(research);
             setresearch('');
           }}
-        />
+        >
+          <Image style={styles.img_conversationBar} source={require('../../images/icons/black/send.png')} />
+        </TouchableOpacity>
       </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  view_conversationBar: {
+    marginTop: 10,
+    marginBottom: 15,
+    flex: 40,
     alignItems: 'center',
     justifyContent: 'flex-start',
   },
-  box: {
+  view_horizontalDisplay: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  imgView_conversationBar: {
     flex: 1,
   },
-  horizontalDisplay: {
-    width: '97 %',
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginLeft: 10,
+  img_conversationBar: {
+    width: 35,
+    height: 35,
   },
-  textInput: {
+  textInput_conversationBar: {
+    flex: 4,
     height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
+    marginRight: 10,
+    borderRadius: 20,
+    fontSize: 16,
+    backgroundColor: '#fff',
+    paddingLeft: 10, 
+    paddingRight: 10, 
+    paddingTop: 10, 
+    paddingBottom: 10, 
   },
 });
 

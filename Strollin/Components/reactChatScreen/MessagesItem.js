@@ -35,7 +35,7 @@ function MessagesItem(props) {
       <View>
           <ImageItem
             imageId={ props.message[props.messageID].message }
-            style={{ width: 300, height: 300, borderRadius: 15, marginLeft: "1%" }}
+            style={{ width: 300, height: 300, borderRadius: 12, marginLeft: "1%" }}
           />
           <Text style={styles.expeditor} ellipsizeMode="tail">
           {props.profil.friends_pseudo_list[props.message[props.messageID].expeditor_id]}
@@ -46,14 +46,14 @@ function MessagesItem(props) {
        <CourseItem navigation={props.navigation} id={props.message[props.messageID].message} pseudo={props.profil.friends_pseudo_list[props.message[props.messageID].expeditor_id]} style={{ width: 300, height: 300, borderRadius: 15, marginLeft: "1%" }}/>
     } else if (props.message[props.messageID]["type"] == "message") {
       return (
-      <View>
-        <View style={styles.greyDisplay}>
-          <View style={styles.box}>
-            <Text style={styles.message}>
-              {props.message[props.messageID].message}
-            </Text>
+        <View>
+          <View style={styles.view_message}>
+            <View style={styles.greyDisplay}>
+                <Text style={styles.messageGrey}>
+                  {props.message[props.messageID].message}
+                </Text>
+            </View>
           </View>
-        </View>
         <Text style={styles.expeditor} ellipsizeMode="tail">
           {props.profil.friends_pseudo_list[props.message[props.messageID].expeditor_id]}
         </Text>
@@ -80,11 +80,11 @@ function MessagesItem(props) {
     } else if (props.message[props.messageID]["type"] == "message") {
       return (
         <View>
-          <View style={styles.blueDisplay}>
-            <View style={styles.box}>
-              <Text style={styles.message}>
-                {props.message[props.messageID].message}
-              </Text>
+          <View style={styles.view_message}>
+            <View style={styles.blueDisplay}>
+                <Text style={styles.messageBlue}>
+                  {props.message[props.messageID].message}
+                </Text>
             </View>
           </View>
           <Text style={styles.expeditorUser} ellipsizeMode="tail">
@@ -98,49 +98,52 @@ function MessagesItem(props) {
 }
 
 const styles = StyleSheet.create({
-  box: {
-    width: '100%',
-    alignItems: 'flex-start',
-    justifyContent: 'space-around',
-    paddingHorizontal: 15,
+  view_message: {
+    justifyContent: 'flex-start', flexDirection: 'row',
   },
   greyDisplay: {
-    flex: 1,
-    width: '70%',
-    borderRadius: 15,
-    padding: 10,
-    marginLeft: "1%",
-    flexDirection: 'row',
+    maxWidth: '77%',
+    borderRadius: 22,
+    paddingTop: 10,
+    paddingLeft: 15,
+    paddingRight: 15,
+    paddingBottom: 10,
     justifyContent: 'flex-start',
-    backgroundColor: 'rgba(215, 215, 215, 1)',
+    backgroundColor: '#fff',
   },
   blueDisplay: {
-    flex: 1,
-    width: '70%',
-    borderRadius: 15,
-    padding: 10,
-    marginLeft: "30%",
-    flexDirection: 'row',
+    maxWidth: '77%',
+    marginLeft: "23%",
+    borderRadius: 22,
+    paddingTop: 10,
+    paddingLeft: 15,
+    paddingRight: 15,
+    paddingBottom: 10,
     justifyContent: 'flex-start',
-    backgroundColor: 'rgba(50, 150, 250, 1)',
-    alignItems: 'flex-end'
+    backgroundColor: '#0092A7',
+    alignItems: 'flex-end',
   },
-  text: {
+  messageGrey: {
     fontSize: 16,
+    color: '#000',
   },
-  message: {
+  messageBlue: {
     fontSize: 16,
-    fontWeight: 'bold',
+    color: '#fff',
   },
   expeditor: {
     fontSize: 10,
-    marginLeft: "4%"
+    marginLeft: 5,
+    textTransform: 'capitalize',
+    fontWeight: 'bold',
+    textAlign: "left",
   },
   expeditorUser: {
     fontSize: 10,
+    marginRight: 5,
+    textTransform: 'capitalize',
+    fontWeight: 'bold',
     textAlign: "right",
-    marginRight: "4%"
-
   },
   icon: {
     width: "20%",
