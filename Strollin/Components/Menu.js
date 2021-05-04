@@ -54,7 +54,12 @@ function Menu(props) {
             <Text style={styles.text_navigationIn}>{props.state.routeNames[1]}</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => props.navigation.navigate(props.state.routeNames[2])}
+            onPress={() => props.navigation.navigate(
+              "New trip",
+              {
+                screen: 'CourseSetting'
+              }
+              )}
             style={[styles.view_navigationIn, props.state.index == 2 ? styles.current_page : {}]}
           >
             <Image style={styles.img_navigationIn} source={require('../images/icons/black/next_trip.png')} />

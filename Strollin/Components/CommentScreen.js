@@ -7,6 +7,8 @@ import { connect } from 'react-redux';
 import Store from '../Store/configureStore';
 import I18n from '../Translation/configureTrans';
 
+import { StackActions } from '@react-navigation/native';
+
 
 export function Header(props) {
 
@@ -28,6 +30,11 @@ export function Header(props) {
           };
           Store.dispatch(action);
           console.log("course = ", props.store.tendance.selectedTendanceCourse);
+
+          const popAction = StackActions.pop(5);
+
+          props.navigation.dispatch(popAction);
+
           props.navigation.navigate('New trip',{
             screen: 'TripSuggestion',
            }

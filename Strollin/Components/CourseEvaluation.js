@@ -11,6 +11,7 @@ import I18n from '../Translation/configureTrans';
 import { DrawerActions } from '@react-navigation/native';
 
 import { CommonActions } from '@react-navigation/native';
+import { StackActions } from '@react-navigation/native';
 
 function randPic() {
   const rand = (Math.floor(Math.random() * 2) + 1);
@@ -54,31 +55,18 @@ function ratingCompleted(rating, comment, props) {
    .catch((error) => {
      console.error('error :', error);
    });
-   props.navigation.dispatch(
-    CommonActions.reset({
-      index: 1,
-      routes: [
-        { name: 'TripSuggestion' },
-        { name: 'TripNavigation' },
-        { name: 'CourseEvaluation'},
-        { name: 'CourseSettings' },
-      ],
-    })
-  );
+
+   const popAction = StackActions.pop(5);
+
+    props.navigation.dispatch(popAction);
+   props.navigation.navigate("HomePage");
 }
 
 function skipRating(props) {
-  props.navigation.dispatch(
-    CommonActions.reset({
-      index: 1,
-      routes: [
-        { name: 'TripSuggestion' },
-        { name: 'TripNavigation' },
-        { name: 'CourseEvaluation'},
-        { name: 'CourseSettings' },
-      ],
-    })
-  );
+  const popAction = StackActions.pop(5);
+
+  props.navigation.dispatch(popAction);
+  props.navigation.navigate("HomePage");
 }
 
 export function CourseEvaluation(props) {

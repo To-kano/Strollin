@@ -132,7 +132,7 @@ async function registerCourse(access_token) {
       console.log("course registered = ", json.course);
       const action = {
         type: 'SET_CURRENT_COURSE',
-        value: json.course
+        value: store.course.course[0]
       };
       Store.dispatch(action);
     }).catch((error) => {
