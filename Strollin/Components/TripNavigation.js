@@ -11,6 +11,7 @@ import Map from './map';
 import { addUserHistoric } from '../apiServer/user';
 import Store from '../Store/configureStore';
 import { PopUpForm } from './PopUpForm';
+import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 
 export function TripNavigation({map, profil, dispatch, navigation}) {
   //const [background, setBackground] = useState(false);
@@ -43,6 +44,46 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
   //    AppState.removeEventListener('change', handleAppStateChange);
   //  };
   //}, []);
+
+  const [pop, setPop] = useState(false);
+  const [course, setCourse] = useState(null);
+
+
+  async function PopUpResponse() {
+
+  }
+  
+  async function PopUpReq(pos, course) {
+    console.log("course: ", course);
+    const store = Store.getState();
+    const access_Token = store.profil.access_token;
+    console.log("pos: ", pos);
+    console.log("token: ", access_Token);
+    const coordinate = [];
+    const test = JSON.stringify({course: course})
+    coordinate[0] = pos.latitude;
+    coordinate[1] = pos.longitude;
+
+    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/generator/generate_popup`, {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      access_Token,
+      coordinate: coordinate
+    },
+    body: test,
+    method: 'POST',
+    })
+    .then(res => res.json())
+    .then(json => {
+      console.log("JJJJJJJJJJJJSSSSSSSSSSSSSSSSOOOOOOOOOONNNNNNNNNn: ", json);
+      setCourse(json.popup)
+      setPop(true);
+      console.log("stp c la le truc: ", json.popup);
+    });
+
+  }
+
   console.log("\n\n", locations)
 
   useEffect(() => {
@@ -73,6 +114,23 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
     longitudeDelta: 0.0121,
   };
 
+  if (pop) {
+    return (
+      <View>
+      <Text>
+        Do you want to go to : {course.Name}
+      </Text>
+      <Button
+        title="yes"
+        onPress={() => Alert.alert('Simple Button pressed')}
+      />
+      <Button
+        title="no"
+        onPress={() => Alert.alert('Simple Button pressed')}
+      />
+    </View>
+    )}
+  else {
   return (
     <View style={styles.view_back}>
       <View style={styles.view_header}>
@@ -162,6 +220,12 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
         <View style={{ flex: 1 }}>
           <Map navigation={navigation} height="100%" width={390} deltaView={deltaView} locations={locations}/>
         </View>
+        <TouchableOpacity onPress={() => {
+          const store = Store.getState();
+          PopUpReq(profil.first_name, profil.scoreCourse); //Je sais pas utiliser les props du coup g stocker des truc dans les props dans course settings
+        }}>
+          <Text style={styles.text_signIn}>{I18n.t('LoginPage.SIGNIN')}</Text>
+        </TouchableOpacity>
       </View>
     </View>
     // <View style={styles.back}>
@@ -255,6 +319,7 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
     //   </View>
     // </View>
   );
+  }
 }
 
 const mapStateToProps = (state) => {
@@ -323,6 +388,12 @@ const styles = StyleSheet.create({
   view_map: {
     flex: 694,
     alignItems: 'center',
+  },
+  text_signIn: {
+    fontWeight: 'bold',
+    fontSize: 16,
+    padding: 12,
+    color: '#0092A7',
   },
   // back: {
   //   flexDirection: 'column',

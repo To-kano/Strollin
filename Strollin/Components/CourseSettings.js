@@ -96,6 +96,8 @@ async function test(pos, budget, hours, minutes, tags, props) {
       value: json.course
     };
     Store.dispatch(action);
+    props.profil.scoreCourse = json.generated_course
+    props.profil.first_name = pos
     props.navigation.navigate("TripSuggestion");
   }).catch((error) => {
     console.error('error :', error);

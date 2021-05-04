@@ -258,7 +258,9 @@ async function PopUpAlgo(course, coordinate, tags) {
         City: locations_list[i].city
       })
     }
-    pop.data.Popup(course, true_list, LocationModel, tags, coordinate)
+    let res = await pop.data.Popup(course, true_list, LocationModel, tags, coordinate)
+    console.log("res print: ", res);
+    return res
 }
 
 async function checkPlace(location, list) {

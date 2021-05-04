@@ -93,7 +93,7 @@ methods.Popup = function (Destinations, List, LocationModel, tags, coordinate) {
               console.log("Location updated: ", raw)
           }
       })
-      return
+      return res
   }
 }
 

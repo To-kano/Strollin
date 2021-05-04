@@ -17,7 +17,7 @@ import {getLocationByID} from '../apiServer/locations';
 import Store from '../Store/configureStore';
 import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 
-function getNavigation() {
+function getNavigation({route}) {
 
   const destination =
   {
@@ -152,6 +152,9 @@ async function getArrayLocation(access_token, idLocations) {
 
 export function TripSuggestion(props) {
   const [course, setCourse] = useState(null);
+
+  //const { test } = route.params;
+  console.log("\n\n\nprops: ", props.profil);
 
   useEffect(() => {
     Tts.setDefaultLanguage('en-US');

@@ -83,8 +83,11 @@ router.post('/generate_popup', async function(req, res) {
     // ACTION ICI
     const promise = algo.data.pop(req.headers.coordinate, user.tags_list, req.body.course);
     promise.then((value) => {
+      console.log("valuer: ", value);
+      let popup = value
+      return res.status(200).send({status: "Result of the pop-up generator.", popup});
     })
-    return res.status(200).send({status: "Result of the pop-up generator.", popup});
+
 });
 
 
@@ -118,4 +121,3 @@ router.get('/popup_answer', async function(req, res) {
 
 
 module.exports = router;
-
