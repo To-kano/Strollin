@@ -41,7 +41,6 @@ function CoursePreviewItem(props) {
           screen: 'TripSuggestion',
          }
         )
-      
         //props.navigation.navigate('TripSuggestion')
       }}/>
     </View>

@@ -171,10 +171,12 @@ export default {
 
   Header: {
     search_tag: 'Search a Tag',
+    friend_list: "Friend List",
     add_friend: 'Add Friend',
     partner: 'Partner',
     profile: 'Profile',
     home: 'Home',
+    options: 'Trip options',
     historic: 'Historic',
     new_trip: 'New Trip',
     settings: 'Settings',
@@ -182,6 +184,7 @@ export default {
     friends: 'Friends',
     chats: 'Chats',
     rating: 'Rating',
+    comment: 'Comment',
   }
 };
 

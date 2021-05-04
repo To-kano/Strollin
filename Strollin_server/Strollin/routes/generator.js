@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var algo = require('../Algo/BasicAlgo2');
+var pop = require('../Algo/PopUpAlgo');
 
 const {
     UserModel
@@ -112,11 +113,13 @@ router.post('/popup_answer', async function(req, res) {
         return res.status(400).send({status: "Error in database transaction:\n", error: user});
     }
 
+    console.log("popup : ", req.body.popup)
     if (!req.headers.answer || !req.body.popup || !req.body.course) {
         return res.status(400).send({status: "Parameter required is missing."});
     }
 
     // ACTION ICI
+    pop.data.Response(req.body.popup)
 
     return res.status(200).send({status: "Result.", popup});
 });

@@ -4,16 +4,19 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { TouchableHighlight } from 'react-native-gesture-handler';
+import { profileUser } from '../apiServer/user';
 
 import GestureRecognizer from 'react-native-swipe-gestures';
 
 import { DrawerActions } from '@react-navigation/native';
 import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 import I18n from '../Translation/configureTrans';
+import Store from '../Store/configureStore';
 
 import ImageProfile from './ImageProfile';
 
 function Menu(props) {
+  const store = Store.getState();
   const config = {
     velocityThreshold: 0.05,
     directionalOffsetThreshold: 80,
@@ -31,7 +34,10 @@ function Menu(props) {
         </View>
         <View style={styles.view_navigation}>
           <TouchableOpacity
-            onPress={() => props.navigation.navigate(props.state.routeNames[0])}
+            onPress={() => {
+              profileUser(props, store.profil.access_token);
+              props.navigation.navigate(props.state.routeNames[0]);
+            }}
             style={[styles.view_navigationIn, props.state.index == 0 ? styles.current_page : {}]}
           >
             <Image style={styles.img_navigationIn} source={require('../images/icons/black/home.png')} />
@@ -124,7 +130,6 @@ function Menu(props) {
         config={config}
         style={{
           flex: 1,
-          backgroundColor: 'green',
           width: 30
         }}
       />
@@ -138,20 +143,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   current_page: {
-    backgroundColor: 'red'
+    width: '150%',
+    backgroundColor: '#CFEAEE',
+    borderRadius: 4,
   },
   view_menu: {
     flex: 1,
     flexDirection: 'column',
     width: '100%',
     padding: 30,
-    shadowColor: '#000000',
-    shadowOffset: {
-      width: 0,
-      height: 10,
-    },
-    shadowOpacity: 0.10,
-    elevation: 10,
     backgroundColor: '#FFFFFF',
   },
   view_close: {

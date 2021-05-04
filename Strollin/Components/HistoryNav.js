@@ -27,13 +27,13 @@ export function HistoryNav({ navigation, profil }) {
           {'   '}
         </Text>
       </View>
-      <View style={styles.viex_list}>
+      <View style={styles.view_list}>
         <FlatList
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
           data={profil.course_historic}
           renderItem={({ item }) => (
-            <HistoryItem courseId={item} />
+            <HistoryItem courseId={item} duration={item.duration}/>
           )}
         />
       </View>
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#000000',
   },
-  viex_list: {
+  view_list: {
     flex: 757,
   },
   view_historic: {

@@ -28,10 +28,10 @@ function ConvPreview(props) {
       style={styles.button}
       onPress={() => GotoChat(props)}
     >
-      <Text style={styles.previewTitle}>
+      <Text numberOfLines={1} style={styles.previewTitle}>
         {props.conversation[props.conversationID].name}
       </Text>
-      <Text style={styles.previewContent}>
+      <Text numberOfLines={1} style={styles.previewContent}>
         { getLastMessage(props)}
       </Text>
     </TouchableOpacity>
@@ -43,17 +43,27 @@ export default connect(mapStateToProps)(ConvPreview);
 
 const styles = StyleSheet.create({
   button: {
-    alignItems: 'center',
-    backgroundColor: '#DDDDDD',
-    padding: 10,
-    borderColor: "#000000"
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    marginTop: 5,
+    marginBottom: 5,
+    width: '100%',
+    paddingLeft: 15,
+    paddingTop: 15,
+    paddingRight: 15,
+    paddingBottom: 15,
+    height: 90,
   },
   previewTitle: {
-    fontWeight: '800',
-    fontSize: 20
+    fontWeight: 'bold',
+    textTransform: 'capitalize',
+    fontSize: 18,
+    color: "#000",
   },
   previewContent: {
-    fontWeight: '300',
+    color: "#707070",
     fontSize: 12,
   },
 });

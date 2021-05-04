@@ -88,7 +88,7 @@ async function setFriendPseudo(props, access_token, profile) {
   }
 }
 
-exports.profileUser = setFriendPseudo;
+exports.setFriendPseudo = setFriendPseudo;
 
 async function setTendance(props, access_token) {
   await fetch(`http://${IP_SERVER}:${PORT_SERVER}/course/get_course`, {
@@ -118,6 +118,8 @@ async function setTendance(props, access_token) {
       .then(async function (answer) {
         const action = { type: "SET_LOCATION_LIST", value: answer["locations_list"], index: i }
         props.dispatch(action);
+        const action2 = { type: "SET_CONVERTED_LOCATION", index: i }
+        props.dispatch(action2);
       })
       .catch((error) => {
         console.error('error :', error);
@@ -222,7 +224,7 @@ async function conversationUser(props, access_token) {
     });
 }
 
-exports.profileUser = conversationUser;
+exports.conversationUser = conversationUser;
 
 async function registerUser(props, newPseudo, newPassword, newMail, setMessage, setPopup, partner) {
   const bodyRequest = JSON.stringify({

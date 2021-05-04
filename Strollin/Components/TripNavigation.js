@@ -49,6 +49,10 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
   const [course, setCourse] = useState(null);
   const [place, setPlace] = useState(null);
 
+  function compare(a, b) {
+    if (a.Dist > b.Dist) return 1;
+    if (b.Dist > a.Dist) return -1;
+  }
 
   async function PopUpResponse(response, pos, course, popup) {
     const store = Store.getState();
@@ -58,6 +62,7 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
     coordinate[0] = pos.latitude;
     coordinate[1] = pos.longitude;
 
+    console.log("\n*\n*\n*\n*", locations[0])
     await fetch(`http://${IP_SERVER}:${PORT_SERVER}/generator/popup_answer`, {
     headers: {
       Accept: 'application/json',
@@ -71,14 +76,30 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
     })
     .then(res => res.json())
     .then(json => {
-      console.log("pleasssssssssse: ", json);
-      let test_loc = []
-      test_loc.push(locations[0])
-      test_loc.push(locations[1])
+      //console.log("\n\n\n\n\n\npleasssssssssse: ", json);
+      setPop(false);
+    });
+
+    if (response == false)
+      return
+    //update course
+    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/get_locations_by_id`, {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      access_Token,
+      locations_id_list: [popup.Id]
+    },
+    method: 'GET',
+    })
+    .then(res => res.json())
+    .then(json => {
+      //console.log("location stp frero: ", json.locations_list[0]);
+      let test_loc = locations
+      test_loc.push(json.locations_list[0])
+      test_loc.sort(compare)
       const action = { type: 'SET_LOCATIONS', locations: test_loc };
       Store.dispatch(action);
-      setPop(false);
-
     });
   }
 
@@ -113,7 +134,7 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
 
   }
 
-  console.log("\n\n", locations)
+  console.log("\n*\n*\n*\n*", locations)
 
   useEffect(() => {
     console.log("ceci est locations\n\n", locations)
@@ -122,7 +143,7 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
 
   async function setTime() {
     let tmp = await Date.now();
-    console.log(tmp);
+    //console.log(tmp);
     tmp = Math.floor(tmp / 1000);
 
     const action = { type: 'SET_TIME', value: tmp };
@@ -165,98 +186,138 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
       <View style={styles.view_header}>
         <Text style={styles.text_header}>   My Trip</Text>
         <TouchableOpacity
-          style={{ width: '20%', height: '100%', marginLeft: 15 }}
-          onPress={() => navigation.navigate('HomePage')}
-        >
-          <Image
-            style={{
-              marginTop: '10%', height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'
-            }}
-            source={require('../ressources/home.png')}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{ width: '20%', height: '100%' }}
-          onPress={() => navigation.navigate('historicUser')}
-        >
-          <Image
-            style={{
-              marginTop: '10%', height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'
-            }}
-            source={require('../ressources/plus.png')}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{ width: '20%', height: '100%' }}
-          onPress={() => navigation.navigate('TripSuggestion')}
-        >
-          <Image
-            style={{
-              marginTop: '10%', height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'
-            }}
-            source={require('../ressources/plus.png')}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{ width: '20%', height: '100%' }}
-          onPress={() => navigation.navigate('FriendList')}
-        >
-          <Image
-            style={{
-              marginTop: '10%', height: '65%', width: '50%', opacity: 0.5, resizeMode: 'stretch'
-            }}
-            source={require('../ressources/friend.png')}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{ width: '20%', height: '100%' }}
-          onPress={() => navigation.navigate('Profile')}
+          onPress={async () => {
+            const store = Store.getState();
+            addUserHistoric(store.profil.access_token, store.course.currentCourse.id);
+            const action = { type: 'ADD_HISTORY', courseID: store.course.currentCourse.id };
+            dispatch(action);
+            const action2 = { type: 'ADD_COURSE_OBJECT_HISTORIC', value: store.course.currentCourse };
+            dispatch(action2);
+            navigation.navigate('CourseEvaluation');
+            // await setTime()
+            // await addUserHistoric(profil.access_token, map.course.id);
+            // const action = { type: 'ADD_HISTORY', courseID: map.course.id };
+            // dispatch(action);
+            // navigation.navigate('HomePage');
+            // await setTime();
+            // const action = { type: 'ADD_HISTORIC', value: waypoints };
+            // props.dispatch(action);
+            // props.navigation.navigate('HomePage');
+          }}
         >
           <Image style={styles.img_header} source={require('../images/icons/black/close.png')} />
         </TouchableOpacity>
       </View>
-      <View style={styles.fill}>
-        <View style={{ flex: 0.1, margin: 5, flexDirection: 'row' }}>
-          <View style={{ flex: 1 }}>
-            <TouchableOpacity
-              style={{ flex: 1 }}
-              onPress={async () => {
-                //await setTime()
-                const store = Store.getState();
-                addUserHistoric(store.profil.access_token, store.course.currentCourse.id);
-                const action = { type: 'ADD_HISTORY', courseID: store.course.currentCourse.id };
-                dispatch(action);
-                const action2 = { type: 'ADD_COURSE_OBJECT_HISTORIC', value: store.course.currentCourse };
-                dispatch(action2);
-                navigation.navigate('CourseEvaluation');
-              }}
-            >
-              <Image
-                style={{
-                  margin: '10%', height: '70%', width: '70%', opacity: 0.9, resizeMode: 'stretch'
-                }}
-                source={require('../ressources/end.png')}
-              />
-            </TouchableOpacity>
-          </View>
-          <Text style={{
-            flex: 6, textAlign: 'center', fontSize: 30, color: '#F07323', fontWeight: 'bold'
-          }}
-          >
-            {locations[0].name}
-          </Text>
-        </View>
-        <View style={{ flex: 1 }}>
-          <Map navigation={navigation} height="100%" width={390} deltaView={deltaView} locations={locations}/>
-        </View>
-        <TouchableOpacity onPress={() => {
-          const store = Store.getState();
-          PopUpReq(profil.first_name, profil.scoreCourse); //Je sais pas utiliser les props du coup g stocker des truc dans les props dans course settings
-        }}>
-          <Text style={styles.text_signIn}>{I18n.t('LoginPage.SIGNIN')}</Text>
-        </TouchableOpacity>
+      <View style={styles.view_destination}>
+        <Image style={styles.img_header} source={require('../images/icons/black/next_trip.png')} />
+        <Text style={styles.text_destination}>{locations[0].name}</Text>
       </View>
+      <View style={styles.view_map}>
+        <Map
+          navigation={navigation}
+          height="100%"
+          width={390}
+          deltaView={deltaView}
+          locations={locations}
+        />
+      </View>
+      <TouchableOpacity onPress={() => {
+        const store = Store.getState();
+        PopUpReq(profil.first_name, profil.scoreCourse); //Je sais pas utiliser les props du coup g stocker des truc dans les props dans course settings
+      }}>
+        <Text style={styles.text_signIn}>{I18n.t('LoginPage.SIGNIN')}</Text>
+      </TouchableOpacity>
     </View>
+
+    // <View style={styles.view_back}>
+    //   <View style={styles.view_header}>
+    //     <Text style={styles.text_header}>   My Trip</Text>
+    //     <TouchableOpacity
+    //       style={{ width: '20%', height: '100%', marginLeft: 15 }}
+    //       onPress={() => navigation.navigate('HomePage')}
+    //     >
+    //       <Image
+    //         style={{
+    //           marginTop: '10%', height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'
+    //         }}
+    //         source={require('../ressources/home.png')}
+    //       />
+    //     </TouchableOpacity>
+    //     <TouchableOpacity
+    //       style={{ width: '20%', height: '100%' }}
+    //       onPress={() => navigation.navigate('historicUser')}
+    //     >
+    //       <Image
+    //         style={{
+    //           marginTop: '10%', height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'
+    //         }}
+    //         source={require('../ressources/plus.png')}
+    //       />
+    //     </TouchableOpacity>
+    //     <TouchableOpacity
+    //       style={{ width: '20%', height: '100%' }}
+    //       onPress={() => navigation.navigate('TripSuggestion')}
+    //     >
+    //       <Image
+    //         style={{
+    //           marginTop: '10%', height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'
+    //         }}
+    //         source={require('../ressources/plus.png')}
+    //       />
+    //     </TouchableOpacity>
+    //     <TouchableOpacity
+    //       style={{ width: '20%', height: '100%' }}
+    //       onPress={() => navigation.navigate('FriendList')}
+    //     >
+    //       <Image
+    //         style={{
+    //           marginTop: '10%', height: '65%', width: '50%', opacity: 0.5, resizeMode: 'stretch'
+    //         }}
+    //         source={require('../ressources/friend.png')}
+    //       />
+    //     </TouchableOpacity>
+    //     <TouchableOpacity
+    //       style={{ width: '20%', height: '100%' }}
+    //       onPress={() => navigation.navigate('Profile')}
+    //     >
+    //       <Image style={styles.img_header} source={require('../images/icons/black/close.png')} />
+    //     </TouchableOpacity>
+    //   </View>
+    //   <View style={styles.fill}>
+    //     <View style={{ flex: 0.1, margin: 5, flexDirection: 'row' }}>
+    //       <View style={{ flex: 1 }}>
+    //         <TouchableOpacity
+    //           style={{ flex: 1 }}
+    //           onPress={async () => {
+    //             await setTime()
+    //             await addUserHistoric(profil.access_token, map.course.id);
+    //             const action = { type: 'ADD_HISTORY', courseID: map.course.id };
+    //             dispatch(action);
+    //             navigation.navigate('HomePage');
+    //           }}
+    //         >
+    //           <Image
+    //             style={{
+    //               margin: '10%', height: '70%', width: '70%', opacity: 0.9, resizeMode: 'stretch'
+    //             }}
+    //             source={require('../ressources/end.png')}
+    //           />
+    //         </TouchableOpacity>
+    //       </View>
+    //       <Text style={{
+    //         flex: 6, textAlign: 'center', fontSize: 30, color: '#F07323', fontWeight: 'bold'
+    //       }}
+    //       >
+    //         {locations[0].name}
+    //       </Text>
+    //     </View>
+    //     <View style={{ flex: 1 }}>
+    //       <Map navigation={navigation} height="100%" width={390} deltaView={deltaView} locations={locations}/>
+    //     </View>
+    //   </View>
+    // </View>
+
+
     // <View style={styles.back}>
     //   <View style={styles.header}>
     //     <TouchableOpacity

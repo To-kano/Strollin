@@ -16,7 +16,7 @@ import { RondFormeText } from './rondForm';
 import { registerUser } from '../apiServer/user';
 import Popup from './Popup';
 
-const getInfoFromToken = (token, setUserInfo, props) => {
+const getInfoFromToken = (token, setUserInfo, props, setMessage, setModalVisible) => {
   const PROFILE_REQUEST_PARAMS = {
     fields: {
       string: 'id, name, last_name, first_name, email',
@@ -27,10 +27,12 @@ const getInfoFromToken = (token, setUserInfo, props) => {
     { token, parameters: PROFILE_REQUEST_PARAMS },
     (error, result) => {
       if (error) {
-        // console.log(`login info has error: ${error}`);
+        console.log(`login info has error: ${error}`);
       } else {
+        console.log("registered as : ", result.name, ' via facebook');
+
         setUserInfo(result);
-        registerUser(props, result.name, result.id, result.email);
+        registerUser(props, result.name, "Facebook1235", result.email, setMessage, setModalVisible, false);
       }
     },
   );
@@ -171,7 +173,7 @@ export function UserRegister(props) {
               } else {
                 AccessToken.getCurrentAccessToken().then((data) => {
                   const accessToken = data.accessToken.toString();
-                  getInfoFromToken(accessToken, setUserInfo, props);
+                  getInfoFromToken(accessToken, setUserInfo, props, setMessage, setModalVisible);
                 });
               }
             }}

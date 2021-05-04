@@ -5,6 +5,10 @@ var Sponsors = require('./Ressources/Sponsors');
 var algo = require('./BasicAlgo2');
 var methods = {}
 
+const {
+  LocationModel
+} = require("../models/location")
+
 //Calcul the distance betwenn two points
 function DistCalc2D(UserPos, PlacePos) {
 
@@ -97,5 +101,18 @@ methods.Popup = function (Destinations, List, LocationModel, tags, coordinate) {
   }
 }
 
+methods.Response = function (popup) {
+  let location = LocationModel;
+  let ag = popup.PopAg + 1
+
+  console.log("pop_ag: ", ag);
+  location.updateOne({id: popup.Id}, { $set: { pop_ag : ag.toString()} }, function(err, raw) {
+      if (err) {
+          return res.status(400).send({status: "Location could not be updated."});
+      } else {
+          console.log("Location updated: ", raw)
+      }
+  })
+}
 
 exports.data = methods;
