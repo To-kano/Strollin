@@ -43,16 +43,14 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
   //    AppState.removeEventListener('change', handleAppStateChange);
   //  };
   //}, []);
-  console.log("\n\n", locations)
 
   useEffect(() => {
-    console.log("\n\n", locations)
     setTime();
   }, []);
 
   async function setTime() {
     let tmp = await Date.now();
-    console.log(tmp);
+    console.log("date = ", tmp);
     tmp = Math.floor(tmp / 1000);
 
     const action = { type: 'SET_TIME', value: tmp };

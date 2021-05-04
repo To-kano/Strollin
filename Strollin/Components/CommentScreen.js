@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   StyleSheet, View, FlatList, Text, TouchableOpacity, Image
 } from 'react-native';
@@ -6,9 +5,29 @@ import Comment from './Comment';
 import { connect } from 'react-redux';
 import Store from '../Store/configureStore';
 import I18n from '../Translation/configureTrans';
-
+import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 import { StackActions } from '@react-navigation/native';
+import React, {useState} from 'react';
 
+async function getCommentList(props, setCommentList, store) {
+  await fetch(`http://${IP_SERVER}:${PORT_SERVER}/comment/get_comment_by_id`, {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      access_token: store.profil.access_token,
+      comments_list: store.tendance.selectedTendanceCourse.comments_list
+    },
+    method: 'GET',
+  }).then((answer) => answer.json())
+  .then(async function (answer) {
+    setCommentList(answer["comments_list"])
+    console.log("comment = ", store.tendance.selectedTendanceCourse.comments_list)
+  })
+  .catch((error) => {
+    console.error('error :', error);
+  });
+
+}
 
 export function Header(props) {
 
@@ -49,14 +68,18 @@ export function Header(props) {
 
 function CommentScreen(props) {
   const store = Store.getState();
+  const [commentList, setCommentList] = useState(null);
 
+  if (!commentList) {
+    getCommentList(props, setCommentList, store);
+  }
   //const DATA = require('./test.json');
   return (
     <View style={styles.view_back}>
       <Header store={store} navigation={props.navigation} />
       <View style={styles.view_list}>
         <FlatList
-          data={store.tendance.selectedTendanceCourse.comments_list}
+          data={commentList}
           contentContainerStyle={{ flexGrow: 0.1 }}
           renderItem={({ item }) => <Comment id={item["author_pseudo"]} comment={item["message"]} note={item["score"]} pseudo={item.pseudo} />}
           keyExtractor={(item) => String(item.id)}

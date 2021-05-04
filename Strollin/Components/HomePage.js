@@ -95,7 +95,7 @@ export function HomePage(props) {
               data={item}
             />
           )}
-          keyExtractor={(item) => item.name}
+          keyExtractor={(item) => item.id}
         />
 {/* export function HomePage(props) {
 

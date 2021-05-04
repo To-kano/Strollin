@@ -88,7 +88,7 @@ function ConversationBar(props) {
       )}
       {!image && (
         <View style={styles.view_horizontalDisplay}>
-          <TouchableOpacity style={styles.imgView_conversationBar} onPress={() => { goToCourseScreen(props); }}>
+          <TouchableOpacity style={styles.imgView_conversationBar} onPress={() => { goToCourseScreen(); }}>
             <Image style={styles.img_conversationBar} source={require('../../images/logo/marker_small_tchat.png')} />
           </TouchableOpacity>
           <TouchableOpacity style={styles.imgView_conversationBar} onPress={handleChooseImage}>

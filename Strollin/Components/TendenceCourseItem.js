@@ -1,10 +1,11 @@
 import {
-  Image, View, StyleSheet, Text, TouchableOpacity, ImageBackground, FlatList, ScrollView
+  Image, View, StyleSheet, Text, TouchableOpacity, ImageBackground, FlatList, ScrollView, 
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import Location_List from './locations_list';
 import { connect } from 'react-redux';
 import Store from '../Store/configureStore';
+import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 
 function GotoComment(props) {
   // props.navigation.setParams({ data: props.data });
@@ -13,16 +14,39 @@ function GotoComment(props) {
   props.navigation.navigate('CommentScreen');
 }
 
+async function getLocation(props, setLocationList) {
+  await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/get_locations_by_id`, {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      access_token: props.profil.access_token,
+      locations_id_list: props.data["locations_list"]
+    },
+    method: 'GET',
+  }).then((answer) => answer.json())
+  .then(async function (answer) {
+    setLocationList(answer["locations_list"]);
+  })
+  .catch((error) => {
+    console.error('error :', error);
+  });
+}
+
 function randPic() {
-  const rand = (Math.floor(Math.random() * 2) + 1);
+  /*const rand = (Math.floor(Math.random() * 2) + 1);
 
   if (rand === 1) {
-    return (require('../ressources/street2.jpg'));
-  }
-  return (require('../ressources/street1.jpg'));
+    return (require('../ressources/street1.jpg'));
+  }*/
+  return (require('../ressources/street2.jpg'));
 }
 
 function TendenceCourseItem(props) {
+  const [locationList, setLocationList] = useState(null);
+
+  if (!locationList) {
+    getLocation(props, setLocationList);
+  }
   return (
     <View
       style={styles.view_box}
@@ -43,8 +67,7 @@ function TendenceCourseItem(props) {
           <View style={styles.view_information}>
             <Image style={styles.img_information} source={require('../images/icons/white/marker.png')}/>
             <FlatList
-              data={props.data["locations_list"]}
-              horizontal={true}
+              data={locationList}
               showsHorizontalScrollIndicator={true}
               renderItem={({ item }) => (
                 <Location_List

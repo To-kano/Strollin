@@ -26,11 +26,9 @@ import {
 
 
 function MessagesItem(props) {
-
   
   if (props.profil.id != props.message[props.messageID].expeditor_id) {
     if (props.message[props.messageID]["type"] == "image") {
-      
       return (
       <View>
           <ImageItem
@@ -43,7 +41,14 @@ function MessagesItem(props) {
       </View>
       );
     } else if (props.message[props.messageID]["type"] == "course") {
-       <CourseItem navigation={props.navigation} id={props.message[props.messageID].message} pseudo={props.profil.friends_pseudo_list[props.message[props.messageID].expeditor_id]} style={{ width: 300, height: 300, borderRadius: 15, marginLeft: "1%" }}/>
+      return (
+      <View>
+        <CourseItem navigation={props.navigation} id={props.message[props.messageID].message} pseudo={props.profil.friends_pseudo_list[props.message[props.messageID].expeditor_id]} style={{ width: 300, height: 300, borderRadius: 15, marginLeft: "1%", backgroundColor: '#fff' }}/>
+        <Text style={styles.expeditor} ellipsizeMode="tail">
+          {props.profil.friends_pseudo_list[props.message[props.messageID].expeditor_id]}
+        </Text>
+      </View>
+      );
     } else if (props.message[props.messageID]["type"] == "message") {
       return (
         <View>
@@ -75,7 +80,12 @@ function MessagesItem(props) {
       );
     } else if (props.message[props.messageID]["type"] == "course") {
       return (
-       <CourseItem navigation={props.navigation} id={props.message[props.messageID].message} pseudo={props.profil.pseudo} style={{ width: 300, height: 300, borderRadius: 15, marginLeft: "18%" }}/>
+        <View>
+          <CourseItem navigation={props.navigation} id={props.message[props.messageID].message} pseudo={props.profil.pseudo} style={{ width: 300, height: 300, borderRadius: 15, marginLeft: "18%", backgroundColor: '#fff' }}/>
+          <Text style={styles.expeditorUser} ellipsizeMode="tail">
+            {props.profil.pseudo}
+          </Text>
+        </View>
       );
     } else if (props.message[props.messageID]["type"] == "message") {
       return (

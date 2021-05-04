@@ -15,7 +15,21 @@ function getLastMessage(props) {
 
     const message_id = props.conversation[props.conversationID].messages_list[props.conversation[props.conversationID].messages_list.length - 1];
 
-    return (props.message[message_id].message);
+    if (props.message[message_id].type == "message") {
+      return (props.message[message_id].message);
+    } else if (props.message[message_id].type == "image") {
+      if (props.message[message_id].expeditor_id == props.profil.id) {
+        return ("You sent an image!");
+      } else if (props.message[message_id].expeditor_id != props.profil.id) {
+        return (props.profil.friends_pseudo_list[props.message[message_id].expeditor_id] + " sent an image!")
+      }
+    } else if (props.message[message_id].type == "course") {
+      if (props.message[message_id].expeditor_id == props.profil.id) {
+        return ("You sent a course!");
+      } else if (props.message[message_id].expeditor_id != props.profil.id) {
+        return (props.profil.friends_pseudo_list[props.message[message_id].expeditor_id] + " sent a course!")
+      }
+    }
   } else {
     return ('No message yet!');
   }
