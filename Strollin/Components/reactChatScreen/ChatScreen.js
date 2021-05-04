@@ -21,7 +21,9 @@ function ChatScreen(props) {
 
 
   return (
-    <View style={styles.view_chatScreen}>
+    <View
+      style={styles.view_chatScreen}
+    >
       <View style={styles.view_header}>
         <TouchableOpacity
           onPress={() => { goToMenu(props); }}
