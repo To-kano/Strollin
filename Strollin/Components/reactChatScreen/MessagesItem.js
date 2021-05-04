@@ -80,7 +80,7 @@ function MessagesItem(props) {
     } else if (props.message[props.messageID]["type"] == "message") {
       return (
         <View>
-          <View style={styles.view_message}>
+          <View style={styles.view_message_mine}>
             <View style={styles.blueDisplay}>
                 <Text style={styles.messageBlue}>
                   {props.message[props.messageID].message}
@@ -101,6 +101,9 @@ const styles = StyleSheet.create({
   view_message: {
     justifyContent: 'flex-start', flexDirection: 'row',
   },
+  view_message_mine: {
+    justifyContent: 'flex-start', flexDirection: 'row-reverse',
+  },
   greyDisplay: {
     maxWidth: '77%',
     borderRadius: 22,
@@ -113,7 +116,6 @@ const styles = StyleSheet.create({
   },
   blueDisplay: {
     maxWidth: '77%',
-    marginLeft: "23%",
     borderRadius: 22,
     paddingTop: 10,
     paddingLeft: 15,

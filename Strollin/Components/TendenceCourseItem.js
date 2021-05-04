@@ -82,6 +82,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     minHeight: 235,
     marginBottom: 30,
+    width: '100%',
   },
   img_boxBack: {
     flex: 1,
