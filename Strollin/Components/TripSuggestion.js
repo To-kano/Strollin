@@ -154,7 +154,7 @@ export function TripSuggestion(props) {
   const [course, setCourse] = useState(null);
 
   //const { test } = route.params;
-  console.log("\n\n\nprops: ", props.profil);
+  //console.log("\n\n\nprops: ", props.profil);
 
   useEffect(() => {
     Tts.setDefaultLanguage('en-US');

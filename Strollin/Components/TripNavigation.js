@@ -47,12 +47,41 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
 
   const [pop, setPop] = useState(false);
   const [course, setCourse] = useState(null);
+  const [place, setPlace] = useState(null);
 
 
-  async function PopUpResponse() {
+  async function PopUpResponse(response, pos, course, popup) {
+    const store = Store.getState();
+    const access_Token = store.profil.access_token;
+    const coordinate = [];
+    const test = JSON.stringify({course: course, popup: popup})
+    coordinate[0] = pos.latitude;
+    coordinate[1] = pos.longitude;
 
+    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/generator/popup_answer`, {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      access_Token,
+      coordinate: coordinate,
+      answer: response
+    },
+    body: test,
+    method: 'POST',
+    })
+    .then(res => res.json())
+    .then(json => {
+      console.log("pleasssssssssse: ", json);
+      let test_loc = []
+      test_loc.push(locations[0])
+      test_loc.push(locations[1])
+      const action = { type: 'SET_LOCATIONS', locations: test_loc };
+      Store.dispatch(action);
+      setPop(false);
+
+    });
   }
-  
+
   async function PopUpReq(pos, course) {
     console.log("course: ", course);
     const store = Store.getState();
@@ -87,7 +116,7 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
   console.log("\n\n", locations)
 
   useEffect(() => {
-    console.log("\n\n", locations)
+    console.log("ceci est locations\n\n", locations)
     setTime();
   }, []);
 
@@ -122,11 +151,11 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
       </Text>
       <Button
         title="yes"
-        onPress={() => Alert.alert('Simple Button pressed')}
+        onPress={() => PopUpResponse(true, profil.first_name, profil.scoreCourse, course)}
       />
       <Button
         title="no"
-        onPress={() => Alert.alert('Simple Button pressed')}
+        onPress={() => PopUpResponse(false, profil.first_name, profil.scoreCourse, course)}
       />
     </View>
     )}

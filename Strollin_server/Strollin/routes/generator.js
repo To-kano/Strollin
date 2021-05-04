@@ -96,9 +96,11 @@ router.post('/generate_popup', async function(req, res) {
  * Answer to pop-up.
  * @param {String} req.headers.access_token
  * @param {Boolean} req.headers.answer
- * @param {LocationObject} req.headers.popup
+ *
+ * @param {LocationObject} req.body.popup
+ * @param {CourseObject} req.body.course
  */
-router.get('/popup_answer', async function(req, res) {
+router.post('/popup_answer', async function(req, res) {
 
     let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo").catch(error => error);
     let popup = undefined;
@@ -110,7 +112,7 @@ router.get('/popup_answer', async function(req, res) {
         return res.status(400).send({status: "Error in database transaction:\n", error: user});
     }
 
-    if (!req.headers.answer || !req.headers.popup) {
+    if (!req.headers.answer || !req.body.popup || !req.body.course) {
         return res.status(400).send({status: "Parameter required is missing."});
     }
 
