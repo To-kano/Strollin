@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import Store from '../../Store/configureStore';
 
 function addParticipant(props) {
@@ -31,6 +31,7 @@ function FriendList(props) {
           <Text style={styles.previewTitle}>
             { props.profil.friends_pseudo_list[props.id] }
           </Text>
+          <Image style={styles.img_checked} source={require('../../images/icons/black/friend.png')} />
         </TouchableOpacity>
       );
     }
@@ -43,6 +44,7 @@ function FriendList(props) {
       <Text style={styles.previewTitle}>
         { props.profil.friends_pseudo_list[props.id] }
       </Text>
+      <Image style={styles.img_checked} source={require('../../images/icons/black/addFriend.png')} />
     </TouchableOpacity>
   );
 }
@@ -52,26 +54,41 @@ export default connect(mapStateToProps)(FriendList);
 
 const styles = StyleSheet.create({
   button: {
-    alignItems: 'center',
-    // backgroundColor: '#DDDDDD',
-    padding: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    marginTop: 5,
+    marginBottom: 5,
     width: '100%',
-    borderColor: "#000000"
+    paddingLeft: 15,
+    paddingTop: 15,
+    paddingRight: 15,
+    paddingBottom: 15,
   },
   selected_button: {
-    alignItems: 'center',
-    backgroundColor: '#595959',
-    padding: 10,
-    borderColor: "#000000",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    marginTop: 5,
+    marginBottom: 5,
     width: '100%',
+    paddingLeft: 15,
+    paddingTop: 15,
+    paddingRight: 15,
+    paddingBottom: 15,
   },
   previewTitle: {
-    fontWeight: '800',
-    width: '100%',
-    fontSize: 20
+    fontWeight: 'bold',
+    textTransform: 'capitalize',
+    fontSize: 18,
+    color: "#000",
   },
-  previewContent: {
-    fontWeight: '300',
-    fontSize: 12
-  },
+  img_checked: {
+    width: 24,
+    height: 24,
+  }
 });

@@ -69,7 +69,7 @@ export function Header({ props, defaultState = false }) {
       <TouchableOpacity
         onPress={() => { GotoChat(props, createConversation); }}
       >
-        <Image style={styles.img_header} source={require('../../images/create_button.png')} />
+        <Image style={styles.img_header} source={require('../../images/icons/black/createChat.png')} />
       </TouchableOpacity>
     </View>
   );

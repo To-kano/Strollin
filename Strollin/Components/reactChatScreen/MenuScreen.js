@@ -176,6 +176,7 @@ const styles = StyleSheet.create({
   },
   view_list: {
     flex: 697,
+    width: '100%',
   }
   // container: {
   //   flex: 1,

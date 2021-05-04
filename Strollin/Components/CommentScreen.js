@@ -48,14 +48,12 @@ function CommentScreen(props) {
     <View style={styles.view_back}>
       <Header store={store} navigation={props.navigation} />
       <View style={styles.view_list}>
-
-
-      <FlatList
-        data={store.tendance.selectedTendanceCourse.comments_list}
-        contentContainerStyle={{ flexGrow: 0.1 }}
-        renderItem={({ item }) => <Comment id={item["author_pseudo"]} comment={item["message"]} note={item["score"]} pseudo={item.pseudo} />}
-        keyExtractor={(item) => String(item.id)}
-      />
+        <FlatList
+          data={store.tendance.selectedTendanceCourse.comments_list}
+          contentContainerStyle={{ flexGrow: 0.1 }}
+          renderItem={({ item }) => <Comment id={item["author_pseudo"]} comment={item["message"]} note={item["score"]} pseudo={item.pseudo} />}
+          keyExtractor={(item) => String(item.id)}
+        />
       </View>
     </View>
   );
@@ -104,5 +102,6 @@ const styles = StyleSheet.create({
   },
   view_list: {
     flex: 757,
+    width: '100%',
   }
 });

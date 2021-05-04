@@ -1,5 +1,5 @@
 import {
-  Image, View, StyleSheet, Text, TouchableOpacity, ImageBackground, FlatList
+  Image, View, StyleSheet, Text, TouchableOpacity, ImageBackground, FlatList, ScrollView
 } from 'react-native';
 import React from 'react';
 import Location_List from './locations_list';
@@ -24,7 +24,7 @@ function randPic() {
 
 function TendenceCourseItem(props) {
   return (
-    <TouchableOpacity
+    <View
       style={styles.view_box}
       onPress={() => GotoComment(props)}
     >
@@ -44,6 +44,8 @@ function TendenceCourseItem(props) {
             <Image style={styles.img_information} source={require('../images/icons/white/marker.png')}/>
             <FlatList
               data={props.data["locations_list"]}
+              horizontal={true}
+              showsHorizontalScrollIndicator={true}
               renderItem={({ item }) => (
                 <Location_List
                   {...props}
@@ -56,10 +58,17 @@ function TendenceCourseItem(props) {
             {/* <Text style={styles.text_information}>{props.data.destinations[1]} - </Text> */}
             {/* <Text style={styles.text_information}>{props.data.destinations[2]}</Text> */}
           </View>
-          <Text style={styles.text_name}>{props.data.name}</Text>
+          <Text numberOfLines={1} style={styles.text_name}>{props.data.name}</Text>
+          <View style={styles.view_comments}>
+            <TouchableOpacity
+              onPress={() => GotoComment(props)}
+              >
+                <Image style={styles.img_comment} source={require('../images/icons/white/comments.png')}/>
+            </TouchableOpacity>
+          </View>
         </View>
       </ImageBackground>
-    </TouchableOpacity>
+    </View>
   );
 }
 
@@ -71,6 +80,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#000000',
     borderRadius: 12,
+    minHeight: 235,
     marginBottom: 30,
   },
   img_boxBack: {
@@ -81,9 +91,9 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column-reverse',
     borderRadius: 12,
-    paddingTop: 20,
-    paddingLeft: 30,
-    paddingRight: 30,
+    paddingTop: 10,
+    paddingLeft: 20,
+    paddingRight: 20,
     paddingBottom: 20,
     backgroundColor: 'rgba(0,0,0,0.6)',
   },
@@ -113,6 +123,15 @@ const styles = StyleSheet.create({
     letterSpacing: 2,
     fontWeight: 'bold',
     color: '#FFFFFF',
+  },
+  view_comments: {
+    flex: 1,
+    flexDirection: 'row-reverse',
+  },
+  img_comment: {
+    width: 35,
+    height: 35,
+    marginRight: -10,
   }
 });
 
