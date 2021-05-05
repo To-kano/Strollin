@@ -22,11 +22,12 @@ export async function updateCoordinates(setUserPosition) {
         latitude: position.coords.latitude,
         longitude: position.coords.longitude,
       };
-      // //console.log(position);
+      console.log("pritn de pierre: ", position);
       setUserPosition(data);
+      return
     },
     (error) => {
-      // console.log(error.code, error.message);
+       console.log(error.code, error.message);
     },
     { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
   );
