@@ -111,6 +111,29 @@ function Back(props) {
   props.navigation.navigate('HomePage');
 }
 
+function Switch() {
+  const [isEatDrink, setEatDring] = useState(false);
+
+  if (isEatDrink === false) {
+    return (
+      <TouchableOpacity
+        style={styles.view_switchOff}
+        onPress={() => { setEatDring(!isEatDrink); }}
+      >
+        <View style={styles.view_switchIn} />
+      </TouchableOpacity>
+    );
+  }
+  return (
+    <TouchableOpacity
+      style={styles.view_switchOn}
+      onPress={() => { setEatDring(!isEatDrink); }}
+    >
+      <View style={styles.view_switchIn} />
+    </TouchableOpacity>
+  );
+}
+
 export function CourseSettings(props) {
   const [hours, setHours] = useState('0');
   const [minutes, setMinutes] = useState('0');
@@ -148,6 +171,7 @@ export function CourseSettings(props) {
           <Text style={styles.text_option}>
             Budget
           </Text>
+          <View style={styles.view_separator} />
           <View style={styles.view_optionInput}>
             <TextInput
               style={styles.textInput_optionInput}
@@ -165,6 +189,7 @@ export function CourseSettings(props) {
           <Text style={styles.text_option}>
             Spending Time
           </Text>
+          <View style={styles.view_separator} />
           <View style={styles.view_optionInput}>
             <TextInput
               style={styles.textInput_optionInput}
@@ -188,6 +213,18 @@ export function CourseSettings(props) {
             <Text style={styles.text_optionInput}>
               Minute(s)
             </Text>
+          </View>
+        </View>
+        <View style={styles.view_option}>
+          <Text style={styles.text_option}>
+            Alimentation
+          </Text>
+          <View style={styles.view_separator} />
+          <View style={styles.view_optionInput}>
+            <Text style={styles.text_optionInput}>
+              Souhaitez-vous manger et boire ?
+            </Text>
+            <Switch/>
           </View>
         </View>
       </View>
@@ -330,6 +367,7 @@ const styles = StyleSheet.create({
   },
   view_optionInput: {
     marginTop: 5,
+    marginBottom: 5,
     height: 40,
     flexDirection: 'row',
     alignItems: 'center',
@@ -349,6 +387,34 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 16,
     color: '#000000',
+  },
+  view_switchOff: {
+    height: 30,
+    borderRadius: 20,
+    flex: 15,
+    flexDirection: 'row',
+    backgroundColor: '#BCBCBC',
+  },
+  view_switchOn: {
+    height: 30,
+    borderRadius: 20,
+    flex: 15,
+    flexDirection: 'row-reverse',
+    backgroundColor: '#0092A7',
+  },
+  view_switchIn: {
+    height: 30,
+    width: 30,
+    borderRadius: 20,
+    backgroundColor: '#fff',
+  },
+  view_separator: {
+    height: 3,
+    marginTop: 2,
+    marginBottom: 5,
+    borderRadius: 2,
+    width: '100%',
+    backgroundColor:'#0092A7',
   },
   view_newTrip: {
     flex: 50,
