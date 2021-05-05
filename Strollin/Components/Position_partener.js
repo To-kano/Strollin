@@ -6,10 +6,13 @@ import { useState, useEffect } from 'react';
 import I18n from '../Translation/configureTrans';
 import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 import { connect } from 'react-redux';
-import { requestGeolocalisationPermission, updateCoordinates } from './map_tmp'
+import { requestGeolocalisationPermission, updateCoordinates } from './map'
 import * as RNLocalize from 'react-native-localize';
 import MapView, { Marker } from "react-native-maps";
 import MapViewDirections from 'react-native-maps-directions';
+import Store from '../Store/configureStore';
+import {getCustomCourse} from '../apiServer/course';
+const store = Store.getState();
 
 
 const locales = RNLocalize.getLocales();
@@ -39,8 +42,13 @@ let jsonDefault = {
     status: "OK"
 }
 
-function Position(props) {
+function Position_partener(props) {
 
+  const [value, onChangeValue] = React.useState(" ");
+  const [jsonObject, onChangeJson] = useState(jsonDefault)
+  const [isLoading, setLoading] = useState(true);
+  const [userPosition, setUserPosition] = useState(null);
+  const [isPermision, setPermision] = useState(false)
   const allTime = []
   let language = "en"
   ////console.log(props.navigate);
@@ -52,19 +60,27 @@ function Position(props) {
     }
   })
 
-  const GOOGLE_MAPS_APIKEY = 'AIzaSyDGvC3HkeGolvgvOevKuaE_6LmS9MPjlvE';
+  if (props.asked == false) {
+    requestGeolocalisationPermission(Store.dispatch);
+  }
+  if (props.permission == true && userPosition == null) {
+    updateCoordinates(setUserPosition);
+  }
+  if (props.permission && userPosition) {
+    setPermision(true)
+    let regionTmp = region
+    regionTmp.longitude = userPosition.longitude
+    regionTmp.latitude = userPosition.latitude
+    setRegion(regionTmp)
+  }
 
-  const [value, onChangeValue] = React.useState(" ");
-  const [jsonObject, onChangeJson] = useState(jsonDefault)
-  const [isLoading, setLoading] = useState(true);
-  const [userPosition, setUserPosition] = useState(null);
-  const [isPermision, setPermision] = useState(false)
+  const GOOGLE_MAPS_APIKEY = 'AIzaSyDGvC3HkeGolvgvOevKuaE_6LmS9MPjlvE';
 
   let regionTmp = {
     latitude: 0,
     longitude: 0,
-    latitudeDelta: 0,
-    longitudeDelta: 0
+    latitudeDelta: 0.009,
+    longitudeDelta: 0.009
   }
 
   function sendMessage(value) {
@@ -136,6 +152,15 @@ function Position(props) {
   );
 }
 
+const mapStateToProps = (state) => {
+  return (
+    {
+      position: state.position,
+      profil: state.profil,
+      map: state.map
+    }
+  )
+};
 //const mapStateToProps = (state) => state;
 
-export default Position;
+export default (Position_partener);

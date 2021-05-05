@@ -88,7 +88,6 @@ function Personal_trip(props) {
       jsonTmp.website = json.website
       jsonTmp.name = json.name
       jsonTmp.adress = json.formatted_address
-      console.log("cheeeeeeeeeh\n\n" + jsonTmp)
       locationPush.locations_list.push(jsonTmp)
     });
   }
@@ -126,8 +125,8 @@ function Personal_trip(props) {
 
   if (Array.isArray(locales)) {
     language = locales[0].languageTag;
-    console.log(language)
   }
+
   if (props.asked == false) {
     requestGeolocalisationPermission(Store.dispatch);
   }
@@ -136,6 +135,10 @@ function Personal_trip(props) {
   }
   if (props.permission && userPosition && localRegion.latitude && localRegion.longitude) {
     setPermision(true)
+    let regionTmp = region
+    regionTmp.longitude = userPosition.longitude
+    regionTmp.latitude = userPosition.latitude
+    setRegion(regionTmp)
   }
 
   function setLocationMaps() {
@@ -154,8 +157,8 @@ function Personal_trip(props) {
     fetch(url, {
       headers : {
               place_name : value,
-              locationlat: "48.8650988",
-              locationlong: "2.1931007",
+              locationlat: region.latitude,
+              locationlong: region.longitude,
               language: language
       },
       method: 'GET',
@@ -352,6 +355,13 @@ function Personal_trip(props) {
   );
 }
 
+const mapStateToProps = (state) => (
+  {
+    position: state.position,
+    profil: state.profil,
+    map: state.map
+  }
+);
 //const mapStateToProps = (state) => state;
 
-export default Personal_trip;
+export default (Personal_trip);
