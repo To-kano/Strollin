@@ -3,6 +3,10 @@ var router = express.Router();
 
 const nodemailer = require('nodemailer');
 
+const CryptoJS = require("crypto-js");
+
+const keyCrypto = "key";
+
 const {
   UserModel
 } = require("../models/user")
@@ -53,11 +57,15 @@ router.post('/register', async function (req, res) {
     // if (password_check == false) {
     //   return res.status(400).send({status: "The password must contains 6 characters with at least 1 uppercase, 1 lowercase and 1 digit."});
     // }
-    user = new UserModel({
+    //console.log( "cryp mot de passe registered ",CryptoJS.HmacSHA1(req.body.password, keyCrypto));
+
+
+    let user = new UserModel({
       id: new Number(Date.now()),
       creation_date: new Date().toLocaleDateString("fr-FR"),
       mail: req.body.mail,
-      password: req.body.password,
+      //password: req.body.password,
+      password: CryptoJS.HmacSHA1(req.body.password, keyCrypto),
       partner: req.body.partner,
       access_token: token,
       first_name: req.body.first_name,
@@ -92,7 +100,7 @@ router.post('/register', async function (req, res) {
       from: '"Strollin App" <strollinapp@outlook.com>', // sender address (who sends)
       to: req.body.mail, // list of receivers (who receives)
       subject: `subscribe the app Strollin `, // Subject line
-      html: `<a href="http://88.165.45.219:3002/users/verify?id=${user.id}">test</a> `,
+      html: `<a href="http://89.87.94.17:3000/users/verify?id=${user.id}">test</a> `,
     };
 
     // send the mail
@@ -100,7 +108,7 @@ router.post('/register', async function (req, res) {
       if (error) {
         console.log(error);
       } else {
-        console.log('Email sent: ' + info.response);
+        //console.log('Email sent: ' + info.response);
       }
     });
 
@@ -112,7 +120,7 @@ router.post('/register', async function (req, res) {
 
 router.get('/verify', async function (req, res) {
 
-  console.log("verify\n", req.query.id);
+  //console.log("verify\n", req.query.id);
   let user = await UserModel.findOne({ id: req.query.id }).catch(error => error);
   if (!user) {
     return res.status(400).send({ status: "not valid link" });
@@ -461,11 +469,20 @@ router.post('/remove_friend', async function (req, res) {
  */
 router.get('/login', async function (req, res) {
 
-  let user = await UserModel.findOne({ mail: req.headers.mail, password: req.headers.password }).catch(error => error);
+  //console.log( "mot de passe login ",req.headers.password);
+  //console.log( "cryp mot de passe login ",CryptoJS.HmacSHA1(req.headers.password, keyCrypto).toString());
+
+
+  let user = await UserModel.findOne({ mail: req.headers.mail, password: CryptoJS.HmacSHA1(req.headers.password, keyCrypto).toString() }).catch(error => error);
+  //console.log( "user ", user);
+
   let token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
   let error = undefined;
   let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   let blacklist = await BlacklistModel.findOne({ ip: ip }).catch(error => error);
+  
+
+
 
   if (!blacklist) {
     blacklist = new BlacklistModel({ ip: ip });

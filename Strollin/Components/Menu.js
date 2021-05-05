@@ -36,7 +36,7 @@ function Menu(props) {
           <TouchableOpacity
             onPress={() => {
               profileUser(props, store.profil.access_token);
-              props.navigation.navigate(props.state.routeNames[0]);
+              props.navigation.navigate(props.state.routeNames[0], { screen: 'HomePage' });
             }}
             style={[styles.view_navigationIn, props.state.index == 0 ? styles.current_page : {}]}
           >

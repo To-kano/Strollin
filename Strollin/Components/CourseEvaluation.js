@@ -122,6 +122,7 @@ export function CourseEvaluation(props) {
       <View style={styles.view_comment}>
         <Text style={styles.text_comment}>{I18n.t('CourseEvaluation.yourComment')}</Text>
         <TextInput
+          autoCapitalize={'none'}
           style={styles.textInput_comment}
           onChangeText={(text) => setComment(text)}
           value={comment}

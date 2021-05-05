@@ -215,6 +215,7 @@ function Personal_trip(props) {
         <View>
           <Text style={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center' }}>{"Personal trip"}</Text>
           <TextInput
+            autoCapitalize={'none'}
             onChangeText={(text) => onChangeValue(text)}
             value={value}
             style={{ borderWidth: 1 }}

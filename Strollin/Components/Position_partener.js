@@ -123,6 +123,7 @@ function Position_partener(props) {
         <View>
           <Text style={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center' }}>{I18n.t('Position.information')}</Text>
           <TextInput
+            autoCapitalize={'none'}
             onChangeText={(text) => onChangeValue(text)}
             value={value}
             style={{ borderWidth: 1 }}

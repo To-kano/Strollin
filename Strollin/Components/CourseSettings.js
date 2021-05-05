@@ -175,6 +175,7 @@ export function CourseSettings(props) {
           <View style={styles.view_separator} />
           <View style={styles.view_optionInput}>
             <TextInput
+              autoCapitalize={'none'}
               style={styles.textInput_optionInput}
               keyboardType="numeric"
               onChangeText={(text) => setBudget(text)}
@@ -193,6 +194,7 @@ export function CourseSettings(props) {
           <View style={styles.view_separator} />
           <View style={styles.view_optionInput}>
             <TextInput
+          autoCapitalize={'none'}
               style={styles.textInput_optionInput}
               keyboardType="numeric"
               onChangeText={(text) => setHours(text)}
@@ -205,6 +207,7 @@ export function CourseSettings(props) {
           </View>
           <View style={styles.view_optionInput}>
             <TextInput
+          autoCapitalize={'none'}
               style={styles.textInput_optionInput}
               keyboardType="numeric"
               onChangeText={(text) => setMinutes(text)}
