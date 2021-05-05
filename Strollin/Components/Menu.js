@@ -142,7 +142,8 @@ function Menu(props) {
         config={config}
         style={{
           flex: 1,
-          width: 30
+          width: 30,
+          backgroundColor:'white' // si il y a pas ça alors la gesture ne marche pas
         }}
       />
     </View>

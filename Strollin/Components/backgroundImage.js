@@ -6,7 +6,7 @@ function RandPic() {
   let img = '';
 
   if (nb == 1) img = require('../ressources/street1.jpg');
-  if (nb == 2) img = require('../ressources/street2.jpeg');
+  if (nb == 2) img = require('../ressources/street2.jpg');
   if (nb == 3) img = require('../ressources/plum2.jpg');
   return img;
 }

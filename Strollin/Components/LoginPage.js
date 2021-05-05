@@ -13,7 +13,7 @@ import I18n from '../Translation/configureTrans';
 import { loginUser } from '../apiServer/user';
 
 const imageStreet1 = require('../ressources/street1.jpg');
-const imageStreet2 = require('../ressources/street2.jpeg');
+const imageStreet2 = require('../ressources/street2.jpg');
 const imagePlum2 = require('../ressources/plum2.jpg');
 const imageLogo3 = require('../ressources/logo3.png');
 
