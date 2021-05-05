@@ -95,7 +95,7 @@ export function HomePage(props) {
               data={item}
             />
           )}
-          keyExtractor={(item) => item.name}
+          keyExtractor={(item) => item.id}
         />
 {/* export function HomePage(props) {
 
@@ -181,6 +181,7 @@ const styles = StyleSheet.create({
   },
   view_list: {
     flex: 757,
+    width: '100%',
   }
 });
 

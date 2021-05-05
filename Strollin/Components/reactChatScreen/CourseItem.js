@@ -47,18 +47,15 @@ function CourseItem(props) {
                 source={require('../../images/loading.jpg')}
                 style={props.style}
             />
-            <Text style={styles.expeditor} ellipsizeMode="tail">
-              {props.pseudo}
-            </Text>
         </View>
         );
       } else {
         return (
           <View>
-            <TouchableOpacity  onPress={() => setModalVisible(true)}>
+            <TouchableOpacity  onPress={() => setModalVisible(true)} style={props.style}>
               <Image
                   source={require('../../images/logo/marker_small.png')}
-                  style={{ width: 300, height: 300, borderRadius: 15, marginLeft: "1%" }}
+                  style={{ width: 220, height: 220, borderRadius: 15, marginLeft: "12%" }}
                 />
                 <Text style={styles.message} ellipsizeMode="tail">
                     {courseObject.name}
@@ -67,18 +64,69 @@ function CourseItem(props) {
             <Popup message={"Preview of course"} modalVisible={modalVisible} setModalVisible={setModalVisible}>
                 <CoursePreviewItem navigation={props.navigation} courseObject={courseObject}/>
             </Popup>
-            <Text style={styles.expeditor} ellipsizeMode="tail">
-              {props.pseudo}
-            </Text>
           </View>
         );
       }}
 
 const styles = StyleSheet.create({
   message: {
-    fontSize: 30,
+    fontSize: 22,
     fontWeight: 'bold',
-  }
+  },
+  view_message: {
+    justifyContent: 'flex-start', flexDirection: 'row',
+  },
+  view_message_mine: {
+    justifyContent: 'flex-start', flexDirection: 'row-reverse',
+  },
+  greyDisplay: {
+    maxWidth: '77%',
+    borderRadius: 22,
+    paddingTop: 10,
+    paddingLeft: 15,
+    paddingRight: 15,
+    paddingBottom: 10,
+    justifyContent: 'flex-start',
+    backgroundColor: '#fff',
+  },
+  blueDisplay: {
+    maxWidth: '77%',
+    borderRadius: 22,
+    paddingTop: 10,
+    paddingLeft: 15,
+    paddingRight: 15,
+    paddingBottom: 10,
+    justifyContent: 'flex-start',
+    backgroundColor: '#0092A7',
+    alignItems: 'flex-end',
+  },
+  messageGrey: {
+    fontSize: 16,
+    color: '#000',
+  },
+  messageBlue: {
+    fontSize: 16,
+    color: '#fff',
+  },
+  expeditor: {
+    fontSize: 10,
+    marginLeft: 5,
+    textTransform: 'capitalize',
+    fontWeight: 'bold',
+    textAlign: "left",
+  },
+  expeditorUser: {
+    fontSize: 10,
+    marginRight: 5,
+    textTransform: 'capitalize',
+    fontWeight: 'bold',
+    textAlign: "right",
+  },
+  icon: {
+    width: "20%",
+    height: "20%",
+    resizeMode: 'contain',
+  },
 });
 //const mapStateToProps = (state) => state;
 //export default connect(mapStateToProps)(CourseItem);

@@ -186,7 +186,7 @@ export function TagSelection({ navigation, profil }) {
         </Text>
         <FlatList
           data={array}
-          keyExtractor={(item) => item._id}
+          keyExtractor={(item) => item.name}
           renderItem={({ item }) => (
             <Tag name={item.name} chosen={item.pressed} />
           )}

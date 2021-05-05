@@ -93,6 +93,14 @@ function MyStack(props) {
                 animationEnabled: false,
               }}
             />
+            <Stack.Screen
+              name="SettingPartenaire"
+              component={PartnerRegister}
+              options={{
+                title: 'partner settings',
+                animationEnabled: false,
+              }}
+            />
             {/* <Stack.Screen
               name="Connection"
               component={ConnectionScreen}

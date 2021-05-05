@@ -104,47 +104,7 @@ async function setTendance(props, access_token) {
   .then(async function (answer) {
     const action = { type: "SET_TENDANCE_LIST", value: answer["courses_list"] }
     props.dispatch(action);
-
-    for (let i in answer["courses_list"]) {
-      await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/get_locations_by_id`, {
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          access_token: access_token,
-          locations_id_list: answer["courses_list"][i]["locations_list"]
-        },
-        method: 'GET',
-      }).then((answer) => answer.json())
-      .then(async function (answer) {
-        const action = { type: "SET_LOCATION_LIST", value: answer["locations_list"], index: i }
-        props.dispatch(action);
-        const action2 = { type: "SET_CONVERTED_LOCATION", index: i }
-        props.dispatch(action2);
-      })
-      .catch((error) => {
-        console.error('error :', error);
-      });
-
-      await fetch(`http://${IP_SERVER}:${PORT_SERVER}/comment/get_comment_by_id`, {
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          access_token: access_token,
-          comments_list: answer["courses_list"][i]["comments_list"]
-        },
-        method: 'GET',
-      }).then((answer) => answer.json())
-      .then(async function (answer) {
-        const action = { type: "SET_COMMENT_LIST", value: answer["comments_list"], index: i }
-        props.dispatch(action);
-      })
-      .catch((error) => {
-        console.error('error :', error);
-      });
-    }
-
     return answer;
-
   })
 }
 

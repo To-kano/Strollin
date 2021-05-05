@@ -51,6 +51,10 @@ function Home() {
                   name="TagSelection"
                   component={TagSelection}
             />
+            <Stack.Screen
+                  name="SettingPartenaire"
+                  component={SettingPartenaire}
+            />
         </Stack.Navigator>
     );
 }

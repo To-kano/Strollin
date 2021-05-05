@@ -163,7 +163,6 @@ export function TripSuggestion(props) {
       //const result = await getCustomCourse(props.profil.access_token);
       const store = Store.getState();
       const result = store.course.course[0];
-      console.log("course =  ", result);
       setCourse(result);
     }
 
@@ -178,20 +177,14 @@ export function TripSuggestion(props) {
     }
 
     if (props.profil.sound && course) {
-      console.log("setLocation ", course);
       for (let i = 0; i < course.length; i++) {
         Tts.speak(`${I18n.t("TripSuggestion.step")} ${i + 1}`);
         Tts.speak(course.name);
       }
     }
-    console.log("course in trip = ", course);
-    if (course && course["converted"]) {
-      setLocations(course.locations_list);
-    } else if (course && course.locations_list) {
-      console.log("entered in getLocation");
+    if (course && course.locations_list) {
       getLocations();
     }
-
   }, [course]);
 
   const [locations, setLocations] = useState(null);
