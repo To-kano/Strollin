@@ -146,7 +146,7 @@ router.post('/update_location', async function(req, res) {
         return res.status(400).send({status: "The location does not exist."});
     }
     if (location.reason) {
-        return res.status(400).send({status: "Error in database transaction:\n", error: location});
+        return res.status(400).send({status: "Error in database transaction 1:\n", error: location});
     }
 
     if (req.body.name) {
@@ -348,9 +348,9 @@ router.get('/get_partner_location', async function(req, res) {
     if (user.reason) {
         return res.status(400).send({status: "Error in database transaction:\n", error: user});
     }
-    if (user.partner == false) {
+    /*if (user.partner == false) {
         return res.status(400).send({status: "You are not a partner."});
-    }
+    }*/
     location = await LocationModel.findOne({owner_id: user.id}, "-_id").catch(error => error);
     if (!location) {
         return res.status(400).send({status: "You have no location registered."});
