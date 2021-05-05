@@ -20,7 +20,7 @@ function randPic() {
   return (require('../ressources/street1.jpg'));
 }
 
-const initialList = [
+var initialList = [
   {
     id: 1,
     name: 'Foot',
@@ -50,6 +50,7 @@ function PartenaireScreen(props) {
       "alg_ag": "0",
       "__v": 0
   })
+  const [tagsList, setTagsList] = useState(initialList)
   console.log(locationUser)
 
   useEffect(() => {
@@ -66,6 +67,11 @@ function PartenaireScreen(props) {
           console.log("answer.location_list", answer);
           if (answer.location) {
             setUser(answer.location);
+            initialList = []
+            for (var i = 0; i < answer.location.tags_list.length; i++) {
+              initialList.push({id: i, name: answer.location.tags_list[i]._id})
+            }
+            setTagsList(initialList)
           }
         })
         .catch((error) => {
@@ -108,9 +114,9 @@ function PartenaireScreen(props) {
             <View style={styles.view_boxIn}>
               <View style={styles.view_information}>
                 <Image style={styles.img_location} source={require('../images/icons/white/location.png')}/>
-                <Text style={styles.text_location}>Adresse de l entreprise</Text>
+                <Text style={styles.text_location}>{locationUser.address}</Text>
               </View>
-              <Text style={styles.text_name}>Nom entreprise</Text>
+              <Text style={styles.text_name}>{locationUser.name}</Text>
             </View>
           </ImageBackground>
         </TouchableOpacity>
@@ -151,7 +157,7 @@ function PartenaireScreen(props) {
             {I18n.t('Partner.number_of_visitors')}
           </Text>
           <View style={styles.view_number}>
-            <Text style={styles.text_number}>310</Text>
+            <Text style={styles.text_number}>{Number(locationUser.alg_ag) + Number(locationUser.pop_ag)}</Text>
           </View>
         </View>
         <View style={styles.view_stat}>
@@ -163,7 +169,7 @@ function PartenaireScreen(props) {
             style={styles.view_tagIn}
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}
-            data={list}
+            data={tagsList}
             contentContainerStyle={{ flexGrow: 1 }}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => (
