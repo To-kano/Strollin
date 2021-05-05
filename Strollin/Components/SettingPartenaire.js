@@ -257,6 +257,7 @@ function SettingPartenaire(props) {
       <TouchableOpacity
         style={styles.view_button}
         onPress={() => {
+          props.navigation.navigate('TagSelectionPart');
           console.log("Choose shop's Tags");
         }}
       >

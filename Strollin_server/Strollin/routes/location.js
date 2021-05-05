@@ -196,6 +196,9 @@ router.post('/update_location', async function(req, res) {
     if (req.body.website) {
         update.website = req.body.website
     }
+    if (req.body.tags_list) {
+        update.tags_list = req.body.tags_list
+    }
     error = await LocationModel.updateOne({id: location.id}, update).catch(error => error);
     if (error.errors) {
         return res.status(400).send({status: "Location could not be updated."});

@@ -49,7 +49,7 @@ export function Header({ navigation, defaultState = false }) {
   );
 }
 
-export function Tag({ name, chosen, defaultState = false }) {
+export function Tag({ name, chosen, defaultState = false, Id, Tags}) {
   const [pressed, setpressed] = useState(defaultState);
   const [args, setArgs] = useState(true);
 
@@ -57,14 +57,48 @@ export function Tag({ name, chosen, defaultState = false }) {
     const store = Store.getState();
     const access_Token = store.profil.access_token;
 
-    const list = [body];
-    const test = JSON.stringify({ tags_list: list });
+    const list = Tags;
 
-    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/add_tag`, {
+
+    list.push({_id: body, dips: 0})
+    console.log("list: ", list);
+    const test = JSON.stringify({ tags_list: list });
+    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/update_location`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        access_Token
+        access_Token,
+        location_id: Id
+      },
+      body: test,
+      method: 'POST',
+    })
+      .then((res) => res.json())
+      .then((json) => {
+      });
+  }
+
+  async function RemoveTags(body) {
+    const store = Store.getState();
+    const access_Token = store.profil.access_token;
+
+    const list = Tags;
+
+
+    for (var i = 0; i < list.length; i++) {
+      if (list[i]._id == body) {
+        list.splice(i, 1)
+        break;
+      }
+    }
+    console.log("list: ", list);
+    const test = JSON.stringify({ tags_list: list });
+    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/update_location`, {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        access_Token,
+        location_id: Id
       },
       body: test,
       method: 'POST',
@@ -97,6 +131,7 @@ export function Tag({ name, chosen, defaultState = false }) {
         style={styles.view_tagOn}
         onPress={() => {
           console.log('unpressed');
+          RemoveTags(name);
           setpressed(!pressed);
         }}
       >
@@ -112,6 +147,7 @@ export function TagSelectionPart({ navigation, profil }) {
   const [args, setArgs] = useState(true);
   const [Profargs, setProfArgs] = useState(true);
   const [array, setArray] = useState(true);
+  const [Id, setId] = useState(null)
 
   const store = Store.getState();
   const access_Token = store.profil.access_token;
@@ -123,9 +159,9 @@ export function TagSelectionPart({ navigation, profil }) {
     console.log('hello');
     for (let i = 0; i < List.length; i++) {
       for (let j = 0; j < UserList.length; j++) {
-        if (UserList[j] == List[i].name) {
+        if (UserList[j]._id == List[i].name) {
           console.log('hellot: ', UserList[j]);
-          arr.push({ name: UserList[j], _id: List[i]._id, pressed: true });
+          arr.push({ name: UserList[j]._id, _id: List[i]._id, pressed: true });
           flag = true;
           break;
         }
@@ -137,8 +173,8 @@ export function TagSelectionPart({ navigation, profil }) {
     setArray(arr);
   }
 
-  async function getUserTags(List) {
-    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/get_own_profile`, {
+  async function getLocationTags(List) {
+    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/get_partner_location`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -148,9 +184,10 @@ export function TagSelectionPart({ navigation, profil }) {
     })
       .then((res) => res.json())
       .then((json) => {
-        console.log('########', json.profile.tags_list);
-        setProfArgs(json.profile.tags_list);
-        buildArray(List, json.profile.tags_list);
+        console.log('########', json.location.tags_list);
+        setProfArgs(json.location.tags_list);
+        buildArray(List, json.location.tags_list);
+        setId(json.location.id)
       });
   }
 
@@ -167,13 +204,13 @@ export function TagSelectionPart({ navigation, profil }) {
       .then((json) => {
         console.log('yooooo', json.tags_list);
         setArgs(json.tags_list);
-        getUserTags(json.tags_list);
+        getLocationTags(json.tags_list);
       });
   }
 
   useEffect(() => {
     getThings();
-    // getUserTags();
+    // getLocationTags();
   }, []);
 
   return (
@@ -188,7 +225,7 @@ export function TagSelectionPart({ navigation, profil }) {
           data={array}
           keyExtractor={(item) => item.name}
           renderItem={({ item }) => (
-            <Tag name={item.name} chosen={item.pressed} />
+            <Tag name={item.name} chosen={item.pressed} Id={Id} Tags={Profargs}/>
           )}
         />
       </View>
@@ -251,7 +288,7 @@ export function TagSelectionPart({ navigation, profil }) {
 
 const mapStateToProps = (state) => state;
 
-export default connect(mapStateToProps)(TagSelection);
+export default connect(mapStateToProps)(TagSelectionPart);
 
 const styles = StyleSheet.create({
   view_back: {
