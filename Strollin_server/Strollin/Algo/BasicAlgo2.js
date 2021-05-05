@@ -140,7 +140,7 @@ function algoTest(Places, Food, time, budget, tags, coordinate) {
 }
 
 //gets the tags from tge DB and transform them to a json with the right format
-async function getTags(time, budget, tags, coordinate) {
+async function getTags(time, budget, tags, coordinate, eat) {
   let query = {};
   let locations_list = null
   let true_list = []
@@ -193,7 +193,7 @@ async function getTags(time, budget, tags, coordinate) {
     console.log("please: ", true_list[i]);
   }*/
 
-  const promise1 = hello(true_list, time, budget, tags, coordinate)
+  const promise1 = hello(true_list, time, budget, tags, coordinate, eat)
   return promise1;
 }
 
@@ -357,7 +357,7 @@ async function getPlaces(coordinate) {
 
 }
 
-hello = function(sending, time, budget, tags, coordinate)
+hello = function(sending, time, budget, tags, coordinate, eat)
 {
   var coordinateArr = coordinate.split(",");
   getPlaces(coordinateArr);
@@ -365,15 +365,15 @@ hello = function(sending, time, budget, tags, coordinate)
   //promise1.then((value) => {
     console.log("coordiante: ", coordinateArr);
     return new Promise((resolve, reject) => {
-      var test = algoTest(sending, false, time, budget, tags, coordinateArr)
+      var test = algoTest(sending, eat, time, budget, tags, coordinateArr)
       resolve(test)
     });
   //})
 }
 
-methods.test = function(time, budget, tags, coordinate) {
+methods.test = function(time, budget, tags, coordinate, eat) {
   console.log("------------------------------------------------------------------");
-  const promise1 = getTags(time, budget, tags, coordinate);
+  const promise1 = getTags(time, budget, tags, coordinate, eat);
   return promise1;
   /*promise1.then((value) => {
     console.log("VALEUUUUUUUUUUUUUUR: ", value);

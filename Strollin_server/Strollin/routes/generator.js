@@ -15,12 +15,14 @@ const {
  * @param {String} req.headers.budget
  * @param {[String]} req.headers.tags
  * @param {[String]} req.headers.coordinate
+ * @param {[String]} req.headers.eat
  */
 router.get('/generate_course', async function(req, res) {
 
     let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo").catch(error => error);
     let course = undefined;
 
+    console.log("EAT: ", req.headers.eat);
     if (!user) {
         return res.status(400).send({status: "You are not connected."});
     }
@@ -34,7 +36,7 @@ router.get('/generate_course', async function(req, res) {
     }
     let tags = req.headers.tags.split(',');
 
-    const promise2 = algo.data.test(req.headers.time , req.headers.budget , req.headers.tags , req.headers.coordinate);
+    const promise2 = algo.data.test(req.headers.time , req.headers.budget , req.headers.tags , req.headers.coordinate, req.headers.eat);
     promise2.then((value) => {
       let generated_course = value;
       console.log("course: ", generated_course);

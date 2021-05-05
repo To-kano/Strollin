@@ -43,7 +43,7 @@ async function PopUpReq(pos, course) {
 
 
 
-async function getUserTags(pos, budget, hours, minutes, props) {
+async function getUserTags(pos, budget, hours, minutes, props, eat) {
   const store = Store.getState();
   const access_Token = store.profil.access_token;
   console.log("token: ", access_Token);
@@ -60,11 +60,11 @@ async function getUserTags(pos, budget, hours, minutes, props) {
     console.log("ici ?: ", json);
     console.log("########", json.profile.tags_list);
     console.log("mail: ", json.profile.mail);
-    test(pos, budget, hours, minutes, json.profile.tags_list, props);
+    test(pos, budget, hours, minutes, json.profile.tags_list, props, eat);
   });
 }
 
-async function test(pos, budget, hours, minutes, tags, props) {
+async function test(pos, budget, hours, minutes, tags, props, eat) {
   const store = Store.getState();
   const access_Token = store.profil.access_token;
   const time = hours * 60 + minutes;
@@ -85,7 +85,8 @@ async function test(pos, budget, hours, minutes, tags, props) {
     'time': time,
     'budget': budget,
     'tags': tags,
-    'coordinate' : coordinate
+    'coordinate' : coordinate,
+    'eat' : eat
   },
   method: 'GET',
   })
@@ -111,34 +112,34 @@ function Back(props) {
   props.navigation.navigate('HomePage');
 }
 
-function Switch() {
+export function CourseSettings(props) {
+  const [hours, setHours] = useState('0');
+  const [minutes, setMinutes] = useState('0');
+  const [budget, setBudget] = useState('0');
+  const [pos, setPos] = useState('0');
   const [isEatDrink, setEatDring] = useState(false);
 
-  if (isEatDrink === false) {
+  function Switch() {
+
+    if (isEatDrink === false) {
+      return (
+        <TouchableOpacity
+          style={styles.view_switchOff}
+          onPress={() => { setEatDring(!isEatDrink); }}
+        >
+          <View style={styles.view_switchIn} />
+        </TouchableOpacity>
+      );
+    }
     return (
       <TouchableOpacity
-        style={styles.view_switchOff}
+        style={styles.view_switchOn}
         onPress={() => { setEatDring(!isEatDrink); }}
       >
         <View style={styles.view_switchIn} />
       </TouchableOpacity>
     );
   }
-  return (
-    <TouchableOpacity
-      style={styles.view_switchOn}
-      onPress={() => { setEatDring(!isEatDrink); }}
-    >
-      <View style={styles.view_switchIn} />
-    </TouchableOpacity>
-  );
-}
-
-export function CourseSettings(props) {
-  const [hours, setHours] = useState('0');
-  const [minutes, setMinutes] = useState('0');
-  const [budget, setBudget] = useState('0');
-  const [pos, setPos] = useState('0');
 
   useEffect(() => {
     //console.log("ntm: ", props.position.permission);
@@ -232,7 +233,7 @@ export function CourseSettings(props) {
         id="test"
         style={styles.view_newTrip}
         onPress={() => {
-          getUserTags(pos, budget, hours, minutes, props);
+          getUserTags(pos, budget, hours, minutes, props, isEatDrink);
         }}
       >
         <Text style={styles.text_newTrip}>
