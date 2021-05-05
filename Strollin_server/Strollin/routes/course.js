@@ -54,7 +54,8 @@ router.post('/new_course', async function(req, res) {
         id: new Number(Date.now()),
         creation_date: new Date().toLocaleDateString("fr-FR"),
         locations_list: req.body.locations_list,
-        name: req.body.name,
+        //name: req.body.name,
+        name: req.body.name.toLowerCase(),
         author_id: user.id,
         author_pseudo: user.pseudo,
         tags_list: [],
@@ -113,16 +114,16 @@ router.get('/get_course', async function(req, res) {
     }
 
     if (req.headers.sort) {
-        if (req.headers.sort === "name") {
+        if (req.headers.sort.toLowerCase() === "name") {
             courses_list = await CourseModel.find({}).sort("name").catch(error => error);
         }
-        else if (req.headers.sort === "popularity") {
+        else if (req.headers.sort.toLowerCase() === "popularity") {
             courses_list = await CourseModel.find({}).sort("number_used").catch(error => error);
         }
-        else if (req.headers.sort === "score") {
+        else if (req.headers.sort.toLowerCase() === "score") {
             courses_list = await CourseModel.find({}).sort("score").catch(error => error);
         }
-        else if (req.headers.sort === "tendency") {
+        else if (req.headers.sort.toLowerCase() === "tendency") {
             let tendency_range = req.headers.tendency_range;
             if (!tendency_range || isNaN(tendency_range)) {
                 tendency_range = 30;
@@ -258,7 +259,7 @@ router.post('/new_course_time', async function(req, res) {
 
     course = new CourseModel({
         locations: ["test"],
-        name: req.body.name,
+        name: req.body.name.toLowerCase(),
         author: "Strollin",
     });
     await course.save();

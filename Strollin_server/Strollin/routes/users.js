@@ -44,7 +44,7 @@ router.post('/register', async function (req, res) {
     return res.status(400).send({ status: "A valid mail was not provided." });
   }
 
-  let mail = await UserModel.findOne({ mail: req.body.mail }).catch(error => error);
+  let mail = await UserModel.findOne({ mail: req.body.mail.toLowerCase() }).catch(error => error);
   let token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
   if (mail && mail.reason) {
@@ -63,7 +63,7 @@ router.post('/register', async function (req, res) {
     let user = new UserModel({
       id: new Number(Date.now()),
       creation_date: new Date().toLocaleDateString("fr-FR"),
-      mail: req.body.mail,
+      mail: req.body.mail.toLowerCase(),
       //password: req.body.password,
       password: CryptoJS.HmacSHA1(req.body.password, keyCrypto),
       partner: req.body.partner,
@@ -98,7 +98,7 @@ router.post('/register', async function (req, res) {
     // create the mail to send
     const mailOptions = {
       from: '"Strollin App" <strollinapp@outlook.com>', // sender address (who sends)
-      to: req.body.mail, // list of receivers (who receives)
+      to: req.body.mail.toLowerCase(), // list of receivers (who receives)
       subject: `subscribe the app Strollin `, // Subject line
       html: `<a href="http://89.87.94.17:3000/users/verify?id=${user.id}">test</a> `,
     };
@@ -279,7 +279,7 @@ router.post('/add_friend', async function (req, res) {
     return res.status(400).send({ status: "Error in database transaction:\n", error: user });
   }
 
-  let friend = await UserModel.findOne({ mail: req.body.friend_mail }, "-_id id pseudo friends_list").catch(error => error);
+  let friend = await UserModel.findOne({ mail: req.body.friend_mail.toLowerCase() }, "-_id id pseudo friends_list").catch(error => error);
   if (!friend) {
     return res.status(400).send({ status: "The user does not exist." });
   } else if (friend.reason) {
@@ -377,7 +377,7 @@ router.post('/add_tag', async function (req, res) {
   }
 
   for (let index = 0; index < add_list.length; index++) {
-    new_tag = await TagModel.findOne({ name: add_list[index] }).catch(error => error);
+    new_tag = await TagModel.findOne({ name: add_list[index].toLowerCase() }).catch(error => error);
     if (new_tag && new_tag.reason) {
       return res.status(400).send({ status: "Error in database transaction:\n", error: new_tag });
     }
@@ -473,7 +473,7 @@ router.get('/login', async function (req, res) {
   //console.log( "cryp mot de passe login ",CryptoJS.HmacSHA1(req.headers.password, keyCrypto).toString());
 
 
-  let user = await UserModel.findOne({ mail: req.headers.mail, password: CryptoJS.HmacSHA1(req.headers.password, keyCrypto).toString() }).catch(error => error);
+  let user = await UserModel.findOne({ mail: req.headers.mail.toLowerCase(), password: CryptoJS.HmacSHA1(req.headers.password, keyCrypto).toString() }).catch(error => error);
   //console.log( "user ", user);
 
   let token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);

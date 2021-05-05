@@ -20,7 +20,7 @@ router.post('/create_question', async function(req, res) {
     let faq = new FaqModel({
         id: new Number(Date.now()),
         creation_date: new Date().toLocaleDateString("fr-FR"),
-        author: req.body.mail,
+        author: req.body.mail.toLowerCase(),
         question: req.body.question,
         language: req.body.language,
     });
