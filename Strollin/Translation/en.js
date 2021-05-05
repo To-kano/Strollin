@@ -117,7 +117,7 @@ export default {
 
   ProfileScreen: {
     name: 'Name',
-    email: 'Email',
+    pseudo: 'Pseudo:',
     tags: 'Tags',
     myTags: 'My tags',
     addTags: 'Add tags'
@@ -185,7 +185,15 @@ export default {
     chats: 'Chats',
     rating: 'Rating',
     comment: 'Comment',
-  }
+  },
+
+  SettingsPartner: {
+    shop_name: 'Shop name',
+    shop_address: 'Shop address',
+    shop_tags: 'Shop Tags',
+    shop_desc: 'Shop Description',
+    choose_my_shop_tag: 'Choose my shop tags'
+  },
 };
 
 // {I18n.t("")}

@@ -84,7 +84,7 @@ function ProfileScreen(props) {
 
     async function postMail(body) {
 
-      const test = JSON.stringify({mail: body})
+      const test = JSON.stringify({pseudo: body})
 
       await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/edit_profile`, {
       headers: {
@@ -139,12 +139,12 @@ function ProfileScreen(props) {
           <ChangeImageProfileForm/>
         </Popup>
         {/* <Image  style={styles.img_profileTop} source={require('')}/> */}
-        <Text style={styles.text_profileTop}>{args.pseudo}</Text>
+        <Text style={styles.text_profileTop}>{args.mail}</Text>
       </View>
       <View style={styles.view_email}>
         <Text style={styles.text_description}>
           {' '}
-          {I18n.t('ProfileScreen.email')}
+          {I18n.t('ProfileScreen.pseudo')}
         </Text>
         <TextInput
           style={styles.text_email}
@@ -154,7 +154,7 @@ function ProfileScreen(props) {
           keyboardType="email-address"
           onChangeText={text => postMail(text)}
         >
-          {args.mail}
+          {args.pseudo}
         </TextInput>
       </View>
       <View style={styles.view_tag}>

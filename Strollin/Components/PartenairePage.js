@@ -178,11 +178,6 @@ function PartenaireScreen(props) {
           />
         </View>
       </ScrollView>
-      <TouchableOpacity onPress={() => {
-          props.navigation.navigate('SettingPartenaire')
-      }}>
-        <Text style={styles.text_signIn}>{I18n.t('LoginPage.SIGNIN')}</Text>
-      </TouchableOpacity>
     </View>
     // <View style={styles.back}>
     //   <BackgroundImage />

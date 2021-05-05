@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import {
-  View, StyleSheet, Image, Text, TouchableOpacity, FlatList, ImageBackground, TextInput
+  View, ScrollView ,StyleSheet, Image, Text, TouchableOpacity, FlatList, ImageBackground, TextInput
 } from 'react-native';
 import BackgroundImage from './backgroundImage';
 import Store from '../Store/configureStore';
@@ -30,59 +30,7 @@ var initialList = [
   {
     id: 3,
     name: 'Piscine',
-  },
-  {
-    id: 4,
-    name: 'Cinéma',
-  },
-  {
-    id: 5,
-    name: 'Cinéma',
-  },
-  {
-    id: 6,
-    name: 'Cinéma',
-  },
-  {
-    id: 7,
-    name: 'Cinéma',
-  },
-  {
-    id: 8,
-    name: 'Cinéma',
-  },
-  {
-    id: 9,
-    name: 'Cinéma',
-  },
-  {
-    id: 10,
-    name: 'Cinéma',
-  },
-  {
-    id: 11,
-    name: 'Cinéma',
-  },
-  {
-    id: 12,
-    name: 'Cinéma',
-  },
-  {
-    id: 13,
-    name: 'Cinéma',
-  },
-  {
-    id: 14,
-    name: 'Cinéma',
-  },
-  {
-    id: 15,
-    name: 'Cinéma',
-  },
-  {
-    id: 16,
-    name: 'Cinéma',
-  },
+  }
 ];
 
 function SettingPartenaire(props) {
@@ -213,47 +161,61 @@ function SettingPartenaire(props) {
           </View>
         </ImageBackground>
       </TouchableOpacity>
-      <View style={styles.view_stat}>
-        <Text style={styles.text_stat}>
-          {I18n.t('SettingsPartner.shop_name')}
-        </Text>
-        <View style={styles.view_number}>
-          <TextInput
-            style={styles.textInput_number}
-            placeholder={args.name}
-            onChangeText={(text) => postName(text)}
+      <ScrollView showsVerticalScrollIndicator={false} style={{ height: 327, marginBottom: 15 }}>
+        <View style={styles.view_stat}>
+          <Text style={styles.text_stat}>
+            {I18n.t('SettingsPartner.shop_name')}
+          </Text>
+          <View style={styles.view_number}>
+            <TextInput
+              style={styles.textInput_number}
+              placeholder={args.name}
+              onChangeText={(text) => postName(text)}
+            />
+          </View>
+        </View>
+        <View style={styles.view_stat}>
+          <Text style={styles.text_stat}>
+            {I18n.t('SettingsPartner.shop_address')}
+          </Text>
+          <View style={styles.view_number}>
+            <TextInput
+              style={styles.textInput_number}
+              placeholder={args.address}
+              onChangeText={(text) => postAdd(text)}
+            />
+          </View>
+        </View>
+        <View style={styles.view_stat}>
+          <Text style={styles.text_stat}>
+            {I18n.t('SettingsPartner.shop_desc')}
+          </Text>
+          <View style={styles.view_number}>
+            <TextInput
+              style={styles.textInput_number}
+              placeholder={args.description}
+              onChangeText={(text) => postAdd(text)}
+            />
+          </View>
+        </View>
+        <View style={styles.view_tags}>
+          <Text style={styles.text_stat}>
+            {I18n.t('SettingsPartner.shop_tags')}
+          </Text>
+          <FlatList
+            numColumns={3}
+            style={styles.view_tagIn}
+            showsHorizontalScrollIndicator={false}
+            showsVerticalScrollIndicator={false}
+            data={list}
+            contentContainerStyle={{ flexGrow: 1 }}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              <Text style={styles.text_tagIn}>{item.name}</Text>
+            )}
           />
         </View>
-      </View>
-      <View style={styles.view_stat}>
-        <Text style={styles.text_stat}>
-          {I18n.t('SettingsPartner.shop_address')}
-        </Text>
-        <View style={styles.view_number}>
-          <TextInput
-            style={styles.textInput_number}
-            placeholder={args.address}
-            onChangeText={(text) => postAdd(text)}
-          />
-        </View>
-      </View>
-      <View style={styles.view_tags}>
-        <Text style={styles.text_stat}>
-          {I18n.t('SettingsPartner.shop_tags')}
-        </Text>
-        <FlatList
-          numColumns={3}
-          style={styles.view_tagIn}
-          showsHorizontalScrollIndicator={false}
-          showsVerticalScrollIndicator={false}
-          data={list}
-          contentContainerStyle={{ flexGrow: 1 }}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <Text style={styles.text_tagIn}>{item.name}</Text>
-          )}
-        />
-      </View>
+      </ScrollView>
       <TouchableOpacity
         style={styles.view_button}
         onPress={() => {

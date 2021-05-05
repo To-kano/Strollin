@@ -32,6 +32,8 @@ const getInfoFromToken = (token, setUserInfo, props, setMessage, setModalVisible
         console.log("registered as : ", result.name, ' via facebook');
 
         setUserInfo(result);
+        console.log("mail: ", result.email);
+        result.email = "toto@toto.toto"
         registerUser(props, result.name, "Facebook1235", result.email, setMessage, setModalVisible, false);
       }
     },
