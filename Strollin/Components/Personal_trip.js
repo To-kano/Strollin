@@ -16,7 +16,7 @@ import { Popup, Toast, Root } from 'popup-ui'
 import Store from '../Store/configureStore';
 import {getCustomCourse} from '../apiServer/course';
 const store = Store.getState();
-
+import Geolocation from 'react-native-geolocation-service';
 
 let language = "en"
 let finalJson = []
@@ -88,7 +88,6 @@ function Personal_trip(props) {
       jsonTmp.website = json.website
       jsonTmp.name = json.name
       jsonTmp.adress = json.formatted_address
-      console.log("cheeeeeeeeeh\n\n" + jsonTmp)
       locationPush.locations_list.push(jsonTmp)
     });
   }
@@ -102,7 +101,7 @@ function Personal_trip(props) {
   const [value, onChangeValue] = React.useState(" ");
   const [jsonObject, onChangeJson] = useState(jsonDefault)
   const [isLoading, setLoading] = useState(true);
-  const [userPosition, setUserPosition] = useState(null);
+  const [userPosition, setUserPosition] = useState('0');
   const [isPermision, setPermision] = useState(false)
   const [localRegion, setLocalRegion] = useState({
     latitudeDelta: deltaView.latitudeDelta,
@@ -119,24 +118,50 @@ function Personal_trip(props) {
     });
   }, [userPosition]);
 
-  useEffect(() => {
+    useEffect(() => {
+    console.log("POSITION DE DÉPART ", userPosition);
     const courseSend = getCustomCourse(store.profil.access_token);
     setCourse(courseSend)
+    if (props.asked == false) {
+      requestGeolocalisationPermission(Store.dispatch);
+    }
+    if (props.permission == true && userPosition == null) {
+      updateCoordinates(setUserPosition);
+    }
+    if (props.permission && userPosition && localRegion.latitude && localRegion.longitude) {
+      setPermision(true)
+      let regionTmp = region
+      regionTmp.longitude = userPosition.longitude
+      regionTmp.latitude = userPosition.latitude
+      setRegion(regionTmp)
+      console.log("JE SET LA RÉGION 1: ", userPosition);
+    }
+
+        Geolocation.getCurrentPosition(
+          (position) => {
+            const data = {
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+            };
+            console.log("pritn de pierre: ", position);
+            setUserPosition(data);
+            let regionTmp = region
+            regionTmp.longitude = data.longitude
+            regionTmp.latitude = data.latitude
+            setRegion(regionTmp)
+            console.log("JE SET LA RÉGION 2: ", userPosition);
+          },
+          (error) => {
+             console.log(error.code, error.message);
+          },
+          { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+        );
   }, [])
 
   if (Array.isArray(locales)) {
     language = locales[0].languageTag;
-    console.log(language)
   }
-  if (props.asked == false) {
-    requestGeolocalisationPermission(Store.dispatch);
-  }
-  if (props.permission == true && userPosition == null) {
-    updateCoordinates(setUserPosition);
-  }
-  if (props.permission && userPosition && localRegion.latitude && localRegion.longitude) {
-    setPermision(true)
-  }
+
 
   function setLocationMaps() {
     let jsonTmp = {
@@ -154,8 +179,8 @@ function Personal_trip(props) {
     fetch(url, {
       headers : {
               place_name : value,
-              locationlat: "48.8650988",
-              locationlong: "2.1931007",
+              locationlat: region.latitude,
+              locationlong: region.longitude,
               language: language
       },
       method: 'GET',
@@ -213,7 +238,7 @@ function Personal_trip(props) {
           title={"back"}
         />
         <MapView
-        style={{ height: 600, width: 400, marginTop: 5 }}
+        style={{ height: 601, width: 400, marginTop: 5 }}
         showsCompass
         userLocationPriority="balanced"
         region={region}
@@ -253,7 +278,7 @@ function Personal_trip(props) {
               props.navigation.navigate('TripNavigation');
             }}
           >
-            <Text>Let's Go !</Text>
+            <Text>Lets Go !</Text>
           </TouchableOpacity>
           </View>
           : (
@@ -352,6 +377,13 @@ function Personal_trip(props) {
   );
 }
 
+const mapStateToProps = (state) => (
+  {
+    position: state.position,
+    profil: state.profil,
+    map: state.map
+  }
+);
 //const mapStateToProps = (state) => state;
 
-export default Personal_trip;
+export default (Personal_trip);

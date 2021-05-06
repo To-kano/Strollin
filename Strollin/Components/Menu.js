@@ -110,6 +110,13 @@ function Menu(props) {
           >
             <Image style={styles.img_navigationIn} source={require('../images/icons/black/next_trip.png')} />
             <Text style={styles.text_navigationIn}>Personal_trip</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => props.navigation.navigate('Position_partener')}
+            style={[styles.view_navigationIn, props.name == 'Position_partener' ? styles.current_page : {}]}
+          >
+            <Image style={styles.img_navigationIn} source={require('../images/icons/black/next_trip.png')} />
+            <Text style={styles.text_navigationIn}>Position_partener</Text>
           </TouchableOpacity>*/}
         </View>
         <TouchableOpacity

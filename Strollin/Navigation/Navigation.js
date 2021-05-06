@@ -25,7 +25,6 @@ import MenuChat from '../Components/reactChatScreen/MenuScreen';
 import ScreenChat from '../Components/reactChatScreen/ChatScreen';
 import NewConversation from '../Components/reactChatScreen/NewConversation';
 import Notation from '../Components/Notation';
-import Position from '../Components/Position';
 import Menu from '../Components/Menu';
 import Socket from '../Components/Socket';
 import CourseEvaluation from '../Components/CourseEvaluation';
@@ -90,6 +89,14 @@ function MyStack(props) {
               component={PartnerRegister}
               options={{
                 title: 'partner inscription',
+                animationEnabled: false,
+              }}
+            />
+            <Stack.Screen
+              name="SettingPartenaire"
+              component={PartnerRegister}
+              options={{
+                title: 'partner settings',
                 animationEnabled: false,
               }}
             />

@@ -25,7 +25,7 @@ function ParseTags(Tags) {
   return list;
 }
 
-const initialList = [
+var initialList = [
   {
     id: 1,
     name: 'Foot',
@@ -46,7 +46,9 @@ const initialList = [
 
 function ProfileScreen(props) {
   // const [list, setList] = React.useState(props.profil.tags_list);
+  const [reload, setReload] = useState(true);
   const [args, setArgs] = useState(true);
+  const [tagsList, setTagsList] = useState(initialList);
 
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -54,6 +56,9 @@ function ProfileScreen(props) {
   const access_Token = store.profil.access_token;
 
     async function getThings() {
+
+      if (reload == false)
+        return
       await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/get_own_profile`, {
       headers: {
         Accept: 'application/json',
@@ -64,14 +69,22 @@ function ProfileScreen(props) {
       })
       .then(res => res.json())
       .then(json => {
-        //console.log(json.profile);
+        console.log("profile: ",json.profile);
+        //console.log("profile updated ");
         setArgs(json.profile)
+        initialList = []
+        for (var i = 0; i < json.profile.tags_list.length; i++) {
+          initialList.push({id: i, name: json.profile.tags_list[i]})
+        }
+        console.log("tags setted: ", initialList);
+        setTagsList(initialList)
+        setReload(false)
       });
     }
 
     async function postMail(body) {
 
-      const test = JSON.stringify({mail: body})
+      const test = JSON.stringify({pseudo: body})
 
       await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/edit_profile`, {
       headers: {
@@ -88,12 +101,13 @@ function ProfileScreen(props) {
       });
     }
 
+    const [list, setList] = React.useState(initialList);
+    const [name, setName] = React.useState('');
+
     useEffect(() => {
           getThings();
     }, []);
 
-  const [list, setList] = React.useState(initialList);
-  const [name, setName] = React.useState('');
 
   function handleChange(event) {
     setName(event.nativeEvent.text);
@@ -103,6 +117,8 @@ function ProfileScreen(props) {
     setList(newList);
     setName('');
   }
+
+  getThings();
 
   return (
     <View style={styles.view_back}>
@@ -123,12 +139,12 @@ function ProfileScreen(props) {
           <ChangeImageProfileForm/>
         </Popup>
         {/* <Image  style={styles.img_profileTop} source={require('')}/> */}
-        <Text style={styles.text_profileTop}>{args.pseudo}</Text>
+        <Text style={styles.text_profileTop}>{args.mail}</Text>
       </View>
       <View style={styles.view_email}>
         <Text style={styles.text_description}>
           {' '}
-          {I18n.t('ProfileScreen.email')}
+          {I18n.t('ProfileScreen.pseudo')}
         </Text>
         <TextInput
           style={styles.text_email}
@@ -138,7 +154,7 @@ function ProfileScreen(props) {
           keyboardType="email-address"
           onChangeText={text => postMail(text)}
         >
-          {args.mail}
+          {args.pseudo}
         </TextInput>
       </View>
       <View style={styles.view_tag}>
@@ -148,18 +164,22 @@ function ProfileScreen(props) {
           style={styles.view_tagIn}
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
-          data={args.tags_list}
+          data={tagsList}
           contentContainerStyle={{ flexGrow: 1 }}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <Text style={styles.text_tagIn}>{item}</Text>
+            <Text style={styles.text_tagIn}>{item.name}</Text>
           )}
         />
       </View>
       <TouchableOpacity
         style={styles.view_button}
         onPress={() => {
+          setReload(true)
           props.navigation.navigate('TagSelection');
+          //getThings();
+          //setTagsList(tagsList);
+          console.log("exisrte stp eeeeeeeeeeeeeeeee");
         }}
       >
         <Text style={styles.text_button}>Choose my tags</Text>

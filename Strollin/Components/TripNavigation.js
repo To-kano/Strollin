@@ -11,6 +11,7 @@ import Map from './map';
 import { addUserHistoric } from '../apiServer/user';
 import Store from '../Store/configureStore';
 import { PopUpForm } from './PopUpForm';
+import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 
 export function TripNavigation({map, profil, dispatch, navigation}) {
   //const [background, setBackground] = useState(false);
@@ -44,7 +45,99 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
   //  };
   //}, []);
 
+  const [pop, setPop] = useState(false);
+  const [course, setCourse] = useState(null);
+  const [place, setPlace] = useState(null);
+
+  function compare(a, b) {
+    if (a.Dist > b.Dist) return 1;
+    if (b.Dist > a.Dist) return -1;
+  }
+
+  async function PopUpResponse(response, pos, course, popup) {
+    const store = Store.getState();
+    const access_Token = store.profil.access_token;
+    const coordinate = [];
+    const test = JSON.stringify({course: course, popup: popup})
+    coordinate[0] = pos.latitude;
+    coordinate[1] = pos.longitude;
+
+    console.log("\n*\n*\n*\n*", locations[0])
+    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/generator/popup_answer`, {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      access_Token,
+      coordinate: coordinate,
+      answer: response
+    },
+    body: test,
+    method: 'POST',
+    })
+    .then(res => res.json())
+    .then(json => {
+      //console.log("\n\n\n\n\n\npleasssssssssse: ", json);
+      setPop(false);
+    });
+
+    if (response == false)
+      return
+    //update course
+    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/get_locations_by_id`, {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      access_Token,
+      locations_id_list: [popup.Id]
+    },
+    method: 'GET',
+    })
+    .then(res => res.json())
+    .then(json => {
+      //console.log("location stp frero: ", json.locations_list[0]);
+      let test_loc = locations
+      test_loc.push(json.locations_list[0])
+      test_loc.sort(compare)
+      const action = { type: 'SET_LOCATIONS', locations: test_loc };
+      Store.dispatch(action);
+    });
+  }
+
+  async function PopUpReq(pos, course) {
+    console.log("course: ", course);
+    const store = Store.getState();
+    const access_Token = store.profil.access_token;
+    console.log("pos: ", pos);
+    console.log("token: ", access_Token);
+    const coordinate = [];
+    const test = JSON.stringify({course: course})
+    coordinate[0] = pos.latitude;
+    coordinate[1] = pos.longitude;
+
+    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/generator/generate_popup`, {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      access_Token,
+      coordinate: coordinate
+    },
+    body: test,
+    method: 'POST',
+    })
+    .then(res => res.json())
+    .then(json => {
+      console.log("JJJJJJJJJJJJSSSSSSSSSSSSSSSSOOOOOOOOOONNNNNNNNNn: ", json);
+      setCourse(json.popup)
+      setPop(true);
+      console.log("stp c la le truc: ", json.popup);
+    });
+
+  }
+
+  console.log("\n*\n*\n*\n*", locations)
+
   useEffect(() => {
+    console.log("ceci est locations\n\n", locations)
     setTime();
   }, []);
 
@@ -71,6 +164,23 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
     longitudeDelta: 0.0121,
   };
 
+  if (pop) {
+    return (
+      <View>
+      <Text>
+        Do you want to go to : {course.Name}
+      </Text>
+      <Button
+        title="yes"
+        onPress={() => PopUpResponse(true, profil.first_name, profil.scoreCourse, course)}
+      />
+      <Button
+        title="no"
+        onPress={() => PopUpResponse(false, profil.first_name, profil.scoreCourse, course)}
+      />
+    </View>
+    )}
+  else {
   return (
     <View style={styles.view_back}>
       <View style={styles.view_header}>
@@ -103,14 +213,20 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
         <Text numberOfLines={1}  style={styles.text_destination}>{locations[0].name}</Text>
       </View>
       <View style={styles.view_map}>
-        <Map 
-          navigation={navigation} 
+        <Map
+          navigation={navigation}
           height="100%"
-          width={390} 
-          deltaView={deltaView} 
+          width={390}
+          deltaView={deltaView}
           locations={locations}
         />
       </View>
+      {/*<TouchableOpacity onPress={() => {
+        const store = Store.getState();
+        PopUpReq(profil.first_name, profil.scoreCourse); //Je sais pas utiliser les props du coup g stocker des truc dans les props dans course settings
+      }}>
+        <Text style={styles.text_signIn}>{I18n.t('LoginPage.SIGNIN')}</Text>
+      </TouchableOpacity>*/}
     </View>
 
     // <View style={styles.view_back}>
@@ -293,6 +409,7 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
     //   </View>
     // </View>
   );
+  }
 }
 
 const mapStateToProps = (state) => {
@@ -361,6 +478,12 @@ const styles = StyleSheet.create({
   view_map: {
     flex: 694,
     alignItems: 'center',
+  },
+  text_signIn: {
+    fontWeight: 'bold',
+    fontSize: 16,
+    padding: 12,
+    color: '#0092A7',
   },
   // back: {
   //   flexDirection: 'column',

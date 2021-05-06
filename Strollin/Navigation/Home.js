@@ -9,6 +9,7 @@ import Profile from '../Components/ProfileScreen';
 import UserRegister from '../Components/UserRegister';
 import PartnerRegister from '../Components/PartnerRegister';
 import TagSelection from '../Components/TagSelection';
+import TagSelectionPart from '../Components/TagSelectionPart';
 import LoginPage from '../Components/LoginPage';
 import FriendList from '../Components/FriendList';
 import HomePage from '../Components/HomePage';
@@ -50,6 +51,14 @@ function Home() {
             <Stack.Screen
                   name="TagSelection"
                   component={TagSelection}
+            />
+            <Stack.Screen
+                  name="TagSelectionPart"
+                  component={TagSelectionPart}
+            />
+            <Stack.Screen
+                  name="SettingPartenaire"
+                  component={SettingPartenaire}
             />
         </Stack.Navigator>
     );

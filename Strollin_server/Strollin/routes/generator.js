@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var algo = require('../Algo/BasicAlgo2');
+var pop = require('../Algo/PopUpAlgo');
 
 const {
     UserModel
@@ -14,12 +15,14 @@ const {
  * @param {String} req.headers.budget
  * @param {[String]} req.headers.tags
  * @param {[String]} req.headers.coordinate
+ * @param {[String]} req.headers.eat
  */
 router.get('/generate_course', async function(req, res) {
 
     let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo").catch(error => error);
     let course = undefined;
 
+    console.log("EAT: ", req.headers.eat);
     if (!user) {
         return res.status(400).send({status: "You are not connected."});
     }
@@ -33,7 +36,7 @@ router.get('/generate_course', async function(req, res) {
     }
     let tags = req.headers.tags.split(',');
 
-    const promise2 = algo.data.test(req.headers.time , req.headers.budget , req.headers.tags , req.headers.coordinate);
+    const promise2 = algo.data.test(req.headers.time , req.headers.budget , req.headers.tags , req.headers.coordinate, req.headers.eat);
     promise2.then((value) => {
       let generated_course = value;
       console.log("course: ", generated_course);
@@ -83,8 +86,11 @@ router.post('/generate_popup', async function(req, res) {
     // ACTION ICI
     const promise = algo.data.pop(req.headers.coordinate, user.tags_list, req.body.course);
     promise.then((value) => {
+      console.log("valuer: ", value);
+      let popup = value
+      return res.status(200).send({status: "Result of the pop-up generator.", popup});
     })
-    return res.status(200).send({status: "Result of the pop-up generator.", popup});
+
 });
 
 
@@ -93,9 +99,11 @@ router.post('/generate_popup', async function(req, res) {
  * Answer to pop-up.
  * @param {String} req.headers.access_token
  * @param {Boolean} req.headers.answer
- * @param {LocationObject} req.headers.popup
+ *
+ * @param {LocationObject} req.body.popup
+ * @param {CourseObject} req.body.course
  */
-router.get('/popup_answer', async function(req, res) {
+router.post('/popup_answer', async function(req, res) {
 
     let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo").catch(error => error);
     let popup = undefined;
@@ -107,15 +115,16 @@ router.get('/popup_answer', async function(req, res) {
         return res.status(400).send({status: "Error in database transaction:\n", error: user});
     }
 
-    if (!req.headers.answer || !req.headers.popup) {
+    console.log("popup : ", req.body.popup)
+    if (!req.headers.answer || !req.body.popup || !req.body.course) {
         return res.status(400).send({status: "Parameter required is missing."});
     }
 
     // ACTION ICI
+    pop.data.Response(req.body.popup)
 
     return res.status(200).send({status: "Result.", popup});
 });
 
 
 module.exports = router;
-

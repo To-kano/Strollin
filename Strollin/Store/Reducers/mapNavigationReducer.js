@@ -121,6 +121,12 @@ function mapNavigationReducer(state = initialState, action) {
         course: action.course
       };
       return nextState;
+    case 'SET_LOCATIONS':
+      nextState = {
+        ...state,
+        locations: action.locations,
+      };
+      return nextState;
     case 'SET_TIME':
       nextState = {
         ...state,

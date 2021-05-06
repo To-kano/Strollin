@@ -258,7 +258,7 @@ router.post('/edit_profile', async function (req, res) {
 /**
  * Add friend by mail.
  * @param {String} req.headers.access_token
- * 
+ *
  * @param {ObjectID} req.body.friend_mail
  */
 router.post('/add_friend', async function (req, res) {
@@ -353,7 +353,7 @@ router.post('/set_image_profile', upload.array('image', 3), async (req, res) => 
 /**
  * Add tags in the current user's tag list
  * @param {String} req.headers.access_token
- * 
+ *
  * @param {[String]} req.body.tags_list
  */
 router.post('/add_tag', async function (req, res) {
@@ -421,7 +421,7 @@ router.post('/add_historic', async function (req, res) {
 /**
  * Delete an friend from friend_list.
  * @param {String} req.headers.access_token
- * 
+ *
  * @param {String} req.body.friend_id
  */
 router.post('/remove_friend', async function (req, res) {

@@ -155,7 +155,7 @@ export default {
 
   ProfileScreen: {
     name: 'Nom',
-    email: 'Email',
+    pseudo: 'Pseudo',
     tags: 'Tags',
     myTags: 'Mes tags',
     addTags: 'Ajouter des tags'
@@ -210,6 +210,7 @@ export default {
   SettingsPartner: {
     shop_name: 'Nom du commerce',
     shop_address: 'Adresse du commerce',
+    shop_desc: 'Description du commerce',
     shop_tags: 'Tags du commerce',
     choose_my_shop_tag: 'Choisir les Tags du commerce'
   },
