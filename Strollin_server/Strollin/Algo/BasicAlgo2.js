@@ -84,11 +84,12 @@ function AddRef(List, UserTags) {
 }
 
 function CheckFood(Food, PlaceFood) {
-  if (Food == true)
+  if (Food === "true")
     return true;
   else {
-    if (PlaceFood == "Food") {
-      console.log("FALSE");
+    //console.log("\n\n place food \n\n");
+    if (PlaceFood === true) {
+      //console.log("FALSE");
       return false;
     }
     else
@@ -97,6 +98,8 @@ function CheckFood(Food, PlaceFood) {
 }
 
 function algoTest(Places, Food, time, budget, tags, coordinate) {
+
+  //console.log("food bool: ", Food);
   return new Promise((resolve, reject) => {
 
     var PlacesArray = []
@@ -109,7 +112,7 @@ function algoTest(Places, Food, time, budget, tags, coordinate) {
     UserPos[0] = parseFloat(coordinate[0]);
     UserPos[1] = parseFloat(coordinate[1]);
 
-    console.log("POs: ", UserPos);
+    //console.log("POs: ", UserPos);
     //console.log("TAGS ------------------------: ", UserTags);
     //Put all the places corresponding to the user tags in a new array (PlacesArray)
     for (var i = 0; i < Places.length; i++) {
@@ -125,7 +128,8 @@ function algoTest(Places, Food, time, budget, tags, coordinate) {
         PlacesArray[i].Dist = DistCalc2D(PlacesArray[i].Pos, UserPos)
       }
       PlacesArray.sort(compare)
-      if (budgetNb > PlacesArray[0].Price && timeNb > PlacesArray[0].Time && CheckFood(Food, PlacesArray[0].City)) {
+      //console.log("\nplace array\n: ", PlacesArray[0]);
+      if (budgetNb > PlacesArray[0].Price && timeNb > PlacesArray[0].Time && CheckFood(Food, PlacesArray[0].Food)) {
         FinalArray.push(PlacesArray[0])
         budgetNb -= PlacesArray[0].Price
         timeNb -= PlacesArray[0].Time
@@ -186,7 +190,8 @@ async function getTags(time, budget, tags, coordinate, eat) {
       Id: locations_list[i].id,
       Owner: locations_list[i].owner,
       Time: Number(locations_list[i].average_time),
-      City: locations_list[i].city
+      City: locations_list[i].city,
+      Food: locations_list[i].food
     })
   }
   /*for (var i = 0; i < true_list.length; i++) {
@@ -222,7 +227,7 @@ async function PopUpAlgo(course, coordinate, tags) {
           }
       })
     }
-    console.log("update: ", update, "tagslistarray: ", tagslistarray);
+    //console.log("update: ", update, "tagslistarray: ", tagslistarray);
 
     locations_list = await LocationModel.find(query)
     for (var i = 0; i < locations_list.length; i++) {
@@ -259,7 +264,7 @@ async function PopUpAlgo(course, coordinate, tags) {
       })
     }
     let res = await pop.data.Popup(course, true_list, LocationModel, tags, coordinate)
-    console.log("res print: ", res);
+    //console.log("res print: ", res);
     return res
 }
 
@@ -304,7 +309,7 @@ async function formatPlaces(data) {
         website: ""
     });
     tmp = data[i].vicinity.split(", ")
-    console.log("TMP: ", tmp);
+    //console.log("TMP: ", tmp);
     if (tmp.length > 1) {
       location.address = tmp[0]
       location.city = tmp[1]
@@ -333,9 +338,9 @@ async function formatPlaces(data) {
 }
 
 
-async function getPlaces(coordinate) {
+async function getPlaces(coordinate, type) {
   const https = require('https');
-  let url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=AIzaSyD6AVcufnom-RKQJeG8tlxAWhAOKor0-uo&location=" + coordinate[0] + "," + coordinate[1] + "&radius=100000&rankedby=location"
+  let url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=AIzaSyD6AVcufnom-RKQJeG8tlxAWhAOKor0-uo&location=" + coordinate[0] + "," + coordinate[1] + "&radius=100000&type=" + type
 
   https.get(url, (resp) => {
     let data = '';
@@ -357,13 +362,26 @@ async function getPlaces(coordinate) {
 
 }
 
-hello = function(sending, time, budget, tags, coordinate, eat)
+async function RecoverPlaces(coordinate, tags) {
+  let tags_array = tags.split(",")
+  var coordinateArr = coordinate.split(",");
+
+  for (var i = 0; i < tags_array.length; i++) {
+    console.log("tags_array: ", tags_array[i]);
+      await getPlaces(coordinateArr, tags_array[i]);
+  }
+  console.log("fini");
+}
+
+hello = async function(sending, time, budget, tags, coordinate, eat)
 {
   var coordinateArr = coordinate.split(",");
-  getPlaces(coordinateArr);
 
+  await RecoverPlaces(coordinate, tags)
+
+  console.log("done");
   //promise1.then((value) => {
-    console.log("coordiante: ", coordinateArr);
+    //console.log("coordiante: ", coordinateArr);
     return new Promise((resolve, reject) => {
       var test = algoTest(sending, eat, time, budget, tags, coordinateArr)
       resolve(test)
@@ -371,7 +389,7 @@ hello = function(sending, time, budget, tags, coordinate, eat)
   //})
 }
 
-methods.test = function(time, budget, tags, coordinate, eat) {
+methods.algo = function(time, budget, tags, coordinate, eat) {
   console.log("------------------------------------------------------------------");
   const promise1 = getTags(time, budget, tags, coordinate, eat);
   return promise1;

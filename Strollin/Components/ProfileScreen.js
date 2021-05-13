@@ -118,7 +118,7 @@ function ProfileScreen(props) {
     setName('');
   }
 
-  getThings();
+  //getThings();
 
   return (
     <View style={styles.view_back}>

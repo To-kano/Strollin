@@ -12,6 +12,7 @@ import MapView, { Marker } from "react-native-maps";
 import MapViewDirections from 'react-native-maps-directions';
 import Store from '../Store/configureStore';
 import {getCustomCourse} from '../apiServer/course';
+import Geolocation from 'react-native-geolocation-service';
 const store = Store.getState();
 
 
@@ -58,7 +59,25 @@ function Position_partener(props) {
       language = locales[0].languageTag;
       console.log(language)
     }
-  })
+    if (region.longitude === 2.1931007) {
+      Geolocation.getCurrentPosition(
+        (position) => {
+          /*const data = {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          };*/
+          let regionTmp = region
+          regionTmp.longitude = position.coords.longitude
+          regionTmp.latitude = position.coords.latitude
+          setRegion(regionTmp)
+        },
+        (error) => {
+           console.log(error.code, error.message);
+        },
+        { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+      );
+    }
+  }, [])
 
   if (props.asked == false) {
     requestGeolocalisationPermission(Store.dispatch);
@@ -104,7 +123,7 @@ function Position_partener(props) {
         console.log("doneF")
       })
       .catch((error) => {
-        console.error('error :', error);
+        console.error('error ici :', error);
       })
       .finally(() => setLoading(false));
       console.log("doneFF")

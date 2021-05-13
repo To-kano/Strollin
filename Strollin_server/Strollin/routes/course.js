@@ -103,14 +103,14 @@ router.post('/new_course', async function(req, res) {
  */
 router.get('/get_course', async function(req, res) {
     let courses_list = undefined;
-    let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo").catch(error => error);
+    /*let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo").catch(error => error);
 
     if (!user) {
         return res.status(400).send({status: "You are not connected."});
     }
     if (user.reason) {
         return res.status(400).send({status: "Error in database transaction:\n", error: user});
-    }
+    }*/
 
     if (req.headers.sort) {
         if (req.headers.sort === "name") {
@@ -186,7 +186,7 @@ router.get('/get_user_historic', async function(req, res) {
     let course = undefined;
     let size = undefined;
     let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo course_historic").catch(error => error);
-  
+
     if (!user) {
         return res.status(400).send({status: "You are not connected."});
     }
@@ -213,7 +213,7 @@ router.get('/get_user_historic', async function(req, res) {
     }
     return res.status(200).send({status: "Course historic sent." , course_historic});
 });
-  
+
 
 // GET_COURSES_BY_ID
 /**
