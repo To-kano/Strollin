@@ -120,25 +120,25 @@ function Personal_trip(props) {
 
   useEffect(() => {
     const courseSend = getCustomCourse(store.profil.access_token);
+    //console.log(store)
     setCourse(courseSend)
+    if (props.asked == false) {
+      requestGeolocalisationPermission(Store.dispatch);
+    }
+    if (props.permission == true && userPosition == null) {
+      updateCoordinates(setUserPosition);
+    }
+    if (props.permission && userPosition && localRegion.latitude && localRegion.longitude) {
+      setPermision(true)
+      let regionTmp = region
+      regionTmp.longitude = userPosition.longitude
+      regionTmp.latitude = userPosition.latitude
+      setRegion(regionTmp)
+    }
   }, [])
 
   if (Array.isArray(locales)) {
     language = locales[0].languageTag;
-  }
-
-  if (props.asked == false) {
-    requestGeolocalisationPermission(Store.dispatch);
-  }
-  if (props.permission == true && userPosition == null) {
-    updateCoordinates(setUserPosition);
-  }
-  if (props.permission && userPosition && localRegion.latitude && localRegion.longitude) {
-    setPermision(true)
-    let regionTmp = region
-    regionTmp.longitude = userPosition.longitude
-    regionTmp.latitude = userPosition.latitude
-    setRegion(regionTmp)
   }
 
   function setLocationMaps() {
