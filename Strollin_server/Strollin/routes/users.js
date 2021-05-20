@@ -92,7 +92,7 @@ router.post('/register', async function (req, res) {
       from: '"Strollin App" <strollinapp@outlook.com>', // sender address (who sends)
       to: req.body.mail, // list of receivers (who receives)
       subject: `subscribe the app Strollin `, // Subject line
-      html: `<a href="http://88.165.45.219:3002/users/verify?id=${user.id}">test</a> `,
+      html: `<a href="http://88.165.45.219:3004/users/verify?id=${user.id}">test</a> `,
     };
 
     // send the mail
