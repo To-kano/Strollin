@@ -104,7 +104,7 @@ function Menu(props) {
             <Image style={styles.img_navigationIn} source={require('../images/icons/black/settings.png')} />
             <Text style={styles.text_navigationIn}>{props.state.routeNames[7]}</Text>
           </TouchableOpacity>
-          {/*<TouchableOpacity
+          <TouchableOpacity
             onPress={() => props.navigation.navigate('Personal_trip')}
             style={[styles.view_navigationIn, props.name == 'Personal_trip' ? styles.current_page : {}]}
           >
@@ -117,14 +117,14 @@ function Menu(props) {
           >
             <Image style={styles.img_navigationIn} source={require('../images/icons/black/next_trip.png')} />
             <Text style={styles.text_navigationIn}>Position_partener</Text>
-          </TouchableOpacity>*/}
+          </TouchableOpacity>
         </View>
-        <TouchableOpacity
+        {/*<TouchableOpacity
           onPress={() => props.navigation.navigate('userLogin')}
           style={styles.view_logOut}
         >
           <Text style={styles.text_logOut}>Log Out</Text>
-        </TouchableOpacity>
+        </TouchableOpacity>*/}
       </View>
       <GestureRecognizer
         onSwipeDown={(state) => {

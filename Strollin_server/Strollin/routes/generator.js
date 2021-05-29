@@ -22,7 +22,6 @@ router.get('/generate_course', async function(req, res) {
     let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo").catch(error => error);
     let course = undefined;
 
-    console.log("EAT: ", req.headers.eat);
     if (!user) {
         return res.status(400).send({status: "You are not connected."});
     }
@@ -30,16 +29,16 @@ router.get('/generate_course', async function(req, res) {
         return res.status(400).send({status: "Error in database transaction:\n", error: user});
     }
 
-    console.log("lets EEEE", req.headers.time , req.headers.budget , " Tags: ", req.headers.tags , req.headers.coordinate);
+    //console.log("lets EEEE", req.headers.time , req.headers.budget , " Tags: ", req.headers.tags , req.headers.coordinate);
     if (!req.headers.coordinate || !req.headers.time || !req.headers.budget || !req.headers.tags) {
         return res.status(400).send({status: "Parameter required is missing."});
     }
     let tags = req.headers.tags.split(',');
 
-    const promise2 = algo.data.test(req.headers.time , req.headers.budget , req.headers.tags , req.headers.coordinate, req.headers.eat);
+    const promise2 = algo.data.algo(req.headers.time , req.headers.budget , req.headers.tags , req.headers.coordinate, req.headers.eat);
     promise2.then((value) => {
       let generated_course = value;
-      console.log("course: ", generated_course);
+      //console.log("course: ", generated_course);
       if (generated_course) {
         course = {locations_list: [], name: (generated_course[0].Name + " => " + generated_course[generated_course.length - 1].Name), tags_list: []}
         for (let index in generated_course) {
@@ -71,7 +70,7 @@ router.post('/generate_popup', async function(req, res) {
 
     let popup = undefined;
 
-    console.log("heyyyyy: ", req.body.course, " : ", req.headers.coordinate);
+    //console.log("heyyyyy: ", req.body.course, " : ", req.headers.coordinate);
     if (!user) {
         return res.status(400).send({status: "You are not connected."});
     }
@@ -86,7 +85,7 @@ router.post('/generate_popup', async function(req, res) {
     // ACTION ICI
     const promise = algo.data.pop(req.headers.coordinate, user.tags_list, req.body.course);
     promise.then((value) => {
-      console.log("valuer: ", value);
+      //console.log("valuer: ", value);
       let popup = value
       return res.status(200).send({status: "Result of the pop-up generator.", popup});
     })

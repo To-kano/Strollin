@@ -93,7 +93,7 @@ async function test(pos, budget, hours, minutes, tags, props, eat) {
   .then(res => res.json())
   .then(json => {
     console.log("algo done:   ", json);
-    PopUpReq(pos, json.generated_course);
+    //PopUpReq(pos, json.generated_course);
     const action = {
       type: 'ADD_COURSE',
       value: json.course

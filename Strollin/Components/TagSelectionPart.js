@@ -232,7 +232,7 @@ export function TagSelectionPart({ navigation, profil }) {
       <TouchableOpacity
         style={styles.view_button}
         onPress={() => {
-          navigation.navigate('Profile');
+          navigation.navigate('SettingPartenaire');
         }}
       >
         <Text style={styles.text_button}>

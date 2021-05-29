@@ -22,6 +22,7 @@ var imageRouter = require('./routes/image');
 var algo = require('./Algo/BasicAlgo2');
 //var algo = require('./Algo/TwoPersonAlgo');
 
+var tags_json = require('./Algo/Ressources/tags');
 var pop = require('./Algo/PopUpAlgo');
 const { isObject } = require('util');
 
@@ -160,6 +161,12 @@ const { fail } = require('assert');
 
 //location = LocationModel.findOne({name: req.body.name, address: req.body.address});
 
+let tag = new TagModel({
+    id: 1,
+    name: "Art",
+    description: "desc",
+});
+
 async function TestLoc() {
   location = new LocationModel({
       name: "Le louvre3",
@@ -175,12 +182,25 @@ async function TestLoc() {
   await location.save();
 }
 
+async function AddTags() {
+  console.log("add tags");
+  for (var i = 0; i < tags_json.tags_array.length; i++) {
+    tag = new TagModel({
+        id: new Number(Date.now()),
+        name: tags_json.tags_array[i],
+        description: "z",
+    });
+    await tag.save();
+    console.log("done");
+  }
+
+}
+
+//AddTags(); //Décometner cette ligne pour ajouter la liste des tags google places a votre bdd
+
 //TestLoc();
 
-let tag = new TagModel({
-    name: "Art",
-    description: "desc",
-});
+
 //tag.save();
 
 

@@ -76,8 +76,8 @@ function Personal_trip(props) {
   function getJsonPush() {
     finalJson.forEach(json => {
       jsonTmp = jsonTest2
-      jsonTmp.coordinate.push = json.geometry.location.lat.toString(10)
-      jsonTmp.coordinate.push = json.geometry.location.lng.toString(10)
+      jsonTmp.latitude = json.geometry.location.lat
+      jsonTmp.longitude = json.geometry.location.lng
       for (var comment in json.review) {
         jsonTmp.comments_list.push(comment.text)
       }
@@ -87,7 +87,7 @@ function Personal_trip(props) {
       jsonTmp.phone = json.international_phone_number
       jsonTmp.website = json.website
       jsonTmp.name = json.name
-      jsonTmp.adress = json.formatted_address
+      jsonTmp.address = json.formatted_address
       locationPush.locations_list.push(jsonTmp)
     });
   }
@@ -273,6 +273,7 @@ function Personal_trip(props) {
           <TouchableOpacity
             onPress={async () => {
               await getJsonPush()
+              console.log("course: ", finalCourse, " \nlost: ", locationPush.locations_list );
               const action = { type: 'SET_WAYPOINTS', course: finalCourse, locations: locationPush.locations_list };
               Store.dispatch(action);
               props.navigation.navigate('TripNavigation');

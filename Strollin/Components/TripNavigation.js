@@ -221,12 +221,12 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
           locations={locations}
         />
       </View>
-      {/*<TouchableOpacity onPress={() => {
+      <TouchableOpacity onPress={() => {
         const store = Store.getState();
         PopUpReq(profil.first_name, profil.scoreCourse); //Je sais pas utiliser les props du coup g stocker des truc dans les props dans course settings
       }}>
-        <Text style={styles.text_signIn}>{I18n.t('LoginPage.SIGNIN')}</Text>
-      </TouchableOpacity>*/}
+        <Text style={styles.text_signIn}>Simulate</Text>
+      </TouchableOpacity>
     </View>
 
     // <View style={styles.view_back}>
