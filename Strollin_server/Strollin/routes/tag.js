@@ -29,7 +29,7 @@ router.post('/new_tag', async function(req, res) {
         return res.status(400).send({status: "Error in database transaction:\n", error: user});
     }
 
-    if (req.body.name) {
+    if (!req.body.name) {
         return res.status(400).send({status: "An element is missing in the request."});
     }
     tag = await TagModel.findOne({name: req.body.name}).catch(error => error);
