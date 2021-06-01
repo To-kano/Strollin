@@ -45,13 +45,26 @@ function SingleTagOk(UserTags, Place) {
 //Calcul the distance betwenn two points
 function DistCalc2D(UserPos, PlacePos) {
 
-  var X1 = UserPos[0]
-  var X2 = PlacePos[0]
-  var Y1 = UserPos[1]
-  var Y2 = PlacePos[1]
+  var lat1 = UserPos[0]
+  var lat2 = PlacePos[0]
+  var lon1 = UserPos[1]
+  var lon2 = PlacePos[1]
 
-  var res = Math.sqrt( Math.pow((X1 - X2), 2) + Math.pow((Y1 - Y2), 2) )
-  return res;
+
+
+  const R = 6371e3; // metres
+  const φ1 = lat1 * Math.PI/180; // φ, λ in radians
+  const φ2 = lat2 * Math.PI/180;
+  const Δφ = (lat2-lat1) * Math.PI/180;
+  const Δλ = (lon2-lon1) * Math.PI/180;
+
+  const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+            Math.cos(φ1) * Math.cos(φ2) *
+            Math.sin(Δλ/2) * Math.sin(Δλ/2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  const d = R * c; // in metres
+
+  return d;
 }
 
 function AddTagsDisp(List, UserTags, i) {
@@ -97,7 +110,7 @@ function CheckFood(Food, PlaceFood) {
   }
 }
 
-function algoTest(Places, Food, time, budget, tags, coordinate) {
+function algoTest(Places, Food, time, budget, tags, coordinate, radius) {
 
   //console.log("food bool: ", Food);
   return new Promise((resolve, reject) => {
@@ -112,11 +125,11 @@ function algoTest(Places, Food, time, budget, tags, coordinate) {
     UserPos[0] = parseFloat(coordinate[0]);
     UserPos[1] = parseFloat(coordinate[1]);
 
-    //console.log("POs: ", UserPos);
+    console.log("..............................POs: ", UserPos);
     //console.log("TAGS ------------------------: ", UserTags);
     //Put all the places corresponding to the user tags in a new array (PlacesArray)
     for (var i = 0; i < Places.length; i++) {
-      if (IsTagOk(tagsArray, Places[i]) == true) {
+      if (IsTagOk(tagsArray, Places[i]) == true && DistCalc2D(Places[i].Pos, UserPos) < radius) {
         PlacesArray.push(Places[i])
       }
     }
@@ -144,7 +157,7 @@ function algoTest(Places, Food, time, budget, tags, coordinate) {
 }
 
 //gets the tags from tge DB and transform them to a json with the right format
-async function getTags(time, budget, tags, coordinate, eat) {
+async function getTags(time, budget, tags, coordinate, eat, radius) {
   let query = {};
   let locations_list = null
   let true_list = []
@@ -198,7 +211,7 @@ async function getTags(time, budget, tags, coordinate, eat) {
     console.log("please: ", true_list[i]);
   }*/
 
-  const promise1 = hello(true_list, time, budget, tags, coordinate, eat)
+  const promise1 = hello(true_list, time, budget, tags, coordinate, eat, radius)
   return promise1;
 }
 
@@ -373,7 +386,7 @@ async function RecoverPlaces(coordinate, tags) {
   console.log("fini");
 }
 
-hello = async function(sending, time, budget, tags, coordinate, eat)
+hello = async function(sending, time, budget, tags, coordinate, eat, radius)
 {
   var coordinateArr = coordinate.split(",");
 
@@ -383,15 +396,15 @@ hello = async function(sending, time, budget, tags, coordinate, eat)
   //promise1.then((value) => {
     //console.log("coordiante: ", coordinateArr);
     return new Promise((resolve, reject) => {
-      var test = algoTest(sending, eat, time, budget, tags, coordinateArr)
+      var test = algoTest(sending, eat, time, budget, tags, coordinateArr, radius)
       resolve(test)
     });
   //})
 }
 
-methods.algo = function(time, budget, tags, coordinate, eat) {
+methods.algo = function(time, budget, tags, coordinate, eat, radius) {
   console.log("------------------------------------------------------------------");
-  const promise1 = getTags(time, budget, tags, coordinate, eat);
+  const promise1 = getTags(time, budget, tags, coordinate, eat, radius);
   return promise1;
   /*promise1.then((value) => {
     console.log("VALEUUUUUUUUUUUUUUR: ", value);
