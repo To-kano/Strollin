@@ -31,14 +31,9 @@ var app = express();
 // MongoDB //
 
 // var mongoDB = 'mongodb://didier:test@db:27017/Strollin'; //Version Authentification
-<<<<<<< HEAD
-//var mongoDB = 'mongodb://127.0.0.1:27017/Strollin';
-var mongoDB = 'mongodb://db:27017/Strollin';
-=======
 var mongoDB = 'mongodb://strollin_server:strollin@db:27017/Strollin'; //Version Authentification Rasp
 //var mongoDB = 'mongodb://127.0.0.1:27017/Strollin';
 //var mongoDB = 'mongodb://db:27017/Strollin';
->>>>>>> 252ac7b8b45ee1a2cc0e9b30f3160eddc5712070
 
 mongoose.connect(mongoDB, { useNewUrlParser: true });
 

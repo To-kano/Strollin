@@ -26,19 +26,6 @@ services:
     restart: 'on-failure'
     depends_on:
       - db
-<<<<<<< HEAD
-  server:
-    build: ./Strollin
-    container_name: server-Strollin
-    networks:
-      - backend
-    ports:
-      - "3004:3000"
-    restart: 'on-failure'
-    depends_on:
-      - db
-  
-=======
   # server:
   #   build: ./Strollin
   #   #image: server
@@ -51,7 +38,6 @@ services:
   #   depends_on:
   #     - db
       
->>>>>>> 252ac7b8b45ee1a2cc0e9b30f3160eddc5712070
 
 networks:
   backend:
