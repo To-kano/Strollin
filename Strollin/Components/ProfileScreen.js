@@ -255,7 +255,7 @@ const styles = StyleSheet.create({
   text_email: {
     width: '100%',
     height: 40,
-    padding: 6,
+    padding: 6,ProfileScreen
     backgroundColor: '#ffffff',
     borderRadius: 4,
     fontSize: 20,
