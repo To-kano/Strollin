@@ -9,7 +9,7 @@ services:
       - "27017:27017"
     environment:
       PORT: 27017
-    # command: [--auth]
+    command: [--auth]
     restart: 'on-failure'
   db-express:
     image: mongo-express
@@ -21,11 +21,12 @@ services:
     environment:
       - ME_CONFIG_MONGODB_SERVER=db
       - ME_CONFIG_MONGODB_PORT=27017
-      # - ME_CONFIG_MONGODB_ADMINUSERNAME=root
-      # - ME_CONFIG_MONGODB_ADMINPASSWORD=root
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=root
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=root
     restart: 'on-failure'
     depends_on:
       - db
+<<<<<<< HEAD
   server:
     build: ./Strollin
     container_name: server-Strollin
@@ -37,6 +38,20 @@ services:
     depends_on:
       - db
   
+=======
+  # server:
+  #   build: ./Strollin
+  #   #image: server
+  #   container_name: server-Strollin
+  #   networks:
+  #     - backend
+  #   ports:
+  #     - "3000:3000"
+  #   restart: 'on-failure'
+  #   depends_on:
+  #     - db
+      
+>>>>>>> 252ac7b8b45ee1a2cc0e9b30f3160eddc5712070
 
 networks:
   backend:

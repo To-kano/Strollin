@@ -591,6 +591,8 @@ The object User represents the users of the application Strollin and the partner
 GENERATOR RELATED:
 ==================
 
+**DESCRIPTION:**
+
 Generator course is not a model but it is used for the algorithm of Strollin and interact with the database. The algorithm will return an array of object containing:
 
 - AlgAg: Number,
@@ -608,6 +610,8 @@ Generator course is not a model but it is used for the algorithm of Strollin and
 - TagsDisp: [Number],
 - Time: Number
 
+
+**REQUESTS:**
 
 - GET a generated course: `GET /generator/generate_course`
 

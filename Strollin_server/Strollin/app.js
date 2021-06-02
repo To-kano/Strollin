@@ -31,8 +31,14 @@ var app = express();
 // MongoDB //
 
 // var mongoDB = 'mongodb://didier:test@db:27017/Strollin'; //Version Authentification
+<<<<<<< HEAD
 //var mongoDB = 'mongodb://127.0.0.1:27017/Strollin';
 var mongoDB = 'mongodb://db:27017/Strollin';
+=======
+var mongoDB = 'mongodb://strollin_server:strollin@db:27017/Strollin'; //Version Authentification Rasp
+//var mongoDB = 'mongodb://127.0.0.1:27017/Strollin';
+//var mongoDB = 'mongodb://db:27017/Strollin';
+>>>>>>> 252ac7b8b45ee1a2cc0e9b30f3160eddc5712070
 
 mongoose.connect(mongoDB, { useNewUrlParser: true });
 
@@ -81,7 +87,7 @@ let stats = {
 
 setInterval(function() {
   console.log("REQUESTS STATISTIC:\n \nRequests by route:\n\t- comment:\t" + stats.comment + "\n\t- conversation:\t" + stats.conversation + "\n\t- course:\t" + stats.course + "\n\t- faq:\t\t" + stats.faq + "\n\t- generator:\t" + stats.generator + "\n\t- location:\t" + stats.location + "\n\t- message:\t" + stats.message + "\n\t- tag:\t\t" + stats.tag + "\n\t- users:\t" + stats.users + "\n\t- other:\t" + stats.other + "\n \nRequest by answer:\n\t- Success:\t" + stats.success + "\n\t- Failure:\t" + stats.failure + "\n\t- Unknown:\t" + stats.unknown + "\n \nTotal Request:\t" + stats.total);
-}, (1000 * 60 * 60))
+}, (1000 * 60 * 60 * 24))
 
 app.use((req, res, next) => {
   let model = req.originalUrl.split('/')[1];
