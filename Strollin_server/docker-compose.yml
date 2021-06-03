@@ -9,7 +9,7 @@ services:
       - "27017:27017"
     environment:
       PORT: 27017
-    command: [--auth]
+    #command: [--auth]
     restart: 'on-failure'
   db-express:
     image: mongo-express
