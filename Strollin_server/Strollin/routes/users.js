@@ -424,7 +424,7 @@ router.post('/add_historic', async function (req, res) {
  */
  router.post('/add_favorite', async function (req, res) {
 
-  let user = await UserModel.findOne({ access_token: req.headers.access_token }, "-_id id pseudo course_favorite").catch(error => error);
+  let user = await UserModel.findOne({ access_token: req.headers.access_token }, "-_id id pseudo course_favorites").catch(error => error);
   if (!user) {
     return res.status(400).send({ status: "You are not connected." });
   }
