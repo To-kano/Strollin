@@ -165,7 +165,15 @@ router.get('/get_course', async function(req, res) {
                 delete course_dict[highest_key];
             }
         } else if (req.headers.sort === "favorites") {
-            courses_list = user.course_favorites;
+            courses_list = [];
+            let course = undefined;
+            for (let index = 0; index < user.course_favorites.length; index++) {
+                course = await CourseModel.findOne({id: user.course_favorites[index]}).catch(error => error);
+                if (course && course.reason) {
+                    return res.status(400).send({status: "Error in database transaction:\n", error: course});
+                }
+                courses_list.push(course);
+            }
         }
         if (courses_list && courses_list.reason) {
             return res.status(400).send({status: "Error in database transaction:\n", error: courses_list});
