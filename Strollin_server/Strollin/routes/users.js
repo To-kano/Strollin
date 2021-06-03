@@ -451,7 +451,7 @@ router.post('/add_historic', async function (req, res) {
       return res.status(400).send({ status: "Error in database transaction:\n", error: user });
     }
     let courses_list = [];
-    let course = undefined;
+    course = undefined;
     for (let index = 0; index < user.course_favorites.length; index++) {
       course = await CourseModel.findOne({id: user.course_favorites[index]}).catch(error => error);
       if (course && course.reason) {
