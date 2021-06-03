@@ -451,7 +451,7 @@ router.post('/add_historic', async function (req, res) {
 });
 
 
-// REMOVE_FRIEND
+// REMOVE_FRIEND (Version Beta)
 /**
  * Delete an friend from friend_list.
  * @param {String} req.headers.access_token
@@ -503,14 +503,14 @@ router.post('/remove_friend', async function (req, res) {
   if (user.reason) {
     return res.status(400).send({ status: "Error in database transaction:\n", error: user });
   }
-  if (!user.course_favorites.includes(course_id)) {
+  if (!user.course_favorites.includes(req.body.course_id)) {
     return res.status(400).send({ status: "The course is not in your favorite." });
   }
-  let error = await UserModel.updateOne({ id: user.id }, { $pull: { course_favorites: course_id }}).catch(error => error);
+  let error = await UserModel.updateOne({ id: user.id }, { $pull: { course_favorites: req.body.course_id }}).catch(error => error);
   if (error.errors) {
     return res.status(400).send({ status: "Error in database transaction:\n", error: user });
   }
-  const index = user.course_favorites.indexOf(course_id);
+  const index = user.course_favorites.indexOf(req.body.course_id);
   if (index > -1) {
     user.course_favorites.splice(index, 1);
   }
