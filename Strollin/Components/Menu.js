@@ -105,6 +105,16 @@ function Menu(props) {
             <Text style={styles.text_navigationIn}>{props.state.routeNames[7]}</Text>
           </TouchableOpacity>
           <TouchableOpacity
+            onPress={() => {
+              profileUser(props, store.profil.access_token);
+              props.navigation.navigate(props.state.routeNames[8]);
+            }}
+            style={[styles.view_navigationIn, props.state.index == 8 ? styles.current_page : {}]}
+          >
+            <Image style={styles.img_navigationIn} source={require('../images/empty_star.png')} />
+            <Text style={styles.text_navigationIn}>{props.state.routeNames[8]}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
             onPress={() => props.navigation.navigate('Personal_trip')}
             style={[styles.view_navigationIn, props.name == 'Personal_trip' ? styles.current_page : {}]}
           >
@@ -118,6 +128,7 @@ function Menu(props) {
             <Image style={styles.img_navigationIn} source={require('../images/icons/black/next_trip.png')} />
             <Text style={styles.text_navigationIn}>Position_partener</Text>
           </TouchableOpacity>
+        
         </View>
         {/*<TouchableOpacity
           onPress={() => props.navigation.navigate('userLogin')}

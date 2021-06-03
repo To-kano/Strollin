@@ -14,6 +14,63 @@ function GotoComment(props) {
   props.navigation.navigate('CommentScreen');
 }
 
+async function addFavorite(props, setIsFavorite) {
+  const bodyRequest = JSON.stringify({
+    course: props.data.id
+  });
+  console.log("sent id = ", props.data.id);
+  await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/add_favorite`, {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      access_token: props.profil.access_token,
+    },
+    method: 'POST',
+    body: bodyRequest,
+  }).then((answer) => answer.json())
+  .then(async function (answer) {
+    setIsFavorite(true);
+    console.log("add answer = ", answer);
+    if (answer.course_favorites) {
+      const action = {type: 'SET_FAVORITES_LIST', value: answer.course_favorites};
+      props.dispatch(action);
+      const action2 = {type: 'ADD_TO_PROFILE_FAVORITES', value: answer.course_favorites}
+      props.dispatch(action2);
+    }
+
+  })
+  .catch((error) => {
+    console.error('error :', error);
+  });
+}
+
+async function removeFavorite(props, setIsFavorite) {
+  console.log("remove props.data.id = ", props.data.id);
+  const bodyRequest = JSON.stringify({
+    course_id: props.data.id
+  });
+  await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/remove_favorite`, {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      access_token: props.profil.access_token,
+    },
+    method: 'POST',
+    body: bodyRequest,
+  }).then((answer) => answer.json())
+  .then(async function (answer) {
+    setIsFavorite(false);
+    console.log("remove answer = ", answer);
+    if (answer.course_favorites) {
+      const action = {type: 'SET_FAVORITES_LIST', value: answer.course_favorites};
+      props.dispatch(action);
+    }
+  })
+  .catch((error) => {
+    console.error('error :', error);
+  });
+}
+
 async function getLocation(props, setLocationList) {
   await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/get_locations_by_id`, {
     headers: {
@@ -41,12 +98,39 @@ function randPic() {
   return (require('../ressources/street2.jpg'));
 }
 
-function TendenceCourseItem(props) {
-  const [locationList, setLocationList] = useState(null);
+function checkFavorite(props) {
+  const store = Store.getState();
+  console.log("store.profil.course_favorites = ", store.profil.course_favorites);
+  console.log("props.data.id = ", props.data.id);
 
+  if (props.favoritesPage) {
+    return (true);
+  }
+
+  if (store.profil.course_favorites && props.data) {
+    for (let i = 0; i < store.profil.course_favorites.length; i++) {
+      console.log("compared id = ", store.profil.course_favorites[i])
+      if (store.profil.course_favorites[i] == props.data.id) {
+        console.log("returned true");
+        return (true);
+      }
+    }
+  }
+  
+  return (false);
+}
+
+function CourseItem(props) {
+  const [locationList, setLocationList] = useState(null);
+  const [isFavorite, setIsFavorite] = useState(null);
+
+  if (isFavorite == null) {
+    setIsFavorite(checkFavorite(props));
+  }
   if (!locationList) {
     getLocation(props, setLocationList);
   }
+
   return (
     <View
       style={styles.view_box}
@@ -77,9 +161,6 @@ function TendenceCourseItem(props) {
               )}
             keyExtractor={(item) => item["name"]}
           />
-            {/* <Text style={styles.text_information}>{props.data.destinations[0]} - </Text> */}
-            {/* <Text style={styles.text_information}>{props.data.destinations[1]} - </Text> */}
-            {/* <Text style={styles.text_information}>{props.data.destinations[2]}</Text> */}
           </View>
           <Text numberOfLines={1} style={styles.text_name}>{props.data.name}</Text>
           <View style={styles.view_comments}>
@@ -88,6 +169,22 @@ function TendenceCourseItem(props) {
               >
                 <Image style={styles.img_comment} source={require('../images/icons/white/comments.png')}/>
             </TouchableOpacity>
+            {
+            !isFavorite && 
+              <TouchableOpacity
+                onPress={() => addFavorite(props, setIsFavorite)}
+                >
+                  <Image style={styles.img_comment} source={require('../images/empty_white_star.png')}/>
+              </TouchableOpacity>
+            }
+            {
+            isFavorite && 
+                <TouchableOpacity
+                  onPress={() => removeFavorite(props, setIsFavorite)}
+                  >
+                    <Image style={styles.img_comment} source={require('../images/yellow_star.png')}/>
+                </TouchableOpacity>
+            }
           </View>
         </View>
       </ImageBackground>
@@ -96,7 +193,7 @@ function TendenceCourseItem(props) {
 }
 
 const mapStateToProps = (state) => state;
-export default connect(mapStateToProps)(TendenceCourseItem);
+export default connect(mapStateToProps)(CourseItem);
 
 const styles = StyleSheet.create({
   view_box: {
