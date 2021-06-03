@@ -32,6 +32,7 @@ var app = express();
 
 // var mongoDB = 'mongodb://didier:test@db:27017/Strollin'; //Version Authentification
 var mongoDB = 'mongodb://strollin_server:strollin@127.0.0.1:27017/Strollin'; //Version Authentification Rasp
+var mongoDB = 'mongodb://strollin_server:strollin@db:27017/Strollin'; //Version Authentification Rasp with docker
 //var mongoDB = 'mongodb://127.0.0.1:27017/Strollin';
 //var mongoDB = 'mongodb://db:27017/Strollin';
 
