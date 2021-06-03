@@ -537,7 +537,7 @@ router.post('/remove_friend', async function (req, res) {
     }
     courses_list.push(course);
   }
-  return res.status(200).send({ status: "Friend successfully removed.", course_favorites: courses_list });
+  return res.status(200).send({ status: "Favorite successfully removed.", course_favorites: courses_list });
 });
 
 
