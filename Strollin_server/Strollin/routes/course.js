@@ -117,10 +117,10 @@ router.get('/get_course', async function(req, res) {
             courses_list = await CourseModel.find({}).sort("name").catch(error => error);
         }
         else if (req.headers.sort === "popularity") {
-            courses_list = await CourseModel.find({}).sort("number_used").catch(error => error);
+            courses_list = await CourseModel.find({}).sort({"number_used": -1}).catch(error => error);
         }
         else if (req.headers.sort === "score") {
-            courses_list = await CourseModel.find({}).sort("score").catch(error => error);
+            courses_list = await CourseModel.find({}).sort({"score": -1}).catch(error => error);
         }
         else if (req.headers.sort === "tendency") {
             let tendency_range = req.headers.tendency_range;
