@@ -420,6 +420,7 @@ router.post('/add_historic', async function (req, res) {
 /**
  * Add a course into the favorite of the user.
  * @param {String} req.headers.access_token
+ * 
  * @param {String} req.body.course
  */
  router.post('/add_favorite', async function (req, res) {
