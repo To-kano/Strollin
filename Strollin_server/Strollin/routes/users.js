@@ -445,8 +445,21 @@ router.post('/add_historic', async function (req, res) {
     if (error.errors) {
       return res.status(400).send({ status: "Error in database transaction:\n", error: error });
     }
-    user.course_favorites.push(course.id);
-    return res.status(200).send({ status: "Favorite added.", course_favorites: user.course_favorites });
+
+    user = await UserModel.findOne({ access_token: req.headers.access_token}, "id pseudo course_favorites").catch(error => error);
+    if (user.reason) {
+      return res.status(400).send({ status: "Error in database transaction:\n", error: user });
+    }
+    let courses_list = [];
+    let course = undefined;
+    for (let index = 0; index < user.course_favorites.length; index++) {
+      course = await CourseModel.findOne({id: user.course_favorites[index]}).catch(error => error);
+      if (course && course.reason) {
+        return res.status(400).send({status: "Error in database transaction:\n", error: course});
+      }
+      courses_list.push(course);
+    }
+    return res.status(200).send({ status: "Favorite added.", course_favorites: courses_list });
   }
 });
 
@@ -491,7 +504,7 @@ router.post('/remove_friend', async function (req, res) {
  * Remove a course from course_favorites.
  * @param {String} req.headers.access_token
  *
- * @param {String} req.body.course_id
+ * @param {String} req.body.course
  */
  router.post('/remove_favorite', async function (req, res) {
 
@@ -510,11 +523,21 @@ router.post('/remove_friend', async function (req, res) {
   if (error.errors) {
     return res.status(400).send({ status: "Error in database transaction:\n", error: user });
   }
-  const index = user.course_favorites.indexOf(req.body.course_id);
-  if (index > -1) {
-    user.course_favorites.splice(index, 1);
+  
+  user = await UserModel.findOne({ access_token: req.headers.access_token}, "id pseudo course_favorites").catch(error => error);
+  if (user.reason) {
+    return res.status(400).send({ status: "Error in database transaction:\n", error: user });
   }
-  return res.status(200).send({ status: "Friend successfully removed.", course_favorites: user.course_favorites });
+  let courses_list = [];
+  let course = undefined;
+  for (let index = 0; index < user.course_favorites.length; index++) {
+    course = await CourseModel.findOne({id: user.course_favorites[index]}).catch(error => error);
+    if (course && course.reason) {
+      return res.status(400).send({status: "Error in database transaction:\n", error: course});
+    }
+    courses_list.push(course);
+  }
+  return res.status(200).send({ status: "Friend successfully removed.", course_favorites: courses_list });
 });
 
 
