@@ -162,7 +162,7 @@ The object Course contains the informations of the course saved in database.
 
 | Description | Headers | Body | Return |
 |-|-|-|-|
-| Get a list of courses. Can be sorted by name, number_used, score, tendency (tendency_range is at 30 days by default) | access_token: String<br>sort: String<br>tendency_range: Number (Optional) | | courses_list: [CourseObject] (See Schema) |
+| Get a list of courses. Can be sorted by name, number_used, score, tendency (tendency_range is at 30 days by default) or favorites | access_token: String<br>sort: String<br>tendency_range: Number (Optional) | | courses_list: [CourseObject] (See Schema) |
 
 
 - GET course: `GET /course/get_user_historic`
@@ -455,6 +455,7 @@ The object User represents the users of the application Strollin and the partner
 - friends_request `[userID]`
 - groups `[[group_name, userID, ...]]`
 - course_historic `[[courseID, String]]` : ID and date
+- course_favorites `[courseID]`
 - socket_id `String`
 - facebook_id `String`
 - verify `Boolean`
@@ -520,11 +521,25 @@ The object User represents the users of the application Strollin and the partner
 | Add existing course in user's historic list with the current date. | access_token: String | course: courseID | None |
 
 
+- ADD a course in the user's historic: `POST /users/add_favorite`
+
+| Description | Headers | Body | Return |
+|-|-|-|-|
+| Add existing course in user's favorites list. | access_token: String | course: courseID | None |
+
+
 - DEL user's friend: `POST /users/remove_friend`
 
 | Description | Headers | Body | Return |
 |-|-|-|-|
 | Remove a friend from the friends list. It will remove your id from the friend's friends list | access_token: String | friend_id: UserID | |
+
+
+- DEL user's favorite: `POST /users/remove_favorite`
+
+| Description | Headers | Body | Return |
+|-|-|-|-|
+| Remove a course from the favorite list. | access_token: String | course_id: CourseID |  |
 
 
 - DEL user's tags: `POST /users/remove_tags`
@@ -548,7 +563,7 @@ The object User represents the users of the application Strollin and the partner
 
 | Description | Headers | Body | Return |
 |-|-|-|-|
-| Get the current user's profile.| access_token: String | None | profile: {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id: UserID,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mail: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;creation_date: Date,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pseudo: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;partner: Boolean<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;first_name: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;last_name: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tags_list: [tagID],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;friends_list: [userID],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;friends_request: [userID],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;groups: [[group_name, userID1, userID2, ...]],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;course_historic: [courseID]<br>} |
+| Get the current user's profile.| access_token: String | None | profile: {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id: UserID,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mail: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;creation_date: Date,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pseudo: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;partner: Boolean<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;first_name: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;last_name: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tags_list: [tagID],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;friends_list: [userID],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;friends_request: [userID],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;groups: [[group_name, userID1, userID2, ...]],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;course_historic: [[courseID, date (String)]],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;course_favorites: [courseID]<br>} |
 
 
 - GET an user's profile: `GET /users/get_user_profile`
