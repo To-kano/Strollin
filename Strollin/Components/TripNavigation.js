@@ -107,7 +107,7 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
     console.log("course: ", course);
     const store = Store.getState();
     const access_Token = store.profil.access_token;
-    console.log("pos: ", pos);
+    //console.log("\n\n\n.............................pos: ", pos);
     console.log("token: ", access_Token);
     const coordinate = [];
     const test = JSON.stringify({course: course})
