@@ -103,24 +103,24 @@ router.post('/new_course', async function(req, res) {
  */
 router.get('/get_course', async function(req, res) {
     let courses_list = undefined;
-    /*let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo").catch(error => error);
+    let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo course_favorites").catch(error => error);
 
     if (!user) {
         return res.status(400).send({status: "You are not connected."});
     }
     if (user.reason) {
         return res.status(400).send({status: "Error in database transaction:\n", error: user});
-    }*/
+    }
 
     if (req.headers.sort) {
         if (req.headers.sort === "name") {
             courses_list = await CourseModel.find({}).sort("name").catch(error => error);
         }
         else if (req.headers.sort === "popularity") {
-            courses_list = await CourseModel.find({}).sort("number_used").catch(error => error);
+            courses_list = await CourseModel.find({}).sort({"number_used": -1}).catch(error => error);
         }
         else if (req.headers.sort === "score") {
-            courses_list = await CourseModel.find({}).sort("score").catch(error => error);
+            courses_list = await CourseModel.find({}).sort({"score": -1}).catch(error => error);
         }
         else if (req.headers.sort === "tendency") {
             let tendency_range = req.headers.tendency_range;
@@ -163,6 +163,16 @@ router.get('/get_course', async function(req, res) {
                 }
                 courses_list.push(course);
                 delete course_dict[highest_key];
+            }
+        } else if (req.headers.sort === "favorites") {
+            courses_list = [];
+            let course = undefined;
+            for (let index = 0; index < user.course_favorites.length; index++) {
+                course = await CourseModel.findOne({id: user.course_favorites[index]}).catch(error => error);
+                if (course && course.reason) {
+                    return res.status(400).send({status: "Error in database transaction:\n", error: course});
+                }
+                courses_list.push(course);
             }
         }
         if (courses_list && courses_list.reason) {

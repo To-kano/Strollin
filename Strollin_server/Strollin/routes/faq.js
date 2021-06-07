@@ -75,7 +75,7 @@ router.get('/get_question_fr', async function(req, res) {
     } else if (faqs_list.length > 0) {
         return res.status(200).send({status: "Faq(s) found.", faqs_list});
     } else {
-        return res.status(400).send({status: "Faq(s) not found.", error: faqs_list});
+        return res.status(200).send({status: "Faq(s) not found.", faqs_list});
     }
 });
 
@@ -92,7 +92,7 @@ router.get('/get_question_en', async function(req, res) {
     } else if (faqs_list.length > 0) {
         return res.status(200).send({status: "Faq(s) found.", faqs_list});
     } else {
-        return res.status(400).send({status: "Faq(s) not found.", error: faqs_list});
+        return res.status(200).send({status: "Faq(s) not found.", faqs_list});
     }
 });
 

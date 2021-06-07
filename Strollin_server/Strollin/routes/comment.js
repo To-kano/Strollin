@@ -172,7 +172,7 @@ router.get('/get_comment_by_id', async function(req, res) {
     } else if (comments_list.length > 0) {
         return res.status(200).send({status: "Comment(s) found.", comments_list});
     } else {
-        return res.status(400).send({status: "Comment(s) not found.", error: comments_list});
+        return res.status(400).send({status: "Comment(s) not found.", comments_list});
     }
 });
 

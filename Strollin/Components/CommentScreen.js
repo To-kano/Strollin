@@ -15,13 +15,13 @@ async function getCommentList(props, setCommentList, store) {
       Accept: 'application/json',
       'Content-Type': 'application/json',
       access_token: store.profil.access_token,
-      comments_list: store.tendance.selectedTendanceCourse.comments_list
+      comments_list: store.comment.selectedCourse.comments_list
     },
     method: 'GET',
   }).then((answer) => answer.json())
   .then(async function (answer) {
     setCommentList(answer["comments_list"])
-    console.log("comment = ", store.tendance.selectedTendanceCourse.comments_list)
+    console.log("comment = ", store.comment.selectedCourse.comments_list)
   })
   .catch((error) => {
     console.error('error :', error);
@@ -45,10 +45,10 @@ export function Header(props) {
          onPress={() => {
           const action = {
             type: 'ADD_COURSE',
-            value: props.store.tendance.selectedTendanceCourse
+            value: props.store.comment.selectedCourse
           };
           Store.dispatch(action);
-          console.log("course = ", props.store.tendance.selectedTendanceCourse);
+          console.log("course = ", props.store.comment.selectedCommentCourse);
 
           const popAction = StackActions.pop(5);
 
