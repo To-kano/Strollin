@@ -203,7 +203,7 @@ async function AddTags() {
     }
     if (flag != 1) {
       await tag.save();
-      console.log("done: tag ", tag.name, " added");
+      console.log("done : tag ", tag.name, " added");
     }
     flag = 0;
   }
