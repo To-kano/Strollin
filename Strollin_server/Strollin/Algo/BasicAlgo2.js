@@ -126,6 +126,8 @@ function algoTest(Places, Food, time, budget, tags, coordinate, radius) {
     UserPos[1] = parseFloat(coordinate[1]);
 
     console.log("..............................POs: ", UserPos);
+    radius = radius * 1000;
+    console.log("radius: ", radius);
     //console.log("TAGS ------------------------: ", UserTags);
     //Put all the places corresponding to the user tags in a new array (PlacesArray)
     for (var i = 0; i < Places.length; i++) {

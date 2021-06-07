@@ -196,7 +196,7 @@ async function AddTags() {
 
 }
 
-//AddTags(); //Décometner cette ligne pour ajouter la liste des tags google places a votre bdd
+AddTags(); //Décometner cette ligne pour ajouter la liste des tags google places a votre bdd
 
 //TestLoc();
 

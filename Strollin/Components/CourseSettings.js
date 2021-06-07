@@ -227,8 +227,8 @@ export function CourseSettings(props) {
             <TextInput
               style={styles.textInput_optionInput}
               keyboardType="numeric"
-              onChangeText={(text) => setBudget(text)}
-              value={budget}
+              onChangeText={(text) => setRadius(text)}
+              value={radius}
               maxLength={6}
             />
             <Text style={styles.text_optionInput}>
