@@ -100,8 +100,6 @@ function randPic() {
 
 function checkFavorite(props) {
   const store = Store.getState();
-  console.log("store.profil.course_favorites = ", store.profil.course_favorites);
-  console.log("props.data.id = ", props.data.id);
 
   if (props.favoritesPage) {
     return (true);
