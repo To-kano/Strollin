@@ -50,9 +50,9 @@ router.post('/register', async function (req, res) {
   }
   if (req.body.mail && req.body.password && req.body.partner !== undefined) {
     let password_check = await check_the_password(req.body.password);
-    // if (password_check == false) {
-    //   return res.status(400).send({status: "The password must contains 6 characters with at least 1 uppercase, 1 lowercase and 1 digit."});
-    // }
+    if (password_check == false) {
+      return res.status(400).send({status: "The password must contains 6 characters with at least 1 uppercase, 1 lowercase and 1 digit."});
+    }
     user = new UserModel({
       id: new Number(Date.now()),
       creation_date: new Date().toLocaleDateString("fr-FR"),
@@ -92,7 +92,7 @@ router.post('/register', async function (req, res) {
       from: '"Strollin App" <strollinapp@outlook.com>', // sender address (who sends)
       to: req.body.mail, // list of receivers (who receives)
       subject: `subscribe the app Strollin `, // Subject line
-      html: `<a href="http://88.165.45.219:3002/users/verify?id=${user.id}">test</a> `,
+      html: `<a href="http://88.165.45.219:3004/users/verify?id=${user.id}">test</a> `,
     };
 
     // send the mail
@@ -416,8 +416,56 @@ router.post('/add_historic', async function (req, res) {
 });
 
 
+// ADD_FAVORITE
+/**
+ * Add a course into the favorite of the user.
+ * @param {String} req.headers.access_token
+ * 
+ * @param {String} req.body.course
+ */
+ router.post('/add_favorite', async function (req, res) {
 
-// REMOVE_FRIEND
+  let user = await UserModel.findOne({ access_token: req.headers.access_token }, "-_id id pseudo course_favorites").catch(error => error);
+  if (!user) {
+    return res.status(400).send({ status: "You are not connected." });
+  }
+  if (user.reason) {
+    return res.status(400).send({ status: "Error in database transaction:\n", error: user });
+  }
+
+  let course = await CourseModel.findOne({ id: req.body.course }).catch(error => error);
+  if (!course) {
+    return res.status(400).send({ status: "The course does not exist." });
+  } else if (course.reason) {
+    return res.status(400).send({ status: "Error in database transaction:\n", error: user });
+  } else {
+    if (user.course_favorites.includes(course.id)) {
+      return res.status(400).send({ status: "The course is already in favorite." });
+    }
+    let error = await UserModel.updateOne({ id: user.id }, { $push: { course_favorites: course.id } }).catch(error => error);
+    if (error.errors) {
+      return res.status(400).send({ status: "Error in database transaction:\n", error: error });
+    }
+
+    user = await UserModel.findOne({ access_token: req.headers.access_token}, "id pseudo course_favorites").catch(error => error);
+    if (user.reason) {
+      return res.status(400).send({ status: "Error in database transaction:\n", error: user });
+    }
+    let courses_list = [];
+    course = undefined;
+    for (let index = 0; index < user.course_favorites.length; index++) {
+      course = await CourseModel.findOne({id: user.course_favorites[index]}).catch(error => error);
+      if (course && course.reason) {
+        return res.status(400).send({status: "Error in database transaction:\n", error: course});
+      }
+      courses_list.push(course);
+    }
+    return res.status(200).send({ status: "Favorite added.", course_favorites: courses_list });
+  }
+});
+
+
+// REMOVE_FRIEND (Version Beta)
 /**
  * Delete an friend from friend_list.
  * @param {String} req.headers.access_token
@@ -451,6 +499,47 @@ router.post('/remove_friend', async function (req, res) {
   return res.status(200).send({ status: "Friend successfully removed." });
 });
 
+
+// REMOVE_FAVORITE
+/**
+ * Remove a course from course_favorites.
+ * @param {String} req.headers.access_token
+ *
+ * @param {String} req.body.course
+ */
+ router.post('/remove_favorite', async function (req, res) {
+
+  let user = await UserModel.findOne({ access_token: req.headers.access_token}, "id pseudo course_favorites").catch(error => error);
+
+  if (!user) {
+    return res.status(400).send({ status: "You are not connected." });
+  }
+  if (user.reason) {
+    return res.status(400).send({ status: "Error in database transaction:\n", error: user });
+  }
+  if (!user.course_favorites.includes(req.body.course_id)) {
+    return res.status(400).send({ status: "The course is not in your favorite." });
+  }
+  let error = await UserModel.updateOne({ id: user.id }, { $pull: { course_favorites: req.body.course_id }}).catch(error => error);
+  if (error.errors) {
+    return res.status(400).send({ status: "Error in database transaction:\n", error: user });
+  }
+  
+  user = await UserModel.findOne({ access_token: req.headers.access_token}, "id pseudo course_favorites").catch(error => error);
+  if (user.reason) {
+    return res.status(400).send({ status: "Error in database transaction:\n", error: user });
+  }
+  let courses_list = [];
+  let course = undefined;
+  for (let index = 0; index < user.course_favorites.length; index++) {
+    course = await CourseModel.findOne({id: user.course_favorites[index]}).catch(error => error);
+    if (course && course.reason) {
+      return res.status(400).send({status: "Error in database transaction:\n", error: course});
+    }
+    courses_list.push(course);
+  }
+  return res.status(200).send({ status: "Favorite successfully removed.", course_favorites: courses_list });
+});
 
 
 // LOGIN

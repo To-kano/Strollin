@@ -3,7 +3,7 @@ import {
   StyleSheet, Text, View, Image, TouchableOpacity, FlatList,
 } from 'react-native';
 import { connect } from 'react-redux';
-import TendenceCourseItem from './TendenceCourseItem';
+import CourseItem from './CourseItem';
 import I18n from '../Translation/configureTrans';
 import SearchBar from './TendanceSearchBar';
 import Store from '../Store/configureStore';
@@ -39,7 +39,7 @@ export function setSortedTendanceData(tag) {
   Store.dispatch(action);
 }
 
-export function getData() {
+export function getTendanceList() {
   const store = Store.getState();
 
   if (store.tendance.sortedTendanceList.length > 0) {
@@ -81,6 +81,7 @@ export function Header({ props, defaultState = false }) {
 }
 
 export function HomePage(props) {
+
   return (
     <View style={styles.view_back}>
       <Header props={props} />
@@ -88,9 +89,9 @@ export function HomePage(props) {
         <FlatList
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
-          data={getData()}
+          data={getTendanceList()}
           renderItem={({ item }) => (
-            <TendenceCourseItem
+            <CourseItem
               {...props}
               data={item}
             />
@@ -125,7 +126,7 @@ export function HomePage(props) {
             <FlatList
               showsHorizontalScrollIndicator={false}
               showsVerticalScrollIndicator={false}
-              data={getData()}
+              data={getTendanceList()}
               renderItem={({ item }) => (
                 <TendenceCourseItem
                   {...props}

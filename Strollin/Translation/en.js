@@ -186,6 +186,7 @@ export default {
     chats: 'Chats',
     rating: 'Rating',
     comment: 'Comment',
+    favorites: 'Favorites'
   },
 
   SettingsPartner: {
