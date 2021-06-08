@@ -220,6 +220,7 @@ export default {
     add_friend: 'Ajouter un ami',
     friend_list: "Liste d'amis",
     partner: 'Partenaire',
+    partnerPosition: 'Localisation',
     profile: 'Profil',
     home: 'Home',
     options: 'Vos options',

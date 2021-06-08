@@ -87,7 +87,6 @@ function PartenaireScreen(props) {
   return (
     <View style={styles.view_back}>
       <View style={styles.view_header}>
-
         <TouchableOpacity onPress={() => props.navigation.dispatch(DrawerActions.openDrawer())}>
           <Image style={styles.img_header} source={require('../images/icons/black/menu.png')} />
         </TouchableOpacity>

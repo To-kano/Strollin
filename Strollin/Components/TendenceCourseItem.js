@@ -69,6 +69,7 @@ function TendenceCourseItem(props) {
             <FlatList
               data={locationList}
               showsHorizontalScrollIndicator={true}
+              horizontal={true}
               renderItem={({ item }) => (
                 <Location_List
                   {...props}

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  Button, Image, View, StyleSheet, Text, ScrollView, FlatList, TextInput
+  ActivityIndicator, Image, View, StyleSheet, Text, TouchableOpacity, FlatList, TextInput
 } from 'react-native';
 import { useState, useEffect } from 'react';
 import I18n from '../Translation/configureTrans';
@@ -13,6 +13,7 @@ import MapViewDirections from 'react-native-maps-directions';
 import Store from '../Store/configureStore';
 import {getCustomCourse} from '../apiServer/course';
 import Geolocation from 'react-native-geolocation-service';
+import { DrawerActions } from '@react-navigation/native';
 const store = Store.getState();
 
 
@@ -47,6 +48,7 @@ function Position_partener(props) {
 
   const [value, onChangeValue] = React.useState(" ");
   const [jsonObject, onChangeJson] = useState(jsonDefault)
+  const [showLoader, setLoader] = useState(<View/>);
   const [isLoading, setLoading] = useState(true);
   const [userPosition, setUserPosition] = useState(null);
   const [isPermision, setPermision] = useState(false)
@@ -138,38 +140,168 @@ function Position_partener(props) {
     });
 
   return (
-    <View>
-        <View>
-          <Text style={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center' }}>{I18n.t('Position.information')}</Text>
-          <TextInput
-            onChangeText={(text) => onChangeValue(text)}
-            value={value}
-            style={{ borderWidth: 1 }}
-          />
-          <Button
-            onPress={() => {
-              sendMessage(value);
-            }}
-            title={I18n.t('Position.send')}
-            color="#841584"
-          />
-        </View>
-        {isLoading ? <View/> : (
-          <View>
-            <Text>{adress}</Text>
-            <MapView
-            style={{ height: 500, width: 400  }}
-            showsCompass
-            userLocationPriority="balanced"
-            region={region}
-            >
-            <Marker coordinate={{ latitude: region.latitude, longitude: region.longitude }} />
-            </MapView>
+    <View style={styles.view_back}>
+      <View style={styles.view_header}>
+        <TouchableOpacity onPress={() => props.navigation.dispatch(DrawerActions.openDrawer())}>
+          <Image style={styles.img_header} source={require('../images/icons/black/menu.png')} />
+        </TouchableOpacity>
+        <Text style={styles.text_header}>
+          {I18n.t('Header.partnerPosition')}
+          {'   '}
+        </Text>
+      </View>
+      <Text style={styles.text_info}>Adresse de votre commerce :</Text>
+      <View style={styles.view_search}>
+        <TextInput
+          onChangeText={(text) => onChangeValue(text)}
+          value={value}
+          style={styles.textInput_search}
+        />
+        <TouchableOpacity onPress={() => { sendMessage(value); setLoading(true); setLoader(<ActivityIndicator style={{marginTop: '75%'}} size="large" color="#0092A7"/>)}}>
+          <Image style={styles.img_search} source={require('../images/icons/black/search.png')} />
+        </TouchableOpacity>
+
+      </View>
+      <View style={styles.view_list}>
+        {isLoading ? showLoader  : (
+            <View>
+              <View style={styles.view_information}>
+                <Image style={styles.img_location} source={require('../images/logo/marker_small.png')}/>
+                <Text numberOfLines={1} style={styles.text_location}>{adress}</Text>
+              </View>
+              <MapView
+              style={{ height: '92.7%', width: '106.5%', marginLeft: '-3.25%'}}
+              showsCompass
+              userLocationPriority="balanced"
+              region={region}
+              >
+              <Marker
+                image={require('../images/logo/marker_small.png')}
+                coordinate={{ latitude: region.latitude, longitude: region.longitude }}
+              />
+              </MapView>
           </View>
-    )}
+        )}
+      </View>
     </View>
+    // <View>
+    //     <View>
+    //       <Text style={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center' }}>{I18n.t('Position.information')}</Text>
+    //       <TextInput
+    //         onChangeText={(text) => onChangeValue(text)}
+    //         value={value}
+    //         style={{ borderWidth: 1 }}
+    //       />
+    //       <Button
+    //         onPress={() => {
+    //           sendMessage(value);
+    //         }}
+    //         title={I18n.t('Position.send')}
+    //         color="#841584"
+    //       />
+    //     </View>
+    //     {isLoading ? <View/> : (
+    //       <View>
+    //         <Text>{adress}</Text>
+    //         <MapView
+    //         style={{ height: 500, width: 400  }}
+    //         showsCompass
+    //         userLocationPriority="balanced"
+    //         region={region}
+    //         >
+    //         <Marker coordinate={{ latitude: region.latitude, longitude: region.longitude }} />
+    //         </MapView>
+    //       </View>
+    // )}
+    // </View>
   );
 }
+
+const styles = StyleSheet.create({
+  view_back: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    backgroundColor: '#E1E2E7',
+    paddingTop: '1.8%',
+    paddingLeft: '3.3%',
+    paddingRight: '3.3%',
+    paddingBottom: '0%',
+  },
+  view_header: {
+    flex: 50,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  textInput_header: {
+    height: 40,
+    width: '85%',
+    borderRadius: 21,
+    marginRight: 12.5,
+    paddingLeft: 12.5,
+    backgroundColor: '#FFFFFF',
+  },
+  img_header: {
+    width: 34,
+    resizeMode: 'contain',
+  },
+  text_header: {
+    width: '87.6%',
+    fontWeight: 'bold',
+    fontSize: 28,
+    letterSpacing: 2,
+    textAlign: 'center',
+    color: '#000000',
+  },
+  view_list: {
+    flex: 757,
+    width: '100%',
+    alignContent: 'flex-start',
+  },
+  view_search: {
+    flex: 50,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  text_info: {
+    width: '96%',
+    fontSize: 16,
+    color: '#000',
+    fontWeight: 'bold',
+    marginBottom: 5,
+  },
+  textInput_search: {
+    flex: 100,
+    backgroundColor: '#fff',
+    borderRadius: 100,
+    paddingHorizontal: 15,
+    marginRight: 15,
+  },
+  img_search: {
+    flex: 34,
+    width: 34,
+    resizeMode: 'contain',
+  },
+  view_information: {
+    marginVertical: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  img_location: {
+    width: 25,
+    resizeMode: 'contain',
+    height: 25,
+    marginRight: 10,
+  },
+  text_location: {
+    width: '90%',
+    fontSize: 16,
+    color: '#000',
+  },
+});
 
 const mapStateToProps = (state) => {
   return (
