@@ -43,7 +43,7 @@ async function PopUpReq(pos, course) {
 
 
 
-async function getUserTags(pos, budget, hours, minutes, props, eat) {
+async function getUserTags(pos, budget, hours, minutes, props, eat, radius) {
   const store = Store.getState();
   const access_Token = store.profil.access_token;
   console.log("token: ", access_Token);
@@ -60,11 +60,11 @@ async function getUserTags(pos, budget, hours, minutes, props, eat) {
     console.log("ici ?: ", json);
     console.log("########", json.profile.tags_list);
     console.log("mail: ", json.profile.mail);
-    test(pos, budget, hours, minutes, json.profile.tags_list, props, eat);
+    test(pos, budget, hours, minutes, json.profile.tags_list, props, eat, radius);
   });
 }
 
-async function test(pos, budget, hours, minutes, tags, props, eat) {
+async function test(pos, budget, hours, minutes, tags, props, eat, radius) {
   const store = Store.getState();
   const access_Token = store.profil.access_token;
   const time = hours * 60 + minutes;
@@ -86,7 +86,8 @@ async function test(pos, budget, hours, minutes, tags, props, eat) {
     'budget': budget,
     'tags': tags,
     'coordinate' : coordinate,
-    'eat' : eat
+    'eat' : eat,
+    'radius' : radius
   },
   method: 'GET',
   })
@@ -118,6 +119,7 @@ export function CourseSettings(props) {
   const [budget, setBudget] = useState('0');
   const [pos, setPos] = useState('0');
   const [isEatDrink, setEatDring] = useState(false);
+  const [radius, setRadius] = useState('0');
 
   function Switch() {
 
@@ -175,6 +177,7 @@ export function CourseSettings(props) {
           <View style={styles.view_separator} />
           <View style={styles.view_optionInput}>
             <TextInput
+              autoCapitalize={'none'}
               style={styles.textInput_optionInput}
               keyboardType="numeric"
               onChangeText={(text) => setBudget(text)}
@@ -193,6 +196,7 @@ export function CourseSettings(props) {
           <View style={styles.view_separator} />
           <View style={styles.view_optionInput}>
             <TextInput
+          autoCapitalize={'none'}
               style={styles.textInput_optionInput}
               keyboardType="numeric"
               onChangeText={(text) => setHours(text)}
@@ -205,6 +209,7 @@ export function CourseSettings(props) {
           </View>
           <View style={styles.view_optionInput}>
             <TextInput
+          autoCapitalize={'none'}
               style={styles.textInput_optionInput}
               keyboardType="numeric"
               onChangeText={(text) => setMinutes(text)}
@@ -213,6 +218,24 @@ export function CourseSettings(props) {
             />
             <Text style={styles.text_optionInput}>
               Minute(s)
+            </Text>
+          </View>
+        </View>
+        <View style={styles.view_option}>
+          <Text style={styles.text_option}>
+            Distance
+          </Text>
+          <View style={styles.view_separator} />
+          <View style={styles.view_optionInput}>
+            <TextInput
+              style={styles.textInput_optionInput}
+              keyboardType="numeric"
+              onChangeText={(text) => setRadius(text)}
+              value={radius}
+              maxLength={6}
+            />
+            <Text style={styles.text_optionInput}>
+              Km
             </Text>
           </View>
         </View>
@@ -233,7 +256,7 @@ export function CourseSettings(props) {
         id="test"
         style={styles.view_newTrip}
         onPress={() => {
-          getUserTags(pos, budget, hours, minutes, props, isEatDrink);
+          getUserTags(pos, budget, hours, minutes, props, isEatDrink, radius);
         }}
       >
         <Text style={styles.text_newTrip}>

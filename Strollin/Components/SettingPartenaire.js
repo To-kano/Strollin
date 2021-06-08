@@ -168,6 +168,7 @@ function SettingPartenaire(props) {
           </Text>
           <View style={styles.view_number}>
             <TextInput
+          autoCapitalize={'none'}
               style={styles.textInput_number}
               placeholder={args.name}
               onChangeText={(text) => postName(text)}
@@ -180,6 +181,7 @@ function SettingPartenaire(props) {
           </Text>
           <View style={styles.view_number}>
             <TextInput
+          autoCapitalize={'none'}
               style={styles.textInput_number}
               placeholder={args.address}
               onChangeText={(text) => postAdd(text)}
@@ -192,6 +194,7 @@ function SettingPartenaire(props) {
           </Text>
           <View style={styles.view_number}>
             <TextInput
+          autoCapitalize={'none'}
               style={styles.textInput_number}
               placeholder={args.description}
               onChangeText={(text) => postAdd(text)}

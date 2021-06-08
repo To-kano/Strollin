@@ -95,6 +95,7 @@ function ConversationBar(props) {
             <Image style={styles.img_conversationBar} source={require('../../images/icons/black/addPicture.png')} />
           </TouchableOpacity>
           <TextInput
+          autoCapitalize={'none'}
             style={styles.textInput_conversationBar}
             placeholder="Message.."
             onChangeText={(text) => setresearch(text)}

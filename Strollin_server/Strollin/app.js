@@ -17,6 +17,7 @@ var tagRouter = require('./routes/tag');
 var faqRouter = require('./routes/faq')
 var generatorRouter = require('./routes/generator');
 var imageRouter = require('./routes/image');
+var mailsRouter = require('./routes/mails');
 
 //var algo = require('./Algo/BasicAlgo');
 var algo = require('./Algo/BasicAlgo2');
@@ -141,6 +142,7 @@ app.use('/tag', tagRouter);
 app.use('/faq', faqRouter);
 app.use('/generator', generatorRouter);
 app.use('/image', imageRouter);
+app.use('/mails', mailsRouter);
 
 /******/
 
@@ -186,14 +188,26 @@ async function TestLoc() {
 
 async function AddTags() {
   console.log("add tags");
+  let flag = 0;
+  let tags = await TagModel.find().catch(error => error);
+  //console.log(tags);
   for (var i = 0; i < tags_json.tags_array.length; i++) {
     tag = new TagModel({
         id: new Number(Date.now()),
         name: tags_json.tags_array[i],
         description: "z",
     });
-    await tag.save();
-    console.log("done");
+    for (var j = 0; j < tags.length; i++) {
+      if (tags[j].name == tag.name) {
+        flag = 1;
+        break;
+      }
+    }
+    if (flag != 1) {
+      await tag.save();
+      console.log("done : tag ", tag.name, " added");
+    }
+    flag = 0;
   }
 
 }

@@ -193,6 +193,7 @@ export function Header({ props, defaultState = false }) {
   return (
     <View style={styles.view_header}>
       <TextInput
+          autoCapitalize={'none'}
         style={styles.textInput_header}
         placeholder={I18n.t('Header.add_friend')}
         onChangeText={(text) => setresearch(text)}
