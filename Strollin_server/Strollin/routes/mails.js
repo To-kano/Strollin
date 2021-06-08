@@ -20,7 +20,28 @@ router.post('/send', async function(req, res, next) {
 
     const form = formidable({ multiples: true });
 
-    let mail = await UserModel.findOne({ mail: req.body.mail.toLowerCase() }).catch(error => error);
+    const projection = 'mail' //-param for excluding
+
+
+    let mail = await UserModel.find({ verify: true }, projection).catch(error => error);
+
+    console.log("mail ", mail);
+
+
+    let sender = "";
+
+    mail.forEach(element => {
+      console.log(" receiver ", element);
+
+      if (sender == "") {
+        sender = sender.concat(element.mail);
+      } else {
+        sender = sender.concat(', ' , element.mail);
+        
+      }
+    });
+
+    console.log("sender = ", sender);
 
 
     const transporter = nodemailer.createTransport({
@@ -58,27 +79,24 @@ router.post('/send', async function(req, res, next) {
 
       fs.readFile(newpath, "utf8", function(err, data) {
           console.log('data ', data);
+          const mailOptions = {
+            from: '"Strollin App" <strollinapp@outlook.com>', // sender address (who sends)
+            to: sender, // list of receivers (who receives)
+            subject: fields.mail_object, // Subject line
+            html: data,
+          };
+
+          transporter.sendMail(mailOptions, function (error, info) {
+            if (error) {
+              console.log(error);
+            } else {
+              //console.log('Email sent: ' + info.response);
+            }
+          });
+
       });
 
-      const mailOptions = {
-        from: '"Strollin App" <strollinapp@outlook.com>', // sender address (who sends)
-        to: req.body.mail.toLowerCase(), // list of receivers (who receives)
-        subject: `subscribe the app Strollin `, // Subject line
-        html: `<a href="http://89.87.94.17:3000/users/verify?id=${user.id}">test</a> `,
-      };
-
-      transporter.sendMail(mailOptions, function (error, info) {
-        if (error) {
-          console.log(error);
-        } else {
-          //console.log('Email sent: ' + info.response);
-        }
-      });
-
-
-      res.render('news', {
-        title: 'Doc Music'
-      });
+      res.redirect('/news');
     }); 
 });
 
