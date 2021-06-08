@@ -223,7 +223,6 @@ router.post('/update_location', async function(req, res) {
  */
 router.post('/add_location_tag', async function(req, res) {
 
-    let update = {};
     let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo").catch(error => error);
     let location = undefined;
 
@@ -393,7 +392,7 @@ router.get('/get_locations_by_id', async function(req, res) {
     } else if (locations_list.length > 0) {
         return res.status(200).send({status: "Location(s) found.", locations_list});
     } else {
-        return res.status(400).send({status: "Location(s) not found.", error: locations_list});
+        return res.status(400).send({status: "Location(s) not found.", locations_list});
     }
 });
 

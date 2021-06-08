@@ -174,6 +174,7 @@ export default {
     friend_list: "Friend List",
     add_friend: 'Add Friend',
     partner: 'Partner',
+    partnerPosition: 'Localisation',
     profile: 'Profile',
     home: 'Home',
     options: 'Trip options',
@@ -185,6 +186,7 @@ export default {
     chats: 'Chats',
     rating: 'Rating',
     comment: 'Comment',
+    favorites: 'Favorites'
   },
 
   SettingsPartner: {
