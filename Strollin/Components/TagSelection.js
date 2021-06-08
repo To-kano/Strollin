@@ -9,6 +9,7 @@ import { getTimeZone } from 'react-native-localize';
 import I18n from '../Translation/configureTrans';
 import Store from '../Store/configureStore';
 import { IP_SERVER, PORT_SERVER } from '../env/Environement';
+import {translateTags, detranslateTags} from '../Translation/translateTags'
 
 export function Header({ navigation, defaultState = false }) {
   const [pressed, setpressed] = useState(defaultState);
@@ -89,7 +90,7 @@ export function Tag({ name, chosen, defaultState = false }) {
           setpressed(!pressed);
         }}
       >
-        <Text style={styles.text_tagOff}>{name}</Text>
+        <Text style={styles.text_tagOff}>{translateTags(name)}</Text>
       </TouchableOpacity>
       )}
       {(pressed === true) && (
@@ -101,7 +102,7 @@ export function Tag({ name, chosen, defaultState = false }) {
         }}
       >
         <Image style={styles.img_tagOn} source={require('../images/icons/white/checked.png')} />
-        <Text style={styles.text_tagOn}>{name}</Text>
+        <Text style={styles.text_tagOn}>{translateTags(name)}</Text>
       </TouchableOpacity>
       )}
     </View>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-  StyleSheet, Text, View, Image, TouchableOpacity, FlatList,
+  StyleSheet, Text, View, Image, TouchableOpacity, FlatList, Linking
 } from 'react-native';
 import { connect } from 'react-redux';
 import TendenceCourseItem from './TendenceCourseItem';
@@ -48,9 +48,16 @@ export function getData() {
   return (store.tendance.tendanceList);
 }
 
+function getUrl(props) {
+  console.log(props)
+  if (props.profil.partner === true)
+    return ("https://forms.gle/feBUmJ8wQFPGga4A6")
+  return ('https://forms.gle/cR126bgPaexbgGYD9')
+}
+
 export function Header({ props, defaultState = false }) {
   const [pressed, setpressed] = useState(defaultState);
-
+  let url = getUrl(props)
   if (pressed === false) {
     return (
       <View style={styles.view_header}>
@@ -62,6 +69,11 @@ export function Header({ props, defaultState = false }) {
         <Text style={styles.text_header}>
           {I18n.t('Header.home')}
         </Text>
+        <TouchableOpacity
+          onPress={() => { Linking.openURL(url) }}
+        >
+          <Image style={styles.img_header} source={require('../images/icons/black/form.png')} />
+        </TouchableOpacity>
         <TouchableOpacity
           onPress={() => { setpressed(!pressed); }}
         >
