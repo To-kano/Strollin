@@ -36,6 +36,7 @@ export function Header({ navigation, defaultState = false }) {
   return (
     <View style={styles.view_header}>
       <TextInput
+          autoCapitalize={'none'}
         style={styles.textInput_header}
         placeholder={I18n.t('Header.search_tag')}
       />

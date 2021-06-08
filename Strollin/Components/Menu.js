@@ -36,7 +36,7 @@ function Menu(props) {
           <TouchableOpacity
             onPress={() => {
               profileUser(props, store.profil.access_token);
-              props.navigation.navigate(props.state.routeNames[0]);
+              props.navigation.navigate(props.state.routeNames[0], { screen: 'HomePage' });
             }}
             style={[styles.view_navigationIn, props.state.index == 0 ? styles.current_page : {}]}
           >
@@ -153,7 +153,8 @@ function Menu(props) {
         config={config}
         style={{
           flex: 1,
-          width: 30
+          width: 30,
+          backgroundColor:'white' // si il y a pas ça alors la gesture ne marche pas
         }}
       />
     </View>

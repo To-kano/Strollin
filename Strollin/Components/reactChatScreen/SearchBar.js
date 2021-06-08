@@ -12,6 +12,7 @@ function SearchBar(props) {
   return (
     <View style={styles.view_searchBar}>
       <TextInput
+          autoCapitalize={'none'}
         style={styles.textInput_searchBar}
         placeholder="Search a friend or a group"
         onChangeText={(text) => setresearch(text)}

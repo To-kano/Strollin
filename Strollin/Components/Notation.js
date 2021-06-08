@@ -133,6 +133,7 @@ function Notation(props) {
         <View>
           <Text style={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center' }}>{I18n.t('Notation.information')}</Text>
           <TextInput
+            autoCapitalize={'none'}
             onChangeText={(text) => onChangeValue(text)}
             value={value}
             style={{ borderWidth: 1 }}

@@ -57,6 +57,8 @@ function ProfileScreen(props) {
 
     async function getThings() {
 
+      console.log("access_Token = ",access_Token );
+
       if (reload == false)
         return
       await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/get_own_profile`, {
@@ -69,7 +71,7 @@ function ProfileScreen(props) {
       })
       .then(res => res.json())
       .then(json => {
-        console.log("profile: ",json.profile);
+        console.log("profile: ",json);
         //console.log("profile updated ");
         setArgs(json.profile)
         initialList = []
@@ -139,7 +141,7 @@ function ProfileScreen(props) {
           <ChangeImageProfileForm/>
         </Popup>
         {/* <Image  style={styles.img_profileTop} source={require('')}/> */}
-        <Text style={styles.text_profileTop}>{args.mail}</Text>
+        <Text style={styles.text_profileTop}>{args?.mail}</Text>
       </View>
       <View style={styles.view_email}>
         <Text style={styles.text_description}>
@@ -154,7 +156,7 @@ function ProfileScreen(props) {
           keyboardType="email-address"
           onChangeText={text => postMail(text)}
         >
-          {args.pseudo}
+          {args?.pseudo}
         </TextInput>
       </View>
       <View style={styles.view_tag}>
@@ -253,7 +255,7 @@ const styles = StyleSheet.create({
   text_email: {
     width: '100%',
     height: 40,
-    padding: 6,
+    padding: 6,ProfileScreen
     backgroundColor: '#ffffff',
     borderRadius: 4,
     fontSize: 20,

@@ -12,6 +12,7 @@ function SearchBar(props) {
   return (
     <View style={styles.view_header}>
       <TextInput
+          autoCapitalize={'none'}
         style={styles.textInput_header}
         placeholder={I18n.t('TendanceSearchBar.searchTag')}
         onChangeText={(text) => setresearch(text)}
