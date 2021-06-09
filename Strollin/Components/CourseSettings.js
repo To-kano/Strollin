@@ -241,6 +241,24 @@ export function CourseSettings(props) {
         </View>
         <View style={styles.view_option}>
           <Text style={styles.text_option}>
+            Distance
+          </Text>
+          <View style={styles.view_separator} />
+          <View style={styles.view_optionInput}>
+            <TextInput
+              style={styles.textInput_optionInput}
+              keyboardType="numeric"
+              onChangeText={(text) => setRadius(text)}
+              value={radius}
+              maxLength={6}
+            />
+            <Text style={styles.text_optionInput}>
+              Km
+            </Text>
+          </View>
+        </View>
+        <View style={styles.view_option}>
+          <Text style={styles.text_option}>
             Alimentation
           </Text>
           <View style={styles.view_separator} />

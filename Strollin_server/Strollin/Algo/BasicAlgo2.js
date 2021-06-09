@@ -2,6 +2,7 @@ var PlacesJson = require('./Ressources/Places');
 var TagsJson = require('./Ressources/UserTags');
 var pop = require('./PopUpAlgo');
 var methods = {}
+const fetch = require('node-fetch');
 
 const {
   LocationModel
@@ -343,7 +344,7 @@ async function formatPlaces(data) {
     //console.log("location: ", location);
     flag = await checkPlace(location, locations_list)
     if (flag == true) {
-      console.log("pushing");
+      console.log("pushing: ", location.name);
       let error = await location.save().catch(error => error);
       if (error.errors) {
           console.log({status: "Error in database transaction", error: error});
@@ -352,12 +353,44 @@ async function formatPlaces(data) {
   }
 }
 
+async function placeCall(url) {
+  const result = fetch(url, {
+    method: 'GET',
+  })
+    .then((response) => response.json())
+    .then(function (answer){
+      return answer
+    })
+    .catch((error) => {
+      console.error('error :', error);
+    });
+    return result
+}
+
+async function callApi(url) {
+  console.log("\n\n\n")
+  let token = null
+  let url_tmp = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=AIzaSyD6AVcufnom-RKQJeG8tlxAWhAOKor0-uo"
+
+
+  await placeCall(url).then((response) => {
+    formatPlaces(response.results);
+    if (response.next_page_token) {
+      token = response.next_page_token
+      url_tmp = url_tmp + "&pagetoken=" +  token
+      setTimeout(async () => {
+        await callApi(url_tmp)
+      }, 2000)
+    }
+  })
+}
 
 async function getPlaces(coordinate, type) {
   const https = require('https');
-  let url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=AIzaSyD6AVcufnom-RKQJeG8tlxAWhAOKor0-uo&location=" + coordinate[0] + "," + coordinate[1] + "&radius=100000&type=" + type
+  let url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=AIzaSyD6AVcufnom-RKQJeG8tlxAWhAOKor0-uo&location=" + coordinate[0] + "," + coordinate[1] + "&radius=5000&type=" + type
 
-  https.get(url, (resp) => {
+  await callApi(url)
+  /*https.get(url, (resp) => {
     let data = '';
 
     // A chunk of data has been received.
@@ -373,7 +406,7 @@ async function getPlaces(coordinate, type) {
     });
   }).on("error", (err) => {
     console.log("Error: " + err.message);
-  });
+  });*/
 
 }
 
@@ -385,7 +418,7 @@ async function RecoverPlaces(coordinate, tags) {
     console.log("tags_array: ", tags_array[i]);
       await getPlaces(coordinateArr, tags_array[i]);
   }
-  console.log("fini");
+  //console.log("fini");
 }
 
 hello = async function(sending, time, budget, tags, coordinate, eat, radius)
