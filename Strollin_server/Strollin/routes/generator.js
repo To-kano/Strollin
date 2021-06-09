@@ -17,14 +17,16 @@ const {
  * @param {[String]} req.headers.coordinate
  * @param {[String]} req.headers.eat
  * @param {[String]} req.headers.radius
+ * @param {[String]} req.headers.placenbr
  */
 router.get('/generate_course', async function(req, res) {
 
     let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo").catch(error => error);
     let course = undefined;
     let radius = Number(req.headers.radius)
+    let placeNbr = Number(req.headers.placenbr)
 
-    console.log("radius: ", radius);
+    console.log("placenbr: ", req.headers.placenbr);
     if (!user) {
         return res.status(400).send({status: "You are not connected."});
     }
@@ -38,7 +40,7 @@ router.get('/generate_course', async function(req, res) {
     }
     let tags = req.headers.tags.split(',');
 
-    const promise2 = algo.data.algo(req.headers.time , req.headers.budget , req.headers.tags , req.headers.coordinate, req.headers.eat, radius);
+    const promise2 = algo.data.algo(req.headers.time , req.headers.budget , req.headers.tags , req.headers.coordinate, req.headers.eat, radius, placeNbr);
     promise2.then((value) => {
       let generated_course = value;
       //console.log("course: ", generated_course);

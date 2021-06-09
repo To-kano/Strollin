@@ -43,7 +43,7 @@ async function PopUpReq(pos, course) {
 
 
 
-async function getUserTags(pos, budget, hours, minutes, props, eat, radius) {
+async function getUserTags(pos, budget, hours, minutes, props, eat, radius, placeNbr) {
   const store = Store.getState();
   const access_Token = store.profil.access_token;
   console.log("token: ", access_Token);
@@ -60,11 +60,11 @@ async function getUserTags(pos, budget, hours, minutes, props, eat, radius) {
     console.log("ici ?: ", json);
     console.log("########", json.profile.tags_list);
     console.log("mail: ", json.profile.mail);
-    test(pos, budget, hours, minutes, json.profile.tags_list, props, eat, radius);
+    test(pos, budget, hours, minutes, json.profile.tags_list, props, eat, radius, placeNbr);
   });
 }
 
-async function test(pos, budget, hours, minutes, tags, props, eat, radius) {
+async function test(pos, budget, hours, minutes, tags, props, eat, radius, placeNbr) {
   const store = Store.getState();
   const access_Token = store.profil.access_token;
   const time = hours * 60 + minutes;
@@ -76,6 +76,8 @@ async function test(pos, budget, hours, minutes, tags, props, eat, radius) {
   console.log("pos: ", pos);
   console.log("budget: ", budget);
   console.log("tags: ", tags);
+  console.log("radius: ", radius);
+  console.log("placeNbr: ", placeNbr);
 
   await fetch(`http://${IP_SERVER}:${PORT_SERVER}/generator/generate_course`, {
   headers: {
@@ -87,7 +89,8 @@ async function test(pos, budget, hours, minutes, tags, props, eat, radius) {
     'tags': tags,
     'coordinate' : coordinate,
     'eat' : eat,
-    'radius' : radius
+    'radius' : radius,
+    'placenbr' : placeNbr
   },
   method: 'GET',
   })
@@ -114,12 +117,13 @@ function Back(props) {
 }
 
 export function CourseSettings(props) {
-  const [hours, setHours] = useState('0');
-  const [minutes, setMinutes] = useState('0');
-  const [budget, setBudget] = useState('0');
+  const [hours, setHours] = useState('2');
+  const [minutes, setMinutes] = useState('30');
+  const [budget, setBudget] = useState('20');
   const [pos, setPos] = useState('0');
   const [isEatDrink, setEatDring] = useState(false);
-  const [radius, setRadius] = useState('0');
+  const [radius, setRadius] = useState('3');
+  const [placeNbr, setPlaceNbr] = useState('10');
 
   function Switch() {
 
@@ -241,19 +245,19 @@ export function CourseSettings(props) {
         </View>
         <View style={styles.view_option}>
           <Text style={styles.text_option}>
-            Distance
+            Nombre de lieux max
           </Text>
           <View style={styles.view_separator} />
           <View style={styles.view_optionInput}>
             <TextInput
               style={styles.textInput_optionInput}
               keyboardType="numeric"
-              onChangeText={(text) => setRadius(text)}
-              value={radius}
+              onChangeText={(text) => setPlaceNbr(text)}
+              value={placeNbr}
               maxLength={6}
             />
             <Text style={styles.text_optionInput}>
-              Km
+              Lieux
             </Text>
           </View>
         </View>
@@ -274,7 +278,7 @@ export function CourseSettings(props) {
         id="test"
         style={styles.view_newTrip}
         onPress={() => {
-          getUserTags(pos, budget, hours, minutes, props, isEatDrink, radius);
+          getUserTags(pos, budget, hours, minutes, props, isEatDrink, radius, placeNbr);
         }}
       >
         <Text style={styles.text_newTrip}>
