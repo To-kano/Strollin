@@ -197,7 +197,7 @@ async function AddTags() {
         name: tags_json.tags_array[i],
         description: "z",
     });
-    for (var j = 0; j < tags.length; i++) {
+    for (var j = 0; j < tags.length; j++) {
       if (tags[j].name == tag.name) {
         flag = 1;
         break;
@@ -212,7 +212,7 @@ async function AddTags() {
 
 }
 
-//AddTags(); //Décometner cette ligne pour ajouter la liste des tags google places a votre bdd
+AddTags(); //Décometner cette ligne pour ajouter la liste des tags google places a votre bdd
 
 //TestLoc();
 
