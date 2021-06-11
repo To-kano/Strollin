@@ -1,0 +1,12 @@
+{
+    "Dev1" : {
+        "name" : "Tony",
+        "description" : "Chef de projet, Développeur",
+        "image": "./Tony_pp.jpg"
+    },
+    "Dev2" : {
+        "name" : "Basile",
+        "description" : "Développeur Front-End",
+        "image": "./Basile_pp"
+    }
+}

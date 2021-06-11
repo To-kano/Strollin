@@ -53,17 +53,17 @@ function LoginArea() {
       <div className={styles.backgroundImage}>
         <div> 
           <div className={styles.form}>
-            <h3 className="form-title text-center">Register now for some bonus!</h3>
-            <form className="register-form" onSubmit={handleSubmit} id="inscription">
-            <h4 className="form-letter">Email</h4>
+            <h3>Register now for some bonus!</h3>
+            <form onSubmit={handleSubmit} id="inscription">
+            <h4 >Email</h4>
               <input type="email" name="email" id="exampleEmail" placeholder="Email" onChange={e => setEmail(e.target.value)} />
-              <h4 className="form-letter">Username</h4>
+              <h4 >Username</h4>
               <input type="username" name="username" id="exampleUsername" placeholder="Username" onChange={e => setUsername(e.target.value)} />
-              <h4 className="form-letter">Password</h4>
+              <h4>Password</h4>
               <input type="password" name="password" id="examplePassword" placeholder="Password" onChange={e => setPassword(e.target.value)} />
-              <h4 className="form-letter">Password confirmation</h4>
+              <h4>Password confirmation</h4>
               <input type="password" name="password" id="examplePassword" placeholder="Password" onChange={e => setPasswordConf(e.target.value)} />
-              <label check className="form-little-letter">
+              <label check>
                 <input type="checkbox" name="check" id="exampleCheck" required/>
                   I agree to the Terms and Conditions
               </label>
@@ -72,7 +72,7 @@ function LoginArea() {
             </form>
           </div>
           <div className={styles.row}>
-              <h1 className="presentation-title">Go out with Strollin'!</h1>
+              <h1 >Go out with Strollin'!</h1>
               <h2 className={styles.row}>
                 No need for plan anymore, Strollin' take care of everything!
               </h2>

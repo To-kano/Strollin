@@ -13,7 +13,7 @@ function PartnerArea() {
        <div >
           <p>How can we help you in you business?</p>
           <p>Lorem ipsum</p>
-          <button onClick>Learn More</button>
+          <button>Learn More</button>
        </div>
      </div>
     </>

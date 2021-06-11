@@ -6,6 +6,8 @@ import PartnerArea from '../component/PartnerArea';
 import LoginArea from '../component/LoginArea';
 import FeaturesArea from '../component/FeaturesArea';
 import Header from '../component/Header';
+import DownloadArea from '../component/DownloadArea';
+import AboutUsArea from '../component/AboutUsArea';
 
 /*export async function getStaticProps() {
   // Call an external API endpoint to get posts
@@ -44,6 +46,8 @@ export default function Home(props) {
         <p>{props.test}</p>
         <PartnerArea/>
         <FeaturesArea/>
+        <DownloadArea/>
+        <AboutUsArea/>
       </main>
 
       <footer className={styles.footer}>

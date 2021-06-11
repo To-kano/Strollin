@@ -29,7 +29,7 @@ function FeaturesArea() {
                           <span className="flaticon-pay"></span>
                       </div> 
                       <div className="service-cap">
-                        <img size="30" src={"./profileIcon.jpg"} style={{ width: 75, height: 75}}/>,
+                        <img size="30" src={"./profileIcon.png"} style={{ width: 75, height: 75}}/>,
                           <h4 style={{fontSize:"25px", fontWeight:"bold"}}>Basé sur votre Profil<br/></h4>
                           <p style={{fontSize:"18px", fontWeight:"500"}}><br/>L'algorithme de Strollin' se base sur les informations que vous lui donnez ! Les tags que vous choisirez permettront à Strollin' d'être de plus en plus précis et de composer les meilleures ensembles de destination pour vous !</p>
                       </div>
