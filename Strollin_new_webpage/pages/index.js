@@ -43,7 +43,7 @@ export default function Home(props) {
 
       <main className={styles.main}>
         <LoginArea/>
-        <p>{props.test}</p>
+        {/* <p>{props.test}</p> */}
         <PartnerArea/>
         <FeaturesArea/>
         <DownloadArea/>

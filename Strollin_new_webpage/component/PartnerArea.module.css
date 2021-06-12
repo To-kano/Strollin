@@ -1,19 +1,31 @@
-.backgroundImage {
+.sectionPartner {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 80vw;
+    height: 75vh;
+}
+
+.imagePartner {
     background-image: url("../public/young_man_stats.png");
-    width: 400px;
-    height: 200px;
+    background-size: cover;
+    width: 47%;
+    height: 67.6vh;
 }
 
-.form {
-    width: 100px;
-    height: 500px;
-}
-
-.row {
-    grid-row: 1;
-}
-
-.image {
-    width: 400px;
-    height: 400px;
+.cardPartner {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 41.7vh;
+    width: 45.5%;
+    background: linear-gradient( rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6) ), url("../public/BackgroundCard2.jpg");
+    background-position:center top;
+    background-size: cover;
+    border-radius: 1.85vh;
+    box-shadow: 0 0 2.3vh #00000050;
+    color: #ffffff;
+    padding: 2.8vh 1.8vw;
 }

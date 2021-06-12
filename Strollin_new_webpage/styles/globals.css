@@ -1,14 +1,65 @@
 html,
 body {
   padding: 0;
-  margin: 20vh 0vw;
+  margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+h1 {
+  font-size: 6.8vh;
+  font-weight: bold;
+  margin: 1vh 0;
+}
+
+h2 {
+  font-size: 3.2vh;
+  font-weight: bold;
+  margin: 1vh 0;
+}
+h3 {
+  font-size: 2vh;
+  font-weight: 0;
+  margin: 0 0;
+}
+
+input {
+  font-size: 2vh;
+  font-weight: 0;
+  border: none;
+  width: 100%;
+  border-radius: .9vh;
+  padding: 1.1vh .5vw;
+  background-color: #ffffff;
+  margin-bottom: 1.6vh;
+  transition: .2s;
+}
+input[type="checkbox"]{
+  width: auto;
+  margin: 0 .5vw;
+}
+input[type="submit"] {
+  cursor: pointer;
+  position: absolute;
+  right: 0;
+  font-size: 2vh;
+  font-weight: bold;
+  border: none;
+  border-radius: .9vh;
+  padding: 1.1vh 2.2vw;
+  width: auto;
+  background-color: #FAC402;
+  margin-top: 1.6vh;
+  margin-bottom: 0;
+}
+input[type="submit"]:hover {
+  background-color: #ffffff;
 }
 
 a {
   color: inherit;
   text-decoration: none;
+  transition: .2s;
 }
 
 * {
@@ -29,18 +80,49 @@ header {
   z-index: 10;
 }
 header a {
+  font-size: 2vh;
+  font-weight: bold;
   color: #000000;
   text-decoration: none;
   transition: 0.2s;
 }
-header svg {
-  display: none;
+header a:hover {
+  color: #FAC402;
 }
 header span {
-  margin-top: 13px;
+  margin-top: 1.3vh;
   float: right;
 }
 header span a {
-  font-size: 22px;
-  margin-left: 60px;
+  margin-left: 3.1vw;
+}
+
+section {
+  height: 82.3vh;
+  width: 99vw;
+  padding: 2vh 10vw;
+  margin-top: 18vh;
+}
+
+button {
+  cursor: pointer;
+  border: 3px solid #FAC402;
+  color: #FAC402;
+  background-color: transparent;
+  font-size: 2vh;
+  padding: 1.1vh 2.2vw;
+  font-weight: 300;
+  width: auto;
+  border-radius: 50px;
+  transition: .2s;
+}
+button:hover {
+  color: #000000;
+  background-color: #FAC402;
+}
+
+@media only screen and (max-width:1300px)  {
+  header span {
+    display: none;
+  }
 }
