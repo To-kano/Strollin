@@ -19,9 +19,11 @@ export default function Header(props) {
       </header>
       <div className={styles.socialNetwork}>
         <span>Follow us on our socials network to donʼt miss our update</span>
-        <a href="#">Instagram</a>
-        <a href="#">Tweeter</a>
-        <a href="#">Facebook</a>
+        <span>
+          <a href="#">Instagram</a>
+          <a href="#">Tweeter</a>
+          <a href="#">Facebook</a>
+        </span>
       </div>
     </div>
   )

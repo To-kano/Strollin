@@ -50,35 +50,39 @@ function LoginArea() {
   return (
     <>
     
-      <div className={styles.backgroundImage}>
-        <div> 
-          <div className={styles.form}>
-            <h3>Register now for some bonus!</h3>
+      <section>
+        <div className={styles.backgroundCard}> 
+          <div className={styles.leftCard}>
+              <h1>Go out with Strollin'!</h1>
+              <h3 className={styles.row}>
+                No need for plan anymore, Strollin' take care of everything!<br/>
+                Strollin, your new guide to free time !
+              </h3>
+              <br/>
+              <br/>
+              <a href="#" className={styles.downloadCard}>Download now</a>
+          </div>
+          <div className={styles.rightCard}>
+            <h2>Register now for some bonus!</h2>
             <form onSubmit={handleSubmit} id="inscription">
-            <h4 >Email</h4>
-              <input type="email" name="email" id="exampleEmail" placeholder="Email" onChange={e => setEmail(e.target.value)} />
-              <h4 >Username</h4>
-              <input type="username" name="username" id="exampleUsername" placeholder="Username" onChange={e => setUsername(e.target.value)} />
-              <h4>Password</h4>
-              <input type="password" name="password" id="examplePassword" placeholder="Password" onChange={e => setPassword(e.target.value)} />
-              <h4>Password confirmation</h4>
-              <input type="password" name="password" id="examplePassword" placeholder="Password" onChange={e => setPasswordConf(e.target.value)} />
+              <h3 >Username</h3>
+              <input type="username" name="username" id="exampleUsername" placeholder="John Doe" onChange={e => setUsername(e.target.value)} />
+              <h3 >Email</h3>
+              <input type="email" name="email" id="exampleEmail" placeholder="john.doe@email.com" onChange={e => setEmail(e.target.value)} />
+              <h3>Password</h3>
+              <input type="password" name="password" id="examplePassword" placeholder="********" onChange={e => setPassword(e.target.value)} />
+              <h3>Password confirmation</h3>
+              <input type="password" name="password" id="examplePassword" placeholder="********" onChange={e => setPasswordConf(e.target.value)} />
               <label check>
                 <input type="checkbox" name="check" id="exampleCheck" required/>
-                  I agree to the Terms and Conditions
+                I agree to the Terms and Conditions
               </label>
               <br/>
-              <input style={{backgroundColor: '#5cb85c', color: 'white', fontSize: '15px', fontWeight: 'bold' }} type="submit" value="Register" />
+              <input type="submit" value="Register" />
             </form>
           </div>
-          <div className={styles.row}>
-              <h1 >Go out with Strollin'!</h1>
-              <h2 className={styles.row}>
-                No need for plan anymore, Strollin' take care of everything!
-              </h2>
-          </div>
         </div>
-      </div>
+      </section>
      
     </>
   );
