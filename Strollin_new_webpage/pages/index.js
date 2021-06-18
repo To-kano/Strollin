@@ -8,6 +8,9 @@ import FeaturesArea from '../component/FeaturesArea';
 import Header from '../component/Header';
 import DownloadArea from '../component/DownloadArea';
 import AboutUsArea from '../component/AboutUsArea';
+import FaqArea from '../component/FaqArea';
+import PartnerLoginArea from '../component/PartnerLoginArea';
+import ApkInstallArea from '../component/ApkInstallArea';
 
 /*export async function getStaticProps() {
   // Call an external API endpoint to get posts
@@ -48,6 +51,10 @@ export default function Home(props) {
         <FeaturesArea/>
         <DownloadArea/>
         <AboutUsArea/>
+        <FaqArea/>
+        <PartnerLoginArea/>
+        <ApkInstallArea/>
+
       </main>
 
       <footer className={styles.footer}>
