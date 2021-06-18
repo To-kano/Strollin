@@ -3,7 +3,7 @@
     justify-content: space-between;
     position: relative;
     border-radius: 1.85vh;
-    background: linear-gradient( rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6) ), url("../public/BackgroundCard.jpg");
+    background: linear-gradient( rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6) ), url("../public/background/BackgroundCard.jpg");
     background-position:center top;
     background-size: cover;
     width: 80vw;
