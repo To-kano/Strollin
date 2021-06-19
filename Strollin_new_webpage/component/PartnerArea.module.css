@@ -30,3 +30,42 @@
     color: #ffffff;
     padding: 2.8vh 1.8vw;
 }
+.downloadLeft {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 32.2vh;
+    width: 47%;
+}
+.downloadRight {
+    background-image: url("../public/background/DownloadImg.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 47%;
+    height: 67.6vh;
+}
+
+.downloadCard {
+    text-align: center;
+    cursor: pointer;
+    color: #000000;
+    background-color: #FAC402;
+    font-size: 2vh;
+    padding: 1.1vh 2.2vw;
+    font-weight: bold;
+    width: auto;
+    border-radius: 50px;
+    transition: .2s;
+    margin-right: 2.8vw;
+}
+.downloadCard:hover {
+    background-color: #ffffff;
+    box-shadow: 0 0 25px #00000050;
+}
+
+.buttonDiv {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+}

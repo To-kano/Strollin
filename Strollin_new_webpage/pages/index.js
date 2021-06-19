@@ -46,28 +46,42 @@ export default function Home(props) {
 
       <main className={styles.main}>
         <LoginArea/>
-        {/* <p>{props.test}</p> */}
+        {/* <a href='#'>{props.test}</a> */}
         <PartnerArea/>
         <FeaturesArea/>
         <DownloadArea/>
         <AboutUsArea/>
-        <FaqArea/>
+        {/* <FaqArea/>
         <PartnerLoginArea/>
-        <ApkInstallArea/>
+        <ApkInstallArea/> */}
 
       </main>
 
       <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
+        <div className={styles.footerImg}/>
+        <div className={styles.list}>
+          <h3>Company</h3>
+          <a href='#'>About</a>
+          <a href='#'>Presentation</a>
+          <a href='#'>Features</a>
+          <a href='#'>About us</a>
+        </div>
+
+        <div className={styles.list}>
+          <h3>Region</h3>
+          <a href='#'>French</a>
+          <a href='#'>English</a>
+          <a href='#'>Spannish</a>
+          <a href='#'>Turkish</a>
+        </div>
+
+        <div className={styles.list}>
+          <h3>Help</h3>
+          <a href='#'>Help center</a>
+          <a href='#'>Contact support</a>
+          <a href='#'>Instruction</a>
+          <a href='#'>How to install</a>
+        </div>
       </footer>
     </div>
   )
