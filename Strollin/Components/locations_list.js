@@ -7,8 +7,8 @@ import React from 'react';
 function Location_List(props) {
   //console.log("nouvelle page : ", props.data["name"]);
   return (
-    <Text style={[{ fontSize: 25, marginLeft: '5%' }]}>
-      {"- " + props.data["name"]}
+    <Text style={styles.text_information}>
+      {props.data["name"] + ', '}
     </Text>
   );
 }
@@ -16,6 +16,10 @@ function Location_List(props) {
 export default Location_List;
 
 const styles = StyleSheet.create({
+  text_information: {
+    color: '#FFFFFF',
+    fontSize: 15,
+  },
   cont: {
     flexDirection: 'column',
     justifyContent: 'flex-start',

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import {
-  StyleSheet, Text, View, Image, TouchableOpacity, FlatList,
+  StyleSheet, Text, View, Image, TouchableOpacity, FlatList, Linking
 } from 'react-native';
 import { connect } from 'react-redux';
-import Box from './box';
+import CourseItem from './CourseItem';
 import I18n from '../Translation/configureTrans';
 import SearchBar from './TendanceSearchBar';
 import Store from '../Store/configureStore';
@@ -39,7 +39,7 @@ export function setSortedTendanceData(tag) {
   Store.dispatch(action);
 }
 
-export function getData() {
+export function getTendanceList() {
   const store = Store.getState();
 
   if (store.tendance.sortedTendanceList.length > 0) {
@@ -48,9 +48,16 @@ export function getData() {
   return (store.tendance.tendanceList);
 }
 
+function getUrl(props) {
+  console.log(props)
+  if (props.profil.partner === true)
+    return ("https://forms.gle/feBUmJ8wQFPGga4A6")
+  return ('https://forms.gle/cR126bgPaexbgGYD9')
+}
+
 export function Header({ props, defaultState = false }) {
   const [pressed, setpressed] = useState(defaultState);
-
+  let url = getUrl(props)
   if (pressed === false) {
     return (
       <View style={styles.view_header}>
@@ -62,6 +69,11 @@ export function Header({ props, defaultState = false }) {
         <Text style={styles.text_header}>
           {I18n.t('Header.home')}
         </Text>
+        <TouchableOpacity
+          onPress={() => { Linking.openURL(url) }}
+        >
+          <Image style={styles.img_header} source={require('../images/icons/black/form.png')} />
+        </TouchableOpacity>
         <TouchableOpacity
           onPress={() => { setpressed(!pressed); }}
         >
@@ -81,6 +93,7 @@ export function Header({ props, defaultState = false }) {
 }
 
 export function HomePage(props) {
+
   return (
     <View style={styles.view_back}>
       <Header props={props} />
@@ -88,14 +101,14 @@ export function HomePage(props) {
         <FlatList
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
-          data={getData()}
+          data={getTendanceList()}
           renderItem={({ item }) => (
-            <Box
+            <CourseItem
               {...props}
               data={item}
             />
           )}
-          keyExtractor={(item) => item.name}
+          keyExtractor={(item) => item.id}
         />
 {/* export function HomePage(props) {
 
@@ -125,9 +138,9 @@ export function HomePage(props) {
             <FlatList
               showsHorizontalScrollIndicator={false}
               showsVerticalScrollIndicator={false}
-              data={getData()}
+              data={getTendanceList()}
               renderItem={({ item }) => (
-                <Box
+                <TendenceCourseItem
                   {...props}
                   data={item}
                 />
@@ -181,6 +194,7 @@ const styles = StyleSheet.create({
   },
   view_list: {
     flex: 757,
+    width: '100%',
   }
 });
 

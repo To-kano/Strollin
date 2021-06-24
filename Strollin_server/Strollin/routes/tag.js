@@ -29,7 +29,7 @@ router.post('/new_tag', async function(req, res) {
         return res.status(400).send({status: "Error in database transaction:\n", error: user});
     }
 
-    if (req.body.name) {
+    if (!req.body.name) {
         return res.status(400).send({status: "An element is missing in the request."});
     }
     tag = await TagModel.findOne({name: req.body.name}).catch(error => error);
@@ -47,7 +47,7 @@ router.post('/new_tag', async function(req, res) {
     if (error.errors) {
         return res.status(400).send({status: "Error in database transaction:\n", error: error});
     }
-    return res.status(200).send({status: "tag created."});
+    return res.status(200).send({status: "Tag created."});
 });
 
 
@@ -81,7 +81,7 @@ router.get('/get_tag', async function(req, res) {
     if (tags && tags.reason) {
         return res.status(400).send({status: "Error in database transaction:\n", error: user});
     } else if (tags) {
-        return res.status(200).send({status: true, tags_list: tags});
+        return res.status(200).send({status: "Tags found", tags_list: tags});
     } else {
         return res.status(400).send({status: "Tags not found."});
     }
@@ -111,9 +111,8 @@ router.get('/get_tag_by_id', async function(req, res) {
     } else if (tags_list.length > 0) {
         return res.status(200).send({status: "Tag(s) found.", tags_list});
     } else {
-        return res.status(400).send({status: "Tag(s) not found.", error: tags_list});
+        return res.status(400).send({status: "Tag(s) not found.", tags_list});
     }
 });
-  
 
 module.exports = router;

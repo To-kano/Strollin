@@ -52,7 +52,7 @@ const initialState = {
       "__v":0
     }
   ],
-  course: 
+  course:
   {
     "_id":
     {
@@ -79,7 +79,6 @@ const initialState = {
 };
 
 function setTime(allTime, value) {
-  console.log("okkkkkk")
   let result = allTime
   result.push(value)
   return result
@@ -120,6 +119,12 @@ function mapNavigationReducer(state = initialState, action) {
         ...state,
         locations: action.locations,
         course: action.course
+      };
+      return nextState;
+    case 'SET_LOCATIONS':
+      nextState = {
+        ...state,
+        locations: action.locations,
       };
       return nextState;
     case 'SET_TIME':

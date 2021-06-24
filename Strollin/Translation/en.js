@@ -117,7 +117,7 @@ export default {
 
   ProfileScreen: {
     name: 'Name',
-    email: 'Email',
+    pseudo: 'Pseudo:',
     tags: 'Tags',
     myTags: 'My tags',
     addTags: 'Add tags'
@@ -151,6 +151,8 @@ export default {
     OR: 'OR',
     SIGNIN: 'SIGN IN',
     SIGNUP: 'SIGN UP',
+    PartnerPage: "Become Partner",
+    companyName: "Company Name"
   },
 
   Tags: {
@@ -169,10 +171,13 @@ export default {
 
   Header: {
     search_tag: 'Search a Tag',
+    friend_list: "Friend List",
     add_friend: 'Add Friend',
     partner: 'Partner',
+    partnerPosition: 'Localisation',
     profile: 'Profile',
     home: 'Home',
+    options: 'Trip options',
     historic: 'Historic',
     new_trip: 'New Trip',
     settings: 'Settings',
@@ -180,7 +185,17 @@ export default {
     friends: 'Friends',
     chats: 'Chats',
     rating: 'Rating',
-  }
+    comment: 'Comment',
+    favorites: 'Favorites'
+  },
+
+  SettingsPartner: {
+    shop_name: 'Shop name',
+    shop_address: 'Shop address',
+    shop_tags: 'Shop Tags',
+    shop_desc: 'Shop Description',
+    choose_my_shop_tag: 'Choose my shop tags'
+  },
 };
 
 // {I18n.t("")}

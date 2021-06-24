@@ -43,7 +43,7 @@ var CourseModelSchema = new Schema({
     },
     price_range: {
         type: [String, String, String],
-        default: ['0', '0', '0']
+        default: ['', '', '']
     },
     comments_list: {
         type: [String],

@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var algo = require('../Algo/BasicAlgo2');
+var pop = require('../Algo/PopUpAlgo');
 
 const {
     UserModel
@@ -14,11 +15,16 @@ const {
  * @param {String} req.headers.budget
  * @param {[String]} req.headers.tags
  * @param {[String]} req.headers.coordinate
+ * @param {[String]} req.headers.eat
+ * @param {[String]} req.headers.radius
  */
 router.get('/generate_course', async function(req, res) {
 
     let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo").catch(error => error);
+    let course = undefined;
+    let radius = Number(req.headers.radius)
 
+    console.log("radius: ", radius);
     if (!user) {
         return res.status(400).send({status: "You are not connected."});
     }
@@ -26,18 +32,28 @@ router.get('/generate_course', async function(req, res) {
         return res.status(400).send({status: "Error in database transaction:\n", error: user});
     }
 
-    console.log("lets EEEE", req.headers.time , req.headers.budget , " TAgs: ", req.headers.tags , req.headers.coordinate);
+    //console.log("lets EEEE", req.headers.time , req.headers.budget , " Tags: ", req.headers.tags , req.headers.coordinate);
     if (!req.headers.coordinate || !req.headers.time || !req.headers.budget || !req.headers.tags) {
         return res.status(400).send({status: "Parameter required is missing."});
     }
     let tags = req.headers.tags.split(',');
 
-    const promise2 = algo.data.test(req.headers.time , req.headers.budget , req.headers.tags , req.headers.coordinate);
+    const promise2 = algo.data.algo(req.headers.time , req.headers.budget , req.headers.tags , req.headers.coordinate, req.headers.eat, radius);
     promise2.then((value) => {
       let generated_course = value;
-      console.log("course: ", generated_course);
+      //console.log("course: ", generated_course);
       if (generated_course) {
-          return res.status(200).send({status: "Result of the generator.", generated_course});
+        course = {locations_list: [], name: (generated_course[0].Name + " => " + generated_course[generated_course.length - 1].Name), tags_list: []}
+        for (let index in generated_course) {
+            course.locations_list.push(generated_course[index].Id);
+            for (let index2 in generated_course.Tags) {
+                tags = generated_course[index].Tags[index2];
+                if (!course.tags_list.includes(tag)) {
+                    course.tags_list.push(tag)
+                }
+            }
+        }
+        return res.status(200).send({status: "Result of the generator.", generated_course, course});
       }
       return res.status(400).send({status: "An error occured during the generation of the course"});
     })
@@ -51,12 +67,13 @@ router.get('/generate_course', async function(req, res) {
  *
  * @param {CourseObject} req.body.course
  */
-router.get('/generate_popup', async function(req, res) {
+router.post('/generate_popup', async function(req, res) {
 
     let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo tags_list").catch(error => error);
 
     let popup = undefined;
 
+    //console.log("heyyyyy: ", req.body.course, " : ", req.headers.coordinate);
     if (!user) {
         return res.status(400).send({status: "You are not connected."});
     }
@@ -69,11 +86,13 @@ router.get('/generate_popup', async function(req, res) {
     }
 
     // ACTION ICI
-    console.log("course: ", req.headers.course[0]);
-    const promise = algo.data.pop(req.headers.coordinate, user.tags_list, req.headers.course);
+    const promise = algo.data.pop(req.headers.coordinate, user.tags_list, req.body.course);
     promise.then((value) => {
+      //console.log("valuer: ", value);
+      let popup = value
+      return res.status(200).send({status: "Result of the pop-up generator.", popup});
     })
-    return res.status(200).send({status: "Result of the pop-up generator.", popup});
+
 });
 
 
@@ -82,9 +101,11 @@ router.get('/generate_popup', async function(req, res) {
  * Answer to pop-up.
  * @param {String} req.headers.access_token
  * @param {Boolean} req.headers.answer
- * @param {LocationObject} req.headers.popup
+ *
+ * @param {LocationObject} req.body.popup
+ * @param {CourseObject} req.body.course
  */
-router.get('/popup_answer', async function(req, res) {
+router.post('/popup_answer', async function(req, res) {
 
     let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo").catch(error => error);
     let popup = undefined;
@@ -96,11 +117,13 @@ router.get('/popup_answer', async function(req, res) {
         return res.status(400).send({status: "Error in database transaction:\n", error: user});
     }
 
-    if (!req.headers.answer || !req.headers.popup) {
+    console.log("popup : ", req.body.popup)
+    if (!req.headers.answer || !req.body.popup || !req.body.course) {
         return res.status(400).send({status: "Parameter required is missing."});
     }
 
     // ACTION ICI
+    pop.data.Response(req.body.popup)
 
     return res.status(200).send({status: "Result.", popup});
 });

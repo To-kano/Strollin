@@ -147,13 +147,12 @@ const EXEMPLE_after_treatment = {
 
 const initialState = {
   tendanceList: [],//EXEMPLE_after_treatment["tendanceList"],
-  sortedTendanceList: []
+  sortedTendanceList: [],
 };
 
 function tendanceReducer(state = initialState, action) {
   let nextState;
-  // //console.log("\n\ngalleryReducer:\n")
-  // //console.log(action)
+
   switch (action.type) {
     case 'SET_TENDANCE_LIST':
       nextState = {
@@ -161,23 +160,25 @@ function tendanceReducer(state = initialState, action) {
         tendanceList: action.value
       };
       return nextState;
+    case 'SET_TENDANCE_LIST_FAVORITES':
+      nextState = {
+        ...state,
+      };
+      for (let i = 0; i < nextState.tendanceList.length; i++) {
+        for (let j = 0; j < action.value.length; j++) {
+          if (action.value[j] == nextState.tendanceList[i].id) {
+            nextState.tendanceList.favorite = true;
+          } else {
+            nextState.tendanceList.favorite = false;
+          }
+        }
+      }
+      return nextState;
     case 'SET_SORTED_TENDANCE_LIST':
       nextState = {
         ...state,
         sortedTendanceList: action.value
       };
-      return nextState;
-    case 'SET_LOCATION_LIST':
-      nextState = {
-        ...state,
-      };
-      nextState.tendanceList[action.index]["locations_list"] = action.value
-      return nextState;
-    case 'SET_COMMENT_LIST':
-      nextState = {
-        ...state,
-      };
-      nextState.tendanceList[action.index]["comments_list"] = action.value
       return nextState;
     default:
       return state;

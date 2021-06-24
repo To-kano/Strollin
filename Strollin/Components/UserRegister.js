@@ -16,7 +16,7 @@ import { RondFormeText } from './rondForm';
 import { registerUser } from '../apiServer/user';
 import Popup from './Popup';
 
-const getInfoFromToken = (token, setUserInfo, props) => {
+const getInfoFromToken = (token, setUserInfo, props, setMessage, setModalVisible) => {
   const PROFILE_REQUEST_PARAMS = {
     fields: {
       string: 'id, name, last_name, first_name, email',
@@ -27,10 +27,14 @@ const getInfoFromToken = (token, setUserInfo, props) => {
     { token, parameters: PROFILE_REQUEST_PARAMS },
     (error, result) => {
       if (error) {
-        // console.log(`login info has error: ${error}`);
+        console.log(`login info has error: ${error}`);
       } else {
+        console.log("registered as : ", result.name, ' via facebook');
+
         setUserInfo(result);
-        registerUser(props, result.name, result.id, result.email);
+        console.log("mail: ", result.email);
+        result.email = "toto@toto.toto"
+        registerUser(props, result.name, "Facebook1235", result.email, setMessage, setModalVisible, false);
       }
     },
   );
@@ -77,6 +81,18 @@ export function UserRegister(props) {
   //}
   return (
     <View style={styles.view_back}>
+      <View style={styles.view_topButton}>
+          <TouchableOpacity
+            style={styles.button_partner}
+            onPress={() => {
+              props.navigation.navigate('PartnerRegister');
+            }}
+          >
+            <Text style={styles.text_partner}>
+              {I18n.t('UserRegister.PartnerPage')}
+            </Text>
+          </TouchableOpacity>
+        </View>
       <View style={styles.view_logo}>
         <Image style={styles.img_logo} source={require('../images/Logo.png')} />
       </View>
@@ -151,7 +167,7 @@ export function UserRegister(props) {
           style={styles.button_logIn}
           onPress={() => {
             if (userPassword === userConfirmPassWord) {
-              registerUser(props, pseudo, userPassword, userEmail, setMessage, setModalVisible);
+              registerUser(props, pseudo, userPassword, userEmail, setMessage, setModalVisible, false);
             }
           }}
         >
@@ -159,7 +175,6 @@ export function UserRegister(props) {
             {I18n.t('UserRegister.SIGNUP')}
           </Text>
         </TouchableOpacity>
-        <Text style={styles.text_or}>{I18n.t('UserRegister.OR')}</Text>
         <View style={styles.view_facebook}>
           <LoginButton
             style={styles.button_facebook}
@@ -172,7 +187,7 @@ export function UserRegister(props) {
               } else {
                 AccessToken.getCurrentAccessToken().then((data) => {
                   const accessToken = data.accessToken.toString();
-                  getInfoFromToken(accessToken, setUserInfo, props);
+                  getInfoFromToken(accessToken, setUserInfo, props, setMessage, setModalVisible);
                 });
               }
             }}
@@ -195,6 +210,11 @@ const styles = StyleSheet.create({
     paddingLeft: '7.5%',
     paddingRight: '7.5%',
     paddingBottom: '10%',
+  },
+  view_topButton: {
+    position: 'absolute',
+    top: 12,
+    right: 10,
   },
   view_logo: {
     flex: 20,
@@ -263,6 +283,20 @@ const styles = StyleSheet.create({
   button_logIn: {
     marginTop: 30,
     width: '100%',
+  },
+  text_partner: {
+    width: '100%',
+    borderRadius: 100,
+    paddingVertical: 4,
+    paddingTop: 6,
+    paddingHorizontal: 10,
+    borderColor: '#000',
+    borderWidth: 2,
+    fontSize: 12,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: '#000',
+    // backgroundColor: '#0092A7',
   },
   text_logIn: {
     width: '100%',

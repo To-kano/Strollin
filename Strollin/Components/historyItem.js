@@ -19,7 +19,7 @@ async function getArrayLocation(access_token, idLocations) {
     return result
 }
 
-export function HistoryItem({ profil, courseId }) {
+export function HistoryItem({ profil, courseId , duration}) {
 
 
     const [course, setCourse] = useState(null);
@@ -48,17 +48,21 @@ export function HistoryItem({ profil, courseId }) {
   }, [course]);
 
   const [locations, setLocations] = useState(null);
-
+  console.log("profil : ", profil);
+  console.log("courseId : ", courseId);
+  console.log("course : ", course);
+  console.log("locations : ", locations);
     return (
-
         <View style={styles.view_historic}>
           <View style={styles.view_historicTop}>
             <View style={styles.view_information}>
               <Image style={styles.img_date} source={require('../images/icons/black/calendar.png')}/>
+              <Text style={styles.text_date}>{courseId[1]}</Text>
             </View>
-            <View style={styles.view_information}>
+            {/* <View style={styles.view_information}>
               <Image style={styles.img_duration} source={require('../images/icons/black/time.png')}/>
-            </View>
+              <Text style={styles.text_duration}>{courseId}</Text>
+            </View> */}
               <ElementHistoryNav course={course} locations={locations}/>
           </View>
         </View>
@@ -111,7 +115,7 @@ export function HistoryItem({ profil, courseId }) {
     },
     view_historic: {
       flexDirection: 'column',
-      marginBottom: 30,
+      marginBottom: 10,
     },
     view_information: {
       flexDirection: 'row',

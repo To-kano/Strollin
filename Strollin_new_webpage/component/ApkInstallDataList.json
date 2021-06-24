@@ -1,0 +1,17 @@
+{
+    "Step1" : {
+        "name": "Step 1",
+        "description": "Place Strollin.apk in the Download file of your Android phone",
+        "image": "./"
+    },
+    "Step2" : {
+        "name" : "Step 2",
+        "description" : "In your phone, go to File Manager and clic on the Apk logo",
+        "image": "./"
+    },
+    "Step3" : {
+        "name" : "Step 3",
+        "description" : "Clic on the download icon, make sure to give the autorisation to install apk",
+        "image": "./"
+    }
+}

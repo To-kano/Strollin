@@ -41,7 +41,7 @@ const { fstat } = require('fs');
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort('3000');
+var port = normalizePort('3004');
 app.set('port', port);
 
 
@@ -198,7 +198,7 @@ sio.on("connection", async (socket) => {
         id: new Number(Date.now()),
         participants : [...msg.participants, user.id],
         name : msg.name,
-      }); 
+      });
 
       console.log("conversation ", conversation);
 
@@ -210,7 +210,7 @@ sio.on("connection", async (socket) => {
       //socket.emit("newConversation", conversation);
     }
   });
-  
+
   // Event "sendMessage"
   socket.on("sendMessage", async (msg) => {
     console.log("sendMessage event " , msg);

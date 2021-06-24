@@ -4,14 +4,19 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { TouchableHighlight } from 'react-native-gesture-handler';
+import { profileUser } from '../apiServer/user';
 
 import GestureRecognizer from 'react-native-swipe-gestures';
 
 import { DrawerActions } from '@react-navigation/native';
 import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 import I18n from '../Translation/configureTrans';
+import Store from '../Store/configureStore';
+
+import ImageProfile from './ImageProfile';
 
 function Menu(props) {
+  const store = Store.getState();
   const config = {
     velocityThreshold: 0.05,
     directionalOffsetThreshold: 80,
@@ -23,13 +28,16 @@ function Menu(props) {
     <View style={styles.horizontal}>
       <View style={styles.view_menu}>
         <View style={styles.view_profile}>
-          <Image style={styles.img_profile} source={require('../images/TonyPP.jpg')} />
+          <ImageProfile style={styles.img_profile} />
           <Text style={styles.text_profile}>{props.profil.pseudo}</Text>
           <Text style={styles.text_grade}>Traveler</Text>
         </View>
         <View style={styles.view_navigation}>
           <TouchableOpacity
-            onPress={() => props.navigation.navigate(props.state.routeNames[0])}
+            onPress={() => {
+              profileUser(props, store.profil.access_token);
+              props.navigation.navigate(props.state.routeNames[0], { screen: 'HomePage' });
+            }}
             style={[styles.view_navigationIn, props.state.index == 0 ? styles.current_page : {}]}
           >
             <Image style={styles.img_navigationIn} source={require('../images/icons/black/home.png')} />
@@ -46,7 +54,12 @@ function Menu(props) {
             <Text style={styles.text_navigationIn}>{props.state.routeNames[1]}</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => props.navigation.navigate(props.state.routeNames[2])}
+            onPress={() => props.navigation.navigate(
+              "New trip",
+              {
+                screen: 'CourseSetting'
+              }
+              )}
             style={[styles.view_navigationIn, props.state.index == 2 ? styles.current_page : {}]}
           >
             <Image style={styles.img_navigationIn} source={require('../images/icons/black/next_trip.png')} />
@@ -92,19 +105,37 @@ function Menu(props) {
             <Text style={styles.text_navigationIn}>{props.state.routeNames[7]}</Text>
           </TouchableOpacity>
           <TouchableOpacity
+            onPress={() => {
+              profileUser(props, store.profil.access_token);
+              props.navigation.navigate(props.state.routeNames[8]);
+            }}
+            style={[styles.view_navigationIn, props.state.index == 8 ? styles.current_page : {}]}
+          >
+            <Image style={styles.img_navigationIn} source={require('../images/empty_star.png')} />
+            <Text style={styles.text_navigationIn}>{props.state.routeNames[8]}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
             onPress={() => props.navigation.navigate('Personal_trip')}
             style={[styles.view_navigationIn, props.name == 'Personal_trip' ? styles.current_page : {}]}
           >
             <Image style={styles.img_navigationIn} source={require('../images/icons/black/next_trip.png')} />
             <Text style={styles.text_navigationIn}>Personal_trip</Text>
           </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => props.navigation.navigate('Position_partener')}
+            style={[styles.view_navigationIn, props.name == 'Position_partener' ? styles.current_page : {}]}
+          >
+            <Image style={styles.img_navigationIn} source={require('../images/icons/black/next_trip.png')} />
+            <Text style={styles.text_navigationIn}>Position_partener</Text>
+          </TouchableOpacity>
+        
         </View>
-        <TouchableOpacity
+        {/*<TouchableOpacity
           onPress={() => props.navigation.navigate('userLogin')}
           style={styles.view_logOut}
         >
           <Text style={styles.text_logOut}>Log Out</Text>
-        </TouchableOpacity>
+        </TouchableOpacity>*/}
       </View>
       <GestureRecognizer
         onSwipeDown={(state) => {
@@ -122,8 +153,8 @@ function Menu(props) {
         config={config}
         style={{
           flex: 1,
-          backgroundColor: 'green',
-          width: 30
+          width: 30,
+          backgroundColor:'white' // si il y a pas ça alors la gesture ne marche pas
         }}
       />
     </View>
@@ -136,20 +167,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   current_page: {
-    backgroundColor: 'red'
+    width: '150%',
+    backgroundColor: '#CFEAEE',
+    borderRadius: 4,
   },
   view_menu: {
     flex: 1,
     flexDirection: 'column',
     width: '100%',
     padding: 30,
-    shadowColor: '#000000',
-    shadowOffset: {
-      width: 0,
-      height: 10,
-    },
-    shadowOpacity: 0.10,
-    elevation: 10,
     backgroundColor: '#FFFFFF',
   },
   view_close: {

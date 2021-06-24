@@ -155,7 +155,7 @@ export default {
 
   ProfileScreen: {
     name: 'Nom',
-    email: 'Email',
+    pseudo: 'Pseudo',
     tags: 'Tags',
     myTags: 'Mes tags',
     addTags: 'Ajouter des tags'
@@ -189,6 +189,8 @@ export default {
     OR: 'OU',
     SIGNIN: 'SE CONNECTER',
     SIGNUP: "S'INSCRIRE",
+    PartnerPage: "Devenir Partenaire",
+    companyName: "Nom d'entreprise"
   },
 
   Tags: {
@@ -208,6 +210,7 @@ export default {
   SettingsPartner: {
     shop_name: 'Nom du commerce',
     shop_address: 'Adresse du commerce',
+    shop_desc: 'Description du commerce',
     shop_tags: 'Tags du commerce',
     choose_my_shop_tag: 'Choisir les Tags du commerce'
   },
@@ -215,9 +218,12 @@ export default {
   Header: {
     search_tag: 'Rechercher un Tag',
     add_friend: 'Ajouter un ami',
+    friend_list: "Liste d'amis",
     partner: 'Partenaire',
+    partnerPosition: 'Localisation',
     profile: 'Profil',
     home: 'Home',
+    options: 'Vos options',
     historic: 'Historique',
     new_trip: 'New Trip',
     settings: 'Paramètres',
@@ -225,5 +231,6 @@ export default {
     friends: 'Amis',
     chats: 'Messages',
     rating: 'Notation',
+    comment: 'Commentaire',
   }
 };

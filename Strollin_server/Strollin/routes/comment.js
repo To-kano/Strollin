@@ -148,27 +148,6 @@ router.post('/new_comment', async function(req, res) {
     }
 });
 
-// // GET_COMMENT
-// /**
-//  * Get the comment(s).
-//  * @param {String} req.headers.access_token
-//  */
-// router.get('/get_comment', async function(req, res) {
-//     let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo").catch(error => error);
-
-//     if (!user) {
-//         return res.status(400).send({status: "You are not connected."});
-//     }
-//     if (user.reason) {
-//         return res.status(400).send({status: "Error in database transaction:\n", error: user});
-//     }
-
-//     let comments_list = await CommentModel.find().catch(error => error);
-//     if (comments_list && comments_list.reason) {
-//         return res.status(400).send({status: "Error in the parameters.", error: comments_list});
-//     }
-//     return res.status(200).send({status: "Comment(s) found.", comments_list});
-// });
 
 
 // GET_COMMENT_BY_ID
@@ -193,7 +172,7 @@ router.get('/get_comment_by_id', async function(req, res) {
     } else if (comments_list.length > 0) {
         return res.status(200).send({status: "Comment(s) found.", comments_list});
     } else {
-        return res.status(400).send({status: "Comment(s) not found.", error: comments_list});
+        return res.status(400).send({status: "Comment(s) not found.", comments_list});
     }
 });
 

@@ -1,6 +1,9 @@
 import { IP_SERVER, PORT_SERVER } from '../../env/Environement';
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
+import CoursePreviewItem from './CoursePreviewItem';
+import ImageItem from './ImageItem';
+import CourseItem from './CourseItem';
 
 // import {GetTrackById} from '../APIserver/Track';
 //
@@ -21,112 +24,138 @@ import {
 //  setTrack(answer);
 // }
 
-function MessagesItem(props) {
 
+function MessagesItem(props) {
+  
   if (props.profil.id != props.message[props.messageID].expeditor_id) {
     if (props.message[props.messageID]["type"] == "image") {
       return (
       <View>
-          <Image
-            source={{ uri: `http://${IP_SERVER}:${PORT_SERVER}/images/` + props.message[props.messageID].message }}
-            style={{ width: 300, height: 300, borderRadius: 15, marginLeft: "1%" }}
+          <ImageItem
+            imageId={ props.message[props.messageID].message }
+            style={{ width: 300, height: 300, borderRadius: 12, marginLeft: "1%" }}
           />
           <Text style={styles.expeditor} ellipsizeMode="tail">
           {props.profil.friends_pseudo_list[props.message[props.messageID].expeditor_id]}
         </Text>
       </View>
       );
-    } else {
+    } else if (props.message[props.messageID]["type"] == "course") {
       return (
       <View>
-        <View style={styles.greyDisplay}>
-          <View style={styles.box}>
-            <Text style={styles.message}>
-              {props.message[props.messageID].message}
-            </Text>
+        <CourseItem navigation={props.navigation} id={props.message[props.messageID].message} pseudo={props.profil.friends_pseudo_list[props.message[props.messageID].expeditor_id]} style={{ width: 300, height: 300, borderRadius: 15, marginLeft: "1%", backgroundColor: '#fff' }}/>
+        <Text style={styles.expeditor} ellipsizeMode="tail">
+          {props.profil.friends_pseudo_list[props.message[props.messageID].expeditor_id]}
+        </Text>
+      </View>
+      );
+    } else if (props.message[props.messageID]["type"] == "message") {
+      return (
+        <View>
+          <View style={styles.view_message}>
+            <View style={styles.greyDisplay}>
+                <Text style={styles.messageGrey}>
+                  {props.message[props.messageID].message}
+                </Text>
+            </View>
           </View>
-        </View>
         <Text style={styles.expeditor} ellipsizeMode="tail">
           {props.profil.friends_pseudo_list[props.message[props.messageID].expeditor_id]}
         </Text>
       </View>
       );
     }
-  }
-  if (props.message[props.messageID]["type"] == "image") {
-    return (
-      <View>
-        <Image
-          source={{ uri: `http://${IP_SERVER}:${PORT_SERVER}/images/` + props.message[props.messageID].message }}
-          style={{ width: 300, height: 300, borderRadius: 15, marginLeft: "18%" }}
-        />
-        <Text style={styles.expeditorUser} ellipsizeMode="tail">
-          {props.profil.pseudo}
-        </Text>
-      </View>
-    );
-  } else {
-    return (
-      <View>
-        <View style={styles.blueDisplay}>
-          <View style={styles.box}>
-            <Text style={styles.message}>
-              {props.message[props.messageID].message}
-            </Text>
-          </View>
+  } else if (props.profil.id == props.message[props.messageID].expeditor_id) {
+    if (props.message[props.messageID]["type"] == "image") {
+      return (
+        <View>
+          <ImageItem
+            imageId={ props.message[props.messageID].message }
+            style={{ width: 300, height: 300, borderRadius: 15, marginLeft: "18%" }}
+          />
+          <Text style={styles.expeditorUser} ellipsizeMode="tail">
+            {props.profil.pseudo}
+          </Text>
         </View>
-        <Text style={styles.expeditorUser} ellipsizeMode="tail">
-          {props.profil.pseudo}
-        </Text>
-      </View>
-    );
+      );
+    } else if (props.message[props.messageID]["type"] == "course") {
+      return (
+        <View>
+          <CourseItem navigation={props.navigation} id={props.message[props.messageID].message} pseudo={props.profil.pseudo} style={{ width: 300, height: 300, borderRadius: 15, marginLeft: "18%", backgroundColor: '#fff' }}/>
+          <Text style={styles.expeditorUser} ellipsizeMode="tail">
+            {props.profil.pseudo}
+          </Text>
+        </View>
+      );
+    } else if (props.message[props.messageID]["type"] == "message") {
+      return (
+        <View>
+          <View style={styles.view_message_mine}>
+            <View style={styles.blueDisplay}>
+                <Text style={styles.messageBlue}>
+                  {props.message[props.messageID].message}
+                </Text>
+            </View>
+          </View>
+          <Text style={styles.expeditorUser} ellipsizeMode="tail">
+            {props.profil.pseudo}
+          </Text>
+        </View>
+      );
+    }
   }
+
 }
 
 const styles = StyleSheet.create({
-  box: {
-    width: '100%',
-    alignItems: 'flex-start',
-    justifyContent: 'space-around',
-    paddingHorizontal: 15,
+  view_message: {
+    justifyContent: 'flex-start', flexDirection: 'row',
+  },
+  view_message_mine: {
+    justifyContent: 'flex-start', flexDirection: 'row-reverse',
   },
   greyDisplay: {
-    flex: 1,
-    width: '70%',
-    borderRadius: 15,
-    padding: 10,
-    marginLeft: "1%",
-    flexDirection: 'row',
+    maxWidth: '77%',
+    borderRadius: 22,
+    paddingTop: 10,
+    paddingLeft: 15,
+    paddingRight: 15,
+    paddingBottom: 10,
     justifyContent: 'flex-start',
-    backgroundColor: 'rgba(215, 215, 215, 1)',
+    backgroundColor: '#fff',
   },
   blueDisplay: {
-    flex: 1,
-    width: '70%',
-    borderRadius: 15,
-    padding: 10,
-    marginLeft: "30%",
-    flexDirection: 'row',
+    maxWidth: '77%',
+    borderRadius: 22,
+    paddingTop: 10,
+    paddingLeft: 15,
+    paddingRight: 15,
+    paddingBottom: 10,
     justifyContent: 'flex-start',
-    backgroundColor: 'rgba(50, 150, 250, 1)',
-    alignItems: 'flex-end'
+    backgroundColor: '#0092A7',
+    alignItems: 'flex-end',
   },
-  text: {
+  messageGrey: {
     fontSize: 16,
+    color: '#000',
   },
-  message: {
+  messageBlue: {
     fontSize: 16,
-    fontWeight: 'bold',
+    color: '#fff',
   },
   expeditor: {
     fontSize: 10,
-    marginLeft: "4%"
+    marginLeft: 5,
+    textTransform: 'capitalize',
+    fontWeight: 'bold',
+    textAlign: "left",
   },
   expeditorUser: {
     fontSize: 10,
+    marginRight: 5,
+    textTransform: 'capitalize',
+    fontWeight: 'bold',
     textAlign: "right",
-    marginRight: "4%"
-
   },
   icon: {
     width: "20%",

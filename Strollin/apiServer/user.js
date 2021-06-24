@@ -17,6 +17,7 @@ async function loginUser(props, newMail, newPassword) {
         await profileUser(props, answer.access_token);
         await conversationUser(props, answer.access_token);
         await setTendance(props, answer.access_token);
+        await setCourseHistoric(props, answer.access_token);
         const action = { type: 'CONNECTION', value: answer.access_token };
         props.dispatch(action);
       } else {
@@ -45,6 +46,8 @@ async function profileUser(props, access_token) {
         const action = { type: 'SET_USER', value: answer.profile };
         props.dispatch(action);
         setFriendPseudo(props, access_token, answer.profile);
+        await setFavorites(props, access_token);
+        await setTendance(props, access_token);
       } else {
         //console.log(answer.status);
       }
@@ -86,7 +89,7 @@ async function setFriendPseudo(props, access_token, profile) {
   }
 }
 
-exports.profileUser = setFriendPseudo;
+exports.setFriendPseudo = setFriendPseudo;
 
 async function setTendance(props, access_token) {
   await fetch(`http://${IP_SERVER}:${PORT_SERVER}/course/get_course`, {
@@ -102,49 +105,52 @@ async function setTendance(props, access_token) {
   .then(async function (answer) {
     const action = { type: "SET_TENDANCE_LIST", value: answer["courses_list"] }
     props.dispatch(action);
-
-    for (i in answer["courses_list"]) {
-      await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/get_locations_by_id`, {
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          access_token: access_token,
-          locations_id_list: answer["courses_list"][i]["locations_list"]
-        },
-        method: 'GET',
-      }).then((answer) => answer.json())
-      .then(async function (answer) {
-        const action = { type: "SET_LOCATION_LIST", value: answer["locations_list"], index: i }
-        props.dispatch(action);
-      })
-      .catch((error) => {
-        console.error('error :', error);
-      });
-
-      await fetch(`http://${IP_SERVER}:${PORT_SERVER}/comment/get_comment_by_id`, {
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          access_token: access_token,
-          comments_list: answer["courses_list"][i]["comments_list"]
-        },
-        method: 'GET',
-      }).then((answer) => answer.json())
-      .then(async function (answer) {
-        const action = { type: "SET_COMMENT_LIST", value: answer["comments_list"], index: i }
-        props.dispatch(action);
-      })
-      .catch((error) => {
-        console.error('error :', error);
-      });
-    }
-
     return answer;
-
   })
 }
 
 exports.messageUser = setTendance;
+
+async function setFavorites(props, access_token) {
+  await fetch(`http://${IP_SERVER}:${PORT_SERVER}/course/get_course`, {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      access_token: access_token,
+      sort: 'favorites',
+    },
+    method: 'GET',
+  }).then((answer) => answer.json())
+  .then(async function (answer) {
+    const action = { type: "SET_FAVORITES_LIST", value: answer["courses_list"] }
+    props.dispatch(action);
+    return answer;
+  })
+}
+
+exports.messageUser = setFavorites;
+
+async function setCourseHistoric(props, access_token) {
+  fetch(`http://${IP_SERVER}:${PORT_SERVER}/course/get_user_historic`, {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      access_token: access_token,
+      size: 10
+    },
+    method: 'GET',
+  })
+    .then((response) => response.json())
+    .then(async (answer) => {
+      const action = { type: 'SET_COURSE_OBJECT_HISTORIC', value: answer.course_historic };
+      props.dispatch(action);
+    })
+    .catch((error) => {
+      console.error('error :', error);
+    });
+}
+
+exports.messageUser = setCourseHistoric;
 
 async function messageUser(props, access_token, message_id) {
   fetch(`http://${IP_SERVER}:${PORT_SERVER}/message/get_message`, {
@@ -198,14 +204,14 @@ async function conversationUser(props, access_token) {
     });
 }
 
-exports.profileUser = conversationUser;
+exports.conversationUser = conversationUser;
 
-async function registerUser(props, newPseudo, newPassword, newMail, setMessage, setPopup) {
+async function registerUser(props, newPseudo, newPassword, newMail, setMessage, setPopup, partner) {
   const bodyRequest = JSON.stringify({
     pseudo: newPseudo,
     password: newPassword,
     mail: newMail,
-    partner: false,
+    partner: partner,
   });
 
   fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/register`, {
@@ -222,6 +228,8 @@ async function registerUser(props, newPseudo, newPassword, newMail, setMessage, 
       //console.log(" answer = " , answer);
       if (answer.access_token) {
         await profileUser(props, answer.access_token);
+        await setFavorites(props, answer.access_token);
+        await setTendance(props, answer.access_token);
         const action = { type: 'CONNECTION', value: answer.access_token };
         props.dispatch(action);
       } else if (answer.status) {
@@ -238,7 +246,7 @@ exports.registerUser = registerUser;
 
 async function addUserHistoric(access_token, courseId) {
   const bodyRequest = JSON.stringify({
-    course: courseId.toString()
+    course: courseId
   });
 
   fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/add_historic`, {

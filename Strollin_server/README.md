@@ -8,11 +8,11 @@ NOTE:
 
 - Where full URLs are provided in responses they will be rendered as if service is running on 'http://' + IP_SERVER + ':' + PORT_SERVER + '/'.
 
-- All request will return an object as :<br>{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;status: String<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;eventual return: Object<br>}
+- All request will return an object as :<br>{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;status: String<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;eventual return: Object (See in requests for details)<br>}
 
 - All documents in the database has a variable "id" (Some Exceptions). Do not use "_id" given by MongoDB.
 
-- The document show some type as "ObjectID" which represent the "id" of a model. (Example: `UserID` represent user.id)
+- This document show some type as "ObjectID" which represent the "id" of a model. (Example: `UserID` represent user.id)
 
 - In case of error during a request with the database transaction, the returned object will always contains a "status" and a "error" variable.
 
@@ -29,11 +29,16 @@ INDEX:
 - [MESSAGE RELATED](#MESSAGE-RELATED)
 - [TAGS RELATED](#TAGS-RELATED)
 - [USER RELATED](#USER-RELATED)
+- [GENERATOR RELATED](#GENERATOR-RELATED)
 
 <br>
 
 BLACKLIST RELATED:
 ================
+
+**DESCRIPTION**
+
+Blacklist is used to save the IP of the user and lock the attempt to connect if the user send wrong authentication.
 
 **SCHEMA:**
 
@@ -51,6 +56,10 @@ No request.
 
 COMMENT RELATED:
 ================
+
+**DESCRIPTION**
+
+The object Comment represents the comments and rates left by an user to a location or a course.
 
 **SCHEMA:**
 
@@ -73,22 +82,20 @@ COMMENT RELATED:
 | Create a new comment in a location or a course with a score. If the user commented before, the comment will be updated | access_token: String<br>location_id: LocationID<br>or<br>course_id: CourseID | message: String<br>score: String | |
 
 
-<!-- - GET get comment: `GET /comment/get_comment`
-
-| Description | Headers | Body | Return |
-|-|-|-|-|
-| Get comment's data in the given list.| access_token: String<br>comment_id: [CommentID] | | [CommentObject] (see Schema) | -->
-
 - GET get comment by ID: `GET /comment/get_comment_by_id`
 
 | Description | Headers | Body | Return |
 |-|-|-|-|
-| Get comment's data by ID or list of ID.| access_token: String<br>comments_list: [CommentID] | | [CommentObject] (see Schema) |
+| Get comment's data by ID or list of ID.| access_token: String<br>comments_list: [CommentID] | | comments_list[CommentObject] (see Schema) |
 
 <br>
 
 CONVERSATION RELATED:
 =====================
+
+**DESCRIPTION**
+
+The object Conversation represents the chat room for the user. It contains a list of Message Object.
 
 **SCHEMA:**
 
@@ -106,19 +113,23 @@ CONVERSATION RELATED:
 
 | Description | Headers | Body | Return |
 |-|-|-|-|
-| Get all the conversations where the user appears.| access_token: String | | [conversationObject] (See Schema) |
+| Get all the conversations where the user appears.| access_token: String | | conversations: [conversationObject] (See Schema) |
 
 
 - GET get conversation by ID: `GET /conversation/get_conversation_by_id`
 
 | Description | Headers | Body | Return |
 |-|-|-|-|
-| Get conversation's data by ID or list of ID. | access_token: String<br>conversations_list: [ConversationID] | | [ConversationObject] (see Schema) |
+| Get conversation's data by ID or list of ID. | access_token: String<br>conversations_list: [ConversationID] | | conversations_list: [ConversationObject] (see Schema) |
 
 <br>
 
 COURSE RELATED:
 ===============
+
+**DESCRIPTION**
+
+The object Course contains the informations of the course saved in database.
 
 **SCHEMA:**
 
@@ -126,7 +137,6 @@ COURSE RELATED:
 - locations_list `[locationID]`
 - name `String`
 - score `String`
-- user_score `[UserID]`
 - number_used `String` : number of usage of the course
 - author_id `UserID`
 - author_pseudo `String`
@@ -145,26 +155,38 @@ COURSE RELATED:
 
 | Description | Headers | Body | Return |
 |-|-|-|-|
-| Add a course to the database. | access_token: String | locations_list: [LocationID]<br>name: String<br>author: UserID (optional)<br>time_spent: String | |
+| Add a course to the database. | access_token: String | locations_list: [LocationID]<br>name: String | course: CourseObject (See Schema) |
 
 
 - GET course: `GET /course/get_course`
 
 | Description | Headers | Body | Return |
 |-|-|-|-|
-| Get a list of courses. Can be sorted by name, number_used, score, tendency (tendency_range is at 30 days by default)) | access_token: String<br>sort: String<br>tendency_range: Number (Optional) | | [CourseObject] (See Schema) |
+| Get a list of courses. Can be sorted by name, number_used, score, tendency (tendency_range is at 30 days by default) or favorites | access_token: String<br>sort: String<br>tendency_range: Number (Optional) | | courses_list: [CourseObject] (See Schema) |
+
+
+- GET course: `GET /course/get_user_historic`
+
+| Description | Headers | Body | Return |
+|-|-|-|-|
+| Get a list of course in the historic of the user. Size is the number of course to return max | access_token: String<br>size: Number (default: 10) | | course_historic: [CourseObject] (See Schema) |
 
 
 - GET get course by ID: `GET /course/get_course_by_id`
 
 | Description | Headers | Body | Return |
 |-|-|-|-|
-| Get course's data by ID or list of ID. | access_token: String<br>courses_id_list: [CourseID] | | [CourseObject] (see Schema) |
+| Get course's data by ID or list of ID. | access_token: String<br>courses_id_list: [CourseID] | | courses_list: [CourseObject] (see Schema) |
 
 <br>
 
+
 FAQ RELATED:
 ===============
+
+**DESCRIPTION**
+
+The object Faq represents the question sent by users and non users about Strollin.
 
 **SCHEMA:**
 
@@ -198,14 +220,14 @@ FAQ RELATED:
 
 | Description | Headers | Body | Return |
 |-|-|-|-|
-| Get questions in french section. | | | [questionObject] (see Schema) |
+| Get questions in french section. | | | faqs_list: [questionObject] (see Schema) |
 
 
 - GET all "en" questions: `GET /faq/get_question_en`
 
 | Description | Headers | Body | Return |
 |-|-|-|-|
-| Get questions in english section. | | | [questionObject] (see Schema) |
+| Get questions in english section. | | | faqs_list: [questionObject] (see Schema) |
 
 
 - GET get question by ID: `GET /faq/get_question_by_id`
@@ -220,6 +242,10 @@ FAQ RELATED:
 IMAGE RELATED:
 ===============
 
+**DESCRIPTION**
+
+The object Image represents the stored images in the server for the user's profile or the shared images in conversations.
+
 **SCHEMA:**
 
 - id `Number`
@@ -233,8 +259,13 @@ IMAGE RELATED:
 
 <br>
 
+
 LOCATION RELATED:
 =================
+
+**DESCRIPTION**
+
+The object Location represents the locations used in courses. It is also used for the partner user.
 
 **SCHEMA:**
 
@@ -274,14 +305,18 @@ LOCATION RELATED:
 | Add a location to the database. | access_token: String | name: String<br>owner: userID (Optional)<br>latitude: Number<br>longitude: Number<br>address: String<br>city: String (optional)<br>country: String (optional)<br>description: String (optional)<br>price_range: [String, String, String] (optional)<br>timetable: String (optional)<br>tags_list: [tagID] (optional)<br>average_time: String (optional)<br>phone: String (optional)<br>website: String  (optional)<br>food: Boolean | |
 
 
-- ADD tag(s) to a location: `POST /location/add_location_tag`
-
-
 - UPDATE a location: `POST /location/update_location`
 
 | Description | Headers | Body | Return |
 |-|-|-|-|
-| Update a location's data (at least one parameter in body). | access_token: String<br>location_id = locationID | name: String (optional)<br>owner: userID (optional)<br>latitude: Number (optional)<br>longitude: Number (optional)<br>address: String (optional)<br>city: String (optional)<br>country: String (optional)<br>description: String (optional)<br>price_range: [String, String, String] (optional)<br>timetable: String (optional)<br>average_time: String (optional)<br>phone: String (optional)<br>website: String  (optional)<br>food: Boolean | |
+| Update a location's data (at least one parameter in body). | access_token: String<br>location_id: locationID | name: String (optional)<br>owner: userID (optional)<br>latitude: Number (optional)<br>longitude: Number (optional)<br>address: String (optional)<br>city: String (optional)<br>country: String (optional)<br>description: String (optional)<br>price_range: [String, String, String] (optional)<br>timetable: String (optional)<br>average_time: String (optional)<br>phone: String (optional)<br>website: String  (optional)<br>food: Boolean | |
+
+
+- ADD tag(s) to a location: `POST /location/add_location_tag`
+
+| Description | Headers | Body | Return |
+|-|-|-|-|
+| Update a location's tags. | access_token: String<br>location_id: locationID | tags_list: [TagName] | |
 
 
 - GET place: `GET /location/get_place`
@@ -295,19 +330,37 @@ LOCATION RELATED:
 
 | Description | Headers | Body | Return |
 |-|-|-|-|
-| Get a list of all locations. | access_token: String | | [LocationObject] |
+| Get a list of all locations. | access_token: String | | locations_list: [LocationObject] |
+
+
+- GET location: `GET /location/get_partner_location`
+
+| Description | Headers | Body | Return |
+|-|-|-|-|
+| Get the location of the partner. | access_token: String | | location: LocationObject |
+
+
+- GET location: `GET /location/get_partner_location`
+
+| Description | Headers | Body | Return |
+|-|-|-|-|
+| Get the location of the partner. | access_token: String | | LocationObject |
 
 
 - GET get location by ID: `GET /location/get_location_by_id`
 
 | Description | Headers | Body | Return |
 |-|-|-|-|
-| Get location's data by ID or list of ID. | access_token: String<br>locations_id_list: [LocationID] | | [LocationObject] (see Schema) |
+| Get location's data by ID or list of ID. | access_token: String<br>locations_id_list: [LocationID] | | locations_list: [LocationObject] (see Schema) |
 
 <br>
 
 MESSAGE RELATED:
 ================
+
+**DESCRIPTION**
+
+The object Message is the message sent in conversations. It can contains simple messages, images or courses.
 
 **SCHEMA:**
 
@@ -327,19 +380,23 @@ MESSAGE RELATED:
 
 | Description | Headers | Body | Return |
 |-|-|-|-|
-| Get the data of messages provided in an array of message's ID.| access_token: String<br>messages_id: messageID | | [messageObject] (See Schema) |
+| Get the data of messages provided in an array of message's ID.| access_token: String<br>messages_id: messageID | | message: [messageObject] (See Schema) |
 
 
 - GET get message by ID: `GET /message/get_message_by_id`
 
 | Description | Headers | Body | Return |
 |-|-|-|-|
-| Get message's data by ID or list of ID. | access_token: String<br>message_id: [MessageID] | | [MessageObject] (see Schema) |
+| Get message's data by ID or list of ID. | access_token: String<br>message_id: [MessageID] | | messages_list: [MessageObject] (see Schema) |
 
 
 
 TAGS RELATED:
 =============
+
+**DESCRIPTION**
+
+The object Tag is used for users, locations and courses.
 
 **SCHEMA:**
 
@@ -365,18 +422,22 @@ TAGS RELATED:
 
 | Description | Headers | Body | Return |
 |-|-|-|-|
-| Get a list of tag with sort (name, number_used) and filter with name search.| access_token: String<br>sort: String (optional)<br>search: String (optional) || [tagObject] (See Schema) |
+| Get a list of tag with sort (name, number_used) and filter with name search.| access_token: String<br>sort: String (optional)<br>search: String (optional) || tags: [tagObject] (See Schema) |
 
 
 - GET get tag by ID: `GET /tag/get_tag_by_id`
 
 | Description | Headers | Body | Return |
 |-|-|-|-|
-| Get tag's data by ID or list of ID. | access_token: String<br>tags_list: [TagID] | | [TagObject] (see Schema) |
+| Get tag's data by ID or list of ID. | access_token: String<br>tags_list: [TagID] | | tags_list: [TagObject] (see Schema) |
 
 
 USER RELATED:
 =============
+
+**DESCRIPTION**
+
+The object User represents the users of the application Strollin and the partner.
 
 **SCHEMA:**
 
@@ -394,6 +455,7 @@ USER RELATED:
 - friends_request `[userID]`
 - groups `[[group_name, userID, ...]]`
 - course_historic `[[courseID, String]]` : ID and date
+- course_favorites `[courseID]`
 - socket_id `String`
 - facebook_id `String`
 - verify `Boolean`
@@ -413,7 +475,7 @@ USER RELATED:
 
 | Description | Headers | Body | Return |
 |-|-|-|-|
-| Check and set to true the variable "verify". | id: String | | |
+| Check and set to true the variable "verify". | id: String | | None |
 
 
 - UPDATE user's information: `POST /users/edit_profile`
@@ -423,7 +485,8 @@ USER RELATED:
 | Edit user's information. | access_token: String | password: String (optional)<br>pseudo: String (optional)<br>first_name: String (optional)<br>last_name: String (optional) | |
 
 
-- ADD a request friend: `POST /users/add_friend_request`
+
+<!-- - ADD a request friend: `POST /users/add_friend_request`
 
 | Description | Headers | Body | Return |
 |-|-|-|-|
@@ -434,7 +497,14 @@ USER RELATED:
 
 | Description | Headers | Body | Return |
 |-|-|-|-|
-| Add to "friends_list" a user from the "friends_request". | access_token: String | friend: userID | None |
+| Add to "friends_list" a user from the "friends_request". | access_token: String | friend: userID | None | -->
+
+
+- ADD a friend: `POST /users/add_friend` (Beta Version)
+
+| Description | Headers | Body | Return |
+|-|-|-|-|
+| Add to "friends_list" a user by mail. | access_token: String | friend_mail: String | None |
 
 
 - ADD new tags in user's tags: `POST /users/add_tag`
@@ -449,6 +519,30 @@ USER RELATED:
 | Description | Headers | Body | Return |
 |-|-|-|-|
 | Add existing course in user's historic list with the current date. | access_token: String | course: courseID | None |
+
+
+- ADD a course in the user's historic: `POST /users/add_favorite`
+
+| Description | Headers | Body | Return |
+|-|-|-|-|
+| Add existing course in user's favorites list. | access_token: String | course: courseID | None |
+
+
+- DEL user's friend: `POST /users/remove_friend`
+
+| Description | Headers | Body | Return |
+|-|-|-|-|
+| Remove a friend from the friends list. It will remove your id from the friend's friends list | access_token: String | friend_id: UserID | |
+
+
+- DEL user's favorite: `POST /users/remove_favorite`
+
+| Description | Headers | Body | Return |
+|-|-|-|-|
+| Remove a course from the favorite list. | access_token: String | course_id: CourseID |  |
+
+
+- DEL user's tags: `POST /users/remove_tags`
 
 
 - GET log in: `GET /users/login`
@@ -469,7 +563,7 @@ USER RELATED:
 
 | Description | Headers | Body | Return |
 |-|-|-|-|
-| Get the current user's profile.| access_token: String | None | profile: {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id: UserID,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mail: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;creation_date: Date,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pseudo: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;partner: Boolean<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;first_name: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;last_name: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tags_list: [tagID],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;friends_list: [userID],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;friends_request: [userID],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;groups: [[group_name, userID1, userID2, ...]],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;course_historic: [courseID]<br>} |
+| Get the current user's profile.| access_token: String | None | profile: {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id: UserID,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mail: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;creation_date: Date,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pseudo: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;partner: Boolean<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;first_name: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;last_name: String,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tags_list: [tagID],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;friends_list: [userID],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;friends_request: [userID],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;groups: [[group_name, userID1, userID2, ...]],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;course_historic: [[courseID, date (String)]],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;course_favorites: [courseID]<br>} |
 
 
 - GET an user's profile: `GET /users/get_user_profile`
@@ -486,11 +580,18 @@ USER RELATED:
 | Get tags of users provided in array of userID.| access_token: String<br>user_id: String | None | all_user_tags: [TagObject] (See [TAG RELATED](#TAG-RELATED)) |
 
 
+- GET get users: `GET /user/get_users`
+
+| Description | Headers | Body | Return |
+|-|-|-|-|
+| Get user's data. | access_token: String | | users_list: [UserObject] (see Schema) |
+
+
 - GET get user by ID: `GET /user/get_user_by_id`
 
 | Description | Headers | Body | Return |
 |-|-|-|-|
-| Get user's data by ID or list of ID. | access_token: String<br>user_id: [UserID] | | [UserObject] (see Schema) |
+| Get user's data by ID or list of ID. | access_token: String<br>user_id: [UserID] | | users_list: [UserObject] (see Schema) |
 
 
 - DEL user's account: `DEL /users/remove_account`
@@ -499,6 +600,50 @@ USER RELATED:
 |-|-|-|-|
 | Delete an user's account.| access_token: String<br>password: String | None | None |
 
-- DEL user's friend: `DEL /users/remove_friend`
 
-- DEL user's tags: `DEL /users/remove_tags`
+
+
+GENERATOR RELATED:
+==================
+
+**DESCRIPTION:**
+
+Generator course is not a model but it is used for the algorithm of Strollin and interact with the database. The algorithm will return an array of object containing:
+
+- AlgAg: Number,
+- AlgDisp: Number,
+- City: String,
+- Desc: String,
+- Dist: Number,
+- Id: Number,
+- Name: String,
+- PopAg: Number,
+- PopDisp: Number,
+- Pos: [Number],
+- Price: Number,
+- Tags: [String],
+- TagsDisp: [Number],
+- Time: Number
+
+
+**REQUESTS:**
+
+- GET a generated course: `GET /generator/generate_course`
+
+| Description | Headers | Body | Return |
+|-|-|-|-|
+| Generate a course according to the given parameters. Will automatically create locations in database if new locations are found. | access_token: String<br>time: String<br>budget: String<br>tags: [String]<br>coordinate: [String] | | generated_course: [AlgorithmObject]<br>course: PartialCourseObject (Not created in database) |
+
+
+- GET a generated popup: `GET /generator/generate_popup`
+
+| Description | Headers | Body | Return |
+|-|-|-|-|
+| Generate a popup of a location owned by a partner. | access_token: String<br>coordinate: [String] | course: CourseID | popup: LocationObject |
+
+
+- GET popup answer: `GET /generator/popup_answer`
+
+| Description | Headers | Body | Return |
+|-|-|-|-|
+| Answer of the user for the previously generated popup. | access_token: String<br>anwser: Boolean<br>popup: LocationObject | | WIP |

@@ -8,6 +8,10 @@ import { connect } from 'react-redux';
 import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 import Store from '../Store/configureStore';
 import I18n from '../Translation/configureTrans';
+import { DrawerActions } from '@react-navigation/native';
+
+import { CommonActions } from '@react-navigation/native';
+import { StackActions } from '@react-navigation/native';
 
 function randPic() {
   const rand = (Math.floor(Math.random() * 2) + 1);
@@ -28,32 +32,41 @@ function ratingCompleted(rating, comment, props) {
     score: rating
   });
 
-  // fetch(`http://${IP_SERVER}:${PORT_SERVER}/comment/new_comment`, {
-  //  headers: {
-  //    Accept: 'application/json',
-  //    'Content-Type': 'application/json',
-  //    access_token: store.profil.access_token,
-  //    course_id: store.course.currentCourse[id],
-  //  },
-  //  body: bodyRequest,
-  //  method: 'post',
-  // })
-  //  .then((response) => response.json())
-  //  .then(async (answer) => {
-  //    if (answer.status == true) {
-  //      //console.log("comment sent successfully");
-  //    } else {
-  //      //console.log("answer = ", answer);
-  //    }
-  //  })
-  //  .catch((error) => {
-  //    console.error('error :', error);
-  //  });
-  props.navigation.navigate('HomePage');
+  fetch(`http://${IP_SERVER}:${PORT_SERVER}/comment/new_comment`, {
+   headers: {
+     Accept: 'application/json',
+     'Content-Type': 'application/json',
+     access_token: store.profil.access_token,
+     course_id: store.course.currentCourse.id,
+   },
+   body: bodyRequest,
+   method: 'post',
+  })
+   .then((response) => response.json())
+   .then(async (answer) => {
+     console.log("answer =", answer);
+     console.log("course =", store.course.currentCourse);
+     if (answer.status == true) {
+       console.log("comment sent successfully");
+     } else {
+       console.log("failed answer = ", answer);
+     }
+   })
+   .catch((error) => {
+     console.error('error :', error);
+   });
+
+   const popAction = StackActions.pop(5);
+
+    props.navigation.dispatch(popAction);
+   props.navigation.navigate("HomePage");
 }
 
 function skipRating(props) {
-  props.navigation.navigate('HomePage');
+  const popAction = StackActions.pop(5);
+
+  props.navigation.dispatch(popAction);
+  props.navigation.navigate("HomePage");
 }
 
 export function CourseEvaluation(props) {
@@ -63,7 +76,7 @@ export function CourseEvaluation(props) {
   return (
     <View style={styles.view_back}>
       <View style={styles.view_header}>
-        <TouchableOpacity onPress={() => props.navigation.navigate('Menu')}>
+        <TouchableOpacity  onPress={() => props.navigation.dispatch(DrawerActions.openDrawer())}>
           <Image style={styles.img_header} source={require('../images/icons/black/menu.png')} />
         </TouchableOpacity>
         <Text style={styles.text_header}>
@@ -109,6 +122,7 @@ export function CourseEvaluation(props) {
       <View style={styles.view_comment}>
         <Text style={styles.text_comment}>{I18n.t('CourseEvaluation.yourComment')}</Text>
         <TextInput
+          autoCapitalize={'none'}
           style={styles.textInput_comment}
           onChangeText={(text) => setComment(text)}
           value={comment}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import {
-  View, StyleSheet, Image, Text, TouchableOpacity, FlatList, ImageBackground, TextInput
+  View, ScrollView ,StyleSheet, Image, Text, TouchableOpacity, FlatList, ImageBackground, TextInput
 } from 'react-native';
 import BackgroundImage from './backgroundImage';
 import Store from '../Store/configureStore';
@@ -18,7 +18,7 @@ function randPic() {
   return (require('../ressources/street1.jpg'));
 }
 
-const initialList = [
+var initialList = [
   {
     id: 1,
     name: 'Foot',
@@ -30,59 +30,7 @@ const initialList = [
   {
     id: 3,
     name: 'Piscine',
-  },
-  {
-    id: 4,
-    name: 'Cinéma',
-  },
-  {
-    id: 5,
-    name: 'Cinéma',
-  },
-  {
-    id: 6,
-    name: 'Cinéma',
-  },
-  {
-    id: 7,
-    name: 'Cinéma',
-  },
-  {
-    id: 8,
-    name: 'Cinéma',
-  },
-  {
-    id: 9,
-    name: 'Cinéma',
-  },
-  {
-    id: 10,
-    name: 'Cinéma',
-  },
-  {
-    id: 11,
-    name: 'Cinéma',
-  },
-  {
-    id: 12,
-    name: 'Cinéma',
-  },
-  {
-    id: 13,
-    name: 'Cinéma',
-  },
-  {
-    id: 14,
-    name: 'Cinéma',
-  },
-  {
-    id: 15,
-    name: 'Cinéma',
-  },
-  {
-    id: 16,
-    name: 'Cinéma',
-  },
+  }
 ];
 
 function SettingPartenaire(props) {
@@ -92,17 +40,26 @@ function SettingPartenaire(props) {
   async function getThings() {
     const store = Store.getState();
     const access_Token = store.profil.access_token;
-    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/get_locations`, {
+    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/get_partner_location`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        access_Token,
+        access_token: props.profil.access_token,
       },
       method: 'GET',
     })
       .then((res) => res.json())
       .then((json) => {
-        setArgs(json.locations_list[0]);
+        console.log("jqson: ", json);
+        if (json.location) {
+          console.log("location: ", json.location);
+          setArgs(json.location);
+          initialList = [];
+          for (var i = 0; i < json.location.tags_list.length; i++) {
+            initialList.push({id: i, name: json.location.tags_list[i]._id})
+          }
+          setList(initialList)
+        }
       });
   }
 
@@ -111,18 +68,42 @@ function SettingPartenaire(props) {
     const access_Token = store.profil.access_token;
     const test = JSON.stringify({ address: body });
 
+    console.log("id: ", args.id);
     await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/update_location`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
         access_Token,
-        location_id: args._id
+        location_id: args.id
       },
       body: test,
       method: 'POST',
     })
       .then((res) => res.json())
       .then((json) => {
+        console.log(json);
+      });
+  }
+
+  async function postName(body) {
+    const store = Store.getState();
+    const access_Token = store.profil.access_token;
+    const test = JSON.stringify({ name: body });
+
+    console.log("id: ", args.id);
+    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/update_location`, {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        access_Token,
+        location_id: args.id
+      },
+      body: test,
+      method: 'POST',
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        console.log(json);
       });
   }
 
@@ -136,7 +117,7 @@ function SettingPartenaire(props) {
         Accept: 'application/json',
         'Content-Type': 'application/json',
         access_Token,
-        location_id: args._id
+        location_id: args.id
       },
       body: test,
       method: 'POST',
@@ -174,55 +155,74 @@ function SettingPartenaire(props) {
           <View style={styles.view_boxIn}>
             <View style={styles.view_information}>
               <Image style={styles.img_location} source={require('../images/icons/white/location.png')} />
-              <Text style={styles.text_location}>Adresse de l entreprise</Text>
+              <Text style={styles.text_location}>{args.address}</Text>
             </View>
             <Text style={styles.text_name}>{args.name}</Text>
           </View>
         </ImageBackground>
       </TouchableOpacity>
-      <View style={styles.view_stat}>
-        <Text style={styles.text_stat}>
-          {I18n.t('SettingsPartner.shop_name')}
-        </Text>
-        <View style={styles.view_number}>
-          <TextInput
-            style={styles.textInput_number}
-            placeholder="Nom du commerce"
+      <ScrollView showsVerticalScrollIndicator={false} style={{ height: 327, marginBottom: 15 }}>
+        <View style={styles.view_stat}>
+          <Text style={styles.text_stat}>
+            {I18n.t('SettingsPartner.shop_name')}
+          </Text>
+          <View style={styles.view_number}>
+            <TextInput
+          autoCapitalize={'none'}
+              style={styles.textInput_number}
+              placeholder={args.name}
+              onChangeText={(text) => postName(text)}
+            />
+          </View>
+        </View>
+        <View style={styles.view_stat}>
+          <Text style={styles.text_stat}>
+            {I18n.t('SettingsPartner.shop_address')}
+          </Text>
+          <View style={styles.view_number}>
+            <TextInput
+          autoCapitalize={'none'}
+              style={styles.textInput_number}
+              placeholder={args.address}
+              onChangeText={(text) => postAdd(text)}
+            />
+          </View>
+        </View>
+        <View style={styles.view_stat}>
+          <Text style={styles.text_stat}>
+            {I18n.t('SettingsPartner.shop_desc')}
+          </Text>
+          <View style={styles.view_number}>
+            <TextInput
+          autoCapitalize={'none'}
+              style={styles.textInput_number}
+              placeholder={args.description}
+              onChangeText={(text) => postAdd(text)}
+            />
+          </View>
+        </View>
+        <View style={styles.view_tags}>
+          <Text style={styles.text_stat}>
+            {I18n.t('SettingsPartner.shop_tags')}
+          </Text>
+          <FlatList
+            numColumns={3}
+            style={styles.view_tagIn}
+            showsHorizontalScrollIndicator={false}
+            showsVerticalScrollIndicator={false}
+            data={list}
+            contentContainerStyle={{ flexGrow: 1 }}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              <Text style={styles.text_tagIn}>{item.name}</Text>
+            )}
           />
         </View>
-      </View>
-      <View style={styles.view_stat}>
-        <Text style={styles.text_stat}>
-          {I18n.t('SettingsPartner.shop_address')}
-        </Text>
-        <View style={styles.view_number}>
-          <TextInput
-            style={styles.textInput_number}
-            placeholder="Adresse du commerce"
-            onChangeText={(text) => postAdd(text)}
-          />
-        </View>
-      </View>
-      <View style={styles.view_tags}>
-        <Text style={styles.text_stat}>
-          {I18n.t('SettingsPartner.shop_tags')}
-        </Text>
-        <FlatList
-          numColumns={3}
-          style={styles.view_tagIn}
-          showsHorizontalScrollIndicator={false}
-          showsVerticalScrollIndicator={false}
-          data={list}
-          contentContainerStyle={{ flexGrow: 1 }}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <Text style={styles.text_tagIn}>{item.name}</Text>
-          )}
-        />
-      </View>
+      </ScrollView>
       <TouchableOpacity
         style={styles.view_button}
         onPress={() => {
+          props.navigation.navigate('TagSelectionPart');
           console.log("Choose shop's Tags");
         }}
       >

@@ -12,24 +12,17 @@ import {
 import Profile from '../Components/ProfileScreen';
 
 import FriendList from '../Components/FriendList';
-import HomePage from '../Components/HomePage';
-import TripSuggestion from '../Components/TripSuggestion';
 import TripNavigation from '../Components/TripNavigation';
 import HistoryNav from '../Components/HistoryNav';
-import CommentScreen from '../Components/CommentScreen';
-import Comment from '../Components/Comment';
-import MenuChat from '../Components/reactChatScreen/MenuScreen';
-import ScreenChat from '../Components/reactChatScreen/ChatScreen';
-import NewConversation from '../Components/reactChatScreen/NewConversation';
+
 import Notation from '../Components/Notation';
+import Position_partener from '../Components/Position_partener';
 import Menu from '../Components/Menu';
-import Socket from '../Components/Socket';
-import CourseEvaluation from '../Components/CourseEvaluation';
-import CourseSettings from '../Components/CourseSettings';
 import PartenaireScreen from '../Components/PartenairePage';
 import SettingPartenaire from '../Components/SettingPartenaire';
 import Personal_trip from '../Components/Personal_trip';
-import TagSelection from '../Components/TagSelection';
+import Favorites from '../Components/Favorites';
+
 
 import Chat from './Chat';
 import Home from './Home';
@@ -58,7 +51,11 @@ function MyDrawer() {
       <Drawer.Screen name="Profile" component={Profile} />
       <Drawer.Screen name="Partenaire" component={PartenaireScreen} />
       <Drawer.Screen name="Settings" component={SettingPartenaire} />
+      <Drawer.Screen name="Favorites" component={Favorites} />
       <Drawer.Screen name="Personal_trip" component={Personal_trip} />
+      <Drawer.Screen name="TripNavigation" component={TripNavigation} />
+      <Drawer.Screen name="Position_partener" component={Position_partener} />
+      <Drawer.Screen name="Notation" component={Notation} />
     </Drawer.Navigator>
   );
 }

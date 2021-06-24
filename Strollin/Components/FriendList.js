@@ -2,9 +2,12 @@ import React, { useState } from 'react';
 import {
   Text, View, FlatList, TouchableOpacity, TextInput, StyleSheet, Image
 } from 'react-native';
-// import { connect } from 'react-redux';
+import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 import { DrawerActions } from '@react-navigation/native';
 import I18n from '../Translation/configureTrans';
+import { profileUser } from '../apiServer/user';
+import { connect } from 'react-redux';
+import Store from '../Store/configureStore';
 
 // import BackgroundImage from './backgroundImage';
 // import stylesHomepage from '../../styles/homepage'
@@ -163,52 +166,6 @@ import I18n from '../Translation/configureTrans';
 //   }
 // }
 
-export function getFriendList(filter = '') {
-  const friendlist = [
-    {
-      name: 'tony',
-      profil_picture: require('../images/TonyPP.jpg'),
-      id: '3ad53abb28ba',
-    },
-    {
-      name: 'Strollin',
-      group: ['pierre', 'didier', 'thomas', 'hugo', 'basile', 'tony'],
-      profil_picture: require('../images/TonyPP.jpg'),
-      id: '3ad53hb28ba',
-    },
-    {
-      name: 'pierre',
-      profil_picture: require('../images/TonyPP.jpg'),
-      id: '3ad53hbb28ba',
-    },
-    {
-      name: 'didier',
-      profil_picture: require('../images/TonyPP.jpg'),
-      id: '3adg3abb28ba',
-    },
-    {
-      name: 'thomas',
-      profil_picture: require('../images/TonyPP.jpg'),
-      id: '3ad53abb28ba9',
-    },
-    {
-      name: 'basile',
-      profil_picture: require('../images/TonyPP.jpg'),
-      id: '3ad53abb28ba1',
-    },
-    {
-      name: 'hugo',
-      profil_picture: require('../images/TonyPP.jpg'),
-      id: '3ad53abb28bab',
-    }
-  ];
-  if (filter) {
-    console.log('\n\n filtered !! \n\n');
-    return (friendlist.filter((friend) => friend.name.includes(filter)));
-  }
-  return (friendlist);
-}
-
 export function Header({ props, defaultState = false }) {
   const [research, setresearch] = useState('');
   const [pressed, setpressed] = useState(defaultState);
@@ -236,6 +193,7 @@ export function Header({ props, defaultState = false }) {
   return (
     <View style={styles.view_header}>
       <TextInput
+          autoCapitalize={'none'}
         style={styles.textInput_header}
         placeholder={I18n.t('Header.add_friend')}
         onChangeText={(text) => setresearch(text)}
@@ -250,85 +208,209 @@ export function Header({ props, defaultState = false }) {
   );
 }
 
-export function addFriend(friend) {
-  console.log('add friend function', friend);
+async function AddFriend(props, store, mail) {
+  const bodyRequest = JSON.stringify({
+    friend_mail: mail
+  });
+
+  await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/add_friend`, {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      'access_token': store.profil.access_token,
+    },
+    method: 'post',
+    body: bodyRequest
+    })
+    .then(res => res.json())
+    .then(json => {
+      console.log("Friend added successfuly !");
+      profileUser(props, store.profil.access_token);
+    }).catch((error) => {
+      console.error('error :', error);
+    });
 }
 
-export function DeleteFriend(id) {
-  console.log('delete friend function', id);
+async function DeleteFriend(props, store, id) {
+  const bodyRequest = JSON.stringify({
+    friend_id: id
+  });
+
+  await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/remove_friend`, {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      'access_token': store.profil.access_token,
+    },
+    method: 'post',
+    body: bodyRequest
+    })
+    .then(res => res.json())
+    .then(json => {
+      console.log("Friend removed successfuly !");
+      profileUser(props, store.profil.access_token);
+    }).catch((error) => {
+      console.error('error :', error);
+    });
 }
 
 export function FriendObject(props) {
-  if (props.data.group) {
-    let groupList = '';
-
-    for (let index = 0; index < props.data.group.length; index += 1) {
-      if (index + 1 < props.data.group.length) {
-        groupList += `${props.data.group[index]}, `;
-      } else {
-        groupList += props.data.group[index];
-      }
-    }
-    return (
-      <View style={styles.view_friend}>
-        <Image
-          style={styles.img_friend}
-          source={props.data.profil_picture}
-        />
-        <View style={styles.view_group}>
-          <Text style={styles.text_group}>
-            {props.data.name}
-          </Text>
-          <Text style={styles.text_groupMember}>
-            {groupList}
-          </Text>
-        </View>
-        <TouchableOpacity
-          style={styles.view_delete}
-          onPress={() => { DeleteFriend(props.data.id); }}
-        >
-          <Image style={styles.img_delete} source={require('../images/icons/black/close.png')} />
-        </TouchableOpacity>
-      </View>
-    );
-  }
   return (
     <View style={styles.view_friend}>
       <Image
         style={styles.img_friend}
-        source={props.data.profil_picture}
+        source={require('../images/TonyPP.jpg')}
       />
       <Text style={styles.text_friend}>
-        {props.data.name}
+        {props.store.profil.friends_pseudo_list[props.id]}
       </Text>
       <TouchableOpacity
         style={styles.view_delete}
-        onPress={() => { DeleteFriend(props.data.id); }}
+        onPress={() => { DeleteFriend(props, props.store, props.id); }}
       >
-        <Image style={styles.img_delete} source={require('../images/icons/black/close.png')} />
+        <Image style={styles.img_delete} source={require('../images/icons/black/deleteFriend.png')} />
       </TouchableOpacity>
     </View>
   );
 }
 
+export function UsersObject(props) {
+  let isFriend = false;
+
+  for (let index = 0; index < props.store.profil.friends_list.length; index++) {
+    if (props.store.profil.friends_list[index] == props.id) {
+      isFriend = true;
+    }
+  }
+  
+  if (props.id != props.store.profil.id) {
+    return (
+      <View style={styles.view_friend}>
+        <Image
+          style={styles.img_friend}
+          source={require('../images/TonyPP.jpg')}
+        />
+        <Text style={styles.text_friend}>
+          {props.pseudo}
+        </Text>
+        { isFriend === false &&
+          <TouchableOpacity
+            style={styles.view_delete}
+            onPress={() => { AddFriend(props, props.store, props.mail); }}
+          >
+            <Image style={styles.img_delete} source={require('../images/icons/black/addFriend.png')} />
+          </TouchableOpacity>
+        }
+        { isFriend === true &&
+          <View style={styles.view_delete}>
+            <Image style={styles.img_delete} source={require('../images/icons/black/friend.png')} />
+          </View>
+        }
+      </View>
+    );
+  }
+  return (
+    <View></View>
+  );
+}
+
+async function getUserList(store, setUserList) {
+  await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/get_users`, {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      'access_token': store.profil.access_token,
+    },
+    method: 'get',
+    })
+    .then(res => res.json())
+    .then(json => {
+      console.log("users_list = ", json.users_list);
+      if (json.users_list) {
+        setUserList(json.users_list);
+      }
+    }).catch((error) => {
+      console.error('userList :', error);
+    });
+}
+
 function FriendList(props) {
+  const store = Store.getState();
+  const [userList, setUserList] = useState(null);
+  const [pressed, setpressed] = useState(true);
+
+  if (!userList) {
+    getUserList(store, setUserList);
+  }
+
   return (
     <View style={styles.view_back}>
-      <Header props={props} />
-      <View style={styles.view_list}>
-        <FlatList
-          showsHorizontalScrollIndicator={false}
-          showsVerticalScrollIndicator={false}
-          data={getFriendList()}
-          renderItem={({ item }) => (
-            <FriendObject
-              {...props}
-              data={item}
-            />
-          )}
-          keyExtractor={(item) => item.name}
-        />
+      {/* <Header props={props} /> */}
+      <View style={styles.view_header}>
+        <TouchableOpacity
+          onPress={() => props.navigation.dispatch(DrawerActions.openDrawer())}
+          // onPress={() => props.navigation.navigate('Menu')}
+        >
+          <Image style={styles.img_header} source={require('../images/icons/black/menu.png')} />
+        </TouchableOpacity>
+        <Text style={styles.text_header}>
+          {I18n.t('Header.friends')}
+        </Text>
+        {pressed === true && 
+          <TouchableOpacity
+            onPress={() => { setpressed(!pressed); }}
+          >
+            <Image style={styles.img_header} source={require('../images/icons/black/addFriend.png')} />
+          </TouchableOpacity>
+        }
+        {pressed === false && 
+          <TouchableOpacity
+            onPress={() => { setpressed(!pressed); }}
+          >
+            <Image style={styles.img_header} source={require('../images/icons/black/friends.png')} />
+          </TouchableOpacity>
+        }
       </View>
+      {pressed === true &&
+        <View style={styles.view_list}>
+          <FlatList
+            showsHorizontalScrollIndicator={false}
+            showsVerticalScrollIndicator={false}
+            data={store.profil.friends_list}
+            renderItem={({ item }) => (
+              <FriendObject
+                {...props}
+                store={store}
+                id={item}
+              />
+            )}
+            keyExtractor={(item, index) => {
+              item;
+            }}
+          />
+        </View>
+      }
+      {pressed === false &&
+        <View style={styles.view_list}>
+          <FlatList
+            showsHorizontalScrollIndicator={false}
+            showsVerticalScrollIndicator={false}
+            data={userList}
+            renderItem={({ item }) => (
+              <UsersObject
+                {...props}
+                store={store}
+                pseudo={item.pseudo}
+                mail={item.mail}
+                id={item.id}
+              />
+            )}
+            keyExtractor={(item, index) => {
+              item.id;
+            }}
+          />
+        </View>
+      }
     </View>
   );
 }
@@ -370,6 +452,23 @@ const styles = StyleSheet.create({
     letterSpacing: 2,
     textAlign: 'center',
     color: '#000000',
+  },
+  view_switchPage: {
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    flexDirection: 'row',
+    marginBottom: 10,
+  },
+  text_switchPageOn: {
+    fontSize: 22,
+    color: '#0092a7',
+    fontWeight: 'bold'
+  },
+  text_switchPageOff: {
+    fontSize: 22,
+    color: '#000',
+    fontWeight: 'bold'
   },
   view_partner: {
     height: 687,
@@ -422,14 +521,14 @@ const styles = StyleSheet.create({
     color: '#A2A2A2',
   },
   view_delete: {
-    flex: 32,
+    flex: 40,
   },
   img_delete: {
-    width: 25,
+    width: 30,
     resizeMode: 'contain',
   }
 });
 
-// const mapStateToProps = (state) => state;
-// export default connect(mapStateToProps)(FriendList);
-export default FriendList;
+const mapStateToProps = (state) => state;
+export default connect(mapStateToProps)(FriendList);
+

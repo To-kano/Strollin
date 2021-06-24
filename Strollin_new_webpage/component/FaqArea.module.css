@@ -1,0 +1,19 @@
+.backgroundImage {
+    background-image: url("../public/profil/Basile_pp.jpg");
+    width: 400px;
+    height: 200px;
+}
+
+.form {
+    width: 100px;
+    height: 500px;
+}
+
+.row {
+    grid-row: 1;
+}
+
+.image {
+    width: 400px;
+    height: 400px;
+}
