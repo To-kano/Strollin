@@ -7,7 +7,7 @@ function FeaturesArea() {
   return (
     <>
       <section className={styles.center}>
-        <h2>Our features</h2>
+        <h2>Qu'est-ce que Strollin' ?</h2>
         <div className={styles.table}>
 
           <div className={styles.box}>

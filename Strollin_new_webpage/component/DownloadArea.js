@@ -14,7 +14,7 @@ function PartnerArea() {
             <br/>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam elementum.
           </h3>
           <div className={styles.buttonDiv}>
-            <a href="#" className={styles.downloadCard}>Download now</a>
+            <a href="/apk/Strollin.apk" className={styles.downloadCard}>Download now</a>
             <button>How to install the apk</button>
           </div>
         </div>

@@ -1,4 +1,4 @@
-  import { IP_SERVER, PORT_SERVER } from '../env/Environement';
+import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 import React, { useState } from "react";
 import styles from "./LoginArea.module.css";
 
@@ -63,22 +63,14 @@ function LoginArea() {
               <a href="#" className={styles.downloadCard}>Download now</a>
           </div>
           <div className={styles.rightCard}>
-            <h2>Register now for some bonus!</h2>
+            <h2>Login now!</h2>
             <form onSubmit={handleSubmit} id="inscription">
-              <h3 >Username</h3>
-              <input type="username" name="username" id="exampleUsername" placeholder="John Doe" onChange={e => setUsername(e.target.value)} />
               <h3 >Email</h3>
               <input type="email" name="email" id="exampleEmail" placeholder="john.doe@email.com" onChange={e => setEmail(e.target.value)} />
               <h3>Password</h3>
               <input type="password" name="password" id="examplePassword" placeholder="********" onChange={e => setPassword(e.target.value)} />
-              <h3>Password confirmation</h3>
-              <input type="password" name="password" id="examplePassword" placeholder="********" onChange={e => setPasswordConf(e.target.value)} />
-              <label check>
-                <input type="checkbox" name="check" id="exampleCheck" required/>
-                I agree to the Terms and Conditions
-              </label>
               <br/>
-              <input type="submit" value="Register" />
+              <input type="submit" value="Login" />
             </form>
           </div>
         </div>

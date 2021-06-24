@@ -3,14 +3,15 @@ import Image from 'next/image';
 import styles from '../styles/Home.module.css';
 
 import PartnerArea from '../component/PartnerArea';
-import LoginArea from '../component/LoginArea';
+import RegisterArea from '../component/RegisterArea';
 import FeaturesArea from '../component/FeaturesArea';
 import Header from '../component/Header';
 import DownloadArea from '../component/DownloadArea';
 import AboutUsArea from '../component/AboutUsArea';
 import FaqArea from '../component/FaqArea';
-import PartnerLoginArea from '../component/PartnerLoginArea';
+import LoginArea from '../component/LoginArea';
 import ApkInstallArea from '../component/ApkInstallArea';
+import Footer from '../component/Footer';
 
 /*export async function getStaticProps() {
   // Call an external API endpoint to get posts
@@ -45,44 +46,18 @@ export default function Home(props) {
       <Header/>
 
       <main className={styles.main}>
-        <LoginArea/>
+        <RegisterArea/>
         {/* <a href='#'>{props.test}</a> */}
-        <PartnerArea/>
         <FeaturesArea/>
+        <PartnerArea/>
         <DownloadArea/>
         <AboutUsArea/>
         {/* <FaqArea/>
-        <PartnerLoginArea/>
+        <LoginArea/>
         <ApkInstallArea/> */}
 
       </main>
-
-      <footer className={styles.footer}>
-        <div className={styles.footerImg}/>
-        <div className={styles.list}>
-          <h3>Company</h3>
-          <a href='#'>About</a>
-          <a href='#'>Presentation</a>
-          <a href='#'>Features</a>
-          <a href='#'>About us</a>
-        </div>
-
-        <div className={styles.list}>
-          <h3>Region</h3>
-          <a href='#'>French</a>
-          <a href='#'>English</a>
-          <a href='#'>Spannish</a>
-          <a href='#'>Turkish</a>
-        </div>
-
-        <div className={styles.list}>
-          <h3>Help</h3>
-          <a href='#'>Help center</a>
-          <a href='#'>Contact support</a>
-          <a href='#'>Instruction</a>
-          <a href='#'>How to install</a>
-        </div>
-      </footer>
+        <Footer/>
     </div>
   )
 }

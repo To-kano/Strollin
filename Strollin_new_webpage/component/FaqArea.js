@@ -2,49 +2,51 @@ import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 import React, { useState } from "react";
 import styles from "./FaqArea.module.css";
 
-function FaqPrinter(FaqDataList) {
+function developerPrinter(faqDataList) {
   let grid = [];
   let tmp = [];
   let i = 0;
+  console.log("faqDataList = ",faqDataList);
 
-  for (var key in FaqDataList) {
-      let question = FaqDataList[key]["question"];
-      let answer = FaqDataList[key]["answer"];
-
-      tmp.push(
-        <div className={styles.backgroundImage}>
-          <div>
-            <h4 style={{fontSize:"25px", fontWeight:"bold"}}>{question}<br/></h4>
-            <p style={{fontSize:"18px", fontWeight:"500"}}><br/>{answer}</p>
-          </div>
-      </div>);
-      i++;
-      if (i % 3 == 0) {
-          grid.push(<div className="row">{tmp}</div>);
-          tmp = [];
-      }
+  for (var key in faqDataList) {
+    let question = faqDataList[key]["question"];
+    let answer = faqDataList[key]["answer"];
+    tmp.push(
+      <div
+        className={styles.box}
+        style={{
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: 'cover',
+        }}
+      >
+          <h2>{question}</h2>
+          <h3>{answer}</h3>
+      </div>
+    );
   }
   if (typeof tmp !== 'undefined' && tmp.length > 0) {
-      grid.push(<div className="row">{tmp}</div>);
+      grid.push(<>{tmp}</>);
   }
   return (grid);
 }
 
-function FaqArea() {
-  const [FaqDataList, setFaqDataList] = useState(null);
+function AboutUsArea() {
+  const [faqDataList, setfaqDataList] = useState(null);
   
-  if (!FaqDataList) {
-    setFaqDataList(require('./FaqDataList.json'));
+  if (!faqDataList) {
+    setfaqDataList(require('./FaqDataList.json'));
   }
 
   return (
     <>
-      <div>
-        <p>Faq</p>
-        {FaqDataList && FaqPrinter(FaqDataList)}
-      </div>
+      <section className={styles.center}>
+        <h2>FAQ</h2>
+        <div className={styles.table}>
+          {faqDataList && developerPrinter(faqDataList)}
+        </div>
+      </section>
     </>
   );
 }
 
-export default FaqArea;
+export default AboutUsArea;
