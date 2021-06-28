@@ -18,6 +18,7 @@ const {
  * @param {[String]} req.headers.eat
  * @param {[String]} req.headers.radius
  * @param {[String]} req.headers.placenbr
+ * @param {[String]} req.headers.locations_list
  */
 router.get('/generate_course', async function(req, res) {
 
@@ -25,8 +26,17 @@ router.get('/generate_course', async function(req, res) {
     let course = undefined;
     let radius = Number(req.headers.radius)
     let placeNbr = Number(req.headers.placenbr)
+    let locations_list = []
 
     console.log("placenbr: ", req.headers.placenbr);
+    console.log("time: ", req.headers.time);
+    console.log("budget: ", req.headers.budget);
+    console.log("tags: ", req.headers.tags);
+    console.log("coordinate: ", req.headers.coordinate);
+    console.log("eat: ", req.headers.eat);
+    console.log("radius: ", req.headers.radius);
+    console.log("locations_list: ", req.headers.locations_list);
+
     if (!user) {
         return res.status(400).send({status: "You are not connected."});
     }
@@ -39,8 +49,12 @@ router.get('/generate_course', async function(req, res) {
         return res.status(400).send({status: "Parameter required is missing."});
     }
     let tags = req.headers.tags.split(',');
+    if (req.headers.locations_list) {
+      locations_list = req.headers.locations_list.split(',');
+      //console.log("locations_list: ", locations_list);
+    }
 
-    const promise2 = algo.data.algo(req.headers.time , req.headers.budget , req.headers.tags , req.headers.coordinate, req.headers.eat, radius, placeNbr);
+    const promise2 = algo.data.algo(req.headers.time , req.headers.budget , req.headers.tags , req.headers.coordinate, req.headers.eat, radius, placeNbr, locations_list);
     promise2.then((value) => {
       let generated_course = value;
       //console.log("course: ", generated_course);

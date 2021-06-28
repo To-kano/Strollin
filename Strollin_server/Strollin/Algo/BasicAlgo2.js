@@ -111,7 +111,17 @@ function CheckFood(Food, PlaceFood) {
   }
 }
 
-function algoTest(Places, Food, time, budget, tags, coordinate, radius, placeNbr) {
+function NotInOldList(Place, old_locations_list) {
+  for (var i = 0; i < old_locations_list.length; i++) {
+    if (old_locations_list[i] == Place.Id) {
+      //console.log("is old place");
+      return false
+    }
+  }
+  return true
+}
+
+function algoTest(Places, Food, time, budget, tags, coordinate, radius, placeNbr, old_locations_list) {
 
   //console.log("food bool: ", Food);
   return new Promise((resolve, reject) => {
@@ -127,13 +137,14 @@ function algoTest(Places, Food, time, budget, tags, coordinate, radius, placeNbr
     UserPos[0] = parseFloat(coordinate[0]);
     UserPos[1] = parseFloat(coordinate[1]);
 
-    console.log("..............................POs: ", UserPos);
+    //console.log("..............................POs: ", UserPos);
     radius = radius * 1000;
-    console.log("radius: ", radius);
+    //console.log("radius: ", radius);
+    //console.log("old_locations_list: ", old_locations_list);
     //console.log("TAGS ------------------------: ", UserTags);
     //Put all the places corresponding to the user tags in a new array (PlacesArray)
     for (var i = 0; i < Places.length; i++) {
-      if (IsTagOk(tagsArray, Places[i]) == true && DistCalc2D(Places[i].Pos, UserPos) < radius) {
+      if (IsTagOk(tagsArray, Places[i]) == true && DistCalc2D(Places[i].Pos, UserPos) < radius && NotInOldList(Places[i], old_locations_list) == true) {
         PlacesArray.push(Places[i])
       }
     }
@@ -161,7 +172,7 @@ function algoTest(Places, Food, time, budget, tags, coordinate, radius, placeNbr
 }
 
 //gets the tags from tge DB and transform them to a json with the right format
-async function getTags(time, budget, tags, coordinate, eat, radius, placeNbr) {
+async function getTags(time, budget, tags, coordinate, eat, radius, placeNbr, old_locations_list) {
   let query = {};
   let locations_list = null
   let true_list = []
@@ -215,7 +226,7 @@ async function getTags(time, budget, tags, coordinate, eat, radius, placeNbr) {
     console.log("please: ", true_list[i]);
   }*/
 
-  const promise1 = hello(true_list, time, budget, tags, coordinate, eat, radius, placeNbr)
+  const promise1 = hello(true_list, time, budget, tags, coordinate, eat, radius, placeNbr, old_locations_list)
   return promise1;
 }
 
@@ -369,7 +380,6 @@ async function placeCall(url) {
 }
 
 async function callApi(url) {
-  console.log("\n\n\n")
   let token = null
   let url_tmp = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=AIzaSyD6AVcufnom-RKQJeG8tlxAWhAOKor0-uo"
 
@@ -416,13 +426,13 @@ async function RecoverPlaces(coordinate, tags) {
   var coordinateArr = coordinate.split(",");
 
   for (var i = 0; i < tags_array.length; i++) {
-    console.log("tags_array: ", tags_array[i]);
+    //console.log("tags_array: ", tags_array[i]);
       await getPlaces(coordinateArr, tags_array[i]);
   }
   //console.log("fini");
 }
 
-hello = async function(sending, time, budget, tags, coordinate, eat, radius, placeNbr)
+hello = async function(sending, time, budget, tags, coordinate, eat, radius, placeNbr, old_locations_list)
 {
   var coordinateArr = coordinate.split(",");
 
@@ -432,15 +442,15 @@ hello = async function(sending, time, budget, tags, coordinate, eat, radius, pla
   //promise1.then((value) => {
     //console.log("coordiante: ", coordinateArr);
     return new Promise((resolve, reject) => {
-      var test = algoTest(sending, eat, time, budget, tags, coordinateArr, radius, placeNbr)
+      var test = algoTest(sending, eat, time, budget, tags, coordinateArr, radius, placeNbr, old_locations_list)
       resolve(test)
     });
   //})
 }
 
-methods.algo = function(time, budget, tags, coordinate, eat, radius, placeNbr) {
+methods.algo = function(time, budget, tags, coordinate, eat, radius, placeNbr, locations_list) {
   console.log("------------------------------------------------------------------");
-  const promise1 = getTags(time, budget, tags, coordinate, eat, radius, placeNbr);
+  const promise1 = getTags(time, budget, tags, coordinate, eat, radius, placeNbr, locations_list);
   return promise1;
   /*promise1.then((value) => {
     console.log("VALEUUUUUUUUUUUUUUR: ", value);

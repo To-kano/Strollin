@@ -150,6 +150,7 @@ async function getArrayLocation(access_token, idLocations) {
 }
 
 
+
 export function TripSuggestion(props) {
   const [course, setCourse] = useState(null);
 
@@ -195,6 +196,56 @@ export function TripSuggestion(props) {
     longitudeDelta: 0.0421,
   };
 
+  //console.log("stp bb: ", props.CourseSettings.pos);
+
+
+  // récupére le trajet précédent et pasre les nom et envoie les dans mle header
+  async function regenerate_course() {
+    const store = Store.getState();
+    const access_Token = store.profil.access_token;
+    let time = Number(props.CourseSettings.hours) *  60 + Number(props.CourseSettings.minutes);
+    const coordinate = [];
+
+    console.log("previous course: ", store.course.course[0].locations_list);
+    coordinate[0] = props.CourseSettings.pos.latitude;
+    coordinate[1] = props.CourseSettings.pos.longitude;
+
+    console.log("time: ", time);
+    console.log("coordo: ", coordinate);
+    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/generator/generate_course`, {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      access_Token,
+      'time': time,
+      'budget': props.CourseSettings.budget,
+      'tags': props.CourseSettings.tags,
+      'coordinate' : coordinate,
+      'eat' : props.CourseSettings.isEatDrink,
+      'radius' : props.CourseSettings.radius,
+      'placenbr' : props.CourseSettings.placeNbr,
+      'locations_list': store.course.course[0].locations_list
+    },
+    method: 'GET',
+    })
+    .then(res => res.json())
+    .then(json => {
+      console.log("algo done:   ", json);
+      setCourse(json.course);
+      //PopUpReq(pos, json.generated_course);
+      const action = {
+        type: 'ADD_COURSE',
+        value: json.course
+      };
+      Store.dispatch(action);
+      props.profil.scoreCourse = json.generated_course
+      props.profil.first_name = props.CourseSettings.pos
+      props.navigation.navigate("TripSuggestion");
+    }).catch((error) => {
+      console.error('error :', error);
+    });
+  }
+
   return (
     <View style={styles.view_back}>
       <View style={styles.view_header}>
@@ -236,117 +287,17 @@ export function TripSuggestion(props) {
           // props.navigation.navigate('TripNavigation');
         }}
       >
-        <Text style={styles.text_button}>Let's Go !</Text>
+        <Text style={styles.text_button}>Lets Go !</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.view_button}
+        onPress={() => {
+          regenerate_course()
+        }}
+      >
+        <Text style={styles.text_button}>New Trip</Text>
       </TouchableOpacity>
     </View>
-
-    // <View style={styles.view_back}>
-    //   <View style={styles.view_header}>
-    //     <TouchableOpacity onPress={() => props.navigation.dispatch(DrawerActions.openDrawer())}>
-    //       <Image style={styles.img_header} source={require('../images/icons/black/menu.png')}/>
-    //     </TouchableOpacity>
-    //     <Text style={styles.text_header}>
-    //       {I18n.t('Header.new_trip')}
-    //       {'    '}
-    //     </Text>
-    //   </View>
-    //   <View style={styles.fill}>
-    //     <View style={{
-    //       justifyContent: 'space-around',
-    //       marginTop: 10,
-    //       paddingLeft: 5,
-    //       paddingBottom: 10,
-    //       backgroundColor: '#FFFFFF',
-    //       borderRadius: 5,
-    //       borderColor: '#BABABA',
-    //       borderWidth: 1,
-    //       width: '95%'
-    //     }}
-    //     >
-    //       <Text style={[{ fontSize: 20, opacity: 0.5, margin: 5 }]}>{I18n.t('TripSuggestion.headingTo')}</Text>
-    //       <Text style={[{
-    //         textAlign: 'center', fontSize: 22, fontWeight: 'bold', color: '#F07323'
-    //       }]}
-    //       >
-    //         {course ? course.name: ""}
-    //       </Text>
-    //     </View>
-    //     <View
-    //       style={{
-    //         flex: 3,
-    //         marginTop: 15,
-    //         justifyContent: 'space-around',
-    //         paddingLeft: 5,
-    //         backgroundColor: '#FFFFFF',
-    //         borderRadius: 5,
-    //         borderColor: '#BABABA',
-    //         borderWidth: 1,
-    //         width: '95%'
-    //       }}
-    //     >
-    //       <ElementHistoryNav course={course} locations={locations}/>
-    //     </View>
-    //     <View style={{
-    //       flex: 0.4,
-    //       flexDirection: 'row',
-    //       justifyContent: 'space-around',
-    //       alignItems: 'center',
-    //       padding: 10,
-    //     }}
-    //     >
-    //       <View style={{ flex: 1, paddingTop: 10, marginRight: 10 }}>
-    //         <Button
-    //           title="Another One!"
-    //           color="#89B3D9"
-    //           onPress={() => {
-    //             Tts.stop();
-    //             getCustomCourse(props.profil.access_token, setCourse);
-    //             //setCourse(getNavigation());
-    //           }}
-    //         />
-    //       </View>
-    //       <View style={{ flex: 1, paddingTop: 10, marginRight: 10 }}>
-    //         <Button
-    //           title="Let's go!"
-    //           color="#F07323"
-    //           onPress={() => {
-    //             const action = { type: 'SET_WAYPOINTS', course: course, locations: locations };
-    //             props.dispatch(action);
-    //             props.navigation.navigate('TripNavigation');
-    //           }}
-    //         />
-    //         <ButtonSwitch
-    //           iconOn={require('../images/volume.png')}
-    //           iconOff={require('../images/no-sound.png')}
-    //           statue={props.profil.sound}
-    //           onPressOff={() => {
-    //             Tts.stop();
-    //             const action = { type: 'SET_SOUND', value: !props.profil.sound };
-    //             props.dispatch(action);
-    //           }}
-    //           onPressOn={() => {
-    //             Tts.stop();
-    //             const action = { type: 'SET_SOUND', value: !props.profil.sound };
-    //             props.dispatch(action);
-    //           }}
-
-    //         />
-    //       </View>
-    //     </View>
-    //   </View>
-    //   <TouchableOpacity
-    //     style={styles.view_button}
-    //     onPress={() => {
-    //       const action = { type: 'SET_WAYPOINTS', value: waypoints };
-    //       props.dispatch(action);
-    //       props.navigation.navigate('TripNavigation');
-    //     }}
-    //   >
-    //     <Text style={styles.text_button}>
-    //       {I18n.t('TripSuggestion.lets_go')}
-    //     </Text>
-    //   </TouchableOpacity>
-    // </View>
   );
 }
 

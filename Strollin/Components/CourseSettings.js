@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  StyleSheet, View, Image, Text, TouchableOpacity, TextInput,
+  StyleSheet, View, ScrollView, Image, Text, TouchableOpacity, TextInput,
 } from 'react-native';
 import Stars from 'react-native-stars';
 import { connect } from 'react-redux';
@@ -69,6 +69,7 @@ async function test(pos, budget, hours, minutes, tags, props, eat, radius, place
   const access_Token = store.profil.access_token;
   const time = hours * 60 + minutes;
   const coordinate = [];
+  var action = {};
 
   coordinate[0] = pos.latitude;
   coordinate[1] = pos.longitude;
@@ -78,6 +79,47 @@ async function test(pos, budget, hours, minutes, tags, props, eat, radius, place
   console.log("tags: ", tags);
   console.log("radius: ", radius);
   console.log("placeNbr: ", placeNbr);
+
+  action = {
+    type: 'ADD_POS',
+    value: pos
+  };
+  Store.dispatch(action);
+  action = {
+    type: 'ADD_BUDGET',
+    value: budget
+  };
+  Store.dispatch(action);
+  action = {
+    type: 'ADD_HOURS',
+    value: hours
+  };
+  Store.dispatch(action);
+  action = {
+    type: 'ADD_MINUTES',
+    value: minutes
+  };
+  Store.dispatch(action);
+  action = {
+    type: 'ADD_EAT',
+    value: eat
+  };
+  Store.dispatch(action);
+  action = {
+    type: 'ADD_RADIUS',
+    value: radius
+  };
+  Store.dispatch(action);
+  action = {
+    type: 'ADD_PLACENBR',
+    value: placeNbr
+  };
+  Store.dispatch(action);
+  action = {
+    type: 'ADD_TAGS',
+    value: tags
+  };
+  Store.dispatch(action);
 
   await fetch(`http://${IP_SERVER}:${PORT_SERVER}/generator/generate_course`, {
   headers: {
@@ -98,9 +140,14 @@ async function test(pos, budget, hours, minutes, tags, props, eat, radius, place
   .then(json => {
     console.log("algo done:   ", json);
     //PopUpReq(pos, json.generated_course);
-    const action = {
+    action = {
       type: 'ADD_COURSE',
       value: json.course
+    };
+    Store.dispatch(action);
+    action = {
+      type: 'ADD_COURSE_LOCATIONS',
+      value: json.generate_course
     };
     Store.dispatch(action);
     props.profil.scoreCourse = json.generated_course
@@ -286,74 +333,6 @@ export function CourseSettings(props) {
         </Text>
       </TouchableOpacity>
     </View>
-    // <View style={styles.container}>
-    //   <View>
-    //     <Text style={{ textAlign: 'center', fontSize: 40 }}> {"Select your options!\n\n"} </Text>
-    //   </View>
-    //   <Text style={{ fontSize: 25  }}> {"Select your budget:"} </Text>
-    //   <View style={styles.container}>
-    //     <View style={{flexDirection: 'row', alignItems: 'center'}}>
-    //       <TextInput
-    //          style={styles.budgetInput}
-    //          keyboardType='numeric'
-    //          onChangeText={(text)=> setBudget(text)}
-    //          value={budget}
-    //          maxLength={6}  //setting limit of input
-    //       />
-    //       <Text style={{ fontSize: 25 }}> € </Text>
-    //     </View>
-    //     <Text> {} </Text>
-    //     <Text style={{ fontSize: 25 }}> {"Select your spending time:"} </Text>
-
-    //     <View style={{flexDirection: 'row', alignItems: 'center'}}>
-    //       <TextInput
-    //          style={styles.timeInput}
-    //          keyboardType='numeric'
-    //          onChangeText={(text)=> setHours(text)}
-    //          value={hours}
-    //          maxLength={2}  //setting limit of input
-    //       />
-    //       <Text style={{ fontSize: 25 }}> Hour(s) </Text>
-    //       <TextInput
-    //          style={styles.timeInput}
-    //          keyboardType='numeric'
-    //          onChangeText={(text)=> setMinutes(text)}
-    //          value={minutes}
-    //          maxLength={2}  //setting limit of input
-    //       />
-    //       <Text style={{ fontSize: 25 }}> Minute(s) </Text>
-    //     </View>
-    //   </View>
-
-    //   <Text> {"\n"} </Text>
-    //   <View>
-    //     <TouchableOpacity
-    //       id={'test'}
-    //       style={styles.newTrip}
-    //       onPress={() => {
-    //         getUserTags(pos, budget, hours, minutes);
-    //       }}
-    //     >
-    //       <Text style={{ fontSize: 16, color: '#FFFFFF' }}>
-    //         Go!
-    //       </Text>
-    //     </TouchableOpacity>
-    //   </View>
-    //   <Text>{"\n"}</Text>
-    //   <View>
-    //     <TouchableOpacity
-    //       id={'test'}
-    //       style={styles.newTrip}
-    //       onPress={() => {
-    //         Back(props);
-    //       }}
-    //     >
-    //       <Text style={{ fontSize: 16, color: '#FFFFFF' }}>
-    //         Back
-    //       </Text>
-    //     </TouchableOpacity>
-    //   </View>
-    // </View>
   );
 }
 
