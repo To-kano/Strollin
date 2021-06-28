@@ -112,9 +112,13 @@ function CheckFood(Food, PlaceFood) {
 }
 
 function NotInOldList(Place, old_locations_list) {
+  let rand = 0;
   for (var i = 0; i < old_locations_list.length; i++) {
     if (old_locations_list[i] == Place.Id) {
-      //console.log("is old place");
+      rand = Math.floor(Math.random() * 3);
+      if (rand == 0) {
+        return true
+      }
       return false
     }
   }
