@@ -597,6 +597,64 @@ router.get('/login', async function (req, res) {
   }
 });
 
+// LOGIN_WEB
+/**
+ * Log in an user to get a new access token (For Website).
+ * @param {String} req.body.mail
+ * @param {String} req.body.password
+ */
+ router.post('/login_web', async function (req, res) {
+
+  let user = await UserModel.findOne({ mail: req.headers.mail, password: req.headers.password }).catch(error => error);
+  let token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+  let error = undefined;
+  let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+  let blacklist = await BlacklistModel.findOne({ ip: ip }).catch(error => error);
+
+  if (!blacklist) {
+    blacklist = new BlacklistModel({ ip: ip });
+    error = await blacklist.save().catch(error => error);
+    if (error.errors) {
+      return res.status(400).send({ status: "Error in database transaction:\n", error: error });
+    }
+  } else if (blacklist.reason) {
+    return res.status(400).send({ status: "Error in database transaction:\n", error: error });
+  } else if (Number(Date.now()) < blacklist.lock_date + (1000 * 60 * (blacklist.attempt - 3))) {
+    return res.status(400).send({ status: "You made too much attempt. Please retry in " + (blacklist.attempt - 3).toString() + " minute(s)" });
+  }
+
+  //User Not found
+  if (!user) {
+    error = await BlacklistModel.updateOne({ ip: blacklist.ip }, { attempt: (blacklist.attempt + 1), lock_date: Number(Date.now()) }).catch(error => error);
+    if (error.errors) {
+      return res.status(400).send({ status: "Error in database transaction:\n", error: error });
+    }
+    if (Number(Date.now()) < Number(Date.now()) + (1000 * 60 * (blacklist.attempt + 1 - 3))) {
+      return res.status(400).send({ status: "You made too much attempt. Please retry in " + (blacklist.attempt + 1 - 3).toString() + " minute(s)" });
+    }
+    return res.status(400).send({ status: "The login or the password is incorrect." });
+
+    //Transaction error
+  } else if (user && user.reason) {
+    return res.status(400).send({ status: "Error in database transaction:\n", error: user });
+
+    //User found
+  } else {
+    if (user.partner == false) {
+      return res.status(400).send({ status: "Only a partner can login in the website." });
+    }
+    error = await UserModel.updateOne({ id: user.id }, { access_token: token }).catch(error => error);
+    if (error.errors) {
+      return res.status(400).send({ status: "Error in database transaction:\n", error: error });
+    }
+    error = await BlacklistModel.updateOne({ ip: blacklist.ip }, { attempt: 0 }).catch(error => error);
+    if (error.errors) {
+      return res.status(400).send({ status: "Error in database transaction:\n", error: error });
+    }
+    return res.status(200).send({ status: "Log in successfully.", access_token: token });
+  }
+});
+
 
 // LOGOUT
 /**
