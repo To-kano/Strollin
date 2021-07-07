@@ -1,0 +1,10 @@
+{
+    "Question1" : {
+        "question" : "Will my data be entirely private?",
+        "answer" : "Yes, we have special care about our users privacy"
+    },
+    "Question2" : {
+        "question" : "Does Strollin have in-app payment?",
+        "answer" : "Not for now, only the partner get to pay for our services currently"
+    }
+}

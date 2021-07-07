@@ -5,7 +5,7 @@ const environement = {
 
 exports.environement = environement;
 
-const IP_SERVER = process.env.IP_SERVER || '90.79.31.52';
+const IP_SERVER = process.env.IP_SERVER || '90.79.34.104';
 
 exports.IP_SERVER = IP_SERVER;
 

@@ -160,6 +160,20 @@ function tendanceReducer(state = initialState, action) {
         tendanceList: action.value
       };
       return nextState;
+    case 'SET_TENDANCE_LIST_FAVORITES':
+      nextState = {
+        ...state,
+      };
+      for (let i = 0; i < nextState.tendanceList.length; i++) {
+        for (let j = 0; j < action.value.length; j++) {
+          if (action.value[j] == nextState.tendanceList[i].id) {
+            nextState.tendanceList.favorite = true;
+          } else {
+            nextState.tendanceList.favorite = false;
+          }
+        }
+      }
+      return nextState;
     case 'SET_SORTED_TENDANCE_LIST':
       nextState = {
         ...state,
