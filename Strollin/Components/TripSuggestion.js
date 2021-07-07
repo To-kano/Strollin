@@ -16,6 +16,8 @@ import {getCustomCourse} from '../apiServer/course';
 import {getLocationByID} from '../apiServer/locations';
 import Store from '../Store/configureStore';
 import { IP_SERVER, PORT_SERVER } from '../env/Environement';
+import Modal from 'react-native-modal'
+import ModalContent from 'react-native-modal'
 
 function getNavigation({route}) {
 
@@ -145,7 +147,6 @@ async function getArrayLocation(access_token, idLocations) {
   for (let i = 0; i < idLocations.length; i++) {
     result.push(await getLocationByID(access_token, idLocations[i]));
   }
-
   return result
 }
 
@@ -168,9 +169,16 @@ export function TripSuggestion(props) {
 
     async function getLocations() {
       const result = await getArrayLocation(props.profil.access_token, course.locations_list)
-
       setLocations(result);
+      check_open(result)
     }
+
+    /*function test() {
+    if (locations != null) {
+      check_open()
+    }
+  }*/
+
 
     if (!course) {
       getCourse();
@@ -187,13 +195,72 @@ export function TripSuggestion(props) {
     }
   }, [course]);
 
-  const [locations, setLocations] = useState(null);
 
+  const [locations, setLocations] = useState(null);
+  const  [deleteLocation, setDelLocations] = useState(null)
+  let locations_tmp = []
+  let locations_name = []
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [getName, setName] = useState("")
+  const [loading, setLoading] = useState(true)
+
+  function toggleModal() {
+    setModalVisible(!isModalVisible);
+  };
+
+  function getNameFunction() {
+    let name = ""
+    locations_name.forEach((item) => {
+      console.log("\n\ndeleted: ", item )
+      if (name != "") {
+        name += ', ' + item
+      } else {
+      name = item
+      }
+    });
+    let nametmp = "ces lieux sont actuelement fermés :\n" + name + "\nvoulez vous les suprimer ?"
+    setName(nametmp)
+    console.log("\n\ndeleted: ", nametmp )
+    toggleModal()
+    setDelLocations(locations_tmp)
+    /*if (confirm("Do you want to save changes?") == true) {
+      setLocations(locations_tmp)
+    }*/
+  }
 
   const deltaView = {
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
   };
+
+  function check_open(result) {
+    locations_tmp = []
+    result.forEach((item, i) => {
+      const url = `http://${IP_SERVER}:${PORT_SERVER}/location/check_open`
+      fetch(url, {
+        headers: {
+          name: item.name
+        },
+        method: 'GET',
+      })
+        .then((response) => response.json())
+        .then((answer) => {
+          if (!answer.result.candidates[0].opening_hours || answer.result.candidates[0].opening_hours.open_now == true) {
+            locations_tmp.push(item)
+          } else {
+            locations_name.push(item.name)
+          }
+        })
+        .catch((error) => {
+          console.error('error :', error);
+        })
+        .finally(() => {
+          if (i == result.length - 1) {
+            console.log(locations_tmp)
+            getNameFunction()
+          }});
+    });
+  }
 
   return (
     <View style={styles.view_back}>
@@ -220,6 +287,21 @@ export function TripSuggestion(props) {
       </View>
       <View style={styles.viex_list}>
         <ElementHistoryNav course={course} locations={locations}/>
+      </View>
+      <View>
+        <Modal isVisible={isModalVisible}>
+          <View>
+            <Button title={getName} color="#BB7859"/>
+            <Button title="Oui, suprimez les" onPress={() => {
+              console.log(deleteLocation)
+              setLocations(deleteLocation)
+              toggleModal()
+            }} />
+            <Button title="Non, gardez les" onPress={() => {
+              toggleModal()
+            }} />
+          </View>
+        </Modal>
       </View>
       <TouchableOpacity
         style={styles.view_button}
