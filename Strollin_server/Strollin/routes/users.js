@@ -605,7 +605,7 @@ router.get('/login', async function (req, res) {
  */
  router.post('/login_web', async function (req, res) {
 
-  let user = await UserModel.findOne({ mail: req.headers.mail, password: req.headers.password }).catch(error => error);
+  let user = await UserModel.findOne({ mail: req.body.mail, password: req.body.password }).catch(error => error);
   let token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
   let error = undefined;
   let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;

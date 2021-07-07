@@ -8,6 +8,7 @@ import { ShareDialog } from 'react-native-fbsdk';
 import Map from './map';
 import I18n from '../Translation/configureTrans';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useNavigation } from '@react-navigation/native';
 
 function randPic() {
   const rand = (Math.floor(Math.random() * 2) + 1);
@@ -60,6 +61,8 @@ function getArrayLocation(idLocations) {
 }
 
 function ElementHistoryNav({ course, locations, defaultSate = false }) {
+  const navigation = useNavigation();
+
   const messagetext = `Strollin' m'a proposé un trajet ! \nRejoignons nous a ${getLocation().name} au ${getLocation().address} à ${getLocation().city} !`;
   const [showMap, setShowMap] = useState(defaultSate);
 
@@ -75,7 +78,10 @@ function ElementHistoryNav({ course, locations, defaultSate = false }) {
           style={styles.view_list}
           data={locations}
           renderItem={({ item }) => (
-            <View style={styles.view_box}>
+            <TouchableOpacity
+              style={styles.view_box}
+              onPress={() => {navigation.navigate('LocationPage', {location: item})}}
+            >
               <ImageBackground
                 style={styles.img_boxBack}
                 imageStyle={styles.img_boxBack}
@@ -123,7 +129,7 @@ function ElementHistoryNav({ course, locations, defaultSate = false }) {
                   </View>
                 </View>
               </ImageBackground>
-            </View>
+            </TouchableOpacity>
           )}
         />
       </View>

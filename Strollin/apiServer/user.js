@@ -1,6 +1,6 @@
 import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 
-async function loginUser(props, newMail, newPassword) {
+async function loginUser(props, newMail, newPassword, setLoading) {
   fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/login`, {
     headers: {
       Accept: 'application/json',
@@ -24,8 +24,10 @@ async function loginUser(props, newMail, newPassword) {
         //console.log('login user faile: ', answer);
       }
     })
+    .then(setLoading(false))
     .catch((error) => {
       console.error('error :', error);
+      setLoading(false);
     });
 }
 
