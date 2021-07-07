@@ -7,6 +7,10 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
+router.get('/news', function(req, res, next) {
+  res.render('news', { title: 'Express' });
+});
+
 
 const storage = multer.diskStorage({
   destination(req, file, callback) {

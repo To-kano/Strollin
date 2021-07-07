@@ -16,6 +16,8 @@ import {getCustomCourse} from '../apiServer/course';
 import {getLocationByID} from '../apiServer/locations';
 import Store from '../Store/configureStore';
 import { IP_SERVER, PORT_SERVER } from '../env/Environement';
+import Modal from 'react-native-modal'
+import ModalContent from 'react-native-modal'
 
 function getNavigation({route}) {
 
@@ -145,9 +147,9 @@ async function getArrayLocation(access_token, idLocations) {
   for (let i = 0; i < idLocations.length; i++) {
     result.push(await getLocationByID(access_token, idLocations[i]));
   }
-
   return result
 }
+
 
 
 export function TripSuggestion(props) {
@@ -168,9 +170,16 @@ export function TripSuggestion(props) {
 
     async function getLocations() {
       const result = await getArrayLocation(props.profil.access_token, course.locations_list)
-
       setLocations(result);
+      check_open(result)
     }
+
+    /*function test() {
+    if (locations != null) {
+      check_open()
+    }
+  }*/
+
 
     if (!course) {
       getCourse();
@@ -187,13 +196,121 @@ export function TripSuggestion(props) {
     }
   }, [course]);
 
-  const [locations, setLocations] = useState(null);
 
+  const [locations, setLocations] = useState(null);
+  const  [deleteLocation, setDelLocations] = useState(null)
+  let locations_tmp = []
+  let locations_name = []
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [getName, setName] = useState("")
+  const [loading, setLoading] = useState(true)
+
+  function toggleModal() {
+    setModalVisible(!isModalVisible);
+  };
+
+  function getNameFunction() {
+    let name = ""
+    locations_name.forEach((item) => {
+      console.log("\n\ndeleted: ", item )
+      if (name != "") {
+        name += ', ' + item
+      } else {
+      name = item
+      }
+    });
+    let nametmp = "ces lieux sont actuelement fermés :\n" + name + "\nvoulez vous les suprimer ?"
+    setName(nametmp)
+    console.log("\n\ndeleted: ", nametmp )
+    toggleModal()
+    setDelLocations(locations_tmp)
+    /*if (confirm("Do you want to save changes?") == true) {
+      setLocations(locations_tmp)
+    }*/
+  }
 
   const deltaView = {
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
   };
+
+  function check_open(result) {
+    locations_tmp = []
+    result.forEach((item, i) => {
+      const url = `http://${IP_SERVER}:${PORT_SERVER}/location/check_open`
+      fetch(url, {
+        headers: {
+          name: item.name
+        },
+        method: 'GET',
+      })
+        .then((response) => response.json())
+        .then((answer) => {
+          if (!answer.result.candidates[0].opening_hours || answer.result.candidates[0].opening_hours.open_now == true) {
+            locations_tmp.push(item)
+          } else {
+            locations_name.push(item.name)
+          }
+        })
+        .catch((error) => {
+          console.error('error :', error);
+        })
+        .finally(() => {
+          if (i == result.length - 1) {
+            console.log(locations_tmp)
+            getNameFunction()
+          }});
+        })};
+
+  //console.log("stp bb: ", props.CourseSettings.pos);
+
+
+  // récupére le trajet précédent et pasre les nom et envoie les dans mle header
+  async function regenerate_course() {
+    const store = Store.getState();
+    const access_Token = store.profil.access_token;
+    let time = Number(props.CourseSettings.hours) *  60 + Number(props.CourseSettings.minutes);
+    const coordinate = [];
+
+    console.log("previous course: ", store.course.course[0].locations_list);
+    coordinate[0] = props.CourseSettings.pos.latitude;
+    coordinate[1] = props.CourseSettings.pos.longitude;
+
+    console.log("time: ", time);
+    console.log("coordo: ", coordinate);
+    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/generator/generate_course`, {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      access_Token,
+      'time': time,
+      'budget': props.CourseSettings.budget,
+      'tags': props.CourseSettings.tags,
+      'coordinate' : coordinate,
+      'eat' : props.CourseSettings.isEatDrink,
+      'radius' : props.CourseSettings.radius,
+      'placenbr' : props.CourseSettings.placeNbr,
+      'locations_list': store.course.course[0].locations_list
+    },
+    method: 'GET',
+    })
+    .then(res => res.json())
+    .then(json => {
+      console.log("algo done:   ", json);
+      setCourse(json.course);
+      //PopUpReq(pos, json.generated_course);
+      const action = {
+        type: 'ADD_COURSE',
+        value: json.course
+      };
+      Store.dispatch(action);
+      props.profil.scoreCourse = json.generated_course
+      props.profil.first_name = props.CourseSettings.pos
+      props.navigation.navigate("TripSuggestion");
+    }).catch((error) => {
+      console.error('error :', error);
+    });
+  }
 
   return (
     <View style={styles.view_back}>
@@ -221,6 +338,21 @@ export function TripSuggestion(props) {
       <View style={styles.viex_list}>
         <ElementHistoryNav course={course} locations={locations}/>
       </View>
+      <View>
+        <Modal isVisible={isModalVisible}>
+          <View>
+            <Button title={getName} color="#BB7859"/>
+            <Button title="Oui, suprimez les" onPress={() => {
+              console.log(deleteLocation)
+              setLocations(deleteLocation)
+              toggleModal()
+            }} />
+            <Button title="Non, gardez les" onPress={() => {
+              toggleModal()
+            }} />
+          </View>
+        </Modal>
+      </View>
       <TouchableOpacity
         style={styles.view_button}
         onPress={() => {
@@ -236,117 +368,17 @@ export function TripSuggestion(props) {
           // props.navigation.navigate('TripNavigation');
         }}
       >
-        <Text style={styles.text_button}>Let's Go !</Text>
+        <Text style={styles.text_button}>Lets Go !</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.view_button}
+        onPress={() => {
+          regenerate_course()
+        }}
+      >
+        <Text style={styles.text_button}>New Trip</Text>
       </TouchableOpacity>
     </View>
-
-    // <View style={styles.view_back}>
-    //   <View style={styles.view_header}>
-    //     <TouchableOpacity onPress={() => props.navigation.dispatch(DrawerActions.openDrawer())}>
-    //       <Image style={styles.img_header} source={require('../images/icons/black/menu.png')}/>
-    //     </TouchableOpacity>
-    //     <Text style={styles.text_header}>
-    //       {I18n.t('Header.new_trip')}
-    //       {'    '}
-    //     </Text>
-    //   </View>
-    //   <View style={styles.fill}>
-    //     <View style={{
-    //       justifyContent: 'space-around',
-    //       marginTop: 10,
-    //       paddingLeft: 5,
-    //       paddingBottom: 10,
-    //       backgroundColor: '#FFFFFF',
-    //       borderRadius: 5,
-    //       borderColor: '#BABABA',
-    //       borderWidth: 1,
-    //       width: '95%'
-    //     }}
-    //     >
-    //       <Text style={[{ fontSize: 20, opacity: 0.5, margin: 5 }]}>{I18n.t('TripSuggestion.headingTo')}</Text>
-    //       <Text style={[{
-    //         textAlign: 'center', fontSize: 22, fontWeight: 'bold', color: '#F07323'
-    //       }]}
-    //       >
-    //         {course ? course.name: ""}
-    //       </Text>
-    //     </View>
-    //     <View
-    //       style={{
-    //         flex: 3,
-    //         marginTop: 15,
-    //         justifyContent: 'space-around',
-    //         paddingLeft: 5,
-    //         backgroundColor: '#FFFFFF',
-    //         borderRadius: 5,
-    //         borderColor: '#BABABA',
-    //         borderWidth: 1,
-    //         width: '95%'
-    //       }}
-    //     >
-    //       <ElementHistoryNav course={course} locations={locations}/>
-    //     </View>
-    //     <View style={{
-    //       flex: 0.4,
-    //       flexDirection: 'row',
-    //       justifyContent: 'space-around',
-    //       alignItems: 'center',
-    //       padding: 10,
-    //     }}
-    //     >
-    //       <View style={{ flex: 1, paddingTop: 10, marginRight: 10 }}>
-    //         <Button
-    //           title="Another One!"
-    //           color="#89B3D9"
-    //           onPress={() => {
-    //             Tts.stop();
-    //             getCustomCourse(props.profil.access_token, setCourse);
-    //             //setCourse(getNavigation());
-    //           }}
-    //         />
-    //       </View>
-    //       <View style={{ flex: 1, paddingTop: 10, marginRight: 10 }}>
-    //         <Button
-    //           title="Let's go!"
-    //           color="#F07323"
-    //           onPress={() => {
-    //             const action = { type: 'SET_WAYPOINTS', course: course, locations: locations };
-    //             props.dispatch(action);
-    //             props.navigation.navigate('TripNavigation');
-    //           }}
-    //         />
-    //         <ButtonSwitch
-    //           iconOn={require('../images/volume.png')}
-    //           iconOff={require('../images/no-sound.png')}
-    //           statue={props.profil.sound}
-    //           onPressOff={() => {
-    //             Tts.stop();
-    //             const action = { type: 'SET_SOUND', value: !props.profil.sound };
-    //             props.dispatch(action);
-    //           }}
-    //           onPressOn={() => {
-    //             Tts.stop();
-    //             const action = { type: 'SET_SOUND', value: !props.profil.sound };
-    //             props.dispatch(action);
-    //           }}
-
-    //         />
-    //       </View>
-    //     </View>
-    //   </View>
-    //   <TouchableOpacity
-    //     style={styles.view_button}
-    //     onPress={() => {
-    //       const action = { type: 'SET_WAYPOINTS', value: waypoints };
-    //       props.dispatch(action);
-    //       props.navigation.navigate('TripNavigation');
-    //     }}
-    //   >
-    //     <Text style={styles.text_button}>
-    //       {I18n.t('TripSuggestion.lets_go')}
-    //     </Text>
-    //   </TouchableOpacity>
-    // </View>
   );
 }
 

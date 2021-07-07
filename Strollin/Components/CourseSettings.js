@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  StyleSheet, View, Image, Text, TouchableOpacity, TextInput,
+  StyleSheet, View, ScrollView, Image, Text, TouchableOpacity, TextInput,
 } from 'react-native';
 import Stars from 'react-native-stars';
 import { connect } from 'react-redux';
@@ -43,7 +43,7 @@ async function PopUpReq(pos, course) {
 
 
 
-async function getUserTags(pos, budget, hours, minutes, props, eat) {
+async function getUserTags(pos, budget, hours, minutes, props, eat, radius, placeNbr) {
   const store = Store.getState();
   const access_Token = store.profil.access_token;
   console.log("token: ", access_Token);
@@ -60,15 +60,16 @@ async function getUserTags(pos, budget, hours, minutes, props, eat) {
     console.log("ici ?: ", json);
     console.log("########", json.profile.tags_list);
     console.log("mail: ", json.profile.mail);
-    test(pos, budget, hours, minutes, json.profile.tags_list, props, eat);
+    test(pos, budget, hours, minutes, json.profile.tags_list, props, eat, radius, placeNbr);
   });
 }
 
-async function test(pos, budget, hours, minutes, tags, props, eat) {
+async function test(pos, budget, hours, minutes, tags, props, eat, radius, placeNbr) {
   const store = Store.getState();
   const access_Token = store.profil.access_token;
   const time = hours * 60 + minutes;
   const coordinate = [];
+  var action = {};
 
   coordinate[0] = pos.latitude;
   coordinate[1] = pos.longitude;
@@ -76,6 +77,49 @@ async function test(pos, budget, hours, minutes, tags, props, eat) {
   console.log("pos: ", pos);
   console.log("budget: ", budget);
   console.log("tags: ", tags);
+  console.log("radius: ", radius);
+  console.log("placeNbr: ", placeNbr);
+
+  action = {
+    type: 'ADD_POS',
+    value: pos
+  };
+  Store.dispatch(action);
+  action = {
+    type: 'ADD_BUDGET',
+    value: budget
+  };
+  Store.dispatch(action);
+  action = {
+    type: 'ADD_HOURS',
+    value: hours
+  };
+  Store.dispatch(action);
+  action = {
+    type: 'ADD_MINUTES',
+    value: minutes
+  };
+  Store.dispatch(action);
+  action = {
+    type: 'ADD_EAT',
+    value: eat
+  };
+  Store.dispatch(action);
+  action = {
+    type: 'ADD_RADIUS',
+    value: radius
+  };
+  Store.dispatch(action);
+  action = {
+    type: 'ADD_PLACENBR',
+    value: placeNbr
+  };
+  Store.dispatch(action);
+  action = {
+    type: 'ADD_TAGS',
+    value: tags
+  };
+  Store.dispatch(action);
 
   await fetch(`http://${IP_SERVER}:${PORT_SERVER}/generator/generate_course`, {
   headers: {
@@ -86,7 +130,9 @@ async function test(pos, budget, hours, minutes, tags, props, eat) {
     'budget': budget,
     'tags': tags,
     'coordinate' : coordinate,
-    'eat' : eat
+    'eat' : eat,
+    'radius' : radius,
+    'placenbr' : placeNbr
   },
   method: 'GET',
   })
@@ -94,9 +140,14 @@ async function test(pos, budget, hours, minutes, tags, props, eat) {
   .then(json => {
     console.log("algo done:   ", json);
     //PopUpReq(pos, json.generated_course);
-    const action = {
+    action = {
       type: 'ADD_COURSE',
       value: json.course
+    };
+    Store.dispatch(action);
+    action = {
+      type: 'ADD_COURSE_LOCATIONS',
+      value: json.generate_course
     };
     Store.dispatch(action);
     props.profil.scoreCourse = json.generated_course
@@ -113,11 +164,13 @@ function Back(props) {
 }
 
 export function CourseSettings(props) {
-  const [hours, setHours] = useState('0');
-  const [minutes, setMinutes] = useState('0');
-  const [budget, setBudget] = useState('0');
+  const [hours, setHours] = useState('2');
+  const [minutes, setMinutes] = useState('30');
+  const [budget, setBudget] = useState('20');
   const [pos, setPos] = useState('0');
   const [isEatDrink, setEatDring] = useState(false);
+  const [radius, setRadius] = useState('3');
+  const [placeNbr, setPlaceNbr] = useState('10');
 
   function Switch() {
 
@@ -175,6 +228,7 @@ export function CourseSettings(props) {
           <View style={styles.view_separator} />
           <View style={styles.view_optionInput}>
             <TextInput
+              autoCapitalize={'none'}
               style={styles.textInput_optionInput}
               keyboardType="numeric"
               onChangeText={(text) => setBudget(text)}
@@ -193,6 +247,7 @@ export function CourseSettings(props) {
           <View style={styles.view_separator} />
           <View style={styles.view_optionInput}>
             <TextInput
+          autoCapitalize={'none'}
               style={styles.textInput_optionInput}
               keyboardType="numeric"
               onChangeText={(text) => setHours(text)}
@@ -205,6 +260,7 @@ export function CourseSettings(props) {
           </View>
           <View style={styles.view_optionInput}>
             <TextInput
+          autoCapitalize={'none'}
               style={styles.textInput_optionInput}
               keyboardType="numeric"
               onChangeText={(text) => setMinutes(text)}
@@ -213,6 +269,42 @@ export function CourseSettings(props) {
             />
             <Text style={styles.text_optionInput}>
               Minute(s)
+            </Text>
+          </View>
+        </View>
+        <View style={styles.view_option}>
+          <Text style={styles.text_option}>
+            Distance
+          </Text>
+          <View style={styles.view_separator} />
+          <View style={styles.view_optionInput}>
+            <TextInput
+              style={styles.textInput_optionInput}
+              keyboardType="numeric"
+              onChangeText={(text) => setRadius(text)}
+              value={radius}
+              maxLength={6}
+            />
+            <Text style={styles.text_optionInput}>
+              Km
+            </Text>
+          </View>
+        </View>
+        <View style={styles.view_option}>
+          <Text style={styles.text_option}>
+            Nombre de lieux max
+          </Text>
+          <View style={styles.view_separator} />
+          <View style={styles.view_optionInput}>
+            <TextInput
+              style={styles.textInput_optionInput}
+              keyboardType="numeric"
+              onChangeText={(text) => setPlaceNbr(text)}
+              value={placeNbr}
+              maxLength={6}
+            />
+            <Text style={styles.text_optionInput}>
+              Lieux
             </Text>
           </View>
         </View>
@@ -233,7 +325,7 @@ export function CourseSettings(props) {
         id="test"
         style={styles.view_newTrip}
         onPress={() => {
-          getUserTags(pos, budget, hours, minutes, props, isEatDrink);
+          getUserTags(pos, budget, hours, minutes, props, isEatDrink, radius, placeNbr);
         }}
       >
         <Text style={styles.text_newTrip}>
@@ -241,74 +333,6 @@ export function CourseSettings(props) {
         </Text>
       </TouchableOpacity>
     </View>
-    // <View style={styles.container}>
-    //   <View>
-    //     <Text style={{ textAlign: 'center', fontSize: 40 }}> {"Select your options!\n\n"} </Text>
-    //   </View>
-    //   <Text style={{ fontSize: 25  }}> {"Select your budget:"} </Text>
-    //   <View style={styles.container}>
-    //     <View style={{flexDirection: 'row', alignItems: 'center'}}>
-    //       <TextInput
-    //          style={styles.budgetInput}
-    //          keyboardType='numeric'
-    //          onChangeText={(text)=> setBudget(text)}
-    //          value={budget}
-    //          maxLength={6}  //setting limit of input
-    //       />
-    //       <Text style={{ fontSize: 25 }}> € </Text>
-    //     </View>
-    //     <Text> {} </Text>
-    //     <Text style={{ fontSize: 25 }}> {"Select your spending time:"} </Text>
-
-    //     <View style={{flexDirection: 'row', alignItems: 'center'}}>
-    //       <TextInput
-    //          style={styles.timeInput}
-    //          keyboardType='numeric'
-    //          onChangeText={(text)=> setHours(text)}
-    //          value={hours}
-    //          maxLength={2}  //setting limit of input
-    //       />
-    //       <Text style={{ fontSize: 25 }}> Hour(s) </Text>
-    //       <TextInput
-    //          style={styles.timeInput}
-    //          keyboardType='numeric'
-    //          onChangeText={(text)=> setMinutes(text)}
-    //          value={minutes}
-    //          maxLength={2}  //setting limit of input
-    //       />
-    //       <Text style={{ fontSize: 25 }}> Minute(s) </Text>
-    //     </View>
-    //   </View>
-
-    //   <Text> {"\n"} </Text>
-    //   <View>
-    //     <TouchableOpacity
-    //       id={'test'}
-    //       style={styles.newTrip}
-    //       onPress={() => {
-    //         getUserTags(pos, budget, hours, minutes);
-    //       }}
-    //     >
-    //       <Text style={{ fontSize: 16, color: '#FFFFFF' }}>
-    //         Go!
-    //       </Text>
-    //     </TouchableOpacity>
-    //   </View>
-    //   <Text>{"\n"}</Text>
-    //   <View>
-    //     <TouchableOpacity
-    //       id={'test'}
-    //       style={styles.newTrip}
-    //       onPress={() => {
-    //         Back(props);
-    //       }}
-    //     >
-    //       <Text style={{ fontSize: 16, color: '#FFFFFF' }}>
-    //         Back
-    //       </Text>
-    //     </TouchableOpacity>
-    //   </View>
-    // </View>
   );
 }
 

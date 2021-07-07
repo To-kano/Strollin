@@ -48,6 +48,7 @@ async function profileUser(props, access_token) {
         const action = { type: 'SET_USER', value: answer.profile };
         props.dispatch(action);
         setFriendPseudo(props, access_token, answer.profile);
+        await setFavorites(props, access_token);
         await setTendance(props, access_token);
       } else {
         //console.log(answer.status);
@@ -111,6 +112,25 @@ async function setTendance(props, access_token) {
 }
 
 exports.messageUser = setTendance;
+
+async function setFavorites(props, access_token) {
+  await fetch(`http://${IP_SERVER}:${PORT_SERVER}/course/get_course`, {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      access_token: access_token,
+      sort: 'favorites',
+    },
+    method: 'GET',
+  }).then((answer) => answer.json())
+  .then(async function (answer) {
+    const action = { type: "SET_FAVORITES_LIST", value: answer["courses_list"] }
+    props.dispatch(action);
+    return answer;
+  })
+}
+
+exports.messageUser = setFavorites;
 
 async function setCourseHistoric(props, access_token) {
   fetch(`http://${IP_SERVER}:${PORT_SERVER}/course/get_user_historic`, {
@@ -210,6 +230,7 @@ async function registerUser(props, newPseudo, newPassword, newMail, setMessage, 
       //console.log(" answer = " , answer);
       if (answer.access_token) {
         await profileUser(props, answer.access_token);
+        await setFavorites(props, answer.access_token);
         await setTendance(props, answer.access_token);
         const action = { type: 'CONNECTION', value: answer.access_token };
         props.dispatch(action);

@@ -81,6 +81,18 @@ export function UserRegister(props) {
   //}
   return (
     <View style={styles.view_back}>
+      <View style={styles.view_topButton}>
+          <TouchableOpacity
+            style={styles.button_partner}
+            onPress={() => {
+              props.navigation.navigate('PartnerRegister');
+            }}
+          >
+            <Text style={styles.text_partner}>
+              {I18n.t('UserRegister.PartnerPage')}
+            </Text>
+          </TouchableOpacity>
+        </View>
       <View style={styles.view_logo}>
         <Image style={styles.img_logo} source={require('../images/Logo.png')} />
       </View>
@@ -182,18 +194,6 @@ export function UserRegister(props) {
             onLogoutFinished={() => setUserInfo({})}
           />
         </View>
-        <View style={styles.view_bottomButton}>
-          <TouchableOpacity
-            style={styles.button_logIn}
-            onPress={() => {
-              props.navigation.navigate('PartnerRegister');
-            }}
-          >
-            <Text style={styles.text_logIn}>
-              {I18n.t('UserRegister.PartnerPage')}
-            </Text>
-          </TouchableOpacity>
-        </View>
       </View>
     </View>
   );
@@ -210,6 +210,11 @@ const styles = StyleSheet.create({
     paddingLeft: '7.5%',
     paddingRight: '7.5%',
     paddingBottom: '10%',
+  },
+  view_topButton: {
+    position: 'absolute',
+    top: 12,
+    right: 10,
   },
   view_logo: {
     flex: 20,
@@ -278,6 +283,20 @@ const styles = StyleSheet.create({
   button_logIn: {
     marginTop: 30,
     width: '100%',
+  },
+  text_partner: {
+    width: '100%',
+    borderRadius: 100,
+    paddingVertical: 4,
+    paddingTop: 6,
+    paddingHorizontal: 10,
+    borderColor: '#000',
+    borderWidth: 2,
+    fontSize: 12,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: '#000',
+    // backgroundColor: '#0092A7',
   },
   text_logIn: {
     width: '100%',

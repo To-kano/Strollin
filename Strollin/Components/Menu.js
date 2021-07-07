@@ -36,7 +36,7 @@ function Menu(props) {
           <TouchableOpacity
             onPress={() => {
               profileUser(props, store.profil.access_token);
-              props.navigation.navigate(props.state.routeNames[0]);
+              props.navigation.navigate(props.state.routeNames[0], { screen: 'HomePage' });
             }}
             style={[styles.view_navigationIn, props.state.index == 0 ? styles.current_page : {}]}
           >
@@ -105,6 +105,16 @@ function Menu(props) {
             <Text style={styles.text_navigationIn}>{props.state.routeNames[7]}</Text>
           </TouchableOpacity>
           <TouchableOpacity
+            onPress={() => {
+              profileUser(props, store.profil.access_token);
+              props.navigation.navigate(props.state.routeNames[8]);
+            }}
+            style={[styles.view_navigationIn, props.state.index == 8 ? styles.current_page : {}]}
+          >
+            <Image style={styles.img_navigationIn} source={require('../images/empty_star.png')} />
+            <Text style={styles.text_navigationIn}>{props.state.routeNames[8]}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
             onPress={() => props.navigation.navigate('Personal_trip')}
             style={[styles.view_navigationIn, props.name == 'Personal_trip' ? styles.current_page : {}]}
           >
@@ -143,7 +153,7 @@ function Menu(props) {
         style={{
           flex: 1,
           width: 30,
-          backgroundColor: 'white'
+          backgroundColor:'white' // si il y a pas ça alors la gesture ne marche pas
         }}
       />
     </View>

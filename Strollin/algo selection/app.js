@@ -1,13 +1,65 @@
 
 const express = require('express')
 const app = express()
-const port = 3000
+const port = 4000
 const readline = require('readline');
+const fetch = require('node-fetch');
 
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout
 });
+
+const test = {
+   "tags_array": [
+      "amusement_park",
+      "aquarium",
+      "art_gallery",
+      "bakery",
+      "bar",
+      "beauty_salon",
+      "bicycle_store",
+      "book_store",
+      "bowling_alley",
+      "cafe",
+      "campground",
+      "casino",
+      "church",
+      "city_hall",
+      "clothing_store",
+      "convenience_store",
+      "department_store",
+      "drugstore",
+      "electronics_store",
+      "florist",
+      "furniture_store",
+      "gym",
+      "hardware_store",
+      "hindu_temple",
+      "home_goods_store",
+      "jewelry_store",
+      "library",
+      "liquor_store",
+      "meal_takeaway",
+      "mosque",
+      "movie_rental",
+      "movie_theater",
+      "museum",
+      "night_club",
+      "painter",
+      "park",
+      "pet_store",
+      "restaurant",
+      "shoe_store",
+      "shopping_mall",
+      "spa",
+      "store",
+      "supermarket",
+      "synagogue",
+      "tourist_attraction",
+      "zoo"
+   ]
+}
 
 
 const user = [
@@ -266,6 +318,82 @@ function finish(userSelect) {
 
 }
 
+async function placeCall(url) {
+  const result = fetch(url, {
+    method: 'GET',
+  })
+    .then((response) => response.json())
+    .then(function (answer){
+      return answer
+    })
+    .catch((error) => {
+      console.error('error :', error);
+    });
+    return result
+}
+
+async function callApi(url, json) {
+  console.log("\n\n\n")
+  let token = null
+  let url_tmp = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=AIzaSyD6AVcufnom-RKQJeG8tlxAWhAOKor0-uo"
+
+  //console.log("\n\n url : \n", url, "$$$\n\n")
+  await placeCall(url).then((response) => {
+    //console.log("\n\n aled \n\n", response, "\n\n")
+    json.push(response.results)
+    if (response.next_page_token) {
+      token = response.next_page_token
+      url_tmp = url_tmp + "&pagetoken=" +  token
+      setTimeout(async () => {
+        json = await callApi(url_tmp, json)
+      }, 2000)
+    }
+    //console.log("\n token \n", token, "$$$\n\n")
+    //console.log("\n\n done \n\n")
+  }).then(() => {
+    console.log("\n\nresponse\n\n", json)
+    return (json)
+  })
+}
+
+async function begin2(value) {
+  let json = []
+    let token = null
+    let url = ""
+
+    let url_tmp = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=AIzaSyD6AVcufnom-RKQJeG8tlxAWhAOKor0-uo&location=48.8650988,2.1931007&radius=10000&keyword=" + value
+    /*do {
+      if (token != null) {
+        url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=AIzaSyD6AVcufnom-RKQJeG8tlxAWhAOKor0-uo&pagetoken=" +  token
+      }
+      else {
+        url = url_tmp
+      }
+      token = null
+      console.log("\n\n url : \n", url, "$$$\n\n")
+      await placeCall(url).then((response) => {
+        console.log("\n\n aled \n\n", response, "\n\n")
+        json.push(response.results)
+        if (response.next_page_token) {
+          token = response.next_page_token
+        }
+        console.log("\n token \n", token, "$$$\n\n")
+        console.log("\n\n done \n\n")
+      })
+    } while (token != null)*/
+    await callApi(url_tmp, json).then((response) => {
+      if (response) {
+          return
+      }
+      console.log("ok")
+    })
+    //console.log(json)
+}
+
 app.listen(port, () => {
-    begin()
+  test.tags_array.forEach((item) => {
+    begin2(item)
+  });
+
+    //begin()
 })

@@ -63,7 +63,6 @@ function Socket({children, profil, dispatch}) {
       socket.on('newConversation', (data) => {
         const store = Store.getState();
 
-
         const action = { type: 'ADD_CONVERSATION', value: data };
         Store.dispatch(action);
         const action2 = { type: 'RESET_PARTICIPANT_OF_CONVERSATION'};

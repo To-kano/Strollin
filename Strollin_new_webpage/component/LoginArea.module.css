@@ -1,0 +1,40 @@
+.backgroundCard {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    border-radius: 1.85vh;
+    background: linear-gradient( rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6) ), url("../public/background/BackgroundCard.jpg");
+    background-position:center top;
+    background-size: cover;
+    width: 80vw;
+    height: 75vh;
+    box-shadow: 0 0 2.3vh #00000050;
+    color: #ffffff;
+}
+
+.leftCard {
+    position: absolute;
+    left: 3vw;
+    bottom: 6vh;
+    width: 35%;
+    text-align: left;
+}
+.downloadCard {
+    font-weight: bold;
+    background-color: #FAC402;
+    color: #000000;
+    border-radius: 50px;
+    padding: 1.4vh 1.6vw;
+    font-size: 2.5vh;
+}
+.downloadCard:hover {
+    background-color: #ffffff;
+}
+
+.rightCard {
+    width: 25%;
+    position: absolute;
+    right: 3vw;
+    bottom: 11vh;
+    text-align: left;
+}

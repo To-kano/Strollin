@@ -77,6 +77,18 @@ export function UserRegister(props) {
   //}
   return (
     <View style={styles.view_back}>
+      <View style={styles.view_topButton}>
+          <TouchableOpacity
+            style={styles.button_partner}
+            onPress={() => {
+              props.navigation.navigate('userRegister');
+            }}
+          >
+            <Text style={styles.text_partner}>
+              {"Return at Regular Account"}
+            </Text>
+          </TouchableOpacity>
+        </View>
       <View style={styles.view_logo}>
         <Image style={styles.img_logo} source={require('../images/Logo.png')} />
       </View>
@@ -159,18 +171,6 @@ export function UserRegister(props) {
             {I18n.t('UserRegister.SIGNUP')}
           </Text>
         </TouchableOpacity>
-        <View style={styles.view_bottomButton}>
-        <TouchableOpacity
-          style={styles.button_logIn}
-          onPress={() => {
-            props.navigation.navigate('userRegister');
-          }}
-        >
-          <Text style={styles.text_logIn}>
-            {"REGULAR ACCOUNT"}
-          </Text>
-        </TouchableOpacity>
-        </View>
       </View>
     </View>
   );
@@ -187,6 +187,11 @@ const styles = StyleSheet.create({
     paddingLeft: '7.5%',
     paddingRight: '7.5%',
     paddingBottom: '10%',
+  },
+  view_topButton: {
+    position: 'absolute',
+    top: 12,
+    right: 10,
   },
   view_logo: {
     flex: 20,
@@ -265,6 +270,20 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#FFFFFF',
     backgroundColor: '#0092A7',
+  },
+  text_partner: {
+    width: '100%',
+    borderRadius: 100,
+    paddingVertical: 4,
+    paddingTop: 6,
+    paddingHorizontal: 10,
+    borderColor: '#000',
+    borderWidth: 2,
+    fontSize: 12,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: '#000',
+    // backgroundColor: '#0092A7',
   },
   text_or: {
     marginTop: 9,
