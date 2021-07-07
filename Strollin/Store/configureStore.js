@@ -13,6 +13,7 @@ import courseReducer from './Reducers/courseReducer';
 import locationReducer from './Reducers/locationReducer';
 import favoritesReducer from './Reducers/favoritesReducer';
 import commentReducer from './Reducers/commentReducer';
+import CourseSettingsReducer from './Reducers/CourseSettingsReducer';
 
 const rootReducer = combineReducers({
   profil: profileReducer,
@@ -28,7 +29,8 @@ const rootReducer = combineReducers({
   course: courseReducer,
   location: locationReducer,
   favorites: favoritesReducer,
-  comment: commentReducer
+  comment: commentReducer,
+  CourseSettings: CourseSettingsReducer
 });
 
 export default createStore(rootReducer);
