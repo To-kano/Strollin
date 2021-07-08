@@ -2,13 +2,13 @@ import React, { useEffect, useState, useContext} from 'react';
 import { connect } from 'react-redux';
 import { StyleSheet, TextInput, View } from 'react-native';
 import socketIOClient from 'socket.io-client';
-import { createContext } from "react"; 
+import { createContext } from "react";
 import Store from '../Store/configureStore';
 import profileReducer from '../Store/Reducers/profileReducer';
+import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 
-const SocketContext = createContext(); 
-const ENDPOINT = 'http://88.165.45.219:3000';//3003 pour Tony
-
+const SocketContext = createContext();
+const ENDPOINT = `http://${IP_SERVER}:${PORT_SERVER}`;//3000 pour Tony
 import AsyncStorage from '@react-native-community/async-storage';
 
 
@@ -35,7 +35,7 @@ function Socket({children, profil, dispatch}) {
 
   if (socket == null) {
     setSocket(socketIOClient(ENDPOINT));
-  } 
+  }
 
   if (!profil.access_token) {
     getProfilCache(dispatch);
@@ -45,14 +45,14 @@ function Socket({children, profil, dispatch}) {
   useEffect(() => {
     if (socket != null) {
       socket.on('receiveMessage', (data) => {
-      //console.log("received " + data);
-      
+      console.log("received msg" + JSON.stringify(data));
+
       const action = { type: 'ADD_MESSAGE', value: data };
       Store.dispatch(action);
 
-      const action2 = { 
+      const action2 = {
         type: 'ADD_MESSAGE_ID',
-        value: { _id: data.conversation, message_id : data._id}
+        value: { id: data.conversation, message_id : data.id}
       };
       Store.dispatch(action2);
 
@@ -63,8 +63,6 @@ function Socket({children, profil, dispatch}) {
       socket.on('newConversation', (data) => {
         const store = Store.getState();
 
-
-        console.log("newconv received!");
         const action = { type: 'ADD_CONVERSATION', value: data };
         Store.dispatch(action);
         const action2 = { type: 'RESET_PARTICIPANT_OF_CONVERSATION'};
@@ -86,16 +84,30 @@ function Socket({children, profil, dispatch}) {
 
   const sendMessage = (message) => {
     //console.log('sending message ', message);
-  
-    
-    socket.emit('sendMessage', { access_token: store.profil.access_token, 
+
+
+    socket.emit('sendMessage', { access_token: store.profil.access_token,
       conversation: store.conversation.currentConversation, type: "message", message: message});
+  };
+
+  const sendImage = (image) => {
+    console.log('sending image', image);
+
+    socket.emit('sendMessage', { access_token: store.profil.access_token,
+      conversation: store.conversation.currentConversation, type: "image", message: image});
+  };
+
+  const sendCourse = (courseId) => {
+    console.log('sending course', courseId);
+
+    socket.emit('sendMessage', { access_token: store.profil.access_token,
+      conversation: store.conversation.currentConversation, type: "course", message: courseId});
   };
 
   const createConversation = (participantsID) => {
     console.log('creating conversation', participantsID);
     let convName = store.profil.pseudo;
-  
+
     for (let i in participantsID) {
       let tmp = ", " + store.profil.friends_pseudo_list[participantsID[i]];
       convName += tmp;
@@ -105,7 +117,7 @@ function Socket({children, profil, dispatch}) {
   };
 
   return (
-    <SocketContext.Provider value={{ socket, sendMessage, createConversation }}>
+    <SocketContext.Provider value={{ socket, sendMessage, createConversation, sendImage, sendCourse }}>
       {children}
     </SocketContext.Provider>
   );

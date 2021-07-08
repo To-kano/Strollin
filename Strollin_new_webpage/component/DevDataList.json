@@ -1,0 +1,32 @@
+{
+    "Dev1" : {
+        "name" : "Tony YE",
+        "description" : "Project Manager - Developer",
+        "image": "./profil/Example_pp.jpg"
+    },
+    "Dev2" : {
+        "name" : "Basile SAMSON",
+        "description" : "Front-End Developer",
+        "image": "./profil/Example_pp.jpg"
+    },
+    "Dev3" : {
+        "name" : "Thomas VIGIER",
+        "description" : "Developer",
+        "image": "./profil/Example_pp.jpg"
+    },
+    "Dev4" : {
+        "name" : "Didier CHENG",
+        "description" : "Developer",
+        "image": "./profil/Example_pp.jpg"
+    },
+    "Dev5" : {
+        "name" : "Pierre ANTOINE",
+        "description" : "Developer",
+        "image": "./profil/Example_pp.jpg"
+    },
+    "Dev6" : {
+        "name" : "Hugo LACOUR",
+        "description" : "Developer",
+        "image": "./profil/Example_pp.jpg"
+    }
+}

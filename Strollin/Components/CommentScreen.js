@@ -1,59 +1,137 @@
-import React from 'react';
 import {
-  StyleSheet, View, FlatList, Text
+  StyleSheet, View, FlatList, Text, TouchableOpacity, Image
 } from 'react-native';
 import Comment from './Comment';
+import { connect } from 'react-redux';
+import Store from '../Store/configureStore';
+import I18n from '../Translation/configureTrans';
+import { IP_SERVER, PORT_SERVER } from '../env/Environement';
+import { StackActions } from '@react-navigation/native';
+import React, {useState} from 'react';
+
+async function getCommentList(props, setCommentList, store) {
+  await fetch(`http://${IP_SERVER}:${PORT_SERVER}/comment/get_comment_by_id`, {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      access_token: store.profil.access_token,
+      comments_list: store.comment.selectedCourse.comments_list
+    },
+    method: 'GET',
+  }).then((answer) => answer.json())
+  .then(async function (answer) {
+    setCommentList(answer["comments_list"])
+    console.log("comment = ", store.comment.selectedCourse.comments_list)
+  })
+  .catch((error) => {
+    console.error('error :', error);
+  });
+
+}
+
+export function Header(props) {
+
+  return (
+    <View style={styles.view_header}>
+      <TouchableOpacity
+        onPress={() => props.navigation.goBack()}
+      >
+        <Image style={styles.img_header} source={require('../images/icons/black/return.png')} />
+      </TouchableOpacity>
+      <Text style={styles.text_header}>
+        {I18n.t('Header.comment')}
+      </Text>
+      <TouchableOpacity
+         onPress={() => {
+          const action = {
+            type: 'ADD_COURSE',
+            value: props.store.comment.selectedCourse
+          };
+          Store.dispatch(action);
+          console.log("course = ", props.store.comment.selectedCommentCourse);
+
+          const popAction = StackActions.pop(5);
+
+          props.navigation.dispatch(popAction);
+
+          props.navigation.navigate('New trip',{
+            screen: 'TripSuggestion',
+           }
+          )
+        }}
+      >
+        <Image style={styles.img_header} source={require('../images/icons/black/next_trip.png')} />
+      </TouchableOpacity>
+    </View>
+  );
+}
 
 function CommentScreen(props) {
-  //console.log("props = ", props.navigation.setParams);
-  const DATA = require('./test.json');
+  const store = Store.getState();
+  const [commentList, setCommentList] = useState(null);
+
+  if (!commentList) {
+    getCommentList(props, setCommentList, store);
+  }
+  //const DATA = require('./test.json');
   return (
-    <View style={styles.container}>
-      <View>
-        <Text style={{ textAlign: 'center', fontSize: 40 }}> {} </Text>
+    <View style={styles.view_back}>
+      <Header store={store} navigation={props.navigation} />
+      <View style={styles.view_list}>
         <FlatList
-          data={DATA}
+          data={commentList}
           contentContainerStyle={{ flexGrow: 0.1 }}
-          renderItem={({ item }) => <Comment id={item.id} comment={item.comment} note={item.note} pseudo={item.pseudo} />}
-          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => <Comment id={item["author_pseudo"]} comment={item["message"]} note={item["score"]} pseudo={item.pseudo} />}
+          keyExtractor={(item) => String(item.id)}
         />
       </View>
     </View>
   );
 }
 
-export default CommentScreen;
+const mapStateToProps = (state) => state;
+export default connect(mapStateToProps)(CommentScreen);
 
 const styles = StyleSheet.create({
-  back: {
+  view_back: {
+    flex: 1,
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    flex: 1
+    backgroundColor: '#E1E2E7',
+    paddingTop: '1.8%',
+    paddingLeft: '3.3%',
+    paddingRight: '3.3%',
+    paddingBottom: '0%',
   },
-  fill: {
+  view_header: {
+    flex: 50,
     flexDirection: 'row',
-    justifyContent: 'flex-start',
     alignItems: 'center',
-    flex: 0.9,
+    marginBottom: 10,
+  },
+  textInput_header: {
+    height: 40,
+    width: '85%',
+    borderRadius: 21,
+    marginRight: 12.5,
+    paddingLeft: 12.5,
+    backgroundColor: '#FFFFFF',
+  },
+  img_header: {
+    width: 34,
+    resizeMode: 'contain',
+  },
+  text_header: {
+    width: '77.8%',
+    fontWeight: 'bold',
+    fontSize: 28,
+    letterSpacing: 2,
+    textAlign: 'center',
+    color: '#000000',
+  },
+  view_list: {
+    flex: 757,
     width: '100%',
-  },
-  header: {
-    backgroundColor: '#E67E22',
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    flex: 0.1,
-    width: '100%',
-  },
-  cont: {
-    marginTop: '5%',
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    flex: 0.1,
-    backgroundColor: '#FFC300',
-    width: '90%',
-    borderRadius: 20
-  },
+  }
 });

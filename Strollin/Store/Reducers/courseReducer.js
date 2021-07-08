@@ -17,26 +17,40 @@ const EXEMPLE = {
 
 const initialState = {
   course: [],
-  currentcourse: {}
+  currentCourse: [],
+  courseObjectHistoric: []
 };
 
 function CourseReducer(state = initialState, action) {
   let nextState;
   // //console.log("\n\ngalleryReducer:\n")
   // //console.log(action)
-  switch (action.type) {
-    case 'ADD_course':
+  switch (action.type) { 
+    case 'ADD_COURSE':
       nextState = {
         ...state,
-        course: [...state.course, action.value]
+        course: [action.value, ...state.course]
+        //course: action.value
       };
-      return nextState;
-    case 'SET_CURRENT_COMMENT':
+        return nextState;
+    case 'SET_CURRENT_COURSE':
       nextState = {
         ...state,
-        currentcourse: action.value
+        currentCourse: action.value
       };
       return nextState;
+    case 'ADD_COURSE_OBJECT_HISTORIC':
+      nextState = {
+        ...state,
+        courseObjectHistoric: [action.value, ...state.courseObjectHistoric]
+      };
+        return nextState;
+    case 'SET_COURSE_OBJECT_HISTORIC':
+      nextState = {
+        ...state,
+        courseObjectHistoric: action.value
+      };
+        return nextState;
     default:
       return state;
   }

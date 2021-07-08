@@ -14,7 +14,8 @@ const initialState = {
   scoreCourse: [],
   scoreLocation: [],
   scoreComment: [],
-  sound: true
+  sound: true,
+  course_historic: []
 };
 
 const storeProfile = async (value) => {
@@ -35,7 +36,7 @@ function profileReducer(state = initialState, action) {
         ...state,
         access_token: action.value
       };
-       //console.log("profile reducer connection", nextState);
+      //console.log("profile reducer connection", nextState);
       return nextState;
 
     case 'DECONNECTION':
@@ -47,14 +48,14 @@ function profileReducer(state = initialState, action) {
         ...state,
         ...action.value
       };
-       //console.log("profile reducer set user", nextState);
+      //console.log("profile reducer set user", nextState);
       //storeProfile(nextState);
       return nextState;
 
     case 'ADD_HISTORY':
       nextState = {
         ...state,
-        history: state.history + action.value,
+        course_historic: [[action.courseID, new Date().toLocaleDateString("fr-FR")], ...state.course_historic],
       };
       //storeProfile(nextState);
       return nextState;
@@ -63,20 +64,26 @@ function profileReducer(state = initialState, action) {
         ...state,
       };
 
-      nextState[action.value._id] = action.value;
+      nextState[action.value.id] = action.value;
+      return nextState;
+    case 'SET_IMAGE_PROFILE':
+      nextState = {
+        ...state,
+        id_image_profile : action.value
+      };
       return nextState;
     case 'ADD_FRIEND_TO_PSEUDO_LIST':
       nextState = {
         ...state,
       };
-      nextState.friends_pseudo_list[action.value._id] = action.value.pseudo;
-    return nextState;
+      nextState.friends_pseudo_list[action.value.id] = action.value.pseudo;
+      return nextState;
     case 'ADD_FRIEND_TO_PSEUDO_LIST_REVERSE':
       nextState = {
         ...state,
       };
-      nextState.friends_pseudo_list[action.value.pseudo] = action.value._id;
-    return nextState;
+      nextState.friends_pseudo_list[action.value.pseudo] = action.value.id;
+      return nextState;
 
     case 'SET_FRIEND_INIT':
       nextState = {
@@ -119,7 +126,20 @@ function profileReducer(state = initialState, action) {
         sound: action.value
       };
       return nextState;
-
+    case 'ADD_TO_PROFILE_FAVORITES':
+        nextState = {
+          ...state,
+        };
+        nextState.course_favorites = [action.value, ...nextState.course_favorites]
+  
+        return nextState;
+      case 'ADD_TO_PROFILE_FAVORITES':
+        nextState = {
+          ...state,
+        };
+        nextState.course_favorites = [action.value, ...nextState.course_favorites]
+  
+        return nextState;
     default:
       return state;
   }

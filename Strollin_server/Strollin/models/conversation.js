@@ -5,7 +5,11 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var ConversationModelSchema = new Schema({
-    participants: {     // Liste des participants d'une conversation {id, date de sortie}, en cas de liste vide, supression de la conversation.
+    id: {
+        type: Number,
+        required: true,
+    },
+    participants: {     // Liste des participants d'une conversation {id, date de sortie}, en cas de liste vide, suppression de la conversation.
         type: [String],
         required: true,
     },

@@ -55,7 +55,8 @@ function IndexHeaderPartFR() {
         console.error('error :', error);
         alert(`Echec de l'inscription`);
       });
-      }
+    }
+    document.getElementById("inscription").reset();
   }
   return (
     <>
@@ -73,7 +74,7 @@ function IndexHeaderPartFR() {
               <Col className="mx-auto" lg="4" md="6">
                 <Card className="card-register">
                   <h3 className="form-title text-center">Essayer 1 mois gratuitement !</h3>
-                  <Form className="register-form" onSubmit={handleSubmit}>
+                  <Form className="register-form" onSubmit={handleSubmit} id="inscription">
                   <h4 className="form-letter">Email</h4>
                     <Input type="email" name="email" id="exampleEmail" placeholder="Email" onChange={e => setEmail(e.target.value)} />
                     <h4 className="form-letter">Nom d'entreprise</h4>

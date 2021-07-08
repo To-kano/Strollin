@@ -23,104 +23,214 @@ export default {
   feedback : 'Donnez nous votre avis',
   by: 'par',
   feedback: "Donnez nous votre avis",
+  SIGNIN: 'SE CONNECTER',
+  SIGNUP: "S'INSCRIRE",
+  OR: 'OU',
+  username: 'Pseudo',
+  connexion: 'Connection',
+  trendingTrip: 'Tendance',
+  by: 'par',
+  views: 'vues',
+  points: 'points',
+  description: 'description',
+  step: 'Etape ',
+  name: 'Nom ',
+  address: 'Adresse',
+  date: 'date',
+  duration: 'durée',
+  startNewTrip: 'Commencer un nouveau trajet',
+  confirm: 'Confirmer',
+  forgot: 'Mot de passe oublié ?',
+  noAccount: "Vous n'avez pas de compte ?",
+  noPermission: "Vous n'avez pas la permission",
+  email: 'Email',
+  password: 'Mot de passe',
+  tags: 'Tags',
+  welcome: 'Bienvenue',
+  chooseTags: 'Choisissez les tags qui correspondent le mieux à votre personnalité',
+  heading: 'En route vers',
+  carte: 'Carte',
+  logOut: 'Déconnexion',
+  newTrip: 'Nouveau trajet',
+  historic: 'historique',
+  jane: 'Accéder au profil de Jane',
+  geoPermission: "Strollin vous demande l'autorisation d'utiliser la géolocalisation",
+  askLater: 'Demandez-moi plus tard',
+  cancel: 'Annuler',
+  ok: 'OK',
+  send: 'Envoyer',
+  next: 'Suivant',
+  endNav: 'Terminer la navigation',
+  anotherOneBitesTheDust: 'Un autre!',
+  letsGo: "C'est partit!",
+  register: 'Inscription',
+  signIn: 'Connection',
+  firstName: 'Prénom',
+  lastName: 'Nom de famille',
+  confPassword: 'Comfirmation du mot de passe',
+  alreadyAccount: 'Vous avez déja un compte ?',
+  friendList: "Liste d'amis",
+  groupList: 'Liste des groupes',
+  deleteFriend: "Suprimer l'ami",
+  addFriend: "Ajouter l'ami",
+  addGroup: 'Ajouter le groupe',
+  showMap: 'Afficher la carte',
+  showStep: 'Afficher les étapes',
+  Share: 'Partager',
+  PublishOnFacebook: 'Publier sur Facebook',
+  feedback: 'Donnez nous votre avis'
   */
 
   CourseEvaluation: {
-    evaluate: "Evaluer cette course!",
-    note: "Note:",
-    yourComment: "Votre commentaire",
+    evaluate: 'Evaluer cette course!',
+    note: 'Note:',
+    yourComment: 'Votre commentaire',
     send: "Envoyer l'évaluation"
   },
-  
+
   FriendList: {
-    groupList : 'liste des groupes',
-    groupName : 'nom de groupe',
-    friendName : "nom de l'ami",
-    groupList: "Liste des groupes",
-    addFriend : "Ajouter l'ami",
-    addGroup : "Ajouter le groupe",
+    groupList: 'liste des groupes',
+    groupName: 'nom de groupe',
+    friendName: "nom de l'ami",
+    addFriend: "Ajouter l'ami",
+    addGroup: 'Ajouter le groupe',
   },
-  
+
   Gallery: {
-    by : 'par',
-    views : 'vues',
-    points : 'points',
-    description : 'description',
+    by: 'par',
+    views: 'vues',
+    points: 'points',
+    description: 'description',
   },
-  
+
   Home: {
-    logOut : 'Déconnexion',
-    newTrip : 'Nouveau trajet',
-    historic : 'historique',
+    logOut: 'Déconnexion',
+    newTrip: 'Nouveau trajet',
+    historic: 'historique',
   },
-  
+
   LoginPage: {
-    confirm : 'Confirmer',
-    forgot : 'Mot de passe oublié ?',
-    noAccount : "Vous n'avez pas de compte ?",
-    or: "OU",
-    password : 'Mot de passe',
+    confirm: 'Confirmer',
+    forgot: 'Mot de passe oublié ?',
+    noAccount: "Vous n'avez pas de compte ?",
+    SIGNIN: 'SE CONNECTER',
+    SIGNUP: "S'INSCRIRE",
+    OR: 'OU',
+    or: 'OU',
+    email: 'Email',
+    password: 'Mot de passe',
     usernameOrEmail: "Nom d'utilisateur ou email",
   },
-  
+
   Map: {
-    geoPermission : "Strollin vous demande l'autorisation d'utiliser la géolocalisation",
-    askLater : 'Demandez-moi plus tard',
-    cancel : 'Annuler',
-    ok : 'OK',
-    noPermission : "Vous n'avez pas la permission",
+    geoPermission: "Strollin vous demande l'autorisation d'utiliser la géolocalisation",
+    askLater: 'Demandez-moi plus tard',
+    cancel: 'Annuler',
+    ok: 'OK',
+    noPermission: "Vous n'avez pas la permission",
   },
-  
+
   Notation: {
+    information: 'information',
+    send: 'Envoyer',
+  },
+
+  PartenerRegister: {
+    email: 'Email',
+    password: 'Mot de passe',
+    confPassword: 'Comfirmation du mot de passe',
+    alreadyAccount: 'Vous avez déja un compte ?',
+    register: 'Inscription',
+    signIn: 'Connection',
+  },
+
+  PopUpForm: {
+    goTo: 'Voulez vous allez à'
+  },
+
+  Position: {
     information: "information",
     send : 'Envoyer',
   },
-  
-  PartenerRegister: {
-    email: "Email",
-    password: "Mot de passe",
-    confPassword : 'Comfirmation du mot de passe',
-    alreadyAccount : 'Vous avez déja un compte ?',
-    register : 'Inscription',
-    signIn : 'Connection',
-  },
-  
-  PopUpForm: {
-    goTo: "Voulez vous allez à"
-  },
-  
+
   ProfileScreen: {
-    name : 'Nom : ',
-    email : 'Email : ',
-    tags : 'Tags : ',
-    myTags: "Mes tags",
-    addTags: "Ajouter des tags"
+    name: 'Nom',
+    pseudo: 'Pseudo',
+    tags: 'Tags',
+    myTags: 'Mes tags',
+    addTags: 'Ajouter des tags'
   },
-  
+
   TagSelection: {
-    welcome : 'Bienvenue : ',
-    chooseTags : 'Choisissez les tags qui correspondent le mieux à votre personnalité',
-    next : 'Suivant',
+    welcome: 'Bienvenue',
+    chooseTags: 'Choisissez les tags qui correspondent le mieux à votre personnalité',
+    next: 'Suivant',
   },
-  
+
   TendanceSearchBar: {
-    searchTag : 'Chercher a partir de tags',
+    searchTag: 'Chercher a partir de tags',
   },
-  
+
   TripSuggestion: {
-    step: "Etape :",
-    headingTo : 'En route vers',
+    step: 'Etape :',
+    headingTo: 'En route vers',
+    lets_go: "C'est parti !"
   },
-  
+
   UserRegister: {
     username: "Nom d'utilisateur",
-    email: "Email",
-    password: "Mot de passe",
-    confPassword : 'Comfirmation du mot de passe',
-    alreadyAccount : 'Vous avez déja un compte ?',
-    register : 'Inscription',
-    signIn : 'Connection',
-    or: 'OU'
+    email: 'Email',
+    password: 'Mot de passe',
+    confPassword: 'Comfirmation du mot de passe',
+    alreadyAccount: 'Vous avez déja un compte ?',
+    register: 'Inscription',
+    signIn: 'Connection',
+    or: 'OU',
+    OR: 'OU',
+    SIGNIN: 'SE CONNECTER',
+    SIGNUP: "S'INSCRIRE",
+    PartnerPage: "Devenir Partenaire",
+    companyName: "Nom d'entreprise"
   },
-  
+
+  Tags: {
+    select_our_tags: 'Selectionnez vos Tags',
+    confirm_my_tags: 'Confirmer mes Tags',
+  },
+
+  Partner: {
+    number_of_popup: 'Nombre de popup',
+    number_of_accepted_popup: 'Nombre de popup accepté',
+    appearances_in_the_algorithm: "Apparition dans l'algorythme",
+    acceptance_in_the_algorithm: "Acceptation dans l'algorythme",
+    number_of_visitors: 'Nombre de visiteurs',
+    appearance_by_tags: 'Apparence par tags',
+  },
+
+  SettingsPartner: {
+    shop_name: 'Nom du commerce',
+    shop_address: 'Adresse du commerce',
+    shop_desc: 'Description du commerce',
+    shop_tags: 'Tags du commerce',
+    choose_my_shop_tag: 'Choisir les Tags du commerce'
+  },
+
+  Header: {
+    search_tag: 'Rechercher un Tag',
+    add_friend: 'Ajouter un ami',
+    friend_list: "Liste d'amis",
+    partner: 'Partenaire',
+    partnerPosition: 'Localisation',
+    profile: 'Profil',
+    home: 'Home',
+    options: 'Vos options',
+    historic: 'Historique',
+    new_trip: 'New Trip',
+    settings: 'Paramètres',
+    tags: 'Tags',
+    friends: 'Amis',
+    chats: 'Messages',
+    rating: 'Notation',
+    comment: 'Commentaire',
+  }
 };

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Text, Platform, KeyboardAvoidingView, safeAreaView, FlatList, View, StyleSheet
+  Text, Platform, KeyboardAvoidingView, safeAreaView, FlatList, View, StyleSheet, TouchableOpacity, Image
 } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
@@ -21,37 +21,33 @@ function ChatScreen(props) {
 
 
   return (
-    <View>
-      <View style={{ flexDirection: 'row', justifyContent: 'center', backgroundColor: "#ffffff", zIndex: 5}}>
-        <View style={{ flex: 1 }}>
-          <ButtonIcon
-            icon={require('../../images/left_arrow.png')}
-            onPress={() => {
-              goToMenu(props);
-            }}
-          />
-        </View>
-        <View style={{ flex: 10 }}>
-          <Text style={styles.header}>{name.length > 26 ? name.substring(0, 23) + "..." : name}</Text>
-        </View>
+    <View style={styles.view_chatScreen}>
+      <View style={styles.view_header}>
+        <TouchableOpacity
+          onPress={() => { goToMenu(props); }}
+        >
+          <Image style={styles.img_header} source={require('../../images/icons/black/return.png')} />
+        </TouchableOpacity>
+        <Text style={styles.text_header}>
+          {name.length > 11 ? name.substring(0, 11) + ".." : name}{'    '}
+        </Text>
       </View>
-      <View style={styles.box}>
-        <View>
+      <View style={styles.view_list}>
           <FlatList
             data={props.conversation[props.conversation.currentConversation].messages_list}
             renderItem={({ item }) => (
-              <MessagesItem
+              <MessagesItem navigation={props.navigation}
               messageID={item}
               />
             )}
-            keyExtractor={(item) => item}
+            keyExtractor={(item) => String(item)}
           />
-        </View>
-        <ConversationBar
-          onPress={sendMessage}
-          imagePath="../../images/send.png"
-        />
       </View>
+      <ConversationBar
+        onPress={sendMessage}
+        imagePath="../../images/send.png"
+        navigation={props.navigation}
+      />
     </View>
 
   );
@@ -61,34 +57,38 @@ const mapStateToProps = (state) => state;
 export default connect(mapStateToProps)(ChatScreen);
 
 const styles = StyleSheet.create({
-  header: {
-    paddingLeft: 10,
-    fontWeight: '800',
-    fontSize: 25,
-    color: '#514E5A',
-  },
-  box: {
-    paddingHorizontal: 15,
-    justifyContent: 'flex-end',
-    height: '95 %'
-  },
-  horizontalDisplay: {
-    width: '100 %',
-    padding: 10,
-    flexDirection: 'row',
+  view_chatScreen: {
+    flex: 1,
+    flexDirection: 'column',
     justifyContent: 'flex-start',
-    backgroundColor: 'rgba(215, 215, 215, 1)',
+    alignItems: 'center',
+    backgroundColor: '#E1E2E7',
+    paddingTop: '1.8%',
+    paddingLeft: '3.3%',
+    paddingRight: '3.3%',
+    paddingBottom: '0%',
   },
-  text: {
-    fontSize: 16,
+  view_header: {
+    flex: 50,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
   },
-  title: {
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  icon: {
-    width: 50,
-    height: 50,
+  img_header: {
+    width: 34,
     resizeMode: 'contain',
+  },
+  text_header: {
+    width: '87.6%',
+    fontWeight: 'bold',
+    fontSize: 28,
+    letterSpacing: 2,
+    textAlign: 'center',
+    textTransform: 'capitalize',
+    color: '#000000',
+  },
+  view_list: {
+    flex: 707,
+    width: '100%',
   },
 });

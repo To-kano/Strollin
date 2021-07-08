@@ -5,45 +5,57 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var LocationModelSchema = new Schema({
+    id: {
+        type: Number,
+        required: true,
+    },
     name: {
         type: String,
         required: true
     },
-    owner: {
+    owner_id: {
         type: String,
-        default: null
+        default: ""
     },
-    score: {
+    owner_pseudo: {
+        type: String,
+        default: ""
+    },
+    score: { //recup depuis plaecs
         type: String,
         default: '0'
     },
-    coordinate: {
-        type: [String, String],
+    latitude: {
+        type: Number,
         required: true,
     },
-    address: {
+    longitude: {
+        type: Number,
+        required: true,
+    },
+    address: { //recup depuis vicinity
         type: String,
         required: true,
     },
-    city: {
+    city: { //recup depuis vicinity
         type: String,
         required: true,
     },
-    country: {
+    country: { //vide pour l'instant
         type: String,
         required: true,
     },
-    description: {
+    description: { //non dispo sur places
         type: String,
         default: "",
     },
-    photo: {
+    photo: { //A voir avec pierre et tony
         type: [String],
         default: [],
     },
-    timetable: {        // Définit les horaires possible en prenant les timetable de la liste des lieux
+    timetable: { //pas présent
         type: String,
-        default: null,
+        default: "",
     },
     comments_list: {
         type: [String],
@@ -54,18 +66,18 @@ var LocationModelSchema = new Schema({
         default: [],
     },
     price_range: {
-        type: [String, String],
-        default: ['', '']
+        type: [String, String, String],
+        default: ['', '', '']
     },
     average_time: {
         type: String,
-        default: ''
+        default: '15'
     },
-    phone: {
+    phone: { //no dispo
         type: String,
         default: ""
     },
-    website: {
+    website: { //non dispo
         type: String,
         default: ""
     },
@@ -84,6 +96,10 @@ var LocationModelSchema = new Schema({
     alg_ag: {
         type: String,
         default: '0'
+    },
+    food: {
+        type: Boolean,
+        default: false
     },
 })
 
