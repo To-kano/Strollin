@@ -22,7 +22,7 @@ function Menu(props) {
     directionalOffsetThreshold: 80,
     gestureIsClickThreshold: 0.5
   };
-  //  console.log("customDrawer ", props.state)
+   console.log("customDrawer ", props.state)
 
   return (
     <View style={styles.horizontal}>
@@ -32,7 +32,7 @@ function Menu(props) {
           <Text style={styles.text_profile}>{props.profil.pseudo}</Text>
           <Text style={styles.text_grade}>Traveler</Text>
         </View>
-        <View style={styles.view_navigation}>
+        <ScrollView style={styles.view_navigation}>
           <TouchableOpacity
             onPress={() => {
               profileUser(props, store.profil.access_token);
@@ -128,8 +128,7 @@ function Menu(props) {
             <Image style={styles.img_navigationIn} source={require('../images/icons/black/next_trip.png')} />
             <Text style={styles.text_navigationIn}>Position_partener</Text>
           </TouchableOpacity>
-        
-        </View>
+        </ScrollView>
         {/*<TouchableOpacity
           onPress={() => props.navigation.navigate('userLogin')}
           style={styles.view_logOut}
@@ -172,10 +171,11 @@ const styles = StyleSheet.create({
     borderRadius: 4,
   },
   view_menu: {
-    flex: 1,
+    flex: 2,
+    justifyContent: 'space-around',
     flexDirection: 'column',
-    width: '100%',
-    padding: 30,
+    padding: 10,
+
     backgroundColor: '#FFFFFF',
   },
   view_close: {
@@ -187,7 +187,7 @@ const styles = StyleSheet.create({
     height: 30,
   },
   view_profile: {
-    flex: 24.6,
+    height: 200,
     flexDirection: 'column',
     alignItems: 'flex-start',
   },
@@ -212,7 +212,6 @@ const styles = StyleSheet.create({
     color: '#B9B9B9',
   },
   view_navigation: {
-    flex: 54.6,
     flexDirection: 'column',
   },
   view_navigationIn: {

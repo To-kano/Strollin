@@ -2,7 +2,7 @@
 /* eslint-disable global-require */
 import React, { useState } from 'react';
 import {
-  StyleSheet, Text, View, Image, TextInput, Button, Share, TouchableOpacity
+  StyleSheet, Text, View, Image, TextInput, Button, Share, TouchableOpacity, ActivityIndicator,
 } from 'react-native';
 import { connect } from 'react-redux';
 import {
@@ -11,6 +11,7 @@ import {
 import { watchPosition } from 'react-native-geolocation-service';
 import I18n from '../Translation/configureTrans';
 import { loginUser } from '../apiServer/user';
+import { Modal } from 'react-native';
 
 const imageStreet1 = require('../ressources/street1.jpg');
 const imageStreet2 = require('../ressources/street2.jpg');
@@ -45,6 +46,7 @@ export function LoginPage(props) {
   const [value, onChangeText] = React.useState('');
   const [valuePass, onChangePass] = React.useState('');
   const [userInfo, setUserInfo] = React.useState({});
+  const [isLoading, setLoading] = React.useState(false);
 
   return (
     <View style={styles.view_back}>
@@ -93,7 +95,12 @@ export function LoginPage(props) {
       <View style={styles.view_bottomButton}>
         <TouchableOpacity
           style={styles.button_logIn}
-          onPress={() => { loginUser(props, value, valuePass); }}
+          onPress={() => {
+            if (value && valuePass) {
+              setLoading(true);
+              loginUser(props, value, valuePass, setLoading);
+            }
+          }}
         >
           <Text style={styles.text_logIn}>
             {I18n.t('LoginPage.SIGNIN')}
@@ -120,6 +127,15 @@ export function LoginPage(props) {
           />
         </View>
       </View>
+      <Modal
+        animationType="none"
+        transparent={true}
+        visible={isLoading}
+      >
+        <View style={styles.loading_screen}>
+          <ActivityIndicator size="large"  color="black" style={{}}/>        
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -233,6 +249,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#1877F2',
     paddingHorizontal: 10,
+  },
+  loading_screen: {
+    backgroundColor:'rgba(100,100,100,0.75)',
+    display: "flex",
+    justifyContent: 'space-around',
+    height: '100%'
   }
 });
 
