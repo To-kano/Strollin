@@ -555,20 +555,11 @@ router.post('/remove_friend', async function (req, res) {
  */
 router.get('/login', async function (req, res) {
 
-  //console.log( "mot de passe login ",req.headers.password);
-  //console.log( "cryp mot de passe login ",CryptoJS.HmacSHA1(req.headers.password, keyCrypto).toString());
-
-
   let user = await UserModel.findOne({ mail: req.headers.mail.toLowerCase(), password: CryptoJS.HmacSHA1(req.headers.password, keyCrypto).toString() }).catch(error => error);
-  //console.log( "user ", user);
-
   let token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
   let error = undefined;
   let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   let blacklist = await BlacklistModel.findOne({ ip: ip }).catch(error => error);
-  
-
-
 
   if (!blacklist) {
     blacklist = new BlacklistModel({ ip: ip });
@@ -872,7 +863,7 @@ async function check_the_password(password) {
   let pass_upcase = false;
   let pass_number = false;
 
-  if (password.length >= 8) {
+  if (password.length >= 6) {
     pass_lenght = true;
   }
   for (let index in password) {
