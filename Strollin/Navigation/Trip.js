@@ -9,6 +9,7 @@ import TripSuggestion from '../Components/TripSuggestion';
 import TripNavigation from '../Components/TripNavigation';
 import CourseEvaluation from '../Components/CourseEvaluation';
 import CourseSettings from '../Components/CourseSettings';
+import LocationPage from '../Components/LocationPage';
 
 const Stack = createStackNavigator();
 
@@ -19,7 +20,6 @@ function Trip() {
             screenOptions={{
             headerShown: false,
             }}
-            
         >
             <Stack.Screen
                   name="CourseSettings"
@@ -36,6 +36,14 @@ function Trip() {
             <Stack.Screen
                   name="CourseEvaluation"
                   component={CourseEvaluation}
+            />
+            <Stack.Screen
+              name="LocationPage"
+              component={LocationPage}
+              options={{
+                title: 'Location Page',
+                animationEnabled: false,
+              }}
             />
         </Stack.Navigator>
     );
