@@ -65,3 +65,5 @@ buck-out/
 #environement
 env/
 Environement.js
+
+Strollin/env/Environement.js
