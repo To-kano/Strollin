@@ -47,7 +47,7 @@ var LocationModelSchema = new Schema({
     },
     description: { //non dispo sur places
         type: String,
-        default: "",
+        default: "N/A",
     },
     photo: { //A voir avec pierre et tony
         type: [String],
@@ -55,7 +55,7 @@ var LocationModelSchema = new Schema({
     },
     timetable: { //pas présent
         type: String,
-        default: "",
+        default: "N/A",
     },
     comments_list: {
         type: [String],
@@ -67,7 +67,7 @@ var LocationModelSchema = new Schema({
     },
     price_range: {
         type: [String, String, String],
-        default: ['', '', '']
+        default: ['0', '0', '0']
     },
     average_time: {
         type: String,
@@ -75,11 +75,11 @@ var LocationModelSchema = new Schema({
     },
     phone: { //no dispo
         type: String,
-        default: ""
+        default: "N/A"
     },
     website: { //non dispo
         type: String,
-        default: ""
+        default: "N/A"
     },
     pop_disp: {
         type: String,
