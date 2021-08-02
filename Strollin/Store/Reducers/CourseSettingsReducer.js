@@ -6,7 +6,8 @@ const initialState = {
   isEatDrink: false,
   radius: 0,
   placeNbr: 0,
-  tags: 0
+  tags: 0,
+  is18: 0
 };
 
 function CourseSettingsReducer(state = initialState, action) {
@@ -63,6 +64,12 @@ function CourseSettingsReducer(state = initialState, action) {
       nextState = {
         ...state,
         tags: action.value
+      };
+      return nextState;
+    case 'ADD_AGE':
+      nextState = {
+        ...state,
+        is18: action.value
       };
       return nextState;
     default:

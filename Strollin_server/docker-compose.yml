@@ -33,7 +33,7 @@ services:
     networks:
       - backend
     ports:
-      - "3000:3000"
+      - "3004:3004"
     restart: 'on-failure'
     depends_on:
       - db

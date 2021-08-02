@@ -43,7 +43,7 @@ async function PopUpReq(pos, course) {
 
 
 
-async function getUserTags(pos, budget, hours, minutes, props, eat, radius, placeNbr) {
+async function getUserTags(pos, budget, hours, minutes, props, eat, radius, placeNbr, is18) {
   const store = Store.getState();
   const access_Token = store.profil.access_token;
   console.log("token: ", access_Token);
@@ -60,11 +60,11 @@ async function getUserTags(pos, budget, hours, minutes, props, eat, radius, plac
     console.log("ici ?: ", json);
     console.log("########", json.profile.tags_list);
     console.log("mail: ", json.profile.mail);
-    test(pos, budget, hours, minutes, json.profile.tags_list, props, eat, radius, placeNbr);
+    test(pos, budget, hours, minutes, json.profile.tags_list, props, eat, radius, placeNbr, is18);
   });
 }
 
-async function test(pos, budget, hours, minutes, tags, props, eat, radius, placeNbr) {
+async function test(pos, budget, hours, minutes, tags, props, eat, radius, placeNbr, is18) {
   const store = Store.getState();
   const access_Token = store.profil.access_token;
   const time = hours * 60 + minutes;
@@ -120,6 +120,11 @@ async function test(pos, budget, hours, minutes, tags, props, eat, radius, place
     value: tags
   };
   Store.dispatch(action);
+  action = {
+    type: 'ADD_AGE',
+    value: is18
+  };
+  Store.dispatch(action);
 
   await fetch(`http://${IP_SERVER}:${PORT_SERVER}/generator/generate_course`, {
   headers: {
@@ -132,7 +137,8 @@ async function test(pos, budget, hours, minutes, tags, props, eat, radius, place
     'coordinate' : coordinate,
     'eat' : eat,
     'radius' : radius,
-    'placenbr' : placeNbr
+    'placenbr' : placeNbr,
+    'is18' : is18
   },
   method: 'GET',
   })
@@ -171,6 +177,7 @@ export function CourseSettings(props) {
   const [isEatDrink, setEatDring] = useState(false);
   const [radius, setRadius] = useState('3');
   const [placeNbr, setPlaceNbr] = useState('10');
+  const [is18, setIs18] = useState(true);
 
   function Switch() {
 
@@ -325,7 +332,7 @@ export function CourseSettings(props) {
         id="test"
         style={styles.view_newTrip}
         onPress={() => {
-          getUserTags(pos, budget, hours, minutes, props, isEatDrink, radius, placeNbr);
+          getUserTags(pos, budget, hours, minutes, props, isEatDrink, radius, placeNbr, is18);
         }}
       >
         <Text style={styles.text_newTrip}>

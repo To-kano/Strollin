@@ -15,10 +15,11 @@ const {
  * @param {String} req.headers.budget
  * @param {[String]} req.headers.tags
  * @param {[String]} req.headers.coordinate
- * @param {[String]} req.headers.eat
- * @param {[String]} req.headers.radius
- * @param {[String]} req.headers.placenbr
+ * @param {String} req.headers.eat
+ * @param {String} req.headers.radius
+ * @param {String} req.headers.placenbr
  * @param {[String]} req.headers.locations_list
+ * @param {String} req.headers.is18
  */
 router.get('/generate_course', async function(req, res) {
 
@@ -36,6 +37,7 @@ router.get('/generate_course', async function(req, res) {
     console.log("eat: ", req.headers.eat);
     console.log("radius: ", req.headers.radius);
     console.log("locations_list: ", req.headers.locations_list);
+    console.log("Is18: ", req.headers.is18);
 
     if (!user) {
         return res.status(400).send({status: "You are not connected."});
