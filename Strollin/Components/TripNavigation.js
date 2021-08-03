@@ -46,12 +46,31 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
   //}, []);
 
   const [pop, setPop] = useState(false);
+  const [del, setDel] = useState(false);
   const [course, setCourse] = useState(null);
   const [place, setPlace] = useState(null);
 
   function compare(a, b) {
     if (a.Dist > b.Dist) return 1;
     if (b.Dist > a.Dist) return -1;
+  }
+
+  async function DeletePlace(isDelete) {
+    if (!isDelete) {
+      setDel(false)
+      return
+    }
+    const store = Store.getState();
+    //console.log("\ntes\ntzeaz\naeza\neza\nea: ", locations, "\n");
+    var current = store.course.currentCourse
+    //console.log("COURSE :::::::::::::::::", current);
+    var list = current.locations_list;
+    locations.splice(3, 1);
+    var action = { type: 'SET_CURRENT_COURSE', value: current };
+    Store.dispatch(action);
+    var action = { type: 'SET_LOCATIONS', locations: locations };
+    Store.dispatch(action);
+    setDel(false)
   }
 
   async function PopUpResponse(response, pos, course, popup) {
@@ -98,6 +117,7 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
       let test_loc = locations
       test_loc.push(json.locations_list[0])
       test_loc.sort(compare)
+      console.log("test_loc: ", test_loc);
       const action = { type: 'SET_LOCATIONS', locations: test_loc };
       Store.dispatch(action);
     });
@@ -164,6 +184,22 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
     longitudeDelta: 0.0121,
   };
 
+  if (del) {
+    return (
+      <View>
+      <Text>
+        Are you sure you want to delete this place ?:
+      </Text>
+      <Button
+        title="yes"
+        onPress={() => DeletePlace(true)}
+      />
+      <Button
+        title="no"
+        onPress={() => DeletePlace(false)}
+      />
+    </View>
+    )}
   if (pop) {
     return (
       <View>
@@ -173,6 +209,7 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
       <Button
         title="yes"
         onPress={() => PopUpResponse(true, profil.first_name, profil.scoreCourse, course)}
+        //onPress={() =>  DeletePlace()}
       />
       <Button
         title="no"
@@ -222,7 +259,13 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
         />
       </View>
       <TouchableOpacity onPress={() => {
+        setDel(true)
+      }}>
+        <Text style={styles.text_signIn}>Delete</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => {
         const store = Store.getState();
+        //DeletePlace();
         PopUpReq(profil.first_name, profil.scoreCourse); //Je sais pas utiliser les props du coup g stocker des truc dans les props dans course settings
       }}>
         <Text style={styles.text_signIn}>Simulate</Text>
