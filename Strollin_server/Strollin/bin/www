@@ -6,17 +6,17 @@
 
 var app = require('../app');
 var debug = require('debug')('Strollin:server');
-var http = require('http');
-//var https = require('https');
-//var fs = require('fs');
+//var http = require('http');
+var https = require('https');
+var fs = require('fs');
 
 
 // option for HTTPS
 
-// const options = {
-//   key: fs.readFileSync('key.pem'),
-//   cert: fs.readFileSync('cert.pem')
-// };
+ const options = {
+   key: fs.readFileSync('key.pem'),
+   cert: fs.readFileSync('cert.pem')
+ };
 
 //Import Models for socket.io
 const {
@@ -49,8 +49,10 @@ app.set('port', port);
  * Create HTTPS server.
  */
 
-var server = http.createServer(app);
- //var server = https.createServer(options, app);
+//var server = http.createServer(app);
+
+
+var server = https.createServer(options, app);
 
 /**
  * Listen on provided port, on all network interfaces.
