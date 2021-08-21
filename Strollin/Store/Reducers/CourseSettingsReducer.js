@@ -7,7 +7,8 @@ const initialState = {
   radius: 0,
   placeNbr: 0,
   tags: 0,
-  is18: 0
+  is18: 0,
+  Temporarytags: 0
 };
 
 function CourseSettingsReducer(state = initialState, action) {
@@ -70,6 +71,12 @@ function CourseSettingsReducer(state = initialState, action) {
       nextState = {
         ...state,
         is18: action.value
+      };
+      return nextState;
+      case 'ADD_TEMPORARYTAGS':
+      nextState = {
+        ...state,
+        Temporarytags: action.value
       };
       return nextState;
     default:

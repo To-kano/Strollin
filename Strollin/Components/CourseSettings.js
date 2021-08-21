@@ -69,6 +69,7 @@ async function test(pos, budget, hours, minutes, tags, props, eat, radius, place
   const access_Token = store.profil.access_token;
   const time = hours * 60 + minutes;
   const coordinate = [];
+  const tempTags = JSON.stringify(store.CourseSettings.Temporarytags);
   var action = {};
 
   coordinate[0] = pos.latitude;
@@ -79,7 +80,7 @@ async function test(pos, budget, hours, minutes, tags, props, eat, radius, place
   console.log("tags: ", tags);
   console.log("radius: ", radius);
   console.log("placeNbr: ", placeNbr);
-
+  console.log("tempTags: ", tempTags);
   action = {
     type: 'ADD_POS',
     value: pos
@@ -138,7 +139,8 @@ async function test(pos, budget, hours, minutes, tags, props, eat, radius, place
     'eat' : eat,
     'radius' : radius,
     'placenbr' : placeNbr,
-    'is18' : is18
+    'is18' : is18,
+    'temptags' : tempTags
   },
   method: 'GET',
   })
@@ -227,7 +229,9 @@ export function CourseSettings(props) {
           {'   '}
         </Text>
       </View>
-      <View style={styles.view_options}>
+      <ScrollView style={styles.view_options}
+        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}>
         <View style={styles.view_option}>
           <Text style={styles.text_option}>
             Budget
@@ -326,8 +330,19 @@ export function CourseSettings(props) {
             </Text>
             <Switch/>
           </View>
+          <TouchableOpacity
+            id="test"
+            style={styles.view_newTrip}
+            onPress={() => {
+              props.navigation.navigate("Temporarytags");
+            }}
+          >
+            <Text style={styles.text_newTrip}>
+              Use temporary tags
+            </Text>
+          </TouchableOpacity>
         </View>
-      </View>
+      </ScrollView>
       <TouchableOpacity
         id="test"
         style={styles.view_newTrip}
@@ -385,7 +400,7 @@ const styles = StyleSheet.create({
     color: '#000000',
   },
   view_options: {
-    flex: 700,
+    height: '80%',
     width: '100%',
   },
   view_option: {

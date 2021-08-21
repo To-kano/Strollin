@@ -38,6 +38,7 @@ router.get('/generate_course', async function(req, res) {
     console.log("radius: ", req.headers.radius);
     console.log("locations_list: ", req.headers.locations_list);
     console.log("Is18: ", req.headers.is18);
+    console.log("tempTags: ", req.headers.temptags);
 
     if (!user) {
         return res.status(400).send({status: "You are not connected."});
