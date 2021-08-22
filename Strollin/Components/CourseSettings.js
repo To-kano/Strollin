@@ -69,7 +69,7 @@ async function test(pos, budget, hours, minutes, tags, props, eat, radius, place
   const access_Token = store.profil.access_token;
   const time = hours * 60 + minutes;
   const coordinate = [];
-  const tempTags = JSON.stringify(store.CourseSettings.Temporarytags);
+  //const tempTags = JSON.stringify(store.CourseSettings.Temporarytags);
   var action = {};
 
   coordinate[0] = pos.latitude;
@@ -80,7 +80,7 @@ async function test(pos, budget, hours, minutes, tags, props, eat, radius, place
   console.log("tags: ", tags);
   console.log("radius: ", radius);
   console.log("placeNbr: ", placeNbr);
-  console.log("tempTags: ", tempTags);
+  console.log("tempTags: ", store.CourseSettings.Temporarytags);
   action = {
     type: 'ADD_POS',
     value: pos
@@ -140,7 +140,7 @@ async function test(pos, budget, hours, minutes, tags, props, eat, radius, place
     'radius' : radius,
     'placenbr' : placeNbr,
     'is18' : is18,
-    'temptags' : tempTags
+    'temptags' : store.CourseSettings.Temporarytags
   },
   method: 'GET',
   })

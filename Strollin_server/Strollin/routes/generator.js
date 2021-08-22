@@ -40,6 +40,7 @@ router.get('/generate_course', async function(req, res) {
     console.log("Is18: ", req.headers.is18);
     console.log("tempTags: ", req.headers.temptags);
 
+    let userTags = req.headers.tags;
     if (!user) {
         return res.status(400).send({status: "You are not connected."});
     }
@@ -57,7 +58,10 @@ router.get('/generate_course', async function(req, res) {
       //console.log("locations_list: ", locations_list);
     }
 
-    const promise2 = algo.data.algo(req.headers.time , req.headers.budget , req.headers.tags , req.headers.coordinate, req.headers.eat, radius, placeNbr, locations_list);
+    if (req.headers.temptags != "[]")
+      userTags = req.headers.temptags
+
+    const promise2 = algo.data.algo(req.headers.time , req.headers.budget , userTags, req.headers.coordinate, req.headers.eat, radius, placeNbr, locations_list);
     promise2.then((value) => {
       let generated_course = value;
       //console.log("course: ", generated_course);
