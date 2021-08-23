@@ -1,6 +1,6 @@
 import React, { Component, useState, useEffect } from 'react';
 import {
-  StyleSheet, AppState, View, Text, Button, BackHandler, Image, TouchableOpacity
+  StyleSheet, AppState, View, Text, Button, BackHandler, Image, TouchableOpacity, ImageBackground,
 } from 'react-native';
 
 import { connect } from 'react-redux';
@@ -12,6 +12,15 @@ import { addUserHistoric } from '../apiServer/user';
 import Store from '../Store/configureStore';
 import { PopUpForm } from './PopUpForm';
 import { IP_SERVER, PORT_SERVER } from '../env/Environement';
+
+function randPic() {
+  /*const rand = (Math.floor(Math.random() * 2) + 1);
+
+  if (rand === 1) {
+    return (require('../ressources/street1.jpg'));
+  }*/
+  return (require('../ressources/street2.jpg'));
+}
 
 export function TripNavigation({map, profil, dispatch, navigation}) {
   //const [background, setBackground] = useState(false);
@@ -166,19 +175,25 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
 
   if (pop) {
     return (
-      <View>
-      <Text>
-        Do you want to go to : {course.Name}
-      </Text>
-      <Button
-        title="yes"
-        onPress={() => PopUpResponse(true, profil.first_name, profil.scoreCourse, course)}
-      />
-      <Button
-        title="no"
-        onPress={() => PopUpResponse(false, profil.first_name, profil.scoreCourse, course)}
-      />
-    </View>
+      <View style={styles.view_popup}>
+        <Text style={styles.text_popup, styles.text_question}>
+          Do you want to go to : {course.Name}
+        </Text>
+        <View style={styles.view_button}>
+          <TouchableOpacity
+            style={styles.button_no}
+            onPress={() => PopUpResponse(false, profil.first_name, profil.scoreCourse, course)}
+          >
+            <Text style={styles.text_popup}>No</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button_yes}
+            onPress={() => PopUpResponse(true, profil.first_name, profil.scoreCourse, course)}
+          >
+            <Text style={styles.text_popup}>Yes</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
     )}
   else {
   return (
@@ -424,6 +439,49 @@ const mapStateToProps = (state) => {
 export default connect(mapStateToProps)(TripNavigation);
 
 const styles = StyleSheet.create({
+  view_popup: {
+    position: 'absolute',
+    bottom: 0,
+    borderRadius: 20,
+    margin: 10,
+    padding: 10,
+    flexDirection: 'column',
+    height: '16%',
+    elevation: 5,
+    backgroundColor: '#FFF'
+  },
+  img_boxBack: {
+    flex: 1,
+    borderRadius: 12,
+  },
+  view_button: {
+    marginVertical: 15,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  button_no: {
+    backgroundColor: '#FFFFFF00',
+    width: "45%",
+    borderRadius: 10,
+    paddingVertical: 8,
+  },
+  button_yes: {
+    backgroundColor: '#FAC402',
+    width: "45%",
+    borderRadius: 10,
+    paddingVertical: 8,
+  },
+  text_popup: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  text_question: {
+    paddingHorizontal: 10,
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'left',
+  },
   view_back: {
     flex: 1,
     flexDirection: 'column',
