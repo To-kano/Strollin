@@ -34,8 +34,8 @@ var app = express();
 // var mongoDB = 'mongodb://didier:test@db:27017/Strollin'; //Version Authentification
 // var mongoDB = 'mongodb://strollin_server:strollin@127.0.0.1:27017/Strollin'; //Version Authentification Rasp
 // var mongoDB = 'mongodb://strollin_server:strollin@db:27017/Strollin'; //Version Authentification Rasp with docker
-// var mongoDB = 'mongodb://127.0.0.1:27017/Strollin';
-var mongoDB = 'mongodb://db:27017/Strollin';
+ var mongoDB = 'mongodb://127.0.0.1:27017/Strollin';
+//var mongoDB = 'mongodb://db:27017/Strollin';
 
 mongoose.connect(mongoDB, { useNewUrlParser: true });
 
@@ -46,7 +46,7 @@ var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
@@ -82,7 +82,7 @@ let stats = {
   other: 0,
 }
 
-setInterval(function() {
+setInterval(function () {
   console.log("REQUESTS STATISTIC:\n \nRequests by route:\n\t- comment:\t" + stats.comment + "\n\t- conversation:\t" + stats.conversation + "\n\t- course:\t" + stats.course + "\n\t- faq:\t\t" + stats.faq + "\n\t- generator:\t" + stats.generator + "\n\t- location:\t" + stats.location + "\n\t- message:\t" + stats.message + "\n\t- tag:\t\t" + stats.tag + "\n\t- users:\t" + stats.users + "\n\t- other:\t" + stats.other + "\n \nRequest by answer:\n\t- Success:\t" + stats.success + "\n\t- Failure:\t" + stats.failure + "\n\t- Unknown:\t" + stats.unknown + "\n \nTotal Request:\t" + stats.total);
 }, (1000 * 60 * 60 * 24))
 
@@ -144,6 +144,21 @@ app.use('/generator', generatorRouter);
 app.use('/image', imageRouter);
 app.use('/mails', mailsRouter);
 
+
+app.get('/.well-known/pki-validation/5772AE219549AD7A92A5E824AF243A2B.txt', function (req, res) {
+  var options = {
+    root: path.join(__dirname)
+  };
+
+  res.sendFile('5772AE219549AD7A92A5E824AF243A2B.txt', options , function (err) {
+    if (err) {
+      next(err);
+    } else {
+      console.log('Sent:', '5772AE219549AD7A92A5E824AF243A2B.txt');
+    }
+  });
+});
+
 /******/
 
 
@@ -155,7 +170,7 @@ const {
 } = require("./models/location")
 
 const {
-    TagModel
+  TagModel
 } = require("./models/tag")
 
 const {
@@ -166,22 +181,22 @@ const { fail } = require('assert');
 //location = LocationModel.findOne({name: req.body.name, address: req.body.address});
 
 let tag = new TagModel({
-    id: 1,
-    name: "Art",
-    description: "desc",
+  id: 1,
+  name: "Art",
+  description: "desc",
 });
 
 async function TestLoc() {
   location = new LocationModel({
-      name: "Le louvre3",
-      owner: "qqn",
-      coordinate: ["-32", "34"],
-      address: "rue descartes",
-      city: "Tpurs",
-      country: "FR",
-      description: "desc",
-      tags_list: [{"tag_id": "5feceff655b121001e405b8f", "disp": "3"}],
-      price_range: "25"
+    name: "Le louvre3",
+    owner: "qqn",
+    coordinate: ["-32", "34"],
+    address: "rue descartes",
+    city: "Tpurs",
+    country: "FR",
+    description: "desc",
+    tags_list: [{ "tag_id": "5feceff655b121001e405b8f", "disp": "3" }],
+    price_range: "25"
   });
   await location.save();
 }
@@ -193,9 +208,9 @@ async function AddTags() {
   //console.log(tags);
   for (var i = 0; i < tags_json.tags_array.length; i++) {
     tag = new TagModel({
-        id: new Number(Date.now()),
-        name: tags_json.tags_array[i],
-        description: "z",
+      id: new Number(Date.now()),
+      name: tags_json.tags_array[i],
+      description: "z",
     });
     for (var j = 0; j < tags.length; j++) {
       if (tags[j].name == tag.name) {
@@ -222,12 +237,12 @@ AddTags(); //Décometner cette ligne pour ajouter la liste des tags google place
 
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
