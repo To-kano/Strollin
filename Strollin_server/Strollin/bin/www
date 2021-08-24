@@ -43,7 +43,7 @@ const { fstat } = require('fs');
  */
 
 var port = normalizePort('3000');
-var portHttps = normalizePort('3413');
+var portHttps = normalizePort('3443');
 app.set('port', port);
 appHttps.set('port', port);
 
