@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import { connect } from 'react-redux';
 import {
-  StyleSheet, Text, View, FlatList, TouchableOpacity, Image, TextInput,
+  StyleSheet, Text, View, FlatList, TouchableOpacity, Image, TextInput, ActivityIndicator, Modal
 } from 'react-native';
 import { DrawerActions } from '@react-navigation/native';
 import { getTimeZone } from 'react-native-localize';
@@ -51,11 +51,11 @@ export function Header({ navigation, defaultState = false }) {
   );
 }
 
-export function Tag({ name, chosen, defaultState = false }) {
+export function Tag({ name, chosen, setLoading, defaultState = false }) {
   const [pressed, setpressed] = useState(defaultState);
   const [args, setArgs] = useState(true);
 
-  async function postTags(body) {
+  async function postTags(body, setLoading) {
     const store = Store.getState();
     const access_Token = store.profil.access_token;
 
@@ -73,7 +73,9 @@ export function Tag({ name, chosen, defaultState = false }) {
     })
       .then((res) => res.json())
       .then((json) => {
-      });
+      })
+      .then(setLoading(false)
+      );
   }
 
   useEffect(() => {
@@ -87,6 +89,7 @@ export function Tag({ name, chosen, defaultState = false }) {
       <TouchableOpacity
         style={styles.view_tagOff}
         onPress={() => {
+          setLoading(true);
           postTags(name);
           setpressed(!pressed);
         }}
@@ -114,6 +117,7 @@ export function TagSelection({ navigation, profil }) {
   const [args, setArgs] = useState(true);
   const [Profargs, setProfArgs] = useState(true);
   const [array, setArray] = useState(true);
+  const [isLoading, setLoading] = React.useState(false);
 
   const store = Store.getState();
   const access_Token = store.profil.access_token;
@@ -156,7 +160,7 @@ export function TagSelection({ navigation, profil }) {
       });
   }
 
-  async function getThings() {
+  async function getThings(setLoading) {
     await fetch(`http://${IP_SERVER}:${PORT_SERVER}/tag/get_tag`, {
       headers: {
         Accept: 'application/json',
@@ -170,11 +174,12 @@ export function TagSelection({ navigation, profil }) {
         console.log('yooooo', json.tags_list);
         setArgs(json.tags_list);
         getUserTags(json.tags_list);
-      });
+      })
+      .then(setLoading(false));
   }
 
   useEffect(() => {
-    getThings();
+    getThings(setLoading);
     // getUserTags();
   }, []);
 
@@ -190,7 +195,7 @@ export function TagSelection({ navigation, profil }) {
           data={array}
           keyExtractor={(item) => item.name}
           renderItem={({ item }) => (
-            <Tag name={item.name} chosen={item.pressed} />
+            <Tag name={item.name} chosen={item.pressed} setLoading={setLoading} />
           )}
         />
       </View>
@@ -204,6 +209,15 @@ export function TagSelection({ navigation, profil }) {
           {I18n.t('Tags.confirm_my_tags')}
         </Text>
       </TouchableOpacity>
+      <Modal
+        animationType="none"
+        transparent={true}
+        visible={isLoading}
+      >
+        <View style={styles.loading_screen}>
+          <ActivityIndicator size="large"  color="black" style={{}}/>        
+        </View>
+      </Modal>
     </View>
     // <View style={styles.back}>
     //   <BackgroundImage />
@@ -366,6 +380,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#FFFFFF',
   },
+  loading_screen: {
+    backgroundColor:'rgba(100,100,100,0.75)',
+    display: "flex",
+    justifyContent: 'space-around',
+    height: '100%'
+  }
   // back: {
   //   flexDirection: 'column',
   //   justifyContent: 'flex-start',

@@ -1,6 +1,6 @@
 import React, { Component, useState, useEffect } from 'react';
 import {
-  StyleSheet, AppState, View, Text, Button, BackHandler, Image, TouchableOpacity
+  StyleSheet, AppState, View, Text, Button, BackHandler, Image, TouchableOpacity, ActivityIndicator, Modal
 } from 'react-native';
 
 import { connect } from 'react-redux';
@@ -48,6 +48,7 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
   const [pop, setPop] = useState(false);
   const [course, setCourse] = useState(null);
   const [place, setPlace] = useState(null);
+  const [isLoading, setLoading] = React.useState(false);
 
   function compare(a, b) {
     if (a.Dist > b.Dist) return 1;
@@ -78,11 +79,13 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
     .then(json => {
       //console.log("\n\n\n\n\n\npleasssssssssse: ", json);
       setPop(false);
-    });
+    })
+    .then(setLoading(false));
 
     if (response == false)
       return
     //update course
+    setLoading(true);
     await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/get_locations_by_id`, {
     headers: {
       Accept: 'application/json',
@@ -100,7 +103,8 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
       test_loc.sort(compare)
       const action = { type: 'SET_LOCATIONS', locations: test_loc };
       Store.dispatch(action);
-    });
+    })
+    .then(setLoading(false));
   }
 
   async function PopUpReq(pos, course) {
@@ -130,8 +134,8 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
       setCourse(json.popup)
       setPop(true);
       console.log("stp c la le truc: ", json.popup);
-    });
-
+    })
+    .then(setLoading(false));
   }
 
   console.log("\n*\n*\n*\n*", locations)
@@ -172,11 +176,17 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
       </Text>
       <Button
         title="yes"
-        onPress={() => PopUpResponse(true, profil.first_name, profil.scoreCourse, course)}
+        onPress={() => {
+          setLoading(true);
+          PopUpResponse(true, profil.first_name, profil.scoreCourse, course);
+        }}
       />
       <Button
         title="no"
-        onPress={() => PopUpResponse(false, profil.first_name, profil.scoreCourse, course)}
+        onPress={() => {
+          setLoading(true);
+          PopUpResponse(false, profil.first_name, profil.scoreCourse, course);
+        }}
       />
     </View>
     )}
@@ -223,10 +233,20 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
       </View>
       <TouchableOpacity onPress={() => {
         const store = Store.getState();
+        setLoading(true);
         PopUpReq(profil.first_name, profil.scoreCourse); //Je sais pas utiliser les props du coup g stocker des truc dans les props dans course settings
       }}>
         <Text style={styles.text_signIn}>Simulate</Text>
       </TouchableOpacity>
+      <Modal
+        animationType="none"
+        transparent={true}
+        visible={isLoading}
+      >
+        <View style={styles.loading_screen}>
+          <ActivityIndicator size="large"  color="black" style={{}}/>        
+        </View>
+      </Modal>
     </View>
 
     // <View style={styles.view_back}>
@@ -484,6 +504,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     padding: 12,
     color: '#0092A7',
+  },
+  loading_screen: {
+    backgroundColor:'rgba(100,100,100,0.75)',
+    display: "flex",
+    justifyContent: 'space-around',
+    height: '100%'
   },
   // back: {
   //   flexDirection: 'column',

@@ -33,6 +33,37 @@ async function loginUser(props, newMail, newPassword, setLoading) {
 
 exports.loginUser = loginUser;
 
+
+async function logoutUser(props, access_token, setLoading) {
+  fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/logout`, {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      access_token: access_token,
+    },
+    method: 'GET',
+  })
+    .then((response) => response.json())
+    .then(async (answer) => {
+      if (answer.status) {
+        console.log("Discon: ", answer);
+        const action = { type: 'DECONNECTION' };
+        props.dispatch(action);
+      } else {
+        console.log('Discon: ', answer);
+      }
+    })
+    .then(setLoading(false))
+    .catch((error) => {
+      console.error('error :', error);
+      setLoading(false);
+    });
+}
+
+exports.logoutUser = logoutUser;
+
+
+
 async function profileUser(props, access_token) {
   fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/get_own_profile`, {
     headers: {
@@ -208,7 +239,7 @@ async function conversationUser(props, access_token) {
 
 exports.conversationUser = conversationUser;
 
-async function registerUser(props, newPseudo, newPassword, newMail, setMessage, setPopup, partner) {
+async function registerUser(props, newPseudo, newPassword, newMail, setMessage, setPopup, partner, setLoading) {
   const bodyRequest = JSON.stringify({
     pseudo: newPseudo,
     password: newPassword,
@@ -239,8 +270,10 @@ async function registerUser(props, newPseudo, newPassword, newMail, setMessage, 
         setPopup(true);
       }
     })
+    .then(setLoading(false))
     .catch((error) => {
       console.error('error :', error);
+      setLoading(false);
     });
 }
 

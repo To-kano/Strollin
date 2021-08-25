@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  StyleSheet, View, ScrollView, Image, Text, TouchableOpacity, TextInput,
+  StyleSheet, View, ScrollView, Image, Text, TouchableOpacity, TextInput, ActivityIndicator, Modal
 } from 'react-native';
 import Stars from 'react-native-stars';
 import { connect } from 'react-redux';
@@ -43,7 +43,7 @@ async function PopUpReq(pos, course) {
 
 
 
-async function getUserTags(pos, budget, hours, minutes, props, eat, radius, placeNbr) {
+async function getUserTags(pos, budget, hours, minutes, props, eat, radius, placeNbr, setLoading) {
   const store = Store.getState();
   const access_Token = store.profil.access_token;
   console.log("token: ", access_Token);
@@ -61,7 +61,8 @@ async function getUserTags(pos, budget, hours, minutes, props, eat, radius, plac
     console.log("########", json.profile.tags_list);
     console.log("mail: ", json.profile.mail);
     test(pos, budget, hours, minutes, json.profile.tags_list, props, eat, radius, placeNbr);
-  });
+  })
+  .then(setLoading(false));
 }
 
 async function test(pos, budget, hours, minutes, tags, props, eat, radius, placeNbr) {
@@ -171,6 +172,7 @@ export function CourseSettings(props) {
   const [isEatDrink, setEatDring] = useState(false);
   const [radius, setRadius] = useState('3');
   const [placeNbr, setPlaceNbr] = useState('10');
+  const [isLoading, setLoading] = useState(false);
 
   function Switch() {
 
@@ -325,13 +327,23 @@ export function CourseSettings(props) {
         id="test"
         style={styles.view_newTrip}
         onPress={() => {
-          getUserTags(pos, budget, hours, minutes, props, isEatDrink, radius, placeNbr);
+          setLoading(true);
+          getUserTags(pos, budget, hours, minutes, props, isEatDrink, radius, placeNbr, setLoading);
         }}
       >
         <Text style={styles.text_newTrip}>
           Confirm my options
         </Text>
       </TouchableOpacity>
+      <Modal
+        animationType="none"
+        transparent={true}
+        visible={isLoading}
+      >
+        <View style={styles.loading_screen}>
+          <ActivityIndicator size="large"  color="black" style={{}}/>        
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -456,6 +468,12 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     color: '#ffffff'
+  },
+  loading_screen: {
+    backgroundColor:'rgba(100,100,100,0.75)',
+    display: "flex",
+    justifyContent: 'space-around',
+    height: '100%'
   }
   // row: {
   //   flex: 1,

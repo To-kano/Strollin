@@ -2,7 +2,7 @@
 /* eslint-disable global-require */
 import React, { useState } from 'react';
 import {
-  StyleSheet, Text, View, Image, TextInput, Button, Share, TouchableOpacity, ActivityIndicator,
+  StyleSheet, Text, View, Image, TextInput, Button, Share, TouchableOpacity, ActivityIndicator, Modal,
 } from 'react-native';
 import { connect } from 'react-redux';
 import {
@@ -11,7 +11,6 @@ import {
 import { watchPosition } from 'react-native-geolocation-service';
 import I18n from '../Translation/configureTrans';
 import { loginUser } from '../apiServer/user';
-import { Modal } from 'react-native';
 
 const imageStreet1 = require('../ressources/street1.jpg');
 const imageStreet2 = require('../ressources/street2.jpg');

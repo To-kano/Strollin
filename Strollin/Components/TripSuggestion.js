@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Tts from 'react-native-tts';
 import { connect } from 'react-redux';
 import {
-  StyleSheet, Text, View, Button , Image, PermissionsAndroid, TouchableOpacity,
+  StyleSheet, Text, View, Button , Image, PermissionsAndroid, TouchableOpacity, ActivityIndicator
 } from 'react-native';
 import { DrawerActions } from '@react-navigation/native';
 import I18n from '../Translation/configureTrans';
@@ -112,7 +112,7 @@ function getLocation(id) {
 }
 
 
-async function registerCourse(access_token) {
+async function registerCourse(access_token, setLoading) {
   console.log("trying to register course....");
 
   const store = Store.getState();
@@ -137,8 +137,11 @@ async function registerCourse(access_token) {
         value: json.course
       };
       Store.dispatch(action);
-    }).catch((error) => {
+    })
+    .then(setLoading(false))
+    .catch((error) => {
       console.error('error :', error);
+      setLoading(false);
     });
 }
 
@@ -203,7 +206,8 @@ export function TripSuggestion(props) {
   let locations_name = []
   const [isModalVisible, setModalVisible] = useState(false);
   const [getName, setName] = useState("")
-  const [loading, setLoading] = useState(true)
+  //const [loading, setLoading] = useState(true)
+  const [isLoading, setLoading] = useState(false);
 
   function toggleModal() {
     setModalVisible(!isModalVisible);
@@ -307,8 +311,11 @@ export function TripSuggestion(props) {
       props.profil.scoreCourse = json.generated_course
       props.profil.first_name = props.CourseSettings.pos
       props.navigation.navigate("TripSuggestion");
-    }).catch((error) => {
+    })
+    .then(setLoading(false))
+    .catch((error) => {
       console.error('error :', error);
+      setLoading(false);
     });
   }
 
@@ -373,11 +380,21 @@ export function TripSuggestion(props) {
       <TouchableOpacity
         style={styles.view_button}
         onPress={() => {
+          setLoading(true);
           regenerate_course()
         }}
       >
         <Text style={styles.text_button}>New Trip</Text>
       </TouchableOpacity>
+      <Modal
+        animationType="none"
+        transparent={true}
+        visible={isLoading}
+      >
+        <View style={styles.loading_screen}>
+          <ActivityIndicator size="large"  color="black" style={{}}/>        
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -435,6 +452,12 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     color: '#FFFFFF',
+  },
+  loading_screen: {
+    backgroundColor:'rgba(100,100,100,0.75)',
+    display: "flex",
+    justifyContent: 'space-around',
+    height: '100%'
   }
   // back: {
   //   flexDirection: 'column',
