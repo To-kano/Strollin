@@ -352,7 +352,7 @@ router.get('/get_partner_location', async function(req, res) {
     let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo partner").catch(error => error);
 
     if (!user) {
-        return res.status(400).send({status: "You are not connected.", ...req.headers});
+        return res.status(400).send({req});
     }
     if (user.reason) {
         return res.status(400).send({status: "Error in database transaction:\n", error: user});
