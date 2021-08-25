@@ -612,6 +612,7 @@ router.get('/login', async function (req, res) {
 
   let user = await UserModel.findOne({ mail: req.body.mail.toLowerCase(), password: CryptoJS.HmacSHA1(req.body.password, keyCrypto).toString() }).catch(error => error);
   let token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+  console.log("token web:", token);
   let error = undefined;
   let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   let blacklist = await BlacklistModel.findOne({ ip: ip }).catch(error => error);
