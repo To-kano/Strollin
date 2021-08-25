@@ -55,7 +55,7 @@ app.set('port', port);
 var server = http.createServer(app);
 
 
-var serverHttps = https.createServer(options, appHttps);
+//var serverHttps = https.createServer(options, appHttps);
 
 /**
  * Listen on provided port, on all network interfaces.
