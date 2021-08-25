@@ -1,5 +1,6 @@
 var createError = require('http-errors');
 var express = require('express');
+var cors = require('cors');
 var mongoose = require('mongoose');
 var path = require('path');
 var cookieParser = require('cookie-parser');
@@ -28,6 +29,8 @@ var pop = require('./Algo/PopUpAlgo');
 const { isObject } = require('util');
 
 var app = express();
+
+app.use(cors());
 
 // MongoDB //
 
