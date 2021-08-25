@@ -252,6 +252,8 @@ const styles = StyleSheet.create({
     width: 35,
     height: 35,
     marginRight: -10,
+    marginLeft: 20,
+    tintColor:"#fff",
   }
 });
 

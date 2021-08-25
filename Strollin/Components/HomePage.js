@@ -70,11 +70,6 @@ export function Header({ props, defaultState = false }) {
           {I18n.t('Header.home')}
         </Text>
         <TouchableOpacity
-          onPress={() => { Linking.openURL(url) }}
-        >
-          <Image style={styles.img_header} source={require('../images/icons/black/form.png')} />
-        </TouchableOpacity>
-        <TouchableOpacity
           onPress={() => { setpressed(!pressed); }}
         >
           <Image style={styles.img_header} source={require('../images/icons/black/search.png')} />
@@ -150,11 +145,52 @@ export function HomePage(props) {
           </View> */}
 
       </View>
+      <TouchableOpacity
+        onPress={() => { Linking.openURL(url) }}
+        style={styles.view_form}
+      >
+        <Image style={styles.img_form} source={require('../images/icons/black/form.png')} />
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => { Linking.openURL(url) }}
+        style={styles.view_form_text}
+      >
+        <Text>Accéder au formulaire</Text>
+      </TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  view_form_text: {
+    position: 'absolute',
+    bottom:20,
+    left:35,
+    backgroundColor: '#fff',
+    borderRadius: 30,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    paddingLeft:30,
+    elevation: 5,
+  },
+  view_form: {
+    flexDirection: 'row',
+    position: 'absolute',
+    bottom:10,
+    left:10,
+    backgroundColor: '#FAC402',
+    borderRadius: 30,
+    height: 50,
+    width: 50,
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+    elevation: 6,
+  },
+  img_form: {
+    height: 25,
+    width: 25,
+    resizeMode: 'contain',
+  },
   view_back: {
     flex: 1,
     flexDirection: 'column',
