@@ -77,6 +77,10 @@ var UserModelSchema = new Schema({
         type: String,
         default: "",
     },
+    stripe_id: {
+        type: String,
+        default: "",
+    },
     verify: {
         type: Boolean,
         default: false
