@@ -127,6 +127,7 @@ router.post('/new_location', async function(req, res) {
  * @param {String} req.body.phone (Optional)
  * @param {String} req.body.website (Optional)
  * @param {Boolean} req.body.food (Optional)
+ * @param {String} req.body.tags_list (Optional)  = "tag1,tag2,tag3"
  */
 router.post('/update_location', async function(req, res) {
 
@@ -204,6 +205,9 @@ router.post('/update_location', async function(req, res) {
     }
     if (req.body.pop_ag) {
         update.pop_ag = req.body.pop_ag
+    }
+    if (req.body.tags_list) {
+        update.tags_list = req.body.tags_list.split(',');
     }
     error = await LocationModel.updateOne({id: location.id}, update).catch(error => error);
     if (error.errors) {
