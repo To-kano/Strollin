@@ -8,31 +8,6 @@ const {
     UserModel
   } = require("../models/user")
 
-// Manage the customer with stripe.customers
-// Retrieve = stripe.customers.retrieve(stripeID)
-// Create = stripe.customers.create() Pas de parametre pour le moment car non nécessaire pour créer un client sur stripe
-
-
-router.post('/payment', async function(req, res) {
-    let payment = await stripe.charges.create(
-        {
-            amount: req.body.amount,
-            currency: 'eur',
-            source: req.body.token_id,
-            description: "test payment Stripe",
-        }
-    )
-    return res.status(200).send({status: "Payment created", payment});
-});
-
-router.post('/payment_intent', async function(req, res) {
-    customer = await stripe.customers.retrieve("cus_K6ylU5dKygMIOi")
-    .catch(error => {
-        return res.status(400).send({status: "no such customer"})
-    })
-
-    return res.status(200).send({status: "Payment created", customer});
-});
 
 router.get('/set_subscription', async function(req, res) {
     let user = await UserModel.findOne({ access_token: req.headers.access_token }, "-_id id").catch(error => error);
@@ -46,7 +21,7 @@ router.get('/set_subscription', async function(req, res) {
     if (user.stripe_id === '') {
         stripe.customers.create({
             email: user.mail,
-
+            
         })
     }
 
