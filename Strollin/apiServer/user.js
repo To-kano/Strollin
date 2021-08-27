@@ -301,3 +301,38 @@ async function registerUserTag(props, newPseudo, newPassword, newMail) {
 }
 
 exports.registerUserTag = registerUserTag;
+
+
+function createFormData(image, body = {}) {
+  const data = new FormData();
+  
+  data.append('image', {
+    name: image.fileName,
+    type: image.type,
+    uri: Platform.OS === 'ios' ? image.uri.replace('file://', '') : image.uri,
+  });
+
+  Object.keys(body).forEach((key) => {
+    data.append(key, body[key]);
+  });
+  
+  return data;
+}
+
+
+async function uploadImageProfile(access_token, image) {
+  let answer = await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/add_image_profile`, {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        access_token: access_token,
+      },
+      method: 'POST',
+      body: createFormData(image, {}),
+    })
+  answer = await answer.json();
+
+  return answer;
+}
+
+exports.uploadImageProfile = uploadImageProfile;
