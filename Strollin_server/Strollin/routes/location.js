@@ -357,7 +357,7 @@ router.get('/get_locations', async function(req, res) {
 router.get('/get_partner_location', async function(req, res) {
 
     let location = undefined;
-    console.log('req',req);
+    //console.log('req',req);
     let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo partner").catch(error => error);
 
     if (!user) {
