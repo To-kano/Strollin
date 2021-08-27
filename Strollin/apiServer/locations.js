@@ -9,7 +9,7 @@ async function getLocationByID(access_token, id) {
   //  return getLocationCacheById(id);
   //}
 
-   let answer = await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/get_locations_by_id`, {
+   let answer = await fetch(`https://${IP_SERVER}:${PORT_SERVER}/location/get_locations_by_id`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -31,7 +31,7 @@ exports.getLocationByID = getLocationByID;
 
 async function getloc(access_Token, args) {
   console.log("getloc(): ", access_Token);
-   return fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/get_locations`, {
+   return fetch(`https://${IP_SERVER}:${PORT_SERVER}/location/get_locations`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',

@@ -64,7 +64,7 @@ export function Tag({ name, chosen, defaultState = false, Id, Tags}) {
     list.push({_id: body, dips: 0})
     console.log("list: ", list);
     const test = JSON.stringify({ tags_list: list });
-    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/update_location`, {
+    await fetch(`https://${IP_SERVER}:${PORT_SERVER}/location/update_location`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -94,7 +94,7 @@ export function Tag({ name, chosen, defaultState = false, Id, Tags}) {
     }
     console.log("list: ", list);
     const test = JSON.stringify({ tags_list: list });
-    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/update_location`, {
+    await fetch(`https://${IP_SERVER}:${PORT_SERVER}/location/update_location`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -175,7 +175,7 @@ export function TagSelectionPart({ navigation, profil }) {
   }
 
   async function getLocationTags(List) {
-    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/get_partner_location`, {
+    await fetch(`https://${IP_SERVER}:${PORT_SERVER}/location/get_partner_location`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -193,7 +193,7 @@ export function TagSelectionPart({ navigation, profil }) {
   }
 
   async function getThings() {
-    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/tag/get_tag`, {
+    await fetch(`https://${IP_SERVER}:${PORT_SERVER}/tag/get_tag`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',

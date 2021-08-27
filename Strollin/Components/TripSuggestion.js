@@ -120,7 +120,7 @@ async function registerCourse(access_token) {
     locations_list: store.course.course[0].locations_list,
     name: store.course.course[0].name
   });
-  await fetch(`http://${IP_SERVER}:${PORT_SERVER}/course/new_course`, {
+  await fetch(`https://${IP_SERVER}:${PORT_SERVER}/course/new_course`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -278,7 +278,7 @@ export function TripSuggestion(props) {
 
     console.log("time: ", time);
     console.log("coordo: ", coordinate);
-    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/generator/generate_course`, {
+    await fetch(`https://${IP_SERVER}:${PORT_SERVER}/generator/generate_course`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',

@@ -24,7 +24,7 @@ async function PopUpReq(pos, course) {
   coordinate[0] = pos.latitude;
   coordinate[1] = pos.longitude;
 
-  await fetch(`http://${IP_SERVER}:${PORT_SERVER}/generator/generate_popup`, {
+  await fetch(`https://${IP_SERVER}:${PORT_SERVER}/generator/generate_popup`, {
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json',
@@ -47,7 +47,7 @@ async function getUserTags(pos, budget, hours, minutes, props, eat, radius, plac
   const store = Store.getState();
   const access_Token = store.profil.access_token;
   console.log("token: ", access_Token);
-  await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/get_own_profile`, {
+  await fetch(`https://${IP_SERVER}:${PORT_SERVER}/users/get_own_profile`, {
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json',
@@ -121,7 +121,7 @@ async function test(pos, budget, hours, minutes, tags, props, eat, radius, place
   };
   Store.dispatch(action);
 
-  await fetch(`http://${IP_SERVER}:${PORT_SERVER}/generator/generate_course`, {
+  await fetch(`https://${IP_SERVER}:${PORT_SERVER}/generator/generate_course`, {
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json',

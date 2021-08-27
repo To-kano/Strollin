@@ -32,7 +32,7 @@ function ratingCompleted(rating, comment, props) {
     score: rating
   });
 
-  fetch(`http://${IP_SERVER}:${PORT_SERVER}/comment/new_comment`, {
+  fetch(`https://${IP_SERVER}:${PORT_SERVER}/comment/new_comment`, {
    headers: {
      Accept: 'application/json',
      'Content-Type': 'application/json',
