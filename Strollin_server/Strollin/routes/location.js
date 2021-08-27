@@ -207,7 +207,12 @@ router.post('/update_location', async function(req, res) {
         update.pop_ag = req.body.pop_ag
     }
     if (req.body.tags_list) {
-        update.tags_list = req.body.tags_list.split(',');
+        var tags_list = [];
+        tags_array = req.body.tags_list.split(',');
+        for (var index=0; index < tags_array.length; index++) {
+            tags_list.push({id: tags_array, disp: 0});
+        }
+        update.tags_list = tags_list;
     }
     error = await LocationModel.updateOne({id: location.id}, update).catch(error => error);
     if (error.errors) {
