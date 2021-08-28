@@ -131,13 +131,16 @@ function Menu(props) {
             <Image style={styles.img_navigationIn} source={require('../images/icons/black/next_trip.png')} />
             <Text style={styles.text_navigationIn}>Position_partener</Text>
           </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => props.navigation.navigate('Subscription')}
+            style={[styles.view_navigationIn, props.name == 'Subscription' ? styles.current_page : {}]}
+          >
+            <Image style={styles.img_navigationIn} source={require('../images/icons/black/next_trip.png')} />
+            <Text style={styles.text_navigationIn}>Position_partener</Text>
+          </TouchableOpacity>
+
         </ScrollView>
-        {/*<TouchableOpacity
-          onPress={() => props.navigation.navigate('userLogin')}
-          style={styles.view_logOut}
-        >
-          <Text style={styles.text_logOut}>Log Out</Text>
-        </TouchableOpacity>*/}
       </View>
       <View>
         <View style={styles.disconnect_button}>

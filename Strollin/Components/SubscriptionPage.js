@@ -24,15 +24,23 @@ function SubscriptionPage({route, navigation}) {
             {'   '}
           </Text>
         </View>
-        <ScrollView
-          style={styles.view_partner}
-          showsHorizontalScrollIndicator={false}
-          showsVerticalScrollIndicator={false}
-        >
-          <View>
-            
+        <View style={styles.view_subscription_page}>
+          <Text style={styles.subscription_title}>{"Subscription Page"}</Text>
+
+          {/* Check si déjà partenaire ou non :
+          Si oui afficher message de confirmation + potentiellement date de fin,
+          si Non, afficher les avantages */}
+          <View style={styles.subscription_text_view}>
+            <Text style={styles.subscription_text}>
+              {"Strollin' is a good way to give more promotion to your location and to get potentially new customers. Subscribing to Strollin' will give the next advantages:"}
+              {"\t- Your location will be more often selected during courses generation"}
+              {"\t- Your location will be promoted via pop up during courses when users pass near and have corresponding tags"}
+            </Text>
           </View>
-        </ScrollView>
+
+          {/* Si oui, mettre bouton stopper l'abonnement
+          Si Non, mettre un bouton s'abonner qui change la page en page de préparation d'abonnement*/}
+        </View>
       </View>
     );
 }
@@ -67,9 +75,22 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#000000',
   },
-  view_partner: {
-    height: 687,
+  view_subscription_page: {
+    // height: 687,
     width: '100%',
+  },
+  subscription_title: {
+    textAlign: 'center',
+    fontSize: 18,
+  },
+  subscription_text_view: {
+    width: '100%',
+    marginLeft: 10,
+    flex: 1
+  },
+  subscription_text: {
+    textAlign: 'justify',
+    fontSize: 12,
   },
 });
   

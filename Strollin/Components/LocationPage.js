@@ -80,7 +80,7 @@ function LocationPage({route, navigation}) {
             {"Address"}
           </Text>
           <View style={styles.view_number}>
-            <Text style={styles.text_number}>{location.address + " " + location.town + " " + location.country}</Text>
+            <Text style={styles.text_number}>{location.address + " " + location.town}</Text>
           </View>
         </View>
         <View style={styles.view_stat}>
