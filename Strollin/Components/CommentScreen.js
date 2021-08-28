@@ -10,9 +10,7 @@ import { StackActions } from '@react-navigation/native';
 import React, {useState} from 'react';
 
 async function getCommentList(props, setCommentList, store, setLoading) {
-
-
-  await fetch(`http://${IP_SERVER}:${PORT_SERVER}/comment/get_comment_by_id`, {
+  await fetch(`https://${IP_SERVER}:${PORT_SERVER}/comment/get_comment_by_id`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',

@@ -6,7 +6,7 @@ import {saveNewCourse, getCourseCacheById} from '../cache/course'
 async function getCustomCourse(access_token) {
     console.log("getCustomCourse(): ", access_token);
     
-     let answer = await fetch(`http://${IP_SERVER}:${PORT_SERVER}/course/get_course`, {
+     let answer = await fetch(`https://${IP_SERVER}:${PORT_SERVER}/course/get_course`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -32,7 +32,7 @@ async function getCustomCourse(access_token) {
   async function getCourseById(access_token, id) {
     console.log("getCourseById(): ", access_token, id);
     
-     let answer = await fetch(`http://${IP_SERVER}:${PORT_SERVER}/course/get_courses_by_id`, {
+     let answer = await fetch(`https://${IP_SERVER}:${PORT_SERVER}/course/get_courses_by_id`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',

@@ -19,7 +19,7 @@ async function addFavorite(props, setIsFavorite) {
     course: props.data.id
   });
   console.log("sent id = ", props.data.id);
-  await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/add_favorite`, {
+  await fetch(`https://${IP_SERVER}:${PORT_SERVER}/users/add_favorite`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -49,7 +49,7 @@ async function removeFavorite(props, setIsFavorite) {
   const bodyRequest = JSON.stringify({
     course_id: props.data.id
   });
-  await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/remove_favorite`, {
+  await fetch(`https://${IP_SERVER}:${PORT_SERVER}/users/remove_favorite`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -72,7 +72,7 @@ async function removeFavorite(props, setIsFavorite) {
 }
 
 async function getLocation(props, setLocationList) {
-  await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/get_locations_by_id`, {
+  await fetch(`https://${IP_SERVER}:${PORT_SERVER}/location/get_locations_by_id`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',

@@ -105,7 +105,7 @@ function Position_partener(props) {
   }
 
   function sendMessage(value) {
-    const url = `http://${IP_SERVER}:${PORT_SERVER}/location/get_location_position`
+    const url = `https://${IP_SERVER}:${PORT_SERVER}/location/get_location_position`
     fetch(url, {
       headers : {
         place_name: value,

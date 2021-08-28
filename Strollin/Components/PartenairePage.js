@@ -55,7 +55,7 @@ function PartenaireScreen(props) {
 
   useEffect(() => {
     if (!i) {
-      const url = `http://${IP_SERVER}:${PORT_SERVER}/location/get_partner_location`
+      const url = `https://${IP_SERVER}:${PORT_SERVER}/location/get_partner_location`
       fetch(url, {
         headers : {
           access_token: props.profil.access_token,

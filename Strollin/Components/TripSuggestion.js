@@ -120,7 +120,7 @@ async function registerCourse(access_token, setLoading) {
     locations_list: store.course.course[0].locations_list,
     name: store.course.course[0].name
   });
-  await fetch(`http://${IP_SERVER}:${PORT_SERVER}/course/new_course`, {
+  await fetch(`https://${IP_SERVER}:${PORT_SERVER}/course/new_course`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -157,6 +157,8 @@ async function getArrayLocation(access_token, idLocations) {
 
 export function TripSuggestion(props) {
   const [course, setCourse] = useState(null);
+  const [locations, setLocations] = useState(null);
+
 
   //const { test } = route.params;
   //console.log("\n\n\nprops: ", props.profil);
@@ -200,7 +202,6 @@ export function TripSuggestion(props) {
   }, [course]);
 
 
-  const [locations, setLocations] = useState(null);
   const  [deleteLocation, setDelLocations] = useState(null)
   let locations_tmp = []
   let locations_name = []
@@ -241,7 +242,7 @@ export function TripSuggestion(props) {
   function check_open(result) {
     locations_tmp = []
     result.forEach((item, i) => {
-      const url = `http://${IP_SERVER}:${PORT_SERVER}/location/check_open`
+      const url = `https://${IP_SERVER}:${PORT_SERVER}/location/check_open`
       fetch(url, {
         headers: {
           name: item.name
@@ -282,7 +283,7 @@ export function TripSuggestion(props) {
 
     console.log("time: ", time);
     console.log("coordo: ", coordinate);
-    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/generator/generate_course`, {
+    await fetch(`https://${IP_SERVER}:${PORT_SERVER}/generator/generate_course`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
