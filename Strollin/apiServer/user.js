@@ -321,7 +321,7 @@ function createFormData(image, body = {}) {
 
 
 async function uploadImageProfile(access_token, image) {
-  let answer = await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/add_image_profile`, {
+  let answer = await fetch(`https://${IP_SERVER}:${PORT_SERVER}/users/add_image_profile`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
