@@ -209,7 +209,7 @@ export function CourseSettings(props) {
   });
 
   return (
-    <View style={styles.view_back}>
+    <ScrollView style={styles.view_back}>
       <View style={styles.view_header}>
         {/* <TouchableOpacity onPress={() => navigation.navigate('Menu')}> */}
         <TouchableOpacity onPress={() => props.navigation.dispatch(DrawerActions.openDrawer())}>
@@ -332,7 +332,7 @@ export function CourseSettings(props) {
           Confirm my options
         </Text>
       </TouchableOpacity>
-    </View>
+    </ScrollView>
   );
 }
 
@@ -349,10 +349,6 @@ export default connect(mapStateToProps)(CourseSettings);
 
 const styles = StyleSheet.create({
   view_back: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
     backgroundColor: '#E1E2E7',
     paddingTop: '1.8%',
     paddingLeft: '3.3%',

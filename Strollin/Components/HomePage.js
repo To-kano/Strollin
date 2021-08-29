@@ -43,7 +43,6 @@ function getTendanceList() {
   const store = Store.getState();
 
   if (store.tendance.sortedTendanceList.length > 0) {
-    console.log("course tendance ", store.tendance.sortedTendanceList);
     return (store.tendance.sortedTendanceList);
   }
   return (store.tendance.tendanceList);
