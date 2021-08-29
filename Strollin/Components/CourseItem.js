@@ -29,31 +29,10 @@ async function getLocation(props, setLocationList) {
   let answer = await getLocationByIDList(props.profil.access_token, location_list);
 
   setLocationList(answer);
-
-  //await fetch(`https://${IP_SERVER}:${PORT_SERVER}/location/get_locations_by_id`, {
-  //  headers: {
-  //    Accept: 'application/json',
-  //    'Content-Type': 'application/json',
-  //    access_token: props.profil.access_token,
-  //    locations_id_list: props.data["locations_list"]
-  //  },
-  //  method: 'GET',
-  //}).then((answer) => answer.json())
-  //.then(async function (answer) {
-  //  console.log("getLocation answer:", answer);
-  //  setLocationList(answer["locations_list"]);
-  //})
-  //.catch((error) => {
-  //  console.error('error :', error);
-  //});
 }
 
 function randPic() {
-  /*const rand = (Math.floor(Math.random() * 2) + 1);
 
-  if (rand === 1) {
-    return (require('../ressources/street1.jpg'));
-  }*/
   return (require('../ressources/street2.jpg'));
 }
 
