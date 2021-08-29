@@ -10,15 +10,11 @@ import Store from '../Store/configureStore';
 import { requestGeolocalisationPermission, updateCoordinates } from './map'
 import I18n from '../Translation/configureTrans';
 
-const store = Store.getState();
-const access_Token = store.profil.access_token;
+import {generateCourse} from '../apiServer/course';
 
 async function PopUpReq(pos, course) {
   const store = Store.getState();
   const access_Token = store.profil.access_token;
-//console.log("pos: ", pos);
-//console.log("token: ", access_Token);
-//console.log("course: ", course);
   const coordinate = [];
   const test = JSON.stringify({course: course})
   coordinate[0] = pos.latitude;
@@ -41,127 +37,52 @@ async function PopUpReq(pos, course) {
 
 }
 
+async function confirmeSettings(pos, budget, hours, minutes, props, eat, radius, placeNbr) {
 
-
-async function getUserTags(pos, budget, hours, minutes, props, eat, radius, placeNbr) {
   const store = Store.getState();
-  const access_Token = store.profil.access_token;
-//console.log("token: ", access_Token);
-  await fetch(`https://${IP_SERVER}:${PORT_SERVER}/users/get_own_profile`, {
-  headers: {
-    Accept: 'application/json',
-    'Content-Type': 'application/json',
-    access_Token,
-  },
-  method: 'GET',
-  })
-  .then(res => res.json())
-  .then(json => {
-  //console.log("ici ?: ", json);
-  //console.log("########", json.profile.tags_list);
-  //console.log("mail: ", json.profile.mail);
-    test(pos, budget, hours, minutes, json.profile.tags_list, props, eat, radius, placeNbr);
-  });
-}
-
-async function test(pos, budget, hours, minutes, tags, props, eat, radius, placeNbr) {
-  const store = Store.getState();
+  const tags = store.profil.tags_list;
   const access_Token = store.profil.access_token;
   const time = hours * 60 + minutes;
   const coordinate = [];
-  var action = {};
 
   coordinate[0] = pos.latitude;
   coordinate[1] = pos.longitude;
-//console.log("time: ", time);
-//console.log("pos: ", pos);
-//console.log("budget: ", budget);
-//console.log("tags: ", tags);
-//console.log("radius: ", radius);
-//console.log("placeNbr: ", placeNbr);
 
-  action = {
-    type: 'ADD_POS',
-    value: pos
-  };
-  Store.dispatch(action);
-  action = {
-    type: 'ADD_BUDGET',
-    value: budget
-  };
-  Store.dispatch(action);
-  action = {
-    type: 'ADD_HOURS',
-    value: hours
-  };
-  Store.dispatch(action);
-  action = {
-    type: 'ADD_MINUTES',
-    value: minutes
-  };
-  Store.dispatch(action);
-  action = {
-    type: 'ADD_EAT',
-    value: eat
-  };
-  Store.dispatch(action);
-  action = {
-    type: 'ADD_RADIUS',
-    value: radius
-  };
-  Store.dispatch(action);
-  action = {
-    type: 'ADD_PLACENBR',
-    value: placeNbr
-  };
-  Store.dispatch(action);
-  action = {
-    type: 'ADD_TAGS',
-    value: tags
+  const settings = {
+    pos : pos,
+    budget : budget,
+    hours : hours,
+    minutes : minutes,
+    isEatDrink : eat,
+    radius : radius,
+    placeNbr : placeNbr,
+    tags : tags
+  }
+
+  let action = {
+    type: 'SET_COURSE_SETTINGS',
+    value: settings
   };
   Store.dispatch(action);
 
-  await fetch(`https://${IP_SERVER}:${PORT_SERVER}/generator/generate_course`, {
-  headers: {
-    Accept: 'application/json',
-    'Content-Type': 'application/json',
-    access_Token,
-    'time': time,
-    'budget': budget,
-    'tags': tags,
-    'coordinate' : coordinate,
-    'eat' : eat,
-    'radius' : radius,
-    'placenbr' : placeNbr
-  },
-  method: 'GET',
-  })
-  .then(res => res.json())
-  .then(json => {
-  //console.log("algo done:   ", json);
-    //PopUpReq(pos, json.generated_course);
-    action = {
-      type: 'ADD_COURSE',
-      value: json.course
-    };
-    Store.dispatch(action);
-    action = {
-      type: 'ADD_COURSE_LOCATIONS',
-      value: json.generate_course
-    };
-    Store.dispatch(action);
-    props.profil.scoreCourse = json.generated_course
-    props.profil.first_name = pos
-    props.navigation.navigate("TripSuggestion");
-  }).catch((error) => {
-    console.error('error :', error);
-  });
-  //console.log("test success");
+  const result = await generateCourse(access_token, settings);
+
+  action = {
+    type: 'ADD_COURSE',
+    value: result.course
+  };
+  Store.dispatch(action);
+  action = {
+    type: 'ADD_COURSE_LOCATIONS',
+    value: result.generate_course
+  };
+  Store.dispatch(action);
+  props.navigation.navigate("TripSuggestion");
 }
 
-function Back(props) {
-  props.navigation.navigate('HomePage');
-}
+//function Back(props) {
+//  props.navigation.navigate('HomePage');
+//}
 
 export function CourseSettings(props) {
   const [hours, setHours] = useState('2');
@@ -325,7 +246,7 @@ export function CourseSettings(props) {
         id="test"
         style={styles.view_newTrip}
         onPress={() => {
-          getUserTags(pos, budget, hours, minutes, props, isEatDrink, radius, placeNbr);
+          confirmeSettings(pos, budget, hours, minutes, props, isEatDrink, radius, placeNbr);
         }}
       >
         <Text style={styles.text_newTrip}>
@@ -453,65 +374,4 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#ffffff'
   }
-  // row: {
-  //   flex: 1,
-  //   flexDirection: "row"
-  // },
-  // container: {
-  //   flex: 1
-  // },
-  // back: {
-  //   flexDirection: 'column',
-  //   justifyContent: 'flex-start',
-  //   alignItems: 'center',
-  //   flex: 1
-  // },
-  // fill: {
-  //   flexDirection: 'row',
-  //   justifyContent: 'flex-start',
-  //   alignItems: 'center',
-  //   flex: 0.9,
-  //   width: '100%',
-  // },
-  // header: {
-  //   backgroundColor: '#E67E22',
-  //   flexDirection: 'row',
-  //   justifyContent: 'flex-start',
-  //   alignItems: 'center',
-  //   flex: 0.1,
-  //   width: '100%',
-  // },
-  // cont: {
-  //   marginTop: '5%',
-  //   flexDirection: 'column',
-  //   justifyContent: 'flex-start',
-  //   alignItems: 'center',
-  //   flex: 0.1,
-  //   backgroundColor: '#FFC300',
-  //   width: '90%',
-  //   borderRadius: 20
-  // },
-  // newTrip: {
-  //   alignItems: 'center',
-  //   backgroundColor: '#F07323',
-  //   paddingVertical: '5%',
-  //   paddingHorizontal: '30%',
-  //   borderRadius: 5,
-  // },
-  // budgetInput: {
-  //   width: '15%',
-  //   height: '75%',
-  //   borderColor: 'gray',
-  //   borderWidth: 1,
-  //   textAlignVertical: 'top',
-  //   marginLeft: '2%'
-  // },
-  // timeInput: {
-  //   width: '6%',
-  //   height: '75%',
-  //   borderColor: 'gray',
-  //   borderWidth: 1,
-  //   textAlignVertical: 'top',
-  //   marginLeft: '2%'
-  // },
 });
