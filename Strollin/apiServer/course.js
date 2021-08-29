@@ -66,8 +66,8 @@ async function generateCourse(access_token, settings) {
   const time = settings.hours * 60 + settings.minutes;
   const coordinate = [];
 
-  coordinate[0] = pos.latitude;
-  coordinate[1] = pos.longitude;
+  coordinate[0] = settings.pos.latitude;
+  coordinate[1] = settings.pos.longitude;
 
   const buffer = {...settings};
 

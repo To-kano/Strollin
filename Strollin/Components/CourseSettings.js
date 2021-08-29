@@ -11,6 +11,8 @@ import { requestGeolocalisationPermission, updateCoordinates } from './map'
 import I18n from '../Translation/configureTrans';
 
 import {generateCourse} from '../apiServer/course';
+import InputSetting from './InputSettings';
+import Switch from './Switch';
 
 async function PopUpReq(pos, course) {
   const store = Store.getState();
@@ -41,12 +43,7 @@ async function confirmeSettings(pos, budget, hours, minutes, props, eat, radius,
 
   const store = Store.getState();
   const tags = store.profil.tags_list;
-  const access_Token = store.profil.access_token;
-  const time = hours * 60 + minutes;
-  const coordinate = [];
-
-  coordinate[0] = pos.latitude;
-  coordinate[1] = pos.longitude;
+  const access_token = store.profil.access_token;
 
   const settings = {
     pos : pos,
@@ -93,28 +90,6 @@ export function CourseSettings(props) {
   const [radius, setRadius] = useState('3');
   const [placeNbr, setPlaceNbr] = useState('10');
 
-  function Switch() {
-
-    if (isEatDrink === false) {
-      return (
-        <TouchableOpacity
-          style={styles.view_switchOff}
-          onPress={() => { setEatDring(!isEatDrink); }}
-        >
-          <View style={styles.view_switchIn} />
-        </TouchableOpacity>
-      );
-    }
-    return (
-      <TouchableOpacity
-        style={styles.view_switchOn}
-        onPress={() => { setEatDring(!isEatDrink); }}
-      >
-        <View style={styles.view_switchIn} />
-      </TouchableOpacity>
-    );
-  }
-
   useEffect(() => {
     //console.log("ntm: ", props.position.permission);
     if (props.position.asked == false) {
@@ -142,25 +117,7 @@ export function CourseSettings(props) {
         </Text>
       </View>
       <View style={styles.view_options}>
-        <View style={styles.view_option}>
-          <Text style={styles.text_option}>
-            Budget
-          </Text>
-          <View style={styles.view_separator} />
-          <View style={styles.view_optionInput}>
-            <TextInput
-              autoCapitalize={'none'}
-              style={styles.textInput_optionInput}
-              keyboardType="numeric"
-              onChangeText={(text) => setBudget(text)}
-              value={budget}
-              maxLength={6}
-            />
-            <Text style={styles.text_optionInput}>
-              Euros
-            </Text>
-          </View>
-        </View>
+        <InputSetting title={"Budget"} text={"Euros"} value={budget} setValue={setBudget} />
         <View style={styles.view_option}>
           <Text style={styles.text_option}>
             Spending Time
@@ -193,42 +150,8 @@ export function CourseSettings(props) {
             </Text>
           </View>
         </View>
-        <View style={styles.view_option}>
-          <Text style={styles.text_option}>
-            Distance
-          </Text>
-          <View style={styles.view_separator} />
-          <View style={styles.view_optionInput}>
-            <TextInput
-              style={styles.textInput_optionInput}
-              keyboardType="numeric"
-              onChangeText={(text) => setRadius(text)}
-              value={radius}
-              maxLength={6}
-            />
-            <Text style={styles.text_optionInput}>
-              Km
-            </Text>
-          </View>
-        </View>
-        <View style={styles.view_option}>
-          <Text style={styles.text_option}>
-            Nombre de lieux max
-          </Text>
-          <View style={styles.view_separator} />
-          <View style={styles.view_optionInput}>
-            <TextInput
-              style={styles.textInput_optionInput}
-              keyboardType="numeric"
-              onChangeText={(text) => setPlaceNbr(text)}
-              value={placeNbr}
-              maxLength={6}
-            />
-            <Text style={styles.text_optionInput}>
-              Lieux
-            </Text>
-          </View>
-        </View>
+        <InputSetting title={"Distance"} text={"Km"} value={radius} setValue={setRadius} />
+        <InputSetting title={"Nombre de lieux max"} text={"Lieux"} value={placeNbr} setValue={setPlaceNbr} />
         <View style={styles.view_option}>
           <Text style={styles.text_option}>
             Alimentation
@@ -238,7 +161,7 @@ export function CourseSettings(props) {
             <Text style={styles.text_optionInput}>
               Souhaitez-vous manger et boire ?
             </Text>
-            <Switch/>
+            <Switch value={isEatDrink} setValue={setEatDring} />
           </View>
         </View>
       </View>
@@ -329,26 +252,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 16,
     color: '#000000',
-  },
-  view_switchOff: {
-    height: 30,
-    borderRadius: 20,
-    flex: 15,
-    flexDirection: 'row',
-    backgroundColor: '#BCBCBC',
-  },
-  view_switchOn: {
-    height: 30,
-    borderRadius: 20,
-    flex: 15,
-    flexDirection: 'row-reverse',
-    backgroundColor: '#0092A7',
-  },
-  view_switchIn: {
-    height: 30,
-    width: 30,
-    borderRadius: 20,
-    backgroundColor: '#fff',
   },
   view_separator: {
     height: 3,
