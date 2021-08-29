@@ -71,7 +71,7 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
     coordinate[0] = pos.latitude;
     coordinate[1] = pos.longitude;
 
-    console.log("\n*\n*\n*\n*", locations[0])
+  //console.log("\n*\n*\n*\n*", locations[0])
     await fetch(`https://${IP_SERVER}:${PORT_SERVER}/generator/popup_answer`, {
     headers: {
       Accept: 'application/json',
@@ -113,11 +113,11 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
   }
 
   async function PopUpReq(pos, course) {
-    console.log("course: ", course);
+  //console.log("course: ", course);
     const store = Store.getState();
     const access_Token = store.profil.access_token;
     //console.log("\n\n\n.............................pos: ", pos);
-    console.log("token: ", access_Token);
+  //console.log("token: ", access_Token);
     const coordinate = [];
     const test = JSON.stringify({course: course})
     coordinate[0] = pos.latitude;
@@ -135,24 +135,24 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
     })
     .then(res => res.json())
     .then(json => {
-      console.log("JJJJJJJJJJJJSSSSSSSSSSSSSSSSOOOOOOOOOONNNNNNNNNn: ", json);
+    //console.log("JJJJJJJJJJJJSSSSSSSSSSSSSSSSOOOOOOOOOONNNNNNNNNn: ", json);
       setCourse(json.popup)
       setPop(true);
-      console.log("stp c la le truc: ", json.popup);
+    //console.log("stp c la le truc: ", json.popup);
     });
 
   }
 
-  console.log("\n*\n*\n*\n*", locations)
+//console.log("\n*\n*\n*\n*", locations)
 
   useEffect(() => {
-    console.log("ceci est locations\n\n", locations)
+  //console.log("ceci est locations\n\n", locations)
     setTime();
   }, []);
 
   async function setTime() {
     let tmp = await Date.now();
-    console.log("date = ", tmp);
+  //console.log("date = ", tmp);
     tmp = Math.floor(tmp / 1000);
 
     const action = { type: 'SET_TIME', value: tmp };

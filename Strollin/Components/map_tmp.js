@@ -87,8 +87,8 @@ function Map(props) {
   const [waypoint, setWaypoint] = useState(props.waypoints);
 
   /*useEffect(() => {
-    console.log("i'm here")
-    console.log(ts)
+  //console.log("i'm here")
+  //console.log(ts)
   }, [])*/
 
   useEffect(() => {
@@ -118,8 +118,8 @@ function Map(props) {
 
   async function setTimeWaypoint() {
     let tmp = await Date.now()
-    console.log("________________________")
-    console.log(tmp)
+  //console.log("________________________")
+  //console.log(tmp)
 
     const action = { type: 'SET_TIME', value: tmp };
     props.dispatch(action);

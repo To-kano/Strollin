@@ -15,7 +15,7 @@ export function getFavoritesList() {
   return (store.favorites.favoritesList);
 }
 
-export function Header({ props, defaultState = false }) {
+function Header({ props, defaultState = false }) {
 
     return (
       <View style={styles.view_header}>

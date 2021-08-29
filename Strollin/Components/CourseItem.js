@@ -18,7 +18,7 @@ async function addFavorite(props, setIsFavorite) {
   const bodyRequest = JSON.stringify({
     course: props.data.id
   });
-  console.log("sent id = ", props.data.id);
+//console.log("sent id = ", props.data.id);
   await fetch(`https://${IP_SERVER}:${PORT_SERVER}/users/add_favorite`, {
     headers: {
       Accept: 'application/json',
@@ -30,7 +30,7 @@ async function addFavorite(props, setIsFavorite) {
   }).then((answer) => answer.json())
   .then(async function (answer) {
     setIsFavorite(true);
-    console.log("add answer = ", answer);
+  //console.log("add answer = ", answer);
     if (answer.course_favorites) {
       const action = {type: 'SET_FAVORITES_LIST', value: answer.course_favorites};
       props.dispatch(action);
@@ -45,7 +45,7 @@ async function addFavorite(props, setIsFavorite) {
 }
 
 async function removeFavorite(props, setIsFavorite) {
-  console.log("remove props.data.id = ", props.data.id);
+//console.log("remove props.data.id = ", props.data.id);
   const bodyRequest = JSON.stringify({
     course_id: props.data.id
   });
@@ -60,7 +60,7 @@ async function removeFavorite(props, setIsFavorite) {
   }).then((answer) => answer.json())
   .then(async function (answer) {
     setIsFavorite(false);
-    console.log("remove answer = ", answer);
+  //console.log("remove answer = ", answer);
     if (answer.course_favorites) {
       const action = {type: 'SET_FAVORITES_LIST', value: answer.course_favorites};
       props.dispatch(action);
@@ -107,9 +107,9 @@ function checkFavorite(props) {
 
   if (store.profil.course_favorites && props.data) {
     for (let i = 0; i < store.profil.course_favorites.length; i++) {
-      console.log("compared id = ", store.profil.course_favorites[i])
+    //console.log("compared id = ", store.profil.course_favorites[i])
       if (store.profil.course_favorites[i] == props.data.id) {
-        console.log("returned true");
+      //console.log("returned true");
         return (true);
       }
     }

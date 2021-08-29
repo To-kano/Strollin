@@ -4,7 +4,7 @@ import {saveNewCourse, getCourseCacheById} from '../cache/course'
 
 
 async function getCustomCourse(access_token) {
-    console.log("getCustomCourse(): ", access_token);
+  //console.log("getCustomCourse(): ", access_token);
     
      let answer = await fetch(`https://${IP_SERVER}:${PORT_SERVER}/course/get_course`, {
       headers: {
@@ -17,8 +17,8 @@ async function getCustomCourse(access_token) {
     })
 
     answer =  await answer.json();
-    console.log("getCustomCourse result : ", answer)
-    console.log("getCustomCourse result : ", answer.courses_list[0])
+  //console.log("getCustomCourse result : ", answer)
+  //console.log("getCustomCourse result : ", answer.courses_list[0])
   //
     //saveNewCourse(answer);
 //
@@ -30,7 +30,7 @@ async function getCustomCourse(access_token) {
 
 
   async function getCourseById(access_token, id) {
-    console.log("getCourseById(): ", access_token, id);
+  //console.log("getCourseById(): ", access_token, id);
     
      let answer = await fetch(`https://${IP_SERVER}:${PORT_SERVER}/course/get_courses_by_id`, {
       headers: {
@@ -43,8 +43,8 @@ async function getCustomCourse(access_token) {
     })
 
     answer =  await answer.json();
-    console.log("getCourseById result : ", answer)
-    console.log("getCourseById result : ", answer.courses_list[0])
+  //console.log("getCourseById result : ", answer)
+  //console.log("getCourseById result : ", answer.courses_list[0])
   //
     //saveNewCourse(answer);
 //

@@ -44,12 +44,12 @@ function ratingCompleted(rating, comment, props) {
   })
    .then((response) => response.json())
    .then(async (answer) => {
-     console.log("answer =", answer);
-     console.log("course =", store.course.currentCourse);
+   //console.log("answer =", answer);
+   //console.log("course =", store.course.currentCourse);
      if (answer.status == true) {
-       console.log("comment sent successfully");
+     //console.log("comment sent successfully");
      } else {
-       console.log("failed answer = ", answer);
+     //console.log("failed answer = ", answer);
      }
    })
    .catch((error) => {

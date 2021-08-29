@@ -29,7 +29,7 @@ function randPic() {
 
 function LocationPage({route, navigation}) {
   const {location} = route.params;
-  console.log("Location Infos: \n", location);
+//console.log("Location Infos: \n", location);
 
   return (
     <View style={styles.view_back}>

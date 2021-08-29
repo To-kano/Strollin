@@ -8,21 +8,21 @@ import I18n from '../Translation/configureTrans';
 import SearchBar from './TendanceSearchBar';
 import Store from '../Store/configureStore';
 
-import DrawerLayout from 'react-native-gesture-handler/DrawerLayout';
-import Menu from './Menu';
+//import DrawerLayout from 'react-native-gesture-handler/DrawerLayout';
+//import Menu from './Menu';
 
 import { DrawerActions } from '@react-navigation/native';
 
 
-const imageFriend = require('../ressources/friend.png');
+//const imageFriend = require('../ressources/friend.png');
 // const imageHistory = require('../ressources/history.png');
-const imageProfile = require('../ressources/profile.png');
+//const imageProfile = require('../ressources/profile.png');
 
 export function setSortedTendanceData(tag) {
   const store = Store.getState();
   const sortedData = [];
 
-  console.log("tag = ", tag)
+//console.log("tag = ", tag)
   for (i in store.tendance.tendanceList) {
     for (j in store.tendance.tendanceList[i].tags_list) {
       if (store.tendance.tendanceList[i].tags_list[j] == tag) {
@@ -39,7 +39,7 @@ export function setSortedTendanceData(tag) {
   Store.dispatch(action);
 }
 
-export function getTendanceList() {
+function getTendanceList() {
   const store = Store.getState();
 
   if (store.tendance.sortedTendanceList.length > 0) {
@@ -49,13 +49,13 @@ export function getTendanceList() {
 }
 
 function getUrl(props) {
-  console.log(props)
+//console.log(props)
   if (props.profil.partner === true)
     return ("https://forms.gle/feBUmJ8wQFPGga4A6")
   return ('https://forms.gle/cR126bgPaexbgGYD9')
 }
 
-export function Header({ props, defaultState = false }) {
+function Header({ props, defaultState = false }) {
   const [pressed, setpressed] = useState(defaultState);
   let url = getUrl(props)
   if (pressed === false) {
@@ -105,44 +105,6 @@ export function HomePage(props) {
           )}
           keyExtractor={(item) => item.id}
         />
-        {/* export function HomePage(props) {
-
-  const [drawer, setDrawer] = useState(null);
-
-  return (
-    <View style={{ flex: 1 }}>
-        <View style={styles.view_back}>
-          <View style={styles.view_header}>
-            <TouchableOpacity onPress={//() => props.navigation.navigate('Menu')
-             () => props.navigation.dispatch(DrawerActions.openDrawer())
-            }>
-              <Image style={styles.img_header} source={require('../images/icons/black/menu.png')}/>
-            </TouchableOpacity>
-            <Text style={styles.text_header}>Home</Text>
-            <TouchableOpacity>
-              <Image style={styles.img_header} source={require('../images/icons/black/search.png')}/>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.SearchBar}>
-              <SearchBar
-               onPress={setSortedTendanceData}
-               imagePath='../images/icons/black/search.png'
-              />
-          </View>
-          <View style={styles.viex_list}>
-            <FlatList
-              showsHorizontalScrollIndicator={false}
-              showsVerticalScrollIndicator={false}
-              data={getTendanceList()}
-              renderItem={({ item }) => (
-                <TendenceCourseItem
-                  {...props}
-                  data={item}
-                />
-              )}
-              keyExtractor={(item) => item["_id"]}
-            />
-          </View> */}
 
       </View>
       <TouchableOpacity

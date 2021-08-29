@@ -16,9 +16,9 @@ const access_Token = store.profil.access_token;
 async function PopUpReq(pos, course) {
   const store = Store.getState();
   const access_Token = store.profil.access_token;
-  console.log("pos: ", pos);
-  console.log("token: ", access_Token);
-  console.log("course: ", course);
+//console.log("pos: ", pos);
+//console.log("token: ", access_Token);
+//console.log("course: ", course);
   const coordinate = [];
   const test = JSON.stringify({course: course})
   coordinate[0] = pos.latitude;
@@ -36,7 +36,7 @@ async function PopUpReq(pos, course) {
   })
   .then(res => res.json())
   .then(json => {
-    console.log("JJJJJJJJJJJJSSSSSSSSSSSSSSSSOOOOOOOOOONNNNNNNNNn: ", json);
+  //console.log("JJJJJJJJJJJJSSSSSSSSSSSSSSSSOOOOOOOOOONNNNNNNNNn: ", json);
   });
 
 }
@@ -46,7 +46,7 @@ async function PopUpReq(pos, course) {
 async function getUserTags(pos, budget, hours, minutes, props, eat, radius, placeNbr) {
   const store = Store.getState();
   const access_Token = store.profil.access_token;
-  console.log("token: ", access_Token);
+//console.log("token: ", access_Token);
   await fetch(`https://${IP_SERVER}:${PORT_SERVER}/users/get_own_profile`, {
   headers: {
     Accept: 'application/json',
@@ -57,9 +57,9 @@ async function getUserTags(pos, budget, hours, minutes, props, eat, radius, plac
   })
   .then(res => res.json())
   .then(json => {
-    console.log("ici ?: ", json);
-    console.log("########", json.profile.tags_list);
-    console.log("mail: ", json.profile.mail);
+  //console.log("ici ?: ", json);
+  //console.log("########", json.profile.tags_list);
+  //console.log("mail: ", json.profile.mail);
     test(pos, budget, hours, minutes, json.profile.tags_list, props, eat, radius, placeNbr);
   });
 }
@@ -73,12 +73,12 @@ async function test(pos, budget, hours, minutes, tags, props, eat, radius, place
 
   coordinate[0] = pos.latitude;
   coordinate[1] = pos.longitude;
-  console.log("time: ", time);
-  console.log("pos: ", pos);
-  console.log("budget: ", budget);
-  console.log("tags: ", tags);
-  console.log("radius: ", radius);
-  console.log("placeNbr: ", placeNbr);
+//console.log("time: ", time);
+//console.log("pos: ", pos);
+//console.log("budget: ", budget);
+//console.log("tags: ", tags);
+//console.log("radius: ", radius);
+//console.log("placeNbr: ", placeNbr);
 
   action = {
     type: 'ADD_POS',
@@ -138,7 +138,7 @@ async function test(pos, budget, hours, minutes, tags, props, eat, radius, place
   })
   .then(res => res.json())
   .then(json => {
-    console.log("algo done:   ", json);
+  //console.log("algo done:   ", json);
     //PopUpReq(pos, json.generated_course);
     action = {
       type: 'ADD_COURSE',
@@ -203,7 +203,7 @@ export function CourseSettings(props) {
       updateCoordinates(setPos);
     }
     if (props.permission && pos && localRegion.latitude && localRegion.longitude) {
-      console.log("3");
+    //console.log("3");
       setPermision(true);
     }
   });

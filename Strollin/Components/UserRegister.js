@@ -27,12 +27,12 @@ const getInfoFromToken = (token, setUserInfo, props, setMessage, setModalVisible
     { token, parameters: PROFILE_REQUEST_PARAMS },
     (error, result) => {
       if (error) {
-        console.log(`login info has error: ${error}`);
+      //console.log(`login info has error: ${error}`);
       } else {
-        console.log("registered as : ", result.name, ' via facebook');
+      //console.log("registered as : ", result.name, ' via facebook');
 
         setUserInfo(result);
-        console.log("mail: ", result.email);
+      //console.log("mail: ", result.email);
         result.email = "toto@toto.toto"
         registerUser(props, result.name, "Facebook1235", result.email, setMessage, setModalVisible, false);
       }
@@ -54,7 +54,7 @@ export function UserRegister(props) {
   const [message, setMessage] = useState("");
   useEffect(() => {
     if (props.profil.access_token != null) {
-      console.log("ok")
+    //console.log("ok")
       props.navigation.navigate('TagSelection');
     }
   })

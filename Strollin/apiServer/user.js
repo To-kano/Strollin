@@ -13,7 +13,7 @@ async function loginUser(props, newMail, newPassword, setLoading) {
     .then((response) => response.json())
     .then(async (answer) => {
       if (answer.access_token) {
-        console.log("AccessToken: ", answer.access_token);
+      //console.log("AccessToken: ", answer.access_token);
         await profileUser(props, answer.access_token);
         await conversationUser(props, answer.access_token);
         await setTendance(props, answer.access_token);
@@ -226,7 +226,7 @@ async function registerUser(props, newPseudo, newPassword, newMail, setMessage, 
   })
     .then((response) => response.json())
     .then(async (answer) => {
-      console.log("okkkk")
+    //console.log("okkkk")
       //console.log(" answer = " , answer);
       if (answer.access_token) {
         await profileUser(props, answer.access_token);
@@ -321,6 +321,7 @@ function createFormData(image, body = {}) {
 
 
 async function uploadImageProfile(access_token, image) {
+//console.log("upload image ", access_token, image);
   let answer = await fetch(`https://${IP_SERVER}:${PORT_SERVER}/users/add_image_profile`, {
       headers: {
         Accept: 'application/json',
@@ -330,8 +331,9 @@ async function uploadImageProfile(access_token, image) {
       method: 'POST',
       body: createFormData(image, {}),
     })
-  answer = await answer.json();
 
+  //answer = await answer.text();
+//console.log("upload image answer", result);
   return answer;
 }
 

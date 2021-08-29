@@ -17,7 +17,7 @@ function CourseItem(props) {
     
     
     const getCourseObject = (id) => {
-        console.log("id =", id);
+      //console.log("id =", id);
         
         fetch(`https://${IP_SERVER}:${PORT_SERVER}/course/get_courses_by_id`, {
           headers: {
@@ -30,16 +30,16 @@ function CourseItem(props) {
         })
           .then((response) => response.json())
           .then((response) => {
-            console.log("got response = ", response);
+          //console.log("got response = ", response);
             setCourseObject(response.courses_list[0]);
           })
           .catch((error) => {
-            console.log('error', error);
+          //console.log('error', error);
           });
         };
 
     if (!courseObject) {
-        console.log("props.id =", props.id)
+      //console.log("props.id =", props.id)
         getCourseObject(props.id);
         return (
           <View>

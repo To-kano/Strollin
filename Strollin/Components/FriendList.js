@@ -166,7 +166,7 @@ import Store from '../Store/configureStore';
 //   }
 // }
 
-export function Header({ props, defaultState = false }) {
+function Header({ props, defaultState = false }) {
   const [research, setresearch] = useState('');
   const [pressed, setpressed] = useState(defaultState);
 
@@ -224,7 +224,7 @@ async function AddFriend(props, store, mail) {
     })
     .then(res => res.json())
     .then(json => {
-      console.log("Friend added successfuly !");
+    //console.log("Friend added successfuly !");
       profileUser(props, store.profil.access_token);
     }).catch((error) => {
       console.error('error :', error);
@@ -247,7 +247,7 @@ async function DeleteFriend(props, store, id) {
     })
     .then(res => res.json())
     .then(json => {
-      console.log("Friend removed successfuly !");
+    //console.log("Friend removed successfuly !");
       profileUser(props, store.profil.access_token);
     }).catch((error) => {
       console.error('error :', error);
@@ -325,7 +325,7 @@ async function getUserList(store, setUserList) {
     })
     .then(res => res.json())
     .then(json => {
-      console.log("users_list = ", json.users_list);
+    //console.log("users_list = ", json.users_list);
       if (json.users_list) {
         setUserList(json.users_list);
       }

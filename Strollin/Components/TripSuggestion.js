@@ -113,7 +113,7 @@ function getLocation(id) {
 
 
 async function registerCourse(access_token) {
-  console.log("trying to register course....");
+//console.log("trying to register course....");
 
   const store = Store.getState();
   const bodyRequest = JSON.stringify({
@@ -131,7 +131,7 @@ async function registerCourse(access_token) {
     })
     .then(res => res.json())
     .then(json => {
-      console.log("course registered = ", json.course);
+    //console.log("course registered = ", json.course);
       const action = {
         type: 'SET_CURRENT_COURSE',
         value: json.course
@@ -213,7 +213,7 @@ export function TripSuggestion(props) {
   function getNameFunction() {
     let name = ""
     locations_name.forEach((item) => {
-      console.log("\n\ndeleted: ", item )
+    //console.log("\n\ndeleted: ", item )
       if (name != "") {
         name += ', ' + item
       } else {
@@ -222,7 +222,7 @@ export function TripSuggestion(props) {
     });
     let nametmp = "ces lieux sont actuelement fermés :\n" + name + "\nvoulez vous les suprimer ?"
     setName(nametmp)
-    console.log("\n\ndeleted: ", nametmp )
+  //console.log("\n\ndeleted: ", nametmp )
     toggleModal()
     setDelLocations(locations_tmp)
     /*if (confirm("Do you want to save changes?") == true) {
@@ -258,7 +258,7 @@ export function TripSuggestion(props) {
         })
         .finally(() => {
           if (i == result.length - 1) {
-            console.log(locations_tmp)
+          //console.log(locations_tmp)
             getNameFunction()
           }});
         })};
@@ -273,12 +273,12 @@ export function TripSuggestion(props) {
     let time = Number(props.CourseSettings.hours) *  60 + Number(props.CourseSettings.minutes);
     const coordinate = [];
 
-    console.log("previous course: ", store.course.course[0].locations_list);
+  //console.log("previous course: ", store.course.course[0].locations_list);
     coordinate[0] = props.CourseSettings.pos.latitude;
     coordinate[1] = props.CourseSettings.pos.longitude;
 
-    console.log("time: ", time);
-    console.log("coordo: ", coordinate);
+  //console.log("time: ", time);
+  //console.log("coordo: ", coordinate);
     await fetch(`https://${IP_SERVER}:${PORT_SERVER}/generator/generate_course`, {
     headers: {
       Accept: 'application/json',
@@ -297,7 +297,7 @@ export function TripSuggestion(props) {
     })
     .then(res => res.json())
     .then(json => {
-      console.log("algo done:   ", json);
+    //console.log("algo done:   ", json);
       setCourse(json.course);
       //PopUpReq(pos, json.generated_course);
       const action = {
@@ -344,7 +344,7 @@ export function TripSuggestion(props) {
           <View>
             <Button title={getName} color="#BB7859"/>
             <Button title="Oui, suprimez les" onPress={() => {
-              console.log(deleteLocation)
+            //console.log(deleteLocation)
               setLocations(deleteLocation)
               toggleModal()
             }} />
