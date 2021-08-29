@@ -29,6 +29,26 @@ async function getLocationByID(access_token, id) {
 
 exports.getLocationByID = getLocationByID;
 
+async function getLocationByIDList(access_token, id_list) {
+  
+     let answer = await fetch(`https://${IP_SERVER}:${PORT_SERVER}/location/get_locations_by_id`, {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        access_token,
+        locations_id_list : id_list,
+      },
+      method: 'GET',
+    })
+  
+    answer = await answer.json();
+  
+    return answer.locations_list;
+  
+  }
+
+  exports.getLocationByIDList = getLocationByIDList;
+
 async function getloc(access_Token, args) {
 //console.log("getloc(): ", access_Token);
    return fetch(`https://${IP_SERVER}:${PORT_SERVER}/location/get_locations`, {
