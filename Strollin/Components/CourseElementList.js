@@ -38,6 +38,14 @@ function CourseElementList({ course, locations }) {
               </ImageBackground>
           )}
         />
+        <TouchableOpacity
+            onPress={() => {
+              console.log("test")
+            }}
+            accessibilityLabel="Share"
+          >
+              <Image style={styles.img_share} source={require('../images/icons/white/share.png')} />
+          </TouchableOpacity>
       </View>
     );
 }
