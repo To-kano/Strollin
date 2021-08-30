@@ -161,7 +161,6 @@ export function TripSuggestion(props) {
     Tts.setDefaultLanguage('en-US');
 
     async function getCourse() {
-      //const store = Store.getState();
       const result = props.course.currentCourse;
       setCourse(result);
     }
@@ -263,15 +262,7 @@ export function TripSuggestion(props) {
 
   // récupére le trajet précédent et pasre les nom et envoie les dans mle header
   async function regenerate_course() {
-    //const store = Store.getState();
     const access_token = props.profil.access_token;
-    //let time = Number(props.CourseSettings.hours) *  60 + Number(props.CourseSettings.minutes);
-    //const coordinate = [];
-//
-  ////console.log("previous course: ", store.course.course[0].locations_list);
-    //coordinate[0] = props.CourseSettings.pos.latitude;
-    //coordinate[1] = props.CourseSettings.pos.longitude;
-
     const settings = {
       ...props.CourseSettings,
       locations_list : props.course.currentLocationProposition
@@ -281,15 +272,7 @@ export function TripSuggestion(props) {
 
   console.log("result generate course", result.course);
 
-      //setCourse(json.course);
-      //PopUpReq(pos, json.generated_course);
-      //const action = {
-      //  type: 'ADD_COURSE',
-      //  value: json.course
-      //};
-      //Store.dispatch(action);
-
-      action = {
+      let action = {
         type: 'SET_CURRENT_COURSE',
         value: result.course
       };
@@ -299,49 +282,6 @@ export function TripSuggestion(props) {
         value: result.course.locations_list
       };
       Store.dispatch(action);
-      //action = {
-      //  type: 'ADD_COURSE_LOCATIONS',
-      //  value: result.generate_course
-      //};
-      //Store.dispatch(action);
-      //props.profil.scoreCourse = json.generated_course
-      //props.profil.first_name = props.CourseSettings.pos
-      //props.navigation.navigate("TripSuggestion");
-
-  //console.log("time: ", time);
-  //console.log("coordo: ", coordinate);
-    /*await fetch(`https://${IP_SERVER}:${PORT_SERVER}/generator/generate_course`, {
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      access_Token,
-      'time': time,
-      'budget': props.CourseSettings.budget,
-      'tags': props.CourseSettings.tags,
-      'coordinate' : coordinate,
-      'eat' : props.CourseSettings.isEatDrink,
-      'radius' : props.CourseSettings.radius,
-      'placenbr' : props.CourseSettings.placeNbr,
-      'locations_list': store.course.currentLocationProposition
-    },
-    method: 'GET',
-    })
-    .then(res => res.json())
-    .then(json => {
-    //console.log("algo done:   ", json);
-      setCourse(json.course);
-      //PopUpReq(pos, json.generated_course);
-      const action = {
-        type: 'ADD_COURSE',
-        value: json.course
-      };
-      Store.dispatch(action);
-      props.profil.scoreCourse = json.generated_course
-      props.profil.first_name = props.CourseSettings.pos
-      props.navigation.navigate("TripSuggestion");
-    }).catch((error) => {
-      console.error('error :', error);
-    });*/
   }
 
   return (

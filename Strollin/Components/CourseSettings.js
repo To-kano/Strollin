@@ -77,11 +77,6 @@ async function confirmeSettings(pos, budget, hours, minutes, props, eat, radius,
     value: result.course.locations_list
   };
   Store.dispatch(action);
-  //action = {
-  //  type: 'ADD_COURSE_LOCATIONS',
-  //  value: result.generate_course
-  //};
-  //Store.dispatch(action);
   props.navigation.navigate("TripSuggestion");
 }
 
