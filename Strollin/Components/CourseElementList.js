@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
-   View, FlatList, ImageBackground,
+   View, FlatList, ImageBackground, Image,
   StyleSheet
 } from 'react-native';
 import { connect } from 'react-redux';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import CourseElement from './CourseElement';
+import FormAddLocationCourse from './form/FormAddLocationCourse';
+
 
 function randPic() {
   const rand = (Math.floor(Math.random() * 2) + 1);
@@ -18,6 +20,7 @@ function randPic() {
 }
 
 function CourseElementList({ course, locations }) {
+  const [showPopupForm, setShowPopupForm] = useState(false);
   //const navigation = useNavigation();
   //console.log(locations);
 
@@ -38,9 +41,10 @@ function CourseElementList({ course, locations }) {
               </ImageBackground>
           )}
         />
+        <FormAddLocationCourse isVisible={showPopupForm} setIsVisible={setShowPopupForm} />
         <TouchableOpacity
             onPress={() => {
-              console.log("test")
+              setShowPopupForm(true);
             }}
             accessibilityLabel="Share"
           >

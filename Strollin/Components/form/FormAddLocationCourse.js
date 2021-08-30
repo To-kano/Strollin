@@ -13,7 +13,6 @@ function FormAddLocationCourse({isVisible, setIsVisible}) {
     <View>
         <Modal isVisible={isVisible}>
           <View>
-            <Button title={getName} color="#BB7859"/>
             <Button title="ajouter cette étape du trajet" onPress={() => {
             //console.log(deleteLocation)
               setIsVisible(false);
@@ -23,7 +22,7 @@ function FormAddLocationCourse({isVisible, setIsVisible}) {
             }} />
           </View>
         </Modal>
-      </View>
+    </View>
   )
 
 }

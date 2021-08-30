@@ -49,7 +49,7 @@ async function getLocationByIDList(access_token, id_list) {
 
   exports.getLocationByIDList = getLocationByIDList;
 
-async function getloc(access_Token, args) {
+async function getloc(access_Token) {
 //console.log("getloc(): ", access_Token);
    return fetch(`https://${IP_SERVER}:${PORT_SERVER}/location/get_locations`, {
     headers: {
@@ -61,7 +61,7 @@ async function getloc(access_Token, args) {
   })
   .then(res => res.json())
   .then(json => {
-  //console.log("json: ", json.locations_list[0])
+    console.log("json: ", json.locations_list[0])
     return json.locations_list[0]
   });
 }
