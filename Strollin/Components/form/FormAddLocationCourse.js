@@ -1,12 +1,30 @@
 import React from 'react';
 import {
-   View, FlatList, ImageBackground,
+   View, FlatList, Button,
   StyleSheet
 } from 'react-native';
 import { connect } from 'react-redux';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
-function FormAddLocationCourse({}) {
+import Modal from 'react-native-modal';
+
+function FormAddLocationCourse({isVisible, setIsVisible}) {
+
+  return (
+    <View>
+        <Modal isVisible={isVisible}>
+          <View>
+            <Button title={getName} color="#BB7859"/>
+            <Button title="ajouter cette étape du trajet" onPress={() => {
+            //console.log(deleteLocation)
+              setIsVisible(false);
+          }} />
+            <Button title="fermer cette pop-up" onPress={() => {
+              setIsVisible(false);
+            }} />
+          </View>
+        </Modal>
+      </View>
+  )
 
 }
 

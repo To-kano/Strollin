@@ -4,7 +4,6 @@ import {
   StyleSheet
 } from 'react-native';
 import { connect } from 'react-redux';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import Modal from 'react-native-modal'
 
