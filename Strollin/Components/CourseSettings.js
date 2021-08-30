@@ -50,7 +50,7 @@ async function confirmeSettings(pos, budget, hours, minutes, props, eat, radius,
     budget : budget,
     hours : hours,
     minutes : minutes,
-    isEatDrink : eat,
+    eat : eat,
     radius : radius,
     placeNbr : placeNbr,
     tags : tags
@@ -64,16 +64,24 @@ async function confirmeSettings(pos, budget, hours, minutes, props, eat, radius,
 
   const result = await generateCourse(access_token, settings);
 
+  console.log("result generate course", result.course);
+  console.log("result.course.locations_list :", result.course.locations_list);
+
   action = {
-    type: 'ADD_COURSE',
+    type: 'SET_CURRENT_COURSE',
     value: result.course
   };
   Store.dispatch(action);
   action = {
-    type: 'ADD_COURSE_LOCATIONS',
-    value: result.generate_course
+    type: 'ADD_LOCATION_PROPOSITION',
+    value: result.course.locations_list
   };
   Store.dispatch(action);
+  //action = {
+  //  type: 'ADD_COURSE_LOCATIONS',
+  //  value: result.generate_course
+  //};
+  //Store.dispatch(action);
   props.navigation.navigate("TripSuggestion");
 }
 

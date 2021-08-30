@@ -17,6 +17,7 @@ import {getLocationByID} from '../apiServer/locations';
 import Store from '../Store/configureStore';
 import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 import Modal from 'react-native-modal'
+import {generateCourse} from '../apiServer/course';
 import ModalContent from 'react-native-modal'
 
 function getNavigation({route}) {
@@ -156,17 +157,12 @@ export function TripSuggestion(props) {
   const [course, setCourse] = useState(null);
   const [locations, setLocations] = useState(null);
 
-
-  //const { test } = route.params;
-  //console.log("\n\n\nprops: ", props.profil);
-
   useEffect(() => {
     Tts.setDefaultLanguage('en-US');
 
     async function getCourse() {
-      //const result = await getCustomCourse(props.profil.access_token);
-      const store = Store.getState();
-      const result = store.course.course[0];
+      //const store = Store.getState();
+      const result = props.course.currentCourse;
       setCourse(result);
     }
 
@@ -196,7 +192,7 @@ export function TripSuggestion(props) {
     if (course && course.locations_list) {
       getLocations();
     }
-  }, [course]);
+  }, [props.course.currentCourse, course]);
 
 
   const  [deleteLocation, setDelLocations] = useState(null)
@@ -263,23 +259,58 @@ export function TripSuggestion(props) {
           }});
         })};
 
-  //console.log("stp bb: ", props.CourseSettings.pos);
 
 
   // récupére le trajet précédent et pasre les nom et envoie les dans mle header
   async function regenerate_course() {
-    const store = Store.getState();
-    const access_Token = store.profil.access_token;
-    let time = Number(props.CourseSettings.hours) *  60 + Number(props.CourseSettings.minutes);
-    const coordinate = [];
+    //const store = Store.getState();
+    const access_token = props.profil.access_token;
+    //let time = Number(props.CourseSettings.hours) *  60 + Number(props.CourseSettings.minutes);
+    //const coordinate = [];
+//
+  ////console.log("previous course: ", store.course.course[0].locations_list);
+    //coordinate[0] = props.CourseSettings.pos.latitude;
+    //coordinate[1] = props.CourseSettings.pos.longitude;
 
-  //console.log("previous course: ", store.course.course[0].locations_list);
-    coordinate[0] = props.CourseSettings.pos.latitude;
-    coordinate[1] = props.CourseSettings.pos.longitude;
+    const settings = {
+      ...props.CourseSettings,
+      locations_list : props.course.currentLocationProposition
+    }
+
+    const result = await generateCourse(access_token, settings);
+
+  console.log("result generate course", result.course);
+
+      //setCourse(json.course);
+      //PopUpReq(pos, json.generated_course);
+      //const action = {
+      //  type: 'ADD_COURSE',
+      //  value: json.course
+      //};
+      //Store.dispatch(action);
+
+      action = {
+        type: 'SET_CURRENT_COURSE',
+        value: result.course
+      };
+      Store.dispatch(action);
+      action = {
+        type: 'ADD_LOCATION_PROPOSITION',
+        value: result.course.locations_list
+      };
+      Store.dispatch(action);
+      //action = {
+      //  type: 'ADD_COURSE_LOCATIONS',
+      //  value: result.generate_course
+      //};
+      //Store.dispatch(action);
+      //props.profil.scoreCourse = json.generated_course
+      //props.profil.first_name = props.CourseSettings.pos
+      //props.navigation.navigate("TripSuggestion");
 
   //console.log("time: ", time);
   //console.log("coordo: ", coordinate);
-    await fetch(`https://${IP_SERVER}:${PORT_SERVER}/generator/generate_course`, {
+    /*await fetch(`https://${IP_SERVER}:${PORT_SERVER}/generator/generate_course`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -291,7 +322,7 @@ export function TripSuggestion(props) {
       'eat' : props.CourseSettings.isEatDrink,
       'radius' : props.CourseSettings.radius,
       'placenbr' : props.CourseSettings.placeNbr,
-      'locations_list': store.course.course[0].locations_list
+      'locations_list': store.course.currentLocationProposition
     },
     method: 'GET',
     })
@@ -310,7 +341,7 @@ export function TripSuggestion(props) {
       props.navigation.navigate("TripSuggestion");
     }).catch((error) => {
       console.error('error :', error);
-    });
+    });*/
   }
 
   return (
