@@ -9,6 +9,7 @@ import I18n from '../Translation/configureTrans';
 import Map from './map';
 
 import ElementHistoryNav from './HistoryElement';
+import CourseElementList from './CourseElementList';
 import BackgroundImage from './backgroundImage';
 import ButtonSwitch from './ButtonSwitch';
 
@@ -308,7 +309,7 @@ export function TripSuggestion(props) {
         />
       </View>
       <View style={styles.viex_list}>
-        <ElementHistoryNav course={course} locations={locations}/>
+        <CourseElementList course={course} locations={locations}/>
       </View>
       <View>
         <Modal isVisible={isModalVisible}>

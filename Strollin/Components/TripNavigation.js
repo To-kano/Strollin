@@ -176,7 +176,7 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
   if (pop) {
     return (
       <View style={styles.view_popup}>
-        <Text style={styles.text_popup, styles.text_question}>
+        <Text style={[styles.text_popup, styles.text_question]}>
           Do you want to go to : {course.Name}
         </Text>
         <View style={styles.view_button}>

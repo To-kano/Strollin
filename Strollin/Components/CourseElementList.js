@@ -60,7 +60,7 @@ function randPic() {
   return result
 }*/
 
-function ElementHistoryNav({ course, locations, defaultSate = false }) {
+function CourseElementList({ course, locations, defaultSate = false }) {
   const navigation = useNavigation();
 
   //const messagetext = `Strollin' m'a proposé un trajet ! \nRejoignons nous a ${getLocation().name} au ${getLocation().address} à ${getLocation().city} !`;
@@ -282,4 +282,4 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => state;
-export default connect(mapStateToProps)(ElementHistoryNav);
+export default connect(mapStateToProps)(CourseElementList);
