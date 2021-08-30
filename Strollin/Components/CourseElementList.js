@@ -5,7 +5,6 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { useNavigation } from '@react-navigation/native';
 
 import CourseElement from './CourseElement';
 
@@ -19,26 +18,24 @@ function randPic() {
 }
 
 function CourseElementList({ course, locations }) {
-  const navigation = useNavigation();
+  //const navigation = useNavigation();
+  //console.log(locations);
 
     return (
       <View style={styles.view_back}>
         <FlatList
           style={styles.view_list}
           data={locations}
+          keyExtractor={item => item.id}
           renderItem={({ item }) => (
-            <TouchableOpacity
-              style={styles.view_box}
-              onPress={() => {navigation.navigate('LocationPage', {location: item})}}
-            >
+
               <ImageBackground
                 style={styles.img_boxBack}
                 imageStyle={styles.img_boxBack}
                 source={randPic()}
               >
-                <CourseElement item={item}/>
+                <CourseElement item={item} />
               </ImageBackground>
-            </TouchableOpacity>
           )}
         />
       </View>
@@ -58,15 +55,12 @@ const styles = StyleSheet.create({
     paddingRight: '0%',
     paddingBottom: '1.8%',
   },
-  view_box: {
-    backgroundColor: '#000000',
-    borderRadius: 12,
+  img_boxBack: {
+    //flex: 1,
+    marginBottom: 12.5,
     width: 330,
     height: 179,
-    marginBottom: 12.5,
-  },
-  img_boxBack: {
-    flex: 1,
+
     borderRadius: 12,
   },
 });

@@ -6,16 +6,26 @@ import {
 import { connect } from 'react-redux';
 import { ShareDialog } from 'react-native-fbsdk';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useNavigation } from '@react-navigation/native';
+
 
 function CourseElement({item}) {
+
+    const navigation = useNavigation();
+
     return (
 
         <View style={styles.view_boxIn}>
-            <View style={styles.view_information}>
-                <Image style={styles.img_information} source={require('../images/icons/white/marker.png')} />
-                <Text style={styles.text_information}>{item.address}, {item.city}</Text>
-            </View>
-            <Text style={styles.text_name}>{item.name}</Text>
+            <TouchableOpacity
+              style={styles.view_box}
+              onPress={() => {navigation.navigate('LocationPage', {location: item})}}
+            >
+                <View style={styles.view_information}>
+                    <Image style={styles.img_information} source={require('../images/icons/white/marker.png')} />
+                    <Text style={styles.text_information}>{item.address}, {item.city}</Text>
+                </View>
+                <Text style={styles.text_name}>{item.name}</Text>
+            </TouchableOpacity>
             <View style={styles.view_share}>
                 <TouchableOpacity
                   onPress={() => {
@@ -49,6 +59,22 @@ function CourseElement({item}) {
                 >
                     <Image style={styles.img_share} source={require('../images/icons/white/facebook.png')} />
                 </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    console.log("test");
+                  }}
+                  accessibilityLabel="Share"
+                >
+                    <Image style={styles.img_share} source={require('../images/icons/white/share.png')} />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    console.log("test")
+                  }}
+                  accessibilityLabel="Share"
+                >
+                    <Image style={styles.img_share} source={require('../images/icons/white/share.png')} />
+                </TouchableOpacity>
             </View>
         </View>
     )
@@ -63,6 +89,9 @@ const styles = StyleSheet.create({
       paddingLeft: 30,
       paddingRight: 5,
       paddingBottom: 20,
+      borderRadius: 12,
+      width: 330,
+      height: 179,
       backgroundColor: 'rgba(0,0,0,0.6)',
     },
     view_information: {
@@ -97,7 +126,14 @@ const styles = StyleSheet.create({
       width: 25,
       height: 25,
       marginRight: 10,
-    }
+    },
+    view_box: {
+        //backgroundColor: '#000000',
+        //borderRadius: 12,
+        //width: 330,
+        //height: 179,
+        //marginBottom: 12.5,
+      },
   });
   
   const mapStateToProps = (state) => state;
