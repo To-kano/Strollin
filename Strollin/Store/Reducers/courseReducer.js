@@ -15,7 +15,7 @@ const EXEMPLE = {
 
 const initialState = {
   course: [],
-  currentCourse: null,
+  currentCourse: {},
   currentLocationProposition: [],
   courseObjectHistoric: [],
   courseLocations: []
@@ -39,12 +39,22 @@ function CourseReducer(state = initialState, action) {
         currentCourse: action.value
       };
       return nextState;
+    case 'CHANGE_CURRENT_COURSE_LOCATION_PROPOSITION':
+      nextState = {
+        ...state,
+        currentCourse: {
+          ...state.currentLocationProposition,
+          locations_list : action.value
+        }
+      };
+      return nextState;
     case 'SET_CURRENT_LOCATION_PROPOSITION':
       nextState = {
         ...state,
         currentLocationProposition: action.value
       };
       return nextState;
+
     case 'ADD_LOCATION_PROPOSITION':
       nextState = {
         ...state,
@@ -63,13 +73,13 @@ function CourseReducer(state = initialState, action) {
         courseObjectHistoric: action.value
       };
       return nextState;
-    //case 'ADD_COURSE_LOCATIONS':
-    //  nextState = {
-    //    ...state,
-    //    courseLocations: [action.value, ...state.course]
-    //    //course: action.value
-    //  };
-    //  return nextState;
+      //case 'ADD_COURSE_LOCATIONS':
+      //  nextState = {
+      //    ...state,
+      //    courseLocations: [action.value, ...state.course]
+      //    //course: action.value
+      //  };
+      //  return nextState;
     default:
       return state;
   }
