@@ -168,7 +168,7 @@ export function TripSuggestion(props) {
     async function getLocations() {
       const result = await getArrayLocation(props.profil.access_token, course.locations_list)
       setLocations(result);
-      check_open(result)
+      //check_open(result)
     }
 
     /*function test() {
@@ -330,7 +330,7 @@ export function TripSuggestion(props) {
         onPress={() => {
           const action = { type: 'SET_WAYPOINTS', course: course, locations: locations };
           props.dispatch(action);
-          registerCourse(props.profil.access_token);
+          //registerCourse(props.profil.access_token);
           props.navigation.navigate('TripNavigation');
           // const action = { type: 'SET_WAYPOINTS', course: course, locations: locations };
           // props.dispatch(action);
