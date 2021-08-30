@@ -8,7 +8,6 @@ import { DrawerActions } from '@react-navigation/native';
 import I18n from '../Translation/configureTrans';
 import Map from './map';
 
-import ElementHistoryNav from './HistoryElement';
 import CourseElementList from './CourseElementList';
 import BackgroundImage from './backgroundImage';
 import ButtonSwitch from './ButtonSwitch';
