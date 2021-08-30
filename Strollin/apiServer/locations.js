@@ -62,7 +62,7 @@ async function getloc(access_Token) {
   .then(res => res.json())
   .then(json => {
     console.log("json: ", json.locations_list[0])
-    return json.locations_list[0]
+    return json.locations_list
   });
 }
 

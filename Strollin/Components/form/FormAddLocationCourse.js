@@ -5,14 +5,17 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 
-import Modal from 'react-native-modal';
+import Modal from '../Popup';
+
+import FormLocationSelection from './FormLocationSelection';
 
 function FormAddLocationCourse({isVisible, setIsVisible}) {
 
   return (
     <View>
-        <Modal isVisible={isVisible}>
+        <Modal modalVisible={isVisible} setModalVisible={setIsVisible} >
           <View>
+            <FormLocationSelection/>
             <Button title="ajouter cette étape du trajet" onPress={() => {
             //console.log(deleteLocation)
               setIsVisible(false);
