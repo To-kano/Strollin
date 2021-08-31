@@ -91,3 +91,25 @@ async function generateCourse(access_token, settings) {
 }
 
 exports.generateCourse = generateCourse;
+
+async function createNewCourse(access_token, settings) {
+
+  console.log("createNewCourse:", settings);
+
+  let answer = await fetch(`https://${IP_SERVER}:${PORT_SERVER}/course/new_course`, {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      access_token,
+    },
+    method: 'POST',
+    body: settings,
+  })
+
+  answer = await answer.json();
+
+  return answer;
+
+}
+
+exports.createNewCourse = createNewCourse;

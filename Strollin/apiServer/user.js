@@ -247,6 +247,8 @@ async function registerUser(props, newPseudo, newPassword, newMail, setMessage, 
 exports.registerUser = registerUser;
 
 async function addUserHistoric(access_token, courseId) {
+
+  console.log("addUserHistoric: ", courseId);
   const bodyRequest = JSON.stringify({
     course: courseId
   });
