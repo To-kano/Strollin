@@ -37,7 +37,7 @@ router.post('/new_course', async function(req, res) {
     let locations_list = null;
     let param_location = null;
     let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo").catch(error => error);
-    console.log(req.body.locations_list);
+    console.log("body new course", req.body);
 
     if (!user) {
         return res.status(400).send({status: "You are not connected."});
