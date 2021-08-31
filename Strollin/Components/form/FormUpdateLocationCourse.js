@@ -5,7 +5,9 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 
-import Modal from 'react-native-modal';
+import Modal from '../Popup';
+import Store from '../../Store/configureStore';
+
 import FormLocationSelection from './FormLocationSelection';
 
 function changeLocationToTrip(locationIdArray, deletedLocationId) {
@@ -33,7 +35,7 @@ function FormUpdateLocationCourse({isVisible, setIsVisible, itemId}) {
 
     return (
         <View>
-            <Modal isVisible={isVisible}>
+            <Modal modalVisible={isVisible} setModalVisible={setIsVisible}>
               <View>
                 <FormLocationSelection setSelectedLocation={setSelectedLocation} />
                 <Button title="changer cette étape du trajet avec la selection" onPress={() => {
