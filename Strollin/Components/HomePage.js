@@ -57,7 +57,7 @@ function getUrl(props) {
 
 function Header({ props, defaultState = false }) {
   const [pressed, setpressed] = useState(defaultState);
-  let url = getUrl(props)
+  
   if (pressed === false) {
     return (
       <View style={styles.view_header}>
@@ -88,6 +88,8 @@ function Header({ props, defaultState = false }) {
 }
 
 export function HomePage(props) {
+
+  let url = getUrl(props)
 
   return (
     <View style={styles.view_back}>

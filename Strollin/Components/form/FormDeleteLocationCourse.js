@@ -36,8 +36,10 @@ function FormDeleteLocationCourse({isVisible, setIsVisible, itemId}) {
           <View>
             <Button title="suprimez cette étape du trajet" onPress={() => {
             //console.log(deleteLocation)
-              deleteLocationFromTrip(itemId);
-              setIsVisible(false);
+              setIsVisible((value) => {
+                deleteLocationFromTrip(itemId);
+                return false;
+              });
           }} />
             <Button title="garder cette étape du trajet" onPress={() => {
               setIsVisible(false);

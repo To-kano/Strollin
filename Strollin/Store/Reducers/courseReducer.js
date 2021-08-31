@@ -24,7 +24,6 @@ const initialState = {
 function CourseReducer(state = initialState, action) {
   let nextState;
   // //console.log("\n\ngalleryReducer:\n")
-  // //console.log(action)
   switch (action.type) {
     case 'ADD_COURSE':
       nextState = {
@@ -40,13 +39,17 @@ function CourseReducer(state = initialState, action) {
       };
       return nextState;
     case 'CHANGE_CURRENT_COURSE_LOCATION_PROPOSITION':
+    console.log("state before change", state.currentCourse);
+      
       nextState = {
         ...state,
         currentCourse: {
-          ...state.currentLocationProposition,
+          ...state.currentCourse,
           locations_list : action.value
         }
       };
+      console.log("state after change:", nextState.currentCourse);
+
       return nextState;
     case 'SET_CURRENT_LOCATION_PROPOSITION':
       nextState = {

@@ -66,7 +66,7 @@ function CourseElement({item}) {
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => {
-                    console.log("test");
+                    setShowDeleteForm(true);
                   }}
                   accessibilityLabel="Share"
                 >
@@ -74,7 +74,8 @@ function CourseElement({item}) {
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => {
-                    console.log("test")
+                    setShowUpdateForm(true);
+
                   }}
                   accessibilityLabel="Share"
                 >
