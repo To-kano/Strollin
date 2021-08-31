@@ -91,7 +91,7 @@ export function CourseSettings(props) {
   const [pos, setPos] = useState('0');
   const [isEatDrink, setEatDring] = useState(false);
   const [radius, setRadius] = useState('3');
-  const [placeNbr, setPlaceNbr] = useState('4');
+  const [placeNbr, setPlaceNbr] = useState('2');
 
   useEffect(() => {
     //console.log("ntm: ", props.position.permission);

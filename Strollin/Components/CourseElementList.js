@@ -19,7 +19,7 @@ function randPic() {
   return (require('../ressources/street1.jpg'));
 }
 
-function CourseElementList({ course, locations }) {
+function CourseElementList({ course, setLocations, locations }) {
   const [showPopupForm, setShowPopupForm] = useState(false);
   //const navigation = useNavigation();
   //console.log(locations);

@@ -178,9 +178,9 @@ export function TripSuggestion(props) {
   }*/
 
 
-    if (!course) {
+    //if (course) {
       getCourse();
-    }
+    //}
 
     if (props.profil.sound && course) {
       for (let i = 0; i < course.length; i++) {
@@ -308,7 +308,7 @@ export function TripSuggestion(props) {
         />
       </View>
       <View style={styles.viex_list}>
-        <CourseElementList course={course} locations={locations}/>
+        <CourseElementList course={course} locations={locations} setLocations={setLocations} />
       </View>
       <View>
         <Modal isVisible={isModalVisible}>
