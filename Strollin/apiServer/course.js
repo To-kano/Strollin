@@ -110,7 +110,7 @@ async function createNewCourse(access_token, settings) {
 
   answer = await answer.json();
 
-  return answer;
+  return answer.course;
 
 }
 
