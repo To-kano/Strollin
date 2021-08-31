@@ -8,10 +8,15 @@ import { ShareDialog } from 'react-native-fbsdk';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 
+import FormUpdateLocationCourse from './form/FormUpdateLocationCourse';
+import FormDeleteLocationCourse from './form/FormDeleteLocationCourse';
+
 
 function CourseElement({item}) {
 
     const navigation = useNavigation();
+    const [showDeleteForm, setShowDeleteForm] = useState(false);
+    const [showUpdateForm, setShowUpdateForm] = useState(false);
 
     return (
 
@@ -75,6 +80,8 @@ function CourseElement({item}) {
                 >
                     <Image style={styles.img_share} source={require('../images/icons/white/share.png')} />
                 </TouchableOpacity>
+                <FormDeleteLocationCourse isVisible={showDeleteForm} setIsVisible={setShowDeleteForm} itemId={item.id} />
+                <FormUpdateLocationCourse isVisible={showUpdateForm} setIsVisible={setShowUpdateForm} itemId={item.id} />
             </View>
         </View>
     )

@@ -8,13 +8,30 @@ import { connect } from 'react-redux';
 import {getloc} from '../../apiServer/locations';
 import Store from '../../Store/configureStore';
 
+import LocationSelectionItem from './LocationSelectionItem';
 
-function FormLocationSelection({}) {
+
+function FormLocationSelection({setSelectedLocation}) {
 
     const [locations, setLocation] = useState([]);
-    const [selectedLocation, setSelectedLocation] = useState(null);
     const store = Store.getState();
     const access_token = store.profil.access_token;
+
+    const actionSelectedItem = (itemId) => {
+        setSelectedLocation((value) => {
+            const result = [...value, itemId];
+            return result;
+        })
+    }
+
+    const actionRemoveItem = (itemId) => {
+        setSelectedLocation((value) => {
+            const result = value.filter(function(value, index, arr){ 
+                return value != itemId;
+            });
+            return result;
+        })
+    }
 
     useEffect(() => {
         getloc(access_token)
@@ -35,11 +52,11 @@ function FormLocationSelection({}) {
                 data={locations}
                 keyExtractor={item => item.id}
                 renderItem={({ item }) => (
-                   <View>
-                       <Text>{item.name}</Text>
-                       <Text>{item.description}</Text>
-                       <Text>{item.address} {item.city}</Text>
-                   </View>
+                   <LocationSelectionItem 
+                    item={item}
+                    actionSelectedItem={actionSelectedItem}
+                    actionRemoveItem={actionRemoveItem}
+                    />
                 )}
             />
         </View>
@@ -66,7 +83,7 @@ const styles = StyleSheet.create({
       //flex: 1,
       //marginBottom: 12.5,
       //width: 330,
-      height: 179,
+      height: 379,
   
       //borderRadius: 12,
     },

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
    View, FlatList, Button,
   StyleSheet
@@ -6,18 +6,37 @@ import {
 import { connect } from 'react-redux';
 
 import Modal from '../Popup';
-
+import Store from '../../Store/configureStore';
 import FormLocationSelection from './FormLocationSelection';
 
+
+function addLocationToTrip(locationIdArray) {
+  const store = Store.getState();
+
+  const currentCourseLocation = store.course.currentCourse.locations_list;
+
+  const action = {
+    type : 'CHANGE_CURRENT_COURSE_LOCATION_PROPOSITION',
+    value : [...currentCourseLocation, ...locationIdArray]
+  }
+
+  Store.dispatch(action);
+
+
+}
+
+
 function FormAddLocationCourse({isVisible, setIsVisible}) {
+
+  const [selectedLocation, setSelectedLocation] = useState([]);
 
   return (
     <View>
         <Modal modalVisible={isVisible} setModalVisible={setIsVisible} >
           <View>
-            <FormLocationSelection/>
+            <FormLocationSelection setSelectedLocation={setSelectedLocation} />
             <Button title="ajouter cette étape du trajet" onPress={() => {
-            //console.log(deleteLocation)
+              addLocationToTrip(selectedLocation);
               setIsVisible(false);
           }} />
             <Button title="fermer cette pop-up" onPress={() => {
