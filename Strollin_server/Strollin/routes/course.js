@@ -35,9 +35,7 @@ router.post('/new_course', async function(req, res) {
     let course = null;
     let tag = null;
     let locations_list = null;
-    let param_location = null;
     let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo").catch(error => error);
-    console.log("body new course", req.body);
 
     if (!user) {
         return res.status(400).send({status: "You are not connected."});
@@ -45,8 +43,7 @@ router.post('/new_course', async function(req, res) {
     if (user.reason) {
         return res.status(400).send({status: "Error in database transaction:\n", error: user});
     }
-    param_location = req.body.locations_list.split(',');
-    locations_list = await LocationModel.find({id: {$in: param_location}}).catch(error => error)
+    locations_list = await LocationModel.find({id: {$in: req.body.locations_list}}).catch(error => error)
     if (locations_list && locations_list.reason) {
         return res.status(400).send({status: "Error in the parameters for database transaction.", locations_list});
     }
