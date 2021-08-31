@@ -96,6 +96,8 @@ async function createNewCourse(access_token, settings) {
 
   console.log("createNewCourse:", settings);
 
+  const bodyRequest = JSON.stringify(settings);
+
   let answer = await fetch(`https://${IP_SERVER}:${PORT_SERVER}/course/new_course`, {
     headers: {
       Accept: 'application/json',
@@ -103,7 +105,7 @@ async function createNewCourse(access_token, settings) {
       access_token,
     },
     method: 'POST',
-    body: settings,
+    body: bodyRequest,
   })
 
   answer = await answer.json();
