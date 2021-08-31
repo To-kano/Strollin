@@ -38,7 +38,7 @@ router.get('/generate_course', async function(req, res) {
     console.log("radius: ", req.headers.radius);
     console.log("locations_list: ", req.headers.locations_list);
     console.log("Is18: ", req.headers.is18);
-    console.log("tempTags: ", req.headers.temptags);
+    console.log("tempTags: ", req.headers.temptags,);
 
     let userTags = req.headers.tags;
     if (!user) {
@@ -58,8 +58,10 @@ router.get('/generate_course', async function(req, res) {
       //console.log("locations_list: ", locations_list);
     }
 
-    if (req.headers.temptags != "[]")
+    if (req.headers.temptags) {
+      console.log("USING TEMPORARY TAGS");
       userTags = req.headers.temptags
+    }
 
     const promise2 = algo.data.algo(req.headers.time , req.headers.budget , userTags, req.headers.coordinate, req.headers.eat, radius, placeNbr, locations_list);
     promise2.then((value) => {

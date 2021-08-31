@@ -71,6 +71,7 @@ async function test(pos, budget, hours, minutes, tags, props, eat, radius, place
   const coordinate = [];
   //const tempTags = JSON.stringify(store.CourseSettings.Temporarytags);
   var action = {};
+  var tempTags = [];
 
   coordinate[0] = pos.latitude;
   coordinate[1] = pos.longitude;
@@ -81,6 +82,10 @@ async function test(pos, budget, hours, minutes, tags, props, eat, radius, place
   console.log("radius: ", radius);
   console.log("placeNbr: ", placeNbr);
   console.log("tempTags: ", store.CourseSettings.Temporarytags);
+  console.log("tempTagsLEN: ", store.CourseSettings.Temporarytags.length);
+  if (store.CourseSettings.Temporarytags.length > 0) {
+    tempTags = store.CourseSettings.Temporarytags
+  }
   action = {
     type: 'ADD_POS',
     value: pos
@@ -140,7 +145,7 @@ async function test(pos, budget, hours, minutes, tags, props, eat, radius, place
     'radius' : radius,
     'placenbr' : placeNbr,
     'is18' : is18,
-    'temptags' : store.CourseSettings.Temporarytags
+    'temptags' : tempTags
   },
   method: 'GET',
   })

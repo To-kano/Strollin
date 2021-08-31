@@ -19,7 +19,8 @@ const initialState = {
   course: [],
   currentCourse: [],
   courseObjectHistoric: [],
-  courseLocations: []
+  courseLocations: [],
+  delete: 0
 };
 
 function CourseReducer(state = initialState, action) {
@@ -56,6 +57,13 @@ function CourseReducer(state = initialState, action) {
       nextState = {
         ...state,
         courseLocations: [action.value, ...state.course]
+        //course: action.value
+      };
+        return nextState;
+    case 'ADD_DELETE':
+      nextState = {
+        ...state,
+        delete: action.value
         //course: action.value
       };
         return nextState;

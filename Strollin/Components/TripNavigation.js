@@ -63,9 +63,16 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
     const store = Store.getState();
     //console.log("\ntes\ntzeaz\naeza\neza\nea: ", locations, "\n");
     var current = store.course.currentCourse
-    //console.log("COURSE :::::::::::::::::", current);
+    console.log("COURSE :::::::::::::::::", current);
     var list = current.locations_list;
-    locations.splice(3, 1);
+    for (var i = 0; i < list.length; i++) {
+      if (list[i] == store.course.delete) {
+        console.log("delte");
+        locations.splice(i, 1);
+        current.locations_list.splice(i, 1);
+      }
+    }
+    //locations.splice(3, 1);
     var action = { type: 'SET_CURRENT_COURSE', value: current };
     Store.dispatch(action);
     var action = { type: 'SET_LOCATIONS', locations: locations };
@@ -188,7 +195,7 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
     return (
       <View>
       <Text>
-        Are you sure you want to delete this place ?:
+        Are you sure you want to delete this place ?: {Store.getState().course.delete}
       </Text>
       <Button
         title="yes"
