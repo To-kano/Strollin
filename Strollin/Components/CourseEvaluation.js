@@ -37,7 +37,7 @@ function ratingCompleted(rating, comment, props) {
      Accept: 'application/json',
      'Content-Type': 'application/json',
      access_token: store.profil.access_token,
-     course_id: store.course.currentCourse.id,
+     course_id: store.course.courseObjectHistoric[0].id,
    },
    body: bodyRequest,
    method: 'post',
