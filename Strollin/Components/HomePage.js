@@ -109,6 +109,7 @@ export function HomePage(props) {
         />
 
       </View>
+      
       <TouchableOpacity
         onPress={() => { Linking.openURL(url) }}
         style={styles.view_form}
@@ -120,6 +121,18 @@ export function HomePage(props) {
         style={styles.view_form_text}
       >
         <Text>Accéder au formulaire</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => { Linking.openURL("https://forms.gle/CzzEjaVahZ7TdyLE6") }}
+        style={styles.view_form2}
+      >
+        <Image style={styles.img_form} source={require('../images/icons/black/form.png')} />
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => { Linking.openURL("https://forms.gle/CzzEjaVahZ7TdyLE6") }}
+        style={styles.view_form_text2}
+      >
+        <Text>Reporter un bug</Text>
       </TouchableOpacity>
     </View>
   );
@@ -141,6 +154,30 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     position: 'absolute',
     bottom:10,
+    left:10,
+    backgroundColor: '#FAC402',
+    borderRadius: 30,
+    height: 50,
+    width: 50,
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+    elevation: 6,
+  },
+  view_form_text2: {
+    position: 'absolute',
+    bottom:80,
+    left:35,
+    backgroundColor: '#fff',
+    borderRadius: 30,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    paddingLeft:30,
+    elevation: 5,
+  },
+  view_form2: {
+    flexDirection: 'row',
+    position: 'absolute',
+    bottom:70,
     left:10,
     backgroundColor: '#FAC402',
     borderRadius: 30,
