@@ -128,6 +128,13 @@ function Menu(props) {
             <Image style={styles.img_navigationIn} source={require('../images/icons/black/next_trip.png')} />
             <Text style={styles.text_navigationIn}>Position_partener</Text>
           </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => props.navigation.navigate('Guide')}
+            style={[styles.view_navigationIn, props.name == 'Guide' ? styles.current_page : {}]}
+          >
+            <Image style={styles.img_navigationIn} source={require('../images/icons/black/next_trip.png')} />
+            <Text style={styles.text_navigationIn}>Guide</Text>
+          </TouchableOpacity>
         </ScrollView>
         {/*<TouchableOpacity
           onPress={() => props.navigation.navigate('userLogin')}
