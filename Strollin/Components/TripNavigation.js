@@ -66,7 +66,7 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
     console.log("COURSE :::::::::::::::::", current);
     var list = current.locations_list;
     for (var i = 0; i < list.length; i++) {
-      if (list[i] == store.course.delete) {
+      if (list[i] == store.course.delete[0]) {
         console.log("delte");
         locations.splice(i, 1);
         current.locations_list.splice(i, 1);
@@ -195,7 +195,7 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
     return (
       <View>
       <Text>
-        Are you sure you want to delete this place ?: {Store.getState().course.delete}
+        Are you sure you want to delete this place ?: {Store.getState().course.delete[1]}
       </Text>
       <Button
         title="yes"

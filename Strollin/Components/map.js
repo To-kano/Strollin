@@ -206,7 +206,7 @@ function Map({
               const store = Store.getState();
               var action = {
                 type: 'ADD_DELETE',
-                value: marker.id
+                value: [marker.id, marker.name]
               };
               Store.dispatch(action);
             }}

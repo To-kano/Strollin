@@ -20,7 +20,7 @@ const initialState = {
   currentCourse: [],
   courseObjectHistoric: [],
   courseLocations: [],
-  delete: 0
+  delete: []
 };
 
 function CourseReducer(state = initialState, action) {
