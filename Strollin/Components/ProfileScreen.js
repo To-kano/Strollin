@@ -10,6 +10,7 @@ import I18n from '../Translation/configureTrans';
 import Store from '../Store/configureStore';
 import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 import { DrawerActions } from '@react-navigation/native';
+import {translateTags, detranslateTags} from '../Translation/translateTags'
 
 import ImageProfile from './ImageProfile';
 
@@ -170,7 +171,7 @@ function ProfileScreen(props) {
           contentContainerStyle={{ flexGrow: 1 }}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <Text style={styles.text_tagIn}>{item.name}</Text>
+            <Text style={styles.text_tagIn}>{translateTags(item.name)}</Text>
           )}
         />
       </View>
