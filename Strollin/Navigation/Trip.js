@@ -10,6 +10,7 @@ import TripNavigation from '../Components/TripNavigation';
 import CourseEvaluation from '../Components/CourseEvaluation';
 import CourseSettings from '../Components/CourseSettings';
 import LocationPage from '../Components/LocationPage';
+import FriendSelection from '../Components/FriendSelection';
 
 const Stack = createStackNavigator();
 
@@ -32,6 +33,10 @@ function Trip() {
             <Stack.Screen
                   name="TripNavigation"
                   component={TripNavigation}
+            />
+            <Stack.Screen
+                  name="FriendSelection"
+                  component={FriendSelection}
             />
             <Stack.Screen
                   name="CourseEvaluation"

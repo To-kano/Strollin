@@ -90,6 +90,7 @@ export function CourseSettings(props) {
   const [budget, setBudget] = useState('20');
   const [pos, setPos] = useState('0');
   const [isEatDrink, setEatDring] = useState(false);
+  const [isTripTogether, setTripTogether] = useState(false);
   const [radius, setRadius] = useState('3');
   const [placeNbr, setPlaceNbr] = useState('2');
 
@@ -165,6 +166,18 @@ export function CourseSettings(props) {
               Souhaitez-vous manger et boire ?
             </Text>
             <Switch value={isEatDrink} setValue={setEatDring} />
+          </View>
+        </View>
+        <View style={styles.view_option}>
+          <Text style={styles.text_option}>
+            Trajet à plusieurs
+          </Text>
+          <View style={styles.view_separator} />
+          <View style={styles.view_optionInput}>
+            <Text style={styles.text_optionInput}>
+              Partager le trajet avec vos amis ?
+            </Text>
+            <Switch value={isTripTogether} setValue={setTripTogether} />
           </View>
         </View>
       </View>
