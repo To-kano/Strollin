@@ -5,6 +5,7 @@ import {
 } from 'react-native';
 
 import Carousel from 'react-native-snap-carousel';
+import TutorialItem from './TutorialItem';
 import { DrawerActions } from '@react-navigation/native';
 
 
@@ -121,40 +122,6 @@ function Header({ props, defaultState = false }) {
 
 function TutorialPage(props) {
 
-    const _renderItem = ({item, index}) => {
-        return (
-            <View style={
-                {
-                    backgroundColor : 'red',
-                    backgroundColor:'floralwhite',
-                    borderRadius: 5,
-                    height: 520,
-                    padding: 50,
-                    margin : 25,
-                    //marginLeft: 25,
-                    //marginRight: 25,
-                }}>
-                <Text style={{
-                    fontWeight: 'bold',
-                    fontSize: 15,
-                    letterSpacing: 2,
-                    textAlign: 'center',
-                    color: '#000000',
-                    marginBottom : 10,
-                }}>{ item.title }</Text>
-                <Image style={{width : 150, height : 300}} source={item.image} />
-                <Text style={{
-                    fontSize: 12,
-                    letterSpacing: 1.4,
-                    textAlign: 'center',
-                    color: '#000000',
-                    marginTop : 20,
-                }}>{ item.description }</Text>
-            </View>
-        );
-
-    }
-
     return (
         <View style={styles.view_back} >
             <Header props={props} />
@@ -163,126 +130,7 @@ function TutorialPage(props) {
                 paddingVertical: 20,
                 height : 600
             }} >
-                <View
-                style={
-                    {
-                        //backgroundColor : 'red',
-                        backgroundColor:'white',
-                        borderRadius: 5,
-                        //height: 520,
-                        paddingVertical: 20,
-                        marginBottom : 25,
-                        //marginLeft: 25,
-                        //marginRight: 25,
-                    }}
-                >
-                    <Text style={{
-                        fontWeight: 'bold',
-                        fontSize: 25,
-                        letterSpacing: 2,
-                        textAlign: 'center',
-                        color: '#000000',
-                    }}>Title</Text>
-                    <Carousel
-                      //ref={(c) => { this._carousel = c; }}
-                      data={tutorielTags}
-                      renderItem={_renderItem}
-                      sliderWidth={400}
-                      itemWidth={300}
-                      layout={'default'}
-                      layoutCardOffset={9}
-                    />
-                </View>
-                <View
-                style={
-                    {
-                        //backgroundColor : 'red',
-                        backgroundColor:'white',
-                        borderRadius: 5,
-                        //height: 520,
-                        paddingVertical: 20,
-                        marginBottom : 25,
-                        //marginLeft: 25,
-                        //marginRight: 25,
-                    }}
-                >
-                    <Text style={{
-                        fontWeight: 'bold',
-                        fontSize: 25,
-                        letterSpacing: 2,
-                        textAlign: 'center',
-                        color: '#000000',
-                    }}>Title</Text>
-                    <Carousel
-                      //ref={(c) => { this._carousel = c; }}
-                      data={tutorielNavigation}
-                      renderItem={_renderItem}
-                      sliderWidth={400}
-                      itemWidth={300}
-                      layout={'default'}
-                      //layoutCardOffset={9}
-                    />
-                </View>
-                <View
-                style={
-                    {
-                        //backgroundColor : 'red',
-                        backgroundColor:'white',
-                        borderRadius: 5,
-                        //height: 520,
-                        paddingVertical: 20,
-                        marginBottom : 25,
-                        //marginLeft: 25,
-                        //marginRight: 25,
-                }}
-                >
-                    <Text style={{
-                        fontWeight: 'bold',
-                        fontSize: 25,
-                        letterSpacing: 2,
-                        textAlign: 'center',
-                        color: '#000000',
-                    }}>Title</Text>
-                    <Carousel
-                      //ref={(c) => { this._carousel = c; }}
-                      data={tutorielPartage}
-                      renderItem={_renderItem}
-                      sliderWidth={400}
-                      itemWidth={300}
-                      layout={'default'}
-                      layoutCardOffset={9}
-                    />
-                </View>
-                <View
-                style={
-                    {
-                        //backgroundColor : 'red',
-                        backgroundColor:'white',
-                        borderRadius: 5,
-                        //height: 520,
-                        paddingVertical: 20,
-                        marginBottom : 25,
-                        //marginLeft: 25,
-                        //marginRight: 25,
-                    }}
-                >
-                    <Text style={{
-                        fontWeight: 'bold',
-                        fontSize: 25,
-                        letterSpacing: 2,
-                        textAlign: 'center',
-                        color: '#000000',
-                    }}>Title</Text>
-                    <Carousel
-                      //ref={(c) => { this._carousel = c; }}
-                      data={tutorielCommunication}
-                      renderItem={_renderItem}
-                      sliderWidth={400}
-                      itemWidth={300}
-                      layout={'default'}
-                      layoutCardOffset={9}
-                    />
-                </View>
+                <TutorialItem title={'Tags'} data={tutorielTags}/>
             </ScrollView>
         </View>
     )
