@@ -1,10 +1,12 @@
 import React, {useState} from 'react';
 import {
-   View, Text, Button,
+   View, Text, Button, TouchableOpacity, ScrollView,
   StyleSheet, Image
 } from 'react-native';
 
 import Carousel from 'react-native-snap-carousel';
+import { DrawerActions } from '@react-navigation/native';
+
 
 const tutorielTags = [
     {
@@ -101,31 +103,218 @@ const tutorielCommunication = [
     }
 ]
 
+function Header({ props, defaultState = false }) {
+    
+      return (
+        <View style={styles.view_header}>
+          <TouchableOpacity
+            onPress={() => props.navigation.dispatch(DrawerActions.openDrawer())}
+          >
+            <Image style={styles.img_header} source={require('../../images/icons/black/menu.png')} />
+          </TouchableOpacity>
+          <Text style={styles.text_header}>
+          Guide
+          </Text>
+        </View>
+      );
+  }
 
-function TutorialPage() {
+function TutorialPage(props) {
 
     const _renderItem = ({item, index}) => {
         return (
-            <View style={{}}>
-                <Image style={{}} source={item.image} />
-                <Text style={{}}>{ item.title }</Text>
-                <Text style={{}}>{ item.description }</Text>
+            <View style={
+                {
+                    backgroundColor : 'red',
+                    backgroundColor:'floralwhite',
+                    borderRadius: 5,
+                    height: 520,
+                    padding: 50,
+                    margin : 25,
+                    //marginLeft: 25,
+                    //marginRight: 25,
+                }}>
+                <Text style={{
+                    fontWeight: 'bold',
+                    fontSize: 15,
+                    letterSpacing: 2,
+                    textAlign: 'center',
+                    color: '#000000',
+                    marginBottom : 10,
+                }}>{ item.title }</Text>
+                <Image style={{width : 150, height : 300}} source={item.image} />
+                <Text style={{
+                    fontSize: 12,
+                    letterSpacing: 1.4,
+                    textAlign: 'center',
+                    color: '#000000',
+                    marginTop : 20,
+                }}>{ item.description }</Text>
             </View>
         );
+
     }
 
     return (
-        <View>
-            <Text>TutorialPage</Text>
-            <Carousel
-              //ref={(c) => { this._carousel = c; }}
-              data={tutorielCommunication}
-              renderItem={_renderItem}
-              sliderWidth={400}
-              itemWidth={400}
-            />
+        <View style={styles.view_back} >
+            <Header props={props} />
+            <ScrollView style={{
+                backgroundColor : "blue",
+                paddingVertical: 20,
+                height : 600
+            }} >
+                <View
+                style={
+                    {
+                        //backgroundColor : 'red',
+                        backgroundColor:'white',
+                        borderRadius: 5,
+                        //height: 520,
+                        paddingVertical: 20,
+                        marginBottom : 25,
+                        //marginLeft: 25,
+                        //marginRight: 25,
+                    }}
+                >
+                    <Text style={{
+                        fontWeight: 'bold',
+                        fontSize: 25,
+                        letterSpacing: 2,
+                        textAlign: 'center',
+                        color: '#000000',
+                    }}>Title</Text>
+                    <Carousel
+                      //ref={(c) => { this._carousel = c; }}
+                      data={tutorielTags}
+                      renderItem={_renderItem}
+                      sliderWidth={400}
+                      itemWidth={300}
+                      layout={'default'}
+                      layoutCardOffset={9}
+                    />
+                </View>
+                <View
+                style={
+                    {
+                        //backgroundColor : 'red',
+                        backgroundColor:'white',
+                        borderRadius: 5,
+                        //height: 520,
+                        paddingVertical: 20,
+                        marginBottom : 25,
+                        //marginLeft: 25,
+                        //marginRight: 25,
+                    }}
+                >
+                    <Text style={{
+                        fontWeight: 'bold',
+                        fontSize: 25,
+                        letterSpacing: 2,
+                        textAlign: 'center',
+                        color: '#000000',
+                    }}>Title</Text>
+                    <Carousel
+                      //ref={(c) => { this._carousel = c; }}
+                      data={tutorielNavigation}
+                      renderItem={_renderItem}
+                      sliderWidth={400}
+                      itemWidth={300}
+                      layout={'default'}
+                      //layoutCardOffset={9}
+                    />
+                </View>
+                <View
+                style={
+                    {
+                        //backgroundColor : 'red',
+                        backgroundColor:'white',
+                        borderRadius: 5,
+                        //height: 520,
+                        paddingVertical: 20,
+                        marginBottom : 25,
+                        //marginLeft: 25,
+                        //marginRight: 25,
+                }}
+                >
+                    <Text style={{
+                        fontWeight: 'bold',
+                        fontSize: 25,
+                        letterSpacing: 2,
+                        textAlign: 'center',
+                        color: '#000000',
+                    }}>Title</Text>
+                    <Carousel
+                      //ref={(c) => { this._carousel = c; }}
+                      data={tutorielPartage}
+                      renderItem={_renderItem}
+                      sliderWidth={400}
+                      itemWidth={300}
+                      layout={'default'}
+                      layoutCardOffset={9}
+                    />
+                </View>
+                <View
+                style={
+                    {
+                        //backgroundColor : 'red',
+                        backgroundColor:'white',
+                        borderRadius: 5,
+                        //height: 520,
+                        paddingVertical: 20,
+                        marginBottom : 25,
+                        //marginLeft: 25,
+                        //marginRight: 25,
+                    }}
+                >
+                    <Text style={{
+                        fontWeight: 'bold',
+                        fontSize: 25,
+                        letterSpacing: 2,
+                        textAlign: 'center',
+                        color: '#000000',
+                    }}>Title</Text>
+                    <Carousel
+                      //ref={(c) => { this._carousel = c; }}
+                      data={tutorielCommunication}
+                      renderItem={_renderItem}
+                      sliderWidth={400}
+                      itemWidth={300}
+                      layout={'default'}
+                      layoutCardOffset={9}
+                    />
+                </View>
+            </ScrollView>
         </View>
     )
 }
 
 export default TutorialPage;
+
+const styles = StyleSheet.create({
+    view_back: {
+      //flex: 1,
+      flexDirection: 'column',
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+      backgroundColor: '#E1E2E7',
+    },
+    view_header: {
+      //flex: 50,
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor : 'green',
+      marginBottom: 10,
+    },
+    img_header: {
+      width: 34,
+      resizeMode: 'contain',
+    },
+    text_header: {
+      width: '77.8%',
+      fontWeight: 'bold',
+      fontSize: 28,
+      letterSpacing: 2,
+      textAlign: 'center',
+      color: '#000000',
+    },
+  });
