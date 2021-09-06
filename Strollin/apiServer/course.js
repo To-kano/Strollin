@@ -12,7 +12,7 @@ import {
 async function getCustomCourse(access_token) {
   //console.log("getCustomCourse(): ", access_token);
 
-  let answer = await fetch(`https://${IP_SERVER}:${PORT_SERVER}/course/get_course`, {
+  let answer = await fetch(`http://${IP_SERVER}:${PORT_SERVER}/course/get_course`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -38,7 +38,7 @@ exports.getCustomCourse = getCustomCourse;
 async function getCourseById(access_token, id) {
   //console.log("getCourseById(): ", access_token, id);
 
-  let answer = await fetch(`https://${IP_SERVER}:${PORT_SERVER}/course/get_courses_by_id`, {
+  let answer = await fetch(`http://${IP_SERVER}:${PORT_SERVER}/course/get_courses_by_id`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -74,7 +74,7 @@ async function generateCourse(access_token, settings) {
   buffer.time = time;
   buffer.coordinate = coordinate;
 
-  let answer = await fetch(`https://${IP_SERVER}:${PORT_SERVER}/generator/generate_course`, {
+  let answer = await fetch(`http://${IP_SERVER}:${PORT_SERVER}/generator/generate_course`, {
     headers: {
       ...buffer,
       Accept: 'application/json',
@@ -98,7 +98,7 @@ async function createNewCourse(access_token, settings) {
 
   const bodyRequest = JSON.stringify(settings);
 
-  let answer = await fetch(`https://${IP_SERVER}:${PORT_SERVER}/course/new_course`, {
+  let answer = await fetch(`http://${IP_SERVER}:${PORT_SERVER}/course/new_course`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',

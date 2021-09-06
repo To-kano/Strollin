@@ -22,7 +22,7 @@ async function PopUpReq(pos, course) {
   coordinate[0] = pos.latitude;
   coordinate[1] = pos.longitude;
 
-  await fetch(`https://${IP_SERVER}:${PORT_SERVER}/generator/generate_popup`, {
+  await fetch(`http://${IP_SERVER}:${PORT_SERVER}/generator/generate_popup`, {
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json',

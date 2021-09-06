@@ -43,7 +43,7 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
     coordinate[1] = pos.longitude;
 
   //console.log("\n*\n*\n*\n*", locations[0])
-    await fetch(`https://${IP_SERVER}:${PORT_SERVER}/generator/popup_answer`, {
+    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/generator/popup_answer`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -63,7 +63,7 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
     if (response == false)
       return
     //update course
-    await fetch(`https://${IP_SERVER}:${PORT_SERVER}/location/get_locations_by_id`, {
+    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/get_locations_by_id`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -94,7 +94,7 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
     coordinate[0] = pos.latitude;
     coordinate[1] = pos.longitude;
 
-    await fetch(`https://${IP_SERVER}:${PORT_SERVER}/generator/generate_popup`, {
+    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/generator/generate_popup`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',

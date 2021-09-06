@@ -8,7 +8,7 @@ import profileReducer from '../Store/Reducers/profileReducer';
 import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 
 const SocketContext = createContext();
-const ENDPOINT = `https://${IP_SERVER}:${PORT_SERVER}`;//3000 pour Tony
+const ENDPOINT = `http://${IP_SERVER}:${PORT_SERVER}`;//3000 pour Tony
 import AsyncStorage from '@react-native-community/async-storage';
 
 

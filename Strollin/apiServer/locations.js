@@ -9,7 +9,7 @@ async function getLocationByID(access_token, id) {
   //  return getLocationCacheById(id);
   //}
 
-   let answer = await fetch(`https://${IP_SERVER}:${PORT_SERVER}/location/get_locations_by_id`, {
+   let answer = await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/get_locations_by_id`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -30,8 +30,8 @@ async function getLocationByID(access_token, id) {
 exports.getLocationByID = getLocationByID;
 
 async function getLocationByIDList(access_token, id_list) {
-  
-     let answer = await fetch(`https://${IP_SERVER}:${PORT_SERVER}/location/get_locations_by_id`, {
+
+     let answer = await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/get_locations_by_id`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -40,18 +40,18 @@ async function getLocationByIDList(access_token, id_list) {
       },
       method: 'GET',
     })
-  
+
     answer = await answer.json();
-  
+
     return answer.locations_list;
-  
+
   }
 
   exports.getLocationByIDList = getLocationByIDList;
 
 async function getloc(access_Token) {
 //console.log("getloc(): ", access_Token);
-   return fetch(`https://${IP_SERVER}:${PORT_SERVER}/location/get_locations`, {
+   return fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/get_locations`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',

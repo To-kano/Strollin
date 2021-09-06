@@ -62,7 +62,7 @@ export function Tag({ name, chosen, defaultState = false }) {
     const list = [body];
     const test = JSON.stringify({ tags_list: list });
 
-    await fetch(`https://${IP_SERVER}:${PORT_SERVER}/users/add_tag`, {
+    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/add_tag`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -140,7 +140,7 @@ export function TagSelection({ navigation, profil }) {
   }
 
   async function getUserTags(List) {
-    await fetch(`https://${IP_SERVER}:${PORT_SERVER}/users/get_own_profile`, {
+    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/get_own_profile`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -157,7 +157,7 @@ export function TagSelection({ navigation, profil }) {
   }
 
   async function getThings() {
-    await fetch(`https://${IP_SERVER}:${PORT_SERVER}/tag/get_tag`, {
+    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/tag/get_tag`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
