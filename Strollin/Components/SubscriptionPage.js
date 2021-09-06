@@ -1,50 +1,198 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import {
-  View, StyleSheet, Image, Text, TouchableOpacity, ImageBackground, FlatList,
+  Button, View, StyleSheet, Image, Text, TouchableOpacity, ImageBackground, FlatList,
 } from 'react-native';
 import { DrawerActions } from '@react-navigation/native';
 import { ScrollView } from 'react-native-gesture-handler';
 import I18n from '../Translation/configureTrans';
 
 
-function SubscriptionPage({route, navigation}) {
-    const {location} = route.params;
-    console.log("Location Infos: \n", location);
+function SubscriptionPage({navigation, profil}) {
+
+  const [ confirmAction, setConfirmAction ] = useState(0);
+
+  return (
+    <View style={styles.view_back}>
+      <View style={styles.view_header}>
   
-    return (
-      <View style={styles.view_back}>
-        <View style={styles.view_header}>
-  
-          <TouchableOpacity onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
-            <Image style={styles.img_header} source={require('../images/icons/black/menu.png')} />
-          </TouchableOpacity>
-          <Text style={styles.text_header}>
-            {I18n.t('Header.partner')}
-            {'   '}
+        <TouchableOpacity onPress={() => {
+          setConfirmAction(0);
+          navigation.dispatch(DrawerActions.openDrawer())}}
+        >
+          <Image style={styles.img_header} source={require('../images/icons/black/menu.png')} />
+        </TouchableOpacity>
+        <Text style={styles.text_header}>
+          {"Subscription"}
+          {'   '}
+        </Text>
+      </View>
+
+      {/* Page 0 + Non abonné */}
+      {confirmAction === 0 && profil.partner === false && (<>
+        <View style={styles.view_subscription_page}>
+          <Text style={styles.subscription_text_price}>
+            {"2€ / Month"}
+          </Text>
+          <Text style={styles.subscription_text}>
+              {"\t\t\t\tStrollin' is a good way to give more promotion to your location and to get potentially new customers. Subscribing to Strollin' will give the next advantages:"}
+              {"\n\n\t\t- Your location will be more often selected during courses generation"}
+              {"\n\n\t\t- Your location will be promoted via pop up during courses when users pass near and have corresponding tags"}
+          </Text>
+          <Text style={styles.subscription_text_state}>
+            {"You are not subscribed"}
           </Text>
         </View>
-        <View style={styles.view_subscription_page}>
-          <Text style={styles.subscription_title}>{"Subscription Page"}</Text>
-
-          {/* Check si déjà partenaire ou non :
-          Si oui afficher message de confirmation + potentiellement date de fin,
-          si Non, afficher les avantages */}
-          <View style={styles.subscription_text_view}>
-            <Text style={styles.subscription_text}>
-              {"Strollin' is a good way to give more promotion to your location and to get potentially new customers. Subscribing to Strollin' will give the next advantages:"}
-              {"\t- Your location will be more often selected during courses generation"}
-              {"\t- Your location will be promoted via pop up during courses when users pass near and have corresponding tags"}
-            </Text>
-          </View>
-
-          {/* Si oui, mettre bouton stopper l'abonnement
-          Si Non, mettre un bouton s'abonner qui change la page en page de préparation d'abonnement*/}
+        <View style={styles.subscription_button_view}>
+          <Button
+            title="Go to Website"
+            onPress={() => {
+            }}
+          />
         </View>
-      </View>
-    );
+      </>)}
+
+      {/* Page 1 + Non abonné */}
+      {/* {confirmAction === 1 && profil.partner === false && (<>
+        <View style={styles.view_subscription_page}>
+          <Text style={styles.subscription_text_price}>
+            {"2€ / Month"}
+          </Text>
+        </View>
+        <View style={styles.subscription_button_view}>
+          <Button
+            title="Confirm Subscription"
+            onPress={() => {
+              // Subscription
+              // if answer === ok
+              setConfirmAction(2);
+            }}
+          />
+        </View>
+      </>)} */}
+
+      {/* Page 2 + Non abonné */}
+      {/* {confirmAction === 2 && profil.partner === false && (<>
+        <View style={styles.view_subscription_page}>
+          <Text style={styles.subscription_text_price}>
+            {"Congratulation!"}
+          </Text>
+          <Text style={styles.subscription_text}>
+              {"\t\t\t\tYou are now subscribed. The debit will be made every month until you choose to stop your subscription."}
+              {"\n\n\t\t- Your location will be more often selected during courses generation"}
+              {"\n\n\t\t- Your location will be promoted via pop up during courses when users pass near and have corresponding tags"}
+          </Text>
+          <Text style={styles.subscription_text_state}>
+            {"Thank you!"}
+          </Text>
+        </View>
+        <View style={styles.subscription_button_view}>
+          <Button
+            title="Subscribe"
+            onPress={() => {
+              // createCustomer request
+              // if answer === ok
+              setConfirmAction(true);
+            }}
+          />
+        </View>
+      </>)} */}
+
+
+      {/* Page 0 + abonné */}
+      {confirmAction === 0 && profil.partner === true && (<>
+        <View style={styles.view_subscription_page}>
+          <Text style={styles.subscription_text_price}>
+            {"2€ / Month"}
+          </Text>
+          <Text style={styles.subscription_text}>
+              {"\t\t\t\tStrollin' is a good way to give more promotion to your location and to get potentially new customers. Subscribing to Strollin' will give the next advantages:"}
+              {"\n\n\t\t- Your location will be more often selected during courses generation"}
+              {"\n\n\t\t- Your location will be promoted via pop up during courses when users pass near and have corresponding tags"}
+          </Text>
+          <Text style={styles.subscription_text_state}>
+            {"You are subscribed"}
+          </Text>
+        </View>
+        <View style={styles.subscription_button_view}>
+          <Button
+            title="Stop Subscription"
+            onPress={() => {
+              // createCustomer request
+              // if answer === ok
+              setConfirmAction(true);
+            }}
+          />
+        </View>
+      </>)}
+
+      {/* Page 1 + abonné */}
+      {confirmAction === 1 && profil.partner === true && (<>
+        <View style={styles.view_subscription_page}>
+          <Text style={styles.subscription_text_price}>
+            {" "}
+          </Text>
+          <Text style={styles.subscription_text}>
+              {"\t\t\t\tUnsubscribe to Strollin will stop debiting your account and you will still considerated as subscribed until the end of the last period you paid."}
+              {"\nYou will stop getting the advantages given to your location"}
+          </Text>
+          <Text style={styles.subscription_text_state}>
+            {"Are you sure you want to stop your subscription ?"}
+          </Text>
+        </View>
+        <View style={styles.subscription_button_view}>
+          <Button
+            title="Confirm Unsubscription"
+            onPress={() => {
+              // createCustomer request
+              // if answer === ok
+              setConfirmAction(true);
+            }}
+          />
+        </View>
+      </>)}
+
+      {/* Page 2 + abonné */}
+      {confirmAction === 2 && profil.partner === false && (<>
+        <View style={styles.view_subscription_page}>
+          <Text style={styles.subscription_text_price}>
+            {"2€ / Month"}
+          </Text>
+          <Text style={styles.subscription_text}>
+              {"\t\t\t\tStrollin' is a good way to give more promotion to your location and to get potentially new customers. Subscribing to Strollin' will give the next advantages:"}
+              {"\n\n\t\t- Your location will be more often selected during courses generation"}
+              {"\n\n\t\t- Your location will be promoted via pop up during courses when users pass near and have corresponding tags"}
+          </Text>
+          <Text style={styles.subscription_text_state}>
+            {"You are not subscribed"}
+          </Text>
+        </View>
+        <View style={styles.subscription_button_view}>
+          <Button
+            title="Subscribe"
+            onPress={() => {
+              // createCustomer request
+              // if answer === ok
+              setConfirmAction(true);
+            }}
+          />
+        </View>
+      </>)}
+
+
+    </View>
+  );
 }
-  
+
+const mapStateToProps = (state) => {
+  return (
+    {
+      profil: state.profil,
+    }
+  )
+};
+export default connect(mapStateToProps)(SubscriptionPage)
+
 const styles = StyleSheet.create({
   view_back: {
     flex: 1,
@@ -58,7 +206,6 @@ const styles = StyleSheet.create({
     paddingBottom: '0%',
   },
   view_header: {
-    flex: 50,
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 10,
@@ -76,24 +223,32 @@ const styles = StyleSheet.create({
     color: '#000000',
   },
   view_subscription_page: {
-    // height: 687,
-    width: '100%',
-  },
-  subscription_title: {
-    textAlign: 'center',
-    fontSize: 18,
-  },
-  subscription_text_view: {
-    width: '100%',
-    marginLeft: 10,
-    flex: 1
+    marginTop: 50,
+    width: '90%',
+    height: '70%',
   },
   subscription_text: {
     textAlign: 'justify',
-    fontSize: 12,
+    fontWeight: 'bold',
+    fontSize: 15,
+  },
+  subscription_text_price: {
+    textAlign: 'center',
+    fontWeight: 'bold',
+    fontSize: 25,
+    marginBottom: 50,
+  },
+  subscription_text_state: {
+    textAlign: 'center',
+    fontWeight: 'bold',
+    fontSize: 20,
+    marginTop: 80,
+  },
+  subscription_button_view: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    marginBottom: 20,
+    width: '80%',
   },
 });
-  
-  const mapStateToProps = (state) => state;
-  export default connect(mapStateToProps)(SubscriptionPage);
   

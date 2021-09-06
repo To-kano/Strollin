@@ -137,7 +137,7 @@ function Menu(props) {
             style={[styles.view_navigationIn, props.name == 'Subscription' ? styles.current_page : {}]}
           >
             <Image style={styles.img_navigationIn} source={require('../images/icons/black/next_trip.png')} />
-            <Text style={styles.text_navigationIn}>Position_partener</Text>
+            <Text style={styles.text_navigationIn}>Subscription</Text>
           </TouchableOpacity>
 
         </ScrollView>

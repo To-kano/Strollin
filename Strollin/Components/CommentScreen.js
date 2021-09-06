@@ -9,7 +9,7 @@ import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 import { StackActions } from '@react-navigation/native';
 import React, {useState} from 'react';
 
-async function getCommentList(props, setCommentList, store, setLoading) {
+async function getCommentList(props, setCommentList, store) {
   await fetch(`https://${IP_SERVER}:${PORT_SERVER}/comment/get_comment_by_id`, {
     headers: {
       Accept: 'application/json',
@@ -23,10 +23,8 @@ async function getCommentList(props, setCommentList, store, setLoading) {
     setCommentList(answer["comments_list"])
     console.log("comment = ", store.comment.selectedCourse.comments_list)
   })
-  .then(setLoading(false))
   .catch((error) => {
     console.error('error :', error);
-    setLoading(false);
   });
 
 }
@@ -71,10 +69,9 @@ export function Header(props) {
 function CommentScreen(props) {
   const store = Store.getState();
   const [commentList, setCommentList] = useState(null);
-  const [isLoading, setLoading] = React.useState(true);
 
   if (!commentList) {
-    getCommentList(props, setCommentList, store, setLoading);
+    getCommentList(props, setCommentList, store);
   }
   //const DATA = require('./test.json');
   return (
@@ -88,15 +85,6 @@ function CommentScreen(props) {
           keyExtractor={(item) => String(item.id)}
         />
       </View>
-      <Modal
-        animationType="none"
-        transparent={true}
-        visible={isLoading}
-      >
-        <View style={styles.loading_screen}>
-          <ActivityIndicator size="large"  color="black" style={{}}/>        
-        </View>
-      </Modal>
     </View>
   );
 }
@@ -146,10 +134,4 @@ const styles = StyleSheet.create({
     flex: 757,
     width: '100%',
   },
-  loading_screen: {
-    backgroundColor:'rgba(100,100,100,0.75)',
-    display: "flex",
-    justifyContent: 'space-around',
-    height: '100%'
-  }
 });
