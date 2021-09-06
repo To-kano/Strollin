@@ -425,7 +425,7 @@ router.post('/add_historic', async function (req, res) {
 /**
  * Add a course into the favorite of the user.
  * @param {String} req.headers.access_token
- * 
+ *
  * @param {String} req.body.course
  */
  router.post('/add_favorite', async function (req, res) {
@@ -529,7 +529,7 @@ router.post('/remove_friend', async function (req, res) {
   if (error.errors) {
     return res.status(400).send({ status: "Error in database transaction:\n", error: user });
   }
-  
+
   user = await UserModel.findOne({ access_token: req.headers.access_token}, "id pseudo course_favorites").catch(error => error);
   if (user.reason) {
     return res.status(400).send({ status: "Error in database transaction:\n", error: user });
@@ -566,7 +566,7 @@ router.get('/login', async function (req, res) {
   let error = undefined;
   let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   let blacklist = await BlacklistModel.findOne({ ip: ip }).catch(error => error);
-  
+
 
 
 
