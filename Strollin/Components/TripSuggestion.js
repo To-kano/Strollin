@@ -174,6 +174,9 @@ export function TripSuggestion(props) {
 
   const locationModal = {locations: []}
   let locationTmp = locationModal
+  const [course, setCourse] = useState(null);
+  const [locations, setLocations] = useState(null);
+  const [testo, setTesto] = useState(false); //PLEASE DO NOT DELETE
 
   async function getLocations2() {
     const result = await getArrayLocation(props.profil.access_token, course.locations_list)
@@ -187,10 +190,10 @@ export function TripSuggestion(props) {
     locationTmp.locations = locationsSet
     carouselItem.carouselItems.push(locationTmp)
     console.log("\n\n coucou \n\n",locationTmp," \n\n\n\n")
+    console.log("carousselItem: ", carouselItem.carouselItems);
     setCarrousel(carouselItem)
+    setTesto(!testo) //PLEASE DO NOT DELETE
   }
-  const [course, setCourse] = useState(null);
-  const [locations, setLocations] = useState(null);
 
   useEffect(() => {
     Tts.setDefaultLanguage('en-US');
@@ -243,7 +246,7 @@ export function TripSuggestion(props) {
     setModalVisible(!isModalVisible);
   };
 
-  function getNameFunction() {
+  function getNameFunction(result) {
     setDelLocations(locations_tmp)
     let name = ""
     locations_name.forEach((item) => {
@@ -261,7 +264,8 @@ export function TripSuggestion(props) {
     if (name != "")
       toggleModal()
     else {
-        setLocationsCarrousel(locations)
+      console.log("elese: ", result);
+        setLocationsCarrousel(result)
     }
 
     /*if (confirm("Do you want to save changes?") == true) {
@@ -298,7 +302,7 @@ export function TripSuggestion(props) {
         })
         .finally(() => {
           if (i == result.length - 1) {
-            getNameFunction()
+            getNameFunction(result)
           }});
         })};
 
@@ -472,8 +476,8 @@ function testrenderItem({item,index}){
             useScrollView={true}
             renderItem={_renderItem}
             onSnapToItem = { index => {
-              carouselItem.activeIndex = index
-              console.log(carouselItem.activeIndex)
+              carouselItemFinal.activeIndex = index
+              console.log(carouselItemFinal.activeIndex)
             }} />
       </View>
       <View>
@@ -496,7 +500,7 @@ function testrenderItem({item,index}){
       <TouchableOpacity
         style={styles.view_button}
         onPress={() => {
-          let finalLocations = carouselItem.carouselItems[carouselItem.activeIndex].locations
+          let finalLocations = carouselItemFinal.carouselItems[carouselItemFinal.activeIndex].locations
           const action = { type: 'SET_WAYPOINTS', course: course, locations: finalLocations };
           props.dispatch(action);
           //registerCourse(props.profil.access_token);
