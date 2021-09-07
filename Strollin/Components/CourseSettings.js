@@ -45,7 +45,7 @@ async function confirmeSettings(pos, budget, hours, minutes, props, eat, radius,
   const tags = store.profil.tags_list;
   const access_token = store.profil.access_token;
   var tempTags = [];
-  
+
   if (store.CourseSettings.Temporarytags.length > 0) {
     tempTags = store.CourseSettings.Temporarytags
   }
@@ -60,14 +60,17 @@ async function confirmeSettings(pos, budget, hours, minutes, props, eat, radius,
     tags : tags,
     locations_list: 0,
     is18: is18,
-    tempTags: tempTags
+    tempTags: tempTags,
+    friendstags: store.CourseSettings.friendstags
   }
 
+  console.log("friendscourse: ", store.CourseSettings.friendstags);
   let action = {
     type: 'SET_COURSE_SETTINGS',
     value: settings
   };
   Store.dispatch(action);
+
 
   const result = await generateCourse(access_token, settings);
 
@@ -230,6 +233,17 @@ export function CourseSettings(props) {
               Partager le trajet avec vos amis ?
             </Text>
             <Switch value={isTripTogether} setValue={setTripTogether} />
+            <TouchableOpacity
+              id="test"
+              style={styles.ButtonTags}
+              onPress={() => {
+                props.navigation.navigate("FriendSelection");
+              }}
+            >
+              <Text style={styles.text_newTrip}>
+                Chose Friends
+              </Text>
+            </TouchableOpacity>
           </View>
           <Text style={styles.text_option}>
             "Restriction d'age"
@@ -357,6 +371,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 12,
     height: 45,
+    marginTop: 12.5,
+    marginBottom: 35.5,
+    backgroundColor: '#0092A7',
+  },
+  ButtonTags: {
+    flex: 50,
+    width: '50%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 12,
+    height: '100%',
     marginTop: 12.5,
     marginBottom: 35.5,
     backgroundColor: '#0092A7',

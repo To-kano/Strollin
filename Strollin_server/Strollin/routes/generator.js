@@ -20,6 +20,8 @@ const {
  * @param {String} req.headers.placenbr
  * @param {[String]} req.headers.locations_list
  * @param {String} req.headers.is18
+ * @param {String} req.headers.temptags
+ * @param {String} req.headers.friendstags
  */
 router.get('/generate_course', async function(req, res) {
 
@@ -38,8 +40,10 @@ router.get('/generate_course', async function(req, res) {
     console.log("radius: ", req.headers.radius);
     console.log("locations_list: ", req.headers.locations_list);
     console.log("Is18: ", req.headers.is18);
-    console.log("tempTags: ", req.headers.temptags,);
+    console.log("tempTags: ", req.headers.temptags);
+    console.log("friendtags: ", req.headers.friendstags);
 
+    let friendstags = req.headers.friendstags;
     let userTags = req.headers.tags;
     if (!user) {
         return res.status(400).send({status: "You are not connected."});
@@ -62,7 +66,18 @@ router.get('/generate_course', async function(req, res) {
       console.log("USING TEMPORARY TAGS");
       userTags = req.headers.temptags
     }
+    console.log("pk:", friendstags);
+    if (friendstags) {
+      friendstags = friendstags.concat(",")
+      friendstags = friendstags.concat(userTags)
+      var friendsArray = friendstags.split(',')
+      console.log("oui");
+      const uniqueset = new Set(friendsArray)
+      console.log("uniqueset: ", uniqueset);
+      userTags = friendsArray.join(',')
+    }
 
+    console.log("userTags: ", userTags);
     const promise2 = algo.data.algo(req.headers.time , req.headers.budget , userTags, req.headers.coordinate, req.headers.eat, radius, placeNbr, locations_list);
     promise2.then((value) => {
       let generated_course = value;

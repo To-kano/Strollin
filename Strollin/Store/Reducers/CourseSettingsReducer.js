@@ -8,7 +8,8 @@ const initialState = {
   placeNbr: 0,
   tags: 0,
   is18: 0,
-  Temporarytags: 0
+  Temporarytags: 0,
+  friendstags: []
 };
 
 function CourseSettingsReducer(state = initialState, action) {
@@ -84,6 +85,12 @@ function CourseSettingsReducer(state = initialState, action) {
       nextState = {
         ...state,
         Temporarytags: action.value
+      };
+      return nextState;
+      case 'ADD_FRIENDSTAGS':
+      nextState = {
+        ...state,
+        friendstags: action.value
       };
       return nextState;
     default:

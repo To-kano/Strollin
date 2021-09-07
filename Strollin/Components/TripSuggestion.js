@@ -179,7 +179,25 @@ export function TripSuggestion(props) {
   const [testo, setTesto] = useState(false); //PLEASE DO NOT DELETE
 
   async function getLocations2() {
-    const result = await getArrayLocation(props.profil.access_token, course.locations_list)
+    const store = Store.getState();
+    const access_Token = store.profil.access_token;
+    const settings = {
+      pos : store.CourseSettings.pos,
+      budget : store.CourseSettings.budget,
+      hours : store.CourseSettings.hours,
+      minutes : store.CourseSettings.minutes,
+      eat : store.CourseSettings.eat,
+      radius : store.CourseSettings.radius,
+      placeNbr : store.CourseSettings.placeNbr,
+      tags : store.CourseSettings.tags,
+      locations_list: store.course.currentLocationProposition,
+      is18: store.CourseSettings.is18,
+      tempTags: store.CourseSettings.tempTags,
+      friendstags: store.CourseSettings.friendstags
+    }
+    console.log("Settings: ", settings);
+    const test = await generateCourse(access_Token, settings);
+    const result = await getArrayLocation(props.profil.access_token, test.course.locations_list)
     setLocations(result);
     //setLocationsCarrousel(result)
     check_open(result)
