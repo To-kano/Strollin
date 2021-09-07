@@ -28,7 +28,6 @@ services:
       - db
   server:
     build: ./Strollin
-    #image: server
     container_name: server-Strollin
     networks:
       - backend

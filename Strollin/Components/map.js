@@ -22,12 +22,12 @@ export async function updateCoordinates(setUserPosition) {
         latitude: position.coords.latitude,
         longitude: position.coords.longitude,
       };
-      console.log("pritn de pierre: ", position);
+    //console.log("pritn de pierre: ", position);
       setUserPosition(data);
       return
     },
     (error) => {
-       console.log(error.code, error.message);
+     //console.log(error.code, error.message);
     },
     { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
   );
@@ -102,8 +102,8 @@ function Map({
   //console.log("parcoure\n", destinations.slice(0, destinations.length - 1));
 
   /*useEffect(() => {
-    console.log("i'm here")
-    console.log(ts)
+  //console.log("i'm here")
+  //console.log(ts)
   }, []) */
 
   useEffect(() => {
@@ -134,8 +134,8 @@ function Map({
 
   async function setTimedestinations() {
     const tmp = await Date.now();
-    console.log('________________________');
-    console.log(tmp);
+  //console.log('________________________');
+  //console.log(tmp);
 
     const action = { type: 'SET_TIME', value: tmp };
     dispatch(action);

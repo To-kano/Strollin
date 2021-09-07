@@ -19,7 +19,7 @@ function randPic() {
   return (require('../ressources/street1.jpg'));
 }
 
-/*function getLocation() {
+function getLocation() {
   const location1 =
   {
     "_id":{"$oid":"5ff31d40977cba001e801bfa"},
@@ -49,29 +49,23 @@ function randPic() {
   }
 
   return location1;
-}*/
+}
 
-/*function getArrayLocation(idLocations) {
+function getArrayLocation(idLocations) {
   let result = [];
   for (let i = 0; i < idLocations.length; i++) {
     result.push(getLocation());
   }
 
   return result
-}*/
+}
 
-function ElementHistoryNav({ course, locations, defaultSate = false }) {
+function SugestionElement({ course, locations}) {
   const navigation = useNavigation();
 
   //const messagetext = `Strollin' m'a proposé un trajet ! \nRejoignons nous a ${getLocation().name} au ${getLocation().address} à ${getLocation().city} !`;
-  const [showMap, setShowMap] = useState(defaultSate);
 
-  const deltaView = {
-    latitudeDelta: 0.1622,
-    longitudeDelta: 0.1021,
-  };
 
-  if (showMap === false) {
     return (
       <View style={styles.view_back}>
         <FlatList
@@ -134,70 +128,6 @@ function ElementHistoryNav({ course, locations, defaultSate = false }) {
         />
       </View>
     );
-  }
-  return (
-    <View style={{
-      margin: 1, flex: 0.9, alignItems: 'center', justifyContent: 'space-evenly'
-    }}
-    >
-      <View />
-      <View style={{ width: '100%', flexDirection: 'row', flex: 0.6 }}>
-        <View style={{ flex: 1, marginLeft: '5%', marginRight: '5%' }}>
-          <Button
-            id={"button map"}
-            title={I18n.t('HistoryElement.showStep')}
-            color="#89B3D9"
-            onPress={() => setShowMap(!showMap)}
-          />
-        </View>
-      </View>
-      <View style={{ width: '100%', flexDirection: 'row', flex: 6 }}>
-        <View style={{ marginTop: 20, marginBottom: 10, marginLeft: -4 }}>
-          <Map height={310} width={310} deltaView={deltaView} course={course} locations={locations}/>
-        </View>
-      </View>
-      <View style={{ width: '100%', flexDirection: 'row', flex: 0.4 }}>
-        <View style={{ flex: 0.66, marginLeft: '2%', marginRight: '2%' }}>
-          <Button
-          id={"button share 1"}
-            onPress={() => {
-              //const shareLinkContent = {
-              //  contentType: 'link',
-              //  contentUrl: 'https://www.google.com',
-              //  quote: messagetext,
-              //};
-              //ShareDialog.show(shareLinkContent);
-            }}
-            title={I18n.t('HistoryElement.PublishOnFacebook')}
-            color="#3b5998"
-            accessibilityLabel="Share"
-          />
-        </View>
-        <View style={{ flex: 0.33, marginLeft: '2%', marginRight: '2%' }}>
-          <Button
-          id={"button share 2"}
-            onPress={() => {
-              //Share.share({
-              //  message: messagetext,
-              //  title: "Sortir avec Strollin'",
-              //  url: 'https://www.google.com',
-              //}, {
-              //  // Android only:
-              //  dialogTitle: 'Share Strollin travel',
-              //  // iOS only:
-              //  excludedActivityTypes: [
-              //    'com.apple.UIKit.activity.PostToTwitter'
-              //  ]
-              //});
-            }}
-            title={I18n.t('HistoryElement.Share')}
-            color="#3b5998"
-            accessibilityLabel="Share"
-          />
-        </View>
-      </View>
-    </View>
-  );
 }
 
 const styles = StyleSheet.create({
@@ -282,4 +212,4 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => state;
-export default connect(mapStateToProps)(ElementHistoryNav);
+export default connect(mapStateToProps)(SugestionElement);

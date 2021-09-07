@@ -3,7 +3,7 @@ import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 
 async function getImageId(id) {
 
-    console.log("id getImageId : ", id);
+  //console.log("id getImageId : ", id);
     let answer = await fetch(`http://${IP_SERVER}:${PORT_SERVER}/image/id`, {
         headers: {
             Accept: 'application/json',
@@ -16,10 +16,10 @@ async function getImageId(id) {
     answer = await answer.json();
 
     if (answer.image) {
-        console.log("image answer = : ", answer);
+      //console.log("image answer = : ", answer);
         return answer.image;
     } else {
-        console.log('fetch image by id failled: ', answer.error);
+      //console.log('fetch image by id failled: ', answer.error);
         return null;
     }
 }

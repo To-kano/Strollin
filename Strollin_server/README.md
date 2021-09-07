@@ -291,7 +291,7 @@ The object Location represents the locations used in courses. It is also used fo
 - pop_disp `String`
 - pop_ag `String`
 - alg_disp `String`
-- alg_disp `String`
+- alg_ag `String`
 - food `Boolean`
 
 <br>

@@ -13,7 +13,7 @@ function SendCourseItem(props) {
   const {sendCourse} = contextSocket();
   const navigation = useNavigation();
 
-  console.log("props.courseObject", props.courseObject);
+//console.log("props.courseObject", props.courseObject);
   return (
     <View style={{
       marginVertical: "5%", marginHorizontal: '10%', backgroundColor: 'rgba(255,255,255, 0.9)', borderRadius: 20

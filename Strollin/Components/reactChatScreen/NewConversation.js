@@ -52,7 +52,7 @@ function sortConversation(key) {
   }
 }
 
-export function Header({ props, defaultState = false }) {
+function Header({ props, defaultState = false }) {
   const {createConversation} = contextSocket();
 
   return (

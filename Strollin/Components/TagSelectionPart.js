@@ -10,7 +10,7 @@ import I18n from '../Translation/configureTrans';
 import Store from '../Store/configureStore';
 import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 
-export function Header({ navigation, defaultState = false }) {
+function Header({ navigation, defaultState = false }) {
   const [pressed, setpressed] = useState(defaultState);
 
   if (pressed === false) {
@@ -62,9 +62,9 @@ export function Tag({ name, chosen, defaultState = false, Id, Tags}) {
 
 
     list.push({_id: body, dips: 0})
-    console.log("list: ", list);
+  //console.log("list: ", list);
     const test = JSON.stringify({ tags_list: list });
-    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/update_location`, {
+    await fetch(`http{IP_SERVER}:${PORT_SERVER}/location/update_location`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -92,9 +92,9 @@ export function Tag({ name, chosen, defaultState = false, Id, Tags}) {
         break;
       }
     }
-    console.log("list: ", list);
+  //console.log("list: ", list);
     const test = JSON.stringify({ tags_list: list });
-    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/update_location`, {
+    await fetch(`http{IP_SERVER}:${PORT_SERVER}/location/update_location`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -110,7 +110,7 @@ export function Tag({ name, chosen, defaultState = false, Id, Tags}) {
   }
 
   useEffect(() => {
-    console.log('hola');
+  //console.log('hola');
     setpressed(chosen);
   }, []);
 
@@ -131,7 +131,7 @@ export function Tag({ name, chosen, defaultState = false, Id, Tags}) {
       <TouchableOpacity
         style={styles.view_tagOn}
         onPress={() => {
-          console.log('unpressed');
+        //console.log('unpressed');
           RemoveTags(name);
           setpressed(!pressed);
         }}
@@ -157,11 +157,11 @@ export function TagSelectionPart({ navigation, profil }) {
     const arr = [];
     let flag = false;
 
-    console.log('hello');
+  //console.log('hello');
     for (let i = 0; i < List.length; i++) {
       for (let j = 0; j < UserList.length; j++) {
         if (UserList[j]._id == List[i].name) {
-          console.log('hellot: ', UserList[j]);
+        //console.log('hellot: ', UserList[j]);
           arr.push({ name: UserList[j]._id, _id: List[i]._id, pressed: true });
           flag = true;
           break;
@@ -170,12 +170,12 @@ export function TagSelectionPart({ navigation, profil }) {
       if (flag == false) arr.push({ name: List[i].name, _id: List[i]._id, pressed: false });
       flag = false;
     }
-    console.log('array: ', arr);
+  //console.log('array: ', arr);
     setArray(arr);
   }
 
   async function getLocationTags(List) {
-    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/get_partner_location`, {
+    await fetch(`http{IP_SERVER}:${PORT_SERVER}/location/get_partner_location`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -185,7 +185,7 @@ export function TagSelectionPart({ navigation, profil }) {
     })
       .then((res) => res.json())
       .then((json) => {
-        console.log('########', json.location.tags_list);
+      //console.log('########', json.location.tags_list);
         setProfArgs(json.location.tags_list);
         buildArray(List, json.location.tags_list);
         setId(json.location.id)
@@ -193,7 +193,7 @@ export function TagSelectionPart({ navigation, profil }) {
   }
 
   async function getThings() {
-    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/tag/get_tag`, {
+    await fetch(`http{IP_SERVER}:${PORT_SERVER}/tag/get_tag`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -203,7 +203,7 @@ export function TagSelectionPart({ navigation, profil }) {
     })
       .then((res) => res.json())
       .then((json) => {
-        console.log('yooooo', json.tags_list);
+      //console.log('yooooo', json.tags_list);
         setArgs(json.tags_list);
         getLocationTags(json.tags_list);
       });

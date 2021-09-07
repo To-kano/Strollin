@@ -95,7 +95,7 @@ function saveTime(value) {
     time_spent: time,
   });
 
-  const url = `http://${IP_SERVER}:${PORT_SERVER}/course/add_course_time`
+  const url = `http{IP_SERVER}:${PORT_SERVER}/course/add_course_time`
   fetch(url, {
     headers : {
       Accept: 'application/json',

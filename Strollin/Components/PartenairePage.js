@@ -52,11 +52,11 @@ function PartenaireScreen(props) {
       "__v": 0
   })
   const [tagsList, setTagsList] = useState(initialList)
-  console.log(locationUser)
+//console.log(locationUser)
 
   useEffect(() => {
     if (!i) {
-      const url = `http://${IP_SERVER}:${PORT_SERVER}/location/get_partner_location`
+      const url = `http{IP_SERVER}:${PORT_SERVER}/location/get_partner_location`
       fetch(url, {
         headers : {
           access_token: props.profil.access_token,
@@ -65,7 +65,7 @@ function PartenaireScreen(props) {
       })
         .then((response) => response.json())
         .then((answer) => {
-          console.log("answer.location_list", answer);
+        //console.log("answer.location_list", answer);
           if (answer.location) {
             setUser(answer.location);
             initialList = []
@@ -83,7 +83,7 @@ function PartenaireScreen(props) {
   }, []);
 
   const [list, setList] = React.useState(initialList);
-  console.log(props.map.locations, "\n\n\n", props.profil, "\n\n\n", props.route)
+//console.log(props.map.locations, "\n\n\n", props.profil, "\n\n\n", props.route)
 
   return (
     <View style={styles.view_back}>

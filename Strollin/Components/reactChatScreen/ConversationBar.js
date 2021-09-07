@@ -47,7 +47,7 @@ function ConversationBar(props) {
               if (image) {
                 const store = Store.getState();
                 const response = await uploadImage(store.profil.access_token, image);
-                console.log("response image = ", response);
+              //console.log("response image = ", response);
                 if (response) {
                   setImage(null);
                   setImageName(response["image"]);
@@ -75,7 +75,7 @@ function ConversationBar(props) {
               if (image) {
                 const store = Store.getState();
                 const response = await uploadImage(store.profil.access_token, image);
-                console.log("response image = ", response);
+              //console.log("response image = ", response);
                 if (response) {
                   setImage(null);
                   setImageName(response["image"]);

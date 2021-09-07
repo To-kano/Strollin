@@ -50,7 +50,7 @@ export function UserRegister(props) {
   const [message, setMessage] = useState("");
   useEffect(() => {
     if (props.profil.access_token != null) {
-      console.log("ok")
+    //console.log("ok")
       props.navigation.navigate('TagSelection');
     }
   })

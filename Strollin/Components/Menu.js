@@ -22,7 +22,7 @@ function Menu(props) {
     directionalOffsetThreshold: 80,
     gestureIsClickThreshold: 0.5
   };
-   console.log("customDrawer ", props.state)
+ //console.log("customDrawer ", props.state)
 
   return (
     <View style={styles.horizontal}>
@@ -45,7 +45,7 @@ function Menu(props) {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              console.log('navigate');
+            //console.log('navigate');
               props.navigation.navigate(props.state.routeNames[1]);
             }}
             style={[styles.view_navigationIn, props.state.index == 1 ? styles.current_page : {}]}

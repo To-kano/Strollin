@@ -8,7 +8,7 @@ import { DrawerActions } from '@react-navigation/native';
 import I18n from '../Translation/configureTrans';
 import Map from './map';
 
-import ElementHistoryNav from './HistoryElement';
+import CourseElementList from './CourseElementList';
 import BackgroundImage from './backgroundImage';
 import ButtonSwitch from './ButtonSwitch';
 import TripElement from './TripElement';
@@ -18,6 +18,7 @@ import {getLocationByID} from '../apiServer/locations';
 import Store from '../Store/configureStore';
 import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 import Modal from 'react-native-modal'
+import {generateCourse} from '../apiServer/course';
 import ModalContent from 'react-native-modal'
 import Carousel from 'react-native-snap-carousel';
 
@@ -131,7 +132,7 @@ let carouselItem = {
 
 
 async function registerCourse(access_token) {
-  console.log("trying to register course....");
+//console.log("trying to register course....");
 
   const store = Store.getState();
   const bodyRequest = JSON.stringify({
@@ -149,7 +150,7 @@ async function registerCourse(access_token) {
     })
     .then(res => res.json())
     .then(json => {
-      console.log("course registered = ", json.course);
+    //console.log("course registered = ", json.course);
       const action = {
         type: 'SET_CURRENT_COURSE',
         value: json.course
@@ -189,17 +190,13 @@ export function TripSuggestion(props) {
     setCarrousel(carouselItem)
   }
   const [course, setCourse] = useState(null);
-
-  //const { test } = route.params;
-  //console.log("\n\n\nprops: ", props.profil);
+  const [locations, setLocations] = useState(null);
 
   useEffect(() => {
     Tts.setDefaultLanguage('en-US');
 
     async function getCourse() {
-      //const result = await getCustomCourse(props.profil.access_token);
-      const store = Store.getState();
-      const result = store.course.course[0];
+      const result = props.course.currentCourse;
       setCourse(result);
     }
     carouselItem.carouselItems = []
@@ -218,9 +215,9 @@ export function TripSuggestion(props) {
   }*/
 
 
-    if (!course) {
+    //if (course) {
       getCourse();
-    }
+    //}
 
     if (props.profil.sound && course) {
       for (let i = 0; i < course.length; i++) {
@@ -231,10 +228,9 @@ export function TripSuggestion(props) {
     if (course && course.locations_list) {
       getLocations();
     }
-  }, [course]);
+  }, [props.course.currentCourse, course]);
 
   const [carouselItemFinal, setCarrousel] = useState(carouselItem)
-  const [locations, setLocations] = useState(null);
   const  [deleteLocation, setDelLocations] = useState(null)
   let locations_tmp = []
   let locations_name = []
@@ -251,7 +247,7 @@ export function TripSuggestion(props) {
     setDelLocations(locations_tmp)
     let name = ""
     locations_name.forEach((item) => {
-      console.log("\n\ndeleted: ", item )
+    //console.log("\n\ndeleted: ", item )
       if (name != "") {
         name += ', ' + item
       } else {
@@ -279,6 +275,7 @@ export function TripSuggestion(props) {
   };
 
   function check_open(result) {
+    console.log("enter cehck open");
     locations_tmp = []
     result.forEach((item, i) => {
       const url = `http://${IP_SERVER}:${PORT_SERVER}/location/check_open`
@@ -390,49 +387,26 @@ function testrenderItem({item,index}){
 
   // récupére le trajet précédent et pasre les nom et envoie les dans mle header
   async function regenerate_course() {
-    const store = Store.getState();
-    const access_Token = store.profil.access_token;
-    let time = Number(props.CourseSettings.hours) *  60 + Number(props.CourseSettings.minutes);
-    const coordinate = [];
+    const access_token = props.profil.access_token;
+    const settings = {
+      ...props.CourseSettings,
+      locations_list : props.course.currentLocationProposition
+    }
 
-    console.log("previous course: ", store.course.course[0].locations_list);
-    coordinate[0] = props.CourseSettings.pos.latitude;
-    coordinate[1] = props.CourseSettings.pos.longitude;
+    const result = await generateCourse(access_token, settings);
 
-    console.log("time: ", time);
-    console.log("coordo: ", coordinate);
-    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/generator/generate_course`, {
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      access_Token,
-      'time': time,
-      'budget': props.CourseSettings.budget,
-      'tags': props.CourseSettings.tags,
-      'coordinate' : coordinate,
-      'eat' : props.CourseSettings.isEatDrink,
-      'radius' : props.CourseSettings.radius,
-      'placenbr' : props.CourseSettings.placeNbr,
-      'locations_list': store.course.course[0].locations_list
-    },
-    method: 'GET',
-    })
-    .then(res => res.json())
-    .then(json => {
-      console.log("algo done:   ", json);
-      setCourse(json.course);
-      //PopUpReq(pos, json.generated_course);
-      const action = {
-        type: 'ADD_COURSE',
-        value: json.course
+  console.log("result generate course", result.course);
+
+      let action = {
+        type: 'SET_CURRENT_COURSE',
+        value: result.course
       };
       Store.dispatch(action);
-      props.profil.scoreCourse = json.generated_course
-      props.profil.first_name = props.CourseSettings.pos
-      props.navigation.navigate("TripSuggestion");
-    }).catch((error) => {
-      console.error('error :', error);
-    });
+      action = {
+        type: 'ADD_LOCATION_PROPOSITION',
+        value: result.course.locations_list
+      };
+      Store.dispatch(action);
   }
 
   let test = {
@@ -507,7 +481,7 @@ function testrenderItem({item,index}){
           <View>
             <Button title={getName} color="#BB7859"/>
             <Button title="Oui, suprimez les" onPress={() => {
-              console.log(deleteLocation)
+            //console.log(deleteLocation)
               setLocations(deleteLocation)
               setLocationsCarrousel(deleteLocation)
               toggleModal()
@@ -525,7 +499,7 @@ function testrenderItem({item,index}){
           let finalLocations = carouselItem.carouselItems[carouselItem.activeIndex].locations
           const action = { type: 'SET_WAYPOINTS', course: course, locations: finalLocations };
           props.dispatch(action);
-          registerCourse(props.profil.access_token);
+          //registerCourse(props.profil.access_token);
           props.navigation.navigate('TripNavigation');
           // const action = { type: 'SET_WAYPOINTS', course: course, locations: locations };
           // props.dispatch(action);

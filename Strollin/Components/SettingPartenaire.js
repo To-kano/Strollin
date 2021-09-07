@@ -40,7 +40,7 @@ function SettingPartenaire(props) {
   async function getThings() {
     const store = Store.getState();
     const access_Token = store.profil.access_token;
-    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/get_partner_location`, {
+    await fetch(`http{IP_SERVER}:${PORT_SERVER}/location/get_partner_location`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -50,9 +50,9 @@ function SettingPartenaire(props) {
     })
       .then((res) => res.json())
       .then((json) => {
-        console.log("jqson: ", json);
+      //console.log("jqson: ", json);
         if (json.location) {
-          console.log("location: ", json.location);
+        //console.log("location: ", json.location);
           setArgs(json.location);
           initialList = [];
           for (var i = 0; i < json.location.tags_list.length; i++) {
@@ -68,8 +68,8 @@ function SettingPartenaire(props) {
     const access_Token = store.profil.access_token;
     const test = JSON.stringify({ address: body });
 
-    console.log("id: ", args.id);
-    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/update_location`, {
+  //console.log("id: ", args.id);
+    await fetch(`http{IP_SERVER}:${PORT_SERVER}/location/update_location`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -81,7 +81,7 @@ function SettingPartenaire(props) {
     })
       .then((res) => res.json())
       .then((json) => {
-        console.log(json);
+      //console.log(json);
       });
   }
 
@@ -90,8 +90,8 @@ function SettingPartenaire(props) {
     const access_Token = store.profil.access_token;
     const test = JSON.stringify({ name: body });
 
-    console.log("id: ", args.id);
-    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/update_location`, {
+  //console.log("id: ", args.id);
+    await fetch(`http{IP_SERVER}:${PORT_SERVER}/location/update_location`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -103,7 +103,7 @@ function SettingPartenaire(props) {
     })
       .then((res) => res.json())
       .then((json) => {
-        console.log(json);
+      //console.log(json);
       });
   }
 
@@ -112,7 +112,7 @@ function SettingPartenaire(props) {
     const access_Token = store.profil.access_token;
     const test = JSON.stringify({ description: body });
 
-    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/update_location`, {
+    await fetch(`http{IP_SERVER}:${PORT_SERVER}/location/update_location`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -223,7 +223,7 @@ function SettingPartenaire(props) {
         style={styles.view_button}
         onPress={() => {
           props.navigation.navigate('TagSelectionPart');
-          console.log("Choose shop's Tags");
+        //console.log("Choose shop's Tags");
         }}
       >
         <Text style={styles.text_button}>

@@ -34,6 +34,7 @@ function ChangeImageProfileForm({profil, dispatch}) {
                     <Button title="OK"
                         onPress={() => {
                             if (image) {
+                              //console.log(" image ", image);
                                 uploadImageProfile(profil.access_token, image).then((answer) => {
                                     if (answer.image) {
                                         const action = { type: 'SET_IMAGE_PROFILE', value: answer.image?.id };

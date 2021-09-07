@@ -18,7 +18,7 @@ import {
 function CoursePreviewItem(props) {
   const store = Store.getState();
   const navigation = useNavigation();
-  console.log("props.courseObject", props.courseObject);
+//console.log("props.courseObject", props.courseObject);
     return (
     <View style={{ height:450}}>
       <Text style={styles.message} ellipsizeMode="tail">

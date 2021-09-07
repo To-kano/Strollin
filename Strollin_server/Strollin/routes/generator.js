@@ -66,8 +66,9 @@ router.get('/generate_course', async function(req, res) {
     const promise2 = algo.data.algo(req.headers.time , req.headers.budget , userTags, req.headers.coordinate, req.headers.eat, radius, placeNbr, locations_list);
     promise2.then((value) => {
       let generated_course = value;
-      //console.log("course: ", generated_course);
+      console.log("course: ", generated_course);
       if (generated_course) {
+        console.log("if 1");
         course = {locations_list: [], name: (generated_course[0].Name + " => " + generated_course[generated_course.length - 1].Name), tags_list: []}
         for (let index in generated_course) {
             course.locations_list.push(generated_course[index].Id);
@@ -78,6 +79,7 @@ router.get('/generate_course', async function(req, res) {
                 }
             }
         }
+        console.log("304 ?");
         return res.status(200).send({status: "Result of the generator.", generated_course, course});
       }
       return res.status(400).send({status: "An error occured during the generation of the course"});

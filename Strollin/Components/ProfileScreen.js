@@ -58,11 +58,11 @@ function ProfileScreen(props) {
 
     async function getThings() {
 
-      console.log("access_Token = ",access_Token );
+    //console.log("access_Token = ",access_Token );
 
       if (reload == false)
         return
-      await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/get_own_profile`, {
+      await fetch(`http{IP_SERVER}:${PORT_SERVER}/users/get_own_profile`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -72,14 +72,14 @@ function ProfileScreen(props) {
       })
       .then(res => res.json())
       .then(json => {
-        console.log("profile: ",json);
+      //console.log("profile: ",json);
         //console.log("profile updated ");
         setArgs(json.profile)
         initialList = []
         for (var i = 0; i < json.profile.tags_list.length; i++) {
           initialList.push({id: i, name: json.profile.tags_list[i]})
         }
-        console.log("tags setted: ", initialList);
+      //console.log("tags setted: ", initialList);
         setTagsList(initialList)
         setReload(false)
       });
@@ -89,7 +89,7 @@ function ProfileScreen(props) {
 
       const test = JSON.stringify({pseudo: body})
 
-      await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/edit_profile`, {
+      await fetch(`http{IP_SERVER}:${PORT_SERVER}/users/edit_profile`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -182,7 +182,7 @@ function ProfileScreen(props) {
           props.navigation.navigate('TagSelection');
           //getThings();
           //setTagsList(tagsList);
-          console.log("exisrte stp eeeeeeeeeeeeeeeee");
+        //console.log("exisrte stp eeeeeeeeeeeeeeeee");
         }}
       >
         <Text style={styles.text_button}>Choose my tags</Text>

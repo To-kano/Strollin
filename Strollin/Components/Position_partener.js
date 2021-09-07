@@ -56,10 +56,10 @@ function Position_partener(props) {
   let language = "en"
   ////console.log(props.navigate);
   useEffect(() => {
-    console.log("i'm here")
+  //console.log("i'm here")
     if (Array.isArray(locales)) {
       language = locales[0].languageTag;
-      console.log(language)
+    //console.log(language)
     }
     if (region.longitude === 2.1931007) {
       Geolocation.getCurrentPosition(
@@ -74,7 +74,7 @@ function Position_partener(props) {
           setRegion(regionTmp)
         },
         (error) => {
-           console.log(error.code, error.message);
+         //console.log(error.code, error.message);
         },
         { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
       );
@@ -105,7 +105,7 @@ function Position_partener(props) {
   }
 
   function sendMessage(value) {
-    const url = `http://${IP_SERVER}:${PORT_SERVER}/location/get_location_position`
+    const url = `http{IP_SERVER}:${PORT_SERVER}/location/get_location_position`
     fetch(url, {
       headers : {
         place_name: value,
@@ -115,20 +115,20 @@ function Position_partener(props) {
     })
       .then((response) => response.json())
       .then((answer) => {
-        console.log(answer)
+      //console.log(answer)
         setAdress(answer.result.formatted_address)
         regionTmp.latitude = answer.result.geometry.location.lat
         regionTmp.longitude = answer.result.geometry.location.lng
         setRegion(regionTmp)
       })
       .then(() => {
-        console.log("doneF")
+      //console.log("doneF")
       })
       .catch((error) => {
         console.error('error ici :', error);
       })
       .finally(() => setLoading(false));
-      console.log("doneFF")
+    //console.log("doneFF")
   }
 
   const [adress, setAdress] = useState("")
