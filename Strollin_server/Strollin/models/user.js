@@ -81,6 +81,10 @@ var UserModelSchema = new Schema({
         type: String,
         default: "",
     },
+    subscription_id: {
+        type: String,
+        default: "",
+    },
     verify: {
         type: Boolean,
         default: false
