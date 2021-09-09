@@ -97,7 +97,7 @@ router.post('/register', async function (req, res) {
     fs.readFile(__dirname + '/mailSubscription.html', "utf8", function(err, data) {
       console.log('data ', data);
 
-      const message = data.replace('USER_NAME', req.body.first_name).replace("USER_ID", user.id.toString());
+      const message = data.replace('USER_NAME', req.body.pseudo).replace("USER_ID", user.id.toString());
 
       console.log("message :", message);
 
@@ -118,22 +118,22 @@ router.post('/register', async function (req, res) {
 
   });
 
-    // create the mail to send
-    const mailOptions = {
-      from: '"Strollin App" <strollinapp@outlook.com>', // sender address (who sends)
-      to: req.body.mail.toLowerCase(), // list of receivers (who receives)
-      subject: `subscribe the app Strollin `, // Subject line
-      html: `<a href="https://strollin.ddns.net/users/verify?id=${user.id}">test</a> `,
-    };
-
-    // send the mail
-    transporter.sendMail(mailOptions, function (error, info) {
-      if (error) {
-        console.log(error);
-      } else {
-        //console.log('Email sent: ' + info.response);
-      }
-    });
+    //// create the mail to send
+    //const mailOptions = {
+    //  from: '"Strollin App" <strollinapp@outlook.com>', // sender address (who sends)
+    //  to: req.body.mail.toLowerCase(), // list of receivers (who receives)
+    //  subject: `subscribe the app Strollin `, // Subject line
+    //  html: `<a href="https://strollin.ddns.net/users/verify?id=${user.id}">test</a> `,
+    //};
+//
+    //// send the mail
+    //transporter.sendMail(mailOptions, function (error, info) {
+    //  if (error) {
+    //    console.log(error);
+    //  } else {
+    //    //console.log('Email sent: ' + info.response);
+    //  }
+    //});
 
     return res.status(200).send({ status: "Account created successfully.", access_token: token });
   }
