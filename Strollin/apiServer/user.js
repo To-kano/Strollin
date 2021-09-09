@@ -224,7 +224,7 @@ async function registerUser(props, newPseudo, newPassword, newMail, setMessage, 
     method: 'post',
     body: bodyRequest,
   })
-    //.then((response) => response.json())
+    .then((response) => response.json())
     .then(async (answer) => {
     //console.log("okkkk")
       //console.log(" answer = " , answer);
