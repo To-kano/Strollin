@@ -191,9 +191,7 @@ router.get('/verify', async function (req, res) {
         error: error
       });
     }
-    return res.status(200).send({
-      status: "Account verified successfully."
-    });
+    return res.render("homepage");
   }
 });
 
