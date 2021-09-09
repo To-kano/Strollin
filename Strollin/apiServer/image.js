@@ -3,8 +3,8 @@ import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 
 async function getImageId(id) {
 
-    console.log("id getImageId : ", id);
-    let answer = await fetch(`http://${IP_SERVER}:${PORT_SERVER}/image/id`, {
+  //console.log("id getImageId : ", id);
+    let answer = await fetch(`https://${IP_SERVER}:${PORT_SERVER}/image/id`, {
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
@@ -16,10 +16,10 @@ async function getImageId(id) {
     answer = await answer.json();
 
     if (answer.image) {
-        console.log("image answer = : ", answer);
+      //console.log("image answer = : ", answer);
         return answer.image;
     } else {
-        console.log('fetch image by id failled: ', answer.error);
+      //console.log('fetch image by id failled: ', answer.error);
         return null;
     }
 }
@@ -43,7 +43,7 @@ function createFormData(image, body = {}) {
 }
 
 async function uploadImageProfile(access_token, image) {
-    let answer = await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/set_image_profile`, {
+    let answer = await fetch(`https://${IP_SERVER}:${PORT_SERVER}/users/set_image_profile`, {
         method: 'POST',
         body: createFormData(image, {access_token}),
     })
@@ -56,7 +56,7 @@ exports.uploadImageProfile = uploadImageProfile;
 
 
 async function uploadImage(access_token, image) {
-    let answer = await fetch(`http://${IP_SERVER}:${PORT_SERVER}/image/upload`, {
+    let answer = await fetch(`https://${IP_SERVER}:${PORT_SERVER}/image/upload`, {
         method: 'POST',
         body: createFormData(image, {access_token}),
     })

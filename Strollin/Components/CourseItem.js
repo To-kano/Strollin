@@ -7,6 +7,10 @@ import { connect } from 'react-redux';
 import Store from '../Store/configureStore';
 import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 
+import {removeFavorite, addFavorite} from '../apiServer/user';
+
+import {getLocationByIDList} from '../apiServer/locations';
+
 function GotoComment(props) {
   // props.navigation.setParams({ data: props.data });
   const action = {type: 'SET_COMMENTS_DISPLAY', value: props.data};
@@ -14,87 +18,21 @@ function GotoComment(props) {
   props.navigation.navigate('CommentScreen');
 }
 
-async function addFavorite(props, setIsFavorite) {
-  const bodyRequest = JSON.stringify({
-    course: props.data.id
-  });
-  console.log("sent id = ", props.data.id);
-  await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/add_favorite`, {
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      access_token: props.profil.access_token,
-    },
-    method: 'POST',
-    body: bodyRequest,
-  }).then((answer) => answer.json())
-  .then(async function (answer) {
-    setIsFavorite(true);
-    console.log("add answer = ", answer);
-    if (answer.course_favorites) {
-      const action = {type: 'SET_FAVORITES_LIST', value: answer.course_favorites};
-      props.dispatch(action);
-      const action2 = {type: 'ADD_TO_PROFILE_FAVORITES', value: answer.course_favorites}
-      props.dispatch(action2);
-    }
-
-  })
-  .catch((error) => {
-    console.error('error :', error);
-  });
-}
-
-async function removeFavorite(props, setIsFavorite) {
-  console.log("remove props.data.id = ", props.data.id);
-  const bodyRequest = JSON.stringify({
-    course_id: props.data.id
-  });
-  await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/remove_favorite`, {
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      access_token: props.profil.access_token,
-    },
-    method: 'POST',
-    body: bodyRequest,
-  }).then((answer) => answer.json())
-  .then(async function (answer) {
-    setIsFavorite(false);
-    console.log("remove answer = ", answer);
-    if (answer.course_favorites) {
-      const action = {type: 'SET_FAVORITES_LIST', value: answer.course_favorites};
-      props.dispatch(action);
-    }
-  })
-  .catch((error) => {
-    console.error('error :', error);
-  });
+function onlyUnique(value, index, self) {
+  return self.indexOf(value) === index;
 }
 
 async function getLocation(props, setLocationList) {
-  await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/get_locations_by_id`, {
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      access_token: props.profil.access_token,
-      locations_id_list: props.data["locations_list"]
-    },
-    method: 'GET',
-  }).then((answer) => answer.json())
-  .then(async function (answer) {
-    setLocationList(answer["locations_list"]);
-  })
-  .catch((error) => {
-    console.error('error :', error);
-  });
+
+  const location_list = props.data.locations_list.filter(onlyUnique);
+
+  let answer = await getLocationByIDList(props.profil.access_token, location_list);
+
+  setLocationList(answer);
 }
 
 function randPic() {
-  /*const rand = (Math.floor(Math.random() * 2) + 1);
 
-  if (rand === 1) {
-    return (require('../ressources/street1.jpg'));
-  }*/
   return (require('../ressources/street2.jpg'));
 }
 
@@ -107,9 +45,9 @@ function checkFavorite(props) {
 
   if (store.profil.course_favorites && props.data) {
     for (let i = 0; i < store.profil.course_favorites.length; i++) {
-      console.log("compared id = ", store.profil.course_favorites[i])
+    //console.log("compared id = ", store.profil.course_favorites[i])
       if (store.profil.course_favorites[i] == props.data.id) {
-        console.log("returned true");
+      //console.log("returned true");
         return (true);
       }
     }
@@ -125,7 +63,7 @@ function CourseItem(props) {
   if (isFavorite == null) {
     setIsFavorite(checkFavorite(props));
   }
-  if (!locationList) {
+  if (!locationList && props.data.locations_list) {
     getLocation(props, setLocationList);
   }
 
@@ -158,7 +96,7 @@ function CourseItem(props) {
                   data={item}
                 />
               )}
-            keyExtractor={(item) => item["name"]}
+            keyExtractor={(item) => item.id}
           />
           </View>
           <Text numberOfLines={1} style={styles.text_name}>{props.data.name}</Text>
@@ -252,6 +190,8 @@ const styles = StyleSheet.create({
     width: 35,
     height: 35,
     marginRight: -10,
+    marginLeft: 20,
+    tintColor:"#fff",
   }
 });
 

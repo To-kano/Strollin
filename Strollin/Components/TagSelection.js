@@ -11,7 +11,7 @@ import Store from '../Store/configureStore';
 import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 import {translateTags, detranslateTags} from '../Translation/translateTags'
 
-export function Header({ navigation, defaultState = false }) {
+function Header({ navigation, defaultState = false }) {
   const [pressed, setpressed] = useState(defaultState);
 
   if (pressed === false) {
@@ -62,7 +62,7 @@ export function Tag({ name, chosen, defaultState = false }) {
     const list = [body];
     const test = JSON.stringify({ tags_list: list });
 
-    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/add_tag`, {
+    await fetch(`https://${IP_SERVER}:${PORT_SERVER}/users/add_tag`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -77,7 +77,7 @@ export function Tag({ name, chosen, defaultState = false }) {
   }
 
   useEffect(() => {
-    console.log('hola');
+  //console.log('hola');
     setpressed(chosen);
   }, []);
 
@@ -98,7 +98,7 @@ export function Tag({ name, chosen, defaultState = false }) {
       <TouchableOpacity
         style={styles.view_tagOn}
         onPress={() => {
-          console.log('unpressed');
+        //console.log('unpressed');
           setpressed(!pressed);
         }}
       >
@@ -122,11 +122,11 @@ export function TagSelection({ navigation, profil }) {
     const arr = [];
     let flag = false;
 
-    console.log('hello');
+  //console.log('hello');
     for (let i = 0; i < List.length; i++) {
       for (let j = 0; j < UserList.length; j++) {
         if (UserList[j] == List[i].name) {
-          console.log('hellot: ', UserList[j]);
+        //console.log('hellot: ', UserList[j]);
           arr.push({ name: UserList[j], _id: List[i]._id, pressed: true });
           flag = true;
           break;
@@ -135,12 +135,12 @@ export function TagSelection({ navigation, profil }) {
       if (flag == false) arr.push({ name: List[i].name, _id: List[i]._id, pressed: false });
       flag = false;
     }
-    console.log('array: ', arr);
+  //console.log('array: ', arr);
     setArray(arr);
   }
 
   async function getUserTags(List) {
-    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/get_own_profile`, {
+    await fetch(`https://${IP_SERVER}:${PORT_SERVER}/users/get_own_profile`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -150,14 +150,14 @@ export function TagSelection({ navigation, profil }) {
     })
       .then((res) => res.json())
       .then((json) => {
-        console.log('########', json.profile.tags_list);
+      //console.log('########', json.profile.tags_list);
         setProfArgs(json.profile.tags_list);
         buildArray(List, json.profile.tags_list);
       });
   }
 
   async function getThings() {
-    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/tag/get_tag`, {
+    await fetch(`https://${IP_SERVER}:${PORT_SERVER}/tag/get_tag`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -167,7 +167,7 @@ export function TagSelection({ navigation, profil }) {
     })
       .then((res) => res.json())
       .then((json) => {
-        console.log('yooooo', json.tags_list);
+      //console.log('yooooo', json.tags_list);
         setArgs(json.tags_list);
         getUserTags(json.tags_list);
       });

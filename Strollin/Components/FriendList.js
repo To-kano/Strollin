@@ -166,7 +166,7 @@ import Store from '../Store/configureStore';
 //   }
 // }
 
-export function Header({ props, defaultState = false }) {
+function Header({ props, defaultState = false }) {
   const [research, setresearch] = useState('');
   const [pressed, setpressed] = useState(defaultState);
 
@@ -213,7 +213,7 @@ async function AddFriend(props, store, mail) {
     friend_mail: mail
   });
 
-  await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/add_friend`, {
+  await fetch(`https://${IP_SERVER}:${PORT_SERVER}/users/add_friend`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -224,7 +224,7 @@ async function AddFriend(props, store, mail) {
     })
     .then(res => res.json())
     .then(json => {
-      console.log("Friend added successfuly !");
+    //console.log("Friend added successfuly !");
       profileUser(props, store.profil.access_token);
     }).catch((error) => {
       console.error('error :', error);
@@ -236,7 +236,7 @@ async function DeleteFriend(props, store, id) {
     friend_id: id
   });
 
-  await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/remove_friend`, {
+  await fetch(`https://${IP_SERVER}:${PORT_SERVER}/users/remove_friend`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -247,7 +247,7 @@ async function DeleteFriend(props, store, id) {
     })
     .then(res => res.json())
     .then(json => {
-      console.log("Friend removed successfuly !");
+    //console.log("Friend removed successfuly !");
       profileUser(props, store.profil.access_token);
     }).catch((error) => {
       console.error('error :', error);
@@ -315,7 +315,7 @@ export function UsersObject(props) {
 }
 
 async function getUserList(store, setUserList) {
-  await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/get_users`, {
+  await fetch(`https://${IP_SERVER}:${PORT_SERVER}/users/get_users`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -325,7 +325,7 @@ async function getUserList(store, setUserList) {
     })
     .then(res => res.json())
     .then(json => {
-      console.log("users_list = ", json.users_list);
+    //console.log("users_list = ", json.users_list);
       if (json.users_list) {
         setUserList(json.users_list);
       }

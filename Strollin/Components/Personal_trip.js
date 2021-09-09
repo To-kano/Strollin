@@ -120,7 +120,7 @@ function Personal_trip(props) {
   }, [userPosition]);
 
   useEffect(() => {
-    console.log("POSITION DE DÉPART ", userPosition);
+  //console.log("POSITION DE DÉPART ", userPosition);
     const courseSend = getCustomCourse(store.profil.access_token);
     setCourse(courseSend)
     if (props.asked == false) {
@@ -135,7 +135,7 @@ function Personal_trip(props) {
       regionTmp.longitude = userPosition.longitude
       regionTmp.latitude = userPosition.latitude
       setRegion(regionTmp)
-      console.log("JE SET LA RÉGION 1: ", userPosition);
+    //console.log("JE SET LA RÉGION 1: ", userPosition);
     }
 
     Geolocation.getCurrentPosition(
@@ -144,16 +144,16 @@ function Personal_trip(props) {
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
         };
-        console.log("pritn de pierre: ", position);
+      //console.log("pritn de pierre: ", position);
         setUserPosition(data);
         let regionTmp = region
         regionTmp.longitude = data.longitude
         regionTmp.latitude = data.latitude
         setRegion(regionTmp)
-        console.log("JE SET LA RÉGION 2: ", userPosition);
+      //console.log("JE SET LA RÉGION 2: ", userPosition);
       },
       (error) => {
-        console.log(error.code, error.message);
+      //console.log(error.code, error.message);
       },
       { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
     );
@@ -176,7 +176,7 @@ function Personal_trip(props) {
   }
 
   function sendMessage(value) {
-    const url = `http://${IP_SERVER}:${PORT_SERVER}/location/get_place`
+    const url = `https://${IP_SERVER}:${PORT_SERVER}/location/get_place`
     fetch(url, {
       headers: {
         place_name: value,
@@ -207,7 +207,7 @@ function Personal_trip(props) {
   var now = new Date();
 
   var day = now.getDayName();
-  console.log("______________________________________________" + day)*/
+//console.log("______________________________________________" + day)*/
 
   const [showLoader, setLoader] = useState(<View />);
   const searchBar = (
@@ -258,7 +258,7 @@ function Personal_trip(props) {
       <TouchableOpacity 
         style={styles.button_retour}
         onPress={() => {
-          console.log("\n\nback")
+        //console.log("\n\nback")
           setFinal(false)
         }}>
         <Image style={styles.img_header} source={require('../images/icons/black/return.png')} />
@@ -289,7 +289,7 @@ function Personal_trip(props) {
           style={styles.view_show_final}
           onPress={async () => {
             await getJsonPush()
-            console.log("course: ", finalCourse, " \nlost: ", locationPush.locations_list);
+          //console.log("course: ", finalCourse, " \nlost: ", locationPush.locations_list);
             const action = { type: 'SET_WAYPOINTS', course: finalCourse, locations: locationPush.locations_list };
             Store.dispatch(action);
             props.navigation.navigate('TripNavigation');
@@ -439,7 +439,7 @@ function Personal_trip(props) {
                 </ScrollView>
                 <TouchableOpacity 
                   onPress={() => {
-                    console.log("show_final")
+                  //console.log("show_final")
                     setFinal(true)
                   }}
                   style={styles.view_show_final}
@@ -452,7 +452,7 @@ function Personal_trip(props) {
 
               //   <Button
               //     onPress={() => {
-              //       console.log("show_map")
+              //     //console.log("show_map")
               //       setMaps(true)
               //     }}
               //     title={"show_map"}
@@ -518,7 +518,7 @@ function Personal_trip(props) {
     //     <View>
     //     <Button
     //       onPress={() => {
-    //         console.log("back")
+    //       //console.log("back")
     //         setMaps(false)
     //       }}
     //       title={"back"}
@@ -545,7 +545,7 @@ function Personal_trip(props) {
     //       <View>
     //       <Button
     //         onPress={() => {
-    //           console.log("back")
+    //         //console.log("back")
     //           setFinal(false)
     //         }}
     //         title={"back"}
@@ -559,7 +559,7 @@ function Personal_trip(props) {
     //       <TouchableOpacity
     //         onPress={async () => {
     //           await getJsonPush()
-    //           console.log("course: ", finalCourse, " \nlost: ", locationPush.locations_list );
+    //         //console.log("course: ", finalCourse, " \nlost: ", locationPush.locations_list );
     //           const action = { type: 'SET_WAYPOINTS', course: finalCourse, locations: locationPush.locations_list };
     //           Store.dispatch(action);
     //           props.navigation.navigate('TripNavigation');
@@ -624,14 +624,14 @@ function Personal_trip(props) {
 
     //           <Button
     //             onPress={() => {
-    //               console.log("show_map")
+    //             //console.log("show_map")
     //               setMaps(true)
     //             }}
     //             title={"show_map"}
     //           />
     //           <Button
     //             onPress={() => {
-    //               console.log("show_final")
+    //             //console.log("show_final")
     //               setFinal(true)
     //             }}
     //             title={"show_final"}

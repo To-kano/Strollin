@@ -22,6 +22,7 @@ import PartenaireScreen from '../Components/PartenairePage';
 import SettingPartenaire from '../Components/SettingPartenaire';
 import Personal_trip from '../Components/Personal_trip';
 import Favorites from '../Components/Favorites';
+import TutorialPage from '../Components/tuto/TutorialPage';
 
 
 import Chat from './Chat';
@@ -56,6 +57,8 @@ function MyDrawer() {
       <Drawer.Screen name="TripNavigation" component={TripNavigation} />
       <Drawer.Screen name="Position_partener" component={Position_partener} />
       <Drawer.Screen name="Notation" component={Notation} />
+      <Drawer.Screen name="Guide" component={TutorialPage} />
+      
     </Drawer.Navigator>
   );
 }

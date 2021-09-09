@@ -24,19 +24,18 @@ services:
       #- ME_CONFIG_MONGODB_ADMINUSERNAME=root
       #- ME_CONFIG_MONGODB_ADMINPASSWORD=root
     restart: 'on-failure'
-    depends_on:
+    depends_on: 
       - db
- # server:
- #   build: ./Strollin
- #   #image: server
- #   container_name: server-Strollin
- #   networks:
- #     - backend
- #   ports:
- #     - "3000:3000"
- #   restart: 'on-failure'
- #   depends_on:
- #     - db
+  #server:
+  #  build: ./Strollin
+  #  container_name: server-Strollin
+  #  networks:
+  #    - backend
+  #  ports:
+  #    - "3000:3000"
+  #  restart: 'on-failure'
+  #  depends_on:
+  #    - db
 
 
 networks:
