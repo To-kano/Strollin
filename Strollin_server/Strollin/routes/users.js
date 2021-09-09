@@ -191,7 +191,9 @@ router.get('/verify', async function (req, res) {
         error: error
       });
     }
-    return res.render("verify");
+    return res.render("verify", {
+      user: user
+    });
   }
 });
 
