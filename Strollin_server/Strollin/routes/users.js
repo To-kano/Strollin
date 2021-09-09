@@ -5,6 +5,8 @@ const nodemailer = require('nodemailer');
 
 const CryptoJS = require("crypto-js");
 
+const fs = require("fs");
+
 const keyCrypto = "key";
 
 const {
@@ -92,12 +94,36 @@ router.post('/register', async function (req, res) {
       },
     });
 
+    fs.readFile(__dirname + '/mailSubscription.html', "utf8", function(err, data) {
+      console.log('data ', data);
+
+      const message = data.replace('USER_NAME', req.body.first_name).replace("USER_ID", user.id.toString());
+
+      console.log("message :", message);
+
+      const mailOptions = {
+        from: '"Strollin App" <strollinapp@outlook.com>', // sender address (who sends)
+        to: req.body.mail.toLowerCase(), // list of receivers (who receives)
+        subject: `subscribe the app Strollin `, // Subject line
+        html: data,
+      };
+
+      transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+          console.log(error);
+        } else {
+          //console.log('Email sent: ' + info.response);
+        }
+      });
+
+  });
+
     // create the mail to send
     const mailOptions = {
       from: '"Strollin App" <strollinapp@outlook.com>', // sender address (who sends)
       to: req.body.mail.toLowerCase(), // list of receivers (who receives)
       subject: `subscribe the app Strollin `, // Subject line
-      html: `<a href="http://88.165.45.219:3004/users/verify?id=${user.id}">test</a> `,
+      html: `<a href="https://strollin.ddns.net/users/verify?id=${user.id}">test</a> `,
     };
 
     // send the mail
