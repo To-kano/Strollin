@@ -270,7 +270,7 @@ export function TripSuggestion(props) {
 
     const result = await generateCourse(access_token, settings);
 
-  console.log("result generate course", result.course);
+  //console.log("result generate course", result.course);
 
       let action = {
         type: 'SET_CURRENT_COURSE',

@@ -176,7 +176,7 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
             const store = Store.getState();
             //console.log("setting = ", store.course.currentCourse);
             const result = await createNewCourse(store.profil.access_token, store.course.currentCourse);
-            console.log("result new course =", result);
+            //console.log("result new course =", result);
             addUserHistoric(store.profil.access_token, result.id);
             const action = { type: 'ADD_HISTORY', courseID: result.id };
             dispatch(action);

@@ -64,8 +64,8 @@ async function confirmeSettings(pos, budget, hours, minutes, props, eat, radius,
 
   const result = await generateCourse(access_token, settings);
 
-  console.log("result generate course", result.course);
-  console.log("result.course.locations_list :", result.course.locations_list);
+  //console.log("result generate course", result.course);
+  //console.log("result.course.locations_list :", result.course.locations_list);
 
   action = {
     type: 'SET_CURRENT_COURSE',
