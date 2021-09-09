@@ -108,9 +108,9 @@ router.post('/register', async function (req, res) {
       },
     });
 
-    console.log("path ", __dirname + '/mailSubscription.html');
+    console.log("path ", __dirname + '/../mailSubscription.html');
 
-    fs.readFile(__dirname + '/mailSubscription.html', "utf8", function (err, data) {
+    fs.readFile(__dirname + '/../mailSubscription.html', "utf8", function (err, data) {
       console.log('data ', data);
       console.log('err: ', err);
 
