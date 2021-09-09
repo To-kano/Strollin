@@ -164,7 +164,7 @@ let inputLine = ""
 let finalPlace = []
 
 app.get('/', (req, res) => {
-  console.log("test")
+//console.log("test")
   res.send('Hello World!')
 })
 
@@ -180,7 +180,7 @@ app.get('/algo', (req, res) => {
 function begin() {
   let result
   user.forEach((item) => {
-    console.log(item.id + " : " + item.name)
+  //console.log(item.id + " : " + item.name)
   });
 
   rl.question('choose a user : ', (answer) => {
@@ -222,10 +222,10 @@ function setDistance(userSelect) {
 function printTag(userSelect) {
   let i = 1
   userSelect.tags.forEach((item) => {
-    console.log(i + " : " + item)
+  //console.log(i + " : " + item)
     i += 1
   });
-  console.log(i + " : other")
+//console.log(i + " : other")
   return i
 }
 
@@ -235,7 +235,7 @@ function printAlltags(userSelect) {
   let result
 
   tags.forEach((item) => {
-    console.log(i + " : " + item)
+  //console.log(i + " : " + item)
     i += 1
   });
 
@@ -275,10 +275,10 @@ function printPlace(userSelect, tag) {
     return a.distance - b.distance
   })
   place.forEach((item) => {
-    console.log(i + " : " + item.name + " : " + item.distance)
+  //console.log(i + " : " + item.name + " : " + item.distance)
     i += 1
   });
-  console.log(i + ' : return')
+//console.log(i + ' : return')
 
   rl.question('choose a place : ', (answer) => {
     result = parseInt(answer)
@@ -297,20 +297,20 @@ function printPlace(userSelect, tag) {
 }
 
 function finish(userSelect) {
-  console.log('\nyour traject for now\n')
+//console.log('\nyour traject for now\n')
     finalPlace.forEach((item) => {
-      console.log(item.name)
+    //console.log(item.name)
     });
   //console.log("your position : " + userSelect.latitude + "  " + userSelect.longitude)
-  console.log("\n____________________________\n")
+//console.log("\n____________________________\n")
   rl.question('do you want to continue to pick place ? : ', (answer) => {
       if (answer == "yes") {
         chooseTag(userSelect)
       }
       else {
-        console.log("\nhere is your final traject : \n")
+      //console.log("\nhere is your final traject : \n")
         finalPlace.forEach((item) => {
-          console.log(item.name)
+        //console.log(item.name)
         });
         return
       }
@@ -333,7 +333,7 @@ async function placeCall(url) {
 }
 
 async function callApi(url, json) {
-  console.log("\n\n\n")
+//console.log("\n\n\n")
   let token = null
   let url_tmp = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=AIzaSyD6AVcufnom-RKQJeG8tlxAWhAOKor0-uo"
 
@@ -351,7 +351,7 @@ async function callApi(url, json) {
     //console.log("\n token \n", token, "$$$\n\n")
     //console.log("\n\n done \n\n")
   }).then(() => {
-    console.log("\n\nresponse\n\n", json)
+  //console.log("\n\nresponse\n\n", json)
     return (json)
   })
 }
@@ -370,22 +370,22 @@ async function begin2(value) {
         url = url_tmp
       }
       token = null
-      console.log("\n\n url : \n", url, "$$$\n\n")
+    //console.log("\n\n url : \n", url, "$$$\n\n")
       await placeCall(url).then((response) => {
-        console.log("\n\n aled \n\n", response, "\n\n")
+      //console.log("\n\n aled \n\n", response, "\n\n")
         json.push(response.results)
         if (response.next_page_token) {
           token = response.next_page_token
         }
-        console.log("\n token \n", token, "$$$\n\n")
-        console.log("\n\n done \n\n")
+      //console.log("\n token \n", token, "$$$\n\n")
+      //console.log("\n\n done \n\n")
       })
     } while (token != null)*/
     await callApi(url_tmp, json).then((response) => {
       if (response) {
           return
       }
-      console.log("ok")
+    //console.log("ok")
     })
     //console.log(json)
 }

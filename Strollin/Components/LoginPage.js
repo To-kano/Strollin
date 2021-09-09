@@ -32,7 +32,7 @@ const getInfoFromToken = (token, setUserInfo, props) => {
       if (error) {
         // //console.log(`login info has error: ${error}`);
       } else {
-        console.log("connected as : ", result.name, ' via facebook');
+      //console.log("connected as : ", result.name, ' via facebook');
         setUserInfo(result);
         loginUser(props, result.email, "Facebook1235");
       }

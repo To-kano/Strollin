@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import { connect } from 'react-redux';
 import {
-  StyleSheet, Text, View, FlatList, TouchableOpacity, Image, TextInput, ActivityIndicator, Modal
+  StyleSheet, Text, View, FlatList, TouchableOpacity, Image, TextInput,
 } from 'react-native';
 import { DrawerActions } from '@react-navigation/native';
 import { getTimeZone } from 'react-native-localize';
@@ -18,12 +18,11 @@ function Header({ navigation, defaultState = false }) {
       <View style={styles.view_header}>
         <TouchableOpacity
           onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
-          // onPress={() => navigation.navigate('Menu')}
         >
           <Image style={styles.img_header} source={require('../images/icons/black/menu.png')} />
         </TouchableOpacity>
         <Text style={styles.text_header}>
-          {I18n.t('Header.tags')}
+          {I18n.t('Header.friends')}
         </Text>
         <TouchableOpacity
           onPress={() => { setpressed(!pressed); }}
@@ -38,10 +37,9 @@ function Header({ navigation, defaultState = false }) {
       <TextInput
           autoCapitalize={'none'}
         style={styles.textInput_header}
-        placeholder={I18n.t('Header.search_tag')}
+        placeholder={I18n.t('Header.search_friend')}
       />
       <TouchableOpacity
-        // onPress={setSortedTendanceData}
         onPress={() => { setpressed(!pressed); }}
       >
         <Image style={styles.img_header} source={require('../images/icons/black/search.png')} />
@@ -50,110 +48,44 @@ function Header({ navigation, defaultState = false }) {
   );
 }
 
-export function Tag({ name, chosen, defaultState = false, Id, Tags, setLoading}) {
+export function Friend({ name, chosen, defaultState = false }) {
   const [pressed, setpressed] = useState(defaultState);
-  const [args, setArgs] = useState(true);
-
-  async function postTags(body) {
-    const store = Store.getState();
-    const access_Token = store.profil.access_token;
-
-    const list = Tags;
-
-
-    list.push({_id: body, dips: 0})
-  //console.log("list: ", list);
-    const test = JSON.stringify({ tags_list: list });
-    await fetch(`https://${IP_SERVER}:${PORT_SERVER}/location/update_location`, {
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        access_Token,
-        location_id: Id
-      },
-      body: test,
-      method: 'POST',
-    })
-      .then((res) => res.json())
-      .then((json) => {
-      })
-      .then(setLoading(false));
-  }
-
-  async function RemoveTags(body, setLoading) {
-    const store = Store.getState();
-    const access_Token = store.profil.access_token;
-
-    const list = Tags;
-
-
-    for (var i = 0; i < list.length; i++) {
-      if (list[i]._id == body) {
-        list.splice(i, 1)
-        break;
-      }
-    }
-  //console.log("list: ", list);
-    const test = JSON.stringify({ tags_list: list });
-    await fetch(`https://${IP_SERVER}:${PORT_SERVER}/location/update_location`, {
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        access_Token,
-        location_id: Id
-      },
-      body: test,
-      method: 'POST',
-    })
-      .then((res) => res.json())
-      .then((json) => {
-      })
-      .then(setLoading(false));
-  }
-
+  
   useEffect(() => {
-  //console.log('hola');
     setpressed(chosen);
   }, []);
 
   return (
-    <View style={styles.view_tags}>
+    <View style={styles.view_friends}>
       {pressed === false && (
       <TouchableOpacity
-        style={styles.view_tagOff}
+        style={styles.view_friendOff}
         onPress={() => {
-          setLoading(true);
-          postTags(name);
           setpressed(!pressed);
         }}
       >
-        <Text style={styles.text_tagOff}>{name}</Text>
+        <Text style={styles.text_friendOff}>{"nom de l'ami"}</Text>
       </TouchableOpacity>
       )}
       {(pressed === true) && (
       <TouchableOpacity
-        style={styles.view_tagOn}
+        style={styles.view_friendOn}
         onPress={() => {
-          setLoading(true);
-          // console.log('unpressed');
-          RemoveTags(name, setLoading);
           setpressed(!pressed);
         }}
       >
-        <Image style={styles.img_tagOn} source={require('../images/icons/white/checked.png')} />
-        <Text style={styles.text_tagOn}>{name}</Text>
+        <Image style={styles.img_friendOn} source={require('../images/icons/white/checked.png')} />
+        <Text style={styles.text_friendOn}>{"nom de l'ami"}</Text>
       </TouchableOpacity>
       )}
     </View>
   );
 }
 
-export function TagSelectionPart({ navigation, profil }) {
+export function FriendSelection({ navigation }) {
   const [args, setArgs] = useState(true);
   const [Profargs, setProfArgs] = useState(true);
   const [array, setArray] = useState(true);
-  const [Id, setId] = useState(null)
-  const [isLoading, setLoading] = React.useState(false);
 
   const store = Store.getState();
   const access_Token = store.profil.access_token;
@@ -165,9 +97,9 @@ export function TagSelectionPart({ navigation, profil }) {
   //console.log('hello');
     for (let i = 0; i < List.length; i++) {
       for (let j = 0; j < UserList.length; j++) {
-        if (UserList[j]._id == List[i].name) {
+        if (UserList[j] == List[i].name) {
         //console.log('hellot: ', UserList[j]);
-          arr.push({ name: UserList[j]._id, _id: List[i]._id, pressed: true });
+          arr.push({ name: UserList[j], _id: List[i]._id, pressed: true });
           flag = true;
           break;
         }
@@ -179,8 +111,8 @@ export function TagSelectionPart({ navigation, profil }) {
     setArray(arr);
   }
 
-  async function getLocationTags(List) {
-    await fetch(`https://${IP_SERVER}:${PORT_SERVER}/location/get_partner_location`, {
+  async function getUserTags(List) {
+    await fetch(`https://${IP_SERVER}:${PORT_SERVER}/users/get_own_profile`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -190,10 +122,9 @@ export function TagSelectionPart({ navigation, profil }) {
     })
       .then((res) => res.json())
       .then((json) => {
-      //console.log('########', json.location.tags_list);
-        setProfArgs(json.location.tags_list);
-        buildArray(List, json.location.tags_list);
-        setId(json.location.id)
+      //console.log('########', json.profile.tags_list);
+        setProfArgs(json.profile.tags_list);
+        buildArray(List, json.profile.tags_list);
       });
   }
 
@@ -210,101 +141,47 @@ export function TagSelectionPart({ navigation, profil }) {
       .then((json) => {
       //console.log('yooooo', json.tags_list);
         setArgs(json.tags_list);
-        getLocationTags(json.tags_list);
-      })
-      .then(setLoading(false));
+        getUserTags(json.tags_list);
+      });
   }
 
   useEffect(() => {
     getThings();
-    // getLocationTags();
+    // getUserTags();
   }, []);
-
   return (
     <View style={styles.view_back}>
       <Header navigation={navigation} />
       <View style={styles.viex_list}>
         <Text style={styles.text_field}>
-          {I18n.t('Tags.select_our_tags')}
+          {I18n.t('TripTogether.addFriend')}
           <Text style={styles.text_star}> *</Text>
         </Text>
         <FlatList
           data={array}
           keyExtractor={(item) => item.name}
           renderItem={({ item }) => (
-            <Tag name={item.name} chosen={item.pressed} Id={Id} Tags={Profargs} setLoading={setLoading}/>
+            <Friend name={item.name} chosen={item.pressed} />
           )}
         />
       </View>
       <TouchableOpacity
         style={styles.view_button}
         onPress={() => {
-          navigation.navigate('SettingPartenaire');
+          navigation.navigate('TripSuggestion');
         }}
       >
         <Text style={styles.text_button}>
-          {I18n.t('Tags.confirm_my_tags')}
+          {I18n.t('TripTogether.addFriend')}
         </Text>
       </TouchableOpacity>
-      <Modal
-        animationType="none"
-        transparent={true}
-        visible={isLoading}
-      >
-        <View style={styles.loading_screen}>
-          <ActivityIndicator size="large"  color="black" style={{}}/>        
-        </View>
-      </Modal>
     </View>
-    // <View style={styles.back}>
-    //   <BackgroundImage />
-    //   <View style={styles.fill}>
-    //     <Text style={[{ textAlign: 'left', color: 'black', fontSize: 25 }]}>
-    //       {I18n.t('welcome')}
-    //     </Text>
-    //     <Text style={[
-    //       {
-    //         textAlign: 'center', color: 'black', fontWeight: 'bold', fontSize: 25
-    //       }
-    //     ]}
-    //     >
-    //       {profil.pseudo}
-    //     </Text>
-    //     <Text style={[{
-    //       textAlign: 'left',
-    //       color: 'black',
-    //       fontSize: 18,
-    //       marginTop: 18,
-    //       fontWeight: 'normal',
-    //     }]}
-    //     >
-    //       {I18n.t('chooseTags')}
-    //     </Text>
-    //     <View style={{ flex: 2, margin: 10, marginTop: 40 }}>
-    //       <FlatList
-    //         data={data}
-    //         renderItem={({ item }) => (
-    //           <Tag name={item.name} pressed={item.pressed} />
-    //         )}
-    //       />
-    //       <TouchableOpacity
-    //         style={styles.newTrip}
-    //         onPress={() => navigation.navigate('Profile')}
-    //         // onPress={() =>
-    //         //  // this.NextPage(navigation.getParam('uid'))
-    //         // }
-    //       >
-    //         <Text style={{ fontSize: 16, color: '#FFFFFF' }}>{I18n.t('next')}</Text>
-    //       </TouchableOpacity>
-    //     </View>
-    //   </View>
-    // </View>
   );
 }
 
 const mapStateToProps = (state) => state;
 
-export default connect(mapStateToProps)(TagSelectionPart);
+export default connect(mapStateToProps)(FriendSelection);
 
 const styles = StyleSheet.create({
   view_back: {
@@ -360,17 +237,17 @@ const styles = StyleSheet.create({
     color: '#FF0000',
     fontSize: 16,
   },
-  view_tags: {
+  view_friends: {
     marginBottom: 9,
   },
-  view_tagOff: {
+  view_friendOff: {
     borderRadius: 25,
     borderWidth: 3,
     padding: 9,
     borderColor: '#000000',
     backgroundColor: '#E1E2E7',
   },
-  text_tagOff: {
+  text_friendOff: {
     textTransform: 'capitalize',
     width: '100%',
     height: 22,
@@ -379,7 +256,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
   },
-  view_tagOn: {
+  view_friendOn: {
     flexDirection: 'row',
     borderRadius: 25,
     borderWidth: 3,
@@ -387,12 +264,12 @@ const styles = StyleSheet.create({
     borderColor: '#0092A7',
     backgroundColor: '#0092A7',
   },
-  img_tagOn: {
+  img_friendOn: {
     width: 22,
     height: 22,
     resizeMode: 'contain',
   },
-  text_tagOn: {
+  text_friendOn: {
     textTransform: 'capitalize',
     width: '86%',
     height: 22,
@@ -417,44 +294,4 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#FFFFFF',
   },
-  loading_screen: {
-    backgroundColor:'rgba(100,100,100,0.75)',
-    display: "flex",
-    justifyContent: 'space-around',
-    height: '100%'
-  },
-  // back: {
-  //   flexDirection: 'column',
-  //   justifyContent: 'flex-start',
-  //   alignItems: 'center',
-  //   flex: 1,
-  //   backgroundColor: '#fff',
-  // },
-  // fill: {
-  //   flexDirection: 'column',
-  //   justifyContent: 'flex-start',
-  //   flex: 1,
-  //   backgroundColor: '#FFFFFF',
-  //   padding: 5,
-  //   paddingTop: 25,
-  //   margin: 10,
-  //   width: '95%',
-  //   borderRadius: 5,
-  //   opacity: 0.9,
-  // },
-  // header: {
-  //   backgroundColor: '#FFFFFF',
-  //   flexDirection: 'row',
-  //   justifyContent: 'flex-start',
-  //   alignItems: 'center',
-  //   flex: 0.1,
-  //   width: '100%',
-  // },
-  // newTrip: {
-  //   alignItems: 'center',
-  //   backgroundColor: '#F07323',
-  //   paddingVertical: '5%',
-  //   paddingHorizontal: '30%',
-  //   borderRadius: 5,
-  // },
 });

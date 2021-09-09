@@ -25,7 +25,7 @@ function Menu(props) {
     gestureIsClickThreshold: 0.5
   };
   const [isLoading, setLoading] = React.useState(false);
-  console.log("customDrawer ", props.state)
+  // console.log("customDrawer ", props.state)
 
   return (
     <View style={styles.horizontal}>
@@ -48,7 +48,7 @@ function Menu(props) {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              console.log('navigate');
+            //console.log('navigate');
               props.navigation.navigate(props.state.routeNames[1]);
             }}
             style={[styles.view_navigationIn, props.state.index == 1 ? styles.current_page : {}]}

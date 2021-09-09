@@ -48,10 +48,10 @@ export function HistoryItem({ profil, courseId , duration}) {
   }, [course]);
 
   const [locations, setLocations] = useState(null);
-  console.log("profil : ", profil);
-  console.log("courseId : ", courseId);
-  console.log("course : ", course);
-  console.log("locations : ", locations);
+//console.log("profil : ", profil);
+//console.log("courseId : ", courseId);
+//console.log("course : ", course);
+//console.log("locations : ", locations);
     return (
         <View style={styles.view_historic}>
           <View style={styles.view_historicTop}>

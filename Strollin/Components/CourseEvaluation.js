@@ -37,19 +37,19 @@ function ratingCompleted(rating, comment, props, setLoading) {
      Accept: 'application/json',
      'Content-Type': 'application/json',
      access_token: store.profil.access_token,
-     course_id: store.course.currentCourse.id,
+     course_id: store.course.courseObjectHistoric[0].id,
    },
    body: bodyRequest,
    method: 'post',
   })
    .then((response) => response.json())
    .then(async (answer) => {
-     console.log("answer =", answer);
-     console.log("course =", store.course.currentCourse);
+   //console.log("answer =", answer);
+   //console.log("course =", store.course.currentCourse);
      if (answer.status == true) {
-       console.log("comment sent successfully");
+     //console.log("comment sent successfully");
      } else {
-       console.log("failed answer = ", answer);
+     //console.log("failed answer = ", answer);
      }
    })
    .then(setLoading(false))

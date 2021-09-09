@@ -51,7 +51,7 @@ function PartenaireScreen(props) {
       "__v": 0
   })
   const [tagsList, setTagsList] = useState(initialList)
-  console.log(locationUser)
+//console.log(locationUser)
 
   useEffect(() => {
     if (!i) {
@@ -64,7 +64,7 @@ function PartenaireScreen(props) {
       })
         .then((response) => response.json())
         .then((answer) => {
-          console.log("answer.location_list", answer);
+        //console.log("answer.location_list", answer);
           if (answer.location) {
             setUser(answer.location);
             initialList = []
@@ -82,7 +82,7 @@ function PartenaireScreen(props) {
   }, []);
 
   const [list, setList] = React.useState(initialList);
-  console.log(props.map.locations, "\n\n\n", props.profil, "\n\n\n", props.route)
+//console.log(props.map.locations, "\n\n\n", props.profil, "\n\n\n", props.route)
 
   return (
     <View style={styles.view_back}>
@@ -249,7 +249,7 @@ const styles = StyleSheet.create({
     color: '#000000',
   },
   view_partner: {
-    height: 687,
+    height: '92%',
     width: '100%',
   },
   view_box: {

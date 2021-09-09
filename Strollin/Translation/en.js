@@ -48,6 +48,10 @@ export default {
     friendList: 'Friend list',
   },
 
+  TripTogether: {
+    addFriend: 'Add friends to my trip'
+  },
+
   Gallery: {
     by: 'by',
     views: 'views',
@@ -170,7 +174,9 @@ export default {
   },
 
   Header: {
+    TripTogether: 'Trip Together',
     search_tag: 'Search a Tag',
+    search_friend: 'Search a friend',
     friend_list: "Friend List",
     add_friend: 'Add Friend',
     partner: 'Partner',

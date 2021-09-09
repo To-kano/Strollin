@@ -11,9 +11,16 @@ const initialState = {
 
 function CourseSettingsReducer(state = initialState, action) {
   let nextState = {};
-  console.log("\n\nCourseSettingsReducer:\n")
-  console.log("//////////////////////////:action: ", action)
+//console.log("\n\nCourseSettingsReducer:\n")
+//console.log("//////////////////////////:action: ", action)
   switch (action.type) {
+    case 'SET_COURSE_SETTINGS':
+      nextState = {
+        ...state,
+        ...action.value
+      };
+
+    return nextState;
     case 'ADD_POS':
       nextState = {
         ...state,

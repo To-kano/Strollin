@@ -79,6 +79,7 @@ const styles = StyleSheet.create({
     color: '#000000',
   },
   view_list: {
+    width: '100%',
     flex: 757,
   },
   view_historic: {

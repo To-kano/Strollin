@@ -24,7 +24,7 @@ export async function getProfilCache(dispatch) {
       dispatch(action);
     }
   } catch (e) {
-    console.log('echec store profile ', e);
+  //console.log('echec store profile ', e);
   }
 };
 
@@ -45,7 +45,7 @@ function Socket({children, profil, dispatch}) {
   useEffect(() => {
     if (socket != null) {
       socket.on('receiveMessage', (data) => {
-      console.log("received msg" + JSON.stringify(data));
+    //console.log("received msg" + JSON.stringify(data));
 
       const action = { type: 'ADD_MESSAGE', value: data };
       Store.dispatch(action);
@@ -91,21 +91,21 @@ function Socket({children, profil, dispatch}) {
   };
 
   const sendImage = (image) => {
-    console.log('sending image', image);
+  //console.log('sending image', image);
 
     socket.emit('sendMessage', { access_token: store.profil.access_token,
       conversation: store.conversation.currentConversation, type: "image", message: image});
   };
 
   const sendCourse = (courseId) => {
-    console.log('sending course', courseId);
+  //console.log('sending course', courseId);
 
     socket.emit('sendMessage', { access_token: store.profil.access_token,
       conversation: store.conversation.currentConversation, type: "course", message: courseId});
   };
 
   const createConversation = (participantsID) => {
-    console.log('creating conversation', participantsID);
+  //console.log('creating conversation', participantsID);
     let convName = store.profil.pseudo;
 
     for (let i in participantsID) {

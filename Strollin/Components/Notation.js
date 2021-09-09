@@ -82,7 +82,7 @@ function Notation(props) {
 
     if (Array.isArray(locales)) {
       language = locales[0].languageTag;
-      console.log(language)
+    //console.log(language)
     }
     if (props.position.asked == false) {
       requestGeolocalisationPermission(props.dispatch);
@@ -126,7 +126,7 @@ function Notation(props) {
   var now = new Date();
 
   var day = now.getDayName();
-  console.log("______________________________________________" + day)*/
+//console.log("______________________________________________" + day)*/
 
   return (
     <View>

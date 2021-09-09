@@ -21,7 +21,7 @@ async function getCommentList(props, setCommentList, store) {
   }).then((answer) => answer.json())
   .then(async function (answer) {
     setCommentList(answer["comments_list"])
-    console.log("comment = ", store.comment.selectedCourse.comments_list)
+  //console.log("comment = ", store.comment.selectedCourse.comments_list)
   })
   .catch((error) => {
     console.error('error :', error);
@@ -29,7 +29,7 @@ async function getCommentList(props, setCommentList, store) {
 
 }
 
-export function Header(props) {
+function Header(props) {
 
   return (
     <View style={styles.view_header}>
@@ -48,7 +48,7 @@ export function Header(props) {
             value: props.store.comment.selectedCourse
           };
           Store.dispatch(action);
-          console.log("course = ", props.store.comment.selectedCommentCourse);
+        //console.log("course = ", props.store.comment.selectedCommentCourse);
 
           const popAction = StackActions.pop(5);
 

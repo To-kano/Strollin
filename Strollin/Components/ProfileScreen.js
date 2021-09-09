@@ -59,7 +59,7 @@ function ProfileScreen(props) {
 
     async function getThings() {
 
-      console.log("access_Token = ",access_Token );
+    //console.log("access_Token = ",access_Token );
 
       if (reload == false)
         return
@@ -73,14 +73,14 @@ function ProfileScreen(props) {
       })
       .then(res => res.json())
       .then(json => {
-        console.log("profile: ",json);
+      //console.log("profile: ",json);
         //console.log("profile updated ");
         setArgs(json.profile)
         initialList = []
         for (var i = 0; i < json.profile.tags_list.length; i++) {
           initialList.push({id: i, name: json.profile.tags_list[i]})
         }
-        console.log("tags setted: ", initialList);
+      //console.log("tags setted: ", initialList);
         setTagsList(initialList)
         setReload(false)
       })
@@ -146,7 +146,7 @@ function ProfileScreen(props) {
           <ChangeImageProfileForm/>
         </Popup>
         {/* <Image  style={styles.img_profileTop} source={require('')}/> */}
-        <Text style={styles.text_profileTop}>{args?.mail}</Text>
+        <Text style={styles.text_profileTop}>{args?.pseudo}</Text>
       </View>
       <View style={styles.view_email}>
         <Text style={styles.text_description}>
@@ -189,7 +189,7 @@ function ProfileScreen(props) {
           props.navigation.navigate('TagSelection');
           //getThings();
           //setTagsList(tagsList);
-          console.log("exisrte stp eeeeeeeeeeeeeeeee");
+        //console.log("exisrte stp eeeeeeeeeeeeeeeee");
         }}
       >
         <Text style={styles.text_button}>Choose my tags</Text>

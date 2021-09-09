@@ -96,6 +96,10 @@ export default {
     addGroup: 'Ajouter le groupe',
   },
 
+  TripTogether: {
+    addFriend: 'Ajouter mes amis'
+  },
+
   Gallery: {
     by: 'par',
     views: 'vues',
@@ -216,7 +220,9 @@ export default {
   },
 
   Header: {
+    TripTogether: 'Trajet à plusieurs',
     search_tag: 'Rechercher un Tag',
+    search_friend: 'Rechercher un ami',
     add_friend: 'Ajouter un ami',
     friend_list: "Liste d'amis",
     partner: 'Partenaire',
