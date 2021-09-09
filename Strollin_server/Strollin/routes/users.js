@@ -122,7 +122,7 @@ router.post('/register', async function (req, res) {
         from: '"Strollin App" <strollinapp@outlook.com>', // sender address (who sends)
         to: req.body.mail.toLowerCase(), // list of receivers (who receives)
         subject: `subscribe the app Strollin `, // Subject line
-        html: data,
+        html: message,
       };
 
       transporter.sendMail(mailOptions, function (error, info) {
