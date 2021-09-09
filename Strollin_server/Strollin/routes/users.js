@@ -191,7 +191,7 @@ router.get('/verify', async function (req, res) {
         error: error
       });
     }
-    return res.render("homepage");
+    return res.render("verify");
   }
 });
 
