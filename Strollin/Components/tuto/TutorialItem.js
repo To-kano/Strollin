@@ -59,6 +59,10 @@ function TutorialItem({data, title}) {
                 color: '#000000',
             }}>{title}</Text>
             <Carousel
+                autoplay={true}
+                autoplayDelay={3000}
+                autoplayInterval={7000}
+                loop={true}
               //ref={(c) => { this._carousel = c; }}
               data={data}
               renderItem={_renderItem}

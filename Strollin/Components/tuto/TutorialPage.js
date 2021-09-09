@@ -36,13 +36,13 @@ const tutorielTags = [
 const tutorielNavigation = [
     {
         title : "Créer une nouvelle sortie",
-        description : "Pour créer une nouvelle sortie vous devez aller à la page de configuration de sortie en selectionnant 'New trip' dans le menu de navigation",
+        description : "Créer une nouvelle sortie en selectionnant 'New trip' dans le menu de navigation",
         image : require('../../images/guide/navigation/Strollin_navigation_new_trip_navigation.jpg')
 
     },
     {
         title : "Configurer ma sortie",
-        description : "Sur la page de configuration de sortie, vous pouvez selectionner votre budget, temps de sortie, la distance à parcourir, le nombre de lieu à visité et indiquer si vous souhaitez boire ou manger",
+        description : "Sur la page de configuration de sortie, vous pouvez selectionner vos besoin pour ce parcoure",
         image : require('../../images/guide/navigation/Strollin_trip_settings.jpg')
 
     },
@@ -58,7 +58,7 @@ const tutorielNavigation = [
     },
     {
         title : "Régénéré une nouvelle sortie",
-        description : "Avant de lancer le parcoure, si celui-ci ne vous convient pas, vous pouvez le régénérer avec la même configuration en appuyant sur le bouton 'New Trip'",
+        description : "Vous pouvez le régénérer avec la même configuration en appuyant sur le bouton 'New Trip'",
         image : require('../../images/guide/navigation/Strollin_trip_suggestion_new_generate.jpg')
     },
     {
@@ -68,7 +68,7 @@ const tutorielNavigation = [
     },
     {
         title : "Noter le parcoure",
-        description : "A la fin de la navigation vous pouvez choisir de noter et commenter la navigation ou non en appuyant sur le bouton 'Envoyer' ou sur la croix en haut à droite",
+        description : "A la fin de la navigation vous pouvez choisir de noter la navigation ou non en appuyant sur le bouton 'Envoyer' ou sur la croix en haut à droite",
         image : require('../../images/guide/navigation/Strollin_trip_notation.jpg')
     },
 ]
@@ -76,7 +76,7 @@ const tutorielNavigation = [
 const tutorielPartage = [
     {
         title : "Voir l'historique",
-        description : "Vous pouvez voir l'historique de vos parcoures en allant sur la page de l'historique en cliquant sur le bouton historic dans le menu de navigation",
+        description : "Vous pouvez voir l'historique de vos parcoures cliquant sur le bouton historic dans le menu de navigation",
         image : require('../../images/guide/partage/Strollin_navigation_historic_nav.jpg')
     },
     {
@@ -126,11 +126,14 @@ function TutorialPage(props) {
         <View style={styles.view_back} >
             <Header props={props} />
             <ScrollView style={{
-                backgroundColor : "blue",
-                paddingVertical: 20,
-                height : 600
+                //backgroundColor : "blue",
+                //paddingVertical: 20,
+                height : '100%'
             }} >
                 <TutorialItem title={'Tags'} data={tutorielTags}/>
+                <TutorialItem title={'Navigation'} data={tutorielNavigation}/>
+                <TutorialItem title={'Partage'} data={tutorielPartage}/>
+                <TutorialItem title={'Chat'} data={tutorielCommunication}/>
             </ScrollView>
         </View>
     )
@@ -144,14 +147,14 @@ const styles = StyleSheet.create({
       flexDirection: 'column',
       justifyContent: 'flex-start',
       alignItems: 'center',
-      backgroundColor: '#E1E2E7',
+      //backgroundColor: '#E1E2E7',
     },
     view_header: {
       //flex: 50,
       flexDirection: 'row',
       alignItems: 'center',
-      backgroundColor : 'green',
-      marginBottom: 10,
+      //backgroundColor : 'green',
+      //marginBottom: 10,
     },
     img_header: {
       width: 34,
