@@ -114,10 +114,10 @@ router.post('/register', async function (req, res) {
       console.log('data ', data);
       console.log('err: ', err);
 
-      //const message = data.replace('USER_NAME', req.body.pseudo).replace("USER_ID", user.id.toString());
-//
-      //console.log("message :", message);
-//
+      const message = data.replace('USER_NAME', req.body.pseudo).replace("USER_ID", user.id.toString());
+
+      console.log("message :", message);
+
       //const mailOptions = {
       //  from: '"Strollin App" <strollinapp@outlook.com>', // sender address (who sends)
       //  to: req.body.mail.toLowerCase(), // list of receivers (who receives)
