@@ -52,52 +52,6 @@ function SubscriptionPage({navigation, profil}) {
         </View>
       </>)}
 
-      {/* Page 1 + Non abonné */}
-      {/* {confirmAction === 1 && profil.partner === false && (<>
-        <View style={styles.view_subscription_page}>
-          <Text style={styles.subscription_text_price}>
-            {"2€ / Month"}
-          </Text>
-        </View>
-        <View style={styles.subscription_button_view}>
-          <Button
-            title="Confirm Subscription"
-            onPress={() => {
-              // Subscription
-              // if answer === ok
-              setConfirmAction(2);
-            }}
-          />
-        </View>
-      </>)} */}
-
-      {/* Page 2 + Non abonné */}
-      {/* {confirmAction === 2 && profil.partner === false && (<>
-        <View style={styles.view_subscription_page}>
-          <Text style={styles.subscription_text_price}>
-            {"Congratulation!"}
-          </Text>
-          <Text style={styles.subscription_text}>
-              {"\t\t\t\tYou are now subscribed. The debit will be made every month until you choose to stop your subscription."}
-              {"\n\n\t\t- Your location will be more often selected during courses generation"}
-              {"\n\n\t\t- Your location will be promoted via pop up during courses when users pass near and have corresponding tags"}
-          </Text>
-          <Text style={styles.subscription_text_state}>
-            {"Thank you!"}
-          </Text>
-        </View>
-        <View style={styles.subscription_button_view}>
-          <Button
-            title="Subscribe"
-            onPress={() => {
-              // createCustomer request
-              // if answer === ok
-              setConfirmAction(true);
-            }}
-          />
-        </View>
-      </>)} */}
-
 
       {/* Page 0 + abonné */}
       {confirmAction === 0 && profil.partner === true && (<>
@@ -120,7 +74,7 @@ function SubscriptionPage({navigation, profil}) {
             onPress={() => {
               // createCustomer request
               // if answer === ok
-              setConfirmAction(true);
+              setConfirmAction(1);
             }}
           />
         </View>
@@ -146,14 +100,14 @@ function SubscriptionPage({navigation, profil}) {
             onPress={() => {
               // createCustomer request
               // if answer === ok
-              setConfirmAction(true);
+              setConfirmAction(2);
             }}
           />
         </View>
       </>)}
 
       {/* Page 2 + abonné */}
-      {confirmAction === 2 && profil.partner === false && (<>
+      {confirmAction === 2 && profil.partner === true && (<>
         <View style={styles.view_subscription_page}>
           <Text style={styles.subscription_text_price}>
             {"2€ / Month"}
@@ -167,16 +121,13 @@ function SubscriptionPage({navigation, profil}) {
             {"You are not subscribed"}
           </Text>
         </View>
-        <View style={styles.subscription_button_view}>
+        {/* <View style={styles.subscription_button_view}>
           <Button
             title="Subscribe"
             onPress={() => {
-              // createCustomer request
-              // if answer === ok
-              setConfirmAction(true);
             }}
           />
-        </View>
+        </View> */}
       </>)}
 
 
