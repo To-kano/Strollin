@@ -750,6 +750,7 @@ const styles = StyleSheet.create({
     color: '#000',
   },
   view_result: {
+    width: '100%',
     flex: 757,
   },
   view_result_header: {
