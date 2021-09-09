@@ -213,13 +213,14 @@ const styles = StyleSheet.create({
     paddingRight: '0%',
     paddingBottom: '1.8%',
   },
-  viex_list: {
+  view_list: {
+    width: '100%',
     height: '61.8%',
   },
   view_box: {
     backgroundColor: '#000000',
     borderRadius: 12,
-    width: 330,
+    width: '100%',
     height: 179,
     marginBottom: 12.5,
   },
@@ -232,7 +233,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column-reverse',
     borderRadius: 12,
     paddingTop: 15,
-    paddingLeft: 30,
+    paddingLeft: 20,
     paddingRight: 5,
     paddingBottom: 20,
     backgroundColor: 'rgba(0,0,0,0.6)',

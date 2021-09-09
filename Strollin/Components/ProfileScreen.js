@@ -141,7 +141,7 @@ function ProfileScreen(props) {
           <ChangeImageProfileForm/>
         </Popup>
         {/* <Image  style={styles.img_profileTop} source={require('')}/> */}
-        <Text style={styles.text_profileTop}>{args?.mail}</Text>
+        <Text style={styles.text_profileTop}>{args?.pseudo}</Text>
       </View>
       <View style={styles.view_email}>
         <Text style={styles.text_description}>

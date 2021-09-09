@@ -126,7 +126,7 @@ export function HomePage(props) {
         onPress={() => { Linking.openURL("https://forms.gle/CzzEjaVahZ7TdyLE6") }}
         style={styles.view_form2}
       >
-        <Image style={styles.img_form} source={require('../images/icons/black/form.png')} />
+        <Image style={styles.img_form} source={require('../images/icons/black/bug.png')} />
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => { Linking.openURL("https://forms.gle/CzzEjaVahZ7TdyLE6") }}
