@@ -1,6 +1,6 @@
 import React, { Component, useState, useEffect } from 'react';
 import {
-  StyleSheet, AppState, View, Text, Button, BackHandler, Image, TouchableOpacity, ImageBackground,
+  StyleSheet, AppState, View, Text, Button, BackHandler, Image, TouchableOpacity, ImageBackground, RefreshControl
 } from 'react-native';
 
 import { connect } from 'react-redux';
@@ -24,7 +24,7 @@ function randPic() {
 }
 
 export function TripNavigation({map, profil, dispatch, navigation}) {
-
+  const [displayMap, setDisplayMap] = useState(true);
   const [pop, setPop] = useState(false);
   const [del, setDel] = useState(false);
   const [course, setCourse] = useState(null);
@@ -100,6 +100,8 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
       test_loc.sort(compare)
       const action = { type: 'SET_LOCATIONS', locations: test_loc };
       Store.dispatch(action);
+      setDisplayMap(false);
+      setDisplayMap(true);
     });
   }
 
@@ -124,6 +126,7 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
     .then(res => res.json())
     .then(json => {
       setCourse(json.popup)
+      //console.log("stp c la le truc: ", json.popup);
       setPop(true);
     });
 
@@ -156,45 +159,45 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
     longitudeDelta: 0.0121,
   };
 
-  if (del) {
-    return (
-      <View>
-      <Text>
-        Are you sure you want to delete this place ?: {Store.getState().course.delete[1]}
-      </Text>
-      <Button
-        title="yes"
-        onPress={() => DeletePlace(true)}
-      />
-      <Button
-        title="no"
-        onPress={() => DeletePlace(false)}
-      />
-    </View>
-    )}
-  if (pop) {
-    return (
-      <View style={styles.view_popup}>
-        <Text style={[styles.text_popup, styles.text_question]}>
-          Do you want to go to : {course.Name}
-        </Text>
-        <View style={styles.view_button}>
-          <TouchableOpacity
-            style={styles.button_no}
-            onPress={() => PopUpResponse(false, profil.first_name, profil.scoreCourse, course)}
-          >
-            <Text style={styles.text_popup}>No</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button_yes}
-            onPress={() => PopUpResponse(true, profil.first_name, profil.scoreCourse, course)}
-          >
-            <Text style={styles.text_popup}>Yes</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    )}
-  else {
+if (del) {
+  return (
+    <View>
+    <Text>
+      Are you sure you want to delete this place ?: {Store.getState().course.delete[1]}
+    </Text>
+    <Button
+      title="yes"
+      onPress={() => DeletePlace(true)}
+    />
+    <Button
+      title="no"
+      onPress={() => DeletePlace(false)}
+    />
+  </View>
+  )}
+ // if (pop) {
+ //   return (
+ //     <View style={styles.view_popup}>
+ //       <Text style={[styles.text_popup, styles.text_question]}>
+ //         Do you want to go to : {course.Name}
+ //       </Text>
+ //       <View style={styles.view_button}>
+ //         <TouchableOpacity
+ //           style={styles.button_no}
+ //           onPress={() => PopUpResponse(false, profil.first_name, profil.scoreCourse, course)}
+ //         >
+ //           <Text style={styles.text_popup}>No</Text>
+ //         </TouchableOpacity>
+ //         <TouchableOpacity
+ //           style={styles.button_yes}
+ //           onPress={() => PopUpResponse(true, profil.first_name, profil.scoreCourse, course)}
+ //         >
+ //           <Text style={styles.text_popup}>Yes</Text>
+ //         </TouchableOpacity>
+ //       </View>
+ //     </View>
+ //   )}
+ // else {
   return (
     <View style={styles.view_back}>
       <View style={styles.view_header}>
@@ -219,14 +222,37 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
         <Text numberOfLines={1}  style={styles.text_destination}>{locations[0].name}</Text>
       </View>
       <View style={styles.view_map}>
-        <Map
-          navigation={navigation}
-          height="100%"
-          width={390}
-          deltaView={deltaView}
-          locations={locations}
-        />
+        {displayMap &&
+          <Map
+            navigation={navigation}
+            height="100%"
+            width={390}
+            deltaView={deltaView}
+            locations={locations}
+          />
+        }
       </View>
+      {pop &&
+        <View style={styles.view_popup}>
+          <Text style={[styles.text_popup, styles.text_question]}>
+            Do you want to go to : {course.Name}
+          </Text>
+          <View style={styles.view_button}>
+            <TouchableOpacity
+              style={styles.button_no}
+              onPress={() => PopUpResponse(false, profil.first_name, profil.scoreCourse, course)}
+            >
+              <Text style={styles.text_popup}>No</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.button_yes}
+              onPress={() => PopUpResponse(true, profil.first_name, profil.scoreCourse, course)}
+            >
+              <Text style={styles.text_popup}>Yes</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      }
       <TouchableOpacity onPress={() => {
         setDel(true)
       }}>
@@ -241,7 +267,7 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
       </TouchableOpacity>
     </View>
   );
-  }
+//   }
 }
 
 const mapStateToProps = (state) => {
@@ -263,7 +289,8 @@ const styles = StyleSheet.create({
     margin: 10,
     padding: 10,
     flexDirection: 'column',
-    height: '16%',
+    width: '100%',
+    height: '14%',
     elevation: 5,
     backgroundColor: '#FFF'
   },

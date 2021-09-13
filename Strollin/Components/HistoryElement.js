@@ -62,7 +62,6 @@ function randPic() {
 
 function ElementHistoryNav({ course, locations, defaultSate = false }) {
   const navigation = useNavigation();
-
   //const messagetext = `Strollin' m'a proposé un trajet ! \nRejoignons nous a ${getLocation().name} au ${getLocation().address} à ${getLocation().city} !`;
   const [showMap, setShowMap] = useState(defaultSate);
 
@@ -131,6 +130,7 @@ function ElementHistoryNav({ course, locations, defaultSate = false }) {
               </ImageBackground>
             </TouchableOpacity>
           )}
+          keyExtractor={(item) => item._id}
         />
       </View>
     );
@@ -213,13 +213,14 @@ const styles = StyleSheet.create({
     paddingRight: '0%',
     paddingBottom: '1.8%',
   },
-  viex_list: {
+  view_list: {
+    width: '100%',
     height: '61.8%',
   },
   view_box: {
     backgroundColor: '#000000',
     borderRadius: 12,
-    width: 330,
+    width: '100%',
     height: 179,
     marginBottom: 12.5,
   },
@@ -232,7 +233,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column-reverse',
     borderRadius: 12,
     paddingTop: 15,
-    paddingLeft: 30,
+    paddingLeft: 20,
     paddingRight: 5,
     paddingBottom: 20,
     backgroundColor: 'rgba(0,0,0,0.6)',

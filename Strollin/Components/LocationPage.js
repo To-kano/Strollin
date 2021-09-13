@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
     color: '#000000',
   },
   view_partner: {
-    height: 687,
+    height: '92%',
     width: '100%',
   },
   view_box: {
@@ -239,7 +239,7 @@ const styles = StyleSheet.create({
     color: '#000000',
   },
   view_number: {
-    flexDirection: 'row-reverse',
+    flexDirection: 'row',
     width: '100%',
     padding: 7,
     backgroundColor: '#FFFFFF',
