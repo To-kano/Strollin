@@ -213,7 +213,7 @@ async function AddFriend(props, store, mail) {
     friend_mail: mail
   });
 
-  await fetch(`http{IP_SERVER}:${PORT_SERVER}/users/add_friend`, {
+  await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/add_friend`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -236,7 +236,7 @@ async function DeleteFriend(props, store, id) {
     friend_id: id
   });
 
-  await fetch(`http{IP_SERVER}:${PORT_SERVER}/users/remove_friend`, {
+  await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/remove_friend`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -315,7 +315,7 @@ export function UsersObject(props) {
 }
 
 async function getUserList(store, setUserList) {
-  await fetch(`http{IP_SERVER}:${PORT_SERVER}/users/get_users`, {
+  await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/get_users`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',

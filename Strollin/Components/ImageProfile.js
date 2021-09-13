@@ -16,7 +16,7 @@ function ImageProfile({profil, style}) {
     useEffect(() => {
         getImageId(profil.id_image_profile).then(answer => {
             if (answer?.uri) {
-                let pathImage = `http{IP_SERVER}:${PORT_SERVER}/images/${answer.uri}`;
+                let pathImage = `http://${IP_SERVER}:${PORT_SERVER}/images/${answer.uri}`;
                 setImage(pathImage);
             }
         })

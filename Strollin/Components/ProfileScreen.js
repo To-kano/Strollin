@@ -62,7 +62,7 @@ function ProfileScreen(props) {
 
       if (reload == false)
         return
-      await fetch(`http{IP_SERVER}:${PORT_SERVER}/users/get_own_profile`, {
+      await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/get_own_profile`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -89,7 +89,7 @@ function ProfileScreen(props) {
 
       const test = JSON.stringify({pseudo: body})
 
-      await fetch(`http{IP_SERVER}:${PORT_SERVER}/users/edit_profile`, {
+      await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/edit_profile`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',

@@ -42,10 +42,15 @@ async function PopUpReq(pos, course) {
 async function confirmeSettings(pos, budget, hours, minutes, props, eat, radius, placeNbr, is18) {
 
   const store = Store.getState();
-  const tags = store.profil.tags_list;
+  var tags = store.profil.tags;
   const access_token = store.profil.access_token;
   var tempTags = [];
 
+  if (tags.length < 1) {
+    console.log("ici");
+    tags = store.profil.tags_list;
+  }
+  console.log("tags: ", tags);
   if (store.CourseSettings.Temporarytags.length > 0) {
     tempTags = store.CourseSettings.Temporarytags
   }
@@ -63,6 +68,9 @@ async function confirmeSettings(pos, budget, hours, minutes, props, eat, radius,
     tempTags: tempTags,
     friendstags: store.CourseSettings.friendstags
   }
+
+  console.log("settings: ", settings);
+  console.log("settings.Tags: ", settings.tags);
 
   console.log("friendscourse: ", store.CourseSettings.friendstags);
   let action = {

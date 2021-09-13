@@ -45,8 +45,10 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
     var current = store.course.currentCourse
     console.log("COURSE :::::::::::::::::", current);
     var list = current.locations_list;
+    console.log("list: ", list);
+    console.log("store.c.d ", store.course.delete);
     for (var i = 0; i < list.length; i++) {
-      if (list[i] == store.course.delete[0]) {
+      if (list[i] === store.course.delete[0]) {
         console.log("delte");
         locations.splice(i, 1);
         current.locations_list.splice(i, 1);
@@ -69,7 +71,7 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
     coordinate[1] = pos.longitude;
 
   //console.log("\n*\n*\n*\n*", locations[0])
-    await fetch(`http{IP_SERVER}:${PORT_SERVER}/generator/popup_answer`, {
+    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/generator/popup_answer`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -89,7 +91,7 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
     if (response == false)
       return
     //update course
-    await fetch(`http{IP_SERVER}:${PORT_SERVER}/location/get_locations_by_id`, {
+    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/get_locations_by_id`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -121,7 +123,7 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
     coordinate[0] = pos.latitude;
     coordinate[1] = pos.longitude;
 
-    await fetch(`http{IP_SERVER}:${PORT_SERVER}/generator/generate_popup`, {
+    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/generator/generate_popup`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',

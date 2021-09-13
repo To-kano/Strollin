@@ -95,7 +95,7 @@ function Notation(props) {
     }
 
   function sendMessage(value) {
-    const url = `http{IP_SERVER}:${PORT_SERVER}/location/get_place`
+    const url = `http://${IP_SERVER}:${PORT_SERVER}/location/get_place`
     fetch(url, {
       headers : {
               place_name : value,

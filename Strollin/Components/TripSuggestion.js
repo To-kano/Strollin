@@ -383,7 +383,7 @@ export function TripSuggestion(props) {
     <View>
     <FlatList
       //style={styles.view_list}
-      keyExtractor={item => item.name}
+      keyExtractor={item => item.id}
       data={item.locations}
       renderItem={_renderItem2}
     />
@@ -492,6 +492,7 @@ function testrenderItem({item,index}){
             itemWidth={350}
             itemHeight={100}
             useScrollView={true}
+            keyExtractor={(item) => item.id}
             renderItem={_renderItem}
             onSnapToItem = { index => {
               carouselItemFinal.activeIndex = index
@@ -518,7 +519,16 @@ function testrenderItem({item,index}){
       <TouchableOpacity
         style={styles.view_button}
         onPress={() => {
+          console.log("COURSE :::::::::::::::::", course);
           let finalLocations = carouselItemFinal.carouselItems[carouselItemFinal.activeIndex].locations
+          var loctmp = [];
+
+          console.log("finalLocations: ", finalLocations);
+          for (var i = 0; i < finalLocations.length; i++) {
+            loctmp.push(finalLocations[i].id)
+          }
+          console.log("loctmp: ", loctmp);
+          course.locations_list = loctmp;
           const action = { type: 'SET_WAYPOINTS', course: course, locations: finalLocations };
           props.dispatch(action);
           //registerCourse(props.profil.access_token);
