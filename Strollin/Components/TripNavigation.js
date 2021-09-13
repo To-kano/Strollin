@@ -41,15 +41,10 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
       return
     }
     const store = Store.getState();
-    //console.log("\ntes\ntzeaz\naeza\neza\nea: ", locations, "\n");
     var current = store.course.currentCourse
-    console.log("COURSE :::::::::::::::::", current);
     var list = current.locations_list;
-    console.log("list: ", list);
-    console.log("store.c.d ", store.course.delete);
     for (var i = 0; i < list.length; i++) {
       if (list[i] === store.course.delete[0]) {
-        console.log("delte");
         locations.splice(i, 1);
         current.locations_list.splice(i, 1);
       }
@@ -70,7 +65,6 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
     coordinate[0] = pos.latitude;
     coordinate[1] = pos.longitude;
 
-  //console.log("\n*\n*\n*\n*", locations[0])
     await fetch(`http://${IP_SERVER}:${PORT_SERVER}/generator/popup_answer`, {
     headers: {
       Accept: 'application/json',
@@ -84,7 +78,6 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
     })
     .then(res => res.json())
     .then(json => {
-      //console.log("\n\n\n\n\n\npleasssssssssse: ", json);
       setPop(false);
     });
 
@@ -102,22 +95,17 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
     })
     .then(res => res.json())
     .then(json => {
-      //console.log("location stp frero: ", json.locations_list[0]);
       let test_loc = locations
       test_loc.push(json.locations_list[0])
       test_loc.sort(compare)
-      console.log("test_loc: ", test_loc);
       const action = { type: 'SET_LOCATIONS', locations: test_loc };
       Store.dispatch(action);
     });
   }
 
   async function PopUpReq(pos, course) {
-  //console.log("course: ", course);
     const store = Store.getState();
     const access_Token = store.profil.access_token;
-    //console.log("\n\n\n.............................pos: ", pos);
-  //console.log("token: ", access_Token);
     const coordinate = [];
     const test = JSON.stringify({course: course})
     coordinate[0] = pos.latitude;
@@ -135,24 +123,19 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
     })
     .then(res => res.json())
     .then(json => {
-    //console.log("JJJJJJJJJJJJSSSSSSSSSSSSSSSSOOOOOOOOOONNNNNNNNNn: ", json);
       setCourse(json.popup)
       setPop(true);
-    //console.log("stp c la le truc: ", json.popup);
     });
 
   }
 
-//console.log("\n*\n*\n*\n*", locations)
 
   useEffect(() => {
-  //console.log("ceci est locations\n\n", locations)
     setTime();
   }, []);
 
   async function setTime() {
     let tmp = await Date.now();
-  //console.log("date = ", tmp);
     tmp = Math.floor(tmp / 1000);
 
     const action = { type: 'SET_TIME', value: tmp };
@@ -219,9 +202,7 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
         <TouchableOpacity
           onPress={async () => {
             const store = Store.getState();
-            //console.log("setting = ", store.course.currentCourse);
             const result = await createNewCourse(store.profil.access_token, store.course.currentCourse);
-            console.log("result new course =", result);
             addUserHistoric(store.profil.access_token, result.id);
             const action = { type: 'ADD_HISTORY', courseID: result.id };
             dispatch(action);

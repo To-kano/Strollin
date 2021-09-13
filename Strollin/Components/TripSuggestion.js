@@ -132,7 +132,6 @@ let carouselItem = {
 
 
 async function registerCourse(access_token) {
-//console.log("trying to register course....");
 
   const store = Store.getState();
   const bodyRequest = JSON.stringify({
@@ -150,7 +149,6 @@ async function registerCourse(access_token) {
     })
     .then(res => res.json())
     .then(json => {
-    //console.log("course registered = ", json.course);
       const action = {
         type: 'SET_CURRENT_COURSE',
         value: json.course
@@ -195,7 +193,6 @@ export function TripSuggestion(props) {
       tempTags: store.CourseSettings.tempTags,
       friendstags: store.CourseSettings.friendstags
     }
-    console.log("Settings: ", settings);
     const test = await generateCourse(access_Token, settings);
     const result = await getArrayLocation(props.profil.access_token, test.course.locations_list)
     setLocations(result);
@@ -207,8 +204,6 @@ export function TripSuggestion(props) {
     locationTmp = locationModal
     locationTmp.locations = locationsSet
     carouselItem.carouselItems.push(locationTmp)
-    console.log("\n\n coucou \n\n",locationTmp," \n\n\n\n")
-    console.log("carousselItem: ", carouselItem.carouselItems);
     setCarrousel(carouselItem)
     setTesto(!testo) //PLEASE DO NOT DELETE
   }
@@ -268,7 +263,6 @@ export function TripSuggestion(props) {
     setDelLocations(locations_tmp)
     let name = ""
     locations_name.forEach((item) => {
-    //console.log("\n\ndeleted: ", item )
       if (name != "") {
         name += ', ' + item
       } else {
@@ -278,11 +272,9 @@ export function TripSuggestion(props) {
 
     let nametmp = "ces lieux sont actuelement fermés :\n" + name + "\nvoulez vous les suprimer ?"
     setName(nametmp)
-    console.log("\n\ndeleted: ", nametmp )
     if (name != "")
       toggleModal()
     else {
-      console.log("elese: ", result);
         setLocationsCarrousel(result)
     }
 
@@ -297,7 +289,6 @@ export function TripSuggestion(props) {
   };
 
   function check_open(result) {
-    console.log("enter cehck open");
     locations_tmp = []
     result.forEach((item, i) => {
       const url = `http://${IP_SERVER}:${PORT_SERVER}/location/check_open`
@@ -324,7 +315,6 @@ export function TripSuggestion(props) {
           }});
         })};
 
-  //console.log("stp bb: ", props.CourseSettings.pos);
   function _renderItem2({item}){
     return (
       <View style={styles.view_box}>
@@ -417,7 +407,6 @@ function testrenderItem({item,index}){
 
     const result = await generateCourse(access_token, settings);
 
-  console.log("result generate course", result.course);
 
       let action = {
         type: 'SET_CURRENT_COURSE',
@@ -496,7 +485,6 @@ function testrenderItem({item,index}){
             renderItem={_renderItem}
             onSnapToItem = { index => {
               carouselItemFinal.activeIndex = index
-              console.log(carouselItemFinal.activeIndex)
             }} />
       </View>
       <View>
@@ -504,7 +492,6 @@ function testrenderItem({item,index}){
           <View>
             <Button title={getName} color="#BB7859"/>
             <Button title="Oui, suprimez les" onPress={() => {
-            //console.log(deleteLocation)
               setLocations(deleteLocation)
               setLocationsCarrousel(deleteLocation)
               toggleModal()
@@ -519,15 +506,12 @@ function testrenderItem({item,index}){
       <TouchableOpacity
         style={styles.view_button}
         onPress={() => {
-          console.log("COURSE :::::::::::::::::", course);
           let finalLocations = carouselItemFinal.carouselItems[carouselItemFinal.activeIndex].locations
           var loctmp = [];
 
-          console.log("finalLocations: ", finalLocations);
           for (var i = 0; i < finalLocations.length; i++) {
             loctmp.push(finalLocations[i].id)
           }
-          console.log("loctmp: ", loctmp);
           course.locations_list = loctmp;
           const action = { type: 'SET_WAYPOINTS', course: course, locations: finalLocations };
           props.dispatch(action);

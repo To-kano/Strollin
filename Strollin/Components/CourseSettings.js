@@ -34,7 +34,6 @@ async function PopUpReq(pos, course) {
   })
   .then(res => res.json())
   .then(json => {
-  //console.log("JJJJJJJJJJJJSSSSSSSSSSSSSSSSOOOOOOOOOONNNNNNNNNn: ", json);
   });
 
 }
@@ -47,10 +46,8 @@ async function confirmeSettings(pos, budget, hours, minutes, props, eat, radius,
   var tempTags = [];
 
   if (tags.length < 1) {
-    console.log("ici");
     tags = store.profil.tags_list;
   }
-  console.log("tags: ", tags);
   if (store.CourseSettings.Temporarytags.length > 0) {
     tempTags = store.CourseSettings.Temporarytags
   }
@@ -69,10 +66,6 @@ async function confirmeSettings(pos, budget, hours, minutes, props, eat, radius,
     friendstags: store.CourseSettings.friendstags
   }
 
-  console.log("settings: ", settings);
-  console.log("settings.Tags: ", settings.tags);
-
-  console.log("friendscourse: ", store.CourseSettings.friendstags);
   let action = {
     type: 'SET_COURSE_SETTINGS',
     value: settings
@@ -81,9 +74,6 @@ async function confirmeSettings(pos, budget, hours, minutes, props, eat, radius,
 
 
   const result = await generateCourse(access_token, settings);
-
-  console.log("result generate course", result.course);
-  console.log("result.course.locations_list :", result.course.locations_list);
 
   action = {
     type: 'SET_CURRENT_COURSE',
@@ -158,7 +148,6 @@ export function CourseSettings(props) {
   const [is18, setIs18] = useState(true);
 
   useEffect(() => {
-    //console.log("ntm: ", props.position.permission);
     if (props.position.asked == false) {
       requestGeolocalisationPermission(props.dispatch);
     }
@@ -166,7 +155,6 @@ export function CourseSettings(props) {
       updateCoordinates(setPos);
     }
     if (props.permission && pos && localRegion.latitude && localRegion.longitude) {
-    //console.log("3");
       setPermision(true);
     }
   });
