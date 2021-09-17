@@ -188,7 +188,7 @@ export function CourseSettings(props) {
         style={styles.view_newTrip}
         onPress={() => {
           setLoading(true);
-          confirmeSettings(pos, budget, hours, minutes, props, isEatDrink, radius, placeNbr);
+          confirmeSettings(pos, budget, hours, minutes, props, isEatDrink, radius, placeNbr, setLoading);
         }}
       >
         <Text style={styles.text_newTrip}>

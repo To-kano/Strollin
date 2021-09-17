@@ -80,7 +80,7 @@ function LocationPage({route, navigation}) {
             {"Address"}
           </Text>
           <View style={styles.view_number}>
-            <Text style={styles.text_number}>{location.address + " " + location.town}</Text>
+            <Text style={styles.text_number}>{location.address}</Text>
           </View>
         </View>
         <View style={styles.view_stat}>
@@ -120,7 +120,7 @@ function LocationPage({route, navigation}) {
             {"Price range"}
           </Text>
           <View style={styles.view_number}>
-            <Text style={styles.text_number}>{location.price_range}</Text>
+            <Text style={styles.text_number}>{"Min: " + location.price_range[0] + " | Max: " + location.price_range[1] + " | Avg: " + location.price_range[2]}</Text>
           </View>
         </View>
         <View style={styles.view_stat}>
