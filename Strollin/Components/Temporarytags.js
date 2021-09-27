@@ -2,16 +2,15 @@ import React, { useState, useEffect } from 'react';
 
 import { connect } from 'react-redux';
 import {
-  StyleSheet, Text, View, FlatList, TouchableOpacity, Image, TextInput, ActivityIndicator, Modal
+  StyleSheet, Text, View, FlatList, TouchableOpacity, Image, TextInput,
 } from 'react-native';
 import { DrawerActions } from '@react-navigation/native';
 import { getTimeZone } from 'react-native-localize';
 import I18n from '../Translation/configureTrans';
 import Store from '../Store/configureStore';
 import { IP_SERVER, PORT_SERVER } from '../env/Environement';
-import {translateTags, detranslateTags} from '../Translation/translateTags'
 
-function Header({ navigation, defaultState = false }) {
+export function Header({ navigation, defaultState = false }) {
   const [pressed, setpressed] = useState(defaultState);
 
   if (pressed === false) {
@@ -19,7 +18,6 @@ function Header({ navigation, defaultState = false }) {
       <View style={styles.view_header}>
         <TouchableOpacity
           onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
-          // onPress={() => navigation.navigate('Menu')}
         >
           <Image style={styles.img_header} source={require('../images/icons/black/menu.png')} />
         </TouchableOpacity>
@@ -42,7 +40,6 @@ function Header({ navigation, defaultState = false }) {
         placeholder={I18n.t('Header.search_tag')}
       />
       <TouchableOpacity
-        // onPress={setSortedTendanceData}
         onPress={() => { setpressed(!pressed); }}
       >
         <Image style={styles.img_header} source={require('../images/icons/black/search.png')} />
@@ -51,44 +48,47 @@ function Header({ navigation, defaultState = false }) {
   );
 }
 
-export function Tag({ name, chosen, setLoading, defaultState = false }) {
+export function Tag({ name, chosen, defaultState = false, props}) {
   const [pressed, setpressed] = useState(defaultState);
   const [args, setArgs] = useState(true);
 
-  async function postTags(body, setLoading) {
+  async function postTags(body) {
     const store = Store.getState();
-    const access_Token = store.profil.access_token;
+    var action = {};
+    const tmpArray = store.CourseSettings.Temporarytags;
 
-    const list = [body];
-    const test = JSON.stringify({ tags_list: list });
-
-    const tagsArray = store.profil.tags;
-    tagsArray.push(body);
-    console.log("body: ", tagsArray);
-    let action = {
-      type: 'SET_USER_TAGS',
-      value: tagsArray
+    tmpArray.push(body)
+    action = {
+      type: 'ADD_TEMPORARYTAGS',
+      value: tmpArray
     };
     Store.dispatch(action);
+    console.log(store.CourseSettings.Temporarytags);
+  }
 
-    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/add_tag`, {
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        access_Token
-      },
-      body: test,
-      method: 'POST',
-    })
-      .then((res) => res.json())
-      .then((json) => {
-      })
-      .then(setLoading(false)
-      );
+  async function RemoveTags(body) {
+    const store = Store.getState();
+    var action = {};
+    var array = store.CourseSettings.Temporarytags;
+
+    console.log("ARRAY: ", array);
+    for (var i = 0; i < array.length; i++) {
+      if (array[i] == body) {
+        array.splice(i, 1)
+        break;
+      }
+    }
+    console.log("ARRAY: ", array);
+    action = {
+      type: 'ADD_TEMPORARYTAGS',
+      value: array
+    };
+    Store.dispatch(action);
+    console.log(store.CourseSettings.Temporarytags);
   }
 
   useEffect(() => {
-  //console.log('hola');
+    console.log('hola');
     setpressed(chosen);
   }, []);
 
@@ -98,71 +98,48 @@ export function Tag({ name, chosen, setLoading, defaultState = false }) {
       <TouchableOpacity
         style={styles.view_tagOff}
         onPress={() => {
-          setLoading(true);
           postTags(name);
           setpressed(!pressed);
         }}
       >
-        <Text style={styles.text_tagOff}>{translateTags(name)}</Text>
+        <Text style={styles.text_tagOff}>{name}</Text>
       </TouchableOpacity>
       )}
       {(pressed === true) && (
       <TouchableOpacity
         style={styles.view_tagOn}
         onPress={() => {
-        //console.log('unpressed');
+          console.log('unpressed');
+          RemoveTags(name);
           setpressed(!pressed);
         }}
       >
         <Image style={styles.img_tagOn} source={require('../images/icons/white/checked.png')} />
-        <Text style={styles.text_tagOn}>{translateTags(name)}</Text>
+        <Text style={styles.text_tagOn}>{name}</Text>
       </TouchableOpacity>
       )}
     </View>
   );
 }
 
-export function TagSelection({ navigation, profil }) {
-  const [args, setArgs] = useState(true);
-  const [Profargs, setProfArgs] = useState(true);
+export function Temporarytags({ navigation, profil }) {
   const [array, setArray] = useState(true);
-  const [isLoading, setLoading] = React.useState(false);
-
   const store = Store.getState();
   const access_Token = store.profil.access_token;
 
-  function setUserTags(tags) {
-    //var userTags = store.profil
-    let action = {
-      type: 'SET_USER_TAGS',
-      value: tags
-    };
-    Store.dispatch(action);
-  }
-
-  async function buildArray(List, UserList) {
+  async function buildArray(List) {
     const arr = [];
-    let flag = false;
 
-  //console.log('hello');
+    console.log('hello');
     for (let i = 0; i < List.length; i++) {
-      for (let j = 0; j < UserList.length; j++) {
-        if (UserList[j] == List[i].name) {
-        //console.log('hellot: ', UserList[j]);
-          arr.push({ name: UserList[j], _id: List[i]._id, pressed: true });
-          flag = true;
-          break;
-        }
-      }
-      if (flag == false) arr.push({ name: List[i].name, _id: List[i]._id, pressed: false });
-      flag = false;
+      arr.push({name: List[i].name, pressed: false})
     }
-  //console.log('array: ', arr);
+    console.log('array: ', arr);
     setArray(arr);
   }
 
-  async function getUserTags(List) {
-    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/get_own_profile`, {
+  async function getThings() {
+    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/tag/get_tag`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -172,33 +149,20 @@ export function TagSelection({ navigation, profil }) {
     })
       .then((res) => res.json())
       .then((json) => {
-      //console.log('########', json.profile.tags_list);
-        setProfArgs(json.profile.tags_list);
-        buildArray(List, json.profile.tags_list);
+        console.log('yooooo', json.tags_list);
+        buildArray(json.tags_list)
+        //setArgs(json.tags_list);
+        //getLocationTags(json.tags_list);
       });
   }
 
-  async function getThings(setLoading) {
-    await fetch(`https://${IP_SERVER}:${PORT_SERVER}/tag/get_tag`, {
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        access_Token,
-      },
-      method: 'GET',
-    })
-      .then((res) => res.json())
-      .then((json) => {
-      //console.log('yooooo', json.tags_list);
-        setArgs(json.tags_list);
-        getUserTags(json.tags_list);
-      })
-      .then(setLoading(false));
-  }
-
   useEffect(() => {
-    getThings(setLoading);
-    // getUserTags();
+    getThings();
+    var action = {
+      type: 'ADD_TEMPORARYTAGS',
+      value: []
+    };
+    Store.dispatch(action);
   }, []);
 
   return (
@@ -213,79 +177,27 @@ export function TagSelection({ navigation, profil }) {
           data={array}
           keyExtractor={(item) => item.name}
           renderItem={({ item }) => (
-            <Tag name={item.name} chosen={item.pressed} setLoading={setLoading} />
+            <Tag name={item.name} chosen={item.pressed}/>
           )}
         />
       </View>
       <TouchableOpacity
         style={styles.view_button}
         onPress={() => {
-          navigation.navigate('Profile');
+          navigation.navigate('CourseSettings');
         }}
       >
         <Text style={styles.text_button}>
           {I18n.t('Tags.confirm_my_tags')}
         </Text>
       </TouchableOpacity>
-      <Modal
-        animationType="none"
-        transparent={true}
-        visible={isLoading}
-      >
-        <View style={styles.loading_screen}>
-          <ActivityIndicator size="large"  color="black" style={{}}/>        
-        </View>
-      </Modal>
     </View>
-    // <View style={styles.back}>
-    //   <BackgroundImage />
-    //   <View style={styles.fill}>
-    //     <Text style={[{ textAlign: 'left', color: 'black', fontSize: 25 }]}>
-    //       {I18n.t('welcome')}
-    //     </Text>
-    //     <Text style={[
-    //       {
-    //         textAlign: 'center', color: 'black', fontWeight: 'bold', fontSize: 25
-    //       }
-    //     ]}
-    //     >
-    //       {profil.pseudo}
-    //     </Text>
-    //     <Text style={[{
-    //       textAlign: 'left',
-    //       color: 'black',
-    //       fontSize: 18,
-    //       marginTop: 18,
-    //       fontWeight: 'normal',
-    //     }]}
-    //     >
-    //       {I18n.t('chooseTags')}
-    //     </Text>
-    //     <View style={{ flex: 2, margin: 10, marginTop: 40 }}>
-    //       <FlatList
-    //         data={data}
-    //         renderItem={({ item }) => (
-    //           <Tag name={item.name} pressed={item.pressed} />
-    //         )}
-    //       />
-    //       <TouchableOpacity
-    //         style={styles.newTrip}
-    //         onPress={() => navigation.navigate('Profile')}
-    //         // onPress={() =>
-    //         //  // this.NextPage(navigation.getParam('uid'))
-    //         // }
-    //       >
-    //         <Text style={{ fontSize: 16, color: '#FFFFFF' }}>{I18n.t('next')}</Text>
-    //       </TouchableOpacity>
-    //     </View>
-    //   </View>
-    // </View>
   );
 }
 
 const mapStateToProps = (state) => state;
 
-export default connect(mapStateToProps)(TagSelection);
+export default connect(mapStateToProps)(Temporarytags);
 
 const styles = StyleSheet.create({
   view_back: {
@@ -398,12 +310,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#FFFFFF',
   },
-  loading_screen: {
-    backgroundColor:'rgba(100,100,100,0.75)',
-    display: "flex",
-    justifyContent: 'space-around',
-    height: '100%'
-  }
   // back: {
   //   flexDirection: 'column',
   //   justifyContent: 'flex-start',

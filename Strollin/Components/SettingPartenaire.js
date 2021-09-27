@@ -41,7 +41,7 @@ function SettingPartenaire(props) {
   async function getThings(setLoading) {
     const store = Store.getState();
     const access_Token = store.profil.access_token;
-    await fetch(`https://${IP_SERVER}:${PORT_SERVER}/location/get_partner_location`, {
+    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/get_partner_location`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -71,7 +71,7 @@ function SettingPartenaire(props) {
     const test = JSON.stringify({ address: body });
 
   //console.log("id: ", args.id);
-    await fetch(`https://${IP_SERVER}:${PORT_SERVER}/location/update_location`, {
+    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/update_location`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -94,7 +94,7 @@ function SettingPartenaire(props) {
     const test = JSON.stringify({ name: body });
 
   //console.log("id: ", args.id);
-    await fetch(`https://${IP_SERVER}:${PORT_SERVER}/location/update_location`, {
+    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/update_location`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -116,7 +116,7 @@ function SettingPartenaire(props) {
     const access_Token = store.profil.access_token;
     const test = JSON.stringify({ description: body });
 
-    await fetch(`https://${IP_SERVER}:${PORT_SERVER}/location/update_location`, {
+    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/update_location`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',

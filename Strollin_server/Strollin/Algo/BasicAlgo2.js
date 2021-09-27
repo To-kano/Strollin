@@ -125,7 +125,20 @@ function NotInOldList(Place, old_locations_list) {
   return true
 }
 
-function algoTest(Places, Food, time, budget, tags, coordinate, radius, placeNbr, old_locations_list) {
+function IsForMinor(Place, is18) {
+  if (is18 == "true") {
+    return true
+  }
+  console.log("place: ", Place);
+  for (var i = 0; i < Place.Tags.length; i++) {
+    if (Place.Tags[i] == "bar" || Place.Tags[i] == "night_club" || Place.Tags[i] == "sex_shop" || Place.Tags[i] == "18+_only") {
+      return false
+    }
+  }
+  return true
+}
+
+function algoTest(Places, Food, time, budget, tags, coordinate, radius, placeNbr, old_locations_list, is18) {
 
   //console.log("food bool: ", Food);
   return new Promise((resolve, reject) => {
@@ -146,9 +159,10 @@ function algoTest(Places, Food, time, budget, tags, coordinate, radius, placeNbr
     //console.log("radius: ", radius);
     //console.log("old_locations_list: ", old_locations_list);
     //console.log("TAGS ------------------------: ", UserTags);
+    console.log("is18: ", is18);
     //Put all the places corresponding to the user tags in a new array (PlacesArray)
     for (var i = 0; i < Places.length; i++) {
-      if (IsTagOk(tagsArray, Places[i]) == true && DistCalc2D(Places[i].Pos, UserPos) < radius && NotInOldList(Places[i], old_locations_list) == true) {
+      if (IsTagOk(tagsArray, Places[i]) == true && DistCalc2D(Places[i].Pos, UserPos) < radius && NotInOldList(Places[i], old_locations_list) == true && IsForMinor(Places[i], is18) == true) {
         PlacesArray.push(Places[i])
       }
     }
@@ -176,7 +190,7 @@ function algoTest(Places, Food, time, budget, tags, coordinate, radius, placeNbr
 }
 
 //gets the tags from tge DB and transform them to a json with the right format
-async function getTags(time, budget, tags, coordinate, eat, radius, placeNbr, old_locations_list) {
+async function getTags(time, budget, tags, coordinate, eat, radius, placeNbr, old_locations_list, is18) {
   let query = {};
   let locations_list = null
   let true_list = []
@@ -230,7 +244,7 @@ async function getTags(time, budget, tags, coordinate, eat, radius, placeNbr, ol
     console.log("please: ", true_list[i]);
   }*/
 
-  const promise1 = hello(true_list, time, budget, tags, coordinate, eat, radius, placeNbr, old_locations_list)
+  const promise1 = hello(true_list, time, budget, tags, coordinate, eat, radius, placeNbr, old_locations_list, is18)
   return promise1;
 }
 
@@ -436,7 +450,7 @@ async function RecoverPlaces(coordinate, tags) {
   //console.log("fini");
 }
 
-hello = async function(sending, time, budget, tags, coordinate, eat, radius, placeNbr, old_locations_list)
+hello = async function(sending, time, budget, tags, coordinate, eat, radius, placeNbr, old_locations_list, is18)
 {
   var coordinateArr = coordinate.split(",");
 
@@ -446,15 +460,15 @@ hello = async function(sending, time, budget, tags, coordinate, eat, radius, pla
   //promise1.then((value) => {
     //console.log("coordiante: ", coordinateArr);
     return new Promise((resolve, reject) => {
-      var test = algoTest(sending, eat, time, budget, tags, coordinateArr, radius, placeNbr, old_locations_list)
+      var test = algoTest(sending, eat, time, budget, tags, coordinateArr, radius, placeNbr, old_locations_list, is18)
       resolve(test)
     });
   //})
 }
 
-methods.algo = function(time, budget, tags, coordinate, eat, radius, placeNbr, locations_list) {
+methods.algo = function(time, budget, tags, coordinate, eat, radius, placeNbr, locations_list, is18) {
   console.log("------------------------------------------------------------------");
-  const promise1 = getTags(time, budget, tags, coordinate, eat, radius, placeNbr, locations_list);
+  const promise1 = getTags(time, budget, tags, coordinate, eat, radius, placeNbr, locations_list, is18);
   return promise1;
   /*promise1.then((value) => {
     console.log("VALEUUUUUUUUUUUUUUR: ", value);

@@ -20,7 +20,7 @@ function addLocationToTrip(locationIdArray) {
     value : [...currentCourseLocation, ...locationIdArray]
   }
 
-  console.log("addLocationToTrip action:", action);
+  //console.log("addLocationToTrip action:", action);
 
   Store.dispatch(action);
 

@@ -60,6 +60,7 @@ function CourseItem(props) {
   const [locationList, setLocationList] = useState(null);
   const [isFavorite, setIsFavorite] = useState(null);
 
+  
   if (isFavorite == null) {
     setIsFavorite(checkFavorite(props));
   }

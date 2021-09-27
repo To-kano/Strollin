@@ -10,6 +10,7 @@ import TripNavigation from '../Components/TripNavigation';
 import CourseEvaluation from '../Components/CourseEvaluation';
 import CourseSettings from '../Components/CourseSettings';
 import LocationPage from '../Components/LocationPage';
+import Temporarytags from '../Components/Temporarytags';
 import FriendSelection from '../Components/FriendSelection';
 
 const Stack = createStackNavigator();
@@ -49,6 +50,10 @@ function Trip() {
                 title: 'Location Page',
                 animationEnabled: false,
               }}
+            />
+            <Stack.Screen
+                  name="Temporarytags"
+                  component={Temporarytags}
             />
         </Stack.Navigator>
     );

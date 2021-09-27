@@ -10,6 +10,7 @@ import I18n from '../Translation/configureTrans';
 import Store from '../Store/configureStore';
 import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 import { DrawerActions } from '@react-navigation/native';
+import {translateTags, detranslateTags} from '../Translation/translateTags'
 
 import ImageProfile from './ImageProfile';
 
@@ -63,7 +64,7 @@ function ProfileScreen(props) {
 
       if (reload == false)
         return
-      await fetch(`https://${IP_SERVER}:${PORT_SERVER}/users/get_own_profile`, {
+      await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/get_own_profile`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -91,7 +92,7 @@ function ProfileScreen(props) {
 
       const test = JSON.stringify({pseudo: body})
 
-      await fetch(`https://${IP_SERVER}:${PORT_SERVER}/users/edit_profile`, {
+      await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/edit_profile`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -178,7 +179,7 @@ function ProfileScreen(props) {
           contentContainerStyle={{ flexGrow: 1 }}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <Text style={styles.text_tagIn}>{item.name}</Text>
+            <Text style={styles.text_tagIn}>{translateTags(item.name)}</Text>
           )}
         />
       </View>

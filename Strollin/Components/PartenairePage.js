@@ -10,6 +10,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import I18n from '../Translation/configureTrans';
 import { useState, useEffect } from 'react';
 import { IP_SERVER, PORT_SERVER } from '../env/Environement';
+import {translateTags, detranslateTags} from '../Translation/translateTags'
 
 function randPic() {
   const rand = (Math.floor(Math.random() * 2) + 1);
@@ -55,7 +56,7 @@ function PartenaireScreen(props) {
 
   useEffect(() => {
     if (!i) {
-      const url = `https://${IP_SERVER}:${PORT_SERVER}/location/get_partner_location`
+      const url = `http://${IP_SERVER}:${PORT_SERVER}/location/get_partner_location`
       fetch(url, {
         headers : {
           access_token: props.profil.access_token,

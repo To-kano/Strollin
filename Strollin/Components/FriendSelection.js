@@ -48,12 +48,26 @@ function Header({ navigation, defaultState = false }) {
   );
 }
 
-export function Friend({ name, chosen, defaultState = false }) {
+export function Friend({ name, chosen, tags, defaultState = false }) {
   const [pressed, setpressed] = useState(defaultState);
-  
+
   useEffect(() => {
     setpressed(chosen);
   }, []);
+
+  function AddFriendTags(FriendTags) {
+    const store = Store.getState();
+    var Tagsarray = store.CourseSettings.friendstags;
+
+    console.log("friendscourse: ", store.CourseSettings.friendstags);
+    Tagsarray.push(FriendTags)
+    let action = {
+      type: 'ADD_FRIENDSTAGS',
+      value: Tagsarray
+    };
+    Store.dispatch(action);
+    console.log("Added friend tags: ", Tagsarray);
+  }
 
   return (
     <View style={styles.view_friends}>
@@ -62,9 +76,10 @@ export function Friend({ name, chosen, defaultState = false }) {
         style={styles.view_friendOff}
         onPress={() => {
           setpressed(!pressed);
+          AddFriendTags(tags)
         }}
       >
-        <Text style={styles.text_friendOff}>{"nom de l'ami"}</Text>
+        <Text style={styles.text_friendOff}>{name}</Text>
       </TouchableOpacity>
       )}
       {(pressed === true) && (
@@ -75,7 +90,7 @@ export function Friend({ name, chosen, defaultState = false }) {
         }}
       >
         <Image style={styles.img_friendOn} source={require('../images/icons/white/checked.png')} />
-        <Text style={styles.text_friendOn}>{"nom de l'ami"}</Text>
+        <Text style={styles.text_friendOn}>{name}</Text>
       </TouchableOpacity>
       )}
     </View>
@@ -86,33 +101,41 @@ export function FriendSelection({ navigation }) {
   const [args, setArgs] = useState(true);
   const [Profargs, setProfArgs] = useState(true);
   const [array, setArray] = useState(true);
+  const [friendsList, setFriendsList] = useState(true);
 
   const store = Store.getState();
   const access_Token = store.profil.access_token;
 
-  async function buildArray(List, UserList) {
+  async function buildArray(List) {
     const arr = [];
     let flag = false;
-
+    var UserArray = [];
   //console.log('hello');
-    for (let i = 0; i < List.length; i++) {
-      for (let j = 0; j < UserList.length; j++) {
-        if (UserList[j] == List[i].name) {
-        //console.log('hellot: ', UserList[j]);
-          arr.push({ name: UserList[j], _id: List[i]._id, pressed: true });
-          flag = true;
-          break;
-        }
-      }
-      if (flag == false) arr.push({ name: List[i].name, _id: List[i]._id, pressed: false });
-      flag = false;
+
+      await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/get_user_by_id`, {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          access_Token,
+          users_list: List
+        },
+        method: 'GET',
+      })
+        .then((res) => res.json())
+        .then((json) => {
+          console.log('user_LIST', json);
+          UserArray = json.users_list;
+        });
+    for (let i = 0; i < UserArray.length; i++) {
+      arr.push({pseudo: UserArray[i].pseudo, tags: UserArray[i].tags_list, pressed: false})
     }
-  //console.log('array: ', arr);
+    console.log('array: ', arr);
     setArray(arr);
   }
 
   async function getUserTags(List) {
-    await fetch(`https://${IP_SERVER}:${PORT_SERVER}/users/get_own_profile`, {
+    console.log("req1");
+    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/get_own_profile`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -122,14 +145,21 @@ export function FriendSelection({ navigation }) {
     })
       .then((res) => res.json())
       .then((json) => {
-      //console.log('########', json.profile.tags_list);
+        console.log('########', json.profile.friends_list);
+        setFriendsList(json.profile.friends_List);
         setProfArgs(json.profile.tags_list);
-        buildArray(List, json.profile.tags_list);
+        buildArray(json.profile.friends_list);
       });
   }
 
   async function getThings() {
-    await fetch(`https://${IP_SERVER}:${PORT_SERVER}/tag/get_tag`, {
+    let action = {
+      type: 'ADD_FRIENDSTAGS',
+      value: []
+    };
+    Store.dispatch(action);
+    console.log("req2");
+    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/tag/get_tag`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -159,16 +189,16 @@ export function FriendSelection({ navigation }) {
         </Text>
         <FlatList
           data={array}
-          keyExtractor={(item) => item.name}
+          keyExtractor={(item) => item.pseudo}
           renderItem={({ item }) => (
-            <Friend name={item.name} chosen={item.pressed} />
+            <Friend name={item.pseudo} chosen={item.pressed} tags={item.tags}/>
           )}
         />
       </View>
       <TouchableOpacity
         style={styles.view_button}
         onPress={() => {
-          navigation.navigate('TripSuggestion');
+          navigation.navigate('CourseSettings');
         }}
       >
         <Text style={styles.text_button}>

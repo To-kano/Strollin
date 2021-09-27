@@ -408,5 +408,17 @@ router.get('/get_location_position', async function(req, res) {
     return res.status(400).send({status: false, error: "Place not found or error occured."})
 });
 
+router.get('/check_open', async function(req, res) {
+
+    let url = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=" + req.headers.name + "&inputtype=textquery&fields=name,formatted_address,opening_hours&key=AIzaSyC4MiDbDXP5M3gvpyUADaIUO60H7Vjb9Uk"
+    let result = await placeCall(url).then((response) => {
+      return response
+    })
+
+    if (result.status === 'OK') {
+        return res.status(200).send({status: true, result})
+    }
+    return res.status(400).send({status: false, error: "Place not found or error occured."})
+});
 
 module.exports = router;

@@ -22,7 +22,7 @@ async function PopUpReq(pos, course) {
   coordinate[0] = pos.latitude;
   coordinate[1] = pos.longitude;
 
-  await fetch(`https://${IP_SERVER}:${PORT_SERVER}/generator/generate_popup`, {
+  await fetch(`http://${IP_SERVER}:${PORT_SERVER}/generator/generate_popup`, {
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json',
@@ -34,17 +34,23 @@ async function PopUpReq(pos, course) {
   })
   .then(res => res.json())
   .then(json => {
-  //console.log("JJJJJJJJJJJJSSSSSSSSSSSSSSSSOOOOOOOOOONNNNNNNNNn: ", json);
   });
 
 }
 
-async function confirmeSettings(pos, budget, hours, minutes, props, eat, radius, placeNbr, setLoading) {
+async function confirmeSettings(pos, budget, hours, minutes, props, eat, radius, placeNbr, is18, setLoading) {
 
   const store = Store.getState();
-  const tags = store.profil.tags_list;
+  var tags = store.profil.tags;
   const access_token = store.profil.access_token;
+  var tempTags = [];
 
+  if (tags.length < 1) {
+    tags = store.profil.tags_list;
+  }
+  if (store.CourseSettings.Temporarytags.length > 0) {
+    tempTags = store.CourseSettings.Temporarytags
+  }
   const settings = {
     pos : pos,
     budget : budget,
@@ -53,7 +59,11 @@ async function confirmeSettings(pos, budget, hours, minutes, props, eat, radius,
     eat : eat,
     radius : radius,
     placeNbr : placeNbr,
-    tags : tags
+    tags : tags,
+    locations_list: 0,
+    is18: is18,
+    tempTags: tempTags,
+    friendstags: store.CourseSettings.friendstags
   }
 
   let action = {
@@ -65,8 +75,7 @@ async function confirmeSettings(pos, budget, hours, minutes, props, eat, radius,
   const result = await generateCourse(access_token, settings);
   setLoading(false);
 
-  console.log("result generate course", result.course);
-  console.log("result.course.locations_list :", result.course.locations_list);
+  const result = await generateCourse(access_token, settings);
 
   action = {
     type: 'SET_CURRENT_COURSE',
@@ -78,7 +87,51 @@ async function confirmeSettings(pos, budget, hours, minutes, props, eat, radius,
     value: result.course.locations_list
   };
   Store.dispatch(action);
+  action = {
+    type: 'ADD_AGE',
+    value: is18
+  };
+  Store.dispatch(action);
   props.navigation.navigate("TripSuggestion");
+
+  /*await fetch(`http://${IP_SERVER}:${PORT_SERVER}/generator/generate_course`, {
+  headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+    access_Token,
+    'time': time,
+    'budget': budget,
+    'tags': tags,
+    'coordinate' : coordinate,
+    'eat' : eat,
+    'radius' : radius,
+    'placenbr' : placeNbr,
+    'is18' : is18,
+    'temptags' : tempTags
+  },
+  method: 'GET',
+  })
+  .then(res => res.json())
+  .then(json => {
+    console.log("algo done:   ", json);
+    //PopUpReq(pos, json.generated_course);
+    action = {
+      type: 'ADD_COURSE',
+      value: json.course
+    };
+    Store.dispatch(action);
+    action = {
+      type: 'ADD_COURSE_LOCATIONS',
+      value: json.generate_course
+    };
+    Store.dispatch(action);
+    props.profil.scoreCourse = json.generated_course
+    props.profil.first_name = pos
+    props.navigation.navigate("TripSuggestion");
+  }).catch((error) => {
+    console.error('error :', error);
+  });*/
+  //console.log("test success");
 }
 
 //function Back(props) {
@@ -95,9 +148,9 @@ export function CourseSettings(props) {
   const [radius, setRadius] = useState('3');
   const [placeNbr, setPlaceNbr] = useState('2');
   const [isLoading, setLoading] = useState(false);
+  const [is18, setIs18] = useState(true);
 
   useEffect(() => {
-    //console.log("ntm: ", props.position.permission);
     if (props.position.asked == false) {
       requestGeolocalisationPermission(props.dispatch);
     }
@@ -105,7 +158,6 @@ export function CourseSettings(props) {
       updateCoordinates(setPos);
     }
     if (props.permission && pos && localRegion.latitude && localRegion.longitude) {
-    //console.log("3");
       setPermision(true);
     }
   });
@@ -180,7 +232,39 @@ export function CourseSettings(props) {
               Partager le trajet avec vos amis ?
             </Text>
             <Switch value={isTripTogether} setValue={setTripTogether} />
+            <TouchableOpacity
+              id="test"
+              style={styles.ButtonTags}
+              onPress={() => {
+                props.navigation.navigate("FriendSelection");
+              }}
+            >
+              <Text style={styles.text_newTrip}>
+                Chose Friends
+              </Text>
+            </TouchableOpacity>
           </View>
+          <Text style={styles.text_option}>
+            "Restriction d'age"
+          </Text>
+          <View style={styles.view_separator} />
+          <View style={styles.view_optionInput}>
+            <Text style={styles.text_optionInput}>
+              Aves vous plus de 18 ans ?
+            </Text>
+            <Switch value={is18} setValue={setIs18} />
+          </View>
+          <TouchableOpacity
+            id="test"
+            style={styles.view_newTrip}
+            onPress={() => {
+              props.navigation.navigate("Temporarytags");
+            }}
+          >
+            <Text style={styles.text_newTrip}>
+              Use temporary tags
+            </Text>
+          </TouchableOpacity>
         </View>
       </View>
       <TouchableOpacity
@@ -188,7 +272,7 @@ export function CourseSettings(props) {
         style={styles.view_newTrip}
         onPress={() => {
           setLoading(true);
-          confirmeSettings(pos, budget, hours, minutes, props, isEatDrink, radius, placeNbr, setLoading);
+          confirmeSettings(pos, budget, hours, minutes, props, isEatDrink, radius, placeNbr, is18, setLoading);
         }}
       >
         <Text style={styles.text_newTrip}>
@@ -246,7 +330,7 @@ const styles = StyleSheet.create({
     color: '#000000',
   },
   view_options: {
-    flex: 700,
+    height: '80%',
     width: '100%',
   },
   view_option: {
@@ -297,7 +381,18 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     height: 45,
     marginTop: 12.5,
-    marginBottom: 12.5,
+    marginBottom: 35.5,
+    backgroundColor: '#0092A7',
+  },
+  ButtonTags: {
+    flex: 50,
+    width: '50%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 12,
+    height: '100%',
+    marginTop: 12.5,
+    marginBottom: 35.5,
     backgroundColor: '#0092A7',
   },
   text_newTrip: {

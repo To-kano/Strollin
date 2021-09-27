@@ -3,7 +3,7 @@ import MapView, { Marker } from 'react-native-maps';
 import { PermissionsAndroid, View, Text } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import MapViewDirections from 'react-native-maps-directions';
-
+import Store from '../Store/configureStore';
 import { connect } from 'react-redux';
 
 import Tts from 'react-native-tts';
@@ -93,6 +93,7 @@ function Map({
 
   //const [waypoint, setWaypoint] = useState(props.waypoints);
   const [destinations, setDestinations] = useState(locations || map.locations);// props.course);
+  const [delToken, setDelToken] = useState("Bonchour");
   //console.log(waypoint);
   /* useEffect(() => {
 
@@ -201,6 +202,14 @@ function Map({
             title={marker.name}
             description={marker.address}
             image={require('../images/logo/marker_small.png')}
+            onCalloutPress={() => {
+              const store = Store.getState();
+              var action = {
+                type: 'ADD_DELETE',
+                value: [marker.id, marker.name]
+              };
+              Store.dispatch(action);
+            }}
           />
         ))}
 

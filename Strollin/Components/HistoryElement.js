@@ -62,7 +62,6 @@ function randPic() {
 
 function ElementHistoryNav({ course, locations, defaultSate = false }) {
   const navigation = useNavigation();
-
   //const messagetext = `Strollin' m'a proposé un trajet ! \nRejoignons nous a ${getLocation().name} au ${getLocation().address} à ${getLocation().city} !`;
   const [showMap, setShowMap] = useState(defaultSate);
 
@@ -131,6 +130,7 @@ function ElementHistoryNav({ course, locations, defaultSate = false }) {
               </ImageBackground>
             </TouchableOpacity>
           )}
+          keyExtractor={(item) => item._id}
         />
       </View>
     );

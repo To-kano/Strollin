@@ -26,6 +26,7 @@ function randPic() {
 export function TripNavigation({map, profil, dispatch, navigation}) {
   const [displayMap, setDisplayMap] = useState(true);
   const [pop, setPop] = useState(false);
+  const [del, setDel] = useState(false);
   const [course, setCourse] = useState(null);
   const [place, setPlace] = useState(null);
   const [isLoading, setLoading] = React.useState(false);
@@ -33,6 +34,28 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
   function compare(a, b) {
     if (a.Dist > b.Dist) return 1;
     if (b.Dist > a.Dist) return -1;
+  }
+
+  async function DeletePlace(isDelete) {
+    if (!isDelete) {
+      setDel(false)
+      return
+    }
+    const store = Store.getState();
+    var current = store.course.currentCourse
+    var list = current.locations_list;
+    for (var i = 0; i < list.length; i++) {
+      if (list[i] === store.course.delete[0]) {
+        locations.splice(i, 1);
+        current.locations_list.splice(i, 1);
+      }
+    }
+    //locations.splice(3, 1);
+    var action = { type: 'SET_CURRENT_COURSE', value: current };
+    Store.dispatch(action);
+    var action = { type: 'SET_LOCATIONS', locations: locations };
+    Store.dispatch(action);
+    setDel(false)
   }
 
   async function PopUpResponse(response, pos, course, popup) {
@@ -43,8 +66,7 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
     coordinate[0] = pos.latitude;
     coordinate[1] = pos.longitude;
 
-  //console.log("\n*\n*\n*\n*", locations[0])
-    await fetch(`https://${IP_SERVER}:${PORT_SERVER}/generator/popup_answer`, {
+    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/generator/popup_answer`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -57,7 +79,6 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
     })
     .then(res => res.json())
     .then(json => {
-      //console.log("\n\n\n\n\n\npleasssssssssse: ", json);
       setPop(false);
     })
     .then(setLoading(false));
@@ -77,7 +98,6 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
     })
     .then(res => res.json())
     .then(json => {
-      //console.log("location stp frero: ", json.locations_list[0]);
       let test_loc = locations
       test_loc.push(json.locations_list[0])
       test_loc.sort(compare)
@@ -90,17 +110,14 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
   }
 
   async function PopUpReq(pos, course) {
-  //console.log("course: ", course);
     const store = Store.getState();
     const access_Token = store.profil.access_token;
-    //console.log("\n\n\n.............................pos: ", pos);
-  //console.log("token: ", access_Token);
     const coordinate = [];
     const test = JSON.stringify({course: course})
     coordinate[0] = pos.latitude;
     coordinate[1] = pos.longitude;
 
-    await fetch(`https://${IP_SERVER}:${PORT_SERVER}/generator/generate_popup`, {
+    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/generator/generate_popup`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -112,7 +129,6 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
     })
     .then(res => res.json())
     .then(json => {
-    //console.log("JJJJJJJJJJJJSSSSSSSSSSSSSSSSOOOOOOOOOONNNNNNNNNn: ", json);
       setCourse(json.popup)
       //console.log("stp c la le truc: ", json.popup);
       setPop(true);
@@ -121,16 +137,13 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
     .then(setLoading(false));
   }
 
-//console.log("\n*\n*\n*\n*", locations)
 
   useEffect(() => {
-  //console.log("ceci est locations\n\n", locations)
     setTime();
   }, []);
 
   async function setTime() {
     let tmp = await Date.now();
-  //console.log("date = ", tmp);
     tmp = Math.floor(tmp / 1000);
 
     const action = { type: 'SET_TIME', value: tmp };
@@ -151,35 +164,45 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
     longitudeDelta: 0.0121,
   };
 
-  // if (pop) {
-  //   return (
-  //     <View style={styles.view_popup}>
-  //       <Text style={styles.text_popup, styles.text_question}>
-  //         Do you want to go to : {course.Name}
-  //       </Text>
-  //       <View style={styles.view_button}>
-  //         <TouchableOpacity
-  //           style={styles.button_no}
-  //           onPress={() => {
-  //             setLoading(true);
-  //             PopUpResponse(false, profil.first_name, profil.scoreCourse, course);
-  //           }}
-  //         >
-  //           <Text style={styles.text_popup}>No</Text>
-  //         </TouchableOpacity>
-  //         <TouchableOpacity
-  //           style={styles.button_yes}
-  //           onPress={() => {
-  //             setLoading(true);
-  //             PopUpResponse(true, profil.first_name, profil.scoreCourse, course);
-  //           }}
-  //         >
-  //           <Text style={styles.text_popup}>Yes</Text>
-  //         </TouchableOpacity>
-  //       </View>
-  //     </View>
-  //   )}
-  // else {
+if (del) {
+  return (
+    <View>
+    <Text>
+      Are you sure you want to delete this place ?: {Store.getState().course.delete[1]}
+    </Text>
+    <Button
+      title="yes"
+      onPress={() => DeletePlace(true)}
+    />
+    <Button
+      title="no"
+      onPress={() => DeletePlace(false)}
+    />
+  </View>
+  )}
+ // if (pop) {
+ //   return (
+ //     <View style={styles.view_popup}>
+ //       <Text style={[styles.text_popup, styles.text_question]}>
+ //         Do you want to go to : {course.Name}
+ //       </Text>
+ //       <View style={styles.view_button}>
+ //         <TouchableOpacity
+ //           style={styles.button_no}
+ //           onPress={() => PopUpResponse(false, profil.first_name, profil.scoreCourse, course)}
+ //         >
+ //           <Text style={styles.text_popup}>No</Text>
+ //         </TouchableOpacity>
+ //         <TouchableOpacity
+ //           style={styles.button_yes}
+ //           onPress={() => PopUpResponse(true, profil.first_name, profil.scoreCourse, course)}
+ //         >
+ //           <Text style={styles.text_popup}>Yes</Text>
+ //         </TouchableOpacity>
+ //       </View>
+ //     </View>
+ //   )}
+ // else {
   return (
     <View style={styles.view_back}>
       <View style={styles.view_header}>
@@ -187,9 +210,7 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
         <TouchableOpacity
           onPress={async () => {
             const store = Store.getState();
-            //console.log("setting = ", store.course.currentCourse);
             const result = await createNewCourse(store.profil.access_token, store.course.currentCourse);
-            console.log("result new course =", result);
             addUserHistoric(store.profil.access_token, result.id);
             const action = { type: 'ADD_HISTORY', courseID: result.id };
             dispatch(action);
@@ -238,8 +259,14 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
         </View>
       }
       <TouchableOpacity onPress={() => {
+        setDel(true)
+      }}>
+        <Text style={styles.text_signIn}>Delete</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => {
         const store = Store.getState();
         setLoading(true);
+        //DeletePlace();
         PopUpReq(profil.first_name, profil.scoreCourse); //Je sais pas utiliser les props du coup g stocker des truc dans les props dans course settings
       }}>
         <Text style={styles.text_signIn}>Simulate</Text>
@@ -255,7 +282,7 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
       </Modal>
     </View>
   );
-  // }
+//   }
 }
 
 const mapStateToProps = (state) => {

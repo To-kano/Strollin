@@ -19,7 +19,7 @@ function CourseItem(props) {
     const getCourseObject = (id) => {
       //console.log("id =", id);
         
-        fetch(`https://${IP_SERVER}:${PORT_SERVER}/course/get_courses_by_id`, {
+        fetch(`http://${IP_SERVER}:${PORT_SERVER}/course/get_courses_by_id`, {
           headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',

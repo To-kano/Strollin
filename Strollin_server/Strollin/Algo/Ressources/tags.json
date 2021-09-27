@@ -13,7 +13,6 @@
       "campground",
       "casino",
       "church",
-      "city_hall",
       "clothing_store",
       "convenience_store",
       "department_store",
@@ -38,6 +37,7 @@
       "park",
       "pet_store",
       "restaurant",
+      "sex_shop",
       "shoe_store",
       "shopping_mall",
       "spa",
@@ -45,6 +45,7 @@
       "supermarket",
       "synagogue",
       "tourist_attraction",
-      "zoo"
+      "zoo",
+      "18+_only"
    ]
 }

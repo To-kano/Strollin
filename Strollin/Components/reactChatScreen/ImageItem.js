@@ -16,7 +16,7 @@ function ImageItem({imageId, style}) {
     useEffect(() => {
         getImageId(imageId).then(answer => {
             if (answer?.uri) {
-                let pathImage = `https://${IP_SERVER}:${PORT_SERVER}/images/${answer.uri}`;
+                let pathImage = `http://${IP_SERVER}:${PORT_SERVER}/images/${answer.uri}`;
                 setImage(pathImage);
             }
         })

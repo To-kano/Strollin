@@ -15,10 +15,13 @@ const {
  * @param {String} req.headers.budget
  * @param {[String]} req.headers.tags
  * @param {[String]} req.headers.coordinate
- * @param {[String]} req.headers.eat
- * @param {[String]} req.headers.radius
- * @param {[String]} req.headers.placenbr
+ * @param {String} req.headers.eat
+ * @param {String} req.headers.radius
+ * @param {String} req.headers.placenbr
  * @param {[String]} req.headers.locations_list
+ * @param {String} req.headers.is18
+ * @param {String} req.headers.temptags
+ * @param {String} req.headers.friendstags
  */
 router.get('/generate_course', async function(req, res) {
 
@@ -36,7 +39,12 @@ router.get('/generate_course', async function(req, res) {
     console.log("eat: ", req.headers.eat);
     console.log("radius: ", req.headers.radius);
     console.log("locations_list: ", req.headers.locations_list);
+    console.log("Is18: ", req.headers.is18);
+    console.log("tempTags: ", req.headers.temptags);
+    console.log("friendtags: ", req.headers.friendstags);
 
+    let friendstags = req.headers.friendstags;
+    let userTags = req.headers.tags;
     if (!user) {
         return res.status(400).send({status: "You are not connected."});
     }
@@ -54,11 +62,28 @@ router.get('/generate_course', async function(req, res) {
       //console.log("locations_list: ", locations_list);
     }
 
-    const promise2 = algo.data.algo(req.headers.time , req.headers.budget , req.headers.tags , req.headers.coordinate, req.headers.eat, radius, placeNbr, locations_list);
+    if (req.headers.temptags) {
+      console.log("USING TEMPORARY TAGS");
+      userTags = req.headers.temptags
+    }
+    console.log("pk:", friendstags);
+    if (friendstags) {
+      friendstags = friendstags.concat(",")
+      friendstags = friendstags.concat(userTags)
+      var friendsArray = friendstags.split(',')
+      console.log("oui");
+      const uniqueset = new Set(friendsArray)
+      console.log("uniqueset: ", uniqueset);
+      userTags = friendsArray.join(',')
+    }
+
+    console.log("userTags: ", userTags);
+    const promise2 = algo.data.algo(req.headers.time , req.headers.budget , userTags, req.headers.coordinate, req.headers.eat, radius, placeNbr, locations_list, req.headers.is18);
     promise2.then((value) => {
       let generated_course = value;
-      //console.log("course: ", generated_course);
+      console.log("course: ", generated_course);
       if (generated_course) {
+        console.log("if 1");
         course = {locations_list: [], name: (generated_course[0].Name + " => " + generated_course[generated_course.length - 1].Name), tags_list: []}
         for (let index in generated_course) {
             course.locations_list.push(generated_course[index].Id);
@@ -69,6 +94,7 @@ router.get('/generate_course', async function(req, res) {
                 }
             }
         }
+        console.log("304 ?");
         return res.status(200).send({status: "Result of the generator.", generated_course, course});
       }
       return res.status(400).send({status: "An error occured during the generation of the course"});

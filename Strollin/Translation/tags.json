@@ -38,6 +38,7 @@
       ["park", "park", "parc"],
       ["pet_store", "pet store", "animalerie"],
       ["restaurant", "restaurant", "restaurant"],
+      ["sex_shop", "sex shop", "sex shop"],
       ["shoe_store", "shoe_store", "magasin de chaussures"],
       ["shopping_mall", "shopping mall", "centre commercial"],
       ["spa", "spa", "spa"],
@@ -46,5 +47,6 @@
       ["synagogue", "synagogue", "synagogue"],
       ["tourist_attraction", "tourist attraction", "attraction touristique"],
       ["zoo", "zoo", "zoo"],
+      ["18+_only", "18+", "18+"]
    ],
 }

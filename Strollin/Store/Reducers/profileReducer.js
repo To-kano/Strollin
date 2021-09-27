@@ -126,19 +126,25 @@ function profileReducer(state = initialState, action) {
         sound: action.value
       };
       return nextState;
+    case 'SET_USER_TAGS':
+      nextState = {
+        ...state,
+        tags: action.value
+      };
+      return nextState;
     case 'ADD_TO_PROFILE_FAVORITES':
         nextState = {
           ...state,
         };
         nextState.course_favorites = [action.value, ...nextState.course_favorites]
-  
+
         return nextState;
       case 'ADD_TO_PROFILE_FAVORITES':
         nextState = {
           ...state,
         };
         nextState.course_favorites = [action.value, ...nextState.course_favorites]
-  
+
         return nextState;
     default:
       return state;
