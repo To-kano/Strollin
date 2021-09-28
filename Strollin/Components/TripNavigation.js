@@ -1,6 +1,6 @@
 import React, { Component, useState, useEffect } from 'react';
 import {
-  StyleSheet, AppState, View, Text, Button, BackHandler, Image, TouchableOpacity, ImageBackground, RefreshControl
+  StyleSheet, AppState, View, Text, Button, BackHandler, Image, TouchableOpacity, ImageBackground, ActivityIndicator, Modal, RefreshControl
 } from 'react-native';
 
 import { connect } from 'react-redux';
@@ -29,6 +29,7 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
   const [del, setDel] = useState(false);
   const [course, setCourse] = useState(null);
   const [place, setPlace] = useState(null);
+  const [isLoading, setLoading] = React.useState(false);
 
   function compare(a, b) {
     if (a.Dist > b.Dist) return 1;
@@ -79,12 +80,14 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
     .then(res => res.json())
     .then(json => {
       setPop(false);
-    });
+    })
+    .then(setLoading(false));
 
     if (response == false)
       return
     //update course
-    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/get_locations_by_id`, {
+    setLoading(true);
+    await fetch(`https://${IP_SERVER}:${PORT_SERVER}/location/get_locations_by_id`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -102,7 +105,8 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
       Store.dispatch(action);
       setDisplayMap(false);
       setDisplayMap(true);
-    });
+    })
+    .then(setLoading(false));
   }
 
   async function PopUpReq(pos, course) {
@@ -128,8 +132,9 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
       setCourse(json.popup)
       //console.log("stp c la le truc: ", json.popup);
       setPop(true);
-    });
-
+      // console.log("stp c la le truc: ", json.popup);
+    })
+    .then(setLoading(false));
   }
 
 
@@ -260,11 +265,21 @@ if (del) {
       </TouchableOpacity>
       <TouchableOpacity onPress={() => {
         const store = Store.getState();
+        setLoading(true);
         //DeletePlace();
         PopUpReq(profil.first_name, profil.scoreCourse); //Je sais pas utiliser les props du coup g stocker des truc dans les props dans course settings
       }}>
         <Text style={styles.text_signIn}>Simulate</Text>
       </TouchableOpacity>
+      <Modal
+        animationType="none"
+        transparent={true}
+        visible={isLoading}
+      >
+        <View style={styles.loading_screen}>
+          <ActivityIndicator size="large"  color="black" style={{}}/>        
+        </View>
+      </Modal>
     </View>
   );
 //   }
@@ -386,5 +401,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     padding: 12,
     color: '#0092A7',
+  },
+  loading_screen: {
+    backgroundColor:'rgba(100,100,100,0.75)',
+    display: "flex",
+    justifyContent: 'space-around',
+    height: '100%'
   },
 });

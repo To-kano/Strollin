@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import {
-  View, ScrollView ,StyleSheet, Image, Text, TouchableOpacity, FlatList, ImageBackground, TextInput
+  View, ScrollView ,StyleSheet, Image, Text, TouchableOpacity, FlatList, ImageBackground, TextInput, ActivityIndicator, Modal
 } from 'react-native';
 import BackgroundImage from './backgroundImage';
 import Store from '../Store/configureStore';
@@ -36,8 +36,9 @@ var initialList = [
 function SettingPartenaire(props) {
   const [list, setList] = React.useState(initialList);
   const [args, setArgs] = useState(true);
+  const [isLoading, setLoading] = React.useState(false);
 
-  async function getThings() {
+  async function getThings(setLoading) {
     const store = Store.getState();
     const access_Token = store.profil.access_token;
     await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/get_partner_location`, {
@@ -60,10 +61,11 @@ function SettingPartenaire(props) {
           }
           setList(initialList)
         }
-      });
+      })
+      .then(setLoading(false));
   }
 
-  async function postAdd(body) {
+  async function postAdd(body, setLoading) {
     const store = Store.getState();
     const access_Token = store.profil.access_token;
     const test = JSON.stringify({ address: body });
@@ -81,11 +83,12 @@ function SettingPartenaire(props) {
     })
       .then((res) => res.json())
       .then((json) => {
-      //console.log(json);
-      });
+        // console.log(json);
+      })
+      .then(setLoading(false));
   }
 
-  async function postName(body) {
+  async function postName(body, setLoading) {
     const store = Store.getState();
     const access_Token = store.profil.access_token;
     const test = JSON.stringify({ name: body });
@@ -103,11 +106,12 @@ function SettingPartenaire(props) {
     })
       .then((res) => res.json())
       .then((json) => {
-      //console.log(json);
-      });
+        // console.log(json);
+      })
+      .then(setLoading(false));
   }
 
-  async function postDesc(body) {
+  async function postDesc(body, setLoading) {
     const store = Store.getState();
     const access_Token = store.profil.access_token;
     const test = JSON.stringify({ description: body });
@@ -124,11 +128,12 @@ function SettingPartenaire(props) {
     })
       .then((res) => res.json())
       .then((json) => {
-      });
+      })
+      .then(setLoading(false));
   }
 
   useEffect(() => {
-    getThings();
+    getThings(setLoading);
   }, []);
 
   return (
@@ -171,7 +176,10 @@ function SettingPartenaire(props) {
           autoCapitalize={'none'}
               style={styles.textInput_number}
               placeholder={args.name}
-              onChangeText={(text) => postName(text)}
+              onChangeText={(text) => {
+                setLoading(true);
+                postName(text);
+              }}
             />
           </View>
         </View>
@@ -184,7 +192,10 @@ function SettingPartenaire(props) {
           autoCapitalize={'none'}
               style={styles.textInput_number}
               placeholder={args.address}
-              onChangeText={(text) => postAdd(text)}
+              onChangeText={(text) => {
+                setLoading(true);
+                postAdd(text);
+              }}
             />
           </View>
         </View>
@@ -197,7 +208,10 @@ function SettingPartenaire(props) {
           autoCapitalize={'none'}
               style={styles.textInput_number}
               placeholder={args.description}
-              onChangeText={(text) => postAdd(text)}
+              onChangeText={(text) => {
+                setLoading(true);
+                postAdd(text);
+              }}
             />
           </View>
         </View>
@@ -308,7 +322,10 @@ function SettingPartenaire(props) {
     //           style={styles.textInput}
     //           placeholder="Description de votre commerce"
     //           multiline
-    //           onChangeText={(text) => postDesc(text)}
+    //           onChangeText={(text) => {
+    //            setLoading(true);
+    //            postDesc(text, setLoading);
+    //           }}
     //         >
     //           {args.description}
     //         </TextInput>
@@ -329,7 +346,10 @@ function SettingPartenaire(props) {
     //           style={styles.textInput}
     //           placeholder="Adresse de votre commerce"
     //           multiline
-    //           onChangeText={(text) => postAdd(text)}
+    //           onChangeText={(text) => {
+    //             setLoading(true);
+    //             postAdd(text);
+    //           }}
     //         >
     //           {args.address}
     //         </TextInput>
@@ -488,6 +508,12 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     color: '#FFFFFF',
+  },
+  loading_screen: {
+    backgroundColor:'rgba(100,100,100,0.75)',
+    display: "flex",
+    justifyContent: 'space-around',
+    height: '100%'
   },
   // back: {
   //   flexDirection: 'column',

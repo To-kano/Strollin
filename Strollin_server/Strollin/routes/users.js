@@ -691,7 +691,7 @@ router.get('/logout', async function (req, res) {
  * @param {String} req.headers.access_token
  */
 router.get('/get_own_profile', async function (req, res) {
-  const projection = '-_id -password -access_token -socket_id -facebook_id -verify' //-param for excluding
+  const projection = '-_id -password -access_token -socket_id -facebook_id -stripe_id -subscription_id -verify' //-param for excluding
   let profile = await UserModel.findOne({ access_token: req.headers.access_token }, projection).catch(error => error);
 
   if (!profile) {
@@ -806,7 +806,7 @@ router.get('/get_users', async function(req, res) {
  * @param {UserID || [UserID]} req.headers.users_list
  */
 router.get('/get_user_by_id', async function (req, res) {
-  const projection = "-_id -password -access_token -socket_id -facebook_id";
+  const projection = "-_id -password -access_token -socket_id -facebook_id -stripe_id - subscription_id";
   let user = await UserModel.findOne({ access_token: req.headers.access_token }, "-_id id pseudo").catch(error => error);
 
   if (!user) {

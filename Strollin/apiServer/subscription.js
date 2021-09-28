@@ -1,7 +1,7 @@
 import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 
 async function loginUser(props, newMail, newPassword, setLoading) {
-  fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/login`, {
+  fetch(`https://${IP_SERVER}:${PORT_SERVER}/users/login`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -13,7 +13,7 @@ async function loginUser(props, newMail, newPassword, setLoading) {
     .then((response) => response.json())
     .then(async (answer) => {
       if (answer.access_token) {
-      //console.log("AccessToken: ", answer.access_token);
+        console.log("AccessToken: ", answer.access_token);
         await profileUser(props, answer.access_token);
         await conversationUser(props, answer.access_token);
         await setTendance(props, answer.access_token);
@@ -65,7 +65,7 @@ exports.logoutUser = logoutUser;
 
 
 async function profileUser(props, access_token) {
-  fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/get_own_profile`, {
+  fetch(`https://${IP_SERVER}:${PORT_SERVER}/users/get_own_profile`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -96,7 +96,7 @@ async function setFriendPseudo(props, access_token, profile) {
   //console.log("profile = ", profile);
   for (let i in profile.friends_list) {
     //console.log("boucle for pour fetch");
-    fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/get_user_profile`, {
+    fetch(`https://${IP_SERVER}:${PORT_SERVER}/users/get_user_profile`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -125,7 +125,7 @@ async function setFriendPseudo(props, access_token, profile) {
 exports.setFriendPseudo = setFriendPseudo;
 
 async function setTendance(props, access_token) {
-  await fetch(`http://${IP_SERVER}:${PORT_SERVER}/course/get_course`, {
+  await fetch(`https://${IP_SERVER}:${PORT_SERVER}/course/get_course`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -145,7 +145,7 @@ async function setTendance(props, access_token) {
 exports.messageUser = setTendance;
 
 async function setFavorites(props, access_token) {
-  await fetch(`http://${IP_SERVER}:${PORT_SERVER}/course/get_course`, {
+  await fetch(`https://${IP_SERVER}:${PORT_SERVER}/course/get_course`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -164,7 +164,7 @@ async function setFavorites(props, access_token) {
 exports.messageUser = setFavorites;
 
 async function setCourseHistoric(props, access_token) {
-  fetch(`http://${IP_SERVER}:${PORT_SERVER}/course/get_user_historic`, {
+  fetch(`https://${IP_SERVER}:${PORT_SERVER}/course/get_user_historic`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -186,7 +186,7 @@ async function setCourseHistoric(props, access_token) {
 exports.messageUser = setCourseHistoric;
 
 async function messageUser(props, access_token, message_id) {
-  fetch(`http://${IP_SERVER}:${PORT_SERVER}/message/get_message`, {
+  fetch(`https://${IP_SERVER}:${PORT_SERVER}/message/get_message`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -208,7 +208,7 @@ async function messageUser(props, access_token, message_id) {
 exports.messageUser = messageUser;
 
 async function conversationUser(props, access_token) {
-  fetch(`http://${IP_SERVER}:${PORT_SERVER}/conversation/get_conversations`, {
+  fetch(`https://${IP_SERVER}:${PORT_SERVER}/conversation/get_conversations`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -247,7 +247,7 @@ async function registerUser(props, newPseudo, newPassword, newMail, setMessage, 
     partner: partner,
   });
 
-  fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/register`, {
+  fetch(`https://${IP_SERVER}:${PORT_SERVER}/users/register`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -257,7 +257,7 @@ async function registerUser(props, newPseudo, newPassword, newMail, setMessage, 
   })
     .then((response) => response.json())
     .then(async (answer) => {
-    //console.log("okkkk")
+      console.log("okkkk")
       //console.log(" answer = " , answer);
       if (answer.access_token) {
         await profileUser(props, answer.access_token);
@@ -280,13 +280,11 @@ async function registerUser(props, newPseudo, newPassword, newMail, setMessage, 
 exports.registerUser = registerUser;
 
 async function addUserHistoric(access_token, courseId) {
-
-  console.log("addUserHistoric: ", courseId);
   const bodyRequest = JSON.stringify({
     course: courseId
   });
 
-  fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/add_historic`, {
+  fetch(`https://${IP_SERVER}:${PORT_SERVER}/users/add_historic`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -314,7 +312,7 @@ async function registerUserTag(props, newPseudo, newPassword, newMail) {
     mail: newMail,
   });
 
-  fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/register`, {
+  fetch(`https://${IP_SERVER}:${PORT_SERVER}/users/register`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -340,7 +338,7 @@ exports.registerUserTag = registerUserTag;
 
 function createFormData(image, body = {}) {
   const data = new FormData();
-
+  
   data.append('image', {
     name: image.fileName,
     type: image.type,
@@ -350,14 +348,13 @@ function createFormData(image, body = {}) {
   Object.keys(body).forEach((key) => {
     data.append(key, body[key]);
   });
-
+  
   return data;
 }
 
 
 async function uploadImageProfile(access_token, image) {
-//console.log("upload image ", access_token, image);
-  let answer = await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/add_image_profile`, {
+  let answer = await fetch(`https://${IP_SERVER}:${PORT_SERVER}/users/add_image_profile`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -366,71 +363,9 @@ async function uploadImageProfile(access_token, image) {
       method: 'POST',
       body: createFormData(image, {}),
     })
+  answer = await answer.json();
 
-  //answer = await answer.text();
-//console.log("upload image answer", result);
   return answer;
 }
 
 exports.uploadImageProfile = uploadImageProfile;
-
-async function addFavorite(props, setIsFavorite) {
-  const bodyRequest = JSON.stringify({
-    course: props.data.id
-  });
-//console.log("sent id = ", props.data.id);
-  await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/add_favorite`, {
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      access_token: props.profil.access_token,
-    },
-    method: 'POST',
-    body: bodyRequest,
-  }).then((answer) => answer.json())
-  .then(async function (answer) {
-    setIsFavorite(true);
-  //console.log("add answer = ", answer);
-    if (answer.course_favorites) {
-      const action = {type: 'SET_FAVORITES_LIST', value: answer.course_favorites};
-      props.dispatch(action);
-      const action2 = {type: 'ADD_TO_PROFILE_FAVORITES', value: answer.course_favorites}
-      props.dispatch(action2);
-    }
-
-  })
-  .catch((error) => {
-    console.error('error :', error);
-  });
-}
-
-exports.addFavorite = addFavorite;
-
-async function removeFavorite(props, setIsFavorite) {
-//console.log("remove props.data.id = ", props.data.id);
-  const bodyRequest = JSON.stringify({
-    course_id: props.data.id
-  });
-  await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/remove_favorite`, {
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      access_token: props.profil.access_token,
-    },
-    method: 'POST',
-    body: bodyRequest,
-  }).then((answer) => answer.json())
-  .then(async function (answer) {
-    setIsFavorite(false);
-  //console.log("remove answer = ", answer);
-    if (answer.course_favorites) {
-      const action = {type: 'SET_FAVORITES_LIST', value: answer.course_favorites};
-      props.dispatch(action);
-    }
-  })
-  .catch((error) => {
-    console.error('error :', error);
-  });
-}
-
-exports.removeFavorite = removeFavorite;

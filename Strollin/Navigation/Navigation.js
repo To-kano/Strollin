@@ -92,7 +92,7 @@ function MyStack(props) {
             <>
               <Stack.Screen
                 name="partner"
-                component={PartenaireScreen}
+                component={MyDrawer}
               />
             </>
           ) : (

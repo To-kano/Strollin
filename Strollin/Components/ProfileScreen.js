@@ -1,7 +1,7 @@
 import React , { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import {
-  View, StyleSheet, Image, Text, TouchableOpacity, TextInput
+  View, StyleSheet, Image, Text, TouchableOpacity, TextInput, ActivityIndicator, Modal
 } from 'react-native';
 import { v4 as uuidv4 } from 'uuid';
 import { FlatList } from 'react-native-gesture-handler';
@@ -52,6 +52,8 @@ function ProfileScreen(props) {
   const [tagsList, setTagsList] = useState(initialList);
 
   const [modalVisible, setModalVisible] = useState(false);
+  const [isLoading, setLoading] = React.useState(false);
+
 
   const store = Store.getState();
   const access_Token = store.profil.access_token;
@@ -82,10 +84,11 @@ function ProfileScreen(props) {
       //console.log("tags setted: ", initialList);
         setTagsList(initialList)
         setReload(false)
-      });
+      })
+      .then(setLoading(false));
     }
 
-    async function postMail(body) {
+    async function postMail(body, setLoading) {
 
       const test = JSON.stringify({pseudo: body})
 
@@ -101,13 +104,15 @@ function ProfileScreen(props) {
       })
       .then(res => res.json())
       .then(json => {
-      });
+      })
+      .then(setLoading(false));
     }
 
     const [list, setList] = React.useState(initialList);
     const [name, setName] = React.useState('');
 
     useEffect(() => {
+          setLoading(true);
           getThings();
     }, []);
 
@@ -155,7 +160,10 @@ function ProfileScreen(props) {
           textContentType="emailAddress"
           autoCompleteType="email"
           keyboardType="email-address"
-          onChangeText={text => postMail(text)}
+          onChangeText={text => {
+            setLoading(true);
+            postMail(text, setLoading);
+          }}
         >
           {args?.pseudo}
         </TextInput>
@@ -187,6 +195,15 @@ function ProfileScreen(props) {
       >
         <Text style={styles.text_button}>Choose my tags</Text>
       </TouchableOpacity>
+      <Modal
+        animationType="none"
+        transparent={true}
+        visible={isLoading}
+      >
+        <View style={styles.loading_screen}>
+          <ActivityIndicator size="large"  color="black" style={{}}/>        
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -305,6 +322,12 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     color: '#FFFFFF',
+  },
+  loading_screen: {
+    backgroundColor:'rgba(100,100,100,0.75)',
+    display: "flex",
+    justifyContent: 'space-around',
+    height: '100%'
   }
 });
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  Button, Image, View, StyleSheet, Text, ScrollView, FlatList, TextInput, TouchableOpacity,
+  Button, Image, View, StyleSheet, Text, ScrollView, FlatList, TextInput, TouchableOpacity, ActivityIndicator, Modal
 } from 'react-native';
 import { connect } from 'react-redux';
 import { TouchableHighlight } from 'react-native-gesture-handler';
@@ -15,6 +15,8 @@ import Store from '../Store/configureStore';
 
 import ImageProfile from './ImageProfile';
 
+import { logoutUser } from '../apiServer/user';
+
 function Menu(props) {
   const store = Store.getState();
   const config = {
@@ -22,7 +24,8 @@ function Menu(props) {
     directionalOffsetThreshold: 80,
     gestureIsClickThreshold: 0.5
   };
- //console.log("customDrawer ", props.state)
+  const [isLoading, setLoading] = React.useState(false);
+  // console.log("customDrawer ", props.state)
 
   return (
     <View style={styles.horizontal}>
@@ -128,34 +131,57 @@ function Menu(props) {
             <Image style={styles.img_navigationIn} source={require('../images/icons/black/next_trip.png')} />
             <Text style={styles.text_navigationIn}>Position_partener</Text>
           </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => props.navigation.navigate('Subscription')}
+            style={[styles.view_navigationIn, props.name == 'Subscription' ? styles.current_page : {}]}
+          >
+            <Image style={styles.img_navigationIn} source={require('../images/icons/black/next_trip.png')} />
+            <Text style={styles.text_navigationIn}>Subscription</Text>
+          </TouchableOpacity>
+
         </ScrollView>
-        {/*<TouchableOpacity
-          onPress={() => props.navigation.navigate('userLogin')}
-          style={styles.view_logOut}
-        >
-          <Text style={styles.text_logOut}>Log Out</Text>
-        </TouchableOpacity>*/}
       </View>
-      <GestureRecognizer
-        onSwipeDown={(state) => {
-          if (props.state.index > 0) {
-            props.navigation.navigate(props.state.routeNames[props.state.index - 1]);
-            props.navigation.dispatch(DrawerActions.openDrawer());
-          }
-        }}
-        onSwipeUp={(state) => {
-          if (props.state.index < 7) {
-            props.navigation.navigate(props.state.routeNames[props.state.index + 1]);
-            props.navigation.dispatch(DrawerActions.openDrawer());
-          }
-        }}
-        config={config}
-        style={{
-          flex: 1,
-          width: 30,
-          backgroundColor:'white' // si il y a pas ça alors la gesture ne marche pas
-        }}
-      />
+      <View>
+        <View style={styles.disconnect_button}>
+          <Button
+            title="Log Out"
+            color="grey"
+            onPress={() => {
+              setLoading(true);
+              logoutUser(props, store.profil.access_token, setLoading);
+            }}
+          />
+        </View>
+        <GestureRecognizer
+          onSwipeDown={(state) => {
+            if (props.state.index > 0) {
+              props.navigation.navigate(props.state.routeNames[props.state.index - 1]);
+              props.navigation.dispatch(DrawerActions.openDrawer());
+            }
+          }}
+          onSwipeUp={(state) => {
+            if (props.state.index < 7) {
+              props.navigation.navigate(props.state.routeNames[props.state.index + 1]);
+              props.navigation.dispatch(DrawerActions.openDrawer());
+            }
+          }}
+          config={config}
+          style={{
+            flex: 5,
+            backgroundColor:'white' // si il y a pas ça alors la gesture ne marche pas
+          }}
+        />
+      </View>
+      <Modal
+        animationType="none"
+        transparent={true}
+        visible={isLoading}
+      >
+        <View style={styles.loading_screen}>
+          <ActivityIndicator size="large"  color="black" style={{}}/>        
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -243,6 +269,17 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: '#FFFFFF',
   },
+  disconnect_button: {
+    flex: 1,
+    marginRight: 20,
+    marginTop: 75,
+  },
+  loading_screen: {
+    backgroundColor:'rgba(100,100,100,0.75)',
+    display: "flex",
+    justifyContent: 'space-around',
+    height: '100%'
+  }
 });
 
 const mapStateToProps = (state) => state;

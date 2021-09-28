@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-  StyleSheet, View, Image, ImageBackground, Text, TouchableOpacity, TextInput
+  StyleSheet, View, Image, ImageBackground, Text, TouchableOpacity, TextInput, ActivityIndicator, Modal
 } from 'react-native';
 import { round } from 'react-native-reanimated';
 import Stars from 'react-native-stars';
@@ -22,7 +22,7 @@ function randPic() {
   return (require('../ressources/street1.jpg'));
 }
 
-function ratingCompleted(rating, comment, props) {
+function ratingCompleted(rating, comment, props, setLoading) {
   // console.log("rating = " + rating);
   // console.log("comment = " + comment);
   const store = Store.getState();
@@ -52,8 +52,10 @@ function ratingCompleted(rating, comment, props) {
      //console.log("failed answer = ", answer);
      }
    })
+   .then(setLoading(false))
    .catch((error) => {
      console.error('error :', error);
+     setLoading(false);
    });
 
    const popAction = StackActions.pop(5);
@@ -72,6 +74,7 @@ function skipRating(props) {
 export function CourseEvaluation(props) {
   const [comment, setComment] = useState('');
   const [rating, setRating] = useState('');
+  const [isLoading, setLoading] = React.useState(false);
 
   return (
     <View style={styles.view_back}>
@@ -133,13 +136,23 @@ export function CourseEvaluation(props) {
       <TouchableOpacity
         style={styles.view_button}
         onPress={() => {
-          ratingCompleted(rating, comment, props);
+          setLoading(true);
+          ratingCompleted(rating, comment, props, setLoading);
         }}
       >
         <Text style={styles.text_button}>
           {I18n.t('Notation.send')}
         </Text>
       </TouchableOpacity>
+      <Modal
+        animationType="none"
+        transparent={true}
+        visible={isLoading}
+      >
+        <View style={styles.loading_screen}>
+          <ActivityIndicator size="large"  color="black" style={{}}/>        
+        </View>
+      </Modal>
     </View>
     // <View style={styles.container}>
     //   <View>
@@ -327,6 +340,12 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     color: '#FFFFFF',
+  },
+  loading_screen: {
+    backgroundColor:'rgba(100,100,100,0.75)',
+    display: "flex",
+    justifyContent: 'space-around',
+    height: '100%'
   },
   // container: {
   //   flex: 1

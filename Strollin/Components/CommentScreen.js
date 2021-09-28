@@ -1,5 +1,5 @@
 import {
-  StyleSheet, View, FlatList, Text, TouchableOpacity, Image
+  StyleSheet, View, FlatList, Text, TouchableOpacity, Image, ActivityIndicator, Modal
 } from 'react-native';
 import Comment from './Comment';
 import { connect } from 'react-redux';
@@ -133,5 +133,5 @@ const styles = StyleSheet.create({
   view_list: {
     flex: 757,
     width: '100%',
-  }
+  },
 });

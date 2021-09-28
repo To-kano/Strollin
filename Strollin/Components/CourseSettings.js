@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  StyleSheet, View, ScrollView, Image, Text, TouchableOpacity, TextInput,
+  StyleSheet, View, ScrollView, Image, Text, TouchableOpacity, TextInput, ActivityIndicator, Modal
 } from 'react-native';
 import Stars from 'react-native-stars';
 import { connect } from 'react-redux';
@@ -38,7 +38,7 @@ async function PopUpReq(pos, course) {
 
 }
 
-async function confirmeSettings(pos, budget, hours, minutes, props, eat, radius, placeNbr, is18) {
+async function confirmeSettings(pos, budget, hours, minutes, props, eat, radius, placeNbr, is18, setLoading) {
 
   const store = Store.getState();
   var tags = store.profil.tags;
@@ -72,6 +72,8 @@ async function confirmeSettings(pos, budget, hours, minutes, props, eat, radius,
   };
   Store.dispatch(action);
 
+  const result = await generateCourse(access_token, settings);
+  setLoading(false);
 
   const result = await generateCourse(access_token, settings);
 
@@ -145,6 +147,7 @@ export function CourseSettings(props) {
   const [isTripTogether, setTripTogether] = useState(false);
   const [radius, setRadius] = useState('3');
   const [placeNbr, setPlaceNbr] = useState('2');
+  const [isLoading, setLoading] = useState(false);
   const [is18, setIs18] = useState(true);
 
   useEffect(() => {
@@ -268,13 +271,23 @@ export function CourseSettings(props) {
         id="test"
         style={styles.view_newTrip}
         onPress={() => {
-          confirmeSettings(pos, budget, hours, minutes, props, isEatDrink, radius, placeNbr, is18);
+          setLoading(true);
+          confirmeSettings(pos, budget, hours, minutes, props, isEatDrink, radius, placeNbr, is18, setLoading);
         }}
       >
         <Text style={styles.text_newTrip}>
           Confirm my options
         </Text>
       </TouchableOpacity>
+      <Modal
+        animationType="none"
+        transparent={true}
+        visible={isLoading}
+      >
+        <View style={styles.loading_screen}>
+          <ActivityIndicator size="large"  color="black" style={{}}/>        
+        </View>
+      </Modal>
     </ScrollView>
   );
 }
@@ -386,5 +399,11 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     color: '#ffffff'
+  },
+  loading_screen: {
+    backgroundColor:'rgba(100,100,100,0.75)',
+    display: "flex",
+    justifyContent: 'space-around',
+    height: '100%'
   }
 });
