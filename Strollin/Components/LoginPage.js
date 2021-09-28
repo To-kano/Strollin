@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable global-require */
 import React, { useState } from 'react';
+import { useNavigation } from '@react-navigation/core';
 import {
   StyleSheet, Text, View, Image, TextInput, Button, Share, TouchableOpacity, ActivityIndicator, Modal,
 } from 'react-native';
@@ -11,11 +12,6 @@ import {
 import { watchPosition } from 'react-native-geolocation-service';
 import I18n from '../Translation/configureTrans';
 import { loginUser } from '../apiServer/user';
-
-const imageStreet1 = require('../ressources/street1.jpg');
-const imageStreet2 = require('../ressources/street2.jpg');
-const imagePlum2 = require('../ressources/plum2.jpg');
-const imageLogo3 = require('../ressources/logo3.png');
 
 // import '../api/facebook_api/facebook-api'
 
@@ -42,6 +38,7 @@ const getInfoFromToken = (token, setUserInfo, props) => {
 };
 
 export function LoginPage(props) {
+  const navigation = useNavigation();
   const [value, onChangeText] = React.useState('');
   const [valuePass, onChangePass] = React.useState('');
   const [userInfo, setUserInfo] = React.useState({});
@@ -91,6 +88,9 @@ export function LoginPage(props) {
           secureTextEntry
         />
       </View>
+      <TouchableOpacity style={{ width: '100%' }} onPress={() => navigation.navigate("ResetPassword", { step: 1 })}>
+        <Text style={{ fontSize: 12, textAlign: 'left', textDecorationLine: 'underline', color: '#000' }}>Mot de passe oublié ?</Text>
+      </TouchableOpacity>
       <View style={styles.view_bottomButton}>
         <TouchableOpacity
           style={styles.button_logIn}

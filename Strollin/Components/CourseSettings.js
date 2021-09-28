@@ -75,7 +75,7 @@ async function confirmeSettings(pos, budget, hours, minutes, props, eat, radius,
   const result = await generateCourse(access_token, settings);
   setLoading(false);
 
-  const result = await generateCourse(access_token, settings);
+  // const result = await generateCourse(access_token, settings);
 
   action = {
     type: 'SET_CURRENT_COURSE',
