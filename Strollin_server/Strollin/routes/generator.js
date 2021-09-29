@@ -182,10 +182,7 @@ router.get('/recover_places', async function(req, res) {
   console.log("coordinate: ", coordinate);
   console.log("tag: ", req.headers.tag);
 
-  const promise = algo.data.places(coordinate, req.headers.tag);
-  promise.then((value) => {
-    console.log("Places Added");
-  })
+algo.data.places(coordinate, req.headers.tag);
 });
 
 module.exports = router;

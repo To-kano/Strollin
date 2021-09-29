@@ -131,7 +131,6 @@ export function TagSelection(props) {
   const [array, setArray] = useState(true);
   const [isLoading, setLoading] = React.useState(false);
   const [pos, setPos] = useState('0');
-  const [test, setTest] = useState('0');
 
   const store = Store.getState();
   const access_Token = store.profil.access_token;
