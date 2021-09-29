@@ -1,7 +1,7 @@
 import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 
 async function loginUser(props, newMail, newPassword, setLoading) {
-  fetch(`https://${IP_SERVER}:${PORT_SERVER}/users/login`, {
+  fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/login`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -65,7 +65,7 @@ exports.logoutUser = logoutUser;
 
 
 async function profileUser(props, access_token) {
-  fetch(`https://${IP_SERVER}:${PORT_SERVER}/users/get_own_profile`, {
+  fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/get_own_profile`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -96,7 +96,7 @@ async function setFriendPseudo(props, access_token, profile) {
   //console.log("profile = ", profile);
   for (let i in profile.friends_list) {
     //console.log("boucle for pour fetch");
-    fetch(`https://${IP_SERVER}:${PORT_SERVER}/users/get_user_profile`, {
+    fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/get_user_profile`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -125,7 +125,7 @@ async function setFriendPseudo(props, access_token, profile) {
 exports.setFriendPseudo = setFriendPseudo;
 
 async function setTendance(props, access_token) {
-  await fetch(`https://${IP_SERVER}:${PORT_SERVER}/course/get_course`, {
+  await fetch(`http://${IP_SERVER}:${PORT_SERVER}/course/get_course`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -145,7 +145,7 @@ async function setTendance(props, access_token) {
 exports.messageUser = setTendance;
 
 async function setFavorites(props, access_token) {
-  await fetch(`https://${IP_SERVER}:${PORT_SERVER}/course/get_course`, {
+  await fetch(`http://${IP_SERVER}:${PORT_SERVER}/course/get_course`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -164,7 +164,7 @@ async function setFavorites(props, access_token) {
 exports.messageUser = setFavorites;
 
 async function setCourseHistoric(props, access_token) {
-  fetch(`https://${IP_SERVER}:${PORT_SERVER}/course/get_user_historic`, {
+  fetch(`http://${IP_SERVER}:${PORT_SERVER}/course/get_user_historic`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -186,7 +186,7 @@ async function setCourseHistoric(props, access_token) {
 exports.messageUser = setCourseHistoric;
 
 async function messageUser(props, access_token, message_id) {
-  fetch(`https://${IP_SERVER}:${PORT_SERVER}/message/get_message`, {
+  fetch(`http://${IP_SERVER}:${PORT_SERVER}/message/get_message`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -208,7 +208,7 @@ async function messageUser(props, access_token, message_id) {
 exports.messageUser = messageUser;
 
 async function conversationUser(props, access_token) {
-  fetch(`https://${IP_SERVER}:${PORT_SERVER}/conversation/get_conversations`, {
+  fetch(`http://${IP_SERVER}:${PORT_SERVER}/conversation/get_conversations`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -247,7 +247,7 @@ async function registerUser(props, newPseudo, newPassword, newMail, setMessage, 
     partner: partner,
   });
 
-  fetch(`https://${IP_SERVER}:${PORT_SERVER}/users/register`, {
+  fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/register`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -284,7 +284,7 @@ async function addUserHistoric(access_token, courseId) {
     course: courseId
   });
 
-  fetch(`https://${IP_SERVER}:${PORT_SERVER}/users/add_historic`, {
+  fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/add_historic`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -312,7 +312,7 @@ async function registerUserTag(props, newPseudo, newPassword, newMail) {
     mail: newMail,
   });
 
-  fetch(`https://${IP_SERVER}:${PORT_SERVER}/users/register`, {
+  fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/register`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -354,7 +354,7 @@ function createFormData(image, body = {}) {
 
 
 async function uploadImageProfile(access_token, image) {
-  let answer = await fetch(`https://${IP_SERVER}:${PORT_SERVER}/users/add_image_profile`, {
+  let answer = await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/add_image_profile`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',

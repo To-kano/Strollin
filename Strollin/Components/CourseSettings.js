@@ -75,8 +75,6 @@ async function confirmeSettings(pos, budget, hours, minutes, props, eat, radius,
   const result = await generateCourse(access_token, settings);
   setLoading(false);
 
-  const result = await generateCourse(access_token, settings);
-
   action = {
     type: 'SET_CURRENT_COURSE',
     value: result.course
@@ -285,7 +283,7 @@ export function CourseSettings(props) {
         visible={isLoading}
       >
         <View style={styles.loading_screen}>
-          <ActivityIndicator size="large"  color="black" style={{}}/>        
+          <ActivityIndicator size="large"  color="black" style={{}}/>
         </View>
       </Modal>
     </ScrollView>

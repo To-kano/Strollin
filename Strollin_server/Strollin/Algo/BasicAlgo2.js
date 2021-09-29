@@ -454,7 +454,7 @@ hello = async function(sending, time, budget, tags, coordinate, eat, radius, pla
 {
   var coordinateArr = coordinate.split(",");
 
-  await RecoverPlaces(coordinate, tags)
+  //await RecoverPlaces(coordinate, tags)
 
   console.log("done");
   //promise1.then((value) => {
@@ -484,6 +484,10 @@ methods.pop = function(coordinate, tags, course) {
   });*/
 }
 
+methods.places = function(coordinate, tag, course) {
+  console.log("------------------------------------------------------------------");
+  getPlaces(coordinate, tag)
+}
 
 //algoTest(TagsJson, PlacesJson)
 //DistCalc2D([-7,-4], [17,6.5])

@@ -10,6 +10,8 @@ import I18n from '../Translation/configureTrans';
 import Store from '../Store/configureStore';
 import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 import {translateTags, detranslateTags} from '../Translation/translateTags'
+import {GetPlaces} from '../apiServer/tag';
+import { requestGeolocalisationPermission, updateCoordinates } from './map'
 
 function Header({ navigation, defaultState = false }) {
   const [pressed, setpressed] = useState(defaultState);
@@ -51,7 +53,7 @@ function Header({ navigation, defaultState = false }) {
   );
 }
 
-export function Tag({ name, chosen, setLoading, defaultState = false }) {
+export function Tag({ name, chosen, setLoading, pos, defaultState = false }) {
   const [pressed, setpressed] = useState(defaultState);
   const [args, setArgs] = useState(true);
 
@@ -85,6 +87,7 @@ export function Tag({ name, chosen, setLoading, defaultState = false }) {
       })
       .then(setLoading(false)
       );
+    GetPlaces(access_Token, body, pos)
   }
 
   useEffect(() => {
@@ -99,7 +102,7 @@ export function Tag({ name, chosen, setLoading, defaultState = false }) {
         style={styles.view_tagOff}
         onPress={() => {
           setLoading(true);
-          postTags(name);
+          postTags(name, setLoading);
           setpressed(!pressed);
         }}
       >
@@ -122,22 +125,28 @@ export function Tag({ name, chosen, setLoading, defaultState = false }) {
   );
 }
 
-export function TagSelection({ navigation, profil }) {
+export function TagSelection(props) {
   const [args, setArgs] = useState(true);
   const [Profargs, setProfArgs] = useState(true);
   const [array, setArray] = useState(true);
   const [isLoading, setLoading] = React.useState(false);
+  const [pos, setPos] = useState('0');
+  const [test, setTest] = useState('0');
 
   const store = Store.getState();
   const access_Token = store.profil.access_token;
 
-  function setUserTags(tags) {
-    //var userTags = store.profil
-    let action = {
-      type: 'SET_USER_TAGS',
-      value: tags
-    };
-    Store.dispatch(action);
+  setUserPos();
+  function setUserPos() {
+    if (props.position.asked == false) {
+      requestGeolocalisationPermission(props.dispatch);
+    }
+    if (props.position.permission == true && pos == '0') {
+      updateCoordinates(setPos);
+    }
+    if (props.permission && pos && localRegion.latitude && localRegion.longitude) {
+      setPermision(true);
+    }
   }
 
   async function buildArray(List, UserList) {
@@ -179,7 +188,7 @@ export function TagSelection({ navigation, profil }) {
   }
 
   async function getThings(setLoading) {
-    await fetch(`https://${IP_SERVER}:${PORT_SERVER}/tag/get_tag`, {
+    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/tag/get_tag`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -198,12 +207,13 @@ export function TagSelection({ navigation, profil }) {
 
   useEffect(() => {
     getThings(setLoading);
+    setUserPos();
     // getUserTags();
   }, []);
 
   return (
     <View style={styles.view_back}>
-      <Header navigation={navigation} />
+      <Header navigation={props.navigation} />
       <View style={styles.viex_list}>
         <Text style={styles.text_field}>
           {I18n.t('Tags.select_our_tags')}
@@ -213,14 +223,14 @@ export function TagSelection({ navigation, profil }) {
           data={array}
           keyExtractor={(item) => item.name}
           renderItem={({ item }) => (
-            <Tag name={item.name} chosen={item.pressed} setLoading={setLoading} />
+            <Tag name={item.name} chosen={item.pressed} setLoading={setLoading} pos={pos}/>
           )}
         />
       </View>
       <TouchableOpacity
         style={styles.view_button}
         onPress={() => {
-          navigation.navigate('Profile');
+          props.navigation.navigate('Profile');
         }}
       >
         <Text style={styles.text_button}>
@@ -233,7 +243,7 @@ export function TagSelection({ navigation, profil }) {
         visible={isLoading}
       >
         <View style={styles.loading_screen}>
-          <ActivityIndicator size="large"  color="black" style={{}}/>        
+          <ActivityIndicator size="large"  color="black" style={{}}/>
         </View>
       </Modal>
     </View>
