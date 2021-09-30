@@ -8,6 +8,7 @@ import I18n from '../Translation/configureTrans';
 import { profileUser } from '../apiServer/user';
 import { connect } from 'react-redux';
 import Store from '../Store/configureStore';
+import SearchBar from './reactChatScreen/SearchBar';
 
 // import BackgroundImage from './backgroundImage';
 // import stylesHomepage from '../../styles/homepage'
@@ -254,24 +255,43 @@ async function DeleteFriend(props, store, id) {
     });
 }
 
+function checkSearch(id) {
+  const store = Store.getState();
+
+  for (let i in store.search.searchFriendList) {
+
+    if (id == store.search.searchFriendList[i]) {
+      return (true);
+    }
+  }
+  return (false);
+}
+
 export function FriendObject(props) {
-  return (
-    <View style={styles.view_friend}>
-      <Image
-        style={styles.img_friend}
-        source={require('../images/TonyPP.jpg')}
-      />
-      <Text style={styles.text_friend}>
-        {props.store.profil.friends_pseudo_list[props.id]}
-      </Text>
-      <TouchableOpacity
-        style={styles.view_delete}
-        onPress={() => { DeleteFriend(props, props.store, props.id); }}
-      >
-        <Image style={styles.img_delete} source={require('../images/icons/black/deleteFriend.png')} />
-      </TouchableOpacity>
-    </View>
-  );
+  if (checkSearch(props.id) == true) {
+    return (
+      <View style={styles.view_friend}>
+        <Image
+          style={styles.img_friend}
+          source={require('../images/TonyPP.jpg')}
+        />
+        <Text style={styles.text_friend}>
+          {props.store.profil.friends_pseudo_list[props.id]}
+        </Text>
+        <TouchableOpacity
+          style={styles.view_delete}
+          onPress={() => { DeleteFriend(props, props.store, props.id); }}
+        >
+          <Image style={styles.img_delete} source={require('../images/icons/black/deleteFriend.png')} />
+        </TouchableOpacity>
+      </View>
+    );
+  }
+  else {
+    return (
+      <View></View>
+    );
+  }
 }
 
 export function UsersObject(props) {
@@ -283,7 +303,7 @@ export function UsersObject(props) {
     }
   }
   
-  if (props.id != props.store.profil.id) {
+  if (props.id != props.store.profil.id && checkSearch(props.id) == true) {
     return (
       <View style={styles.view_friend}>
         <Image
@@ -334,6 +354,29 @@ async function getUserList(store, setUserList) {
     });
 }
 
+function sortFriendList(key) {
+  const store = Store.getState();
+  let found = false;
+
+  if (key == '') {
+    //console.log("nothing in search");
+    const action = {type: 'SET_SEARCH_FRIEND_LIST', value: store.profil.friends_list};
+    Store.dispatch(action);
+  } else {
+    for (let i in store.profil.friends_list) {
+      if (key == store.profil.friends_pseudo_list[store.profil.friends_list[i]]) {
+        const action = {type: 'SET_SEARCH_FRIEND_LIST', value: [store.profil.friends_list[i]]};
+        Store.dispatch(action);
+        found = true;
+        break;
+      }
+    }
+    if (found == false) {
+      //console.log("not found in search");
+    }
+  }
+}
+
 function FriendList(props) {
   const store = Store.getState();
   const [userList, setUserList] = useState(null);
@@ -342,7 +385,6 @@ function FriendList(props) {
   if (!userList) {
     getUserList(store, setUserList);
   }
-
   return (
     <View style={styles.view_back}>
       {/* <Header props={props} /> */}
@@ -371,6 +413,10 @@ function FriendList(props) {
           </TouchableOpacity>
         }
       </View>
+      <SearchBar
+        onPress={sortFriendList}
+      />
+      <Text/>
       {pressed === true &&
         <View style={styles.view_list}>
           <FlatList
