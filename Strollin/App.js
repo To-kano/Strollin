@@ -24,7 +24,7 @@ function App() {
 
   React.useEffect(() => {
      SplashScreen.hide();
-     //Sentry.nativeCrash();
+     Sentry.nativeCrash();
    });
    
   return (
