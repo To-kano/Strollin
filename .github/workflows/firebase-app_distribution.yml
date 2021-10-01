@@ -11,7 +11,7 @@ jobs:
       - name: Install npm dependencies
         run: |
           cd Strollin && npm install
-  build-android:
+  upload-fire-base-app-distribtion:
     needs: install-and-test
     runs-on: ubuntu-latest
     steps: 
