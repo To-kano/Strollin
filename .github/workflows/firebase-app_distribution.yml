@@ -1,4 +1,4 @@
-name: react-native-android-build-apk
+name: firebase_app_distribution
 on:
   push:
     branches:
@@ -25,7 +25,7 @@ jobs:
       - name: upload artifact to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
-            appId: testdatareactnative
+            appId: 1:110522901090:android:caa45de0296214eb99673b
             token: 1//03nziq7GIIRP8CgYIARAAGAMSNwF-L9IrbkvGH2ToYbSb8X3fawDdqpIfNoIHM18R1fBlvmPnPsgXip8sAyPhN7cGdGnibRR9wIA
             groups: beta
             file: Strollin/android/app/build/outputs/apk/release/Strollin-release.apk
