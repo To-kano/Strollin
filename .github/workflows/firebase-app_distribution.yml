@@ -22,9 +22,9 @@ jobs:
       - name: Build Android Release
         run: |
           cd Strollin && cd android && ./gradlew assembleRelease
-       - name: upload artifact to Firebase App Distribution
-          uses: wzieba/Firebase-Distribution-Github-Action@v1
-          with:
+      - name: upload artifact to Firebase App Distribution
+        uses: wzieba/Firebase-Distribution-Github-Action@v1
+        with:
             appId: testdatareactnative
             token: 1//03nziq7GIIRP8CgYIARAAGAMSNwF-L9IrbkvGH2ToYbSb8X3fawDdqpIfNoIHM18R1fBlvmPnPsgXip8sAyPhN7cGdGnibRR9wIA
             groups: beta
