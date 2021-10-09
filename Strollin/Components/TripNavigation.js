@@ -87,7 +87,7 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
       return
     //update course
     setLoading(true);
-    await fetch(`https://${IP_SERVER}:${PORT_SERVER}/location/get_locations_by_id`, {
+    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/get_locations_by_id`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',

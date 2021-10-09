@@ -179,7 +179,7 @@ export function TagSelection({ navigation, profil }) {
   }
 
   async function getThings(setLoading) {
-    await fetch(`https://${IP_SERVER}:${PORT_SERVER}/tag/get_tag`, {
+    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/tag/get_tag`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',

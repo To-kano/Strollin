@@ -1,9 +1,9 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable global-require */
 import React, { useState } from 'react';
-import { useNavigation } from '@react-navigation/core';
+// import { useNavigation } from '@react-navigation/core';
 import {
-  StyleSheet, Text, View, Image, TextInput, Button, Share, TouchableOpacity, ActivityIndicator, Modal,
+  StyleSheet, Text, View, Image, TextInput, Button, Share, TouchableOpacity, ActivityIndicator, Modal, StatusBar,
 } from 'react-native';
 import { connect } from 'react-redux';
 import {
@@ -12,6 +12,10 @@ import {
 import { watchPosition } from 'react-native-geolocation-service';
 import I18n from '../Translation/configureTrans';
 import { loginUser } from '../apiServer/user';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import PrimaryButton from './components/PrimaryButton';
+
+const globalStyles = require('../Styles');
 
 // import '../api/facebook_api/facebook-api'
 
@@ -38,94 +42,97 @@ const getInfoFromToken = (token, setUserInfo, props) => {
 };
 
 export function LoginPage(props) {
-  const navigation = useNavigation();
+  // const navigation = useNavigation();
   const [value, onChangeText] = React.useState('');
   const [valuePass, onChangePass] = React.useState('');
   const [userInfo, setUserInfo] = React.useState({});
   const [isLoading, setLoading] = React.useState(false);
 
   return (
-    <View style={styles.view_back}>
-      <View style={styles.view_logo}>
-        <Image style={styles.img_logo} source={require('../images/Logo.png')} />
-      </View>
-      <View style={styles.view_signInUp}>
-        <TouchableOpacity>
-          <Text style={styles.text_signIn}>{I18n.t('LoginPage.SIGNIN')}</Text>
-        </TouchableOpacity>
-        <View style={styles.view_separator} />
-        <TouchableOpacity onPress={() => { props.navigation.navigate('userRegister'); }}>
-          <Text style={styles.text_signUp}>{I18n.t('LoginPage.SIGNUP')}</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.view_field}>
-        <Text style={styles.text_field}>
-          {I18n.t('LoginPage.email')}
-          <Text style={styles.text_star}> *</Text>
-        </Text>
-        <TextInput
-          style={styles.textInput_field}
-          autoCapitalize="none"
-          textContentType="emailAddress"
-          autoCompleteType="email"
-          keyboardType="email-address"
-          onChangeText={(text) => { onChangeText(text); }}
-          value={value}
-        />
-      </View>
-      <View style={styles.view_field}>
-        <Text style={styles.text_field}>
-          {I18n.t('LoginPage.password')}
-          <Text style={styles.text_star}> *</Text>
-        </Text>
-        <TextInput
-          style={styles.textInput_field}
-          autoCapitalize="none"
-          textContentType="password"
-          autoCompleteType="password"
-          onChangeText={(text) => onChangePass(text)}
-          valuePass={valuePass}
-          secureTextEntry
-        />
-      </View>
-      <TouchableOpacity style={{ width: '100%' }} onPress={() => navigation.navigate("ResetPassword", { step: 1 })}>
-        <Text style={{ fontSize: 12, textAlign: 'left', textDecorationLine: 'underline', color: '#000' }}>Mot de passe oublié ?</Text>
+    <View style={globalStyles.container}>
+      <Image
+        source={require("../assets/images/Strollin_logo.png")}
+        style={globalStyles.logo}
+      />
+      <TextInput
+        placeholder={I18n.t('LoginPage.email')}
+        style={globalStyles.textInput}
+        autoCapitalize="none"
+        textContentType="emailAddress"
+        autoCompleteType="email"
+        keyboardType="email-address"
+        onChangeText={(text) => { onChangeText(text); }}
+        value={value}
+      />
+      <TextInput
+        placeholder={I18n.t('LoginPage.password')}
+        style={globalStyles.textInput}
+        autoCapitalize="none"
+        textContentType="password"
+        autoCompleteType="password"
+        onChangeText={(text) => onChangePass(text)}
+        valuePass={valuePass}
+        secureTextEntry={true}
+      />
+      <TouchableOpacity style={{width: '100%', marginTop: 4, marginBottom: 32}} onPress={() => { props.navigation.navigate("ResetPassword", { step: 1 }) }}>
+        <Text
+          style={[globalStyles.subparagraphs, { fontSize: 10, textDecorationLine: "underline", textDecorationColor: "#1C1B1C"}]}
+        >Mot de passe oublié ?</Text>
       </TouchableOpacity>
-      <View style={styles.view_bottomButton}>
-        <TouchableOpacity
-          style={styles.button_logIn}
-          onPress={() => {
+      <PrimaryButton
+        text="Me connecter"
+        onPressFct={() => {
             if (value && valuePass) {
               setLoading(true);
               loginUser(props, value, valuePass, setLoading);
             }
-          }}
+          }
+        }
+      />
+      <PrimaryButton
+        text="Continuer avec Facebook"
+        onPressFct={() => console.log("login facebook here")}
+        color= "#1877F2"
+      />
+      {/* <LoginButton
+        style={styles.button_facebook}
+        readPermissions={['public_profile', 'email']}
+        onLoginFinished={(error, result) => {
+          if (error) {
+            //console.log(`login has error: ${result.error}`);
+          } else if (result.isCancelled) {
+            //console.log('login is cancelled.');
+          } else {
+            AccessToken.getCurrentAccessToken().then((data) => {
+              const accessToken = data.accessToken.toString();
+              getInfoFromToken(accessToken, setUserInfo, props);
+            });
+          }
+        }}
+        onLogoutFinished={() => setUserInfo({})}
+      /> */}
+      <TouchableOpacity
+        onPress={() => { props.navigation.navigate('userRegister') }}
+        style={{
+          width: "100%",
+          backgroundColor: "#fff",
+          padding: 16,
+          marginTop: 32,
+          justifyContent: "center",
+          alignContent: "center",
+          borderRadius: 32,
+        }}
+      >
+        <Text
+          style={[
+            globalStyles.paragraphs,
+            { color: "#9B979B", textAlign: "center" },
+          ]}
         >
-          <Text style={styles.text_logIn}>
-            {I18n.t('LoginPage.SIGNIN')}
-          </Text>
-        </TouchableOpacity>
-        <Text style={styles.text_or}>{I18n.t('LoginPage.OR')}</Text>
-        <View style={styles.view_facebook}>
-          <LoginButton
-            style={styles.button_facebook}
-            readPermissions={['public_profile', 'email']}
-            onLoginFinished={(error, result) => {
-              if (error) {
-                //console.log(`login has error: ${result.error}`);
-              } else if (result.isCancelled) {
-                //console.log('login is cancelled.');
-              } else {
-                AccessToken.getCurrentAccessToken().then((data) => {
-                  const accessToken = data.accessToken.toString();
-                  getInfoFromToken(accessToken, setUserInfo, props);
-                });
-              }
-            }}
-            onLogoutFinished={() => setUserInfo({})}
-          />
-        </View>
-      </View>
+          Pas encore de compte ?
+          <Text style={{ color: "#0989FF" }}> Inscrit toi !</Text>
+        </Text>
+      </TouchableOpacity>
       <Modal
         animationType="none"
         transparent={true}
@@ -136,6 +143,97 @@ export function LoginPage(props) {
         </View>
       </Modal>
     </View>
+    // <View style={styles.view_back}>
+    //   <View style={styles.view_logo}>
+    //     <Image style={styles.img_logo} source={require('../images/Logo.png')} />
+    //   </View>
+    //   <View style={styles.view_signInUp}>
+    //     <TouchableOpacity>
+    //       <Text style={styles.text_signIn}>{I18n.t('LoginPage.SIGNIN')}</Text>
+    //     </TouchableOpacity>
+    //     <View style={styles.view_separator} />
+    //     <TouchableOpacity onPress={() => { props.navigation.navigate('userRegister'); }}>
+    //       <Text style={styles.text_signUp}>{I18n.t('LoginPage.SIGNUP')}</Text>
+    //     </TouchableOpacity>
+    //   </View>
+    //   <View style={styles.view_field}>
+    //     <Text style={styles.text_field}>
+    //       {I18n.t('LoginPage.email')}
+    //       <Text style={styles.text_star}> *</Text>
+    //     </Text>
+    //     <TextInput
+    //       style={styles.textInput_field}
+    //       autoCapitalize="none"
+    //       textContentType="emailAddress"
+    //       autoCompleteType="email"
+    //       keyboardType="email-address"
+    //       onChangeText={(text) => { onChangeText(text); }}
+    //       value={value}
+    //     />
+    //   </View>
+    //   <View style={styles.view_field}>
+    //     <Text style={styles.text_field}>
+    //       {I18n.t('LoginPage.password')}
+    //       <Text style={styles.text_star}> *</Text>
+    //     </Text>
+    //     <TextInput
+    //       style={styles.textInput_field}
+    //       autoCapitalize="none"
+    //       textContentType="password"
+    //       autoCompleteType="password"
+    //       onChangeText={(text) => onChangePass(text)}
+    //       valuePass={valuePass}
+    //       secureTextEntry
+    //     />
+    //   </View>
+    //   <TouchableOpacity style={{ width: '100%' }} onPress={() => { props.navigation.navigate("ResetPassword", { step: 1 }) }}>
+    //     <Text style={{ fontSize: 12, textAlign: 'left', textDecorationLine: 'underline', color: '#000' }}>Mot de passe oublié ?</Text>
+    //   </TouchableOpacity>
+    //   <View style={styles.view_bottomButton}>
+    //     <TouchableOpacity
+    //       style={styles.button_logIn}
+    //       onPress={() => {
+    //         if (value && valuePass) {
+    //           setLoading(true);
+    //           loginUser(props, value, valuePass, setLoading);
+    //         }
+    //       }}
+    //     >
+    //       <Text style={styles.text_logIn}>
+    //         {I18n.t('LoginPage.SIGNIN')}
+    //       </Text>
+    //     </TouchableOpacity>
+    //     <Text style={styles.text_or}>{I18n.t('LoginPage.OR')}</Text>
+    //     <View style={styles.view_facebook}>
+    //       <LoginButton
+    //         style={styles.button_facebook}
+    //         readPermissions={['public_profile', 'email']}
+    //         onLoginFinished={(error, result) => {
+    //           if (error) {
+    //             //console.log(`login has error: ${result.error}`);
+    //           } else if (result.isCancelled) {
+    //             //console.log('login is cancelled.');
+    //           } else {
+    //             AccessToken.getCurrentAccessToken().then((data) => {
+    //               const accessToken = data.accessToken.toString();
+    //               getInfoFromToken(accessToken, setUserInfo, props);
+    //             });
+    //           }
+    //         }}
+    //         onLogoutFinished={() => setUserInfo({})}
+    //       />
+    //     </View>
+    //   </View>
+    //   <Modal
+    //     animationType="none"
+    //     transparent={true}
+    //     visible={isLoading}
+    //   >
+    //     <View style={styles.loading_screen}>
+    //       <ActivityIndicator size="large"  color="black" style={{}}/>        
+    //     </View>
+    //   </Modal>
+    // </View>
   );
 }
 
