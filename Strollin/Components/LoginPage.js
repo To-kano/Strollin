@@ -74,7 +74,7 @@ export function LoginPage(props) {
         valuePass={valuePass}
         secureTextEntry={true}
       />
-      <TouchableOpacity style={{width: '100%', marginTop: 4, marginBottom: 32}} onPress={() => { props.navigation.navigate("ResetPassword", { step: 1 }) }}>
+      <TouchableOpacity style={{width: '100%', marginTop: 4, marginBottom: 32}} onPress={() => { props.navigation.navigate("ResetPassword") }}>
         <Text
           style={[globalStyles.subparagraphs, { fontSize: 10, textDecorationLine: "underline", textDecorationColor: "#1C1B1C"}]}
         >Mot de passe oublié ?</Text>
