@@ -64,7 +64,7 @@ function PopupAlgo(tags, Sponsors, Destinations, UserPos) {
 
 //List: List of Places
 //Destination: Course
-methods.Popup = function (Destinations, List, LocationModel, tags, coordinate) {
+methods.Popup = function (Destinations, List, LocationModel, tags, coordinate, test_list) {
   let location = LocationModel;
   var res;
   var UserPos = coordinate.split(',');
@@ -73,13 +73,13 @@ methods.Popup = function (Destinations, List, LocationModel, tags, coordinate) {
 
   console.log("positionnnn: ", coordinate);
   for (var i = 0; i < List.length; i++) {
-    console.log("oui");
+    //console.log("oui");
     if (List[i].Owner == 'qqn') {
       partner[j] = List[i]
       j++
     }
   }
-  console.log("List: ", partner);
+
   while(1) {
     res = PopupAlgo(tags, partner, Destinations, UserPos)
     if (res != false)
