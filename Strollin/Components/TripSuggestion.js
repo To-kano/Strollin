@@ -301,32 +301,34 @@ export function TripSuggestion(props) {
     longitudeDelta: 0.0421,
   };
 
-  function check_open(result) {
+async function check_open(result) {
     locations_tmp = []
-    result.forEach((item, i) => {
-      const url = `http://${IP_SERVER}:${PORT_SERVER}/location/check_open`
-      fetch(url, {
-        headers: {
-          name: item.name
-        },
-        method: 'GET',
+
+    const test = JSON.stringify({list: result})
+      await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/check_open`, {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: test,
+      method: 'POST',
       })
         .then((response) => response.json())
         .then((answer) => {
-          if (!answer.result.candidates[0].opening_hours || answer.result.candidates[0].opening_hours.open_now == true) {
-            locations_tmp.push(item)
-          } else {
-            locations_name.push(item.name)
+          console.log("answer: ", answer.res);
+          for (var i = 0; i < answer.res.length; i++) {
+            if (answer.res[i].website == true) {
+              locations_tmp.push(answer.res[i])
+            } else {
+              locations_name.push(answer.res[i].name)
+            }
           }
+          getNameFunction(answer.res)
         })
         .catch((error) => {
           console.error('error :', error);
-        })
-        .finally(() => {
-          if (i == result.length - 1) {
-            getNameFunction(result)
-          }});
-        })};
+        });
+};
 
   function _renderItem2({item}){
     return (
