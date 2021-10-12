@@ -170,5 +170,19 @@ router.post('/popup_answer', async function(req, res) {
     return res.status(200).send({status: "Result.", popup});
 });
 
+// recover places
+/**
+ * Recover places with user tags and add them to the DB
+ * @param {String} req.headers.access_token
+ * @param {String} req.headers.coordinates
+ * @param {String} req.headers.tag
+ */
+router.get('/recover_places', async function(req, res) {
+  var coordinate = req.headers.coordinates.split(",")
+  console.log("coordinate: ", coordinate);
+  console.log("tag: ", req.headers.tag);
+
+algo.data.places(coordinate, req.headers.tag);
+});
 
 module.exports = router;

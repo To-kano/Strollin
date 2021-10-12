@@ -22,7 +22,7 @@
     "lodash.memoize": "^4.1.2",
     "popup-ui": "^1.2.2",
     "react": "17.0.1",
-    "react-native": "^0.64.2",
+    "react-native": "^0.66.0",
     "react-native-android-pip": "^1.0.1",
     "react-native-elements": "^1.2.7",
     "react-native-fbsdk": "^2.0.0",

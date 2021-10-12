@@ -232,7 +232,7 @@ export default {
     partner: 'Partenaire',
     partnerPosition: 'Localisation',
     profile: 'Profil',
-    home: 'Acceuil',
+    home: 'Bienvenue !',
     options: 'Vos options',
     historic: 'Historique',
     new_trip: 'New Trip',

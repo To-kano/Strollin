@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Tts from 'react-native-tts';
 import { connect } from 'react-redux';
 import {
-  StyleSheet, Text, View, Button , Image, PermissionsAndroid, TouchableOpacity, FlatList, ImageBackground, ActivityIndicator
+  StyleSheet, Text, View, ScrollView, Button , Image, PermissionsAndroid, TouchableOpacity, FlatList, ImageBackground, ActivityIndicator, RefreshControl
 } from 'react-native';
 import { DrawerActions } from '@react-navigation/native';
 import I18n from '../Translation/configureTrans';
@@ -206,6 +206,7 @@ export function TripSuggestion(props) {
   function setLocationsCarrousel(locationsSet) {
     locationTmp = locationModal
     locationTmp.locations = locationsSet
+    console.log("locationTmp: ", locationTmp);
     carouselItem.carouselItems.push(locationTmp)
     setCarrousel(carouselItem)
     setTesto(!testo) //PLEASE DO NOT DELETE
@@ -257,6 +258,14 @@ export function TripSuggestion(props) {
   const [getName, setName] = useState("")
   const [isLoading, setLoading] = useState(false);
   const [indexN, setIndex] = useState(0)
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    console.log("C frais");
+    getLocations2()
+    setRefreshing(false);
+  }, []);
 
   function toggleModal() {
     setModalVisible(!isModalVisible);
@@ -275,6 +284,7 @@ export function TripSuggestion(props) {
 
     let nametmp = "ces lieux sont actuelement fermés :\n" + name + "\nvoulez vous les suprimer ?"
     setName(nametmp)
+    setLoading(false)
     if (name != "")
       toggleModal()
     else {
@@ -451,7 +461,15 @@ function testrenderItem({item,index}){
       }
 
   return (
-    <View style={styles.view_back}>
+    <ScrollView
+      style={styles.view_back}
+      refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={onRefresh}
+              />
+      }
+    >
     <View style={styles.view_header}>
       <TouchableOpacity onPress={() => props.navigation.dispatch(DrawerActions.openDrawer())}>
         <Image style={styles.img_header} source={require('../images/icons/black/menu.png')}/>
@@ -549,7 +567,7 @@ function testrenderItem({item,index}){
           <ActivityIndicator size="large"  color="black" style={{}}/>
         </View>
       </Modal>
-    </View>
+    </ScrollView>
   );
 }
 
@@ -613,8 +631,8 @@ const styles = StyleSheet.create({
     flex: 1,
     maxHeight: '100%',
     flexDirection: 'column',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
+    //justifyContent: 'flex-start',
+    //alignItems: 'center',
     backgroundColor: '#E1E2E7',
     paddingTop: '1.8%',
     paddingLeft: '0%',

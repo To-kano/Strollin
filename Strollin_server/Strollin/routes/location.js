@@ -303,7 +303,7 @@ router.get('/get_place', async function(req, res) {
     })
     console.log("_____________________________")
     console.log(research)
-    url = "https://maps.googleapis.com/maps/api/place/details/json?place_id=" + research.candidates[0].place_id + "&fields=formatted_address,geometry,name,type,opening_hours,website,price_level,rating,review,international_phone_number,user_ratings_total,photo&key=AIzaSyC4MiDbDXP5M3gvpyUADaIUO60H7Vjb9Uk"
+    url = "https://maps.googleapis.com/maps/api/place/details/json?place_id=" + research.candidates[0].place_id + "&fields=formatted_address,geometry,name,type,opening_hours,website,price_level,rating,review,international_phone_number,user_ratings_total,photo&key=AIzaSyDPc6ZV5KYveppsIq8o_1oeVEZ6CShTX4w"
     let result = await placeCall(url).then((response) => {
       return response
     })
@@ -397,7 +397,7 @@ router.get('/get_locations_by_id', async function(req, res) {
 });
 
 router.get('/get_location_position', async function(req, res) {
-    let url = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=" + req.headers.place_name + "&inputtype=textquery&fields=formatted_address,geometry&key=AIzaSyDWnNbYqihMAkObSa_KDJ11YNBD4ffpNBk&language=" + req.headers.language
+    let url = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=" + req.headers.place_name + "&inputtype=textquery&fields=formatted_address,geometry&key=AIzaSyDPc6ZV5KYveppsIq8o_1oeVEZ6CShTX4w&language=" + req.headers.language
     let result = await placeCall(url).then((response) => {
       return response.candidates[0]
     })
@@ -410,7 +410,7 @@ router.get('/get_location_position', async function(req, res) {
 
 router.get('/check_open', async function(req, res) {
 
-    let url = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=" + req.headers.name + "&inputtype=textquery&fields=name,formatted_address,opening_hours&key=AIzaSyC4MiDbDXP5M3gvpyUADaIUO60H7Vjb9Uk"
+    let url = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=" + req.headers.name + "&inputtype=textquery&fields=name,formatted_address,opening_hours&key=AIzaSyDPc6ZV5KYveppsIq8o_1oeVEZ6CShTX4w"
     let result = await placeCall(url).then((response) => {
       return response
     })

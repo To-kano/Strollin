@@ -9,6 +9,8 @@ import { getTimeZone } from 'react-native-localize';
 import I18n from '../Translation/configureTrans';
 import Store from '../Store/configureStore';
 import { IP_SERVER, PORT_SERVER } from '../env/Environement';
+import {GetPlaces} from '../apiServer/tag';
+import { requestGeolocalisationPermission, updateCoordinates } from './map'
 import {translateTags, detranslateTags} from '../Translation/translateTags'
 
 export function Header({ navigation, defaultState = false }) {
@@ -49,7 +51,7 @@ export function Header({ navigation, defaultState = false }) {
   );
 }
 
-export function Tag({ name, chosen, defaultState = false, props}) {
+export function Tag({ name, chosen, defaultState = false, props,  access_Token, pos}) {
   const [pressed, setpressed] = useState(defaultState);
   const [args, setArgs] = useState(true);
 
@@ -64,7 +66,8 @@ export function Tag({ name, chosen, defaultState = false, props}) {
       value: tmpArray
     };
     Store.dispatch(action);
-    console.log(store.CourseSettings.Temporarytags);
+    //console.log(store.CourseSettings.Temporarytags);
+    GetPlaces(access_Token, body, pos)
   }
 
   async function RemoveTags(body) {
@@ -123,10 +126,24 @@ export function Tag({ name, chosen, defaultState = false, props}) {
   );
 }
 
-export function Temporarytags({ navigation, profil }) {
+export function Temporarytags(props) {
   const [array, setArray] = useState(true);
   const store = Store.getState();
   const access_Token = store.profil.access_token;
+  const [pos, setPos] = useState('0');
+
+  setUserPos();
+  function setUserPos() {
+    if (props.position.asked == false) {
+      requestGeolocalisationPermission(props.dispatch);
+    }
+    if (props.position.permission == true && pos == '0') {
+      updateCoordinates(setPos);
+    }
+    if (props.permission && pos && localRegion.latitude && localRegion.longitude) {
+      setPermision(true);
+    }
+  }
 
   async function buildArray(List) {
     const arr = [];
@@ -168,7 +185,7 @@ export function Temporarytags({ navigation, profil }) {
 
   return (
     <View style={styles.view_back}>
-      <Header navigation={navigation} />
+      <Header navigation={props.navigation} />
       <View style={styles.viex_list}>
         <Text style={styles.text_field}>
           {I18n.t('Tags.select_our_tags')}
@@ -178,14 +195,14 @@ export function Temporarytags({ navigation, profil }) {
           data={array}
           keyExtractor={(item) => item.name}
           renderItem={({ item }) => (
-            <Tag name={translateTags(item.name)} chosen={item.pressed}/>
+            <Tag name={translateTags(item.name)} chosen={item.pressed} access_Token={access_Token} pos={pos}/>
           )}
         />
       </View>
       <TouchableOpacity
         style={styles.view_button}
         onPress={() => {
-          navigation.navigate('CourseSettings');
+          props.navigation.navigate('CourseSettings');
         }}
       >
         <Text style={styles.text_button}>

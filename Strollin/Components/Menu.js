@@ -33,7 +33,7 @@ function Menu(props) {
         <View style={styles.view_profile}>
           <ImageProfile style={styles.img_profile} />
           <Text style={styles.text_profile}>{props.profil.pseudo}</Text>
-          <Text style={styles.text_grade}>{I18n.t("Menu.traveler")}</Text>
+          {/*<Text style={styles.text_grade}>Traveler</Text>*/}
         </View>
         <ScrollView style={styles.view_navigation}>
           <TouchableOpacity
@@ -88,7 +88,7 @@ function Menu(props) {
             <Image style={styles.img_navigationIn} source={require('../images/icons/black/profile.png')} />
             <Text style={styles.text_navigationIn}>{props.state.routeNames[5]}</Text>
           </TouchableOpacity>
-          <TouchableOpacity
+          {/*<TouchableOpacity
             onPress={() => props.navigation.navigate(props.state.routeNames[6])}
             style={[styles.view_navigationIn, props.state.index == 6 ? styles.current_page : {}]}
           >
@@ -101,7 +101,7 @@ function Menu(props) {
           >
             <Image style={styles.img_navigationIn} source={require('../images/icons/black/settings.png')} />
             <Text style={styles.text_navigationIn}>{props.state.routeNames[7]}</Text>
-          </TouchableOpacity>
+          </TouchableOpacity>*/}
           <TouchableOpacity
             onPress={() => {
               profileUser(props, store.profil.access_token);
@@ -112,12 +112,10 @@ function Menu(props) {
             <Image style={styles.img_navigationIn} source={require('../images/empty_star.png')} />
             <Text style={styles.text_navigationIn}>{props.state.routeNames[8]}</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              profileUser(props, store.profil.access_token);
-              props.navigation.navigate(props.state.routeNames[9]);
-            }}
-            style={[styles.view_navigationIn, props.state.index == 9 ? styles.current_page : {}]}
+          {/*<TouchableOpacity
+            onPress={() => props.navigation.navigate('Personal_trip')}
+            style={[styles.view_navigationIn, props.name == 'Personal_trip' ? styles.current_page : {}]}
+>>>>>>> 277f15e204e8feffce5c5f354035a5faf66680c7
           >
             <Image style={styles.img_navigationIn} source={require('../images/icons/black/next_trip.png')} />
             <Text style={styles.text_navigationIn}>{props.state.routeNames[9]}</Text>
@@ -141,8 +139,13 @@ function Menu(props) {
             style={[styles.view_navigationIn, props.state.index == 11 ? styles.current_page : {}]}
           >
             <Image style={styles.img_navigationIn} source={require('../images/icons/black/next_trip.png')} />
+<<<<<<< HEAD
             <Text style={styles.text_navigationIn}>{props.state.routeNames[11]}</Text>
           </TouchableOpacity>
+=======
+            <Text style={styles.text_navigationIn}>Subscription</Text>
+          </TouchableOpacity>*/}
+>>>>>>> 277f15e204e8feffce5c5f354035a5faf66680c7
 
         </ScrollView>
       </View>

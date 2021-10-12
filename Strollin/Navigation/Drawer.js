@@ -56,9 +56,6 @@ function MyDrawer() {
       <Drawer.Screen name={I18n.t("Menu.settings")} component={SettingPartenaire} />
       <Drawer.Screen name={I18n.t("Menu.favorites")} component={Favorites} />
       <Drawer.Screen name={I18n.t("Menu.personalTrip")} component={Personal_trip} />
-      <Drawer.Screen name={I18n.t("Menu.positionPartener")} component={Position_partener} />
-      <Drawer.Screen name={I18n.t("Menu.subscription")} component={Subscription} />
-      <Drawer.Screen name={I18n.t("Menu.notation")} component={Notation} />
       <Drawer.Screen name="TripNavigation" component={TripNavigation} />
     </Drawer.Navigator>
   );

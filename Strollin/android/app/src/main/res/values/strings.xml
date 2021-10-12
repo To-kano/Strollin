@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Strollin</string>
-    <string name="facebook_app_id">753977208771959</string>
+    <string name="facebook_app_id">1070937677049555</string>
+    <string name="fb_login_protocol_scheme">fb1070937677049555</string>
 </resources>
