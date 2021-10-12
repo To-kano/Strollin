@@ -27,8 +27,8 @@ function ImageProfile({profil, style}) {
             <Image source={{uri: image}} style={style} />
         )
     }
-    return (<Image style={style} source={require('../images/TonyPP.jpg')} />);
-    
+    return (<Image style={style} source={require('../images/happy_man.jpg')} />);
+
 }
 
 //const styles = StyleSheet.create({

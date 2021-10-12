@@ -1,5 +1,5 @@
 import {
-  Image, View, StyleSheet, Text, TouchableOpacity, ImageBackground, FlatList, ScrollView, 
+  Image, View, StyleSheet, Text, TouchableOpacity, ImageBackground, FlatList, ScrollView,
 } from 'react-native';
 import React, {useState} from 'react';
 import Location_List from './locations_list';
@@ -52,7 +52,7 @@ function checkFavorite(props) {
       }
     }
   }
-  
+
   return (false);
 }
 
@@ -60,7 +60,7 @@ function CourseItem(props) {
   const [locationList, setLocationList] = useState(null);
   const [isFavorite, setIsFavorite] = useState(null);
 
-  
+
   if (isFavorite == null) {
     setIsFavorite(checkFavorite(props));
   }
@@ -82,7 +82,11 @@ function CourseItem(props) {
         <View style={styles.view_boxIn}>
           <View style={styles.view_information}>
             <Image style={styles.img_buget} source={require('../images/icons/white/money.png')}/>
-            <Text style={styles.text_budget}>{props.data["price_range"][0] + " ~ " + props.data["price_range"][1]}</Text>
+            {props.data["price_range"][0] === "0" && props.data["price_range"][1] === "0" ?
+              <Text style={styles.text_budget}>{"Gratuit"}</Text>
+              :
+              <Text style={styles.text_budget}>{props.data["price_range"][0] + " ~ " + props.data["price_range"][1]}</Text>
+            }
             {/* <Text style={styles.text_budget}>{ "Période : " + props.data["timetable"]}</Text> */}
           </View>
           <View style={styles.view_information}>
@@ -108,7 +112,7 @@ function CourseItem(props) {
                 <Image style={styles.img_comment} source={require('../images/icons/white/comments.png')}/>
             </TouchableOpacity>
             {
-            !isFavorite && 
+            !isFavorite &&
               <TouchableOpacity
                 onPress={() => addFavorite(props, setIsFavorite)}
                 >
@@ -116,7 +120,7 @@ function CourseItem(props) {
               </TouchableOpacity>
             }
             {
-            isFavorite && 
+            isFavorite &&
                 <TouchableOpacity
                   onPress={() => removeFavorite(props, setIsFavorite)}
                   >
@@ -220,7 +224,7 @@ const styles = StyleSheet.create({
 //         {props.data["name"]}
 //       </Text>
 //       <Text style={[{ fontSize: 25, marginLeft: '5%' }]}>
-        
+
 //         {"Budget: " + props.data["price_range"][0] + " ~ " + props.data["price_range"][1]}
 //       </Text>
 //       <Text style={[{ fontSize: 25, marginLeft: '5%' }]}>

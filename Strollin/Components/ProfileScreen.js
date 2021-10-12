@@ -141,13 +141,15 @@ function ProfileScreen(props) {
       </View>
       <View style={styles.view_profileTop}>
         <TouchableOpacity onPress={() => setModalVisible(true)}>
-          <ImageProfile style={styles.img_profileTop} />
+        <ImageProfile style={styles.img_profileTop} />
+        <View style={{position: 'absolute', bottom: -10, right: -10, backgroundColor: '#fff',borderRadius: 20, padding: 8}}>
+          <Image source={{uri: 'https://cdn-icons-png.flaticon.com/512/84/84380.png'}} style={{width: 24, height: 24, tintColor: '#000'}} />
+        </View>
         </TouchableOpacity>
         <Popup message={"Choose your profile picture"} modalVisible={modalVisible} setModalVisible={setModalVisible}>
           <ChangeImageProfileForm/>
         </Popup>
         {/* <Image  style={styles.img_profileTop} source={require('')}/> */}
-        <Text style={styles.text_profileTop}>{args?.pseudo}</Text>
       </View>
       <View style={styles.view_email}>
         <Text style={styles.text_description}>
@@ -171,12 +173,11 @@ function ProfileScreen(props) {
       <View style={styles.view_tag}>
         <Text style={styles.text_description}> Tags</Text>
         <FlatList
-          numColumns={3}
           style={styles.view_tagIn}
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
           data={tagsList}
-          contentContainerStyle={{ flexGrow: 1 }}
+          contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap' }}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <Text style={styles.text_tagIn}>{translateTags(item.name)}</Text>
@@ -201,7 +202,7 @@ function ProfileScreen(props) {
         visible={isLoading}
       >
         <View style={styles.loading_screen}>
-          <ActivityIndicator size="large"  color="black" style={{}}/>        
+          <ActivityIndicator size="large"  color="black" style={{}}/>
         </View>
       </Modal>
     </View>
@@ -239,7 +240,7 @@ const styles = StyleSheet.create({
     color: '#000000',
   },
   view_profileTop: {
-    flex: 260,
+    flex: 200,
     flexDirection: 'column',
     alignItems: 'center',
     width: '100%',
@@ -266,7 +267,8 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   text_description: {
-    marginTop: 15,
+    marginTop: 16,
+    marginBottom: 8,
     fontSize: 16,
     fontWeight: 'bold'
   },
@@ -281,6 +283,7 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
   },
   view_tag: {
+    marginTop: 16,
     flex: 344,
     width: '100%',
   },
@@ -288,24 +291,20 @@ const styles = StyleSheet.create({
     flex: 304,
     borderRadius: 4,
     backgroundColor: '#ffffff',
-    paddingTop: 7.5,
+    padding: 8,
   },
   text_tagIn: {
-    alignSelf: 'flex-start',
     textAlign: 'center',
-    width: '30%',
-    marginLeft: 7.5,
-    marginBottom: 7.5,
-    paddingTop: 7,
-    paddingLeft: 2,
-    paddingRight: 2,
+    margin: 4,
+    paddingVertical: 4,
+    paddingHorizontal: 8,
     color: '#0091A7',
     fontSize: 16,
     fontWeight: 'bold',
     letterSpacing: 1,
     borderRadius: 20,
     borderColor: '#0091A7',
-    borderWidth: 4,
+    borderWidth: 2,
   },
   view_button: {
     flex: 50,

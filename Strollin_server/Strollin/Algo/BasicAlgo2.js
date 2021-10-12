@@ -416,7 +416,7 @@ async function callApi(url) {
 
 async function getPlaces(coordinate, type) {
   const https = require('https');
-  let url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=AIzaSyD6AVcufnom-RKQJeG8tlxAWhAOKor0-uo&location=" + coordinate[0] + "," + coordinate[1] + "&radius=5000&type=" + type
+  let url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=AIzaSyDPc6ZV5KYveppsIq8o_1oeVEZ6CShTX4w&location=" + coordinate[0] + "," + coordinate[1] + "&radius=5000&type=" + type
 
   await callApi(url)
   /*https.get(url, (resp) => {

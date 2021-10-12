@@ -229,7 +229,6 @@ export function CourseSettings(props) {
             <Text style={styles.text_optionInput}>
               Partager le trajet avec vos amis ?
             </Text>
-            <Switch value={isTripTogether} setValue={setTripTogether} />
             <TouchableOpacity
               id="test"
               style={styles.ButtonTags}
@@ -238,7 +237,7 @@ export function CourseSettings(props) {
               }}
             >
               <Text style={styles.text_newTrip}>
-                Chose Friends
+                Choose Friends
               </Text>
             </TouchableOpacity>
           </View>

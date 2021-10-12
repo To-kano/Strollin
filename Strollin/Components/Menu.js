@@ -33,7 +33,7 @@ function Menu(props) {
         <View style={styles.view_profile}>
           <ImageProfile style={styles.img_profile} />
           <Text style={styles.text_profile}>{props.profil.pseudo}</Text>
-          <Text style={styles.text_grade}>Traveler</Text>
+          {/*<Text style={styles.text_grade}>Traveler</Text>*/}
         </View>
         <ScrollView style={styles.view_navigation}>
           <TouchableOpacity
@@ -93,7 +93,7 @@ function Menu(props) {
             <Image style={styles.img_navigationIn} source={require('../images/icons/black/profile.png')} />
             <Text style={styles.text_navigationIn}>{props.state.routeNames[5]}</Text>
           </TouchableOpacity>
-          <TouchableOpacity
+          {/*<TouchableOpacity
             onPress={() => props.navigation.navigate(props.state.routeNames[6])}
             style={[styles.view_navigationIn, props.state.index == 6 ? styles.current_page : {}]}
           >
@@ -106,7 +106,7 @@ function Menu(props) {
           >
             <Image style={styles.img_navigationIn} source={require('../images/icons/black/settings.png')} />
             <Text style={styles.text_navigationIn}>{props.state.routeNames[7]}</Text>
-          </TouchableOpacity>
+          </TouchableOpacity>*/}
           <TouchableOpacity
             onPress={() => {
               profileUser(props, store.profil.access_token);
@@ -117,7 +117,7 @@ function Menu(props) {
             <Image style={styles.img_navigationIn} source={require('../images/empty_star.png')} />
             <Text style={styles.text_navigationIn}>{props.state.routeNames[8]}</Text>
           </TouchableOpacity>
-          <TouchableOpacity
+          {/*<TouchableOpacity
             onPress={() => props.navigation.navigate('Personal_trip')}
             style={[styles.view_navigationIn, props.name == 'Personal_trip' ? styles.current_page : {}]}
           >
@@ -138,7 +138,7 @@ function Menu(props) {
           >
             <Image style={styles.img_navigationIn} source={require('../images/icons/black/next_trip.png')} />
             <Text style={styles.text_navigationIn}>Subscription</Text>
-          </TouchableOpacity>
+          </TouchableOpacity>*/}
 
         </ScrollView>
       </View>
@@ -179,7 +179,7 @@ function Menu(props) {
         visible={isLoading}
       >
         <View style={styles.loading_screen}>
-          <ActivityIndicator size="large"  color="black" style={{}}/>        
+          <ActivityIndicator size="large"  color="black" style={{}}/>
         </View>
       </Modal>
     </View>
