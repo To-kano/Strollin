@@ -1,0 +1,11 @@
+{
+   "days_array": [
+      ["monday","monday","lundi"],
+      ["tuesday","tuesday","mardi"],
+      ["wednesday","wednesday","mercredi"],
+      ["thursday","thursday","jeudi"],
+      ["friday","friday","sendredi"],
+      ["saturday","saturday","samedi"],
+      ["sunday","sunday","dimanche"],
+   ],
+}

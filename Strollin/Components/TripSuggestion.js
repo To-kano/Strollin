@@ -456,7 +456,7 @@ function testrenderItem({item,index}){
       <TouchableOpacity onPress={() => props.navigation.dispatch(DrawerActions.openDrawer())}>
         <Image style={styles.img_header} source={require('../images/icons/black/menu.png')}/>
       </TouchableOpacity>
-      <Text style={styles.text_header}>New Trip</Text>
+      <Text style={styles.text_header}>{I18n.t("Header.newTrip")}</Text>
       <ButtonSwitch
         iconOn={require('../images/volume.png')}
         iconOff={require('../images/no-sound.png')}
@@ -485,7 +485,7 @@ function testrenderItem({item,index}){
             itemWidth={350}
             itemHeight={100}
             useScrollView={true}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item) => item.name}
             renderItem={_renderItem}
             onSnapToItem = { index => {
               carouselItemFinal.activeIndex = index
@@ -529,7 +529,7 @@ function testrenderItem({item,index}){
           // props.navigation.navigate('TripNavigation');
         }}
       >
-        <Text style={styles.text_button}>Lets Go !</Text>
+        <Text style={styles.text_button}>{I18n.t("TripSuggestion.letsGo")}</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.view_button}
@@ -538,7 +538,7 @@ function testrenderItem({item,index}){
           getLocations2()
         }}
       >
-        <Text style={styles.text_button}>New Trip</Text>
+        <Text style={styles.text_button}>{I18n.t("TripSuggestion.newTrip")}</Text>
       </TouchableOpacity>
       <Modal
         animationType="none"
@@ -546,7 +546,7 @@ function testrenderItem({item,index}){
         visible={isLoading}
       >
         <View style={styles.loading_screen}>
-          <ActivityIndicator size="large"  color="black" style={{}}/>        
+          <ActivityIndicator size="large"  color="black" style={{}}/>
         </View>
       </Modal>
     </View>

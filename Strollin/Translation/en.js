@@ -1,42 +1,35 @@
-
 export default {
-  /*
-  SIGNIN: 'SIGN IN',
-  SIGNUP: 'SIGN UP',
-  OR: 'OR',
-  username: 'Username',
-  connexion: 'Connexion',
-  trendingTrip: 'Trending trip: ',
-  date: 'date: ',
-  duration: 'duration: ',
-  startNewTrip: 'Start a new trip',
-  confirm: 'Confirm',
-  forgot: 'Forgot Pasword ?',
-  noAccount: 'Dont have an account ?',
-  noPermission: 'No permission',
-  email: 'Email ',
-  password: 'Password ',
-  tags: 'Tags ',
-  welcome: 'Welcome: ',
-  chooseTags: 'Choose the tags that fit best your personality',
-  heading: 'Heading to',
-  carte: 'Carte',
-  jane: "Go to Jane's profile",
-  endNav: 'End Navigation',
-  anotherOneBitesTheDust: 'Another One!',
-  letsGo: "Let's go!",
-  feedback: 'Give us a feedback',
-  firstName: "First Name",
-  lastName: "Last Name",
-  deleteFriend: "Delete friend",
-  feedback: "Give us a feedback",
-  */
-
+  Chat: {
+    search:"Search a friend or a group"
+  },
   CourseEvaluation: {
     evaluate: 'Evaluate this course!',
     note: 'Note:',
     yourComment: 'Your comment',
-    send: 'Send Evaluation'
+    send: 'Send Evaluation',
+    adress: "Adress of the company",
+    name: "Name of the company",
+  },
+
+  CourseSettings:{
+    budget: 'Budget',
+    euros:'Euros',
+    spendingTime: 'Spending time',
+    hour:'Hour(s)',
+    minutes:'Minute(s)',
+    distance:'Distance',
+    km:'Km',
+    maxPlaces:'Max number of places',
+    places:'Places',
+    alimentation:'Food',
+    eatDrink:'Do you want to drink or eat ?',
+    multipleTrips:'Trips together',
+    shareTrip:'Share trips with your friends ?',
+    chooseFriend:'Choose your friends',
+    ageRestriction:"Age restriction",
+    more18:'Are you 18 or over ?',
+    tmpTags:'Use temporary tags',
+    confirmOptions:'Confirm my options',
   },
 
   FriendList: {
@@ -49,6 +42,7 @@ export default {
   },
 
   TripTogether: {
+    friends: "Your friends",
     addFriend: 'Add friends to my trip'
   },
 
@@ -73,6 +67,8 @@ export default {
     logOut: 'Log out',
     newTrip: 'New trip',
     historic: 'historic',
+    report: 'Report a bug',
+    form: 'Access the form'
   },
 
   LoginPage: {
@@ -81,7 +77,7 @@ export default {
     noAccount: 'Dont have an account ?',
     SIGNIN: 'SIGN IN',
     SIGNUP: 'SIGN UP',
-    OR: 'OU',
+    OR: 'OR',
     or: 'OR',
     email: 'Email',
     password: 'Password',
@@ -94,6 +90,24 @@ export default {
     cancel: 'Cancel',
     ok: 'OK',
     noPermission: 'No permission',
+  },
+
+  Menu: {
+    home:'Home',
+    historic:'Historic',
+    newTrip:'New trip',
+    friends:'Friends',
+    friendsSelection:'Choose friends',
+    chat:'Chat',
+    profile:'Profile',
+    partenaire:'Partner',
+    settings:'Settings',
+    favorites:'Favorites',
+    personalTrip:'Personal trips',
+    positionPartener:'Shop position',
+    subscription:'Subscription',
+    logOut:'Log out',
+    traveler:'Traveler'
   },
 
   Notation: {
@@ -110,6 +124,19 @@ export default {
     signIn: 'Sign in',
   },
 
+  PersonalTrip: {
+    whereGo: "Where do you want to go ?",
+    addTrip: "Add to trip",
+    shedules: "Shedules",
+    tags: "Tags :",
+    adress: "Adress :",
+    website: "Website :",
+    seeTrip: "See my trip",
+    finalTrip: "Your final trip :",
+    emptyTrip: "Your trip is empty..",
+    go: "Lets go !"
+  },
+
   PopUpForm: {
     goTo: 'do you want to go to',
   },
@@ -119,12 +146,21 @@ export default {
     send: 'Send',
   },
 
+  PositionPartener: {
+    adress: "Address of your business :"
+  },
+
   ProfileScreen: {
     name: 'Name',
     pseudo: 'Pseudo:',
     tags: 'Tags',
     myTags: 'My tags',
-    addTags: 'Add tags'
+    addTags: 'Add tags',
+    choosePic: 'Choose your profile picture',
+    pic: 'Picture',
+    remove: 'Remove',
+    ok: 'OK',
+    close: 'Close'
   },
 
   TagSelection: {
@@ -140,7 +176,13 @@ export default {
   TripSuggestion: {
     step: 'Step :',
     headingTo: 'Heading to',
-    lets_go: "Let's go !"
+    letsGo: "Let's go !",
+    newTrip: "New Trip"
+  },
+
+  TripNavigation: {
+    delete: "Delete",
+    simulate: "Simulate"
   },
 
   UserRegister: {
@@ -185,14 +227,15 @@ export default {
     home: 'Home',
     options: 'Trip options',
     historic: 'Historic',
-    new_trip: 'New Trip',
+    newTrip: 'New Trip',
     settings: 'Settings',
     tags: 'Tags',
     friends: 'Friends',
     chats: 'Chats',
     rating: 'Rating',
     comment: 'Comment',
-    favorites: 'Favorites'
+    favorites: 'Favorites',
+    myTrip: 'My trip'
   },
 
   SettingsPartner: {
@@ -201,6 +244,16 @@ export default {
     shop_tags: 'Shop Tags',
     shop_desc: 'Shop Description',
     choose_my_shop_tag: 'Choose my shop tags'
+  },
+
+  Subscription: {
+    subscription: 'Subscription',
+    month: 'Month',
+    sub1: "Strollin' is a good way to give more promotion to your location and to get potentially new customers. Subscribing to Strollin' will give the next advantages:",
+    sub2: "Your location will be more often selected during courses generation",
+    sub3: "Your location will be promoted via pop up during courses when users pass near and have corresponding tags",
+    notSub: "You are not subscribed",
+    website: "Go to Website",
   },
 };
 

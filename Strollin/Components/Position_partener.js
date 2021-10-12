@@ -150,7 +150,7 @@ function Position_partener(props) {
           {'   '}
         </Text>
       </View>
-      <Text style={styles.text_info}>Adresse de votre commerce :</Text>
+      <Text style={styles.text_info}>{I18n.t("PositionPartener.adress")}</Text>
       <View style={styles.view_search}>
         <TextInput
           onChangeText={(text) => onChangeValue(text)}

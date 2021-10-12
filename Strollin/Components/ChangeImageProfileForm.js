@@ -5,6 +5,7 @@ import ButtonIcon from './ButtonIcon.js';
 
 import { connect } from 'react-redux';
 import { StyleSheet, Image,Button, View } from 'react-native';
+import I18n from '../Translation/configureTrans';
 
 import { uploadImageProfile } from '../apiServer/image';
 
@@ -31,7 +32,7 @@ function ChangeImageProfileForm({profil, dispatch}) {
                         source={{ uri: image.uri }}
                         style={{ width: 250, height: 250, borderRadius: 15}}
                     />
-                    <Button title="OK"
+                    <Button title={I18n.t("ProfileScreen.ok")}
                         onPress={() => {
                             if (image) {
                               //console.log(" image ", image);
@@ -43,13 +44,13 @@ function ChangeImageProfileForm({profil, dispatch}) {
                                 });
                             }
                         }} />
-                    <Button title="Remove" onPress={() => {setImage(null)}} />
+                    <Button title={I18n.t("ProfileScreen.remove")} onPress={() => {setImage(null)}} />
                 </>
             )}
 
             {!image && (
                 <Button
-                title="Photo"
+                title={I18n.t("ProfileScreen.pic")}
                 onPress={handleChooseImage}
             />
             )}

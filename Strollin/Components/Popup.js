@@ -1,5 +1,6 @@
 import React from 'react';
 import {  Alert, Modal, StyleSheet, Text, Pressable, View } from 'react-native';
+import I18n from '../Translation/configureTrans';
 
 function Popup({message, modalVisible, setModalVisible, children}) {
 
@@ -21,7 +22,7 @@ function Popup({message, modalVisible, setModalVisible, children}) {
               style={[styles.button, styles.buttonClose]}
               onPress={() => setModalVisible(!modalVisible)}
             >
-              <Text style={styles.textStyle}>Close</Text>
+              <Text style={styles.textStyle}>{I18n.t('ProfileScreen.close')}</Text>
             </Pressable>
           </View>
         </View>

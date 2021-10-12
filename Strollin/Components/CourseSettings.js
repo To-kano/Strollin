@@ -75,8 +75,6 @@ async function confirmeSettings(pos, budget, hours, minutes, props, eat, radius,
   const result = await generateCourse(access_token, settings);
   setLoading(false);
 
-  const result = await generateCourse(access_token, settings);
-
   action = {
     type: 'SET_CURRENT_COURSE',
     value: result.course
@@ -175,10 +173,10 @@ export function CourseSettings(props) {
         </Text>
       </View>
       <View style={styles.view_options}>
-        <InputSetting title={"Budget"} text={"Euros"} value={budget} setValue={setBudget} />
+        <InputSetting title={I18n.t("CourseSettings.budget")} text={I18n.t("CourseSettings.euros")} value={budget} setValue={setBudget} />
         <View style={styles.view_option}>
           <Text style={styles.text_option}>
-            Spending Time
+            {I18n.t('CourseSettings.spendingTime')}
           </Text>
           <View style={styles.view_separator} />
           <View style={styles.view_optionInput}>
@@ -191,7 +189,7 @@ export function CourseSettings(props) {
               maxLength={2}
             />
             <Text style={styles.text_optionInput}>
-              Hour(s)
+              {I18n.t('CourseSettings.hour')}
             </Text>
           </View>
           <View style={styles.view_optionInput}>
@@ -204,32 +202,32 @@ export function CourseSettings(props) {
               maxLength={2}
             />
             <Text style={styles.text_optionInput}>
-              Minute(s)
+              {I18n.t('CourseSettings.minutes')}
             </Text>
           </View>
         </View>
-        <InputSetting title={"Distance"} text={"Km"} value={radius} setValue={setRadius} />
-        <InputSetting title={"Nombre de lieux max"} text={"Lieux"} value={placeNbr} setValue={setPlaceNbr} />
+        <InputSetting title={I18n.t("CourseSettings.distance")} text={I18n.t("CourseSettings.km")} value={radius} setValue={setRadius} />
+        <InputSetting title={I18n.t("CourseSettings.maxPlaces")} text={I18n.t("CourseSettings.places")} value={placeNbr} setValue={setPlaceNbr} />
         <View style={styles.view_option}>
           <Text style={styles.text_option}>
-            Alimentation
+            {I18n.t('CourseSettings.alimentation')}
           </Text>
           <View style={styles.view_separator} />
           <View style={styles.view_optionInput}>
             <Text style={styles.text_optionInput}>
-              Souhaitez-vous manger et boire ?
+              {I18n.t('CourseSettings.eatDrink')}
             </Text>
             <Switch value={isEatDrink} setValue={setEatDring} />
           </View>
         </View>
         <View style={styles.view_option}>
           <Text style={styles.text_option}>
-            Trajet à plusieurs
+            {I18n.t('CourseSettings.multipleTrips')}
           </Text>
           <View style={styles.view_separator} />
           <View style={styles.view_optionInput}>
             <Text style={styles.text_optionInput}>
-              Partager le trajet avec vos amis ?
+              {I18n.t('CourseSettings.shareTrip')}
             </Text>
             <Switch value={isTripTogether} setValue={setTripTogether} />
             <TouchableOpacity
@@ -240,17 +238,17 @@ export function CourseSettings(props) {
               }}
             >
               <Text style={styles.text_newTrip}>
-                Chose Friends
+                {I18n.t('CourseSettings.chooseFriend')}
               </Text>
             </TouchableOpacity>
           </View>
           <Text style={styles.text_option}>
-            "Restriction d'age"
+            {I18n.t('CourseSettings.ageRestriction')}
           </Text>
           <View style={styles.view_separator} />
           <View style={styles.view_optionInput}>
             <Text style={styles.text_optionInput}>
-              Aves vous plus de 18 ans ?
+              {I18n.t('CourseSettings.more18')}
             </Text>
             <Switch value={is18} setValue={setIs18} />
           </View>
@@ -262,7 +260,7 @@ export function CourseSettings(props) {
             }}
           >
             <Text style={styles.text_newTrip}>
-              Use temporary tags
+              {I18n.t('CourseSettings.tmpTags')}
             </Text>
           </TouchableOpacity>
         </View>
@@ -276,7 +274,7 @@ export function CourseSettings(props) {
         }}
       >
         <Text style={styles.text_newTrip}>
-          Confirm my options
+          {I18n.t('CourseSettings.confirmOptions')}
         </Text>
       </TouchableOpacity>
       <Modal
@@ -285,7 +283,7 @@ export function CourseSettings(props) {
         visible={isLoading}
       >
         <View style={styles.loading_screen}>
-          <ActivityIndicator size="large"  color="black" style={{}}/>        
+          <ActivityIndicator size="large"  color="black" style={{}}/>
         </View>
       </Modal>
     </ScrollView>

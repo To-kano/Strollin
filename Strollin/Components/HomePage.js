@@ -57,7 +57,7 @@ function getUrl(props) {
 
 function Header({ props, defaultState = false }) {
   const [pressed, setpressed] = useState(defaultState);
-  
+
   if (pressed === false) {
     return (
       <View style={styles.view_header}>
@@ -109,7 +109,7 @@ export function HomePage(props) {
         />
 
       </View>
-      
+
       <TouchableOpacity
         onPress={() => { Linking.openURL(url) }}
         style={styles.view_form}
@@ -120,7 +120,7 @@ export function HomePage(props) {
         onPress={() => { Linking.openURL(url) }}
         style={styles.view_form_text}
       >
-        <Text>Accéder au formulaire</Text>
+        <Text>{I18n.t("Home.form")}</Text>
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => { Linking.openURL("https://forms.gle/CzzEjaVahZ7TdyLE6") }}
@@ -132,7 +132,7 @@ export function HomePage(props) {
         onPress={() => { Linking.openURL("https://forms.gle/CzzEjaVahZ7TdyLE6") }}
         style={styles.view_form_text2}
       >
-        <Text>Reporter un bug</Text>
+        <Text>{I18n.t("Home.report")}</Text>
       </TouchableOpacity>
     </View>
   );

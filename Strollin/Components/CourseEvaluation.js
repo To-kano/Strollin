@@ -103,9 +103,9 @@ export function CourseEvaluation(props) {
           <View style={styles.view_boxIn}>
             <View style={styles.view_information}>
               <Image style={styles.img_location} source={require('../images/icons/white/location.png')} />
-              <Text style={styles.text_location}>Adresse de l entreprise</Text>
+              <Text style={styles.text_location}>{I18n.t("CourseEvaluation.adress")}</Text>
             </View>
-            <Text style={styles.text_name}>Nom entreprise</Text>
+            <Text style={styles.text_name}>{I18n.t("CourseEvaluation.name")}</Text>
           </View>
         </ImageBackground>
       </View>
@@ -150,7 +150,7 @@ export function CourseEvaluation(props) {
         visible={isLoading}
       >
         <View style={styles.loading_screen}>
-          <ActivityIndicator size="large"  color="black" style={{}}/>        
+          <ActivityIndicator size="large"  color="black" style={{}}/>
         </View>
       </Modal>
     </View>

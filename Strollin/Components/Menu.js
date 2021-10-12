@@ -33,7 +33,7 @@ function Menu(props) {
         <View style={styles.view_profile}>
           <ImageProfile style={styles.img_profile} />
           <Text style={styles.text_profile}>{props.profil.pseudo}</Text>
-          <Text style={styles.text_grade}>Traveler</Text>
+          <Text style={styles.text_grade}>{I18n.t("Menu.traveler")}</Text>
         </View>
         <ScrollView style={styles.view_navigation}>
           <TouchableOpacity
@@ -57,12 +57,7 @@ function Menu(props) {
             <Text style={styles.text_navigationIn}>{props.state.routeNames[1]}</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => props.navigation.navigate(
-              "New trip",
-              {
-                screen: 'CourseSetting'
-              }
-              )}
+            onPress={() => props.navigation.navigate(props.state.routeNames[2])}
             style={[styles.view_navigationIn, props.state.index == 2 ? styles.current_page : {}]}
           >
             <Image style={styles.img_navigationIn} source={require('../images/icons/black/next_trip.png')} />
@@ -118,26 +113,35 @@ function Menu(props) {
             <Text style={styles.text_navigationIn}>{props.state.routeNames[8]}</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => props.navigation.navigate('Personal_trip')}
-            style={[styles.view_navigationIn, props.name == 'Personal_trip' ? styles.current_page : {}]}
+            onPress={() => {
+              profileUser(props, store.profil.access_token);
+              props.navigation.navigate(props.state.routeNames[9]);
+            }}
+            style={[styles.view_navigationIn, props.state.index == 9 ? styles.current_page : {}]}
           >
             <Image style={styles.img_navigationIn} source={require('../images/icons/black/next_trip.png')} />
-            <Text style={styles.text_navigationIn}>Personal_trip</Text>
+            <Text style={styles.text_navigationIn}>{props.state.routeNames[9]}</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => props.navigation.navigate('Position_partener')}
-            style={[styles.view_navigationIn, props.name == 'Position_partener' ? styles.current_page : {}]}
+            onPress={() => {
+              profileUser(props, store.profil.access_token);
+              props.navigation.navigate(props.state.routeNames[10]);
+            }}
+            style={[styles.view_navigationIn, props.state.index == 10 ? styles.current_page : {}]}
           >
             <Image style={styles.img_navigationIn} source={require('../images/icons/black/next_trip.png')} />
-            <Text style={styles.text_navigationIn}>Position_partener</Text>
+            <Text style={styles.text_navigationIn}>{props.state.routeNames[10]}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() => props.navigation.navigate('Subscription')}
-            style={[styles.view_navigationIn, props.name == 'Subscription' ? styles.current_page : {}]}
+          onPress={() => {
+              profileUser(props, store.profil.access_token);
+              props.navigation.navigate(props.state.routeNames[11]);
+            }}
+            style={[styles.view_navigationIn, props.state.index == 11 ? styles.current_page : {}]}
           >
             <Image style={styles.img_navigationIn} source={require('../images/icons/black/next_trip.png')} />
-            <Text style={styles.text_navigationIn}>Subscription</Text>
+            <Text style={styles.text_navigationIn}>{props.state.routeNames[11]}</Text>
           </TouchableOpacity>
 
         </ScrollView>
@@ -145,7 +149,7 @@ function Menu(props) {
       <View>
         <View style={styles.disconnect_button}>
           <Button
-            title="Log Out"
+            title={I18n.t("Menu.logOut")}
             color="grey"
             onPress={() => {
               setLoading(true);
@@ -179,7 +183,7 @@ function Menu(props) {
         visible={isLoading}
       >
         <View style={styles.loading_screen}>
-          <ActivityIndicator size="large"  color="black" style={{}}/>        
+          <ActivityIndicator size="large"  color="black" style={{}}/>
         </View>
       </Modal>
     </View>

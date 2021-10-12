@@ -206,7 +206,7 @@ if (del) {
   return (
     <View style={styles.view_back}>
       <View style={styles.view_header}>
-        <Text style={styles.text_header}>   My Trip</Text>
+        <Text style={styles.text_header}>{I18n.t("Header.myTrip")}</Text>
         <TouchableOpacity
           onPress={async () => {
             const store = Store.getState();
@@ -261,7 +261,7 @@ if (del) {
       <TouchableOpacity onPress={() => {
         setDel(true)
       }}>
-        <Text style={styles.text_signIn}>Delete</Text>
+        <Text style={styles.text_signIn}>{I18n.t("TripNavigation.delete")}</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => {
         const store = Store.getState();
@@ -269,7 +269,7 @@ if (del) {
         //DeletePlace();
         PopUpReq(profil.first_name, profil.scoreCourse); //Je sais pas utiliser les props du coup g stocker des truc dans les props dans course settings
       }}>
-        <Text style={styles.text_signIn}>Simulate</Text>
+        <Text style={styles.text_signIn}>{I18n.t("TripNavigation.simulate")}</Text>
       </TouchableOpacity>
       <Modal
         animationType="none"
@@ -277,7 +277,7 @@ if (del) {
         visible={isLoading}
       >
         <View style={styles.loading_screen}>
-          <ActivityIndicator size="large"  color="black" style={{}}/>        
+          <ActivityIndicator size="large"  color="black" style={{}}/>
         </View>
       </Modal>
     </View>

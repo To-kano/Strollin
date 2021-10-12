@@ -15,7 +15,7 @@ function SubscriptionPage({navigation, profil}) {
   return (
     <View style={styles.view_back}>
       <View style={styles.view_header}>
-  
+
         <TouchableOpacity onPress={() => {
           setConfirmAction(0);
           navigation.dispatch(DrawerActions.openDrawer())}}
@@ -23,7 +23,7 @@ function SubscriptionPage({navigation, profil}) {
           <Image style={styles.img_header} source={require('../images/icons/black/menu.png')} />
         </TouchableOpacity>
         <Text style={styles.text_header}>
-          {"Subscription"}
+          {I18n.t("Subscription.subscription")}
           {'   '}
         </Text>
       </View>
@@ -32,20 +32,20 @@ function SubscriptionPage({navigation, profil}) {
       {confirmAction === 0 && profil.partner === false && (<>
         <View style={styles.view_subscription_page}>
           <Text style={styles.subscription_text_price}>
-            {"2€ / Month"}
+            {"2€ / "}{I18n.t("Subscription.month")}
           </Text>
           <Text style={styles.subscription_text}>
-              {"\t\t\t\tStrollin' is a good way to give more promotion to your location and to get potentially new customers. Subscribing to Strollin' will give the next advantages:"}
-              {"\n\n\t\t- Your location will be more often selected during courses generation"}
-              {"\n\n\t\t- Your location will be promoted via pop up during courses when users pass near and have corresponding tags"}
+              {"\t\t\t\t"}{I18n.t("Subscription.sub1")}
+              {"\n\n\t\t- "}{I18n.t("Subscription.sub2")}
+              {"\n\n\t\t- "}{I18n.t("Subscription.sub3")}
           </Text>
           <Text style={styles.subscription_text_state}>
-            {"You are not subscribed"}
+            {I18n.t("Subscription.notSub")}
           </Text>
         </View>
         <View style={styles.subscription_button_view}>
           <Button
-            title="Go to Website"
+            title={I18n.t("Subscription.website")}
             onPress={() => {
             }}
           />
@@ -202,4 +202,3 @@ const styles = StyleSheet.create({
     width: '80%',
   },
 });
-  

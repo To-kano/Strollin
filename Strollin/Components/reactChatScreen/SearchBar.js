@@ -6,6 +6,7 @@ import {
 } from 'react-native';
 
 import ButtonIcon from '../ButtonIcon.js';
+import I18n from '../../Translation/configureTrans';
 
 function SearchBar(props) {
   const [research, setresearch] = useState('');
@@ -14,7 +15,7 @@ function SearchBar(props) {
       <TextInput
           autoCapitalize={'none'}
         style={styles.textInput_searchBar}
-        placeholder="Search a friend or a group"
+        placeholder={I18n.t("Chat.search")}
         onChangeText={(text) => setresearch(text)}
         value={research}
       />

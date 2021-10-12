@@ -143,7 +143,7 @@ function ProfileScreen(props) {
         <TouchableOpacity onPress={() => setModalVisible(true)}>
           <ImageProfile style={styles.img_profileTop} />
         </TouchableOpacity>
-        <Popup message={"Choose your profile picture"} modalVisible={modalVisible} setModalVisible={setModalVisible}>
+        <Popup message={I18n.t("ProfileScreen.choosePic")} modalVisible={modalVisible} setModalVisible={setModalVisible}>
           <ChangeImageProfileForm/>
         </Popup>
         {/* <Image  style={styles.img_profileTop} source={require('')}/> */}
@@ -201,7 +201,7 @@ function ProfileScreen(props) {
         visible={isLoading}
       >
         <View style={styles.loading_screen}>
-          <ActivityIndicator size="large"  color="black" style={{}}/>        
+          <ActivityIndicator size="large"  color="black" style={{}}/>
         </View>
       </Modal>
     </View>

@@ -9,6 +9,7 @@ import { getTimeZone } from 'react-native-localize';
 import I18n from '../Translation/configureTrans';
 import Store from '../Store/configureStore';
 import { IP_SERVER, PORT_SERVER } from '../env/Environement';
+import {translateTags, detranslateTags} from '../Translation/translateTags'
 
 export function Header({ navigation, defaultState = false }) {
   const [pressed, setpressed] = useState(defaultState);
@@ -177,7 +178,7 @@ export function Temporarytags({ navigation, profil }) {
           data={array}
           keyExtractor={(item) => item.name}
           renderItem={({ item }) => (
-            <Tag name={item.name} chosen={item.pressed}/>
+            <Tag name={translateTags(item.name)} chosen={item.pressed}/>
           )}
         />
       </View>
