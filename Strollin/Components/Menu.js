@@ -145,8 +145,6 @@ function Menu(props) {
 =======
             <Text style={styles.text_navigationIn}>Subscription</Text>
           </TouchableOpacity>*/}
->>>>>>> 277f15e204e8feffce5c5f354035a5faf66680c7
-
         </ScrollView>
       </View>
       <View>
