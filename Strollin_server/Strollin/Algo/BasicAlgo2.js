@@ -145,9 +145,6 @@ function algoTest(params, test_list) {
 
     var PlacesArray = []
     var FinalArray = []
-    console.log("#######################################################");
-    console.log("params: ", params);
-    console.log("is18: ", params.is18);
     //Put all the places corresponding to the user tags in a new array (PlacesArray)
     for (var i = 0; i < test_list.length; i++) {
       if (IsTagOk(params.tags, test_list[i]) == true && DistCalc2D(test_list[i], params.coordinate) < params.radius && NotInOldList(test_list[i], params.locations_list) == true && IsForMinor(test_list[i], params.is18) == true) {
@@ -441,21 +438,41 @@ hello = async function(params, test_list)
 {
   //await RecoverPlaces(coordinate, tags)
 
-  console.log("done");
   //promise1.then((value) => {
     //console.log("coordiante: ", coordinateArr);
+    var tmpTags = params.tags;
     return new Promise((resolve, reject) => {
-      var test = algoTest(params, test_list)
-      resolve(test)
+      if (params.friendflag) {
+        params.placeNbr = params.placeNbr / 3;
+        params.tags = params.prioFriends;
+        var test2 = algoTest(params, test_list)
+        test2.then((value) => {
+          params.tags = tmpTags;
+          var test3 = algoTest(params, test_list)
+          test3.then((value2) => {
+            params.tags = params.friendsArray;
+            var test4 = algoTest(params, test_list)
+            test4.then((value3) => {
+              var res = value.concat(value2)
+              res = res.concat(value3)
+              resolve(res)
+            })
+          })
+        })
+      } else {
+        var test = algoTest(params, test_list)
+        resolve(test)
+      }
     });
   //})
 }
 
-methods.algo = function(time, budget, tags, coordinate, eat, radius, placeNbr, locations_list, is18) {
+methods.algo = function(time, budget, tags, coordinate, eat, radius, placeNbr, locations_list, is18, prioFriends, friendflag, friendsArray) {
   console.log("------------------------------------------------------------------");
   var UserPos = [];
   var coordinateArr = coordinate.split(",");
   var tagsArray = tags.split(",");
+
   budget = parseInt(budget, 10);
   time = parseInt(time, 10);
   placeNbr = parseInt(placeNbr, 10);
@@ -464,7 +481,7 @@ methods.algo = function(time, budget, tags, coordinate, eat, radius, placeNbr, l
   UserPos[1] = parseFloat(coordinate[1]);
   radius = radius * 1000;
 
-  var params = {time: time, budget: budget, tags: tagsArray, coordinate: coordinateArr, eat: eat, radius: radius, placeNbr: placeNbr, locations_list: locations_list, is18: is18}
+  var params = {time: time, budget: budget, tags: tagsArray, coordinate: coordinateArr, eat: eat, radius: radius, placeNbr: placeNbr, locations_list: locations_list, is18: is18, prioFriends: prioFriends, friendflag: friendflag, friendsArray: friendsArray}
   const promise1 = getTags(params);
   return promise1;
 }

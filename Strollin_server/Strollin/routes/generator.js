@@ -70,16 +70,27 @@ router.get('/generate_course', async function(req, res) {
     }
 
     if (friendstags) {
-      friendstags = friendstags.concat(",")
-      friendstags = friendstags.concat(userTags)
       var friendsArray = friendstags.split(',')
-      const uniqueset = new Set(friendsArray)
-      userTags = friendsArray.join(',')
+      var tagsArray = userTags.split(',')
+      var prioFriends = [];
+
+      console.log("friendsArray: ", friendsArray);
+      for (var i = 0; i < friendsArray.length; i++) {
+        for (var j = 0; j < tagsArray.length; j++) {
+          if (friendsArray[i] == tagsArray[j]) {
+            prioFriends.push(friendsArray[i])
+            tagsArray.splice(j, 1);
+            break;
+          }
+        }
+      }
+      userTags = tagsArray.join()
       friendflag = true;
+      console.log("prioFriends: ", prioFriends);
     }
 
     console.log("userTags: ", userTags);
-    const promise2 = algo.data.algo(req.headers.time , req.headers.budget , userTags, req.headers.coordinate, req.headers.eat, radius, placeNbr, locations_list, req.headers.is18);
+    const promise2 = algo.data.algo(req.headers.time , req.headers.budget , userTags, req.headers.coordinate, req.headers.eat, radius, placeNbr, locations_list, req.headers.is18, prioFriends, friendflag, friendsArray);
     promise2.then((value) => {
       let generated_course = value;
       console.log("course: ", generated_course);

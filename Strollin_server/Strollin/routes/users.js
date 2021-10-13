@@ -817,7 +817,7 @@ router.get('/get_user_by_id', async function (req, res) {
     return res.status(400).send({ status: "Error in database transaction:\n", error: user });
   }
   let given_list = req.headers.users_list.split(',');
-  let users_list = await UserModel.find({ id: { $in: given_list } }, projection).catch(error => error);
+  let users_list = await UserModel.find({ id: { $in: given_list } }).catch(error => error);
   if (users_list && users_list.reason) {
     return res.status(400).send({ status: "Error in database transaction:\n", error: users_list });
   } else if (users_list && users_list.length > 0) {
