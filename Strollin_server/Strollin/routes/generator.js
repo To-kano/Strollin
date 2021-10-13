@@ -45,6 +45,7 @@ router.get('/generate_course', async function(req, res) {
 
     let friendstags = req.headers.friendstags;
     let userTags = req.headers.tags;
+    var friendflag = false;
 
     if (!user) {
         return res.status(400).send({status: "You are not connected."});
@@ -74,6 +75,7 @@ router.get('/generate_course', async function(req, res) {
       var friendsArray = friendstags.split(',')
       const uniqueset = new Set(friendsArray)
       userTags = friendsArray.join(',')
+      friendflag = true;
     }
 
     console.log("userTags: ", userTags);
