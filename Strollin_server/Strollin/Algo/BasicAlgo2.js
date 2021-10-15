@@ -267,7 +267,7 @@ async function PopUpAlgo(course, coordinate, tags) {
       update.tags_list = tagslistarray
       location.updateOne({name: course[i].Name}, { $set: { tags_list : update.tags_list } }, function(err, raw) {
           if (err) {
-              return res.status(400).send({status: "Location could not be updated."});
+              return res.status(500).send({ error_code: 2 });
           } else {
               console.log("Location updated: ", raw)
           }
@@ -377,7 +377,7 @@ async function formatPlaces(data) {
       console.log("pushing: ", location.name);
       let error = await location.save().catch(error => error);
       if (error.errors) {
-          console.log({status: "Error in database transaction", error: error});
+          console.log({ status: "Error in database transaction", error: error});
       }
     }
   }

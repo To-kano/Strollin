@@ -18,29 +18,29 @@ router.post('/create_customer', async function(req, res) {
     let user = await UserModel.findOne({ access_token: req.headers.access_token }, "-_id id mail stripe_id").catch(error => error);
 
     if (!user) {
-        return res.status(400).send({ status: "You are not connected." });
+        return res.status(401).send({ error_code: 1 });
     }
     if (user.reason) {
-        return res.status(400).send({ status: "Error in database transaction:\n", error: user });
+        return res.status(500).send({ error_code: 2 });
     }
     if (user.stripe_id === '') {
         customer = await stripe.customers.create({
             email: user.mail,
         })
         .catch(error => {
-            return res.status(400).send({status: "An error occurred during the creation of customer"})
+            return res.status(500).send({ error_code: 2 })
         });
         let error = await UserModel.updateOne({ id: user.id }, {stripe_id: customer.id}).catch(error => error);
         if (error.errors) {
-            return res.status(400).send({ status: "Error in database transaction:\n", error: error.errors });
+            return res.status(500).send({ error_code: 2 });
         }
-        return res.status(200).send({status: "The customer is created", id: customer.id});
+        return res.status(200).send({ status: "The customer is created", id: customer.id});
     } else {
         customer = await stripe.customers.retrieve(user.stripe_id)
         .catch(error => {
-            return res.status(400).send({status: "An error occurred during the retrieve of customer"})
+            return res.status(500).send({ error_code: 2 })
         });
-        return res.status(200).send({status: "The customer is retrieved", id: customer.id});
+        return res.status(200).send({ status: "The customer is retrieved", id: customer.id});
     }
 });
 
@@ -57,10 +57,10 @@ router.post('/create_subscription', async function(req, res) {
     let user = await UserModel.findOne({ access_token: req.headers.access_token }, "-_id id stripe_id").catch(error => error);
 
     if (!user) {
-        return res.status(400).send({ status: "You are not connected." });
+        return res.status(401).send({ error_code: 1 });
     }
     if (user.reason) {
-        return res.status(400).send({ status: "Error in database transaction:\n", error: user });
+        return res.status(500).send({ error_code: 2 });
     }
     if (user.stripe_id !== '') {
 
@@ -73,17 +73,17 @@ router.post('/create_subscription', async function(req, res) {
             expand: ['latest_invoice.payment_intent'],
         })
         .catch(error => {
-            return res.status(400).send({status: "Impossible to create the subscription."});
+            return res.status(500).send({ error_code: 2 });
         });
     } else {
-        return res.status(400).send({status: "The user has not a stripe ID."});
+        return res.status(500).send({ error_code: 2 });
     }
 
     let error = await UserModel.updateOne({ id: user.id }, {subscription_id: subscription.id}).catch(error => error);
     if (error.errors) {
-        return res.status(400).send({ status: "Error in database transaction:\n", error: error.errors });
+        return res.status(500).send({ error_code: 2 });
     }
-    return res.status(200).send({status: "The subscription is created, waiting to confirm the payment.", subscription_id: subscription.id, client_secret: subscription.latest_invoice.payment_intent.client_secret});
+    return res.status(200).send({ status: "The subscription is created, waiting to confirm the payment.", subscription_id: subscription.id, client_secret: subscription.latest_invoice.payment_intent.client_secret});
 });
 
 
@@ -97,15 +97,15 @@ router.get('/get_subscription', async function(req, res) {
     // const sub = undefined;
 
     // if (!user) {
-    //     return res.status(400).send({ status: "You are not connected." });
+    //     return res.status(401).send({ error_code: 1 });
     // }
     // if (user.reason) {
-    //     return res.status(400).send({ status: "Error in database transaction:\n", error: user });
+    //     return res.status(500).send({ error_code: 2 });
     // }
     // if (user.subscription_id !== '') {
     sub = await stripe.subscriptions.retrieve(req.headers.sub)
     // }
-    return res.status(200).send({status: "Here is the subscription's information.", subscription: sub});
+    return res.status(200).send({ status: "Here is the subscription's information.", subscription: sub});
 });
 
 
@@ -119,16 +119,16 @@ router.post('/stop_subscription', async function(req, res) {
     let user = await UserModel.findOne({ access_token: req.headers.access_token }, "-_id id subscription_id").catch(error => error);
 
     if (!user) {
-        return res.status(400).send({ status: "You are not connected." });
+        return res.status(401).send({ error_code: 1 });
     }
     if (user.reason) {
-        return res.status(400).send({ status: "Error in database transaction:\n", error: user });
+        return res.status(500).send({ error_code: 2 });
     }
     stripe.subscriptions.update(user.subscription_id, {cancel_at_period_end: true})
     .catch(error => {
-        return res.status(400).send({status: "Error while requesting stop sub."});
+        return res.status(500).send({ error_code: 2 });
     });
-    return res.status(200).send({status: "Subscription cancel has been taken into account."});
+    return res.status(200).send({ status: "Subscription cancel has been taken into account." });
 });
 
 

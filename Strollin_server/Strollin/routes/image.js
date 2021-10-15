@@ -24,7 +24,7 @@ router.get('/id', async function (req, res, next) {
             image: image,
         });
     } else {
-        return res.status(400).send({ status: "image id unknow" });
+        return res.status(400).send({ error_code: 4 });
     }
 });
 
@@ -63,7 +63,7 @@ router.post('/upload', upload.array('image', 3), async (req, res) => {
 
     let error = await image.save().catch(error => error);
     if (error.errors) {
-      return res.status(400).send({ status: "Error in upload", error: error });
+      return res.status(500).send({ error_code: 2 });
     } else {
       res.status(200).json({
         image: image,
@@ -71,7 +71,7 @@ router.post('/upload', upload.array('image', 3), async (req, res) => {
     }
 
   } else {
-    return res.status(400).send({ status: "user unknow" });
+    return res.status(401).send({ error_code: 1 });
   }
 });
 

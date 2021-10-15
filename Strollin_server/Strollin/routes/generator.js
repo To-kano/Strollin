@@ -46,15 +46,15 @@ router.get('/generate_course', async function(req, res) {
     let friendstags = req.headers.friendstags;
     let userTags = req.headers.tags;
     if (!user) {
-        return res.status(400).send({status: "You are not connected."});
+        return res.status(401).send({ error_code: 1 });
     }
     if (user.reason) {
-        return res.status(400).send({status: "Error in database transaction:\n", error: user});
+        return res.status(500).send({ error_code: 2 });
     }
 
     //console.log("lets EEEE", req.headers.time , req.headers.budget , " Tags: ", req.headers.tags , req.headers.coordinate);
     if (!req.headers.coordinate || !req.headers.time || !req.headers.budget || !req.headers.tags) {
-        return res.status(400).send({status: "Parameter required is missing."});
+        return res.status(400).send({ error_code: 3 });
     }
     let tags = req.headers.tags.split(',');
     if (req.headers.locations_list) {
@@ -95,9 +95,9 @@ router.get('/generate_course', async function(req, res) {
             }
         }
         console.log("304 ?");
-        return res.status(200).send({status: "Result of the generator.", generated_course, course});
+        return res.status(200).send({ status: "Result of the generator.", generated_course, course});
       }
-      return res.status(400).send({status: "An error occured during the generation of the course"});
+      return res.status(500).send({ error_code: 2 });
     })
 });
 
@@ -117,14 +117,14 @@ router.post('/generate_popup', async function(req, res) {
 
     //console.log("heyyyyy: ", req.body.course, " : ", req.headers.coordinate);
     if (!user) {
-        return res.status(400).send({status: "You are not connected."});
+        return res.status(401).send({ error_code: 1 });
     }
     if (user.reason) {
-        return res.status(400).send({status: "Error in database transaction:\n", error: user});
+        return res.status(500).send({ error_code: 2 });
     }
 
     if (!req.headers.coordinate || !req.body.course) {
-        return res.status(400).send({status: "Parameter required is missing."});
+        return res.status(400).send({ error_code: 3 });
     }
 
     // ACTION ICI
@@ -132,7 +132,7 @@ router.post('/generate_popup', async function(req, res) {
     promise.then((value) => {
       //console.log("valuer: ", value);
       let popup = value
-      return res.status(200).send({status: "Result of the pop-up generator.", popup});
+      return res.status(200).send({ status: "Result of the pop-up generator.", popup});
     })
 
 });
@@ -153,21 +153,21 @@ router.post('/popup_answer', async function(req, res) {
     let popup = undefined;
 
     if (!user) {
-        return res.status(400).send({status: "You are not connected."});
+        return res.status(401).send({ error_code: 1 });
     }
     if (user.reason) {
-        return res.status(400).send({status: "Error in database transaction:\n", error: user});
+        return res.status(500).send({ error_code: 2 });
     }
 
     console.log("popup : ", req.body.popup)
     if (!req.headers.answer || !req.body.popup || !req.body.course) {
-        return res.status(400).send({status: "Parameter required is missing."});
+        return res.status(400).send({ error_code: 3 });
     }
 
     // ACTION ICI
     pop.data.Response(req.body.popup)
 
-    return res.status(200).send({status: "Result.", popup});
+    return res.status(200).send({ status: "Result.", popup});
 });
 
 

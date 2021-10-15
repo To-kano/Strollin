@@ -8,14 +8,13 @@ NOTE:
 
 - Where full URLs are provided in responses they will be rendered as if service is running on 'http://' + IP_SERVER + ':' + PORT_SERVER + '/'.
 
-- All request will return an object as :<br>{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;status: String<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;eventual return: Object (See in requests for details)<br>}
-
 - All documents in the database has a variable "id" (Some Exceptions). Do not use "_id" given by MongoDB.
 
 - This document show some type as "ObjectID" which represent the "id" of a model. (Example: `UserID` represent user.id)
 
-- In case of error during a request with the database transaction, the returned object will always contains a "status" and a "error" variable.
+- In case of successful request, all request will return an object as:<br>{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;status: String<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;eventual return: Object (See in requests for details)<br>}
 
+- In case of failed request, all request will return an error code which correspond of the next list:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1: You must be authenticated<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2: An error has occured in the server<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3: An internal error has occured<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4: An error in the data has occured<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5: You must be a subscribed to access this functionality<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;100: The mail is not valid<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;101: The mail is already used<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;102: The password must contains 6 characters with at least 1 uppercase, 1 lowercase and 1 digit<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;103: The login or the password is incorrect<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;104: You made too much attempt. Please retry later.
 
 INDEX:
 ======

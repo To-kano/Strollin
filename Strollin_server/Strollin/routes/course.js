@@ -38,17 +38,17 @@ router.post('/new_course', async function(req, res) {
     let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo").catch(error => error);
 
     if (!user) {
-        return res.status(400).send({status: "You are not connected."});
+        return res.status(401).send({ error_code: 1 });
     }
     if (user.reason) {
-        return res.status(400).send({status: "Error in database transaction:\n", error: user});
+        return res.status(500).send({ error_code: 2 });
     }
     locations_list = await LocationModel.find({id: {$in: req.body.locations_list}}).catch(error => error)
     if (locations_list && locations_list.reason) {
-        return res.status(400).send({status: "Error in the parameters for database transaction.", locations_list});
+        return res.status(500).send({ error_code: 2 });
     }
     if (req.body.locations_list.length !== locations_list.length) {
-        return res.status(400).send({status: "One of the locations does not exist."});
+        return res.status(400).send({ error_code: 4 });
     }
     course = new CourseModel({
         id: new Number(Date.now()),
@@ -89,9 +89,9 @@ router.post('/new_course', async function(req, res) {
 
     let error = await course.save().catch(error => error);
     if (error.errors) {
-        return res.status(400).send({status: "Error in database transaction:\n", error});
+        return res.status(500).send({ error_code: 2 });
     }
-    return res.status(200).send({status: "Course created.", course});
+    return res.status(200).send({ status: "Course created.", course});
 });
 
 
@@ -107,10 +107,10 @@ router.get('/get_course', async function(req, res) {
     let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo course_favorites").catch(error => error);
 
     if (!user) {
-        return res.status(400).send({status: "You are not connected."});
+        return res.status(401).send({ error_code: 1 });
     }
     if (user.reason) {
-        return res.status(400).send({status: "Error in database transaction:\n", error: user});
+        return res.status(500).send({ error_code: 2 });
     }
 
     if (req.headers.sort) {
@@ -118,10 +118,10 @@ router.get('/get_course', async function(req, res) {
             courses_list = await CourseModel.find({}).sort("name").catch(error => error);
         }
         else if (req.headers.sort === "popularity") {
-            courses_list = await CourseModel.find({}).sort({"number_used": -1}).catch(error => error);
+            courses_list = await CourseModel.find({}).sort({"number_used": -1 }).catch(error => error);
         }
         else if (req.headers.sort === "score") {
-            courses_list = await CourseModel.find({}).sort({"score": -1}).catch(error => error);
+            courses_list = await CourseModel.find({}).sort({"score": -1 }).catch(error => error);
         }
         else if (req.headers.sort.toLowerCase() === "tendency") {
             let tendency_range = req.headers.tendency_range;
@@ -136,7 +136,7 @@ router.get('/get_course', async function(req, res) {
                 },
             ).catch(error => error);
             if (comments_list && comments_list.reason) {
-                return res.status(400).send({status: "Error in database transaction:\n", error: comments_list});
+                return res.status(500).send({ error_code: 2 });
             }
             let course_dict = {};
             for (let index = 0; index < comments_list.length; index++) {
@@ -160,7 +160,7 @@ router.get('/get_course', async function(req, res) {
                 }
                 course = await CourseModel.findOne({id: highest_key}).catch(error => error);
                 if (course && course.reason) {
-                    return res.status(400).send({status: "Error in database transaction:\n", error: course});
+                    return res.status(500).send({ error_code: 2 });
                 }
                 courses_list.push(course);
                 delete course_dict[highest_key];
@@ -171,17 +171,17 @@ router.get('/get_course', async function(req, res) {
             for (let index = 0; index < user.course_favorites.length; index++) {
                 course = await CourseModel.findOne({id: user.course_favorites[index]}).catch(error => error);
                 if (course && course.reason) {
-                    return res.status(400).send({status: "Error in database transaction:\n", error: course});
+                    return res.status(500).send({ error_code: 2 });
                 }
                 courses_list.push(course);
             }
         }
         if (courses_list && courses_list.reason) {
-            return res.status(400).send({status: "Error in database transaction:\n", error: courses_list});
+            return res.status(500).send({ error_code: 2 });
         }
-        return res.status(200).send({status: "List of courses returned.", courses_list})
+        return res.status(200).send({ status: "List of courses returned.", courses_list})
     }
-    return res.status(400).send({status: "Please send a research's sort."});
+    return res.status(400).send({ error_code: 3 });
 });
 
 
@@ -199,10 +199,10 @@ router.get('/get_user_historic', async function(req, res) {
     let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo course_historic").catch(error => error);
 
     if (!user) {
-        return res.status(400).send({status: "You are not connected."});
+        return res.status(401).send({ error_code: 1 });
     }
     if (user.reason) {
-        return res.status(400).send({status: "Error in database transaction:\n", error: user});
+        return res.status(500).send({ error_code: 2 });
     }
     if (!req.headers.size || req.headers.size <= 0) {
         size = 10;
@@ -217,12 +217,12 @@ router.get('/get_user_historic', async function(req, res) {
             console.log("Course not found.");
             size += 1;
         } else if (course.reason) {
-            return res.status(400).send({status: "Error in database transaction:\n", error: course});
+            return res.status(500).send({ error_code: 2 });
         } else {
             course_historic.push(course)
         }
     }
-    return res.status(200).send({status: "Course historic sent." , course_historic});
+    return res.status(200).send({ status: "Course historic sent." , course_historic});
 });
 
 
@@ -236,21 +236,21 @@ router.get('/get_courses_by_id', async function(req, res) {
     let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo").catch(error => error);
 
     if (!user) {
-        return res.status(400).send({status: "You are not connected."});
+        return res.status(401).send({ error_code: 1 });
     }
     if (user.reason) {
-        return res.status(400).send({status: "Error in database transaction:\n", error: user});
+        return res.status(500).send({ error_code: 2 });
     }
 
     let given_list = req.headers.courses_id_list.split(',');
     console.log("given list = ", given_list);
     let courses_list = await CourseModel.find({id: {$in: given_list}}).catch(error => error);
     if (courses_list.reason) {
-        return res.status(400).send({status: "Error in the parameters for database transaction.", courses_list});
+        return res.status(500).send({ error_code: 2 });
     } else if (courses_list.length > 0) {
-        return res.status(200).send({status: "Course(s) found.", courses_list});
+        return res.status(200).send({ status: "Course(s) found.", courses_list });
     } else {
-        return res.status(400).send({status: "Course(s) not found.", courses_list});
+        return res.status(200).send({ status: "Course(s) not found.", courses_list });
     }
 });
 
@@ -273,7 +273,7 @@ router.post('/new_course_time', async function(req, res) {
         author: "Strollin",
     });
     await course.save();
-    return res.status(200).send({status: "Course created."});
+    return res.status(200).send({ status: "Course created." });
 });
 
 
@@ -289,9 +289,9 @@ router.post('/add_course_time', async function(req, res) {
     let course = await CourseModel.findOne({id: req.headers.course_id});
     if (course) {
         await CourseModel.updateOne({id: course.id}, {$push: {time_spent: req.body.time_spent}});
-        return res.status(200).send({status: "Course time spent added."});
+        return res.status(200).send({ status: "Course time spent added." });
     }
-    return res.status(400).send({status: "Error"});
+    return res.status(400).send({ error_code: 4 });
 });
 
 

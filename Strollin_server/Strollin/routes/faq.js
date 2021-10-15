@@ -15,7 +15,7 @@ const {
 router.post('/create_question', async function(req, res) {
 
     if (!req.body.mail || !req.body.question || !req.body.language) {
-        return res.status(400).send({status: "Parameter required is missing."});
+        return res.status(400).send({ error_code: 3 });
     }
     let faq = new FaqModel({
         id: new Number(Date.now()),
@@ -26,9 +26,9 @@ router.post('/create_question', async function(req, res) {
     });
     let error = await faq.save().catch(error => error);
     if (error.errors) {
-        return res.status(400).send({status: "Error in database transaction:\n", error: error.errors});
+        return res.status(500).send({ error_code: 2});
     }
-    return res.status(200).send({status: "Question created successfully."});
+    return res.status(200).send({ status: "Question created successfully." });
 });
 
 // ANSWER_QUESTION
@@ -43,13 +43,13 @@ router.post('/answer_question', async function(req, res) {
 
     let question = await FaqModel.findOne({id: req.headers.question_id}).catch(error => error);
     if (question.reason) {
-        return res.status(400).send({status: "Error in the parameters.", error: question});
+        return res.status(500).send({ error_code: 2 });
     }
     if (!question) {
-        return res.status(400).send({status: "Question not found."});
+        return res.status(200).send({ question });
     }
     if (!req.body.answer || !req.body.published) {
-        return res.status(400).send({status: "Answer (String) and published (Boolean) required."});
+        return res.status(400).send({ error_code: 3 });
     }
     let query = {
         answer: req.body.answer,
@@ -57,9 +57,9 @@ router.post('/answer_question', async function(req, res) {
     };
     let error = await FaqModel.updateOne({id: question.id}, query).catch(error => error);
     if (error.errors) {
-        return res.status(400).send({status: "Error in database transaction:\n", error: error.errors});
+        return res.status(500).send({ error_code: 2 });
     }
-    return res.status(200).send({status: "Question answered."});
+    return res.status(200).send({ status: "Question answered." });
   });
   
 
@@ -71,11 +71,11 @@ router.get('/get_question_fr', async function(req, res) {
 
     let faqs_list = await FaqModel.find({published: true, language: 'fr'}, "-_id question answer creation_date").catch(error => error);
     if (faqs_list.reason) {
-        return res.status(400).send({status: "Error in the parameters.", error: faqs_list});
+        return res.status(500).send({ error_code: 2 });
     } else if (faqs_list.length > 0) {
-        return res.status(200).send({status: "Faq(s) found.", faqs_list});
+        return res.status(200).send({ status: "Faq(s) found.", faqs_list });
     } else {
-        return res.status(200).send({status: "Faq(s) not found.", faqs_list});
+        return res.status(200).send({ status: "Faq(s) not found.", faqs_list });
     }
 });
 
@@ -88,11 +88,11 @@ router.get('/get_question_en', async function(req, res) {
 
     let faqs_list = await FaqModel.find({published: true, language: 'en'}, "-_id question answer creation_date").catch(error => error);
     if (faqs_list.reason) {
-        return res.status(400).send({status: "Error in the parameters.", error: faqs_list});
+        return res.status(500).send({ error_code: 2 });
     } else if (faqs_list.length > 0) {
-        return res.status(200).send({status: "Faq(s) found.", faqs_list});
+        return res.status(200).send({ status: "Faq(s) found.", faqs_list});
     } else {
-        return res.status(200).send({status: "Faq(s) not found.", faqs_list});
+        return res.status(200).send({ status: "Faq(s) not found.", faqs_list});
     }
 });
 
@@ -107,11 +107,11 @@ router.get('/get_question_by_id', async function(req, res) {
     let given_list = req.headers.faqs_id.split(',');
     let faqs_list = await FaqModel.find({id: {$in: given_list}}, "-_id -password").catch(error => error);
     if (faqs_list.reason) {
-        return res.status(400).send({status: "Error in the parameters.", error: faqs_list});
+        return res.status(500).send({ error_code: 2 });
     } else if (faqs_list.length > 0) {
-        return res.status(200).send({status: "Faq(s) found.", faqs_list});
+        return res.status(200).send({ status: "Faq(s) found.", faqs_list});
     } else {
-        return res.status(400).send({status: "Faq(s) not found.", error: faqs_list});
+        return res.status(200).send({ status: "Faq(s) not found.", faqs_list});
     }
 });
 
