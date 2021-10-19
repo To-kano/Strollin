@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-  StyleSheet, Text, View, Image, TouchableOpacity, FlatList,
+  StyleSheet, Text, View, Image, TouchableOpacity, FlatList, ScrollView
 } from 'react-native';
 import { connect } from 'react-redux';
 import CourseItem from './CourseItem';
@@ -8,6 +8,9 @@ import I18n from '../Translation/configureTrans';
 import Store from '../Store/configureStore';
 
 import { DrawerActions } from '@react-navigation/native';
+import MenuButton from './components/MenuButton';
+
+const globalStyles = require('../Styles');
 
 export function getFavoritesList() {
   const store = Store.getState();
@@ -34,23 +37,32 @@ function Header({ props, defaultState = false }) {
 export function Favorites(props) {
 
   return (
-    <View style={styles.view_back}>
-      <Header props={props} />
-      <View style={styles.view_list}>
-        <FlatList
-          showsHorizontalScrollIndicator={false}
-          showsVerticalScrollIndicator={false}
-          data={getFavoritesList()}
-          renderItem={({ item }) => (
-            <CourseItem
-              {...props}
-              data={item}
-              favoritesPage={true}
+    <View style={globalStyles.container}>
+      <ScrollView
+        style={{width: '100%'}}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingVertical: 96 }}
+      >
+        <Text style={[globalStyles.titles, { marginBottom: 32, }]}>Tes trajets favoris sont ici</Text>
+        { getFavoritesList().length > 0 
+          ? <FlatList
+              style={{width: '100%'}}
+              showsHorizontalScrollIndicator={false}
+              showsVerticalScrollIndicator={false}
+              data={getFavoritesList()}
+              renderItem={({ item }) => (
+                <CourseItem
+                  {...props}
+                  data={item}
+                  favoritesPage={true}
+                />
+              )}
+              keyExtractor={(item) => item.id}
             />
-          )}
-          keyExtractor={(item) => item.id}
-        />
-      </View>
+          : <Text style={[globalStyles.subparagraphs, {marginTop: 96}]}>Malheureusement on dirait que tu n'as pas encore de trajet dans tes favoris. Essaye d'appuyer sur l'étoile quand un trajet sur la page d'acceuil te plaît 😉</Text>
+        }
+      </ScrollView>
+      <MenuButton props={props}/>
     </View>
   );
 }

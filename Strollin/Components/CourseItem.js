@@ -1,19 +1,22 @@
 import {
-  Image, View, StyleSheet, Text, TouchableOpacity, ImageBackground, FlatList, ScrollView, 
+  Image, View, StyleSheet, Text, TouchableOpacity, ImageBackground, FlatList, ScrollView, Touchable,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import Location_List from './locations_list';
 import { connect } from 'react-redux';
 import Store from '../Store/configureStore';
 import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 
-import {removeFavorite, addFavorite} from '../apiServer/user';
+import { removeFavorite, addFavorite } from '../apiServer/user';
 
-import {getLocationByIDList} from '../apiServer/locations';
+import { getLocationByIDList } from '../apiServer/locations';
+import Icon from './components/Icon';
+
+const globalStyles = require('../Styles');
 
 function GotoComment(props) {
   // props.navigation.setParams({ data: props.data });
-  const action = {type: 'SET_COMMENTS_DISPLAY', value: props.data};
+  const action = { type: 'SET_COMMENTS_DISPLAY', value: props.data };
   props.dispatch(action);
   props.navigation.navigate('CommentScreen');
 }
@@ -45,14 +48,14 @@ function checkFavorite(props) {
 
   if (store.profil.course_favorites && props.data) {
     for (let i = 0; i < store.profil.course_favorites.length; i++) {
-    //console.log("compared id = ", store.profil.course_favorites[i])
+      //console.log("compared id = ", store.profil.course_favorites[i])
       if (store.profil.course_favorites[i] == props.data.id) {
-      //console.log("returned true");
+        //console.log("returned true");
         return (true);
       }
     }
   }
-  
+
   return (false);
 }
 
@@ -60,7 +63,7 @@ function CourseItem(props) {
   const [locationList, setLocationList] = useState(null);
   const [isFavorite, setIsFavorite] = useState(null);
 
-  
+
   if (isFavorite == null) {
     setIsFavorite(checkFavorite(props));
   }
@@ -69,62 +72,63 @@ function CourseItem(props) {
   }
 
   return (
-    <View
-      style={styles.view_box}
-      onPress={() => GotoComment(props)}
-    >
+    <View style={styles.view_box}>
       <ImageBackground
         style={styles.img_boxBack}
         imageStyle={styles.img_boxBack}
         source={randPic()}
-        // source={require(props.data.image)}
       >
-        <View style={styles.view_boxIn}>
-          <View style={styles.view_information}>
-            <Image style={styles.img_buget} source={require('../images/icons/white/money.png')}/>
-            <Text style={styles.text_budget}>{props.data["price_range"][0] + " ~ " + props.data["price_range"][1]}</Text>
-            {/* <Text style={styles.text_budget}>{ "Période : " + props.data["timetable"]}</Text> */}
+      <View style={styles.view_boxIn}>
+        <View style={{width: "100%", flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+          <Text numberOfLines={1} style={[globalStyles.titles, {width: '70%', color: '#ffffff', textTransform: 'capitalize'}]}>{props.data.name}</Text>
+          <View style={{flexDirection: 'row'}}>
+            { isFavorite 
+              ? <TouchableOpacity
+                  onPress={() => removeFavorite(props, setIsFavorite)}
+                >
+                  <Icon name='star_filled' size={29} color='#ffffff'/>
+                </TouchableOpacity>
+              : <TouchableOpacity
+                  onPress={() => addFavorite(props, setIsFavorite)}
+                >
+                  <Icon name='star_empty' size={29} color='#ffffff'/>
+                </TouchableOpacity>
+            }
+            <TouchableOpacity
+              style={{marginLeft: 8}}
+              onPress={() => GotoComment(props)}
+            >
+              <Icon name='comment' size={29} color='#ffffff'/>
+            </TouchableOpacity>
           </View>
+
+        </View>
+        <View>
           <View style={styles.view_information}>
-            <Image style={styles.img_information} source={require('../images/icons/white/marker.png')}/>
+            <Icon name="map" size={29} color='#ffffff'/>
             <FlatList
               data={locationList}
               showsHorizontalScrollIndicator={true}
               horizontal={true}
               renderItem={({ item }) => (
-                <Location_List
-                  {...props}
-                  data={item}
-                />
+                <Text style={[globalStyles.subparagraphs, {color: '#ffffff', marginLeft: 8}]}>
+                  {item["name"] + ', '}
+                </Text>
               )}
-            keyExtractor={(item) => item.id}
-          />
+              keyExtractor={(item) => item.id}
+            />
           </View>
-          <Text numberOfLines={1} style={styles.text_name}>{props.data.name}</Text>
-          <View style={styles.view_comments}>
-            <TouchableOpacity
-              onPress={() => GotoComment(props)}
-              >
-                <Image style={styles.img_comment} source={require('../images/icons/white/comments.png')}/>
-            </TouchableOpacity>
-            {
-            !isFavorite && 
-              <TouchableOpacity
-                onPress={() => addFavorite(props, setIsFavorite)}
-                >
-                  <Image style={styles.img_comment} source={require('../images/empty_white_star.png')}/>
-              </TouchableOpacity>
-            }
-            {
-            isFavorite && 
-                <TouchableOpacity
-                  onPress={() => removeFavorite(props, setIsFavorite)}
-                  >
-                    <Image style={styles.img_comment} source={require('../images/yellow_star.png')}/>
-                </TouchableOpacity>
-            }
+          <View style={styles.view_information}>
+            <Icon name="piggy" size={29} color='#ffffff'/>
+            <Text style={[globalStyles.subparagraphs, {color: '#ffffff', marginLeft: 8}]}>
+              { props.data["price_range"][0] =='0' && props.data["price_range"][1] == '0' 
+                ? "Gratuit"
+                : props.data["price_range"][0] + "€ ~ " + props.data["price_range"][1] + "€"
+              }
+            </Text>
           </View>
         </View>
+      </View>
       </ImageBackground>
     </View>
   );
@@ -135,10 +139,9 @@ export default connect(mapStateToProps)(CourseItem);
 
 const styles = StyleSheet.create({
   view_box: {
-    flex: 1,
     backgroundColor: '#000000',
-    borderRadius: 12,
-    minHeight: 235,
+    borderRadius: 16,
+    minHeight: 220,
     marginBottom: 30,
     width: '100%',
   },
@@ -147,17 +150,19 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   view_boxIn: {
-    flex: 1,
-    flexDirection: 'column-reverse',
-    borderRadius: 12,
-    paddingTop: 10,
-    paddingLeft: 20,
-    paddingRight: 20,
-    paddingBottom: 20,
-    backgroundColor: 'rgba(0,0,0,0.6)',
+    width: "100%",
+    height: '100%',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    borderRadius: 16,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    backgroundColor: 'rgba(0,0,0,0.4)',
   },
   view_information: {
+    marginTop: 8,
     flexDirection: 'row',
+    alignItems: 'center',
   },
   img_information: {
     width: 25,
@@ -168,130 +173,4 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 15,
   },
-  img_buget: {
-    width: 25,
-    height: 25,
-    marginRight: 10,
-  },
-  text_budget: {
-    fontSize: 22,
-    color: '#FFFFFF',
-  },
-  text_name: {
-    fontSize: 28,
-    letterSpacing: 2,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
-  },
-  view_comments: {
-    flex: 1,
-    flexDirection: 'row-reverse',
-  },
-  img_comment: {
-    width: 35,
-    height: 35,
-    marginRight: -10,
-    marginLeft: 20,
-    tintColor:"#fff",
-  }
 });
-
-// import {
-//   Button, Image, View, StyleSheet, Text, ScrollView, FlatList
-// } from 'react-native';
-// import React from 'react';
-// import Location_List from './locations_list';
-
-// function GotoComment(props) {
-//   props.navigation.setParams({ data: props.data });
-//   props.navigation.navigate('CommentScreen', { data: props.data});
-// }
-
-// function Box(props) {
-//   return (
-//     <View style={{
-//       justifyContent: 'space-around', flex: 1, marginTop: 20, marginHorizontal: '5%', backgroundColor: 'rgba(255,255,255, 0.9)', borderRadius: 5, width: '90%'
-//     }}
-//     >
-//       <Text style={[{
-//         textAlign: 'center', fontSize: 30, color: '#39A5D6', margin: 5
-//       }]}
-//       >
-//         {props.data["name"]}
-//       </Text>
-//       <Text style={[{ fontSize: 25, marginLeft: '5%' }]}>
-        
-//         {"Budget: " + props.data["price_range"][0] + " ~ " + props.data["price_range"][1]}
-//       </Text>
-//       <Text style={[{ fontSize: 25, marginLeft: '5%' }]}>
-//         { "Période : " + props.data["timetable"]}
-//       </Text>
-//       <Text style={[{ fontSize: 25, marginLeft: '5%' }]}>
-//         Destinations:
-//       </Text>
-//       <FlatList
-//           data={props.data["locations_list"]}
-//           renderItem={({ item }) => (
-//             <Location_List
-//               {...props}
-//               data={item}
-//             />
-//           )}
-//         keyExtractor={(item) => item["name"]}
-//       />
-//       <Button
-//         title="Commentaires"
-//         onPress={() => GotoComment(props)}
-//       />
-//     </View>
-//   );
-// }
-
-// /* import I18n from "../Translation/configureTrans";
-
-// export default class Box extends Component {
-//   render() {
-//     return (
-//       <View style={styles.cont}>
-//         <Text style={{ fontSize: 40 }}> {I18n.t("trendingTrip")} </Text>
-//         <View style={styles.cont}>
-//           <Image style={{ resizeMode: 'stretch' }} source={require('../ressources/plum2.jpg')} />
-//         </View>
-//       </View>
-//     );
-//   }
-// } */
-
-// export default Box;
-
-// const styles = StyleSheet.create({
-//   cont: {
-//     flexDirection: 'column',
-//     justifyContent: 'flex-start',
-//     marginBottom: 20,
-//   },
-//   text: {
-//     fontSize: 22,
-//     marginBottom: 5,
-//     opacity: 0.5
-//   },
-//   img: {
-//     flexDirection: 'column',
-//     justifyContent: 'flex-start',
-//     alignItems: 'center',
-//     flex: 0.1,
-//     backgroundColor: 'red',
-//     width: '80%'
-//   },
-//   whiteBox: {
-//     justifyContent: 'space-between',
-//     flex: 1,
-//     marginTop: 20,
-//     marginHorizontal: '10%',
-//     backgroundColor: 'rgba(255,255,255, 0.9)',
-//     borderRadius: 20,
-//     textAlign: 'left',
-//     width: '80%',
-//     resizeMode: 'stretch',
-//   }
-// });

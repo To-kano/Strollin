@@ -10,6 +10,13 @@ import I18n from '../Translation/configureTrans';
 import Store from '../Store/configureStore';
 import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 import {translateTags, detranslateTags} from '../Translation/translateTags'
+import Footer from './components/Footer';
+import MenuButton from './components/MenuButton';
+import Icon from './components/Icon';
+import { ScrollView } from 'react-native-gesture-handler';
+import PrimaryButton from './components/PrimaryButton';
+
+const globalStyles = require('../Styles');
 
 function Header({ navigation, defaultState = false }) {
   const [pressed, setpressed] = useState(defaultState);
@@ -88,51 +95,43 @@ export function Tag({ name, chosen, setLoading, defaultState = false }) {
   }
 
   useEffect(() => {
-  //console.log('hola');
     setpressed(chosen);
   }, []);
 
   return (
-    <View style={styles.view_tags}>
-      {pressed === false && (
-      <TouchableOpacity
-        style={styles.view_tagOff}
+    <>
+      {pressed 
+      ? <TouchableOpacity style={[globalStyles.tag, {flexDirection: 'row', alignItems: 'center'}]} onPress={() => { setpressed(!pressed); }} >
+          <Text style={[globalStyles.subparagraphs, {marginRight: 11, textTransform: 'capitalize'}]}>{translateTags(name)}</Text>
+          <Icon name="checked" size={24} color="#1C1B1C"/>
+        </TouchableOpacity>
+      : <TouchableOpacity
+        style={[globalStyles.tag, {flexDirection: 'row', alignItems: 'center', backgroundColor: '#ffffff', borderWidth: 1, borderColor: "#1C1B1C"}]} 
         onPress={() => {
           setLoading(true);
           postTags(name);
           setpressed(!pressed);
         }}
       >
-        <Text style={styles.text_tagOff}>{translateTags(name)}</Text>
+        <Text style={[globalStyles.subparagraphs, {marginRight: 11, textTransform: 'capitalize'}]}>{translateTags(name)}</Text>
+          <Icon name="add" size={24} color="#1C1B1C"/>
       </TouchableOpacity>
-      )}
-      {(pressed === true) && (
-      <TouchableOpacity
-        style={styles.view_tagOn}
-        onPress={() => {
-        //console.log('unpressed');
-          setpressed(!pressed);
-        }}
-      >
-        <Image style={styles.img_tagOn} source={require('../images/icons/white/checked.png')} />
-        <Text style={styles.text_tagOn}>{translateTags(name)}</Text>
-      </TouchableOpacity>
-      )}
-    </View>
+      }
+    </>
   );
 }
 
-export function TagSelection({ navigation, profil }) {
+export function TagSelection(props, { navigation, profil }) {
   const [args, setArgs] = useState(true);
   const [Profargs, setProfArgs] = useState(true);
   const [array, setArray] = useState(true);
   const [isLoading, setLoading] = React.useState(false);
+  const [firstTime, setFirstTime] = useState(true);
 
   const store = Store.getState();
   const access_Token = store.profil.access_token;
 
   function setUserTags(tags) {
-    //var userTags = store.profil
     let action = {
       type: 'SET_USER_TAGS',
       value: tags
@@ -144,11 +143,9 @@ export function TagSelection({ navigation, profil }) {
     const arr = [];
     let flag = false;
 
-  //console.log('hello');
     for (let i = 0; i < List.length; i++) {
       for (let j = 0; j < UserList.length; j++) {
         if (UserList[j] == List[i].name) {
-        //console.log('hellot: ', UserList[j]);
           arr.push({ name: UserList[j], _id: List[i]._id, pressed: true });
           flag = true;
           break;
@@ -157,7 +154,6 @@ export function TagSelection({ navigation, profil }) {
       if (flag == false) arr.push({ name: List[i].name, _id: List[i]._id, pressed: false });
       flag = false;
     }
-  //console.log('array: ', arr);
     setArray(arr);
   }
 
@@ -172,7 +168,6 @@ export function TagSelection({ navigation, profil }) {
     })
       .then((res) => res.json())
       .then((json) => {
-      //console.log('########', json.profile.tags_list);
         setProfArgs(json.profile.tags_list);
         buildArray(List, json.profile.tags_list);
       });
@@ -189,7 +184,6 @@ export function TagSelection({ navigation, profil }) {
     })
       .then((res) => res.json())
       .then((json) => {
-      //console.log('yooooo', json.tags_list);
         setArgs(json.tags_list);
         getUserTags(json.tags_list);
       })
@@ -202,83 +196,87 @@ export function TagSelection({ navigation, profil }) {
   }, []);
 
   return (
-    <View style={styles.view_back}>
-      <Header navigation={navigation} />
-      <View style={styles.viex_list}>
-        <Text style={styles.text_field}>
-          {I18n.t('Tags.select_our_tags')}
-          <Text style={styles.text_star}> *</Text>
-        </Text>
-        <FlatList
-          data={array}
-          keyExtractor={(item) => item.name}
-          renderItem={({ item }) => (
-            <Tag name={item.name} chosen={item.pressed} setLoading={setLoading} />
-          )}
-        />
-      </View>
-      <TouchableOpacity
-        style={styles.view_button}
-        onPress={() => {
-          navigation.navigate('Profile');
-        }}
-      >
-        <Text style={styles.text_button}>
-          {I18n.t('Tags.confirm_my_tags')}
-        </Text>
-      </TouchableOpacity>
-      <Modal
-        animationType="none"
-        transparent={true}
-        visible={isLoading}
-      >
-        <View style={styles.loading_screen}>
-          <ActivityIndicator size="large"  color="black" style={{}}/>        
+    <>
+      {firstTime && props.profil.tags_list.length == 0
+      ? <View style={[globalStyles.container, {justifyContent: 'flex-start'}]}>
+          <Text style={[globalStyles.titles, {marginVertical: 32}]}>Bienvenue sur Strollin {props.profil.pseudo} !</Text>
+          <Text style={[globalStyles.titles, {marginVertical: 16}]}>Ici tu vas pouvoir choisir tes tags</Text>
+          <Text style={[globalStyles.subparagraphs, {marginVertical: 8}]}>
+            Ce qu'on appelle <Text style={[globalStyles.paragraphs, {color: '#0989FF'}]}>les tags</Text> c'est toutes les choses que tu aimes dans la vie. Ça permettra à l'application de <Text style={[globalStyles.paragraphs, {color: '#0989FF'}]}>générer des trajets en fonction de tes goûts</Text>.
+          </Text>
+          <Text style={[globalStyles.subparagraphs, {marginVertical: 8}]}>
+            Pour les ajouter à ta liste t'auras juste à les sélectionner. Un tag ajouté dans ta liste de tag s'affiche avec un <Text style={[globalStyles.paragraphs, {color: '#0989FF'}]}>check</Text> derrière.
+            Si il n'y a pas le check, t'as compris, il n'est pas dans ta liste.
+          </Text>
+          <Text style={[globalStyles.subparagraphs, {marginVertical: 8, marginBottom: 48}]}>
+            Tu pourras les changer à tous moments dans ton profil en <Text style={[globalStyles.paragraphs, {color: '#0989FF'}]}>cliquant sur ta photo dans le menu</Text> 😉
+          </Text>
+          <PrimaryButton text="J'ai compris ! Je choisi mes tags" onPressFct={() => setFirstTime(false)}/>
         </View>
-      </Modal>
-    </View>
-    // <View style={styles.back}>
-    //   <BackgroundImage />
-    //   <View style={styles.fill}>
-    //     <Text style={[{ textAlign: 'left', color: 'black', fontSize: 25 }]}>
-    //       {I18n.t('welcome')}
+      : <View style={[globalStyles.container, {justifyContent: 'flex-start'}]}>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{ paddingVertical: 96 }}
+          >
+            <Text style={[globalStyles.titles]}>{I18n.t('Tags.select_our_tags')}</Text>
+            <FlatList
+              style={{width: '100%'}}
+              data={array}
+              contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap' }}
+              keyExtractor={(item) => item.name}
+              renderItem={({ item }) => (
+                <Tag name={item.name} chosen={item.pressed} setLoading={setLoading} />
+              )}
+            />
+          </ScrollView>
+          <Modal
+            animationType="none"
+            transparent={true}
+            visible={isLoading}
+          >
+            <View style={styles.loading_screen}>
+              <ActivityIndicator size="large"  color="black"/>
+            </View>
+          </Modal>
+          <MenuButton props={props}/>
+          <Footer primaryText="Valider mes tags" primaryOnPressFct={() => props.navigation.navigate('Profile')}/>
+        </View>
+      }
+    </>
+    // <View style={styles.view_back}>
+    //   <Header navigation={navigation} />
+    //   <View style={styles.viex_list}>
+    //     <Text style={styles.text_field}>
+    //       {I18n.t('Tags.select_our_tags')}
+    //       <Text style={styles.text_star}> *</Text>
     //     </Text>
-    //     <Text style={[
-    //       {
-    //         textAlign: 'center', color: 'black', fontWeight: 'bold', fontSize: 25
-    //       }
-    //     ]}
-    //     >
-    //       {profil.pseudo}
-    //     </Text>
-    //     <Text style={[{
-    //       textAlign: 'left',
-    //       color: 'black',
-    //       fontSize: 18,
-    //       marginTop: 18,
-    //       fontWeight: 'normal',
-    //     }]}
-    //     >
-    //       {I18n.t('chooseTags')}
-    //     </Text>
-    //     <View style={{ flex: 2, margin: 10, marginTop: 40 }}>
-    //       <FlatList
-    //         data={data}
-    //         renderItem={({ item }) => (
-    //           <Tag name={item.name} pressed={item.pressed} />
-    //         )}
-    //       />
-    //       <TouchableOpacity
-    //         style={styles.newTrip}
-    //         onPress={() => navigation.navigate('Profile')}
-    //         // onPress={() =>
-    //         //  // this.NextPage(navigation.getParam('uid'))
-    //         // }
-    //       >
-    //         <Text style={{ fontSize: 16, color: '#FFFFFF' }}>{I18n.t('next')}</Text>
-    //       </TouchableOpacity>
-    //     </View>
+    //     <FlatList
+    //       data={array}
+    //       keyExtractor={(item) => item.name}
+    //       renderItem={({ item }) => (
+    //         <Tag name={item.name} chosen={item.pressed} setLoading={setLoading} />
+    //       )}
+    //     />
     //   </View>
+    //   <TouchableOpacity
+    //     style={styles.view_button}
+    //     onPress={() => {
+    //       navigation.navigate('Profile');
+    //     }}
+    //   >
+    //     <Text style={styles.text_button}>
+    //       {I18n.t('Tags.confirm_my_tags')}
+    //     </Text>
+    //   </TouchableOpacity>
+      // <Modal
+      //   animationType="none"
+      //   transparent={true}
+      //   visible={isLoading}
+      // >
+      //   <View style={styles.loading_screen}>
+      //     <ActivityIndicator size="large"  color="black" style={{}}/>        
+      //   </View>
+      // </Modal>
     // </View>
   );
 }

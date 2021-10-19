@@ -1,7 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { Text, StyleSheet, TouchableOpacity, Image, View } from 'react-native';
 import Store from '../../Store/configureStore';
+import Icon from '../components/Icon';
+
+const globalStyles = require('../../Styles');
 
 function addParticipant(props) {
   //console.log('adding participant');
@@ -28,10 +31,16 @@ function FriendList(props) {
           style={styles.selected_button}
           onPress={() => deleteParticipant(props)}
         >
-          <Text style={styles.previewTitle}>
-            { props.profil.friends_pseudo_list[props.id] }
-          </Text>
-          <Image style={styles.img_checked} source={require('../../images/icons/black/friend.png')} />
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Image
+              style={{height: 64, width: 64, borderRadius: 16}}
+              source={require('../../assets/images/default_profile_picture.png')}
+            />
+            <Text style={[globalStyles.paragraphs, {marginLeft: 16}]}>
+              {props.profil.friends_pseudo_list[props.id]}
+            </Text>
+          </View>
+          <Icon name='checked' size={29} color="#0989FF"/>
         </TouchableOpacity>
       );
     }
@@ -41,10 +50,16 @@ function FriendList(props) {
       style={styles.button}
       onPress={() => addParticipant(props)}
     >
-      <Text style={styles.previewTitle}>
-        { props.profil.friends_pseudo_list[props.id] }
-      </Text>
-      <Image style={styles.img_checked} source={require('../../images/icons/black/addFriend.png')} />
+      <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <Image
+          style={{height: 64, width: 64, borderRadius: 16}}
+          source={require('../../assets/images/default_profile_picture.png')}
+        />
+        <Text style={[globalStyles.paragraphs, {marginLeft: 16}]}>
+          {props.profil.friends_pseudo_list[props.id]}
+        </Text>
+      </View>
+      <Icon name='add' size={29} color="#0989FF"/>
     </TouchableOpacity>
   );
 }
@@ -54,32 +69,44 @@ export default connect(mapStateToProps)(FriendList);
 
 const styles = StyleSheet.create({
   button: {
+    width: '100%',
+    backgroundColor: '#ffffff',
+    borderRadius: 16,
+    padding: 16,
+    marginTop: 16,
+    shadowColor: "#000",
+    shadowOffset: {
+        width: 0,
+        height: 5,
+    },
+    shadowOpacity: 0.34,
+    shadowRadius: 6.27,
+
+    elevation: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    marginTop: 5,
-    marginBottom: 5,
-    width: '100%',
-    paddingLeft: 15,
-    paddingTop: 15,
-    paddingRight: 15,
-    paddingBottom: 15,
+    alignContent: 'center',
+    alignItems: 'center',
   },
   selected_button: {
+    width: '100%',
+    backgroundColor: '#ffffff',
+    borderRadius: 16,
+    padding: 16,
+    marginTop: 16,
+    shadowColor: "#000",
+    shadowOffset: {
+        width: 0,
+        height: 5,
+    },
+    shadowOpacity: 0.34,
+    shadowRadius: 6.27,
+
+    elevation: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    marginTop: 5,
-    marginBottom: 5,
-    width: '100%',
-    paddingLeft: 15,
-    paddingTop: 15,
-    paddingRight: 15,
-    paddingBottom: 15,
+    alignContent: 'center',
+    alignItems: 'center',
   },
   previewTitle: {
     fontWeight: 'bold',
@@ -88,7 +115,7 @@ const styles = StyleSheet.create({
     color: "#000",
   },
   img_checked: {
-    width: 24,
-    height: 24,
+    width: 29,
+    height: 29,
   }
 });

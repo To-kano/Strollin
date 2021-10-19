@@ -8,8 +8,6 @@ module.exports = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         paddingHorizontal: 16,
-        paddingVertical: 32,
-        paddingTop: 32,
     },
     titles: {
         maxWidth: "100%",
@@ -21,7 +19,7 @@ module.exports = StyleSheet.create({
     },
     subtitles: {
         maxWidth: "100%",
-        fontSize: 32,
+        fontSize: 24,
         textAlign: "left",
         fontWeight: "bold",
         color: "#1C1B1C",
@@ -58,5 +56,16 @@ module.exports = StyleSheet.create({
         paddingVertical: 8,
         paddingHorizontal: 16,
         marginTop: 16,
+    },
+
+    tag: {
+        textAlign: 'center',
+        backgroundColor: '#D6EBFF',
+        marginRight: 8,
+        marginVertical: 4,
+        paddingVertical: 8,
+        paddingHorizontal: 16,
+        borderRadius: 20,
+        textTransform: 'capitalize',
     }
 });
