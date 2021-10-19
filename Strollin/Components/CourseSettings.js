@@ -66,16 +66,10 @@ async function confirmeSettings(pos, budget, hours, minutes, props, eat, radius,
     friendstags: store.CourseSettings.friendstags
   }
 
-  let action = {
-    type: 'SET_COURSE_SETTINGS',
-    value: settings
-  };
-  Store.dispatch(action);
-
   const result = await generateCourse(access_token, settings);
   setLoading(false);
 
-  action = {
+  let action = {
     type: 'SET_CURRENT_COURSE',
     value: result.course
   };
@@ -260,6 +254,17 @@ export function CourseSettings(props) {
           >
             <Text style={styles.text_newTrip}>
               Use temporary tags
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            id="test"
+            style={styles.view_newTrip}
+            onPress={() => {
+              props.navigation.navigate("ChosePosition");
+            }}
+          >
+            <Text style={styles.text_newTrip}>
+              Chose starting position
             </Text>
           </TouchableOpacity>
         </View>

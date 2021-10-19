@@ -73,8 +73,9 @@ function isNear(userPosition, elementPosition) {
 function Map({
   position, height, width, deltaView, locations, profil, map, dispatch, navigation
 }) {
-  const [userPosition, setUserPosition] = useState(null);
   const allTime = [];
+  const store = Store.getState();
+  const [userPosition, setUserPosition] = useState(store.CourseSettings.pos);
 
   /// /console.log(props.navigate);
   // console.log("map\n");
