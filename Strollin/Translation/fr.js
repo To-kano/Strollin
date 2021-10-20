@@ -172,7 +172,7 @@ export default {
   },
 
   TendanceSearchBar: {
-    searchTag: 'Chercher a partir de tags',
+    searchTag: 'Chercher un tag',
   },
 
   TripSuggestion: {

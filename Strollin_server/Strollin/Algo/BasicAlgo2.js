@@ -385,8 +385,9 @@ async function callApi(url) {
   let token = null
   let url_tmp = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=AIzaSyD6AVcufnom-RKQJeG8tlxAWhAOKor0-uo"
 
-
+  console.log("before await");
   await placeCall(url).then((response) => {
+    console.log("IN await");
     formatPlaces(response.results);
     if (response.next_page_token) {
       token = response.next_page_token
@@ -396,13 +397,15 @@ async function callApi(url) {
       }, 2000)
     }
   })
+  console.log("OUT");
 }
 
 async function getPlaces(coordinate, type) {
   const https = require('https');
   let url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=AIzaSyDPc6ZV5KYveppsIq8o_1oeVEZ6CShTX4w&location=" + coordinate[0] + "," + coordinate[1] + "&radius=5000&type=" + type
 
-  await callApi(url)
+  callApi(url)
+  console.log("CALLAD");
   /*https.get(url, (resp) => {
     let data = '';
 
@@ -495,6 +498,7 @@ methods.pop = function(coordinate, tags, course) {
 methods.places = function(coordinate, tag, course) {
   console.log("------------------------------------------------------------------");
   getPlaces(coordinate, tag)
+  console.log("IM OUT OF HERE\n");
 }
 
 exports.data = methods;

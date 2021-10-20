@@ -190,11 +190,14 @@ router.post('/popup_answer', async function(req, res) {
  * @param {String} req.headers.tag
  */
 router.get('/recover_places', async function(req, res) {
+  console.log("GENERATE PLACES");
   var coordinate = req.headers.coordinates.split(",")
   console.log("coordinate: ", coordinate);
   console.log("tag: ", req.headers.tag);
 
-algo.data.places(coordinate, req.headers.tag);
+  algo.data.places(coordinate, req.headers.tag);
+  console.log("I AM REEEEEEEEEEEEALLLLLLY OUT");
+  return res.status(200).send({status: "Result."});
 });
 
 module.exports = router;

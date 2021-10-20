@@ -15,6 +15,11 @@ import I18n from '../Translation/configureTrans';
 import { RondFormeText } from './rondForm';
 import { registerUser } from '../apiServer/user';
 import Popup from './Popup';
+import Step from './components/Step';
+import PrimaryButton from './components/PrimaryButton';
+import SecondaryButton from './components/SecondaryButton';
+
+const globalStyles = require('../Styles');
 
 const getInfoFromToken = (token, setUserInfo, props, setMessage, setModalVisible) => {
   const PROFILE_REQUEST_PARAMS = {
@@ -49,6 +54,7 @@ export function UserRegister(props) {
   const [pseudo, setPseudo] = useState('');
   const [userLastName, setUserLastName] = useState('');
   const [userInfo, setUserInfo] = React.useState({});
+  const [SignInStep, setSignInStep] = useState(1);
 
   const [modalVisible, setModalVisible] = useState(false);
   const [message, setMessage] = useState("");
@@ -80,125 +86,256 @@ export function UserRegister(props) {
   //  );
   //}
   return (
-    <View style={styles.view_back}>
-      <View style={styles.view_topButton}>
-          <TouchableOpacity
-            style={styles.button_partner}
-            onPress={() => {
-              props.navigation.navigate('PartnerRegister');
-            }}
-          >
-            <Text style={styles.text_partner}>
-              {I18n.t('UserRegister.PartnerPage')}
-            </Text>
-          </TouchableOpacity>
-        </View>
-      <View style={styles.view_logo}>
-        <Image style={styles.img_logo} source={require('../images/Logo.png')} />
-      </View>
-      <View style={styles.view_signInUp}>
-        <TouchableOpacity onPress={() => props.navigation.navigate('userLogin')}>
-          <Text style={styles.text_signIn}>{I18n.t('UserRegister.SIGNIN')}</Text>
-        </TouchableOpacity>
-        <View style={styles.view_separator} />
-        <TouchableOpacity>
-          <Text style={styles.text_signUp}>{I18n.t('UserRegister.SIGNUP')}</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.view_field}>
-        <Popup message={message} modalVisible={modalVisible} setModalVisible={setModalVisible} />
-        <Text style={styles.text_field}>
-          {I18n.t('UserRegister.username')}
-          <Text style={styles.text_star}> *</Text>
-        </Text>
-        <TextInput
-          style={styles.textInput_field}
-          autoCapitalize="none"
-          textContentType="username"
-          autoCompleteType="username"
-          onChangeText={(valueText) => { setPseudo(valueText); }}
-          value={pseudo}
-        />
-      </View>
-      <View style={styles.view_field}>
-        <Text style={styles.text_field}>
-          {I18n.t('UserRegister.email')}
-          <Text style={styles.text_star}> *</Text>
-        </Text>
-        <TextInput
-          style={styles.textInput_field}
-          autoCapitalize="none"
-          textContentType="emailAddress"
-          autoCompleteType="email"
-          onChangeText={(valueText) => { setUserEmail(valueText); }}
-          value={userEmail}
-        />
-      </View>
-      <View style={styles.view_field}>
-        <Text style={styles.text_field}>
-          {I18n.t('UserRegister.password')}
-          <Text style={styles.text_star}> *</Text>
-        </Text>
-        <TextInput
-          style={styles.textInput_field}
-          autoCapitalize="none"
-          textContentType="password"
-          onChangeText={(valueText) => { setUserPassword(valueText); }}
-          value={userPassword}
-          secureTextEntry
-        />
-      </View>
-      <TouchableOpacity style={{alignSelf: 'center', maxWidth: 400, width: '100%', marginTop: 0, marginBottom: 4, marginLeft: 4 }}>
-        <Text style={[{fontSize: 10, color: '#000',}, {color: '#c3c3c6',}]}>ⓘ 8 caractères minimum, 1 Majuscule, 1 Minuscule, 1 chiffre</Text>
-      </TouchableOpacity>
-      <View style={styles.view_field}>
-        <Text style={styles.text_field}>
-          {I18n.t('UserRegister.confPassword')}
-          <Text style={styles.text_star}> *</Text>
-        </Text>
-        <TextInput
-          style={styles.textInput_field}
-          autoCapitalize="none"
-          textContentType="password"
-          onChangeText={(valueText) => { setUserConfirmPassword(valueText); }}
-          value={userConfirmPassWord}
-          secureTextEntry
-        />
-      </View>
-      <View style={styles.view_bottomButton}>
-        <TouchableOpacity
-          style={styles.button_logIn}
-          onPress={() => {
-            if (userPassword === userConfirmPassWord) {
-              registerUser(props, pseudo, userPassword, userEmail, setMessage, setModalVisible, false);
-            }
-          }}
-        >
-          <Text style={styles.text_logIn}>
-            {I18n.t('UserRegister.SIGNUP')}
+    <View style={globalStyles.container}>
+      <Step actualStep={SignInStep} finishStep={4} onPressFct={() => setSignInStep(SignInStep-1)}/>
+      <Image
+        source={require("../assets/images/Strollin_logo.png")}
+        style={globalStyles.logo}
+      />
+
+      {SignInStep === 1 &&
+        <>
+          <Text style={globalStyles.subparapraphs}>
+            Choisi un nom d'utilisateur, ça permettra à tes amis de te retrouver dans l'app 😉
           </Text>
-        </TouchableOpacity>
-        <View style={styles.view_facebook}>
-          <LoginButton
-            style={styles.button_facebook}
-            readPermissions={['public_profile', 'email']}
-            onLoginFinished={(error, result) => {
-              if (error) {
-                //console.log(`login has error: ${result.error}`);
-              } else if (result.isCancelled) {
-                //console.log('login is cancelled.');
-              } else {
-                AccessToken.getCurrentAccessToken().then((data) => {
-                  const accessToken = data.accessToken.toString();
-                  getInfoFromToken(accessToken, setUserInfo, props, setMessage, setModalVisible);
-                });
+          <TextInput
+            placeholder={I18n.t('UserRegister.username')}
+            style={[globalStyles.textInput, {marginBottom: 32}]}
+            autoCapitalize="none"
+            textContentType="username"
+            autoCompleteType="username"
+            onChangeText={(valueText) => { setPseudo(valueText); }}
+            value={pseudo}
+          />
+          <PrimaryButton text="J'ai trouvé un bon nom d'utilisateur" onPressFct={() => setSignInStep(2)}/>
+        </>
+      }
+
+      {SignInStep === 2 &&
+        <>
+          <Text style={globalStyles.subparapraphs}>
+            Rentre ton adresse email ça te permettra de te connecter plus tard !
+          </Text>
+          <TextInput
+            placeholder={I18n.t('UserRegister.email')}
+            keyboardType="email-address"
+            style={[globalStyles.textInput, {marginBottom: 32}]}
+            autoCapitalize="none"
+            textContentType="emailAddress"
+            autoCompleteType="email"
+            onChangeText={(valueText) => { setUserEmail(valueText); }}
+            value={userEmail}
+          />
+          <PrimaryButton text="Continuer mon inscription" onPressFct={() => setSignInStep(3)}/>
+        </>
+      }
+
+      {SignInStep === 3 &&
+        <>
+          <Text style={globalStyles.subparapraphs}>
+            Tu y es presque ! Trouve un mot de passe avec au  moins 8 caractères, 1 chiffre, 1 maj et 1 min
+          </Text>
+          <TextInput
+            placeholder={I18n.t('UserRegister.password')}
+            secureTextEntry={true}
+            style={[globalStyles.textInput, {marginBottom: 32}]}
+            autoCapitalize="none"
+            textContentType="password"
+            onChangeText={(valueText) => { setUserPassword(valueText); }}
+            value={userPassword}
+          />
+          <PrimaryButton text="Continuer mon inscription" onPressFct={() => setSignInStep(4)}/>
+        </>
+      }
+
+      {SignInStep === 4 &&
+        <>
+          <Text style={globalStyles.subparapraphs}>
+            C'est la dernière étape ! Confirme ton mot de passe et prouve nous que tu n'es pas un robot
+          </Text>
+          <TextInput
+            placeholder={I18n.t('UserRegister.confPassword')}
+            secureTextEntry={true}
+            style={[globalStyles.textInput, {marginBottom: 32}]}
+            autoCapitalize="none"
+            textContentType="password"
+            onChangeText={(valueText) => { setUserConfirmPassword(valueText); }}
+            value={userConfirmPassWord}
+          />
+          <PrimaryButton
+            text="Continuer mon inscription"
+            onPressFct={() => {
+              if (userPassword === userConfirmPassWord) {
+                console.log("JE SUIS LAS");
+                registerUser(props, pseudo, userPassword, userEmail, setMessage, setModalVisible, false);
               }
             }}
-            onLogoutFinished={() => setUserInfo({})}
           />
-        </View>
-      </View>
+        </>
+      }
+
+      <PrimaryButton text='Continuer avec Facebook' onPressFct={() => console.log('facebook signin')} color='#1877F2'/>
+      {/* <LoginButton
+        style={styles.button_facebook}
+        readPermissions={['public_profile', 'email']}
+        onLoginFinished={(error, result) => {
+          if (error) {
+            //console.log(`login has error: ${result.error}`);
+          } else if (result.isCancelled) {
+            //console.log('login is cancelled.');
+          } else {
+            AccessToken.getCurrentAccessToken().then((data) => {
+              const accessToken = data.accessToken.toString();
+              getInfoFromToken(accessToken, setUserInfo, props, setMessage, setModalVisible);
+            });
+          }
+        }}
+        onLogoutFinished={() => setUserInfo({})}
+      /> */}
+      <TouchableOpacity
+        onPress={() => props.navigation.navigate('userLogin')}
+        style={{
+          width: "100%",
+          backgroundColor: "#fff",
+          padding: 16,
+          marginTop: 32,
+          marginBottom: 16,
+          justifyContent: "center",
+          alignContent: "center",
+          borderRadius: 32,
+        }}
+      >
+        <Text
+          style={[
+            globalStyles.paragraphs,
+            { color: "#9B979B", textAlign: "center" },
+          ]}
+        >
+          T'as déjà un compte ?
+          <Text style={{color: "#0989FF"}}> Connecte toi !</Text>
+        </Text>
+      </TouchableOpacity>
+      <SecondaryButton text='Devenir partenaire' onPressFct={() => props.navigation.navigate('PartnerRegister')}/>
     </View>
+    // <View style={styles.view_back}>
+    //   <View style={styles.view_topButton}>
+    //       <TouchableOpacity
+    //         style={styles.button_partner}
+    //         onPress={() => {
+    //           props.navigation.navigate('PartnerRegister');
+    //         }}
+    //       >
+    //         <Text style={styles.text_partner}>
+    //           {I18n.t('UserRegister.PartnerPage')}
+    //         </Text>
+    //       </TouchableOpacity>
+    //     </View>
+    //   <View style={styles.view_logo}>
+    //     <Image style={styles.img_logo} source={require('../images/Logo.png')} />
+    //   </View>
+    //   <View style={styles.view_signInUp}>
+    //     <TouchableOpacity onPress={() => props.navigation.navigate('userLogin')}>
+    //       <Text style={styles.text_signIn}>{I18n.t('UserRegister.SIGNIN')}</Text>
+    //     </TouchableOpacity>
+    //     <View style={styles.view_separator} />
+    //     <TouchableOpacity>
+    //       <Text style={styles.text_signUp}>{I18n.t('UserRegister.SIGNUP')}</Text>
+    //     </TouchableOpacity>
+    //   </View>
+    //   <View style={styles.view_field}>
+    //     <Popup message={message} modalVisible={modalVisible} setModalVisible={setModalVisible} />
+    //     <Text style={styles.text_field}>
+    //       {I18n.t('UserRegister.username')}
+    //       <Text style={styles.text_star}> *</Text>
+    //     </Text>
+    //     <TextInput
+    //       style={styles.textInput_field}
+    //       autoCapitalize="none"
+    //       textContentType="username"
+    //       autoCompleteType="username"
+    //       onChangeText={(valueText) => { setPseudo(valueText); }}
+    //       value={pseudo}
+    //     />
+    //   </View>
+    //   <View style={styles.view_field}>
+    //     <Text style={styles.text_field}>
+    //       {I18n.t('UserRegister.email')}
+    //       <Text style={styles.text_star}> *</Text>
+    //     </Text>
+    //     <TextInput
+    //       style={styles.textInput_field}
+    //       autoCapitalize="none"
+    //       textContentType="emailAddress"
+    //       autoCompleteType="email"
+    //       onChangeText={(valueText) => { setUserEmail(valueText); }}
+    //       value={userEmail}
+    //     />
+    //   </View>
+    //   <View style={styles.view_field}>
+    //     <Text style={styles.text_field}>
+    //       {I18n.t('UserRegister.password')}
+    //       <Text style={styles.text_star}> *</Text>
+    //     </Text>
+    //     <TextInput
+    //       style={styles.textInput_field}
+    //       autoCapitalize="none"
+    //       textContentType="password"
+    //       onChangeText={(valueText) => { setUserPassword(valueText); }}
+    //       value={userPassword}
+    //       secureTextEntry
+    //     />
+    //   </View>
+    //   <TouchableOpacity style={{alignSelf: 'center', maxWidth: 400, width: '100%', marginTop: 0, marginBottom: 4, marginLeft: 4 }}>
+    //     <Text style={[{fontSize: 10, color: '#000',}, {color: '#c3c3c6',}]}>ⓘ 8 caractères minimum, 1 Majuscule, 1 Minuscule, 1 chiffre</Text>
+    //   </TouchableOpacity>
+    //   <View style={styles.view_field}>
+    //     <Text style={styles.text_field}>
+    //       {I18n.t('UserRegister.confPassword')}
+    //       <Text style={styles.text_star}> *</Text>
+    //     </Text>
+    //     <TextInput
+    //       style={styles.textInput_field}
+    //       autoCapitalize="none"
+    //       textContentType="password"
+    //       onChangeText={(valueText) => { setUserConfirmPassword(valueText); }}
+    //       value={userConfirmPassWord}
+    //       secureTextEntry
+    //     />
+    //   </View>
+    //   <View style={styles.view_bottomButton}>
+    //     <TouchableOpacity
+    //       style={styles.button_logIn}
+    //       onPress={() => {
+    //         if (userPassword === userConfirmPassWord) {
+    //           registerUser(props, pseudo, userPassword, userEmail, setMessage, setModalVisible, false);
+    //         }
+    //       }}
+    //     >
+    //       <Text style={styles.text_logIn}>
+    //         {I18n.t('UserRegister.SIGNUP')}
+    //       </Text>
+    //     </TouchableOpacity>
+    //     <View style={styles.view_facebook}>
+    //       <LoginButton
+    //         style={styles.button_facebook}
+    //         readPermissions={['public_profile', 'email']}
+    //         onLoginFinished={(error, result) => {
+    //           if (error) {
+    //             //console.log(`login has error: ${result.error}`);
+    //           } else if (result.isCancelled) {
+    //             //console.log('login is cancelled.');
+    //           } else {
+    //             AccessToken.getCurrentAccessToken().then((data) => {
+    //               const accessToken = data.accessToken.toString();
+    //               getInfoFromToken(accessToken, setUserInfo, props, setMessage, setModalVisible);
+    //             });
+    //           }
+    //         }}
+    //         onLogoutFinished={() => setUserInfo({})}
+    //       />
+    //     </View>
+    //   </View>
+    // </View>
   );
 }
 

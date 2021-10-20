@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Tts from 'react-native-tts';
 import { connect } from 'react-redux';
 import {
-  StyleSheet, Text, View, ScrollView, Button , Image, PermissionsAndroid, TouchableOpacity, FlatList, ImageBackground, ActivityIndicator, RefreshControl
+  StyleSheet, Text, View, Button , Image, Dimensions, PermissionsAndroid, TouchableOpacity, FlatList, ImageBackground, ActivityIndicator, ScrollView, RefreshControl
 } from 'react-native';
 import { DrawerActions } from '@react-navigation/native';
 import I18n from '../Translation/configureTrans';
@@ -12,6 +12,7 @@ import CourseElementList from './CourseElementList';
 import BackgroundImage from './backgroundImage';
 import ButtonSwitch from './ButtonSwitch';
 import TripElement from './TripElement';
+import { translateTags, detranslateTags } from '../Translation/translateTags'
 
 import {getCustomCourse} from '../apiServer/course';
 import {getLocationByID} from '../apiServer/locations';
@@ -20,7 +21,16 @@ import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 import Modal from 'react-native-modal'
 import {generateCourse} from '../apiServer/course';
 import ModalContent from 'react-native-modal'
-import Carousel from 'react-native-snap-carousel';
+import Carousel, { Pagination } from 'react-native-snap-carousel';
+import MenuButton from './components/MenuButton';
+import Footer from './components/Footer';
+import Popup from './Popup';
+import Icon from './components/Icon';
+import { ShareDialog } from 'react-native-fbsdk';
+
+const globalStyles = require('../Styles');
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 function randPic() {
   const rand = (Math.floor(Math.random() * 2) + 1);
@@ -276,13 +286,13 @@ export function TripSuggestion(props) {
     let name = ""
     locations_name.forEach((item) => {
       if (name != "") {
-        name += ', ' + item
+        name += '\n' + item
       } else {
       name = item
       }
     });
 
-    let nametmp = "ces lieux sont actuelement fermés :\n" + name + "\nvoulez vous les suprimer ?"
+    let nametmp = name
     setName(nametmp)
     setLoading(false)
     if (name != "")
@@ -332,67 +342,138 @@ async function check_open(result) {
 
   function _renderItem2({item}){
     return (
-      <View style={styles.view_box}>
-        <ImageBackground
-          style={styles.img_boxBack}
-          imageStyle={styles.img_boxBack}
-          source={randPic()}
-        >
-          <View style={styles.view_boxIn}>
-            <View style={styles.view_information}>
-              <Image style={styles.img_information} source={require('../images/icons/white/marker.png')} />
-              <Text style={styles.text_information}>{item.address}, {item.city}</Text>
-            </View>
-            <Text style={styles.text_name}>{item.name}</Text>
-            <View style={styles.view_share}>
-              <TouchableOpacity
-                onPress={() => {
-                  Share.share({
-                    message: `Strollin' m'a proposé un trajet ! \nRejoignons nous a ${item.name} au ${item.address} !`,
-                    title: "Sortir avec Strollin'",
-                    url: 'https://www.google.com',
-                  }, {
-                  // Android only:
-                    dialogTitle: 'Share Strollin travel',
-                    // iOS only:
-                    excludedActivityTypes: [
-                      'com.apple.UIKit.activity.PostToTwitter'
-                    ]
-                  });
-                }}
-                accessibilityLabel="Share"
-              >
-                <Image style={styles.img_share} source={require('../images/icons/white/share.png')} />
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  const shareLinkContent = {
-                    contentType: 'link',
-                    contentUrl: 'https://www.google.com',
-                    quote: `Strollin' m'a proposé un trajet ! \nRejoignons nous a ${item.name} au ${item.address} !`,
-                  };
-                  ShareDialog.show(shareLinkContent);
-                }}
-                accessibilityLabel="Share"
-              >
-                <Image style={styles.img_share} source={require('../images/icons/white/facebook.png')} />
-              </TouchableOpacity>
-            </View>
-          </View>
-        </ImageBackground>
+      <View style={{
+        backgroundColor: "#ffffff",
+        padding: 16,
+        margin: 16,
+        borderRadius: 16,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 5,
+        },
+        shadowOpacity: 0.34,
+        shadowRadius: 6.27,
+
+        elevation: 10,
+      }}>
+        <Text style={globalStyles.subtitles}>{item.name}</Text>
+        <Text numberOfLines={1} style={[globalStyles.subparagraphs, {color: '#9B979B'}]}>{item.address}, {item.city}</Text>
+        <View style={{ marginTop: 16, width: "100%", }}>
+          <FlatList
+            style={{ width: "100%", flexWrap: 'wrap', flexDirection: 'row',  }}
+            data={item.tags_list}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              <>
+              {translateTags(item._id) === 'error'
+              ? <></>
+              : <Text style={[globalStyles.subparagraphs, globalStyles.tag,]}>{translateTags(item._id) === 'error' ? <></> : translateTags(item._id)}</Text>
+              }
+            </>
+            )}
+          />
+        </View>
+        <View style={{ position: 'absolute', top: 8, right: 8, flexDirection: 'row' }}>
+          <TouchableOpacity
+            onPress={() => {
+              Share.share({
+                message: `Strollin' m'a proposé un trajet ! \nRejoignons nous a ${item.name} au ${item.address} !`,
+                title: "Sortir avec Strollin'",
+                url: 'https://www.google.com',
+              }, {
+              // Android only:
+                dialogTitle: 'Share Strollin travel',
+                // iOS only:
+                excludedActivityTypes: [
+                  'com.apple.UIKit.activity.PostToTwitter'
+                ]
+              });
+            }}
+            accessibilityLabel="Share"
+          >
+            <Icon name="share" size={29} color='#000000'/>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{marginLeft: 8}}
+            onPress={() => {
+              const shareLinkContent = {
+                contentType: 'link',
+                contentUrl: 'https://www.google.com',
+                quote: `Strollin' m'a proposé un trajet ! \nRejoignons nous a ${item.name} au ${item.address} !`,
+              };
+              ShareDialog.show(shareLinkContent);
+            }}
+            accessibilityLabel="Share"
+          >
+            <Icon name="facebook" size={29} color='#000000'/>
+          </TouchableOpacity>
+        </View>
       </View>
+
+      // <View style={styles.view_box}>
+      //   <ImageBackground
+      //     style={styles.img_boxBack}
+      //     imageStyle={styles.img_boxBack}
+      //     source={randPic()}
+      //   >
+      //     <View style={styles.view_boxIn}>
+      //       <View style={styles.view_information}>
+      //         <Image style={styles.img_information} source={require('../images/icons/white/marker.png')} />
+      //         <Text style={styles.text_information}>{item.address}, {item.city}</Text>
+      //       </View>
+      //       <Text style={styles.text_name}>{item.name}</Text>
+      //       <View style={styles.view_share}>
+      //         <TouchableOpacity
+      //           onPress={() => {
+      //             Share.share({
+      //               message: `Strollin' m'a proposé un trajet ! \nRejoignons nous a ${item.name} au ${item.address} !`,
+      //               title: "Sortir avec Strollin'",
+      //               url: 'https://www.google.com',
+      //             }, {
+      //             // Android only:
+      //               dialogTitle: 'Share Strollin travel',
+      //               // iOS only:
+      //               excludedActivityTypes: [
+      //                 'com.apple.UIKit.activity.PostToTwitter'
+      //               ]
+      //             });
+      //           }}
+      //           accessibilityLabel="Share"
+      //         >
+      //           <Image style={styles.img_share} source={require('../images/icons/white/share.png')} />
+      //         </TouchableOpacity>
+      //         <TouchableOpacity
+      //           onPress={() => {
+      //             const shareLinkContent = {
+      //               contentType: 'link',
+      //               contentUrl: 'https://www.google.com',
+      //               quote: `Strollin' m'a proposé un trajet ! \nRejoignons nous a ${item.name} au ${item.address} !`,
+      //             };
+      //             ShareDialog.show(shareLinkContent);
+      //           }}
+      //           accessibilityLabel="Share"
+      //         >
+      //           <Image style={styles.img_share} source={require('../images/icons/white/facebook.png')} />
+      //         </TouchableOpacity>
+      //       </View>
+      //     </View>
+      //   </ImageBackground>
+      // </View>
   )}
 
   function _renderItem({item,index}){
   return (
-    <View>
-    <FlatList
-      //style={styles.view_list}
-      keyExtractor={item => item.id}
-      data={item.locations}
-      renderItem={_renderItem2}
-    />
-    </View>
+    <ScrollView
+      contentContainerStyle={{ width: '100%', backgroundColor: '#ffffff', paddingTop: 96, paddingBottom: 176 }}
+    >
+      <Text style={[globalStyles.subtitles, {marginHorizontal: 16}]}>On a trouvé ça pour toi</Text>
+      <FlatList
+        keyExtractor={item => item.id}
+        data={item.locations}
+        renderItem={_renderItem2}
+      />
+    </ScrollView>
   )
 }
 
@@ -437,49 +518,118 @@ function testrenderItem({item,index}){
   }
 
   let test = {
-          activeIndex:0,
-          carouselItems: [
-          {
-              title:"Item 1",
-              text: "Text 1",
-          },
-          {
-              title:"Item 2",
-              text: "Text 2",
-          },
-          {
-              title:"Item 3",
-              text: "Text 3",
-          },
-          {
-              title:"Item 4",
-              text: "Text 4",
-          },
-          {
-              title:"Item 5",
-              text: "Text 5",
-          },
-        ]
-      }
+    activeIndex:0,
+    carouselItems: [
+      {
+          title:"Item 1",
+          text: "Text 1",
+      },
+      {
+          title:"Item 2",
+          text: "Text 2",
+      },
+      {
+          title:"Item 3",
+          text: "Text 3",
+      },
+      {
+          title:"Item 4",
+          text: "Text 4",
+      },
+      {
+          title:"Item 5",
+          text: "Text 5",
+      },
+    ]
+  }
+
+  const [indexCarrousel, setindexCarrousel] = useState(0);
 
   return (
-    <ScrollView
-      style={styles.view_back}
-      refreshControl={
-              <RefreshControl
-                refreshing={refreshing}
-                onRefresh={onRefresh}
-              />
-      }
-    >
-    <View style={styles.view_header}>
-      <TouchableOpacity onPress={() => props.navigation.dispatch(DrawerActions.openDrawer())}>
-        <Image style={styles.img_header} source={require('../images/icons/black/menu.png')}/>
-      </TouchableOpacity>
-      <Text style={styles.text_header}>New Trip</Text>
+    <View style={[globalStyles.container, {paddingHorizontal: 0}]}>
+      <Popup message={"Ces lieux sont fermés.."} modalVisible={isModalVisible} setModalVisible={toggleModal}>
+        <Text style={[globalStyles.paragraphs, {width: '100%'}]}>{getName}</Text>
+        <Text style={[globalStyles.paragraphs, {marginTop: 32, width: '100%'}]}>Est-ce tu veux qu on les enlève du trajet que tu vas faire ?</Text>
+        <View style={{
+            width: '100%',
+            marginTop: 32,
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between'
+          }}>
+            <TouchableOpacity
+              style={{ backgroundColor: "#ffffff", padding: 16, alignItems: 'center', borderRadius: 32 }}
+              onPress={() => {
+                setLocationsCarrousel(locations)
+                toggleModal()
+              }}
+            >
+              <Text style={globalStyles.paragraphs}>Non merci</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{ backgroundColor: "#0989FF", padding: 16, alignItems: 'center', borderRadius: 32 }}
+              onPress={() => {
+                setLocations(deleteLocation)
+                setLocationsCarrousel(deleteLocation)
+                toggleModal()
+              }}
+            >
+              <Text style={[globalStyles.paragraphs, { color: '#ffffff' }]}>Oui svp</Text>
+            </TouchableOpacity>
+          </View>
+      </Popup>
+      <ScrollView
+        style={{width: "100%"}}
+        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+                <RefreshControl
+                  refreshing={refreshing}
+                  onRefresh={onRefresh}
+                />
+        }
+      >
+        <View style={styles.view_carrousel}>
+          {/* <ElementHistoryNav course={course} locations={locations} /> */}
+          <Carousel
+            layout={"stack"}
+            //ref={ref => this.carousel = ref}
+            data={carouselItemFinal.carouselItems}
+            //containerCustomStyle={styles.carouselContainer}
+            sliderWidth={windowWidth}
+            itemWidth={windowWidth}
+            // itemHeight={100}
+            useScrollView={true}
+            keyExtractor={(item) => item.id}
+            renderItem={_renderItem}
+            onSnapToItem={index => {
+              carouselItemFinal.activeIndex = index;
+              setindexCarrousel(index);
+            }}
+          />
+        </View>
+      </ScrollView>
+      <Pagination
+        dotsLength={carouselItemFinal.carouselItems.length}
+        activeDotIndex={indexCarrousel}
+        containerStyle={{ backgroundColor: '#ffffff00', position: 'absolute', top: 16, right: 0, left: 0 }}
+        dotStyle={{
+            width: 10,
+            height: 10,
+            borderRadius: 5,
+            marginHorizontal: 4,
+            backgroundColor: '#0989FF',
+        }}
+        inactiveDotStyle={{
+            backgroundColor: '#9B979B',
+            // Define styles for inactive dots here
+        }}
+        inactiveDotOpacity={0.4}
+        inactiveDotScale={0.6}
+      />
       <ButtonSwitch
-        iconOn={require('../images/volume.png')}
-        iconOff={require('../images/no-sound.png')}
+        iconOn={require('../assets/icons/sound_active.png')}
+        iconOff={require('../assets/icons/sound_inactive.png')}
         statue={props.profil.sound}
         onPressOff={() => {
           Tts.stop();
@@ -492,44 +642,10 @@ function testrenderItem({item,index}){
           props.dispatch(action);
         }}
       />
-    </View>
-      <View style={styles.view_carrousel}>
-      {/*<View style={styles.view_carrousel}>
-        <ElementHistoryNav course={course} locations={locations}/>*/}
-          <Carousel
-            layout={"default"}
-            //ref={ref => this.carousel = ref}
-            data={carouselItemFinal.carouselItems}
-            //containerCustomStyle={styles.carouselContainer}
-            sliderWidth={350}
-            itemWidth={350}
-            itemHeight={100}
-            useScrollView={true}
-            keyExtractor={(item) => item.id}
-            renderItem={_renderItem}
-            onSnapToItem = { index => {
-              carouselItemFinal.activeIndex = index
-            }} />
-      </View>
-      <View>
-        <Modal isVisible={isModalVisible}>
-          <View>
-            <Button title={getName} color="#BB7859"/>
-            <Button title="Oui, suprimez les" onPress={() => {
-              setLocations(deleteLocation)
-              setLocationsCarrousel(deleteLocation)
-              toggleModal()
-            }} />
-            <Button title="Non, gardez les" onPress={() => {
-              setLocationsCarrousel(locations)
-              toggleModal()
-            }} />
-          </View>
-        </Modal>
-      </View>
-      <TouchableOpacity
-        style={styles.view_button}
-        onPress={() => {
+      <MenuButton props={props}/>
+      <Footer
+        primaryText="C'est parti mon kiki"
+        primaryOnPressFct={() => {
           let finalLocations = carouselItemFinal.carouselItems[carouselItemFinal.activeIndex].locations
           var loctmp = [];
 
@@ -548,18 +664,13 @@ function testrenderItem({item,index}){
           // props.dispatch(action);
           // props.navigation.navigate('TripNavigation');
         }}
-      >
-        <Text style={styles.text_button}>Lets Go !</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.view_button}
-        onPress={() => {
+        secondaryText="Ca me plait pas trop"
+        secondaryOnPressFct={() => {
           setLoading(true);
           getLocations2()
         }}
-      >
-        <Text style={styles.text_button}>New Trip</Text>
-      </TouchableOpacity>
+
+      />
       <Modal
         animationType="none"
         transparent={true}
@@ -569,7 +680,7 @@ function testrenderItem({item,index}){
           <ActivityIndicator size="large"  color="black" style={{}}/>
         </View>
       </Modal>
-    </ScrollView>
+    </View>
   );
 }
 
