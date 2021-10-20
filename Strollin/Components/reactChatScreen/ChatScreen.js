@@ -10,6 +10,9 @@ import Store from '../../Store/configureStore';
 import profileReducer from '../../Store/Reducers/profileReducer';
 import {contextSocket} from '../Socket';
 import ButtonIcon from './../ButtonIcon.js';
+import ReturnButton from '../components/ReturnButton';
+
+const globalStyles = require('../../Styles');
 
 function goToMenu(props) {
   props.navigation.navigate('MenuChat');
@@ -21,33 +24,45 @@ function ChatScreen(props) {
 
 
   return (
-    <View style={styles.view_chatScreen}>
-      <View style={styles.view_header}>
-        <TouchableOpacity
-          onPress={() => { goToMenu(props); }}
-        >
-          <Image style={styles.img_header} source={require('../../images/icons/black/return.png')} />
-        </TouchableOpacity>
-        <Text style={styles.text_header}>
-          {name.length > 11 ? name.substring(0, 11) + ".." : name}{'    '}
-        </Text>
+    <View style={[globalStyles.container, {paddingHorizontal: 0}]}>
+      <View style={{
+        width: '100%',
+        backgroundColor: '#ffffff',
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 5,
+          },
+        shadowOpacity: 0.34,
+        shadowRadius: 6.27,
+        elevation: 10,
+        alignItems: 'flex-start',
+        justifyContent: 'center',
+        paddingVertical: 32,
+        paddingLeft: 96,
+        paddingRight: 8,
+      }}>
+        <Text numberOfLines={1} style={[globalStyles.subtitles, {width: '100%'}]}>{name}</Text>
       </View>
-      <View style={styles.view_list}>
-          <FlatList
-            data={props.conversation[props.conversation.currentConversation].messages_list}
-            renderItem={({ item }) => (
-              <MessagesItem navigation={props.navigation}
-              messageID={item}
-              />
-            )}
-            keyExtractor={(item) => String(item)}
+
+      <FlatList
+        data={props.conversation[props.conversation.currentConversation].messages_list}
+        contentContainerStyle={{flexDirection: 'column-reverse', paddingVertical: 8, marginVertical: 64}}
+        inverted
+        style={{backgroundColor: '#ffffff'}}
+        renderItem={({ item }) => (
+          <MessagesItem navigation={props.navigation}
+          messageID={item}
           />
-      </View>
+          )}
+        keyExtractor={(item) => String(item)}
+      />
       <ConversationBar
         onPress={sendMessage}
         imagePath="../../images/send.png"
         navigation={props.navigation}
       />
+      <ReturnButton onPressFct={() => goToMenu(props)}/>
     </View>
 
   );
@@ -62,7 +77,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    backgroundColor: '#E1E2E7',
+    backgroundColor: '#ffffff',
     paddingTop: '1.8%',
     paddingLeft: '3.3%',
     paddingRight: '3.3%',

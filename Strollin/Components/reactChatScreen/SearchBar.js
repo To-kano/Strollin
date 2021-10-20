@@ -57,7 +57,7 @@ function SearchBar(props) {
           },
           shadowOpacity: 0.34,
           shadowRadius: 6.27,
-          width: '76%',
+          width: '70%',
           justifyContent: 'space-between',
           elevation: 10,
         }}>
@@ -65,7 +65,7 @@ function SearchBar(props) {
             autoCapitalize={'none'}
             style={[
               globalStyles.subparagraphs, { padding: 0, }]}
-            placeholder={'Search a friend or a group'}
+            placeholder={'Rechercher une conversation'}
             onChangeText={(text) => setresearch(text)}
             value={research}
           />

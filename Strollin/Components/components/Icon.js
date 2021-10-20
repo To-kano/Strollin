@@ -15,6 +15,10 @@ const ICONS = [
         uri: require("../../assets/icons/add_map.png"),
     },
     {
+        name: 'add_picture',
+        uri: require("../../assets/icons/add_picture.png"),
+    },
+    {
         name: 'add',
         uri: require("../../assets/icons/add.png"),
     },
@@ -103,6 +107,10 @@ const ICONS = [
         uri: require("../../assets/icons/search.png"),
     },
     {
+        name: 'send',
+        uri: require("../../assets/icons/send.png"),
+    },
+    {
         name: 'settings',
         uri: require("../../assets/icons/settings.png"),
     },
@@ -129,6 +137,10 @@ const ICONS = [
     {
         name: 'step_before',
         uri: require("../../assets/icons/step_before.png"),
+    },
+    {
+        name: 'strollin',
+        uri: require("../../assets/icons/strollin.png"),
     },
     
     

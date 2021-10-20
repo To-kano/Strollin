@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
     paddingRight: 15,
     paddingBottom: 10,
     justifyContent: 'flex-start',
-    backgroundColor: '#fff',
+    backgroundColor: '#ffffff',
   },
   blueDisplay: {
     maxWidth: '77%',
@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
     paddingRight: 15,
     paddingBottom: 10,
     justifyContent: 'flex-start',
-    backgroundColor: '#0092A7',
+    backgroundColor: '#0989FF',
     alignItems: 'flex-end',
   },
   messageGrey: {
