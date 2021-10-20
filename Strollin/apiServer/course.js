@@ -67,7 +67,7 @@ async function generateCourse(access_token, settings) {
   const time = settings.hours * 60 + settings.minutes;
   const coordinate = [];
   const store = Store.getState();
-  const pos = store.CourseSettings.pos
+  var pos = store.CourseSettings.pos
 
   if (!pos) {
     pos = settings.pos;
