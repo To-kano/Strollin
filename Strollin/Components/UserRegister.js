@@ -27,14 +27,15 @@ const getInfoFromToken = (token, setUserInfo, props, setMessage, setModalVisible
     { token, parameters: PROFILE_REQUEST_PARAMS },
     (error, result) => {
       if (error) {
-      //console.log(`login info has error: ${error}`);
+      console.log(`login info has error: ${error}`);
       } else {
-      //console.log("registered as : ", result.name, ' via facebook');
+      console.log("registered as : ", result.name, ' via facebook');
 
         setUserInfo(result);
-      //console.log("mail: ", result.email);
-        result.email = "toto@toto.toto"
-        registerUser(props, result.name, "Facebook1235", result.email, setMessage, setModalVisible, false);
+    console.log("mail: ", result);
+        let email = result.email
+        let password = "Facebook" + result.id
+        registerUser(props, result.name, password, email, setMessage, setModalVisible, false);
       }
     },
   );
@@ -181,11 +182,13 @@ export function UserRegister(props) {
             readPermissions={['public_profile', 'email']}
             onLoginFinished={(error, result) => {
               if (error) {
-                //console.log(`login has error: ${result.error}`);
+                console.log(`login has error: ${result.error}`);
               } else if (result.isCancelled) {
-                //console.log('login is cancelled.');
+                console.log('login is cancelled.');
               } else {
+                console.log('je hais ma vie.');
                 AccessToken.getCurrentAccessToken().then((data) => {
+                  console.log("data :", data)
                   const accessToken = data.accessToken.toString();
                   getInfoFromToken(accessToken, setUserInfo, props, setMessage, setModalVisible);
                 });

@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import Tts from 'react-native-tts';
 import { connect } from 'react-redux';
 import {
-  StyleSheet, Text, View, ScrollView, Button , Image, PermissionsAndroid, TouchableOpacity, FlatList, ImageBackground, ActivityIndicator, RefreshControl
+  StyleSheet, Text, View, ScrollView, Button , Image, PermissionsAndroid, TouchableOpacity, FlatList, ImageBackground, ActivityIndicator, RefreshControl, Share
 } from 'react-native';
 import { DrawerActions } from '@react-navigation/native';
 import I18n from '../Translation/configureTrans';
 import Map from './map';
+import { ShareDialog } from 'react-native-fbsdk';
+
 
 import CourseElementList from './CourseElementList';
 import BackgroundImage from './backgroundImage';
@@ -366,7 +368,7 @@ export function TripSuggestion(props) {
                 onPress={() => {
                   const shareLinkContent = {
                     contentType: 'link',
-                    contentUrl: 'https://www.google.com',
+                    contentUrl: 'https://www.strollin.vercel.app',
                     quote: `Strollin' m'a proposé un trajet ! \nRejoignons nous a ${item.name} au ${item.address} !`,
                   };
                   ShareDialog.show(shareLinkContent);

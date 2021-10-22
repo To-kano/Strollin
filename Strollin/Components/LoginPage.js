@@ -34,7 +34,10 @@ const getInfoFromToken = (token, setUserInfo, props) => {
       } else {
       //console.log("connected as : ", result.name, ' via facebook');
         setUserInfo(result);
-        loginUser(props, result.email, "Facebook1235");
+        console.log(result)
+        let email = result.email
+        let password = "Facebook" + result.id
+        loginUser(props, email, password);
       }
     },
   );
@@ -132,7 +135,7 @@ export function LoginPage(props) {
         visible={isLoading}
       >
         <View style={styles.loading_screen}>
-          <ActivityIndicator size="large"  color="black" style={{}}/>        
+          <ActivityIndicator size="large"  color="black" style={{}}/>
         </View>
       </Modal>
     </View>

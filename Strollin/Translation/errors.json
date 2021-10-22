@@ -1,0 +1,14 @@
+{
+   "errors_array": [
+      ["1","You must be authenticated","Vous devez être authentifié"],
+      ["2","An error has occurred in the server","Une erreur s'est produite sur le serveur"],
+      ["3","An internal error has occurred","Une erreur interne s'est produite"],
+      ["4","An error in the data has occurred","Une erreur dans les données s'est produite"],
+      ["5","You must be a subscribed to access this functionality","Vous devez être abonné pour accéder à cette fonctionnalité"],
+      ["100","The email is not valid","L'email n'est pas valide"],
+      ["101","The email is already used","L'email est déjà utilisé"],
+      ["102","The password must contains 6 characters with at least 1 uppercase, 1 lowercase and 1 digit","Le mot de passe doit contenir 6 caractères avec au moins 1 majuscule, 1 minuscule et 1 chiffre"],
+      ["103","The login or the password is incorrect","Le login ou le mot de passe est incorrect"],
+      ["104","You made too much attempt, please retry later","Vous avez fait trop d'effort, veuillez réessayer ultérieurement"],
+   ],
+}
