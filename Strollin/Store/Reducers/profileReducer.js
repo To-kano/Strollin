@@ -16,7 +16,9 @@ const initialState = {
   scoreComment: [],
   sound: true,
   course_historic: [],
-  position: []
+  position: [],
+  fav: false,
+  favid: 0
 };
 
 const storeProfile = async (value) => {
@@ -151,6 +153,18 @@ function profileReducer(state = initialState, action) {
         nextState = {
           ...state,
           pos: action.value
+        };
+        return nextState;
+      case 'SET_FAV':
+        nextState = {
+          ...state,
+          fav: action.value
+        };
+        return nextState;
+      case 'SET_FAV_ID':
+        nextState = {
+          ...state,
+          favid: action.value
         };
         return nextState;
     default:

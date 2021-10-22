@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { StyleSheet, Image, TouchableHighlight } from 'react-native';
 import Icon from './components/Icon';
 
-function ButtonSwitch({statue, iconOn, iconOff, onPressOn, onPressOff}) {
+function ButtonSwitch({statue, iconOn, iconOff, onPressOn, onPressOff, position}) {
 
   if (statue) {
     return (
@@ -12,8 +12,8 @@ function ButtonSwitch({statue, iconOn, iconOff, onPressOn, onPressOff}) {
         style={{
           backgroundColor: "#ffffff",
           position: "absolute",
-          top: 16,
-          right: 16,
+          top: position.top,
+          right: position.right,
           padding: 16,
           borderRadius: 32,
           shadowColor: "#000",
@@ -26,7 +26,7 @@ function ButtonSwitch({statue, iconOn, iconOff, onPressOn, onPressOff}) {
 
           elevation: 10,
       }}>
-        <Icon name="sound_active" size={29} color='#000000'/>
+        <Icon name={iconOn} size={29} color='#000000'/>
       </TouchableHighlight>
     );
   } else {
@@ -36,8 +36,8 @@ function ButtonSwitch({statue, iconOn, iconOff, onPressOn, onPressOff}) {
         style={{
           backgroundColor: "#ffffff",
           position: "absolute",
-          top: 16,
-          right: 16,
+          top: position.top,
+          right: position.right,
           padding: 16,
           borderRadius: 32,
           shadowColor: "#000",
@@ -50,7 +50,7 @@ function ButtonSwitch({statue, iconOn, iconOff, onPressOn, onPressOff}) {
 
           elevation: 10,
         }}>
-          <Icon name="sound_inactive" size={29} color='#000000'/>
+          <Icon name={iconOff} size={29} color='#000000'/>
         </TouchableHighlight>
     );
   }

@@ -544,6 +544,79 @@ function testrenderItem({item,index}){
   }
 
   const [indexCarrousel, setindexCarrousel] = useState(0);
+  const [fav, setFav] = useState(false);
+
+  async function pushFav(courseID) {
+    const store = Store.getState();
+    const access_Token = store.profil.access_token;
+    console.log("courseID: ", courseID);
+    const body = JSON.stringify({course: courseID})
+    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/add_favorite`, {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'access_token': access_Token,
+      },
+      method: 'post',
+      body: body,
+      })
+      .then(res => res.json())
+      .then(json => {
+        console.log(json);
+      })
+      .catch((error) => {
+        console.error('error :', error);
+      });
+  }
+
+  async function addFav(coursetmp) {
+    const store = Store.getState();
+    const access_Token = store.profil.access_token;
+    const body = JSON.stringify({locations_list: coursetmp.locations_list, name: coursetmp.name})
+    console.log("body: ", body);
+    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/course/new_course`, {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'access_token': access_Token,
+      },
+      method: 'post',
+      body: body,
+      })
+      .then(res => res.json())
+      .then(json => {
+        console.log(json);
+        let action = { type: 'SET_FAV_ID', value: json.course.id};
+        props.dispatch(action);
+        pushFav(json.course.id)
+      })
+      .catch((error) => {
+        console.error('error :', error);
+      });
+  }
+
+  async function removeFav() {
+    const store = Store.getState();
+    const access_Token = store.profil.access_token;
+    const body = JSON.stringify({course_id: store.profil.favid})
+    console.log("body: ", body);
+    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/remove_favorite`, {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'access_token': access_Token,
+      },
+      method: 'post',
+      body: body,
+      })
+      .then(res => res.json())
+      .then(json => {
+        console.log(json);
+      })
+      .catch((error) => {
+        console.error('error :', error);
+      });
+  }
 
   return (
     <View style={[globalStyles.container, {paddingHorizontal: 0}]}>
@@ -628,8 +701,9 @@ function testrenderItem({item,index}){
         inactiveDotScale={0.6}
       />
       <ButtonSwitch
-        iconOn={require('../assets/icons/sound_active.png')}
-        iconOff={require('../assets/icons/sound_inactive.png')}
+        iconOn={"sound_active"}
+        iconOff={"sound_inactive"}
+        position={{top: 16, right: 16}}
         statue={props.profil.sound}
         onPressOff={() => {
           Tts.stop();
@@ -640,6 +714,25 @@ function testrenderItem({item,index}){
           Tts.stop();
           const action = { type: 'SET_SOUND', value: !props.profil.sound };
           props.dispatch(action);
+        }}
+      />
+      <ButtonSwitch
+        iconOff={'star_empty'}
+        iconOn={'star_filled'}
+        position={{top: 16, right: 90}}
+        statue={props.profil.fav}
+        onPressOff={() => {
+          const action = { type: 'SET_FAV', value: !props.profil.fav };
+          props.dispatch(action);
+          console.log("course: ", course);
+          addFav(course);
+        }}
+        onPressOn={() => {
+          const action = { type: 'SET_FAV', value: !props.profil.fav };
+          props.dispatch(action);
+          console.log("IT iS ONS");
+          console.log("course: ", course);
+          removeFav();
         }}
       />
       <MenuButton props={props}/>

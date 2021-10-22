@@ -180,7 +180,7 @@ function Map({
     }
   ]
 
-  
+
   if (position.asked == false) {
     requestGeolocalisationPermission(dispatch);
   }
@@ -230,6 +230,8 @@ function Map({
             title={marker.name}
             description={marker.address}
             image={require('../images/logo/marker_small.png')}
+            width={44}
+            height={64}
             onCalloutPress={() => {
               const store = Store.getState();
               var action = {
