@@ -10,6 +10,10 @@ import SearchBar from './SearchBar';
 import Store from '../../Store/configureStore';
 import ButtonIcon from './../ButtonIcon.js';
 import { IP_SERVER, PORT_SERVER } from '../../env/Environement';
+import MenuButton from '../components/MenuButton';
+import AddButton from '../components/AddFriendsButton';
+
+const globalStyles = require('../../Styles');
 
 function goToHome(props) {
   props.navigation.navigate('HomePage');
@@ -54,82 +58,24 @@ function sortConversation(key) {
   }
 }
 
-function Header({ props, defaultState = false }) {
-  return (
-    <View style={styles.view_header}>
-      <TouchableOpacity
-        onPress={() => props.navigation.dispatch(DrawerActions.openDrawer())}
-      >
-        <Image style={styles.img_header} source={require('../../images/icons/black/menu.png')} />
-      </TouchableOpacity>
-      <Text style={styles.text_header}>
-        {I18n.t('Header.chats')}
-      </Text>
-      <TouchableOpacity
-        onPress={() => { NewConversation(props); }}
-      >
-        <Image style={styles.img_header} source={require('../../images/icons/black/addChat.png')} />
-      </TouchableOpacity>
-    </View>
-  );
-}
-
 function LoginScreen(props) {
   //console.log('Menu Screen');
 
   return (
-    <View style={styles.view_back}>
-      <Header props={props} />
+    <View style={[globalStyles.container, {paddingHorizontal: 0}]}>
+      <FlatList
+        style={{width: '100%'}}
+        contentContainerStyle={{ paddingVertical: 96, paddingHorizontal: 16 }}
+        data={props.search.searchConvList}
+        renderItem={({ item }) => <ConvPreview {...props} conversationID={item} />}
+        keyExtractor={(item) => String(item)}
+      />
       <SearchBar
         onPress={sortConversation}
       />
-      <View style={styles.view_list}>
-        <FlatList
-          data={props.search.searchConvList}
-          renderItem={({ item }) => <ConvPreview {...props} conversationID={item} />}
-          keyExtractor={(item) => String(item)}
-        />
-      </View>
+      <MenuButton props={props}/>
+      <AddButton iconName="add_conversation" onPressFct={() => { NewConversation(props) }}/>
     </View>
-
-    // <View style={styles.container}>
-    //   <View style={styles.circle} />
-    //   <View style={{ flexDirection: 'row', justifyContent: 'center', backgroundColor: "#ffffff" }}>
-    //     <View style={{ flex: 1 }}>
-    //       <ButtonIcon
-    //         icon={require('../../images/left_arrow.png')}
-    //         onPress={() => {
-    //           goToHome(props);
-    //         }}
-    //       />
-    //     </View>
-    //     <View style={{ flex: 7, }}>
-    //       <Text style={styles.header}>Discussions</Text>
-    //     </View>
-    //     <View style={{ flex: 1 }}>
-    //       <ButtonIcon
-    //         icon={require('../../images/plus.png')}
-    //         onPress={() => {
-    //           NewConversation(props);
-    //         }}
-    //       />
-    //     </View>
-
-    //   </View>
-    //   <View style={{backgroundColor: "#ffffff"}}>
-    //     <SearchBar
-    //       onPress={sortConversation}
-    //       imagePath="../../images/loupe.svg"
-    //     />
-    //   </View>
-    //   <View>
-    //     <FlatList
-    //       data={props.search.searchConvList}
-    //       renderItem={({ item }) => <ConvPreview {...props} conversationID={item} />}
-    //       keyExtractor={(item) => String(item)}
-    //     />
-    //   </View>
-    // </View>
   );
 }
 

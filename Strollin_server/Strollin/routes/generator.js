@@ -45,6 +45,8 @@ router.get('/generate_course', async function(req, res) {
 
     let friendstags = req.headers.friendstags;
     let userTags = req.headers.tags;
+    var friendflag = false;
+
     if (!user) {
         return res.status(400).send({status: "You are not connected."});
     }
@@ -52,10 +54,10 @@ router.get('/generate_course', async function(req, res) {
         return res.status(400).send({status: "Error in database transaction:\n", error: user});
     }
 
-    //console.log("lets EEEE", req.headers.time , req.headers.budget , " Tags: ", req.headers.tags , req.headers.coordinate);
     if (!req.headers.coordinate || !req.headers.time || !req.headers.budget || !req.headers.tags) {
         return res.status(400).send({status: "Parameter required is missing."});
     }
+
     let tags = req.headers.tags.split(',');
     if (req.headers.locations_list) {
       locations_list = req.headers.locations_list.split(',');
@@ -66,35 +68,45 @@ router.get('/generate_course', async function(req, res) {
       console.log("USING TEMPORARY TAGS");
       userTags = req.headers.temptags
     }
-    console.log("pk:", friendstags);
+
     if (friendstags) {
-      friendstags = friendstags.concat(",")
-      friendstags = friendstags.concat(userTags)
       var friendsArray = friendstags.split(',')
-      console.log("oui");
-      const uniqueset = new Set(friendsArray)
-      console.log("uniqueset: ", uniqueset);
-      userTags = friendsArray.join(',')
+      var tagsArray = userTags.split(',')
+      var prioFriends = [];
+
+      console.log("friendsArray: ", friendsArray);
+      for (var i = 0; i < friendsArray.length; i++) {
+        for (var j = 0; j < tagsArray.length; j++) {
+          if (friendsArray[i] == tagsArray[j]) {
+            prioFriends.push(friendsArray[i])
+            tagsArray.splice(j, 1);
+            break;
+          }
+        }
+      }
+      userTags = tagsArray.join()
+      friendflag = true;
+      console.log("prioFriends: ", prioFriends);
     }
 
     console.log("userTags: ", userTags);
-    const promise2 = algo.data.algo(req.headers.time , req.headers.budget , userTags, req.headers.coordinate, req.headers.eat, radius, placeNbr, locations_list, req.headers.is18);
+    const promise2 = algo.data.algo(req.headers.time , req.headers.budget , userTags, req.headers.coordinate, req.headers.eat, radius, placeNbr, locations_list, req.headers.is18, prioFriends, friendflag, friendsArray);
     promise2.then((value) => {
       let generated_course = value;
       console.log("course: ", generated_course);
+
+      // A OPTI
       if (generated_course) {
-        console.log("if 1");
-        course = {locations_list: [], name: (generated_course[0].Name + " => " + generated_course[generated_course.length - 1].Name), tags_list: []}
+        course = {locations_list: [], name: (generated_course[0].name + " => " + generated_course[generated_course.length - 1].name), tags_list: []}
         for (let index in generated_course) {
-            course.locations_list.push(generated_course[index].Id);
-            for (let index2 in generated_course.Tags) {
-                tags = generated_course[index].Tags[index2];
+            course.locations_list.push(generated_course[index].id);
+            for (let index2 in generated_course.tags_list) {
+                tags = generated_course[index].tags_list[index2]._id;
                 if (!course.tags_list.includes(tag)) {
                     course.tags_list.push(tag)
                 }
             }
         }
-        console.log("304 ?");
         return res.status(200).send({status: "Result of the generator.", generated_course, course});
       }
       return res.status(400).send({status: "An error occured during the generation of the course"});
@@ -178,11 +190,14 @@ router.post('/popup_answer', async function(req, res) {
  * @param {String} req.headers.tag
  */
 router.get('/recover_places', async function(req, res) {
+  console.log("GENERATE PLACES");
   var coordinate = req.headers.coordinates.split(",")
   console.log("coordinate: ", coordinate);
   console.log("tag: ", req.headers.tag);
 
-algo.data.places(coordinate, req.headers.tag);
+  algo.data.places(coordinate, req.headers.tag);
+  console.log("I AM REEEEEEEEEEEEALLLLLLY OUT");
+  return res.status(200).send({status: "Result."});
 });
 
 module.exports = router;

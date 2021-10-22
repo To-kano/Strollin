@@ -9,15 +9,20 @@ import ButtonIcon from '../ButtonIcon.js';
 import {contextSocket} from '../Socket';
 import { uploadImage } from '../../apiServer/image';
 import Store from '../../Store/configureStore';
+import Icon from '../components/Icon';
+
+const globalStyles = require('../../Styles');
 
 function ConversationBar(props) {
   const [research, setresearch] = useState('');
   const [image, setImage] = useState(null);
   const [imageName, setImageName] = useState(null);
+  const [MoreOptions, setMoreOptions] = useState(false);
+  const [inputWidth, setinputWidth] = useState("75%");
   const {sendImage} = contextSocket();
 
 
-  const goToCourseScreen= () => {
+  const goToCourseScreen = () => {
     props.navigation.navigate("SendCourseScreen")
   }
 
@@ -87,30 +92,38 @@ function ConversationBar(props) {
         </View>
       )}
       {!image && (
-        <View style={styles.view_horizontalDisplay}>
-          <TouchableOpacity style={styles.imgView_conversationBar} onPress={() => { goToCourseScreen(); }}>
-            <Image style={styles.img_conversationBar} source={require('../../images/logo/marker_small_tchat.png')} />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.imgView_conversationBar} onPress={handleChooseImage}>
-            <Image style={styles.img_conversationBar} source={require('../../images/icons/black/addPicture.png')} />
-          </TouchableOpacity>
+        <>
+          {MoreOptions
+            ? <>
+                <TouchableOpacity onPress={() => { goToCourseScreen(); setMoreOptions(false); setinputWidth('75%')}}>
+                  <Icon name="marker" size={29} color='#1C1B1C'/>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => { handleChooseImage(); setMoreOptions(false); setinputWidth('75%')}}>
+                  <Icon name="add_picture" size={29} color='#1C1B1C'/>
+                </TouchableOpacity>
+              </>
+            : 
+              <TouchableOpacity onPress={() => { setMoreOptions(true); setinputWidth('55%')}}>
+                  <Icon name="add" size={29} color='#1C1B1C'/>
+              </TouchableOpacity>
+          }
           <TextInput
-          autoCapitalize={'none'}
-            style={styles.textInput_conversationBar}
+            autoCapitalize={'none'}
+
+            style={[globalStyles.textInput, {width: inputWidth, marginTop: 0}]}
             placeholder="Message.."
             onChangeText={(text) => setresearch(text)}
             value={research}
           />
           <TouchableOpacity
-            style={styles.imgView_conversationBar}
             onPress={() => {
               props.onPress(research);
               setresearch('');
             }}
           >
-            <Image style={styles.img_conversationBar} source={require('../../images/icons/black/send.png')} />
+            <Icon name="send" size={29} color='#1C1B1C'/>
           </TouchableOpacity>
-        </View>
+        </>
       )}
     </View>
   );
@@ -118,19 +131,23 @@ function ConversationBar(props) {
 
 const styles = StyleSheet.create({
   view_imageDisplay: {
-    marginTop: 10,
-    marginBottom: 15,
-    flex: 100,
-    width: '100%',
-    flexDirection: 'row',
+    backgroundColor: '#ffffff',
+    position: 'absolute',
+    bottom: 0,
+    left: 0, right: 0,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    justifyContent: 'space-between',
     alignItems: 'center',
-    justifyContent: 'flex-end',
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    paddingLeft: 10, 
-    paddingRight: 10, 
-    paddingTop: 5, 
-    paddingBottom: 5,
+    shadowColor: "#000",
+    flexDirection: 'row',
+    shadowOffset: {
+        width: 0,
+        height: 5,
+      },
+    shadowOpacity: 0.34,
+    shadowRadius: 6.27,
+    elevation: 10,
   },
   img_imageDisplay: {
     width: 120,
@@ -139,36 +156,38 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   view_conversationBar: {
-    marginTop: 10,
-    marginBottom: 15,
-    flex: 40,
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-  },
-  view_horizontalDisplay: {
-    width: '100%',
-    flexDirection: 'row',
+    backgroundColor: '#ffffff',
+    position: 'absolute',
+    bottom: 0,
+    left: 0, right: 0,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
     justifyContent: 'space-between',
     alignItems: 'center',
-  },
-  imgView_conversationBar: {
-    flex: 1,
+    shadowColor: "#000",
+    flexDirection: 'row',
+    shadowOffset: {
+        width: 0,
+        height: 5,
+      },
+    shadowOpacity: 0.34,
+    shadowRadius: 6.27,
+    elevation: 10,
   },
   img_conversationBar: {
     width: 35,
     height: 35,
   },
   textInput_conversationBar: {
-    flex: 4,
-    height: 40,
-    marginRight: 10,
-    borderRadius: 20,
+    height: 48,
+    borderRadius: 4,
     fontSize: 16,
+    color: '#1C1B1C',
     backgroundColor: '#fff',
-    paddingLeft: 10, 
-    paddingRight: 10, 
-    paddingTop: 10, 
-    paddingBottom: 10, 
+    paddingLeft: 8, 
+    paddingRight: 8, 
+    paddingTop: 8, 
+    paddingBottom: 8, 
   },
 });
 

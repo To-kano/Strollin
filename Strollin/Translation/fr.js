@@ -172,7 +172,7 @@ export default {
   },
 
   TendanceSearchBar: {
-    searchTag: 'Chercher a partir de tags',
+    searchTag: 'Chercher un tag',
   },
 
   TripSuggestion: {
@@ -228,7 +228,7 @@ export default {
     partner: 'Partenaire',
     partnerPosition: 'Localisation',
     profile: 'Profil',
-    home: 'Home',
+    home: 'Bienvenue !',
     options: 'Vos options',
     historic: 'Historique',
     new_trip: 'New Trip',

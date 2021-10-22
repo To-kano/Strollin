@@ -24,10 +24,9 @@ async function loginUser(props, newMail, newPassword, setLoading) {
         //console.log('login user faile: ', answer);
       }
     })
-    .then(setLoading(false))
+    .then()
     .catch((error) => {
       console.error('error :', error);
-      setLoading(false);
     });
 }
 
@@ -270,10 +269,9 @@ async function registerUser(props, newPseudo, newPassword, newMail, setMessage, 
         setPopup(true);
       }
     })
-    .then(setLoading(false))
+    .then()
     .catch((error) => {
       console.error('error :', error);
-      setLoading(false);
     });
 }
 
@@ -338,7 +336,7 @@ exports.registerUserTag = registerUserTag;
 
 function createFormData(image, body = {}) {
   const data = new FormData();
-  
+
   data.append('image', {
     name: image.fileName,
     type: image.type,
@@ -348,7 +346,7 @@ function createFormData(image, body = {}) {
   Object.keys(body).forEach((key) => {
     data.append(key, body[key]);
   });
-  
+
   return data;
 }
 

@@ -91,6 +91,7 @@ router.post('/new_course', async function(req, res) {
     if (error.errors) {
         return res.status(400).send({status: "Error in database transaction:\n", error});
     }
+    console.log("COURSE: ", course);
     return res.status(200).send({status: "Course created.", course});
 });
 
