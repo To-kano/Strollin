@@ -177,7 +177,7 @@ export function CourseSettings(props) {
 
   return (
     <View style={globalStyles.container}>
-      <Step actualStep={CourseSettingStep} finishStep={7} onPressFct={() => setCourseSettingStep(CourseSettingStep - 1)} />
+      <Step actualStep={CourseSettingStep} finishStep={8} onPressFct={() => setCourseSettingStep(CourseSettingStep - 1)} />
 
       {CourseSettingStep === 1 &&
         <>
@@ -276,6 +276,21 @@ export function CourseSettings(props) {
         </>
       }
       {CourseSettingStep === 7 &&
+        <>
+          <View>
+            <Text style={globalStyles.titles}>Veux tu faire le trajet avec des amis UwU ?</Text>
+            <Text style={[globalStyles.subparagraphs, { marginTop: 16 }]}>Strollin est aussi une application sociale {'\n'} Ajoute tes amis au trajet et nous nous occupons de faire un trajet qui plait a tout le monde</Text>
+          </View>
+          <SecondaryButton
+            text="Choisir des amis"
+            onPressFct={() => {
+              props.navigation.navigate("FriendSelection");
+            }}
+          />
+          <NextStep text='La suite' onPressFct={() => setCourseSettingStep(CourseSettingStep + 1)} />
+        </>
+      }
+      {CourseSettingStep === 8 &&
         <>
           <View style={{width: "100%", marginBottom: 16}}>
             <Text style={globalStyles.titles}>Veux-tu un peu de changement ?</Text>
