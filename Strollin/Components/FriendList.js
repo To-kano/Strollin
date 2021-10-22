@@ -258,6 +258,9 @@ async function DeleteFriend(props, store, id) {
 function checkSearch(id) {
   const store = Store.getState();
 
+  if (store.search.searchFriendList.length == 0) {
+    return (true);
+  }
   for (let i in store.search.searchFriendList) {
 
     if (id == store.search.searchFriendList[i]) {

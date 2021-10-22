@@ -90,7 +90,6 @@ function Header({ props, defaultState = false }) {
 export function HomePage(props) {
 
   let url = getUrl(props);
-
   return (
     <View style={styles.view_back}>
       <Header props={props} />

@@ -5,6 +5,7 @@ import {
 } from 'react-native';
 
 import ElementHistoryNav from './HistoryElement';
+import CourseItem from './CourseItem';
 
 
 import {getCourseById} from '../apiServer/course';
@@ -19,65 +20,68 @@ async function getArrayLocation(access_token, idLocations) {
     return result
 }
 
-export function HistoryItem({ profil, courseId , duration}) {
+export function HistoryItem(props) {
 
 
     const [course, setCourse] = useState(null);
 
   useEffect(() => {
     async function getCourse() {
-      const result = await getCourseById(profil.access_token, courseId[0]);
+      const result = await getCourseById(props.profil.access_token, props.courseId[0]);
 
       setCourse(result);
     }
 
-    async function getLocations() {
-      const result = await getArrayLocation(profil.access_token, course.locations_list)
-
-      setLocations(result);
-    }
+    //async function getLocations() {
+    //  const result = await getArrayLocation(props.profil.access_token, course.locations_list)
+//
+    //  setLocations(result);
+    //}
 
     if (!course) {
       getCourse();
     }
 
-    if (course && course.locations_list) {
-      getLocations();
-    }
+    //if (course && course.locations_list) {
+    //  getLocations();
+    //}
 
   }, [course]);
 
-  const [locations, setLocations] = useState(null);
-//console.log("profil : ", profil);
-//console.log("courseId : ", courseId);
-//console.log("course : ", course);
+  //const [locations, setLocations] = useState(null);
+//console.log("props.profil : ", props.profil);
+//console.log("props.courseId : ", props.courseId);
+console.log("course : ", props.courseId);
 //console.log("locations : ", locations);
+  if (course) {
     return (
-        <View style={styles.view_historic}>
-          <View style={styles.view_historicTop}>
-            <View style={styles.view_information}>
-              <Image style={styles.img_date} source={require('../images/icons/black/calendar.png')}/>
-              <Text style={styles.text_date}>{courseId[1]}</Text>
-            </View>
-            {/* <View style={styles.view_information}>
-              <Image style={styles.img_duration} source={require('../images/icons/black/time.png')}/>
-              <Text style={styles.text_duration}>{courseId}</Text>
-            </View> */}
-              <ElementHistoryNav course={course} locations={locations}/>
+      <View style={styles.view_historic}>
+        <View style={styles.view_historicTop}>
+          <View style={styles.view_information}>
+            <Image style={styles.img_date} source={require('../images/icons/black/calendar.png')}/>
+            <Text style={styles.text_date}>{props.courseId[1]}</Text>
           </View>
+          {/* <View style={styles.view_information}>
+            <Image style={styles.img_props.duration} source={require('../images/icons/black/time.png')}/>
+            <Text style={styles.text_props.duration}>{props.courseId}</Text>
+          </View> */}
+            {/*<ElementHistoryNav course={course} locations={locations}/>*/}
+            <CourseItem 
+              {...props}
+              data={course} />
         </View>
+      </View>
 
     );
   }
+  else {
+    return (<View></View>);
+  }
+
+}
   
   
-  const mapStateToProps = (state) => {
-    return (
-      {
-        profil: state.profil
-      }
-    )
-  };
+const mapStateToProps = (state) => state;
   export default connect(mapStateToProps)(HistoryItem);
   
   const styles = StyleSheet.create({
