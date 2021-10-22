@@ -1,6 +1,6 @@
 import React, { Component, useState, useEffect } from 'react';
 import {
-  StyleSheet, AppState, View, Text, Button, BackHandler, Image, TouchableOpacity, ImageBackground, ActivityIndicator, Modal, RefreshControl
+  StyleSheet, AppState, View, Text, Button, BackHandler, Image, TouchableOpacity, Dimensions, ActivityIndicator, Modal, RefreshControl, Share
 } from 'react-native';
 
 import { connect } from 'react-redux';
@@ -13,6 +13,17 @@ import Store from '../Store/configureStore';
 import { PopUpForm } from './PopUpForm';
 import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 import {createNewCourse} from '../apiServer/course';
+import MenuButton from './components/MenuButton';
+import CloseButton from './components/CloseButton';
+import { FlatList } from 'react-native-gesture-handler';
+import { translateTags } from '../Translation/translateTags';
+import Icon from './components/Icon';
+import { ShareDialog } from 'react-native-fbsdk';
+
+const globalStyles = require('../Styles');
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
+
 
 function randPic() {
   /*const rand = (Math.floor(Math.random() * 2) + 1);
@@ -23,7 +34,7 @@ function randPic() {
   return (require('../ressources/street2.jpg'));
 }
 
-export function TripNavigation({map, profil, dispatch, navigation}) {
+export function TripNavigation({ map, profil, dispatch, navigation}) {
   const [displayMap, setDisplayMap] = useState(true);
   const [pop, setPop] = useState(false);
   const [del, setDel] = useState(false);
@@ -87,7 +98,7 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
       return
     //update course
     setLoading(true);
-    await fetch(`https://${IP_SERVER}:${PORT_SERVER}/location/get_locations_by_id`, {
+    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/get_locations_by_id`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -167,18 +178,18 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
 if (del) {
   return (
     <View>
-    <Text>
-      Are you sure you want to delete this place ?: {Store.getState().course.delete[1]}
-    </Text>
-    <Button
-      title="yes"
-      onPress={() => DeletePlace(true)}
-    />
-    <Button
-      title="no"
-      onPress={() => DeletePlace(false)}
-    />
-  </View>
+      <Text>
+        Are you sure you want to delete this place ?: {Store.getState().course.delete[1]}
+      </Text>
+      <Button
+        title="yes"
+        onPress={() => DeletePlace(true)}
+      />
+      <Button
+        title="no"
+        onPress={() => DeletePlace(false)}
+      />
+    </View>
   )}
  // if (pop) {
  //   return (
@@ -203,9 +214,21 @@ if (del) {
  //     </View>
  //   )}
  // else {
+   console.log("loc : ", locations[0]);
   return (
-    <View style={styles.view_back}>
-      <View style={styles.view_header}>
+    <View style={globalStyles.container}>
+      <View style={styles.view_map}>
+        {displayMap &&
+          <Map
+            navigation={navigation}
+            height={windowHeight}
+            width={windowWidth}
+            deltaView={deltaView}
+            locations={locations}
+          />
+        }
+      </View>
+      {/* <View style={styles.view_header}>
         <Text style={styles.text_header}>   My Trip</Text>
         <TouchableOpacity
           onPress={async () => {
@@ -221,22 +244,94 @@ if (del) {
         >
           <Image style={styles.img_header} source={require('../images/icons/black/close.png')} />
         </TouchableOpacity>
+      </View> */}
+      <View
+        style={{
+          position: 'absolute',
+          bottom: 16,
+          right: 8,
+          left: 8,
+          backgroundColor: "#ffffff",
+          padding: 16,
+          margin: 16,
+          borderRadius: 16,
+          shadowColor: "#000",
+          shadowOffset: {
+              width: 0,
+              height: 5,
+          },
+          shadowOpacity: 0.34,
+          shadowRadius: 6.27,
+
+          elevation: 10,
+        }}>
+          <Text style={globalStyles.subtitles}>{locations[0].name}</Text>
+          <Text numberOfLines={1} style={[globalStyles.subparagraphs, {color: '#9B979B'}]}>{locations[0].address}, {locations[0].city}</Text>
+          <View style={{ marginTop: 16, width: "100%", }}>
+            <FlatList
+              style={{ width: "100%" }}
+              data={locations[0].tags_list}
+              horizontal={true}
+              keyExtractor={(item) => item.id}
+              renderItem={({ item }) => (
+                <>
+                {translateTags(item._id) === 'error'
+                ? <></>
+                : <Text style={[globalStyles.subparagraphs, globalStyles.tag,]}>{translateTags(item._id) === 'error' ? <></> : translateTags(item._id)}</Text>
+                }
+              </>
+              )}
+            />
+          </View>
+          <View style={{ position: 'absolute', top: 8, right: 8, flexDirection: 'row' }}>
+            <TouchableOpacity
+              onPress={() => {
+                Share.share({
+                  message: `Strollin' m'a proposé un trajet ! \nRejoignons nous a ${locations[0].name} au ${locations[0].address} !`,
+                  title: "Sortir avec Strollin'",
+                  url: 'https://www.google.com',
+                }, {
+                // Android only:
+                  dialogTitle: 'Share Strollin travel',
+                  // iOS only:
+                  excludedActivityTypes: [
+                    'com.apple.UIKit.activity.PostToTwitter'
+                  ]
+                });
+              }}
+              accessibilityLabel="Share"
+            >
+              <Icon name="share" size={29} color='#000000'/>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{marginLeft: 8}}
+              onPress={() => {
+                const shareLinkContent = {
+                  contentType: 'link',
+                  contentUrl: 'https://www.google.com',
+                  quote: `Strollin' m'a proposé un trajet ! \nRejoignons nous a ${locations[0].name} au ${locations[0].address} !`,
+                };
+                ShareDialog.show(shareLinkContent);
+              }}
+              accessibilityLabel="Share"
+            >
+              <Icon name="facebook" size={29} color='#000000'/>
+            </TouchableOpacity>
+          </View>
       </View>
-      <View style={styles.view_destination}>
-        <Image style={styles.img_header} source={require('../images/icons/black/next_trip.png')} />
-        <Text numberOfLines={1}  style={styles.text_destination}>{locations[0].name}</Text>
-      </View>
-      <View style={styles.view_map}>
-        {displayMap &&
-          <Map
-            navigation={navigation}
-            height="100%"
-            width={390}
-            deltaView={deltaView}
-            locations={locations}
-          />
-        }
-      </View>
+      <CloseButton
+        onPressFct={async () => {
+          const store = Store.getState();
+          const result = await createNewCourse(store.profil.access_token, store.course.currentCourse);
+          addUserHistoric(store.profil.access_token, result.id);
+          const action = { type: 'ADD_HISTORY', courseID: result.id };
+          dispatch(action);
+          const action2 = { type: 'ADD_COURSE_OBJECT_HISTORIC', value: result };
+          dispatch(action2);
+          navigation.navigate('CourseEvaluation');
+        }}
+      />
+
       {pop &&
         <View style={styles.view_popup}>
           <Text style={[styles.text_popup, styles.text_question]}>
@@ -258,7 +353,7 @@ if (del) {
           </View>
         </View>
       }
-      <TouchableOpacity onPress={() => {
+      {/* <TouchableOpacity onPress={() => {
         setDel(true)
       }}>
         <Text style={styles.text_signIn}>Delete</Text>
@@ -270,14 +365,14 @@ if (del) {
         PopUpReq(profil.first_name, profil.scoreCourse); //Je sais pas utiliser les props du coup g stocker des truc dans les props dans course settings
       }}>
         <Text style={styles.text_signIn}>Simulate</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       <Modal
         animationType="none"
         transparent={true}
         visible={isLoading}
       >
         <View style={styles.loading_screen}>
-          <ActivityIndicator size="large"  color="black" style={{}}/>        
+          <ActivityIndicator size="large"  color="black" style={{}}/>
         </View>
       </Modal>
     </View>

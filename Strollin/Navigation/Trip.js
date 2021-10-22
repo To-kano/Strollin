@@ -11,6 +11,7 @@ import CourseEvaluation from '../Components/CourseEvaluation';
 import CourseSettings from '../Components/CourseSettings';
 import LocationPage from '../Components/LocationPage';
 import Temporarytags from '../Components/Temporarytags';
+import ChosePosition from '../Components/ChosePosition';
 import FriendSelection from '../Components/FriendSelection';
 
 const Stack = createStackNavigator();
@@ -54,6 +55,10 @@ function Trip() {
             <Stack.Screen
                   name="Temporarytags"
                   component={Temporarytags}
+            />
+            <Stack.Screen
+                  name="ChosePosition"
+                  component={ChosePosition}
             />
         </Stack.Navigator>
     );

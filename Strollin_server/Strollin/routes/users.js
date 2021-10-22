@@ -40,6 +40,7 @@ const {
  */
 router.post('/register', async function (req, res) {
 
+  console.log("REGISTER BODY: ", req.body);
   if (!req.body.mail || !req.body.mail.includes('@')) {
     return res.status(400).send({ error_code: 100 });
   }
@@ -425,11 +426,12 @@ router.post('/add_historic', async function (req, res) {
 /**
  * Add a course into the favorite of the user.
  * @param {String} req.headers.access_token
- * 
+ *
  * @param {String} req.body.course
  */
  router.post('/add_favorite', async function (req, res) {
 
+   console.log("body: ", req.body.course);
   let user = await UserModel.findOne({ access_token: req.headers.access_token }, "-_id id pseudo course_favorites").catch(error => error);
   if (!user) {
     return res.status(401).send({ error_code: 1 });
@@ -437,7 +439,7 @@ router.post('/add_historic', async function (req, res) {
   if (user.reason) {
     return res.status(500).send({ error_code: 2 });
   }
-
+  console.log("ici");
   let course = await CourseModel.findOne({ id: req.body.course }).catch(error => error);
   if (!course) {
     return res.status(400).send({ error_code: 4 });
@@ -469,6 +471,46 @@ router.post('/add_historic', async function (req, res) {
   }
 });
 
+router.post('/add_favorite', async function (req, res) {
+
+  console.log("body: ", req.body.course);
+ let user = await UserModel.findOne({ access_token: req.headers.access_token }, "-_id id pseudo course_favorites").catch(error => error);
+ if (!user) {
+   return res.status(400).send({ status: "You are not connected." });
+ }
+ if (user.reason) {
+   return res.status(400).send({ status: "Error in database transaction:\n", error: user });
+ }
+ let course = await CourseModel.findOne({ id: req.body.course }).catch(error => error);
+ if (!course) {
+   return res.status(400).send({ status: "The course does not exist." });
+ } else if (course.reason) {
+   return res.status(400).send({ status: "Error in database transaction:\n", error: user });
+ } else {
+   if (user.course_favorites.includes(course.id)) {
+     return res.status(400).send({ status: "The course is already in favorite." });
+   }
+   let error = await UserModel.updateOne({ id: user.id }, { $push: { course_favorites: course.id } }).catch(error => error);
+   if (error.errors) {
+     return res.status(400).send({ status: "Error in database transaction:\n", error: error });
+   }
+
+   user = await UserModel.findOne({ access_token: req.headers.access_token}, "id pseudo course_favorites").catch(error => error);
+   if (user.reason) {
+     return res.status(400).send({ status: "Error in database transaction:\n", error: user });
+   }
+   let courses_list = [];
+   course = undefined;
+   for (let index = 0; index < user.course_favorites.length; index++) {
+     course = await CourseModel.findOne({id: user.course_favorites[index]}).catch(error => error);
+     if (course && course.reason) {
+       return res.status(400).send({status: "Error in database transaction:\n", error: course});
+     }
+     courses_list.push(course);
+   }
+   return res.status(200).send({ status: "Favorite added.", course_favorites: courses_list });
+ }
+});
 
 // REMOVE_FRIEND (Version Beta)
 /**
@@ -529,7 +571,7 @@ router.post('/remove_friend', async function (req, res) {
   if (error.errors) {
     return res.status(500).send({ error_code: 2 });
   }
-  
+
   user = await UserModel.findOne({ access_token: req.headers.access_token}, "id pseudo course_favorites").catch(error => error);
   if (user.reason) {
     return res.status(500).send({ error_code: 2 });
@@ -816,7 +858,7 @@ router.get('/get_user_by_id', async function (req, res) {
     return res.status(500).send({ error_code: 2 });
   }
   let given_list = req.headers.users_list.split(',');
-  let users_list = await UserModel.find({ id: { $in: given_list } }, projection).catch(error => error);
+  let users_list = await UserModel.find({ id: { $in: given_list } }).catch(error => error);
   if (users_list && users_list.reason) {
     return res.status(500).send({ error_code: 2 });
   } else if (users_list && users_list.length > 0) {

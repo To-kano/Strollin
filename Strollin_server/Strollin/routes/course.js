@@ -91,7 +91,8 @@ router.post('/new_course', async function(req, res) {
     if (error.errors) {
         return res.status(500).send({ error_code: 2 });
     }
-    return res.status(200).send({ status: "Course created.", course});
+    console.log("COURSE: ", course);
+    return res.status(200).send({status: "Course created.", course});
 });
 
 

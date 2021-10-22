@@ -270,10 +270,9 @@ async function registerUser(props, newPseudo, newPassword, newMail, setMessage, 
         setPopup(true);
       }
     })
-    .then(setLoading(false))
+    .then()
     .catch((error) => {
       console.error('error :', error);
-      setLoading(false);
     });
 }
 

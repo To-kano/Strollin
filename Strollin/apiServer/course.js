@@ -7,6 +7,7 @@ import {
   saveNewCourse,
   getCourseCacheById
 } from '../cache/course'
+import Store from '../Store/configureStore';
 
 
 async function getCustomCourse(access_token) {
@@ -65,14 +66,29 @@ async function generateCourse(access_token, settings) {
 
   const time = settings.hours * 60 + settings.minutes;
   const coordinate = [];
+  const store = Store.getState();
+  var pos = store.CourseSettings.pos
 
-  coordinate[0] = settings.pos.latitude;
-  coordinate[1] = settings.pos.longitude;
+  if (!pos) {
+    pos = settings.pos;
+  }
+  else {
+    settings.pos = pos;
+  }
+
+  coordinate[0] = pos.latitude;
+  coordinate[1] = pos.longitude;
 
   const buffer = {...settings};
 
   buffer.time = time;
   buffer.coordinate = coordinate;
+
+  let action = {
+    type: 'SET_COURSE_SETTINGS',
+    value: settings
+  };
+  Store.dispatch(action);
 
   let answer = await fetch(`http://${IP_SERVER}:${PORT_SERVER}/generator/generate_course`, {
     headers: {

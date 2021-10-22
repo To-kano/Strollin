@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 
-import { IP_SERVER, PORT_SERVER } from '../env/Environement';
+import { IP_SERVER, PORT_SERVER } from '../../env/Environement';
 
 
 
 import { connect } from 'react-redux';
 import { Image } from 'react-native';
 
-import { getImageId } from '../apiServer/image';
+import { getImageId } from '../../apiServer/image';
 
 function ImageProfile({profil, style}) {
 
@@ -27,19 +27,9 @@ function ImageProfile({profil, style}) {
             <Image source={{uri: image}} style={style} />
         )
     }
-    return (<Image style={style} source={require('../images/TonyPP.jpg')} />);
-    
-}
+    return (<Image style={style} source={require('../../images/happy_man.jpg')} />);
 
-//const styles = StyleSheet.create({
-//    icon: {
-//        width: 35,
-//        height: 35,
-//        resizeMode: 'contain',
-//        backgroundColor: 'white',
-//        borderColor: 'gray'
-//    },
-//});
+}
 
 const mapStateToProps = (state) => state;
 export default connect(mapStateToProps)(ImageProfile);

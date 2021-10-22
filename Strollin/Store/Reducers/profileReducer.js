@@ -15,7 +15,10 @@ const initialState = {
   scoreLocation: [],
   scoreComment: [],
   sound: true,
-  course_historic: []
+  course_historic: [],
+  position: [],
+  fav: false,
+  favid: 0
 };
 
 const storeProfile = async (value) => {
@@ -145,6 +148,24 @@ function profileReducer(state = initialState, action) {
         };
         nextState.course_favorites = [action.value, ...nextState.course_favorites]
 
+        return nextState;
+      case 'SET_USER_POS':
+        nextState = {
+          ...state,
+          pos: action.value
+        };
+        return nextState;
+      case 'SET_FAV':
+        nextState = {
+          ...state,
+          fav: action.value
+        };
+        return nextState;
+      case 'SET_FAV_ID':
+        nextState = {
+          ...state,
+          favid: action.value
+        };
         return nextState;
     default:
       return state;

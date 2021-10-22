@@ -49,7 +49,6 @@ function MyDrawer() {
       <Drawer.Screen name="Historic" component={HistoryNav} />
       <Drawer.Screen name="New trip" component={Trip} />
       <Drawer.Screen name="Friends" component={FriendList} />
-      <Drawer.Screen name="Friend selection" component={FriendSelection} />
       <Drawer.Screen name="Chat" component={Chat} />
       <Drawer.Screen name="Profile" component={Profile} />
       <Drawer.Screen name="Partenaire" component={PartenaireScreen} />
