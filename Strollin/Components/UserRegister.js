@@ -148,6 +148,9 @@ export function UserRegister(props) {
           secureTextEntry
         />
       </View>
+      <TouchableOpacity style={{alignSelf: 'center', maxWidth: 400, width: '100%', marginTop: 0, marginBottom: 4, marginLeft: 4 }}>
+        <Text style={[{fontSize: 10, color: '#000',}, {color: '#c3c3c6',}]}>ⓘ 8 caractères minimum, 1 Majuscule, 1 Minuscule, 1 chiffre</Text>
+      </TouchableOpacity>
       <View style={styles.view_field}>
         <Text style={styles.text_field}>
           {I18n.t('UserRegister.confPassword')}
