@@ -79,26 +79,40 @@ router.post('/new_location', async function(req, res) {
         }
     }
 
-    location = new LocationModel({
+    let model = {
         id: new Number(Date.now()),
         name: req.body.name,
         owner_id: owner,
         owner_pseudo: owner.pseudo,
-        coordinate: req.body.coordinate,
         latitude: req.body.latitude,
         longitude: req.body.longitude,
         address: req.body.address,
         city: req.body.city,
         country: req.body.country,
-        description: req.body.description,
-        timetable: req.body.timetable,
         tags_list: req.body.tags_list,
         price_range: req.body.price_range,
         average_time: req.body.average_time,
-        phone: req.body.phone,
-        website: req.body.website,
         food: req.body.food
-    });
+    }
+
+    if (req.body.description) {
+
+        model.description = req.body.description
+    }
+    if (req.body.timetable) {
+
+        model.timetable = req.body.timetable
+    }
+    if (req.body.phone) {
+
+        model.phone = req.body.phone
+    }
+    if (req.body.website) {
+
+        model.website = req.body.website
+    }
+
+    location = new LocationModel(model);
     let error = await location.save().catch(error => error);
     if (error.errors) {
         return res.status(500).send({ error_code: 2 });
