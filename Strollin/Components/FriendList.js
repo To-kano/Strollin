@@ -8,9 +8,6 @@ import I18n from '../Translation/configureTrans';
 import { profileUser } from '../apiServer/user';
 import { connect } from 'react-redux';
 import Store from '../Store/configureStore';
-<<<<<<< HEAD
-import SearchBar from './reactChatScreen/SearchBar';
-=======
 import MenuButton from './components/MenuButton';
 import AddFriendsButton from './components/AddFriendsButton';
 import ReturnButton from './components/ReturnButton';
@@ -19,7 +16,6 @@ import Icon from './components/Icon';
 import AddButton from './components/AddFriendsButton';
 
 const globalStyles = require('../Styles');
->>>>>>> 9911db9263c8e8b1fc86f4d9a68f59789b33b486
 
 // import BackgroundImage from './backgroundImage';
 // import stylesHomepage from '../../styles/homepage'
@@ -393,12 +389,9 @@ function FriendList(props) {
   if (!userList) {
     getUserList(store, setUserList);
   }
-<<<<<<< HEAD
-=======
 
   console.log("amis : ", userList)
 
->>>>>>> 9911db9263c8e8b1fc86f4d9a68f59789b33b486
   return (
     <View style={[globalStyles.container, {paddingHorizontal: 0}]}>
       {!AddFriendPage ?
@@ -480,18 +473,9 @@ function FriendList(props) {
             <Image style={styles.img_header} source={require('../images/icons/black/friends.png')} />
           </TouchableOpacity>
         }
-<<<<<<< HEAD
-      </View>
-      <SearchBar
-        onPress={sortFriendList}
-      />
-      <Text/>
-      {pressed === true &&
-=======
       </View> */}
       
       {/* {pressed === true &&
->>>>>>> 9911db9263c8e8b1fc86f4d9a68f59789b33b486
         <View style={styles.view_list}>
           <FlatList
             showsHorizontalScrollIndicator={false}
