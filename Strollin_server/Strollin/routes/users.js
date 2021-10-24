@@ -5,6 +5,8 @@ const nodemailer = require('nodemailer');
 
 const CryptoJS = require("crypto-js");
 
+const fs = require("fs");
+
 const keyCrypto = "key";
 
 const fs = require("fs");
@@ -109,22 +111,49 @@ router.post('/register', async function (req, res) {
       },
     });
 
-    // create the mail to send
-    const mailOptions = {
-      from: '"Strollin App" <strollinapp@outlook.com>', // sender address (who sends)
-      to: req.body.mail.toLowerCase(), // list of receivers (who receives)
-      subject: `subscribe the app Strollin `, // Subject line
-      html: `<a href="http://88.165.45.219:3004/users/verify?id=${user.id}">test</a> `,
-    };
+    console.log("path ", __dirname + '/../mailSubscription.html');
 
-    // send the mail
-    transporter.sendMail(mailOptions, function (error, info) {
-      if (error) {
-        console.log(error);
-      } else {
-        //console.log('Email sent: ' + info.response);
-      }
+    fs.readFile(__dirname + '/../mailSubscription.html', "utf8", function (err, data) {
+      console.log('data ', data);
+      console.log('err: ', err);
+
+      const message = data.replace('USER_NAME', req.body.pseudo).replace("USER_ID", user.id.toString());
+
+      console.log("message :", message);
+
+      const mailOptions = {
+        from: '"Strollin App" <strollinapp@outlook.com>', // sender address (who sends)
+        to: req.body.mail.toLowerCase(), // list of receivers (who receives)
+        subject: `subscribe the app Strollin `, // Subject line
+        html: message,
+      };
+
+      transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+          console.log(error);
+        } else {
+          //console.log('Email sent: ' + info.response);
+        }
+      });
+
     });
+
+    //// create the mail to send
+    //const mailOptions = {
+    //  from: '"Strollin App" <strollinapp@outlook.com>', // sender address (who sends)
+    //  to: req.body.mail.toLowerCase(), // list of receivers (who receives)
+    //  subject: `subscribe the app Strollin `, // Subject line
+    //  html: `<a href="https://strollin.ddns.net/users/verify?id=${user.id}">test</a> `,
+    //};
+    //
+    //// send the mail
+    //transporter.sendMail(mailOptions, function (error, info) {
+    //  if (error) {
+    //    console.log(error);
+    //  } else {
+    //    //console.log('Email sent: ' + info.response);
+    //  }
+    //});
 
     return res.status(200).send({
       status: "Account created successfully.",
@@ -236,6 +265,9 @@ router.get('/verify', async function (req, res) {
         error: error
       });
     }
+    /*return res.render("verify", {
+      user: user
+    }*/
     return res.status(200).send({
       status: "Account verified successfully."
     });
@@ -1066,6 +1098,7 @@ router.post('/login_web', async function (req, res) {
     password: CryptoJS.HmacSHA1(req.body.password, keyCrypto).toString()
   }).catch(error => error);
   let token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+  console.log("token web:", token);
   let error = undefined;
   let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   let blacklist = await BlacklistModel.findOne({
