@@ -1,20 +1,27 @@
-import React , { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import {
-  View, StyleSheet, Image, Text, TouchableOpacity, TextInput
+  View, StyleSheet, Image, Text, TouchableOpacity, TextInput, ActivityIndicator, Modal
 } from 'react-native';
 import { v4 as uuidv4 } from 'uuid';
-import { FlatList } from 'react-native-gesture-handler';
+import { FlatList, ScrollView } from 'react-native-gesture-handler';
 import json from '../ressources/profile.json';
 import I18n from '../Translation/configureTrans';
 import Store from '../Store/configureStore';
 import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 import { DrawerActions } from '@react-navigation/native';
+import { translateTags, detranslateTags } from '../Translation/translateTags'
 
-import ImageProfile from './ImageProfile';
+import ImageProfile from './components/ImageProfile';
 
 import Popup from './Popup';
 import ChangeImageProfileForm from './ChangeImageProfileForm';
+import MenuButton from './components/MenuButton';
+import Footer from './components/Footer';
+import Icon from './components/Icon';
+import HistoricButton from './components/HistoricButton';
+
+const globalStyles = require('../Styles');
 
 function ParseTags(Tags) {
   let list = Tags[0];
@@ -51,44 +58,47 @@ function ProfileScreen(props) {
   const [tagsList, setTagsList] = useState(initialList);
 
   const [modalVisible, setModalVisible] = useState(false);
+  const [isLoading, setLoading] = React.useState(false);
+
 
   const store = Store.getState();
   const access_Token = store.profil.access_token;
 
-    async function getThings() {
+  async function getThings() {
 
     //console.log("access_Token = ",access_Token );
 
-      if (reload == false)
-        return
-      await fetch(`https://${IP_SERVER}:${PORT_SERVER}/users/get_own_profile`, {
+    if (reload == false)
+      return
+    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/get_own_profile`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
         access_Token,
       },
       method: 'GET',
-      })
+    })
       .then(res => res.json())
       .then(json => {
-      //console.log("profile: ",json);
+        //console.log("profile: ",json);
         //console.log("profile updated ");
         setArgs(json.profile)
         initialList = []
         for (var i = 0; i < json.profile.tags_list.length; i++) {
-          initialList.push({id: i, name: json.profile.tags_list[i]})
+          initialList.push({ id: i, name: json.profile.tags_list[i] })
         }
-      //console.log("tags setted: ", initialList);
+        //console.log("tags setted: ", initialList);
         setTagsList(initialList)
         setReload(false)
-      });
-    }
+      })
+      .then(setLoading(false));
+  }
 
-    async function postMail(body) {
+  async function postMail(body, setLoading) {
 
-      const test = JSON.stringify({pseudo: body})
+    const test = JSON.stringify({ pseudo: body })
 
-      await fetch(`https://${IP_SERVER}:${PORT_SERVER}/users/edit_profile`, {
+    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/edit_profile`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -97,18 +107,20 @@ function ProfileScreen(props) {
       },
       body: test,
       method: 'POST',
-      })
+    })
       .then(res => res.json())
       .then(json => {
-      });
-    }
+      })
+      .then(setLoading(false));
+  }
 
-    const [list, setList] = React.useState(initialList);
-    const [name, setName] = React.useState('');
+  const [list, setList] = React.useState(initialList);
+  const [name, setName] = React.useState('');
 
-    useEffect(() => {
-          getThings();
-    }, []);
+  useEffect(() => {
+    setLoading(true);
+    getThings();
+  }, []);
 
 
   function handleChange(event) {
@@ -123,70 +135,144 @@ function ProfileScreen(props) {
   //getThings();
 
   return (
-    <View style={styles.view_back}>
-      <View style={styles.view_header}>
-        <TouchableOpacity onPress={() => props.navigation.dispatch(DrawerActions.openDrawer())}>
-          <Image style={styles.img_header} source={require('../images/icons/black/menu.png')} />
-          </TouchableOpacity>
-        <Text style={styles.text_header}>
-          {I18n.t('Header.profile')}
-          {'   '}
-        </Text>
-      </View>
-      <View style={styles.view_profileTop}>
-        <TouchableOpacity onPress={() => setModalVisible(true)}>
-          <ImageProfile style={styles.img_profileTop} />
-        </TouchableOpacity>
-        <Popup message={"Choose your profile picture"} modalVisible={modalVisible} setModalVisible={setModalVisible}>
-          <ChangeImageProfileForm/>
-        </Popup>
-        {/* <Image  style={styles.img_profileTop} source={require('')}/> */}
-        <Text style={styles.text_profileTop}>{args?.mail}</Text>
-      </View>
-      <View style={styles.view_email}>
-        <Text style={styles.text_description}>
-          {' '}
-          {I18n.t('ProfileScreen.pseudo')}
-        </Text>
-        <TextInput
-          style={styles.text_email}
-          autoCapitalize="none"
-          textContentType="emailAddress"
-          autoCompleteType="email"
-          keyboardType="email-address"
-          onChangeText={text => postMail(text)}
-        >
-          {args?.pseudo}
-        </TextInput>
-      </View>
-      <View style={styles.view_tag}>
-        <Text style={styles.text_description}> Tags</Text>
-        <FlatList
-          numColumns={3}
-          style={styles.view_tagIn}
-          showsHorizontalScrollIndicator={false}
+    <View style={globalStyles.container}>
+        <ScrollView
           showsVerticalScrollIndicator={false}
-          data={tagsList}
-          contentContainerStyle={{ flexGrow: 1 }}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <Text style={styles.text_tagIn}>{item.name}</Text>
-          )}
-        />
-      </View>
-      <TouchableOpacity
-        style={styles.view_button}
-        onPress={() => {
-          setReload(true)
-          props.navigation.navigate('TagSelection');
-          //getThings();
-          //setTagsList(tagsList);
-        //console.log("exisrte stp eeeeeeeeeeeeeeeee");
-        }}
+          contentContainerStyle={{ paddingVertical: 96 , width: "100%"}}
+          style={{width: "100%"}}
+        >
+          <View style={{alignItems: 'center'}}>
+            <TouchableOpacity onPress={() => setModalVisible(true)}>
+              <ImageProfile style={styles.img_profileTop} />
+              <View style={{
+                position: 'absolute',
+                bottom: -16, right: -16,
+                backgroundColor: '#0989FF',
+                borderRadius: 32,
+                padding: 11
+              }}>
+                <Icon name='pencil' size={24} color="#FFFFFF" />
+              </View>
+            </TouchableOpacity>
+          </View>
+        <Popup message={"Changer ma photo"} modalVisible={modalVisible} setModalVisible={setModalVisible}>
+          <ChangeImageProfileForm modalVisible={modalVisible} setModalVisible={setModalVisible}/>
+        </Popup>
+        <View style={{ marginTop: 32, width: "100%" }}>
+          <Text style={[globalStyles.paragraphs, { marginBottom: 8 }]}>{I18n.t('ProfileScreen.pseudo')}</Text>
+          <TextInput
+            style={[globalStyles.textInput, { marginTop: 0, width: "100%"}]}
+            autoCapitalize="none"
+            onChangeText={text => {
+              setLoading(true);
+              postMail(text, setLoading);
+            }}
+          >
+            {args?.pseudo}
+          </TextInput>
+        </View>
+        <View style={{ marginTop: 32, width: "100%" }}>
+          <Text style={[globalStyles.paragraphs, { marginBottom: 8 }]}>Les tags que j aime</Text>
+          <FlatList
+            style={styles.view_tagIn}
+            data={tagsList}
+            contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap' }}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              <Text style={[globalStyles.subparagraphs, globalStyles.tag]}>{translateTags(item.name)}</Text>
+            )}
+          />
+        </View>
+      </ScrollView>
+      <HistoricButton props={props}/>
+      <MenuButton props={props} />
+      <Footer primaryText="Changer mes tags" primaryOnPressFct={() => { setReload(true); props.navigation.navigate('TagSelection'); }} />
+      {/* <Modal
+        animationType="none"
+        transparent={true}
+        visible={isLoading}
       >
-        <Text style={styles.text_button}>Choose my tags</Text>
-      </TouchableOpacity>
+        <View style={styles.loading_screen}>
+          <ActivityIndicator size="large"  color="black" style={{}}/>
+        </View>
+      </Modal> */}
     </View>
+    // <View style={styles.view_back}>
+    //   <View style={styles.view_header}>
+    //     <TouchableOpacity onPress={() => props.navigation.dispatch(DrawerActions.openDrawer())}>
+    //       <Image style={styles.img_header} source={require('../images/icons/black/menu.png')} />
+    //       </TouchableOpacity>
+    //     <Text style={styles.text_header}>
+    //       {I18n.t('Header.profile')}
+    //       {'   '}
+    //     </Text>
+    //   </View>
+    //   <View style={styles.view_profileTop}>
+    //     <TouchableOpacity onPress={() => setModalVisible(true)}>
+    //       <ImageProfile style={styles.img_profileTop} />
+    //     </TouchableOpacity>
+    //     <Popup message={"Choose your profile picture"} modalVisible={modalVisible} setModalVisible={setModalVisible}>
+    //       <ChangeImageProfileForm/>
+    //     </Popup>
+    //     {/* <Image  style={styles.img_profileTop} source={require('')}/> */}
+    //     <Text style={styles.text_profileTop}>{args?.pseudo}</Text>
+    //   </View>
+    //   <View style={styles.view_email}>
+    //     <Text style={styles.text_description}>
+    //       {' '}
+    //       {I18n.t('ProfileScreen.pseudo')}
+    //     </Text>
+    //     <TextInput
+    //       style={styles.text_email}
+    //       autoCapitalize="none"
+    //       textContentType="emailAddress"
+    //       autoCompleteType="email"
+    //       keyboardType="email-address"
+    //       onChangeText={text => {
+    //         setLoading(true);
+    //         postMail(text, setLoading);
+    //       }}
+    //     >
+    //       {args?.pseudo}
+    //     </TextInput>
+    //   </View>
+    //   <View style={styles.view_tag}>
+    //     <Text style={styles.text_description}> Tags</Text>
+    //     <FlatList
+    //       numColumns={3}
+    //       style={styles.view_tagIn}
+    //       showsHorizontalScrollIndicator={false}
+    //       showsVerticalScrollIndicator={false}
+    //       data={tagsList}
+    //       contentContainerStyle={{ flexGrow: 1 }}
+    //       keyExtractor={(item) => item.id}
+    //       renderItem={({ item }) => (
+    //         <Text style={styles.text_tagIn}>{translateTags(item.name)}</Text>
+    //       )}
+    //     />
+    //   </View>
+    //   <TouchableOpacity
+    //     style={styles.view_button}
+    //     onPress={() => {
+    //       setReload(true)
+    //       props.navigation.navigate('TagSelection');
+    //       //getThings();
+    //       //setTagsList(tagsList);
+    //     //console.log("exisrte stp eeeeeeeeeeeeeeeee");
+    //     }}
+    //   >
+    //     <Text style={styles.text_button}>Choose my tags</Text>
+    //   </TouchableOpacity>
+    //   <Modal
+    //     animationType="none"
+    //     transparent={true}
+    //     visible={isLoading}
+    //   >
+    //     <View style={styles.loading_screen}>
+    //       <ActivityIndicator size="large"  color="black" style={{}}/>
+    //     </View>
+    //   </Modal>
+    // </View>
   );
 }
 
@@ -221,16 +307,15 @@ const styles = StyleSheet.create({
     color: '#000000',
   },
   view_profileTop: {
-    flex: 260,
+    flex: 200,
     flexDirection: 'column',
     alignItems: 'center',
     width: '100%',
   },
   img_profileTop: {
-    marginTop: 15,
-    width: 150,
-    height: 150,
-    borderRadius: 12,
+    width: 128,
+    height: 128,
+    borderRadius: 16,
   },
   text_profileTop: {
     marginTop: 5,
@@ -248,7 +333,8 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   text_description: {
-    marginTop: 15,
+    marginTop: 16,
+    marginBottom: 8,
     fontSize: 16,
     fontWeight: 'bold'
   },
@@ -263,31 +349,28 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
   },
   view_tag: {
-    flex: 344,
     width: '100%',
   },
   view_tagIn: {
-    flex: 304,
     borderRadius: 4,
-    backgroundColor: '#ffffff',
-    paddingTop: 7.5,
+    color: "#1C1B1C",
+    borderColor: "#9B979B",
+    borderWidth: 1,
+    width: "100%",
+    padding: 8,
   },
   text_tagIn: {
-    alignSelf: 'flex-start',
     textAlign: 'center',
-    width: '30%',
-    marginLeft: 7.5,
-    marginBottom: 7.5,
-    paddingTop: 7,
-    paddingLeft: 2,
-    paddingRight: 2,
+    margin: 4,
+    paddingVertical: 4,
+    paddingHorizontal: 8,
     color: '#0091A7',
     fontSize: 16,
     fontWeight: 'bold',
     letterSpacing: 1,
     borderRadius: 20,
     borderColor: '#0091A7',
-    borderWidth: 4,
+    borderWidth: 2,
   },
   view_button: {
     flex: 50,
@@ -304,6 +387,12 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     color: '#FFFFFF',
+  },
+  loading_screen: {
+    backgroundColor: 'rgba(100,100,100,0.75)',
+    display: "flex",
+    justifyContent: 'space-around',
+    height: '100%'
   }
 });
 

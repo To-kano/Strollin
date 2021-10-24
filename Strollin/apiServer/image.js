@@ -4,7 +4,7 @@ import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 async function getImageId(id) {
 
   //console.log("id getImageId : ", id);
-    let answer = await fetch(`https://${IP_SERVER}:${PORT_SERVER}/image/id`, {
+    let answer = await fetch(`http://${IP_SERVER}:${PORT_SERVER}/image/id`, {
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
@@ -43,7 +43,7 @@ function createFormData(image, body = {}) {
 }
 
 async function uploadImageProfile(access_token, image) {
-    let answer = await fetch(`https://${IP_SERVER}:${PORT_SERVER}/users/set_image_profile`, {
+    let answer = await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/set_image_profile`, {
         method: 'POST',
         body: createFormData(image, {access_token}),
     })
@@ -56,7 +56,7 @@ exports.uploadImageProfile = uploadImageProfile;
 
 
 async function uploadImage(access_token, image) {
-    let answer = await fetch(`https://${IP_SERVER}:${PORT_SERVER}/image/upload`, {
+    let answer = await fetch(`http://${IP_SERVER}:${PORT_SERVER}/image/upload`, {
         method: 'POST',
         body: createFormData(image, {access_token}),
     })

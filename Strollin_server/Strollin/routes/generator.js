@@ -15,10 +15,13 @@ const {
  * @param {String} req.headers.budget
  * @param {[String]} req.headers.tags
  * @param {[String]} req.headers.coordinate
- * @param {[String]} req.headers.eat
- * @param {[String]} req.headers.radius
- * @param {[String]} req.headers.placenbr
+ * @param {String} req.headers.eat
+ * @param {String} req.headers.radius
+ * @param {String} req.headers.placenbr
  * @param {[String]} req.headers.locations_list
+ * @param {String} req.headers.is18
+ * @param {String} req.headers.temptags
+ * @param {String} req.headers.friendstags
  */
 router.get('/generate_course', async function(req, res) {
 
@@ -36,6 +39,13 @@ router.get('/generate_course', async function(req, res) {
     console.log("eat: ", req.headers.eat);
     console.log("radius: ", req.headers.radius);
     console.log("locations_list: ", req.headers.locations_list);
+    console.log("Is18: ", req.headers.is18);
+    console.log("tempTags: ", req.headers.temptags);
+    console.log("friendtags: ", req.headers.friendstags);
+
+    let friendstags = req.headers.friendstags;
+    let userTags = req.headers.tags;
+    var friendflag = false;
 
     if (!user) {
         return res.status(400).send({status: "You are not connected."});
@@ -44,26 +54,54 @@ router.get('/generate_course', async function(req, res) {
         return res.status(400).send({status: "Error in database transaction:\n", error: user});
     }
 
-    //console.log("lets EEEE", req.headers.time , req.headers.budget , " Tags: ", req.headers.tags , req.headers.coordinate);
     if (!req.headers.coordinate || !req.headers.time || !req.headers.budget || !req.headers.tags) {
         return res.status(400).send({status: "Parameter required is missing."});
     }
+
     let tags = req.headers.tags.split(',');
     if (req.headers.locations_list) {
       locations_list = req.headers.locations_list.split(',');
       //console.log("locations_list: ", locations_list);
     }
 
-    const promise2 = algo.data.algo(req.headers.time , req.headers.budget , req.headers.tags , req.headers.coordinate, req.headers.eat, radius, placeNbr, locations_list);
+    if (req.headers.temptags) {
+      console.log("USING TEMPORARY TAGS");
+      userTags = req.headers.temptags
+    }
+
+    if (friendstags) {
+      var friendsArray = friendstags.split(',')
+      var tagsArray = userTags.split(',')
+      var prioFriends = [];
+
+      console.log("friendsArray: ", friendsArray);
+      for (var i = 0; i < friendsArray.length; i++) {
+        for (var j = 0; j < tagsArray.length; j++) {
+          if (friendsArray[i] == tagsArray[j]) {
+            prioFriends.push(friendsArray[i])
+            tagsArray.splice(j, 1);
+            break;
+          }
+        }
+      }
+      userTags = tagsArray.join()
+      friendflag = true;
+      console.log("prioFriends: ", prioFriends);
+    }
+
+    console.log("userTags: ", userTags);
+    const promise2 = algo.data.algo(req.headers.time , req.headers.budget , userTags, req.headers.coordinate, req.headers.eat, radius, placeNbr, locations_list, req.headers.is18, prioFriends, friendflag, friendsArray);
     promise2.then((value) => {
       let generated_course = value;
-      //console.log("course: ", generated_course);
+      console.log("course: ", generated_course);
+
+      // A OPTI
       if (generated_course) {
-        course = {locations_list: [], name: (generated_course[0].Name + " => " + generated_course[generated_course.length - 1].Name), tags_list: []}
+        course = {locations_list: [], name: (generated_course[0].name + " => " + generated_course[generated_course.length - 1].name), tags_list: []}
         for (let index in generated_course) {
-            course.locations_list.push(generated_course[index].Id);
-            for (let index2 in generated_course.Tags) {
-                tags = generated_course[index].Tags[index2];
+            course.locations_list.push(generated_course[index].id);
+            for (let index2 in generated_course.tags_list) {
+                tags = generated_course[index].tags_list[index2]._id;
                 if (!course.tags_list.includes(tag)) {
                     course.tags_list.push(tag)
                 }
@@ -144,5 +182,22 @@ router.post('/popup_answer', async function(req, res) {
     return res.status(200).send({status: "Result.", popup});
 });
 
+// recover places
+/**
+ * Recover places with user tags and add them to the DB
+ * @param {String} req.headers.access_token
+ * @param {String} req.headers.coordinates
+ * @param {String} req.headers.tag
+ */
+router.get('/recover_places', async function(req, res) {
+  console.log("GENERATE PLACES");
+  var coordinate = req.headers.coordinates.split(",")
+  console.log("coordinate: ", coordinate);
+  console.log("tag: ", req.headers.tag);
+
+  algo.data.places(coordinate, req.headers.tag);
+  console.log("I AM REEEEEEEEEEEEALLLLLLY OUT");
+  return res.status(200).send({status: "Result."});
+});
 
 module.exports = router;

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import { connect } from 'react-redux';
 import {
-  StyleSheet, Text, View, FlatList, TouchableOpacity, Image, TextInput,
+  StyleSheet, Text, View, FlatList, TouchableOpacity, Image, TextInput, ActivityIndicator, Modal
 } from 'react-native';
 import { DrawerActions } from '@react-navigation/native';
 import { getTimeZone } from 'react-native-localize';
@@ -50,7 +50,7 @@ function Header({ navigation, defaultState = false }) {
   );
 }
 
-export function Tag({ name, chosen, defaultState = false, Id, Tags}) {
+export function Tag({ name, chosen, defaultState = false, Id, Tags, setLoading}) {
   const [pressed, setpressed] = useState(defaultState);
   const [args, setArgs] = useState(true);
 
@@ -64,7 +64,7 @@ export function Tag({ name, chosen, defaultState = false, Id, Tags}) {
     list.push({_id: body, dips: 0})
   //console.log("list: ", list);
     const test = JSON.stringify({ tags_list: list });
-    await fetch(`https://${IP_SERVER}:${PORT_SERVER}/location/update_location`, {
+    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/update_location`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -76,10 +76,11 @@ export function Tag({ name, chosen, defaultState = false, Id, Tags}) {
     })
       .then((res) => res.json())
       .then((json) => {
-      });
+      })
+      .then(setLoading(false));
   }
 
-  async function RemoveTags(body) {
+  async function RemoveTags(body, setLoading) {
     const store = Store.getState();
     const access_Token = store.profil.access_token;
 
@@ -94,7 +95,7 @@ export function Tag({ name, chosen, defaultState = false, Id, Tags}) {
     }
   //console.log("list: ", list);
     const test = JSON.stringify({ tags_list: list });
-    await fetch(`https://${IP_SERVER}:${PORT_SERVER}/location/update_location`, {
+    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/update_location`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -106,7 +107,8 @@ export function Tag({ name, chosen, defaultState = false, Id, Tags}) {
     })
       .then((res) => res.json())
       .then((json) => {
-      });
+      })
+      .then(setLoading(false));
   }
 
   useEffect(() => {
@@ -120,6 +122,7 @@ export function Tag({ name, chosen, defaultState = false, Id, Tags}) {
       <TouchableOpacity
         style={styles.view_tagOff}
         onPress={() => {
+          setLoading(true);
           postTags(name);
           setpressed(!pressed);
         }}
@@ -131,8 +134,9 @@ export function Tag({ name, chosen, defaultState = false, Id, Tags}) {
       <TouchableOpacity
         style={styles.view_tagOn}
         onPress={() => {
-        //console.log('unpressed');
-          RemoveTags(name);
+          setLoading(true);
+          // console.log('unpressed');
+          RemoveTags(name, setLoading);
           setpressed(!pressed);
         }}
       >
@@ -149,6 +153,7 @@ export function TagSelectionPart({ navigation, profil }) {
   const [Profargs, setProfArgs] = useState(true);
   const [array, setArray] = useState(true);
   const [Id, setId] = useState(null)
+  const [isLoading, setLoading] = React.useState(false);
 
   const store = Store.getState();
   const access_Token = store.profil.access_token;
@@ -175,7 +180,7 @@ export function TagSelectionPart({ navigation, profil }) {
   }
 
   async function getLocationTags(List) {
-    await fetch(`https://${IP_SERVER}:${PORT_SERVER}/location/get_partner_location`, {
+    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/get_partner_location`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -193,7 +198,7 @@ export function TagSelectionPart({ navigation, profil }) {
   }
 
   async function getThings() {
-    await fetch(`https://${IP_SERVER}:${PORT_SERVER}/tag/get_tag`, {
+    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/tag/get_tag`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -206,7 +211,8 @@ export function TagSelectionPart({ navigation, profil }) {
       //console.log('yooooo', json.tags_list);
         setArgs(json.tags_list);
         getLocationTags(json.tags_list);
-      });
+      })
+      .then(setLoading(false));
   }
 
   useEffect(() => {
@@ -226,7 +232,7 @@ export function TagSelectionPart({ navigation, profil }) {
           data={array}
           keyExtractor={(item) => item.name}
           renderItem={({ item }) => (
-            <Tag name={item.name} chosen={item.pressed} Id={Id} Tags={Profargs}/>
+            <Tag name={item.name} chosen={item.pressed} Id={Id} Tags={Profargs} setLoading={setLoading}/>
           )}
         />
       </View>
@@ -240,6 +246,15 @@ export function TagSelectionPart({ navigation, profil }) {
           {I18n.t('Tags.confirm_my_tags')}
         </Text>
       </TouchableOpacity>
+      <Modal
+        animationType="none"
+        transparent={true}
+        visible={isLoading}
+      >
+        <View style={styles.loading_screen}>
+          <ActivityIndicator size="large"  color="black" style={{}}/>        
+        </View>
+      </Modal>
     </View>
     // <View style={styles.back}>
     //   <BackgroundImage />
@@ -401,6 +416,12 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     color: '#FFFFFF',
+  },
+  loading_screen: {
+    backgroundColor:'rgba(100,100,100,0.75)',
+    display: "flex",
+    justifyContent: 'space-around',
+    height: '100%'
   },
   // back: {
   //   flexDirection: 'column',

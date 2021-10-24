@@ -176,7 +176,7 @@ function Personal_trip(props) {
   }
 
   function sendMessage(value) {
-    const url = `https://${IP_SERVER}:${PORT_SERVER}/location/get_place`
+    const url = `http://${IP_SERVER}:${PORT_SERVER}/location/get_place`
     fetch(url, {
       headers: {
         place_name: value,
@@ -750,6 +750,7 @@ const styles = StyleSheet.create({
     color: '#000',
   },
   view_result: {
+    width: '100%',
     flex: 757,
   },
   view_result_header: {

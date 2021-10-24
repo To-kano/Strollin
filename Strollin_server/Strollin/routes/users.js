@@ -9,6 +9,8 @@ const fs = require("fs");
 
 const keyCrypto = "key";
 
+const fs = require("fs");
+
 const {
   UserModel
 } = require("../models/user")
@@ -42,6 +44,7 @@ const {
  */
 router.post('/register', async function (req, res) {
 
+  console.log("REGISTER BODY: ", req.body);
   if (!req.body.mail || !req.body.mail.includes('@')) {
     return res.status(400).send({
       status: "A valid mail was not provided."
@@ -163,6 +166,77 @@ router.post('/register', async function (req, res) {
 });
 
 
+router.post('/reset_password', async function (req, res) {
+  console.log("Reset password: ", req.body);
+  if (!req.body.mail || !req.body.mail.includes('@')) {
+    return res.status(400).send({
+      status: "A valid mail was not provided."
+    });
+  }
+
+  let mail = await UserModel.findOne({
+    mail: req.body.mail.toLowerCase()
+  }).catch(error => error);
+  //let token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+
+  if (mail && mail.reason) {
+    return res.status(400).send({
+      status: "Error in database transaction:\n",
+      error: mail
+    });
+  } else if (mail) {
+
+    const transporter = nodemailer.createTransport({
+      host: 'smtp-mail.outlook.com', // hostname
+      secureConnection: false, // TLS requires secureConnection to be false
+      port: 587, // port for secure SMTP
+      tls: {
+        ciphers: 'SSLv3',
+      },
+      auth: {
+        user: 'strollinapp@outlook.com',
+        pass: 'Strollin94',
+      },
+    });
+
+    //read tamplate mail,
+    fs.readFile(__dirname + '../RestPassword.html', "utf8", function(err, data) {
+      console.log('data ', data);
+      console.log('err', err);
+      const mailOptions = {
+        from: '"Strollin App" <strollinapp@outlook.com>', // sender address (who sends)
+        to: req.body.mail.toLowerCase(), // list of receivers (who receives)
+        subject: `Reset password Strollin `, // Subject line
+        html: data,
+      };
+
+      // send the mail
+      transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('Email sent: ' + info.response);
+      }
+    });
+    })
+
+    // create the mail to send
+    
+
+    
+
+    return res.status(200).send({
+      status: "Reset Mail sent.",
+      //access_token: token
+    });
+  }
+  return res.status(400).send({
+    status: "The entry is invalid."
+  });
+});
+
+
+
 router.get('/verify', async function (req, res) {
 
   //console.log("verify\n", req.query.id);
@@ -191,8 +265,11 @@ router.get('/verify', async function (req, res) {
         error: error
       });
     }
-    return res.render("verify", {
+    /*return res.render("verify", {
       user: user
+    }*/
+    return res.status(200).send({
+      status: "Account verified successfully."
     });
   }
 });
@@ -602,11 +679,12 @@ router.post('/add_historic', async function (req, res) {
 /**
  * Add a course into the favorite of the user.
  * @param {String} req.headers.access_token
- * 
+ *
  * @param {String} req.body.course
  */
 router.post('/add_favorite', async function (req, res) {
 
+  console.log("body: ", req.body.course);
   let user = await UserModel.findOne({
     access_token: req.headers.access_token
   }, "-_id id pseudo course_favorites").catch(error => error);
@@ -621,7 +699,7 @@ router.post('/add_favorite', async function (req, res) {
       error: user
     });
   }
-
+  console.log("ici");
   let course = await CourseModel.findOne({
     id: req.body.course
   }).catch(error => error);
@@ -684,6 +762,84 @@ router.post('/add_favorite', async function (req, res) {
   }
 });
 
+router.post('/add_favorite', async function (req, res) {
+
+  console.log("body: ", req.body.course);
+  let user = await UserModel.findOne({
+    access_token: req.headers.access_token
+  }, "-_id id pseudo course_favorites").catch(error => error);
+  if (!user) {
+    return res.status(400).send({
+      status: "You are not connected."
+    });
+  }
+  if (user.reason) {
+    return res.status(400).send({
+      status: "Error in database transaction:\n",
+      error: user
+    });
+  }
+  let course = await CourseModel.findOne({
+    id: req.body.course
+  }).catch(error => error);
+  if (!course) {
+    return res.status(400).send({
+      status: "The course does not exist."
+    });
+  } else if (course.reason) {
+    return res.status(400).send({
+      status: "Error in database transaction:\n",
+      error: user
+    });
+  } else {
+    if (user.course_favorites.includes(course.id)) {
+      return res.status(400).send({
+        status: "The course is already in favorite."
+      });
+    }
+    let error = await UserModel.updateOne({
+      id: user.id
+    }, {
+      $push: {
+        course_favorites: course.id
+      }
+    }).catch(error => error);
+    if (error.errors) {
+      return res.status(400).send({
+        status: "Error in database transaction:\n",
+        error: error
+      });
+    }
+
+    user = await UserModel.findOne({
+      access_token: req.headers.access_token
+    }, "id pseudo course_favorites").catch(error => error);
+    if (user.reason) {
+      return res.status(400).send({
+        status: "Error in database transaction:\n",
+        error: user
+      });
+    }
+    let courses_list = [];
+    course = undefined;
+    for (let index = 0; index < user.course_favorites.length; index++) {
+      course = await CourseModel.findOne({
+        id: user.course_favorites[index]
+      }).catch(error => error);
+      if (course && course.reason) {
+        return res.status(400).send({
+          status: "Error in database transaction:\n",
+          error: course
+        });
+      }
+      courses_list.push(course);
+    }
+    return res.status(200).send({
+      status: "Favorite added.",
+      course_favorites: courses_list
+    });
+  }
+});
 
 // REMOVE_FRIEND (Version Beta)
 /**
@@ -1084,7 +1240,7 @@ router.get('/logout', async function (req, res) {
  * @param {String} req.headers.access_token
  */
 router.get('/get_own_profile', async function (req, res) {
-  const projection = '-_id -password -access_token -socket_id -facebook_id -verify' //-param for excluding
+  const projection = '-_id -password -access_token -socket_id -facebook_id -stripe_id -subscription_id -verify' //-param for excluding
   let profile = await UserModel.findOne({
     access_token: req.headers.access_token
   }, projection).catch(error => error);
@@ -1271,7 +1427,7 @@ router.get('/get_users', async function (req, res) {
  * @param {UserID || [UserID]} req.headers.users_list
  */
 router.get('/get_user_by_id', async function (req, res) {
-  const projection = "-_id -password -access_token -socket_id -facebook_id";
+  const projection = "-_id -password -access_token -socket_id -facebook_id -stripe_id - subscription_id";
   let user = await UserModel.findOne({
     access_token: req.headers.access_token
   }, "-_id id pseudo").catch(error => error);
@@ -1292,7 +1448,7 @@ router.get('/get_user_by_id', async function (req, res) {
     id: {
       $in: given_list
     }
-  }, projection).catch(error => error);
+  }).catch(error => error);
   if (users_list && users_list.reason) {
     return res.status(400).send({
       status: "Error in database transaction:\n",

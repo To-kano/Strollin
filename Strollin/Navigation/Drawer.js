@@ -23,11 +23,13 @@ import SettingPartenaire from '../Components/SettingPartenaire';
 import Personal_trip from '../Components/Personal_trip';
 import Favorites from '../Components/Favorites';
 import TutorialPage from '../Components/tuto/TutorialPage';
+import Subscription from '../Components/SubscriptionPage';
 
 
 import Chat from './Chat';
 import Home from './Home';
 import Trip from './Trip';
+import { FriendSelection } from '../Components/FriendSelection';
 
 const Drawer = createDrawerNavigator();
 
@@ -45,7 +47,7 @@ function MyDrawer() {
         drawerContent={(props) => <CustomDrawerContent {...props} />}
     >
       <Drawer.Screen name="Home" component={Home} />
-      <Drawer.Screen name="historic" component={HistoryNav} />
+      <Drawer.Screen name="Historic" component={HistoryNav} />
       <Drawer.Screen name="New trip" component={Trip} />
       <Drawer.Screen name="Friends" component={FriendList} />
       <Drawer.Screen name="Chat" component={Chat} />
@@ -59,6 +61,7 @@ function MyDrawer() {
       <Drawer.Screen name="Notation" component={Notation} />
       <Drawer.Screen name="Guide" component={TutorialPage} />
       
+      <Drawer.Screen name="Subscription" component={Subscription} />
     </Drawer.Navigator>
   );
 }

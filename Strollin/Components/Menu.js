@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  Button, Image, View, StyleSheet, Text, ScrollView, FlatList, TextInput, TouchableOpacity,
+  Button, Image, View, StyleSheet, Text, ScrollView, FlatList, TextInput, TouchableOpacity, ActivityIndicator, Modal
 } from 'react-native';
 import { connect } from 'react-redux';
 import { TouchableHighlight } from 'react-native-gesture-handler';
@@ -13,7 +13,12 @@ import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 import I18n from '../Translation/configureTrans';
 import Store from '../Store/configureStore';
 
-import ImageProfile from './ImageProfile';
+import ImageProfile from './components/ImageProfile';
+
+import { logoutUser } from '../apiServer/user';
+import Icon from './components/Icon';
+
+const globalStyles = require('../Styles');
 
 function Menu(props) {
   const store = Store.getState();
@@ -22,17 +27,16 @@ function Menu(props) {
     directionalOffsetThreshold: 80,
     gestureIsClickThreshold: 0.5
   };
- //console.log("customDrawer ", props.state)
+  const [isLoading, setLoading] = React.useState(false);
 
   return (
     <View style={styles.horizontal}>
       <View style={styles.view_menu}>
-        <View style={styles.view_profile}>
+        <TouchableOpacity style={styles.view_profile} onPress={() => props.navigation.navigate(props.state.routeNames[5])}>
           <ImageProfile style={styles.img_profile} />
-          <Text style={styles.text_profile}>{props.profil.pseudo}</Text>
-          <Text style={styles.text_grade}>Traveler</Text>
-        </View>
-        <ScrollView style={styles.view_navigation}>
+          <Text style={[globalStyles.subtitles, {textTransform: 'capitalize'}]}>{props.profil.pseudo}</Text>
+        </TouchableOpacity>
+        <View style={styles.view_navigation}>
           <TouchableOpacity
             onPress={() => {
               profileUser(props, store.profil.access_token);
@@ -40,10 +44,11 @@ function Menu(props) {
             }}
             style={[styles.view_navigationIn, props.state.index == 0 ? styles.current_page : {}]}
           >
-            <Image style={styles.img_navigationIn} source={require('../images/icons/black/home.png')} />
-            <Text style={styles.text_navigationIn}>{props.state.routeNames[0]}</Text>
+            <Icon name='home' size={32} color='#1C1B1C'/>
+            <Text style={[globalStyles.paragraphs, {marginLeft: 8}]}>{props.state.routeNames[0]}</Text>
           </TouchableOpacity>
-          <TouchableOpacity
+
+          {/* <TouchableOpacity
             onPress={() => {
             //console.log('navigate');
               props.navigation.navigate(props.state.routeNames[1]);
@@ -51,8 +56,9 @@ function Menu(props) {
             style={[styles.view_navigationIn, props.state.index == 1 ? styles.current_page : {}]}
           >
             <Image style={styles.img_navigationIn} source={require('../images/icons/black/historic.png')} />
-            <Text style={styles.text_navigationIn}>{props.state.routeNames[1]}</Text>
-          </TouchableOpacity>
+            <Text style={[globalStyles.paragraphs, {marginLeft: 8}]}>{props.state.routeNames[1]}</Text>
+          </TouchableOpacity> */}
+
           <TouchableOpacity
             onPress={() => props.navigation.navigate(
               "New trip",
@@ -62,16 +68,18 @@ function Menu(props) {
               )}
             style={[styles.view_navigationIn, props.state.index == 2 ? styles.current_page : {}]}
           >
-            <Image style={styles.img_navigationIn} source={require('../images/icons/black/next_trip.png')} />
-            <Text style={styles.text_navigationIn}>{props.state.routeNames[2]}</Text>
+            <Icon name='marker' size={32} color='#1C1B1C'/>
+            <Text style={[globalStyles.paragraphs, {marginLeft: 8}]}>{props.state.routeNames[2]}</Text>
           </TouchableOpacity>
+
           <TouchableOpacity
             onPress={() => props.navigation.navigate(props.state.routeNames[3])}
             style={[styles.view_navigationIn, props.state.index == 3 ? styles.current_page : {}]}
           >
-            <Image style={styles.img_navigationIn} source={require('../images/icons/black/friends.png')} />
-            <Text style={styles.text_navigationIn}>{props.state.routeNames[3]}</Text>
+            <Icon name='friend' size={32} color='#1C1B1C'/>
+            <Text style={[globalStyles.paragraphs, {marginLeft: 8}]}>{props.state.routeNames[3]}</Text>
           </TouchableOpacity>
+
           <TouchableOpacity
             onPress={() => {
               const action = { type: 'SET_SEARCH_CONV_LIST', value: props.conversation.conversationList };
@@ -80,30 +88,10 @@ function Menu(props) {
             }}
             style={[styles.view_navigationIn, props.state.index == 4 ? styles.current_page : {}]}
           >
-            <Image style={styles.img_navigationIn} source={require('../images/icons/black/chats.png')} />
-            <Text style={styles.text_navigationIn}>{props.state.routeNames[4]}</Text>
+            <Icon name='conversation' size={32} color='#1C1B1C'/>
+            <Text style={[globalStyles.paragraphs, {marginLeft: 8}]}>{props.state.routeNames[4]}</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => props.navigation.navigate(props.state.routeNames[5])}
-            style={[styles.view_navigationIn, props.state.index == 5 ? styles.current_page : {}]}
-          >
-            <Image style={styles.img_navigationIn} source={require('../images/icons/black/profile.png')} />
-            <Text style={styles.text_navigationIn}>{props.state.routeNames[5]}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => props.navigation.navigate(props.state.routeNames[6])}
-            style={[styles.view_navigationIn, props.state.index == 6 ? styles.current_page : {}]}
-          >
-            <Image style={styles.img_navigationIn} source={require('../images/icons/black/partner.png')} />
-            <Text style={styles.text_navigationIn}>{props.state.routeNames[6]}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => props.navigation.navigate(props.state.routeNames[7])}
-            style={[styles.view_navigationIn, props.state.index == 7 ? styles.current_page : {}]}
-          >
-            <Image style={styles.img_navigationIn} source={require('../images/icons/black/settings.png')} />
-            <Text style={styles.text_navigationIn}>{props.state.routeNames[7]}</Text>
-          </TouchableOpacity>
+
           <TouchableOpacity
             onPress={() => {
               profileUser(props, store.profil.access_token);
@@ -111,22 +99,72 @@ function Menu(props) {
             }}
             style={[styles.view_navigationIn, props.state.index == 8 ? styles.current_page : {}]}
           >
-            <Image style={styles.img_navigationIn} source={require('../images/empty_star.png')} />
-            <Text style={styles.text_navigationIn}>{props.state.routeNames[8]}</Text>
+            <Icon name='star_empty' size={32} color='#1C1B1C'/>
+            <Text style={[globalStyles.paragraphs, {marginLeft: 8}]}>{props.state.routeNames[8]}</Text>
           </TouchableOpacity>
-          <TouchableOpacity
+
+          {/* <TouchableOpacity
+            onPress={() => props.navigation.navigate(props.state.routeNames[5])}
+            style={[styles.view_navigationIn, props.state.index == 5 ? styles.current_page : {}]}
+          >
+            <Image style={styles.img_navigationIn} source={require('../images/icons/black/profile.png')} />
+            <Text style={[globalStyles.paragraphs, {marginLeft: 8}]}>{props.state.routeNames[5]}</Text>
+          </TouchableOpacity> */}
+
+          {props.profil.partner &&
+          <>
+            <TouchableOpacity
+              onPress={() => props.navigation.navigate(props.state.routeNames[6])}
+              style={[styles.view_navigationIn, {marginTop: 48}, props.state.index == 6 ? styles.current_page : {}]}
+            >
+              <Icon name='partner' size={32} color='#1C1B1C'/>
+              <Text style={[globalStyles.paragraphs, {marginLeft: 8}]}>{props.state.routeNames[6]}</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => props.navigation.navigate(props.state.routeNames[7])}
+              style={[styles.view_navigationIn, props.state.index == 7 ? styles.current_page : {}]}
+            >
+              <Icon name='settings' size={32} color='#1C1B1C'/>
+              <Text style={[globalStyles.paragraphs, {marginLeft: 8}]}>{props.state.routeNames[7]}</Text>
+            </TouchableOpacity>
+          </>
+          }
+
+          {/* <TouchableOpacity
             onPress={() => props.navigation.navigate('Personal_trip')}
             style={[styles.view_navigationIn, props.name == 'Personal_trip' ? styles.current_page : {}]}
           >
             <Image style={styles.img_navigationIn} source={require('../images/icons/black/next_trip.png')} />
-            <Text style={styles.text_navigationIn}>Personal_trip</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
+            <Text style={[globalStyles.paragraphs, {marginLeft: 8}]}>Personal_trip</Text>
+          </TouchableOpacity> */}
+
+          {/* <TouchableOpacity
             onPress={() => props.navigation.navigate('Position_partener')}
             style={[styles.view_navigationIn, props.name == 'Position_partener' ? styles.current_page : {}]}
           >
             <Image style={styles.img_navigationIn} source={require('../images/icons/black/next_trip.png')} />
-            <Text style={styles.text_navigationIn}>Position_partener</Text>
+            <Text style={[globalStyles.paragraphs, {marginLeft: 8}]}>Position_partener</Text>
+          </TouchableOpacity> */}
+
+          {/* <TouchableOpacity
+            onPress={() => props.navigation.navigate('Subscription')}
+            style={[styles.view_navigationIn, props.name == 'Subscription' ? styles.current_page : {}]}
+          >
+            <Image style={styles.img_navigationIn} source={require('../images/icons/black/next_trip.png')} />
+            <Text style={[globalStyles.paragraphs, {marginLeft: 8}]}>Subscription</Text>
+          </TouchableOpacity> */}
+
+          {/* Logout Button */}
+          <TouchableOpacity
+            onPress={() => {
+              setLoading(true);
+              logoutUser(props, store.profil.access_token, setLoading);
+            }}
+            style={[styles.view_navigationIn, {position: 'absolute', bottom: 0}]}
+          >
+            <Icon name='logout' size={32} color='#1C1B1C'/>
+            <Text style={[globalStyles.paragraphs, {marginLeft: 8}]}>Se déconnecter</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => props.navigation.navigate('Guide')}
@@ -142,27 +180,38 @@ function Menu(props) {
         >
           <Text style={styles.text_logOut}>Log Out</Text>
         </TouchableOpacity>*/}
+        </View>
       </View>
-      <GestureRecognizer
-        onSwipeDown={(state) => {
-          if (props.state.index > 0) {
-            props.navigation.navigate(props.state.routeNames[props.state.index - 1]);
-            props.navigation.dispatch(DrawerActions.openDrawer());
-          }
-        }}
-        onSwipeUp={(state) => {
-          if (props.state.index < 7) {
-            props.navigation.navigate(props.state.routeNames[props.state.index + 1]);
-            props.navigation.dispatch(DrawerActions.openDrawer());
-          }
-        }}
-        config={config}
-        style={{
-          flex: 1,
-          width: 30,
-          backgroundColor:'white' // si il y a pas ça alors la gesture ne marche pas
-        }}
-      />
+      <View>
+        <GestureRecognizer
+          onSwipeDown={(state) => {
+            if (props.state.index > 0) {
+              props.navigation.navigate(props.state.routeNames[props.state.index - 1]);
+              props.navigation.dispatch(DrawerActions.openDrawer());
+            }
+          }}
+          onSwipeUp={(state) => {
+            if (props.state.index < 7) {
+              props.navigation.navigate(props.state.routeNames[props.state.index + 1]);
+              props.navigation.dispatch(DrawerActions.openDrawer());
+            }
+          }}
+          config={config}
+          style={{
+            flex: 5,
+            backgroundColor:'white' // si il y a pas ça alors la gesture ne marche pas
+          }}
+        />
+      </View>
+      <Modal
+        animationType="none"
+        transparent={true}
+        visible={isLoading}
+      >
+        <View style={styles.loading_screen}>
+          <ActivityIndicator size="large"  color="black" style={{}}/>
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -173,44 +222,37 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   current_page: {
-    width: '150%',
-    backgroundColor: '#CFEAEE',
+    width: '100%',
+    backgroundColor: '#D6EBFF',
     borderRadius: 4,
   },
   view_menu: {
-    flex: 2,
-    justifyContent: 'space-around',
+    width: '100%',
     flexDirection: 'column',
-    padding: 10,
-
+    padding: 16,
+    paddingTop: 32,
     backgroundColor: '#FFFFFF',
   },
   view_close: {
     flex: 5,
     flexDirection: 'row-reverse',
   },
-  img_close: {
-    width: 30,
-    height: 30,
-  },
   view_profile: {
-    height: 200,
     flexDirection: 'column',
     alignItems: 'flex-start',
   },
   img_profile: {
-    width: 100,
-    height: 100,
-    borderRadius: 12,
-    marginBottom: 7.5,
+    width: 96,
+    height: 96,
+    borderRadius: 16,
+    marginBottom: 8,
   },
   text_profile: {
     fontSize: 22,
     fontWeight: 'bold',
-    textTransform: 'uppercase',
+    textTransform: 'capitalize',
     letterSpacing: 2,
     color: '#000000',
-    marginBottom: 7.5,
   },
   text_grade: {
     fontSize: 16,
@@ -219,13 +261,16 @@ const styles = StyleSheet.create({
     color: '#B9B9B9',
   },
   view_navigation: {
+    marginTop: 48,
     flexDirection: 'column',
+    width: '100%',
+    flex: 1,
   },
   view_navigationIn: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 14.7,
-    width: 140
+    marginTop: 16,
+    width: '100%'
   },
   img_navigationIn: {
     width: 30,
@@ -250,6 +295,17 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: '#FFFFFF',
   },
+  disconnect_button: {
+    flex: 1,
+    marginRight: 20,
+    marginTop: 75,
+  },
+  loading_screen: {
+    backgroundColor:'rgba(100,100,100,0.75)',
+    display: "flex",
+    justifyContent: 'space-around',
+    height: '100%'
+  }
 });
 
 const mapStateToProps = (state) => state;

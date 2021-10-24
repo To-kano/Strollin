@@ -19,6 +19,7 @@ var faqRouter = require('./routes/faq')
 var generatorRouter = require('./routes/generator');
 var imageRouter = require('./routes/image');
 var mailsRouter = require('./routes/mails');
+var subscriptionRouter = require('./routes/subscription');
 
 //var algo = require('./Algo/BasicAlgo');
 var algo = require('./Algo/BasicAlgo2');
@@ -146,6 +147,8 @@ app.use('/faq', faqRouter);
 app.use('/generator', generatorRouter);
 app.use('/image', imageRouter);
 app.use('/mails', mailsRouter);
+app.use('/subscription', subscriptionRouter);
+
 
 
 app.get('/.well-known/pki-validation/5772AE219549AD7A92A5E824AF243A2B.txt', function (req, res) {

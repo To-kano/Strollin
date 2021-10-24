@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-  StyleSheet, Text, View, Image, TouchableOpacity, FlatList, Linking
+  StyleSheet, Text, View, Image, TouchableOpacity, FlatList, Linking, ScrollView
 } from 'react-native';
 import { connect } from 'react-redux';
 import CourseItem from './CourseItem';
@@ -8,10 +8,14 @@ import I18n from '../Translation/configureTrans';
 import SearchBar from './TendanceSearchBar';
 import Store from '../Store/configureStore';
 
+const globalStyles = require('../Styles');
+
 //import DrawerLayout from 'react-native-gesture-handler/DrawerLayout';
 //import Menu from './Menu';
 
 import { DrawerActions } from '@react-navigation/native';
+import MenuButton from './components/MenuButton';
+import Footer from './components/Footer';
 
 
 //const imageFriend = require('../ressources/friend.png');
@@ -89,52 +93,66 @@ function Header({ props, defaultState = false }) {
 
 export function HomePage(props) {
 
-  let url = getUrl(props)
+  let url = getUrl(props);
 
   return (
-    <View style={styles.view_back}>
-      <Header props={props} />
-      <View style={styles.view_list}>
-        <FlatList
-          showsHorizontalScrollIndicator={false}
-          showsVerticalScrollIndicator={false}
-          data={getTendanceList()}
-          renderItem={({ item }) => (
-            <CourseItem
-              {...props}
-              data={item}
+    <View style={globalStyles.container}>
+      <ScrollView
+        style={{width: '100%'}}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingVertical: 96 }}
+      >
+        <Text style={[globalStyles.titles, { marginBottom: 32, }]}>Salut {props.profil.pseudo} !</Text>
+        { getTendanceList().length > 0 
+          ? <FlatList
+              style={{width: '100%'}}
+              showsHorizontalScrollIndicator={false}
+              showsVerticalScrollIndicator={false}
+              data={getTendanceList()}
+              renderItem={({ item }) => (
+                <CourseItem
+                  {...props}
+                  data={item}
+                />
+              )}
+              keyExtractor={(item) => item.id}
             />
-          )}
-          keyExtractor={(item) => item.id}
-        />
-
-      </View>
-      
-      <TouchableOpacity
-        onPress={() => { Linking.openURL(url) }}
-        style={styles.view_form}
-      >
-        <Image style={styles.img_form} source={require('../images/icons/black/form.png')} />
-      </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => { Linking.openURL(url) }}
-        style={styles.view_form_text}
-      >
-        <Text>Accéder au formulaire</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => { Linking.openURL("https://forms.gle/CzzEjaVahZ7TdyLE6") }}
-        style={styles.view_form2}
-      >
-        <Image style={styles.img_form} source={require('../images/icons/black/form.png')} />
-      </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => { Linking.openURL("https://forms.gle/CzzEjaVahZ7TdyLE6") }}
-        style={styles.view_form_text2}
-      >
-        <Text>Reporter un bug</Text>
-      </TouchableOpacity>
+          : <Text style={globalStyles.subtitles}>T'es nouveau par ici dis moi ! Essaye donc de faire un trajet 😉</Text>
+        }
+      </ScrollView>
+      <MenuButton props={props}/>
+      <SearchBar
+        onPress={(data) => { setSortedTendanceData(data); setpressed(!pressed); }}
+        imagePath="../images/icons/black/search.png"
+      />
+      <Footer primaryText="Une envie de sortir ?" primaryOnPressFct={() => props.navigation.navigate("New trip", { screen: 'CourseSetting' })}/>
     </View>
+      
+      // {/* <TouchableOpacity
+      //   onPress={() => { Linking.openURL(url) }}
+      //   style={styles.view_form}
+      // >
+      //   <Image style={styles.img_form} source={require('../images/icons/black/form.png')} />
+      // </TouchableOpacity>
+      // <TouchableOpacity
+      //   onPress={() => { Linking.openURL(url) }}
+      //   style={styles.view_form_text}
+      // >
+      //   <Text>Accéder au formulaire</Text>
+      // </TouchableOpacity>
+      // <TouchableOpacity
+      //   onPress={() => { Linking.openURL("https://forms.gle/CzzEjaVahZ7TdyLE6") }}
+      //   style={styles.view_form2}
+      // >
+      //   <Image style={styles.img_form} source={require('../images/icons/black/bug.png')} />
+      // </TouchableOpacity>
+      // <TouchableOpacity
+      //   onPress={() => { Linking.openURL("https://forms.gle/CzzEjaVahZ7TdyLE6") }}
+      //   style={styles.view_form_text2}
+      // >
+      //   <Text>Reporter un bug</Text>
+      // </TouchableOpacity> */}
+    // {/* </View> */}
   );
 }
 

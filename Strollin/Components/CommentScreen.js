@@ -1,5 +1,5 @@
 import {
-  StyleSheet, View, FlatList, Text, TouchableOpacity, Image
+  StyleSheet, View, FlatList, Text, TouchableOpacity, Image, ActivityIndicator, Modal
 } from 'react-native';
 import Comment from './Comment';
 import { connect } from 'react-redux';
@@ -10,7 +10,7 @@ import { StackActions } from '@react-navigation/native';
 import React, {useState} from 'react';
 
 async function getCommentList(props, setCommentList, store) {
-  await fetch(`https://${IP_SERVER}:${PORT_SERVER}/comment/get_comment_by_id`, {
+  await fetch(`http://${IP_SERVER}:${PORT_SERVER}/comment/get_comment_by_id`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -133,5 +133,5 @@ const styles = StyleSheet.create({
   view_list: {
     flex: 757,
     width: '100%',
-  }
+  },
 });

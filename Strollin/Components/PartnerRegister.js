@@ -45,6 +45,7 @@ export function UserRegister(props) {
   const [pseudo, setPseudo] = useState('');
   const [userLastName, setUserLastName] = useState('');
   const [userInfo, setUserInfo] = React.useState({});
+  const [isLoading, setLoading] = React.useState(false);
 
   const [modalVisible, setModalVisible] = useState(false);
   const [message, setMessage] = useState("");
@@ -163,7 +164,8 @@ export function UserRegister(props) {
           style={styles.button_logIn}
           onPress={() => {
             if (userPassword === userConfirmPassWord) {
-              registerUser(props, pseudo, userPassword, userEmail, setMessage, setModalVisible, true);
+              setLoading(true);
+              registerUser(props, pseudo, userPassword, userEmail, setMessage, setModalVisible, true, setLoading);
             }
           }}
         >
@@ -172,6 +174,15 @@ export function UserRegister(props) {
           </Text>
         </TouchableOpacity>
       </View>
+      <Modal
+        animationType="none"
+        transparent={true}
+        visible={isLoading}
+      >
+        <View style={styles.loading_screen}>
+          <ActivityIndicator size="large"  color="black" style={{}}/>        
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -304,6 +315,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#1877F2',
     paddingHorizontal: 10,
+  },
+  loading_screen: {
+    backgroundColor:'rgba(100,100,100,0.75)',
+    display: "flex",
+    justifyContent: 'space-around',
+    height: '100%'
   }
 });
 

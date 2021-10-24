@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-  Text, View, FlatList, TouchableOpacity, TextInput, StyleSheet, Image
+  Text, View, FlatList, TouchableOpacity, TextInput, StyleSheet, Image, ScrollView
 } from 'react-native';
 import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 import { DrawerActions } from '@react-navigation/native';
@@ -8,6 +8,14 @@ import I18n from '../Translation/configureTrans';
 import { profileUser } from '../apiServer/user';
 import { connect } from 'react-redux';
 import Store from '../Store/configureStore';
+import MenuButton from './components/MenuButton';
+import AddFriendsButton from './components/AddFriendsButton';
+import ReturnButton from './components/ReturnButton';
+import ImageProfile from './components/ImageProfile';
+import Icon from './components/Icon';
+import AddButton from './components/AddFriendsButton';
+
+const globalStyles = require('../Styles');
 
 // import BackgroundImage from './backgroundImage';
 // import stylesHomepage from '../../styles/homepage'
@@ -166,54 +174,54 @@ import Store from '../Store/configureStore';
 //   }
 // }
 
-function Header({ props, defaultState = false }) {
-  const [research, setresearch] = useState('');
-  const [pressed, setpressed] = useState(defaultState);
+// function Header({ props, defaultState = false }) {
+//   const [research, setresearch] = useState('');
+//   const [pressed, setpressed] = useState(defaultState);
 
-  if (pressed === false) {
-    return (
-      <View style={styles.view_header}>
-        <TouchableOpacity
-          onPress={() => props.navigation.dispatch(DrawerActions.openDrawer())}
-          // onPress={() => props.navigation.navigate('Menu')}
-        >
-          <Image style={styles.img_header} source={require('../images/icons/black/menu.png')} />
-        </TouchableOpacity>
-        <Text style={styles.text_header}>
-          {I18n.t('Header.friends')}
-        </Text>
-        <TouchableOpacity
-          onPress={() => { setpressed(!pressed); }}
-        >
-          <Image style={styles.img_header} source={require('../images/icons/black/addFriend.png')} />
-        </TouchableOpacity>
-      </View>
-    );
-  }
-  return (
-    <View style={styles.view_header}>
-      <TextInput
-          autoCapitalize={'none'}
-        style={styles.textInput_header}
-        placeholder={I18n.t('Header.add_friend')}
-        onChangeText={(text) => setresearch(text)}
-        value={research}
-      />
-      <TouchableOpacity
-        onPress={() => { addFriend(research); setpressed(!pressed); setresearch(''); }}
-      >
-        <Image style={styles.img_header} source={require('../images/icons/black/addFriend.png')} />
-      </TouchableOpacity>
-    </View>
-  );
-}
+//   if (pressed === false) {
+//     return (
+//       <View style={styles.view_header}>
+//         <TouchableOpacity
+//           onPress={() => props.navigation.dispatch(DrawerActions.openDrawer())}
+//           // onPress={() => props.navigation.navigate('Menu')}
+//         >
+//           <Image style={styles.img_header} source={require('../images/icons/black/menu.png')} />
+//         </TouchableOpacity>
+//         <Text style={styles.text_header}>
+//           {I18n.t('Header.friends')}
+//         </Text>
+//         <TouchableOpacity
+//           onPress={() => { setpressed(!pressed); }}
+//         >
+//           <Image style={styles.img_header} source={require('../images/icons/black/addFriend.png')} />
+//         </TouchableOpacity>
+//       </View>
+//     );
+//   }
+//   return (
+//     <View style={styles.view_header}>
+//       <TextInput
+//           autoCapitalize={'none'}
+//         style={styles.textInput_header}
+//         placeholder={I18n.t('Header.add_friend')}
+//         onChangeText={(text) => setresearch(text)}
+//         value={research}
+//       />
+//       <TouchableOpacity
+//         onPress={() => { addFriend(research); setpressed(!pressed); setresearch(''); }}
+//       >
+//         <Image style={styles.img_header} source={require('../images/icons/black/addFriend.png')} />
+//       </TouchableOpacity>
+//     </View>
+//   );
+// }
 
 async function AddFriend(props, store, mail) {
   const bodyRequest = JSON.stringify({
     friend_mail: mail
   });
 
-  await fetch(`https://${IP_SERVER}:${PORT_SERVER}/users/add_friend`, {
+  await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/add_friend`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -236,7 +244,7 @@ async function DeleteFriend(props, store, id) {
     friend_id: id
   });
 
-  await fetch(`https://${IP_SERVER}:${PORT_SERVER}/users/remove_friend`, {
+  await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/remove_friend`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -255,22 +263,27 @@ async function DeleteFriend(props, store, id) {
 }
 
 export function FriendObject(props) {
+  const [showBin, setshowBin] = useState(false);
+
   return (
-    <View style={styles.view_friend}>
-      <Image
-        style={styles.img_friend}
-        source={require('../images/TonyPP.jpg')}
-      />
-      <Text style={styles.text_friend}>
-        {props.store.profil.friends_pseudo_list[props.id]}
-      </Text>
-      <TouchableOpacity
-        style={styles.view_delete}
-        onPress={() => { DeleteFriend(props, props.store, props.id); }}
-      >
-        <Image style={styles.img_delete} source={require('../images/icons/black/deleteFriend.png')} />
-      </TouchableOpacity>
-    </View>
+    <TouchableOpacity style={styles.view_friend} onLongPress={() => setshowBin(state => !state)}>
+      <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <Image
+          style={{height: 64, width: 64, borderRadius: 16}}
+          source={require('../assets/images/default_profile_picture.png')}
+        />
+        <Text style={[globalStyles.paragraphs, {marginLeft: 16}]}>
+          {props.store.profil.friends_pseudo_list[props.id]}
+        </Text>
+      </View>
+      {showBin &&
+        <TouchableOpacity
+          onPress={() => { DeleteFriend(props, props.store, props.id); }}
+        >
+          <Icon name="bin" size={29} color="#F8333C"/>
+        </TouchableOpacity>
+      }
+    </TouchableOpacity>
   );
 }
 
@@ -283,29 +296,24 @@ export function UsersObject(props) {
     }
   }
   
-  if (props.id != props.store.profil.id) {
+  if (props.id != props.store.profil.id && isFriend === false) {
     return (
       <View style={styles.view_friend}>
-        <Image
-          style={styles.img_friend}
-          source={require('../images/TonyPP.jpg')}
-        />
-        <Text style={styles.text_friend}>
-          {props.pseudo}
-        </Text>
-        { isFriend === false &&
-          <TouchableOpacity
-            style={styles.view_delete}
-            onPress={() => { AddFriend(props, props.store, props.mail); }}
-          >
-            <Image style={styles.img_delete} source={require('../images/icons/black/addFriend.png')} />
-          </TouchableOpacity>
-        }
-        { isFriend === true &&
-          <View style={styles.view_delete}>
-            <Image style={styles.img_delete} source={require('../images/icons/black/friend.png')} />
-          </View>
-        }
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <Image
+            style={{height: 64, width: 64, borderRadius: 16}}
+            source={require('../assets/images/default_profile_picture.png')}
+          />
+          <Text style={[globalStyles.paragraphs, {marginLeft: 16}]}>
+            {props.pseudo}
+          </Text>
+        </View>
+        <TouchableOpacity
+          style={styles.view_delete}
+          onPress={() => { AddFriend(props, props.store, props.mail); }}
+        >
+          <Text style={[globalStyles.paragraphs, {color: '#0989FF'}]}>Ajouter</Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -315,7 +323,7 @@ export function UsersObject(props) {
 }
 
 async function getUserList(store, setUserList) {
-  await fetch(`https://${IP_SERVER}:${PORT_SERVER}/users/get_users`, {
+  await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/get_users`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -338,15 +346,72 @@ function FriendList(props) {
   const store = Store.getState();
   const [userList, setUserList] = useState(null);
   const [pressed, setpressed] = useState(true);
+  const [AddFriendPage, setAddFriendPage] = useState(false);
 
   if (!userList) {
     getUserList(store, setUserList);
   }
 
+  console.log("amis : ", userList)
+
   return (
-    <View style={styles.view_back}>
+    <View style={[globalStyles.container, {paddingHorizontal: 0}]}>
+      {!AddFriendPage ?
+        <>
+          <View style={{ marginTop: 96, marginBottom: 16, width: "100%", flexDirection: "row", justifyContent: 'space-between', paddingHorizontal: 16}}>
+            <View>
+              <Text style={globalStyles.subtitles}>Tes amis sont ici</Text>
+              <Text style={[globalStyles.subparagraphs, {color: '#9B979B'}]}>{store.profil.friends_list.length} ami{store.profil.friends_list.length > 1 ? "s" : ""}</Text>
+            </View>
+            <ImageProfile style={{height: 64, width: 64, borderRadius: 16}} />
+          </View>
+          <FlatList
+            contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 16}}
+            style={{width: '100%' }}
+            showsHorizontalScrollIndicator={false}
+            showsVerticalScrollIndicator={false}
+            data={store.profil.friends_list}
+            renderItem={({ item }) => (
+              <FriendObject
+                {...props}
+                store={store}
+                id={item}
+              />
+            )}
+            keyExtractor={(item, index) => {
+              item;
+            }}
+          />
+          <MenuButton props={props}/>
+          <AddButton iconName="add_friend" onPressFct={() => setAddFriendPage(true)}/>
+        </>
+        :
+        <>
+          <FlatList
+            contentContainerStyle={{ paddingVertical: 96, paddingHorizontal: 16 }}
+            style={{width: '100%'}}
+            showsHorizontalScrollIndicator={false}
+            showsVerticalScrollIndicator={false}
+            data={userList}
+            renderItem={({ item }) => (
+              <UsersObject
+                {...props}
+                store={store}
+                pseudo={item.pseudo}
+                mail={item.mail}
+                id={item.id}
+              />
+            )}
+            keyExtractor={(item, index) => {
+              item.id;
+            }}
+          />
+          <ReturnButton onPressFct={() => setAddFriendPage(false)}/>
+        </>
+      }
+
       {/* <Header props={props} /> */}
-      <View style={styles.view_header}>
+      {/* <View style={styles.view_header}>
         <TouchableOpacity
           onPress={() => props.navigation.dispatch(DrawerActions.openDrawer())}
           // onPress={() => props.navigation.navigate('Menu')}
@@ -370,8 +435,9 @@ function FriendList(props) {
             <Image style={styles.img_header} source={require('../images/icons/black/friends.png')} />
           </TouchableOpacity>
         }
-      </View>
-      {pressed === true &&
+      </View> */}
+      
+      {/* {pressed === true &&
         <View style={styles.view_list}>
           <FlatList
             showsHorizontalScrollIndicator={false}
@@ -410,29 +476,12 @@ function FriendList(props) {
             }}
           />
         </View>
-      }
+      } */}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  view_back: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    backgroundColor: '#E1E2E7',
-    paddingTop: '1.8%',
-    paddingLeft: '3.3%',
-    paddingRight: '3.3%',
-    paddingBottom: '0%',
-  },
-  view_header: {
-    flex: 50,
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
   textInput_header: {
     height: 40,
     width: '85%',
@@ -474,40 +523,25 @@ const styles = StyleSheet.create({
     height: 687,
     width: '100%',
   },
-  view_list: {
-    width: '100%',
-    flex: 757,
-  },
   view_friend: {
     width: '100%',
-    backgroundColor: '#FFFFFF',
-    paddingLeft: 5,
-    paddingTop: 5,
-    paddingRight: 5,
-    paddingBottom: 5,
-    marginBottom: 5,
-    borderRadius: 15,
+    backgroundColor: '#ffffff',
+    borderRadius: 16,
+    padding: 16,
+    marginTop: 16,
+    shadowColor: "#000",
+    shadowOffset: {
+        width: 0,
+        height: 5,
+    },
+    shadowOpacity: 0.34,
+    shadowRadius: 6.27,
+
+    elevation: 10,
     flexDirection: 'row',
+    justifyContent: 'space-between',
     alignContent: 'center',
     alignItems: 'center',
-  },
-  img_friend: {
-    flex: 96,
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    resizeMode: 'contain',
-    marginRight: 16,
-  },
-  text_friend: {
-    fontWeight: 'bold',
-    fontSize: 16,
-    textTransform: 'capitalize',
-    flex: 257,
-  },
-  view_group: {
-    flexDirection: 'column',
-    flex: 257,
   },
   text_group: {
     fontWeight: 'bold',
@@ -519,9 +553,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     textTransform: 'capitalize',
     color: '#A2A2A2',
-  },
-  view_delete: {
-    flex: 40,
   },
   img_delete: {
     width: 30,

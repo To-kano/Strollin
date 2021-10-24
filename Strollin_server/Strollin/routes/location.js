@@ -312,7 +312,7 @@ router.get('/get_place', async function(req, res) {
     })
     console.log("_____________________________")
     console.log(research)
-    url = "https://maps.googleapis.com/maps/api/place/details/json?place_id=" + research.candidates[0].place_id + "&fields=formatted_address,geometry,name,type,opening_hours,website,price_level,rating,review,international_phone_number,user_ratings_total,photo&key=AIzaSyC4MiDbDXP5M3gvpyUADaIUO60H7Vjb9Uk"
+    url = "https://maps.googleapis.com/maps/api/place/details/json?place_id=" + research.candidates[0].place_id + "&fields=formatted_address,geometry,name,type,opening_hours,website,price_level,rating,review,international_phone_number,user_ratings_total,photo&key=AIzaSyDPc6ZV5KYveppsIq8o_1oeVEZ6CShTX4w"
     let result = await placeCall(url).then((response) => {
       return response
     })
@@ -407,7 +407,7 @@ router.get('/get_locations_by_id', async function(req, res) {
 });
 
 router.get('/get_location_position', async function(req, res) {
-    let url = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=" + req.headers.place_name + "&inputtype=textquery&fields=formatted_address,geometry&key=AIzaSyDWnNbYqihMAkObSa_KDJ11YNBD4ffpNBk&language=" + req.headers.language
+    let url = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=" + req.headers.place_name + "&inputtype=textquery&fields=formatted_address,geometry&key=AIzaSyDPc6ZV5KYveppsIq8o_1oeVEZ6CShTX4w&language=" + req.headers.language
     let result = await placeCall(url).then((response) => {
       return response.candidates[0]
     })
@@ -418,5 +418,23 @@ router.get('/get_location_position', async function(req, res) {
     return res.status(400).send({status: false, error: "Place not found or error occured."})
 });
 
+router.post('/check_open', async function(req, res) {
+
+    console.log("##################################################################################################################");
+    var array = req.body.list;
+    for (var i = 0; i < array.length; i++) {
+      let name = array[i].name.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+      let url = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=" + name + "&inputtype=textquery&fields=name,formatted_address,opening_hours&key=AIzaSyDPc6ZV5KYveppsIq8o_1oeVEZ6CShTX4w"
+      let result = await placeCall(url)
+      console.log("candidat: ", result.candidates);
+      if (!result.candidates[0].opening_hours || result.candidates[0].opening_hours.open_now == true) {
+        array[i].website = true;
+      }
+      else {
+        array[i].website = false;
+      }
+    }
+    return res.status(200).send({status: true, res: array})
+});
 
 module.exports = router;

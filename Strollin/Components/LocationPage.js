@@ -80,7 +80,7 @@ function LocationPage({route, navigation}) {
             {"Address"}
           </Text>
           <View style={styles.view_number}>
-            <Text style={styles.text_number}>{location.address + " " + location.town + " " + location.country}</Text>
+            <Text style={styles.text_number}>{location.address}</Text>
           </View>
         </View>
         <View style={styles.view_stat}>
@@ -120,7 +120,7 @@ function LocationPage({route, navigation}) {
             {"Price range"}
           </Text>
           <View style={styles.view_number}>
-            <Text style={styles.text_number}>{location.price_range}</Text>
+            <Text style={styles.text_number}>{"Min: " + location.price_range[0] + " | Max: " + location.price_range[1] + " | Avg: " + location.price_range[2]}</Text>
           </View>
         </View>
         <View style={styles.view_stat}>
@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
     color: '#000000',
   },
   view_partner: {
-    height: 687,
+    height: '92%',
     width: '100%',
   },
   view_box: {
@@ -239,7 +239,7 @@ const styles = StyleSheet.create({
     color: '#000000',
   },
   view_number: {
-    flexDirection: 'row-reverse',
+    flexDirection: 'row',
     width: '100%',
     padding: 7,
     backgroundColor: '#FFFFFF',

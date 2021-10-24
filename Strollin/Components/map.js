@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import MapView, { Marker } from 'react-native-maps';
-import { PermissionsAndroid, View, Text } from 'react-native';
+import { PermissionsAndroid, View, Text, Dimensions } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import MapViewDirections from 'react-native-maps-directions';
-
+import Store from '../Store/configureStore';
 import { connect } from 'react-redux';
 
 import Tts from 'react-native-tts';
 import { addUserHistoric } from '../apiServer/user';
 
 import I18n from '../Translation/configureTrans';
+
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 // apiKey AIzaSyDGvC3HkeGolvgvOevKuaE_6LmS9MPjlvE
 
@@ -73,8 +76,9 @@ function isNear(userPosition, elementPosition) {
 function Map({
   position, height, width, deltaView, locations, profil, map, dispatch, navigation
 }) {
-  const [userPosition, setUserPosition] = useState(null);
   const allTime = [];
+  const store = Store.getState();
+  const [userPosition, setUserPosition] = useState(store.CourseSettings.pos);
 
   /// /console.log(props.navigate);
   // console.log("map\n");
@@ -93,10 +97,11 @@ function Map({
 
   //const [waypoint, setWaypoint] = useState(props.waypoints);
   const [destinations, setDestinations] = useState(locations || map.locations);// props.course);
+  const [delToken, setDelToken] = useState("Bonchour");
   //console.log(waypoint);
   /* useEffect(() => {
 
-  //console.log("destination\n", destinations);
+  // console.log("destination\n", destinations);
   //console.log("final\n", destinations[destinations.length - 1]);
   //console.log("parcoure\n", destinations.slice(0, destinations.length - 1));
 
@@ -126,7 +131,7 @@ function Map({
   const [magic, setMagic] = useState(1);
 
   const BlackMagic = () => {
-    setMagic(0);
+    setMagic(1);
   };
 
   // const [refMapView, setRefMapView] = useState(React.createRef());
@@ -155,6 +160,27 @@ function Map({
     setUserPosition(position);
   };
 
+  const mapStyle = [
+    {
+      "featureType": "poi",
+      "elementType": "labels",
+      "stylers": [
+        {
+          "visibility": "off"
+        }
+      ]
+    },
+    {
+      "featureType": "transit",
+      "stylers": [
+        {
+          "visibility": "off"
+        }
+      ]
+    }
+  ]
+
+
   if (position.asked == false) {
     requestGeolocalisationPermission(dispatch);
   }
@@ -168,11 +194,13 @@ function Map({
     //
     return (
       <MapView
-      // ref={refMapView}
-        style={{ height, width: width + magic }} // showsMyLocationButton dont show if width is not change
+        customMapStyle={mapStyle}
+        style={{ height: windowHeight, width: windowWidth }} // showsMyLocationButton dont show if width is not change
         initialRegion={localRegion}
-        showsUserLocation
-        showsCompass
+        showsUserLocation={true}
+        showsCompass={false}
+        mapType="standard"
+        followUserLocation={true}
         onMapReady={BlackMagic}
         userLocationPriority="balanced"
         onUserLocationChange={(data) => {
@@ -187,10 +215,11 @@ function Map({
           waypoints={destinations.slice(0, destinations.length - 1)}
             // waypoints={destinations.slice(0, destinations.length - 1)}
           apikey={GOOGLE_MAPS_APIKEY}
-          strokeWidth={5}
+          strokeWidth={3}
+          language='fr'
           timePrecision="now"
           resetOnChange={false}
-          strokeColor="#39A5D6"
+          strokeColor="#0989FF"
           mode="WALKING"
         />
 
@@ -201,6 +230,16 @@ function Map({
             title={marker.name}
             description={marker.address}
             image={require('../images/logo/marker_small.png')}
+            width={44}
+            height={64}
+            onCalloutPress={() => {
+              const store = Store.getState();
+              var action = {
+                type: 'ADD_DELETE',
+                value: [marker.id, marker.name]
+              };
+              Store.dispatch(action);
+            }}
           />
         ))}
 

@@ -1,6 +1,6 @@
 import React, { Component, useState, useEffect } from 'react';
 import {
-  StyleSheet, AppState, View, Text, Button, BackHandler, Image, TouchableOpacity, ImageBackground,
+  StyleSheet, AppState, View, Text, Button, BackHandler, Image, TouchableOpacity, Dimensions, ActivityIndicator, Modal, RefreshControl, Share
 } from 'react-native';
 
 import { connect } from 'react-redux';
@@ -13,6 +13,17 @@ import Store from '../Store/configureStore';
 import { PopUpForm } from './PopUpForm';
 import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 import {createNewCourse} from '../apiServer/course';
+import MenuButton from './components/MenuButton';
+import CloseButton from './components/CloseButton';
+import { FlatList } from 'react-native-gesture-handler';
+import { translateTags } from '../Translation/translateTags';
+import Icon from './components/Icon';
+import { ShareDialog } from 'react-native-fbsdk';
+
+const globalStyles = require('../Styles');
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
+
 
 function randPic() {
   /*const rand = (Math.floor(Math.random() * 2) + 1);
@@ -23,15 +34,39 @@ function randPic() {
   return (require('../ressources/street2.jpg'));
 }
 
-export function TripNavigation({map, profil, dispatch, navigation}) {
-
+export function TripNavigation({ map, profil, dispatch, navigation}) {
+  const [displayMap, setDisplayMap] = useState(true);
   const [pop, setPop] = useState(false);
+  const [del, setDel] = useState(false);
   const [course, setCourse] = useState(null);
   const [place, setPlace] = useState(null);
+  const [isLoading, setLoading] = React.useState(false);
 
   function compare(a, b) {
     if (a.Dist > b.Dist) return 1;
     if (b.Dist > a.Dist) return -1;
+  }
+
+  async function DeletePlace(isDelete) {
+    if (!isDelete) {
+      setDel(false)
+      return
+    }
+    const store = Store.getState();
+    var current = store.course.currentCourse
+    var list = current.locations_list;
+    for (var i = 0; i < list.length; i++) {
+      if (list[i] === store.course.delete[0]) {
+        locations.splice(i, 1);
+        current.locations_list.splice(i, 1);
+      }
+    }
+    //locations.splice(3, 1);
+    var action = { type: 'SET_CURRENT_COURSE', value: current };
+    Store.dispatch(action);
+    var action = { type: 'SET_LOCATIONS', locations: locations };
+    Store.dispatch(action);
+    setDel(false)
   }
 
   async function PopUpResponse(response, pos, course, popup) {
@@ -42,8 +77,7 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
     coordinate[0] = pos.latitude;
     coordinate[1] = pos.longitude;
 
-  //console.log("\n*\n*\n*\n*", locations[0])
-    await fetch(`https://${IP_SERVER}:${PORT_SERVER}/generator/popup_answer`, {
+    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/generator/popup_answer`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -56,14 +90,15 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
     })
     .then(res => res.json())
     .then(json => {
-      //console.log("\n\n\n\n\n\npleasssssssssse: ", json);
       setPop(false);
-    });
+    })
+    .then(setLoading(false));
 
     if (response == false)
       return
     //update course
-    await fetch(`https://${IP_SERVER}:${PORT_SERVER}/location/get_locations_by_id`, {
+    setLoading(true);
+    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/get_locations_by_id`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -74,27 +109,26 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
     })
     .then(res => res.json())
     .then(json => {
-      //console.log("location stp frero: ", json.locations_list[0]);
       let test_loc = locations
       test_loc.push(json.locations_list[0])
       test_loc.sort(compare)
       const action = { type: 'SET_LOCATIONS', locations: test_loc };
       Store.dispatch(action);
-    });
+      setDisplayMap(false);
+      setDisplayMap(true);
+    })
+    .then(setLoading(false));
   }
 
   async function PopUpReq(pos, course) {
-  //console.log("course: ", course);
     const store = Store.getState();
     const access_Token = store.profil.access_token;
-    //console.log("\n\n\n.............................pos: ", pos);
-  //console.log("token: ", access_Token);
     const coordinate = [];
     const test = JSON.stringify({course: course})
     coordinate[0] = pos.latitude;
     coordinate[1] = pos.longitude;
 
-    await fetch(`https://${IP_SERVER}:${PORT_SERVER}/generator/generate_popup`, {
+    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/generator/generate_popup`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -106,24 +140,21 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
     })
     .then(res => res.json())
     .then(json => {
-    //console.log("JJJJJJJJJJJJSSSSSSSSSSSSSSSSOOOOOOOOOONNNNNNNNNn: ", json);
       setCourse(json.popup)
+      //console.log("stp c la le truc: ", json.popup);
       setPop(true);
-    //console.log("stp c la le truc: ", json.popup);
-    });
-
+      // console.log("stp c la le truc: ", json.popup);
+    })
+    .then(setLoading(false));
   }
 
-//console.log("\n*\n*\n*\n*", locations)
 
   useEffect(() => {
-  //console.log("ceci est locations\n\n", locations)
     setTime();
   }, []);
 
   async function setTime() {
     let tmp = await Date.now();
-  //console.log("date = ", tmp);
     tmp = Math.floor(tmp / 1000);
 
     const action = { type: 'SET_TIME', value: tmp };
@@ -144,39 +175,65 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
     longitudeDelta: 0.0121,
   };
 
-  if (pop) {
-    return (
-      <View style={styles.view_popup}>
-        <Text style={[styles.text_popup, styles.text_question]}>
-          Do you want to go to : {course.Name}
-        </Text>
-        <View style={styles.view_button}>
-          <TouchableOpacity
-            style={styles.button_no}
-            onPress={() => PopUpResponse(false, profil.first_name, profil.scoreCourse, course)}
-          >
-            <Text style={styles.text_popup}>No</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button_yes}
-            onPress={() => PopUpResponse(true, profil.first_name, profil.scoreCourse, course)}
-          >
-            <Text style={styles.text_popup}>Yes</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    )}
-  else {
+if (del) {
   return (
-    <View style={styles.view_back}>
-      <View style={styles.view_header}>
+    <View>
+      <Text>
+        Are you sure you want to delete this place ?: {Store.getState().course.delete[1]}
+      </Text>
+      <Button
+        title="yes"
+        onPress={() => DeletePlace(true)}
+      />
+      <Button
+        title="no"
+        onPress={() => DeletePlace(false)}
+      />
+    </View>
+  )}
+ // if (pop) {
+ //   return (
+ //     <View style={styles.view_popup}>
+ //       <Text style={[styles.text_popup, styles.text_question]}>
+ //         Do you want to go to : {course.Name}
+ //       </Text>
+ //       <View style={styles.view_button}>
+ //         <TouchableOpacity
+ //           style={styles.button_no}
+ //           onPress={() => PopUpResponse(false, profil.first_name, profil.scoreCourse, course)}
+ //         >
+ //           <Text style={styles.text_popup}>No</Text>
+ //         </TouchableOpacity>
+ //         <TouchableOpacity
+ //           style={styles.button_yes}
+ //           onPress={() => PopUpResponse(true, profil.first_name, profil.scoreCourse, course)}
+ //         >
+ //           <Text style={styles.text_popup}>Yes</Text>
+ //         </TouchableOpacity>
+ //       </View>
+ //     </View>
+ //   )}
+ // else {
+   console.log("loc : ", locations[0]);
+  return (
+    <View style={globalStyles.container}>
+      <View style={styles.view_map}>
+        {displayMap &&
+          <Map
+            navigation={navigation}
+            height={windowHeight}
+            width={windowWidth}
+            deltaView={deltaView}
+            locations={locations}
+          />
+        }
+      </View>
+      {/* <View style={styles.view_header}>
         <Text style={styles.text_header}>   My Trip</Text>
         <TouchableOpacity
           onPress={async () => {
             const store = Store.getState();
-            //console.log("setting = ", store.course.currentCourse);
             const result = await createNewCourse(store.profil.access_token, store.course.currentCourse);
-            console.log("result new course =", result);
             addUserHistoric(store.profil.access_token, result.id);
             const action = { type: 'ADD_HISTORY', courseID: result.id };
             dispatch(action);
@@ -187,29 +244,140 @@ export function TripNavigation({map, profil, dispatch, navigation}) {
         >
           <Image style={styles.img_header} source={require('../images/icons/black/close.png')} />
         </TouchableOpacity>
+      </View> */}
+      <View
+        style={{
+          position: 'absolute',
+          bottom: 16,
+          right: 8,
+          left: 8,
+          backgroundColor: "#ffffff",
+          padding: 16,
+          margin: 16,
+          borderRadius: 16,
+          shadowColor: "#000",
+          shadowOffset: {
+              width: 0,
+              height: 5,
+          },
+          shadowOpacity: 0.34,
+          shadowRadius: 6.27,
+
+          elevation: 10,
+        }}>
+          <Text style={globalStyles.subtitles}>{locations[0].name}</Text>
+          <Text numberOfLines={1} style={[globalStyles.subparagraphs, {color: '#9B979B'}]}>{locations[0].address}, {locations[0].city}</Text>
+          <View style={{ marginTop: 16, width: "100%", }}>
+            <FlatList
+              style={{ width: "100%" }}
+              data={locations[0].tags_list}
+              horizontal={true}
+              keyExtractor={(item) => item.id}
+              renderItem={({ item }) => (
+                <>
+                {translateTags(item._id) === 'error'
+                ? <></>
+                : <Text style={[globalStyles.subparagraphs, globalStyles.tag,]}>{translateTags(item._id) === 'error' ? <></> : translateTags(item._id)}</Text>
+                }
+              </>
+              )}
+            />
+          </View>
+          <View style={{ position: 'absolute', top: 8, right: 8, flexDirection: 'row' }}>
+            <TouchableOpacity
+              onPress={() => {
+                Share.share({
+                  message: `Strollin' m'a proposé un trajet ! \nRejoignons nous a ${locations[0].name} au ${locations[0].address} !`,
+                  title: "Sortir avec Strollin'",
+                  url: 'https://www.google.com',
+                }, {
+                // Android only:
+                  dialogTitle: 'Share Strollin travel',
+                  // iOS only:
+                  excludedActivityTypes: [
+                    'com.apple.UIKit.activity.PostToTwitter'
+                  ]
+                });
+              }}
+              accessibilityLabel="Share"
+            >
+              <Icon name="share" size={29} color='#000000'/>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{marginLeft: 8}}
+              onPress={() => {
+                const shareLinkContent = {
+                  contentType: 'link',
+                  contentUrl: 'https://www.google.com',
+                  quote: `Strollin' m'a proposé un trajet ! \nRejoignons nous a ${locations[0].name} au ${locations[0].address} !`,
+                };
+                ShareDialog.show(shareLinkContent);
+              }}
+              accessibilityLabel="Share"
+            >
+              <Icon name="facebook" size={29} color='#000000'/>
+            </TouchableOpacity>
+          </View>
       </View>
-      <View style={styles.view_destination}>
-        <Image style={styles.img_header} source={require('../images/icons/black/next_trip.png')} />
-        <Text numberOfLines={1}  style={styles.text_destination}>{locations[0].name}</Text>
-      </View>
-      <View style={styles.view_map}>
-        <Map
-          navigation={navigation}
-          height="100%"
-          width={390}
-          deltaView={deltaView}
-          locations={locations}
-        />
-      </View>
+      <CloseButton
+        onPressFct={async () => {
+          const store = Store.getState();
+          const result = await createNewCourse(store.profil.access_token, store.course.currentCourse);
+          addUserHistoric(store.profil.access_token, result.id);
+          const action = { type: 'ADD_HISTORY', courseID: result.id };
+          dispatch(action);
+          const action2 = { type: 'ADD_COURSE_OBJECT_HISTORIC', value: result };
+          dispatch(action2);
+          navigation.navigate('CourseEvaluation');
+        }}
+      />
+
+      {pop &&
+        <View style={styles.view_popup}>
+          <Text style={[styles.text_popup, styles.text_question]}>
+            Do you want to go to : {course.Name}
+          </Text>
+          <View style={styles.view_button}>
+            <TouchableOpacity
+              style={styles.button_no}
+              onPress={() => PopUpResponse(false, profil.first_name, profil.scoreCourse, course)}
+            >
+              <Text style={styles.text_popup}>No</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.button_yes}
+              onPress={() => PopUpResponse(true, profil.first_name, profil.scoreCourse, course)}
+            >
+              <Text style={styles.text_popup}>Yes</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      }
+      {/* <TouchableOpacity onPress={() => {
+        setDel(true)
+      }}>
+        <Text style={styles.text_signIn}>Delete</Text>
+      </TouchableOpacity>
       <TouchableOpacity onPress={() => {
         const store = Store.getState();
+        setLoading(true);
+        //DeletePlace();
         PopUpReq(profil.first_name, profil.scoreCourse); //Je sais pas utiliser les props du coup g stocker des truc dans les props dans course settings
       }}>
         <Text style={styles.text_signIn}>Simulate</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
+      <Modal
+        animationType="none"
+        transparent={true}
+        visible={isLoading}
+      >
+        <View style={styles.loading_screen}>
+          <ActivityIndicator size="large"  color="black" style={{}}/>
+        </View>
+      </Modal>
     </View>
   );
-  }
+//   }
 }
 
 const mapStateToProps = (state) => {
@@ -231,7 +399,8 @@ const styles = StyleSheet.create({
     margin: 10,
     padding: 10,
     flexDirection: 'column',
-    height: '16%',
+    width: '100%',
+    height: '14%',
     elevation: 5,
     backgroundColor: '#FFF'
   },
@@ -327,5 +496,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     padding: 12,
     color: '#0092A7',
+  },
+  loading_screen: {
+    backgroundColor:'rgba(100,100,100,0.75)',
+    display: "flex",
+    justifyContent: 'space-around',
+    height: '100%'
   },
 });

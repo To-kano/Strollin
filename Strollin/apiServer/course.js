@@ -7,12 +7,13 @@ import {
   saveNewCourse,
   getCourseCacheById
 } from '../cache/course'
+import Store from '../Store/configureStore';
 
 
 async function getCustomCourse(access_token) {
   //console.log("getCustomCourse(): ", access_token);
 
-  let answer = await fetch(`https://${IP_SERVER}:${PORT_SERVER}/course/get_course`, {
+  let answer = await fetch(`http://${IP_SERVER}:${PORT_SERVER}/course/get_course`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -38,7 +39,7 @@ exports.getCustomCourse = getCustomCourse;
 async function getCourseById(access_token, id) {
   //console.log("getCourseById(): ", access_token, id);
 
-  let answer = await fetch(`https://${IP_SERVER}:${PORT_SERVER}/course/get_courses_by_id`, {
+  let answer = await fetch(`http://${IP_SERVER}:${PORT_SERVER}/course/get_courses_by_id`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -65,16 +66,31 @@ async function generateCourse(access_token, settings) {
 
   const time = settings.hours * 60 + settings.minutes;
   const coordinate = [];
+  const store = Store.getState();
+  var pos = store.CourseSettings.pos
 
-  coordinate[0] = settings.pos.latitude;
-  coordinate[1] = settings.pos.longitude;
+  if (!pos) {
+    pos = settings.pos;
+  }
+  else {
+    settings.pos = pos;
+  }
+
+  coordinate[0] = pos.latitude;
+  coordinate[1] = pos.longitude;
 
   const buffer = {...settings};
 
   buffer.time = time;
   buffer.coordinate = coordinate;
 
-  let answer = await fetch(`https://${IP_SERVER}:${PORT_SERVER}/generator/generate_course`, {
+  let action = {
+    type: 'SET_COURSE_SETTINGS',
+    value: settings
+  };
+  Store.dispatch(action);
+
+  let answer = await fetch(`http://${IP_SERVER}:${PORT_SERVER}/generator/generate_course`, {
     headers: {
       ...buffer,
       Accept: 'application/json',
@@ -98,7 +114,7 @@ async function createNewCourse(access_token, settings) {
 
   const bodyRequest = JSON.stringify(settings);
 
-  let answer = await fetch(`https://${IP_SERVER}:${PORT_SERVER}/course/new_course`, {
+  let answer = await fetch(`http://${IP_SERVER}:${PORT_SERVER}/course/new_course`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',

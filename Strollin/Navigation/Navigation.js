@@ -14,6 +14,7 @@ import PartenaireScreen from '../Components/PartenairePage';
 
 
 import MyDrawer from './Drawer'
+import ResetPassword from '../Components/ResetPassword';
 
 const Stack = createStackNavigator();
 
@@ -63,6 +64,13 @@ function MyStack(props) {
               }}
             />
             <Stack.Screen
+              name="ResetPassword"
+              component={ResetPassword}
+              options={{
+                title: '',
+              }}
+            />
+            <Stack.Screen
               name="PartnerRegister"
               component={PartnerRegister}
               options={{
@@ -92,7 +100,7 @@ function MyStack(props) {
             <>
               <Stack.Screen
                 name="partner"
-                component={PartenaireScreen}
+                component={MyDrawer}
               />
             </>
           ) : (

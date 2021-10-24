@@ -18,7 +18,8 @@ const initialState = {
   currentCourse: {},
   currentLocationProposition: [],
   courseObjectHistoric: [],
-  courseLocations: []
+  courseLocations: [],
+  delete: []
 };
 
 function CourseReducer(state = initialState, action) {
@@ -40,7 +41,7 @@ function CourseReducer(state = initialState, action) {
       return nextState;
     case 'CHANGE_CURRENT_COURSE_LOCATION_PROPOSITION':
     console.log("state before change", state.currentCourse);
-      
+
       nextState = {
         ...state,
         currentCourse: {
@@ -75,14 +76,21 @@ function CourseReducer(state = initialState, action) {
         ...state,
         courseObjectHistoric: action.value
       };
-      return nextState;
-      //case 'ADD_COURSE_LOCATIONS':
-      //  nextState = {
-      //    ...state,
-      //    courseLocations: [action.value, ...state.course]
-      //    //course: action.value
-      //  };
-      //  return nextState;
+        return nextState;
+    case 'ADD_COURSE_LOCATIONS':
+      nextState = {
+        ...state,
+        courseLocations: [action.value, ...state.course]
+        //course: action.value
+      };
+        return nextState;
+    case 'ADD_DELETE':
+      nextState = {
+        ...state,
+        delete: action.value
+        //course: action.value
+      };
+        return nextState;
     default:
       return state;
   }

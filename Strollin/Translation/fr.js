@@ -96,6 +96,10 @@ export default {
     addGroup: 'Ajouter le groupe',
   },
 
+  TripTogether: {
+    addFriend: 'Ajouter mes amis'
+  },
+
   Gallery: {
     by: 'par',
     views: 'vues',
@@ -168,7 +172,7 @@ export default {
   },
 
   TendanceSearchBar: {
-    searchTag: 'Chercher a partir de tags',
+    searchTag: 'Chercher un tag',
   },
 
   TripSuggestion: {
@@ -216,13 +220,15 @@ export default {
   },
 
   Header: {
+    TripTogether: 'Trajet à plusieurs',
     search_tag: 'Rechercher un Tag',
+    search_friend: 'Rechercher un ami',
     add_friend: 'Ajouter un ami',
     friend_list: "Liste d'amis",
     partner: 'Partenaire',
     partnerPosition: 'Localisation',
     profile: 'Profil',
-    home: 'Home',
+    home: 'Bienvenue !',
     options: 'Vos options',
     historic: 'Historique',
     new_trip: 'New Trip',
