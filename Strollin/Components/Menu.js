@@ -173,7 +173,7 @@ function Menu(props) {
             <Image style={styles.img_navigationIn} source={require('../images/icons/black/next_trip.png')} />
             <Text style={styles.text_navigationIn}>Guide</Text>
           </TouchableOpacity>
-        </ScrollView>
+        {/*</ScrollView>*/}
         {/*<TouchableOpacity
           onPress={() => props.navigation.navigate('userLogin')}
           style={styles.view_logOut}

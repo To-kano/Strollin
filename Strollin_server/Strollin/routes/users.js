@@ -198,7 +198,7 @@ router.post('/reset_password', async function (req, res) {
     });
 
     //read tamplate mail,
-    fs.readFile(__dirname + '../RestPassword.html', "utf8", function(err, data) {
+    fs.readFile(__dirname + '/../RestPassword.html', "utf8", function(err, data) {
       console.log('data ', data);
       console.log('err', err);
       const mailOptions = {
