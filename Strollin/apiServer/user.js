@@ -279,6 +279,8 @@ async function registerUser(props, newPseudo, newPassword, newMail, setMessage, 
 exports.registerUser = registerUser;
 
 async function resetUserPassword(mail) {
+
+  console.log(mail);
   const bodyRequest = JSON.stringify({
     mail: mail,
   });
