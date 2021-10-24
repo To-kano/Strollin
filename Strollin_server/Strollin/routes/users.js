@@ -9,8 +9,6 @@ const fs = require("fs");
 
 const keyCrypto = "key";
 
-const fs = require("fs");
-
 const {
   UserModel
 } = require("../models/user")
