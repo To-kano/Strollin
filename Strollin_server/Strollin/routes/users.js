@@ -202,7 +202,7 @@ router.post('/reset_password', async function (req, res) {
       //console.log('data ', data);
       console.log('err', err, req.body.mail.toLowerCase() );
       const mailOptions = {
-        from: '"Strollin App" <strollinapp@outlook.com>', // sender address (who sends)
+        from: '"Strollin App" <StrollinBeta@hotmail.com>', // sender address (who sends)
         to: req.body.mail.toLowerCase(), // list of receivers (who receives)
         subject: `Reset password Strollin `, // Subject line
         html: data,
