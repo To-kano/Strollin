@@ -327,16 +327,16 @@ async function formatPlaces(data) {
         score: "",
         latitude: "",
         longitude: "",
-        address: " ",
-        city: " ",
-        country: " ",
-        description: "",
-        timetable: "",
+        address: "",
+        city: "",
+        country: "",
+        description: "N/A",
+        timetable: "N/A",
         tags_list: "",
         price_range: [ "0", "0", "0" ],
         average_time: "15",
-        phone: "",
-        website: ""
+        phone: "N/A",
+        website: "N/A"
     });
     tmp = data[i].vicinity.split(", ")
     //console.log("TMP: ", tmp);

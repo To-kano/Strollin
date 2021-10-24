@@ -3,16 +3,12 @@ import { connect } from 'react-redux';
 import {
   View, StyleSheet, Image, Text, TouchableOpacity, ImageBackground, FlatList,
 } from 'react-native';
-// import BackgroundImage from './backgroundImage';
-// import { SceneView } from 'react-navigation';
 import { DrawerActions } from '@react-navigation/native';
 import { ScrollView } from 'react-native-gesture-handler';
 import I18n from '../Translation/configureTrans';
-// import { useState, useEffect } from 'react';
-// import { IP_SERVER, PORT_SERVER } from '../env/Environement';
-// import { useNavigation } from '@react-navigation/native';
-// import { loadOptions } from '@babel/core';
 import { translateTags, detranslateTags } from '../Translation/translateTags'
+
+import { useNavigation } from '@react-navigation/native';
 
 const globalStyles = require('../Styles');
 
@@ -31,9 +27,8 @@ function randPic() {
 
 
 function LocationPage({route, navigation}) {
-  const {location} = route.params;
-//console.log("Location Infos: \n", location);
 
+  const {location} = route.params;
   return (
     <View style={styles.view_back}>
       <View style={styles.view_header}>
@@ -79,12 +74,16 @@ function LocationPage({route, navigation}) {
           </View>
         </View>
         <View style={styles.view_stat}>
-          <Text style={styles.text_stat}>
-            {"Address"}
-          </Text>
-          <View style={styles.view_number}>
-            <Text style={styles.text_number}>{location.address}</Text>
-          </View>
+          <TouchableOpacity
+            onPress={() => {navigation.navigate('PositionShareMap', {latitude: location.latitude, longitude: location.longitude, name: location.name})}}
+          >
+            <Text style={styles.text_stat}>
+              {"Address"}
+            </Text>
+            <View style={styles.view_number}>
+              <Text style={styles.text_number}>{location.address}</Text>
+            </View>
+          </TouchableOpacity>
         </View>
         <View style={styles.view_stat}>
           <Text style={styles.text_stat}>
