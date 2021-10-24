@@ -130,7 +130,7 @@ router.post('/register', async function (req, res) {
         if (error) {
           console.log(error);
         } else {
-          //console.log('Email sent: ' + info.response);
+          console.log('Email sent: ' + info.response);
         }
       });
 
@@ -192,15 +192,15 @@ router.post('/reset_password', async function (req, res) {
         ciphers: 'SSLv3',
       },
       auth: {
-        user: 'strollinapp@outlook.com',
-        pass: 'Strollin94',
+        user: 'StrollinBeta@hotmail.com',
+        pass: 'Strollin1234',
       },
     });
 
     //read tamplate mail,
     fs.readFile(__dirname + '/../RestPassword.html', "utf8", function(err, data) {
-      console.log('data ', data);
-      console.log('err', err);
+      //console.log('data ', data);
+      console.log('err', err, req.body.mail.toLowerCase() );
       const mailOptions = {
         from: '"Strollin App" <strollinapp@outlook.com>', // sender address (who sends)
         to: req.body.mail.toLowerCase(), // list of receivers (who receives)
