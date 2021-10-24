@@ -166,7 +166,20 @@ function Menu(props) {
             <Icon name='logout' size={32} color='#1C1B1C'/>
             <Text style={[globalStyles.paragraphs, {marginLeft: 8}]}>Se déconnecter</Text>
           </TouchableOpacity>
-
+          <TouchableOpacity
+            onPress={() => props.navigation.navigate('Guide')}
+            style={[styles.view_navigationIn, props.name == 'Guide' ? styles.current_page : {}]}
+          >
+            <Image style={styles.img_navigationIn} source={require('../images/icons/black/next_trip.png')} />
+            <Text style={styles.text_navigationIn}>Guide</Text>
+          </TouchableOpacity>
+        </ScrollView>
+        {/*<TouchableOpacity
+          onPress={() => props.navigation.navigate('userLogin')}
+          style={styles.view_logOut}
+        >
+          <Text style={styles.text_logOut}>Log Out</Text>
+        </TouchableOpacity>*/}
         </View>
       </View>
       <View>
