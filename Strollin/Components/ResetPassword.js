@@ -2,6 +2,9 @@ import React, { useState } from 'react'
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image } from 'react-native'
 import PrimaryButton from './components/PrimaryButton';
 import Step from './components/Step';
+
+import {resetUserPassword} from '../apiServer/user';
+
 const globalStyles = require('../Styles');
 
 
@@ -27,11 +30,16 @@ export default function ResetPassword(props) {
           <TextInput
             style={[globalStyles.textInput, { marginBottom: 48 }]}
             placeholder={"Adresse Email"}
+            value={Email}
+            onChange={(value) => {setEmail(value)}}
             keyboardType="email-address"
           />
           <PrimaryButton
             text="Envoyer les instructions"
-            onPressFct={() => setResetPasswordStep(2)}
+            onPressFct={() => {
+              setResetPasswordStep(2);
+              resetUserPassword(Email);
+            }}
           />
         </>
       )}
@@ -45,7 +53,7 @@ export default function ResetPassword(props) {
             récupérer votre mot de passe.
           </Text>
           <PrimaryButton
-            text="Ouvrir ma boite mail"
+            text="Retour"
             onPressFct={() => setResetPasswordStep(1)}
           />
           

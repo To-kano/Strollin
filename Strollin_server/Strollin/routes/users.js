@@ -7,6 +7,8 @@ const CryptoJS = require("crypto-js");
 
 const keyCrypto = "key";
 
+const fs = require("fs");
+
 const {
   UserModel
 } = require("../models/user")
@@ -136,7 +138,7 @@ router.post('/register', async function (req, res) {
 
 
 router.post('/reset_password', async function (req, res) {
-  console.log("REGISTER BODY: ", req.body);
+  console.log("Reset password: ", req.body);
   if (!req.body.mail || !req.body.mail.includes('@')) {
     return res.status(400).send({
       status: "A valid mail was not provided."
@@ -146,7 +148,7 @@ router.post('/reset_password', async function (req, res) {
   let mail = await UserModel.findOne({
     mail: req.body.mail.toLowerCase()
   }).catch(error => error);
-  let token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+  //let token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
   if (mail && mail.reason) {
     return res.status(400).send({
@@ -168,26 +170,35 @@ router.post('/reset_password', async function (req, res) {
       },
     });
 
-    // create the mail to send
-    const mailOptions = {
-      from: '"Strollin App" <strollinapp@outlook.com>', // sender address (who sends)
-      to: req.body.mail.toLowerCase(), // list of receivers (who receives)
-      subject: `Reset password Strollin `, // Subject line
-      html: `<a href="http://88.165.45.219:3004/users/verify?id=${user.id}">test</a> `,
-    };
+    //read tamplate mail,
+    fs.readFile(__dirname + '../RestPassword.html', "utf8", function(err, data) {
+      console.log('data ', data);
+      console.log('err', err);
+      const mailOptions = {
+        from: '"Strollin App" <strollinapp@outlook.com>', // sender address (who sends)
+        to: req.body.mail.toLowerCase(), // list of receivers (who receives)
+        subject: `Reset password Strollin `, // Subject line
+        html: data,
+      };
 
-    // send the mail
-    transporter.sendMail(mailOptions, function (error, info) {
+      // send the mail
+      transporter.sendMail(mailOptions, function (error, info) {
       if (error) {
         console.log(error);
       } else {
-        //console.log('Email sent: ' + info.response);
+        console.log('Email sent: ' + info.response);
       }
     });
+    })
+
+    // create the mail to send
+    
+
+    
 
     return res.status(200).send({
-      status: "Account created successfully.",
-      access_token: token
+      status: "Reset Mail sent.",
+      //access_token: token
     });
   }
   return res.status(400).send({

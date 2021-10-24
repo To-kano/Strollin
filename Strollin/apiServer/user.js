@@ -278,6 +278,35 @@ async function registerUser(props, newPseudo, newPassword, newMail, setMessage, 
 
 exports.registerUser = registerUser;
 
+async function resetUserPassword(mail) {
+  const bodyRequest = JSON.stringify({
+    mail: mail,
+  });
+
+  fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/reset_password`, {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    method: 'post',
+    body: bodyRequest,
+  })
+    .then((response) => response.json())
+    .then(async (answer) => {
+    //console.log("okkkk")
+      console.log(" answer reset mail = " , answer);
+      if (answer.status) {
+        //setMessage(answer.status);
+        //setPopup(true);
+      }
+    })
+    .catch((error) => {
+      console.error('error :', error);
+    });
+}
+
+exports.resetUserPassword = resetUserPassword;
+
 async function addUserHistoric(access_token, courseId) {
 
   console.log("addUserHistoric: ", courseId);
