@@ -299,8 +299,8 @@ router.post('/reset_password_confirme', async function (req, res) {
     //const newPassword = CryptoJS.HmacSHA1(req.body.password, keyCrypto);
 
     let error = await UserModel.updateOne({
-      password: CryptoJS.HmacSHA1(req.body.password, keyCrypto),
-    }, query).catch(error => error);
+      id: req.body.user_id,
+    }, {password: CryptoJS.HmacSHA1(req.body.password, keyCrypto)}).catch(error => error);
 
     if (error.errors) {
       return res.status(400).send({
