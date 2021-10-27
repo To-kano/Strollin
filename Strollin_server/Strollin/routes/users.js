@@ -201,11 +201,14 @@ router.post('/reset_password', async function (req, res) {
     fs.readFile(__dirname + '/../RestPassword.html', "utf8", function(err, data) {
       //console.log('data ', data);
       console.log('err', err, req.body.mail.toLowerCase() );
+
+      const mailUser = data.replace('LINK_USER', 'https://strollin.ddns.net/users/reset_password?id=' + mail.id.toString())
+
       const mailOptions = {
         from: '"Strollin App" <StrollinBeta@hotmail.com>', // sender address (who sends)
         to: req.body.mail.toLowerCase(), // list of receivers (who receives)
         subject: `Reset password Strollin `, // Subject line
-        html: data,
+        html: mailUser,
       };
 
       // send the mail
@@ -269,6 +272,69 @@ router.get('/verify', async function (req, res) {
     return res.status(200).send({
       status: "Account verified successfully."
     });
+  }
+});
+
+router.post('/reset_password_confirme', async function (req, res) {
+
+  console.log("reset_password_confirme\n", req.body);
+  let user = await UserModel.findOne({
+    id: req.body.user_id
+  }).catch(error => error);
+  if (!user) {
+    return res.status(400).send({
+      status: "not valid link"
+    });
+  } else if (user.reason) {
+    return res.status(400).send({
+      status: "Error in database transaction:\n",
+      error: user
+    });
+  } else if (req.body.password !== req.body.confirm_password) {
+    return res.status(400).send({
+      status: "Error password or not the same:\n",
+    });
+  } else {
+
+    //const newPassword = CryptoJS.HmacSHA1(req.body.password, keyCrypto);
+
+    let error = await UserModel.updateOne({
+      password: CryptoJS.HmacSHA1(req.body.password, keyCrypto),
+    }, query).catch(error => error);
+
+    if (error.errors) {
+      return res.status(400).send({
+        status: "Error in database transaction:\n",
+        error: error.errors
+      });
+    }
+
+    return res.render("confirmed_password", {
+      //user: user
+    })
+  }
+ 
+});
+
+router.get('/reset_password', async function (req, res) {
+
+  console.log("reset_password\n", req.query.id);
+  let user = await UserModel.findOne({
+    id: req.query.id
+  }).catch(error => error);
+  if (!user) {
+    return res.status(400).send({
+      status: "not valid link"
+    });
+  } else if (user.reason) {
+    return res.status(400).send({
+      status: "Error in database transaction:\n",
+      error: user
+    });
+  } else {
+    return res.render("reset_password", {
+      user: user
+    })
   }
 });
 
