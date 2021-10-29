@@ -298,11 +298,18 @@ router.post('/reset_password_confirme', async function (req, res) {
 
     //const newPassword = CryptoJS.HmacSHA1(req.body.password, keyCrypto);
 
-    let error = await UserModel.updateOne({
+    user.password = await CryptoJS.HmacSHA1(req.body.password, keyCrypto)
+
+    console.log("user new : ", user);
+
+    let error = await user.save().catch(error => error);
+
+    /*let error = await UserModel.updateOne({
       id: req.body.user_id,
     }, {password: CryptoJS.HmacSHA1(req.body.password, keyCrypto)}).catch(error => error);
-
+*/
     if (error.errors) {
+      console.log("error ", error);
       return res.status(400).send({
         status: "Error in database transaction:\n",
         error: error.errors
@@ -1072,17 +1079,21 @@ router.get('/login', async function (req, res) {
     });
     error = await blacklist.save().catch(error => error);
     if (error.errors) {
+    console.log("Error in database transaction:\n", error)
+
       return res.status(400).send({
         status: "Error in database transaction:\n",
         error: error
       });
     }
   } else if (blacklist.reason) {
+    console.log("Error in database transaction:\n", error)
     return res.status(400).send({
       status: "Error in database transaction:\n",
       error: error
     });
   } else if (Number(Date.now()) < blacklist.lock_date + (1000 * 60 * (blacklist.attempt - 3))) {
+    console.log("Error in database transaction:\n", error)
     return res.status(400).send({
       status: "You made too much attempt. Please retry in " + (blacklist.attempt - 3).toString() + " minute(s)"
     });
@@ -1097,12 +1108,15 @@ router.get('/login', async function (req, res) {
       lock_date: Number(Date.now())
     }).catch(error => error);
     if (error.errors) {
+    console.log("Error in database transaction:\n", error)
+
       return res.status(400).send({
         status: "Error in database transaction:\n",
         error: error
       });
     }
     if (Number(Date.now()) < Number(Date.now()) + (1000 * 60 * (blacklist.attempt + 1 - 3))) {
+      console.log("Error in database transaction:\n", error)
       return res.status(400).send({
         status: "You made too much attempt. Please retry in " + (blacklist.attempt + 1 - 3).toString() + " minute(s)"
       });
@@ -1113,6 +1127,7 @@ router.get('/login', async function (req, res) {
 
     //Transaction error
   } else if (user && user.reason) {
+    console.log("Error in database transaction:\n", user)
     return res.status(400).send({
       status: "Error in database transaction:\n",
       error: user
@@ -1126,6 +1141,7 @@ router.get('/login', async function (req, res) {
       access_token: token
     }).catch(error => error);
     if (error.errors) {
+    console.log("Error in database transaction:\n", error)
       return res.status(400).send({
         status: "Error in database transaction:\n",
         error: error
@@ -1137,6 +1153,7 @@ router.get('/login', async function (req, res) {
       attempt: 0
     }).catch(error => error);
     if (error.errors) {
+    console.log("Error in database transaction:\n", error)
       return res.status(400).send({
         status: "Error in database transaction:\n",
         error: error
