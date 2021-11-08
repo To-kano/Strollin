@@ -10,6 +10,10 @@ import SearchBar from './SearchBar';
 import Store from '../../Store/configureStore';
 import ButtonIcon from './../ButtonIcon.js';
 import {contextSocket} from '../Socket';
+import MenuButton from '../components/MenuButton';
+import AddButton from '../components/AddFriendsButton';
+
+const globalStyles = require('../../Styles');
 
 function goToMenu(props) {
   props.navigation.navigate('MenuChat');
@@ -76,49 +80,29 @@ function Header({ props, defaultState = false }) {
 }
 
 function NewConversation(props) {
+  const {createConversation} = contextSocket();
+
   return (
-    <View style={styles.view_back}>
-      <Header props={props} />
+    <View style={[globalStyles.container, {paddingHorizontal: 0}]}>
+      <FlatList
+        style={{width: '100%'}}
+        contentContainerStyle={{ paddingVertical: 96, paddingHorizontal: 16 }}
+        data={props.search.searchFriendList}
+        renderItem={({ item }) => <FriendList {...props} id={item} />}
+        keyExtractor={(item) => String(item)}
+      />
+      <MenuButton props={props}/>
       <SearchBar
         onPress={sortConversation}
       />
-      <View style={styles.view_list}>
-        <FlatList
-          data={props.search.searchFriendList}
-          renderItem={({ item }) => <FriendList {...props} id={item} />}
-          keyExtractor={(item) => String(item)}
-        />
-      </View>
+      <AddButton iconName='conversation' text="Démarrer la conversation" onPressFct={() => { GotoChat(props, createConversation) }}/>
     </View>
-    // <View style={styles.container}>
-    //   <View style={styles.circle} />
-    //   <View style={{ flexDirection: 'row', justifyContent: 'center', backgroundColor: "#ffffff"}}>
-    //     <View style={{ flex: 1 }}>
-    //       <ButtonIcon
-    //         icon={require('../../images/left_arrow.png')}
-    //         onPress={() => {
-    //           goToMenu(props);
-    //         }}
-    //       />
-    //     </View>
-    //     <View style={{ flex: 7 }}>
-    //       <Text style={styles.header}>Friend List</Text>
-    //     </View>
-    //     <View style={{ flex: 1 }}>
-    //       <ButtonIcon
-    //         icon={require('../../images/create_button.png')}
-    //         onPress={() => {
-    //           GotoChat(props, createConversation);
-    //         }}
-    //       />
-    //     </View>
-    //   </View>
-    //   <View style={{backgroundColor: "#ffffff"}}>
-    //     <SearchBar
-    //       onPress={sortConversation}
-    //     />
-    //   </View>
-    //   <View>
+    // <View style={styles.view_back}>
+    //   <Header props={props} />
+    //   <SearchBar
+    //     onPress={sortConversation}
+    //   />
+    //   <View style={styles.view_list}>
     //     <FlatList
     //       data={props.search.searchFriendList}
     //       renderItem={({ item }) => <FriendList {...props} id={item} />}

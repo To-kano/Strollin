@@ -14,6 +14,7 @@ import PartenaireScreen from '../Components/PartenairePage';
 
 
 import MyDrawer from './Drawer'
+import ResetPassword from '../Components/ResetPassword';
 
 const Stack = createStackNavigator();
 
@@ -60,6 +61,13 @@ function MyStack(props) {
               options={{
                 title: 'inscription',
                 animationEnabled: false,
+              }}
+            />
+            <Stack.Screen
+              name="ResetPassword"
+              component={ResetPassword}
+              options={{
+                title: '',
               }}
             />
             <Stack.Screen

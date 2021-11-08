@@ -12,6 +12,10 @@ import { DrawerActions } from '@react-navigation/native';
 
 import { CommonActions } from '@react-navigation/native';
 import { StackActions } from '@react-navigation/native';
+import Footer from './components/Footer';
+import MenuButton from './components/MenuButton';
+
+const globalStyles = require('../Styles');
 
 function randPic() {
   const rand = (Math.floor(Math.random() * 2) + 1);
@@ -77,8 +81,11 @@ export function CourseEvaluation(props) {
   const [isLoading, setLoading] = React.useState(false);
 
   return (
-    <View style={styles.view_back}>
-      <View style={styles.view_header}>
+    <View style={[globalStyles.container, {
+      alignItems: "flex-start",
+      justifyContent: "center",
+      }]}>
+      {/* <View style={styles.view_header}>
         <TouchableOpacity  onPress={() => props.navigation.dispatch(DrawerActions.openDrawer())}>
           <Image style={styles.img_header} source={require('../images/icons/black/menu.png')} />
         </TouchableOpacity>
@@ -92,58 +99,53 @@ export function CourseEvaluation(props) {
         >
           <Image style={styles.img_header} source={require('../images/icons/black/close.png')} />
         </TouchableOpacity>
-      </View>
-      <View style={styles.view_box}>
-        <ImageBackground
-          style={styles.img_boxBack}
-          imageStyle={styles.img_boxBack}
-          source={randPic()}
-          // source={require(props.data.image)}
-        >
-          <View style={styles.view_boxIn}>
-            <View style={styles.view_information}>
-              <Image style={styles.img_location} source={require('../images/icons/white/location.png')} />
-              <Text style={styles.text_location}>{I18n.t("CourseEvaluation.adress")}</Text>
-            </View>
-            <Text style={styles.text_name}>{I18n.t("CourseEvaluation.name")}</Text>
-          </View>
-        </ImageBackground>
-      </View>
-      <View style={styles.view_star}>
+      </View> */}
+      <View
+        style={{
+          alignItems: 'flex-start',
+          width: '100%',
+          backgroundColor: "#ffffff",
+          padding: 16,
+          borderRadius: 16,
+          shadowColor: "#000",
+          shadowOffset: {
+              width: 0,
+              height: 5,
+          },
+          shadowOpacity: 0.34,
+          shadowRadius: 6.27,
+
+          elevation: 10,
+      }}>
+        <Text style={[globalStyles.subtitles, {width: "100%", marginBottom: 32}]}>Le trajet t'as plu ? Donne nous ton retour 😉</Text>
         <Stars
-          half
+          half={false}
           default={1.5}
           update={(val) => { setRating(val); }}
-          spacing={4}
-          starSize={40}
+          spacing={8}
+          starSize={32}
           count={5}
-          fullStar={require('../images/icons/black/star_filled.png')}
-          emptyStar={require('../images/icons/black/star_empty.png')}
-          halfStar={require('../images/icons/black/star_half.png')}
+          fullStar={require('../assets/icons/star_filled.png')}
+          emptyStar={require('../assets/icons/star_empty.png')}
+          // halfStar={require('../images/icons/black/star_half.png')}
         />
-      </View>
-      <View style={styles.view_comment}>
-        <Text style={styles.text_comment}>{I18n.t('CourseEvaluation.yourComment')}</Text>
+
         <TextInput
-          autoCapitalize={'none'}
-          style={styles.textInput_comment}
+          placeholder="Dis nous qu'est ce que tu en as pensé ?.."
+          style={[globalStyles.textInput, ]}
           onChangeText={(text) => setComment(text)}
           value={comment}
-          multiline
-          numberOfLines={7}
+          multiline={true}
+          // numberOfLines={7}
         />
       </View>
-      <TouchableOpacity
-        style={styles.view_button}
-        onPress={() => {
+
+      <MenuButton props={props}/>
+
+      <Footer primaryText={I18n.t('Notation.send')} primaryOnPressFct={() => {
           setLoading(true);
           ratingCompleted(rating, comment, props, setLoading);
-        }}
-      >
-        <Text style={styles.text_button}>
-          {I18n.t('Notation.send')}
-        </Text>
-      </TouchableOpacity>
+        }}/>
       <Modal
         animationType="none"
         transparent={true}
@@ -154,63 +156,6 @@ export function CourseEvaluation(props) {
         </View>
       </Modal>
     </View>
-    // <View style={styles.container}>
-    //   <View>
-    //     <Text style={{ textAlign: 'center', fontSize: 40 }}> {I18n.t("CourseEvaluation.evaluate")} {"\n"} </Text>
-    //   </View>
-    //   <View>
-    //     <Text style={{ textAlign: 'center', fontSize: 30 }}> {I18n.t("CourseEvaluation.note")} </Text>
-    //     <Stars
-    //       half={true}
-    //       default={1.5}
-    //       update={(val)=>{setRating(val)}}
-    //       spacing={4}
-    //       starSize={40}
-    //       count={5}
-    //       fullStar= {require('./../images/star.png')}
-    //       emptyStar= {require('./../images/empty_star.png')}
-    //       halfStar={require('./../images/half_star.png')}
-    //     />
-    //   </View>
-    //   <Text> {"\n"} </Text>
-    //   <View style={{ alignItems: 'center', justifyContent: 'center'}}>
-    //     <TextInput
-    //       style={styles.textInput}
-    //       placeholder={I18n.t("CourseEvaluation.yourComment")}
-    //       onChangeText={(text) => setComment(text)}
-    //       value={comment}
-    //       multiline
-    //       numberOfLines={7}
-    //     />
-    //     <Text> {"\n"} </Text>
-    //   </View>
-    //   <View>
-    //     <TouchableOpacity
-    //       id={'test'}
-    //       style={styles.newTrip}
-    //       onPress={() => {
-    //         ratingCompleted(rating, comment, props);
-    //       }}
-    //     >
-    //       <Text style={{ fontSize: 16, color: '#FFFFFF' }}>
-    //         {I18n.t("CourseEvaluation.send")}
-    //       </Text>
-    //     </TouchableOpacity>
-    //   </View>
-    //   <View>
-    //     <TouchableOpacity
-    //       id={'test'}
-    //       style={styles.newTrip}
-    //       onPress={() => {
-    //         skipRating(props);
-    //       }}
-    //     >
-    //       <Text style={{ fontSize: 16, color: '#FFFFFF' }}>
-    //         Skip Rating
-    //       </Text>
-    //     </TouchableOpacity>
-    //   </View>
-    // </View>
   );
 }
 

@@ -1,6 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, StyleSheet, TouchableOpacity, Image, View } from 'react-native';
+import Icon from '../components/Icon';
+
+const globalStyles = require('../../Styles');
 
 async function GotoChat(props) {
   //console.log('GOING TO CHAT');
@@ -36,18 +39,30 @@ function getLastMessage(props) {
 }
 
 function ConvPreview(props) {
-  //console.log("props.conversation[props.conversationID] = ", props.conversation[props.conversationID]);
   return (
     <TouchableOpacity
       style={styles.button}
       onPress={() => GotoChat(props)}
     >
-      <Text numberOfLines={1} style={styles.previewTitle}>
-        {props.conversation[props.conversationID].name}
-      </Text>
-      <Text numberOfLines={1} style={styles.previewContent}>
-        { getLastMessage(props)}
-      </Text>
+      {props.conversation[props.conversationID].participants.length === 2 ?
+        <Image
+          style={{height: 64, width: 64, borderRadius: 16, marginRight: 16}}
+          source={require('../../assets/images/default_profile_picture.png')}
+        />
+      :
+        <Image
+          style={{height: 64, width: 64, borderRadius: 16, marginRight: 16}}
+          source={require('../../assets/images/default_group_picture.png')}
+        />
+      }
+      <View>
+        <Text numberOfLines={1} style={globalStyles.paragraphs}>
+          {props.conversation[props.conversationID].name}
+        </Text>
+        <Text numberOfLines={1} style={[globalStyles.subparagraphs, {color: '#9B979B'}]}>
+          { getLastMessage(props)}
+        </Text>
+      </View>
     </TouchableOpacity>
   );
 }
@@ -57,27 +72,23 @@ export default connect(mapStateToProps)(ConvPreview);
 
 const styles = StyleSheet.create({
   button: {
-    justifyContent: 'center',
-    alignItems: 'flex-start',
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    marginTop: 5,
-    marginBottom: 5,
     width: '100%',
-    paddingLeft: 15,
-    paddingTop: 15,
-    paddingRight: 15,
-    paddingBottom: 15,
-    height: 90,
-  },
-  previewTitle: {
-    fontWeight: 'bold',
-    textTransform: 'capitalize',
-    fontSize: 18,
-    color: "#000",
-  },
-  previewContent: {
-    color: "#707070",
-    fontSize: 12,
+    backgroundColor: '#ffffff',
+    borderRadius: 16,
+    padding: 16,
+    marginTop: 16,
+    shadowColor: "#000",
+    shadowOffset: {
+        width: 0,
+        height: 5,
+    },
+    shadowOpacity: 0.34,
+    shadowRadius: 6.27,
+
+    elevation: 10,
+    flexDirection: "row",
+    justifyContent: 'flex-start',
+    alignContent: 'center',
+    alignItems: 'center',
   },
 });

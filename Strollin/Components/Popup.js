@@ -1,6 +1,9 @@
 import React from 'react';
-import {  Alert, Modal, StyleSheet, Text, Pressable, View } from 'react-native';
+import {  Alert, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import Icon from './components/Icon';
+const globalStyles = require('../Styles');
 import I18n from '../Translation/configureTrans';
+
 
 function Popup({message, modalVisible, setModalVisible, children}) {
 
@@ -16,14 +19,19 @@ function Popup({message, modalVisible, setModalVisible, children}) {
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <Text style={styles.modalText}>{message}</Text>
+            <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 32}}>
+              <Text style={globalStyles.subtitles}>{message}</Text>
+              <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
+                <Icon name='close' size={24} color='#1C1B1C'/>
+              </TouchableOpacity>
+            </View>
             {children}
-            <Pressable
+            {/* <Pressable
               style={[styles.button, styles.buttonClose]}
               onPress={() => setModalVisible(!modalVisible)}
             >
-              <Text style={styles.textStyle}>{I18n.t('ProfileScreen.close')}</Text>
-            </Pressable>
+              <Text style={styles.textStyle}>Close</Text>
+            </Pressable> */}
           </View>
         </View>
       </Modal>
@@ -35,13 +43,14 @@ const styles = StyleSheet.create({
       flex: 1,
       justifyContent: "center",
       alignItems: "center",
-      marginTop: 22
+      padding: 16,
+      backgroundColor: 'rgba(100,100,100,0.75)'
     },
     modalView: {
-      margin: 20,
-      backgroundColor: "white",
-      borderRadius: 20,
-      padding: 35,
+      width: '100%',
+      backgroundColor: "#ffffff",
+      borderRadius: 16,
+      padding: 16,
       alignItems: "center",
       shadowColor: "#000",
       shadowOffset: {

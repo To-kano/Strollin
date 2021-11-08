@@ -170,7 +170,7 @@ export default {
   },
 
   TendanceSearchBar: {
-    searchTag: 'Search with tag',
+    searchTag: 'Search a tag',
   },
 
   TripSuggestion: {
