@@ -115,10 +115,11 @@ export function LoginPage(props) {
             readPermissions={['public_profile', 'email']}
             onLoginFinished={(error, result) => {
               if (error) {
-                //console.log(`login has error: ${result.error}`);
+                console.log(`login has error: ${result.error}`);
               } else if (result.isCancelled) {
-                //console.log('login is cancelled.');
+                console.log('login is cancelled.');
               } else {
+                console.log("tamer")
                 AccessToken.getCurrentAccessToken().then((data) => {
                   const accessToken = data.accessToken.toString();
                   getInfoFromToken(accessToken, setUserInfo, props);
