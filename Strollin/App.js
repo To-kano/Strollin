@@ -13,6 +13,9 @@ import Store from './Store/configureStore';
 import Socket from "./Components/Socket";
 import SplashScreen from  "react-native-splash-screen";
 
+
+  
+
 import * as Sentry from '@sentry/react-native';
 
 Sentry.init({ 
@@ -25,7 +28,8 @@ function App() {
   React.useEffect(() => {
      SplashScreen.hide();
      //Sentry.nativeCrash();
-   });
+
+   },[]);
    
   return (
       <Provider store={Store}>

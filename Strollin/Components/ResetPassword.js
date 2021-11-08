@@ -1,13 +1,20 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image } from 'react-native'
 import PrimaryButton from './components/PrimaryButton';
 import Step from './components/Step';
+
+import {resetUserPassword} from '../apiServer/user';
+
 const globalStyles = require('../Styles');
 
 
 export default function ResetPassword(props) {
-  const [Email, setEmail] = useState("");
+  const [email, setEmail] = useState("test");
   const [ResetPasswordStep, setResetPasswordStep] = useState(1);
+
+  useEffect(() => {
+    console.log("mail", email);
+  }, [email]);
 
   // console.log('type = ',typeof(Step))
 
@@ -27,11 +34,20 @@ export default function ResetPassword(props) {
           <TextInput
             style={[globalStyles.textInput, { marginBottom: 48 }]}
             placeholder={"Adresse Email"}
+            textContentType="emailAddress"
+            autoCompleteType="email"
+            value={email}
+            onChangeText={(valueText) => { 
+              console.log("value", valueText)
+              setEmail(valueText); }}
             keyboardType="email-address"
           />
           <PrimaryButton
             text="Envoyer les instructions"
-            onPressFct={() => setResetPasswordStep(2)}
+            onPressFct={() => {
+              setResetPasswordStep(2);
+              resetUserPassword(email);
+            }}
           />
         </>
       )}
@@ -45,7 +61,7 @@ export default function ResetPassword(props) {
             récupérer votre mot de passe.
           </Text>
           <PrimaryButton
-            text="Ouvrir ma boite mail"
+            text="Retour"
             onPressFct={() => setResetPasswordStep(1)}
           />
           
