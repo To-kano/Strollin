@@ -60,12 +60,7 @@ function Menu(props) {
           </TouchableOpacity> */}
 
           <TouchableOpacity
-            onPress={() => props.navigation.navigate(
-              "New trip",
-              {
-                screen: 'CourseSetting'
-              }
-              )}
+            onPress={() => props.navigation.navigate(props.state.routeNames[2])}
             style={[styles.view_navigationIn, props.state.index == 2 ? styles.current_page : {}]}
           >
             <Icon name='marker' size={32} color='#1C1B1C'/>
@@ -134,8 +129,6 @@ function Menu(props) {
           {/* <TouchableOpacity
             onPress={() => props.navigation.navigate('Personal_trip')}
             style={[styles.view_navigationIn, props.name == 'Personal_trip' ? styles.current_page : {}]}
-          >
-            <Image style={styles.img_navigationIn} source={require('../images/icons/black/next_trip.png')} />
             <Text style={[globalStyles.paragraphs, {marginLeft: 8}]}>Personal_trip</Text>
           </TouchableOpacity> */}
 

@@ -30,7 +30,7 @@ async function getLocationByID(access_token, id) {
 exports.getLocationByID = getLocationByID;
 
 async function getLocationByIDList(access_token, id_list) {
-  
+
      let answer = await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/get_locations_by_id`, {
       headers: {
         Accept: 'application/json',
@@ -40,11 +40,11 @@ async function getLocationByIDList(access_token, id_list) {
       },
       method: 'GET',
     })
-  
+
     answer = await answer.json();
-  
+
     return answer.locations_list;
-  
+
   }
 
   exports.getLocationByIDList = getLocationByIDList;

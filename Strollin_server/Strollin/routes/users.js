@@ -1092,12 +1092,12 @@ router.get('/login', async function (req, res) {
       status: "Error in database transaction:\n",
       error: error
     });
-  } else if (Number(Date.now()) < blacklist.lock_date + (1000 * 60 * (blacklist.attempt - 3))) {
+  } /*else if (Number(Date.now()) < blacklist.lock_date + (1000 * 60 * (blacklist.attempt - 3))) {
     console.log("Error in database transaction:\n", error)
     return res.status(400).send({
       status: "You made too much attempt. Please retry in " + (blacklist.attempt - 3).toString() + " minute(s)"
     });
-  }
+  }*/
 
   //User Not found
   if (!user) {

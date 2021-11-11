@@ -17,7 +17,7 @@ function SearchBar(props) {
 
   return (
     <>
-    {!pressed 
+    {!pressed
       ? <TouchableOpacity
         onPress={() => setpressed(!pressed)}
         style={{
@@ -40,7 +40,7 @@ function SearchBar(props) {
       >
         <Icon name="search" size={29} color="#1C1B1C" />
       </TouchableOpacity>
-      : <View 
+      : <View
         style={{
           flexDirection: 'row',
           alignItems: 'center',

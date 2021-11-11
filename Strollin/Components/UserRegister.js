@@ -32,14 +32,15 @@ const getInfoFromToken = (token, setUserInfo, props, setMessage, setModalVisible
     { token, parameters: PROFILE_REQUEST_PARAMS },
     (error, result) => {
       if (error) {
-      //console.log(`login info has error: ${error}`);
+      console.log(`login info has error: ${error}`);
       } else {
-      //console.log("registered as : ", result.name, ' via facebook');
+      console.log("registered as : ", result.name, ' via facebook');
 
         setUserInfo(result);
-      //console.log("mail: ", result.email);
-        result.email = "toto@toto.toto"
-        registerUser(props, result.name, "Facebook1235", result.email, setMessage, setModalVisible, false);
+    console.log("mail: ", result);
+        let email = result.email
+        let password = "Facebook" + result.id
+        registerUser(props, result.name, password, email, setMessage, setModalVisible, false);
       }
     },
   );
@@ -174,24 +175,19 @@ export function UserRegister(props) {
         </>
       }
 
-      <PrimaryButton text='Continuer avec Facebook' onPressFct={() => console.log('facebook signin')} color='#1877F2'/>
-      {/* <LoginButton
-        style={styles.button_facebook}
-        readPermissions={['public_profile', 'email']}
-        onLoginFinished={(error, result) => {
-          if (error) {
-            //console.log(`login has error: ${result.error}`);
-          } else if (result.isCancelled) {
-            //console.log('login is cancelled.');
-          } else {
+      <PrimaryButton text='Continuer avec Facebook' onPressFct={() => {
+        console.log('facebook signin')
+
             AccessToken.getCurrentAccessToken().then((data) => {
+              console.log('login is ta grosse mere.');
               const accessToken = data.accessToken.toString();
               getInfoFromToken(accessToken, setUserInfo, props, setMessage, setModalVisible);
             });
-          }
-        }}
+        }
+      } color='#1877F2'
+        readPermissions={['public_profile', 'email']}
         onLogoutFinished={() => setUserInfo({})}
-      /> */}
+      />
       <TouchableOpacity
         onPress={() => props.navigation.navigate('userLogin')}
         style={{

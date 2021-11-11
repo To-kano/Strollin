@@ -356,7 +356,7 @@ if (del) {
       {/* <TouchableOpacity onPress={() => {
         setDel(true)
       }}>
-        <Text style={styles.text_signIn}>Delete</Text>
+        <Text style={styles.text_signIn}>{I18n.t("TripNavigation.delete")}</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => {
         const store = Store.getState();

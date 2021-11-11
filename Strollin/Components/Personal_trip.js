@@ -18,6 +18,9 @@ import { getCustomCourse } from '../apiServer/course';
 const store = Store.getState();
 import Geolocation from 'react-native-geolocation-service';
 import { DrawerActions } from '@react-navigation/native';
+import {translateTags, detranslateTags} from '../Translation/translateTags'
+import {translateDays, detranslateDays} from '../Translation/translateDays'
+
 
 let language = "en"
 let finalJson = []
@@ -212,7 +215,7 @@ function Personal_trip(props) {
   const [showLoader, setLoader] = useState(<View />);
   const searchBar = (
     <>
-      <Text style={styles.text_info}>Où voulez vous allez :</Text>
+      <Text style={styles.text_info}>{I18n.t("PersonalTrip.whereGo")}</Text>
       <View style={styles.view_search}>
         <TextInput
           onChangeText={(text) => onChangeValue(text)}
@@ -255,7 +258,7 @@ function Personal_trip(props) {
 
   const finalView = (
     <>
-      <TouchableOpacity 
+      <TouchableOpacity
         style={styles.button_retour}
         onPress={() => {
         //console.log("\n\nback")
@@ -264,15 +267,15 @@ function Personal_trip(props) {
         <Image style={styles.img_header} source={require('../images/icons/black/return.png')} />
       </TouchableOpacity>
       <View style={styles.view_list}>
-        <Text style={styles.text_result_title}>Votre trajet final</Text>
+        <Text style={styles.text_result_title}>{I18n.t("PersonalTrip.finalTrip")}</Text>
         <View style={styles.view_result_list}>
-          {finalJson.length === 0 && 
+          {finalJson.length === 0 &&
             <View style={styles.empty_list}>
               <Image style={styles.img_empty} source={require('../images/logo/marker_empty.png')} />
-              <Text style={{ textAlign: 'center' }}>Votre trajet est vide..</Text>
+              <Text style={{ textAlign: 'center' }}>{I18n.t("PersonalTrip.emptyTrip")}</Text>
             </View>
           }
-          {finalJson.length > 0 && 
+          {finalJson.length > 0 &&
             <FlatList
               data={finalJson}
               renderItem={({ item }) => (
@@ -289,13 +292,24 @@ function Personal_trip(props) {
           style={styles.view_show_final}
           onPress={async () => {
             await getJsonPush()
+            finalCourse.locations_list = locationPush.locations_list
+            let action = {
+              type: 'SET_CURRENT_COURSE',
+              value: finalCourse
+            };
+            Store.dispatch(action);
+            action = {
+              type: 'ADD_LOCATION_PROPOSITION',
+              value: finalCourse.locations_list
+            };
+            Store.dispatch(action);
           //console.log("course: ", finalCourse, " \nlost: ", locationPush.locations_list);
-            const action = { type: 'SET_WAYPOINTS', course: finalCourse, locations: locationPush.locations_list };
+            action = { type: 'SET_WAYPOINTS', course: finalCourse, locations: locationPush.locations_list };
             Store.dispatch(action);
             props.navigation.navigate('TripNavigation');
           }}
         >
-          <Text style={styles.text_show_final}>Lets Go !</Text>
+          <Text style={styles.text_show_final}>{I18n.t("PersonalTrip.go")}</Text>
         </TouchableOpacity>
       </View>
     </>
@@ -305,7 +319,7 @@ function Personal_trip(props) {
     const handlePress = useCallback(async () => {
       // Checking if the link is supported for links with custom URL scheme.
       const supported = await Linking.canOpenURL(url);
-  
+
       if (supported) {
         // Opening the link with some app, if the URL scheme is "http" the web link should be opened
         // by some browser in the mobile
@@ -314,7 +328,7 @@ function Personal_trip(props) {
         Alert.alert(`Don't know how to open this URL: ${url}`);
       }
     }, [url]);
-  
+
     return (<TouchableOpacity><Text>{children.split('/')[2]}</Text></TouchableOpacity>);
   };
 
@@ -325,7 +339,7 @@ function Personal_trip(props) {
           <Image style={styles.img_header} source={require('../images/icons/black/menu.png')} />
         </TouchableOpacity>
         <Text style={styles.text_header}>
-          {I18n.t('Header.new_trip')}
+          {I18n.t('Header.newTrip')}
           {'   '}
         </Text>
       </View>
@@ -339,7 +353,7 @@ function Personal_trip(props) {
                   <View style={styles.view_result_header}>
                     <Text style={styles.text_result_name}>{jsonObject.result.name}</Text>
                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                      <TouchableOpacity 
+                      <TouchableOpacity
                         onPress={() => {
                           Share.share({
                             message: messagetext,
@@ -372,27 +386,27 @@ function Personal_trip(props) {
                           // })
                         }}
                       >
-                        <Text style={styles.text_add_trip}>Add to trip</Text>
+                        <Text style={styles.text_add_trip}>{I18n.t("PersonalTrip.addTrip")}</Text>
                         <Image style={styles.img_add_trip} source={require('../images/icons/black/addMap.png')} />
                       </TouchableOpacity>
                     </View>
                   </View>
                   {!jsonObject.result.opening_hours ? <View /> : (
                     <>
-                      <Text style={styles.text_result_title}>Horaires :</Text>
+                      <Text style={styles.text_result_title}>{I18n.t("PersonalTrip.shedules")}</Text>
                       <View style={styles.view_result_list}>
                         <FlatList
                           data={jsonObject.result.opening_hours.weekday_text}
                           renderItem={({ item }) => (
                             <View style={styles.view_result_hours}>
                               <Text style={{ }}>
-                                {item.split(':')[0]} : 
+                                {translateDays(item.split(':')[0])} :
                               </Text>
                               <Text style={{fontWeight: 'bold', }}>
                                 { item.split(':')[1] }{':'}
                                 { item.split(':')[2] }{':'}
                                 { item.split(':')[3] }
-                                { item.split(':')[4] } 
+                                { item.split(':')[4] }
                               </Text>
                             </View>
                           )}
@@ -403,22 +417,25 @@ function Personal_trip(props) {
                   )}
                   {!jsonObject.result.types ? <View /> : (
                     <>
-                      <Text style={styles.text_result_title}>Tags :</Text>
+                      <Text style={styles.text_result_title}>{I18n.t("PersonalTrip.tags")}</Text>
                       <View style={styles.view_result_list}>
                         <FlatList
                           data={jsonObject.result.types}
-                          renderItem={({ item }) => (
+                          renderItem={({ item }) => {
+                            if (translateTags(item) == "")
+                              return (<View/>)
+                            return (
                               <View style={styles.view_result_tags}>
                                 <Image style={styles.img_tag} source={require('../images/logo/marker_small.png')} />
-                                <Text style={styles.text_tag}>{item}</Text>
+                                <Text style={styles.text_tag}>{translateTags(item)}</Text>
                               </View>
-                            )}
+                            )}}
                           keyExtractor={(item) => item.id}
                         />
                         </View>
                     </>
                   )}
-                  <Text style={styles.text_result_title}>Adresse :</Text>
+                  <Text style={styles.text_result_title}>{I18n.t("PersonalTrip.adress")}</Text>
                   <View style={styles.view_result_list}>
                     <View style={styles.view_result_tags} >
                       <Image style={styles.img_tag} source={require('../images/icons/black/map.png')} />
@@ -427,7 +444,7 @@ function Personal_trip(props) {
                   </View>
                   {!jsonObject.result.website ? <View /> : (
                     <>
-                    <Text style={styles.text_result_title}>Web Site :</Text>
+                    <Text style={styles.text_result_title}>{I18n.t("PersonalTrip.website")}</Text>
                     <View style={styles.view_result_list}>
                       <View style={styles.view_result_tags}>
                         <Image style={styles.img_tag} source={require('../images/icons/black/www.png')} />
@@ -437,14 +454,14 @@ function Personal_trip(props) {
                   </>
                   )}
                 </ScrollView>
-                <TouchableOpacity 
+                <TouchableOpacity
                   onPress={() => {
                   //console.log("show_final")
                     setFinal(true)
                   }}
                   style={styles.view_show_final}
                 >
-                  <Text style={styles.text_show_final}>Voir mon trajet</Text>
+                  <Text style={styles.text_show_final}>{I18n.t("PersonalTrip.seeTrip")}</Text>
                   {/* <Image style={styles.img_show_final} source={require('../images/icons/black/finalMap.png')} /> */}
                 </TouchableOpacity>
               </View>

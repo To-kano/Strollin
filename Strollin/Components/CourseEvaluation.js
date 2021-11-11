@@ -152,7 +152,7 @@ export function CourseEvaluation(props) {
         visible={isLoading}
       >
         <View style={styles.loading_screen}>
-          <ActivityIndicator size="large"  color="black" style={{}}/>        
+          <ActivityIndicator size="large"  color="black" style={{}}/>
         </View>
       </Modal>
     </View>

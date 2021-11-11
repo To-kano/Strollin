@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { StyleSheet, Image, Button, View, Text, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
+import I18n from '../Translation/configureTrans';
+
 import { uploadImageProfile } from '../apiServer/image';
 import ImageProfile from './components/ImageProfile';
 
@@ -33,7 +35,7 @@ function ChangeImageProfileForm({ profil, dispatch, modalVisible, setModalVisibl
             alignItems: 'center',
             justifyContent: 'space-between'
           }}>
-            <TouchableOpacity 
+            <TouchableOpacity
               style={{ backgroundColor: "#ffffff", padding: 16, alignItems: 'center', borderRadius: 32 }}
               onPress={() => { setImage(null) }}
             >

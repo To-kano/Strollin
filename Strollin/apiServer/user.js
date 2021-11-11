@@ -1,6 +1,9 @@
 import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 
 async function loginUser(props, newMail, newPassword, setLoading) {
+
+  console.log("mail", newMail, "password", newPassword);
+
   fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/login`, {
     headers: {
       Accept: 'application/json',
@@ -12,6 +15,7 @@ async function loginUser(props, newMail, newPassword, setLoading) {
   })
     .then((response) => response.json())
     .then(async (answer) => {
+      console.log("answer", answer);
       if (answer.access_token) {
       //console.log("AccessToken: ", answer.access_token);
         await profileUser(props, answer.access_token);

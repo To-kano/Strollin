@@ -1,6 +1,6 @@
 import * as RNLocalize from 'react-native-localize';
 
-var tags_json = require('./tags');
+var errors_json = require('./errors');
 const locales = RNLocalize.getLocales();
 
 function getLanguage() {
@@ -11,14 +11,14 @@ function getLanguage() {
   return language
 }
 
-export function translateTags(value) {
+export function translateErrors(value) {
   let i = 1
   let language = getLanguage()
   let res = ""
   if (language == 'fr-FR')
     i = 2
-  tags_json.tags_array.forEach((item) => {
-    if (item[0].toLowerCase() == value) {
+  errors_json.errors_array.forEach((item) => {
+    if (item[0].toString().toLowerCase() == value.toLowerCase()) {
       res = item[i]
       return
     }
@@ -26,14 +26,14 @@ export function translateTags(value) {
   return res
 }
 
-export function detranslateTags(value) {
+export function detranslateErrors(value) {
   let i = 1
   let language = getLanguage()
   let res = ""
   if (language == 'fr-FR')
     i = 2
-  tags_json.tags_array.forEach((item) => {
-    if (item[i].toLowerCase() == value)
+  errors_json.errors_array.forEach((item) => {
+    if (item[i].toLowerCase() == value.toLowerCase())
       res = item[0]
       return
   });

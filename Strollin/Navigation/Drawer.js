@@ -30,6 +30,7 @@ import Chat from './Chat';
 import Home from './Home';
 import Trip from './Trip';
 import { FriendSelection } from '../Components/FriendSelection';
+import I18n from '../Translation/configureTrans';
 
 const Drawer = createDrawerNavigator();
 
@@ -46,22 +47,17 @@ function MyDrawer() {
         drawerType={'front'}
         drawerContent={(props) => <CustomDrawerContent {...props} />}
     >
-      <Drawer.Screen name="Home" component={Home} />
-      <Drawer.Screen name="Historic" component={HistoryNav} />
-      <Drawer.Screen name="New trip" component={Trip} />
-      <Drawer.Screen name="Friends" component={FriendList} />
-      <Drawer.Screen name="Chat" component={Chat} />
-      <Drawer.Screen name="Profile" component={Profile} />
-      <Drawer.Screen name="Partenaire" component={PartenaireScreen} />
-      <Drawer.Screen name="Settings" component={SettingPartenaire} />
-      <Drawer.Screen name="Favorites" component={Favorites} />
-      <Drawer.Screen name="Personal_trip" component={Personal_trip} />
+      <Drawer.Screen name={I18n.t("Menu.home")} component={Home} />
+      <Drawer.Screen name={I18n.t("Menu.historic")} component={HistoryNav} />
+      <Drawer.Screen name={I18n.t("Menu.newTrip")} component={Trip} />
+      <Drawer.Screen name={I18n.t("Menu.friends")} component={FriendList} />
+      <Drawer.Screen name={I18n.t("Menu.chat")} component={Chat} />
+      <Drawer.Screen name={I18n.t("Menu.profile")} component={Profile} />
+      <Drawer.Screen name={I18n.t("Menu.partenaire")} component={PartenaireScreen} />
+      <Drawer.Screen name={I18n.t("Menu.settings")} component={SettingPartenaire} />
+      <Drawer.Screen name={I18n.t("Menu.favorites")} component={Favorites} />
+      <Drawer.Screen name={I18n.t("Menu.personalTrip")} component={Personal_trip} />
       <Drawer.Screen name="TripNavigation" component={TripNavigation} />
-      <Drawer.Screen name="Position_partener" component={Position_partener} />
-      <Drawer.Screen name="Notation" component={Notation} />
-      <Drawer.Screen name="Guide" component={TutorialPage} />
-      
-      <Drawer.Screen name="Subscription" component={Subscription} />
     </Drawer.Navigator>
   );
 }

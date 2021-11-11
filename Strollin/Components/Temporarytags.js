@@ -11,6 +11,7 @@ import Store from '../Store/configureStore';
 import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 import {GetPlaces} from '../apiServer/tag';
 import { requestGeolocalisationPermission, updateCoordinates } from './map'
+import {translateTags, detranslateTags} from '../Translation/translateTags'
 
 export function Header({ navigation, defaultState = false }) {
   const [pressed, setpressed] = useState(defaultState);
@@ -194,7 +195,7 @@ export function Temporarytags(props) {
           data={array}
           keyExtractor={(item) => item.name}
           renderItem={({ item }) => (
-            <Tag name={item.name} chosen={item.pressed} access_Token={access_Token} pos={pos}/>
+            <Tag name={translateTags(item.name)} chosen={item.pressed} access_Token={access_Token} pos={pos}/>
           )}
         />
       </View>
