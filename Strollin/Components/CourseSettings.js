@@ -177,7 +177,7 @@ export function CourseSettings(props) {
 
   return (
     <View style={globalStyles.container}>
-      <Step actualStep={CourseSettingStep} finishStep={8} onPressFct={() => setCourseSettingStep(CourseSettingStep - 1)} />
+      <Step actualStep={CourseSettingStep} finishStep={9} onPressFct={() => setCourseSettingStep(CourseSettingStep - 1)} />
 
       {CourseSettingStep === 1 &&
         <>
@@ -291,6 +291,21 @@ export function CourseSettings(props) {
         </>
       }
       {CourseSettingStep === 8 &&
+        <>
+          <View>
+            <Text style={globalStyles.titles}>D ou veux tu partir ?</Text>
+            <Text style={[globalStyles.subparagraphs, { marginTop: 16 }]}>Choisi un point de départ à ton trajet.</Text>
+          </View>
+          <SecondaryButton
+            text="Choisir le point de départ"
+            onPressFct={() => {
+              props.navigation.navigate("ChosePosition");
+            }}
+          />
+          <NextStep text='La suite' onPressFct={() => setCourseSettingStep(CourseSettingStep + 1)} />
+        </>
+      }
+      {CourseSettingStep === 9 &&
         <>
           <View style={{width: "100%", marginBottom: 16}}>
             <Text style={globalStyles.titles}>Veux-tu un peu de changement ?</Text>
