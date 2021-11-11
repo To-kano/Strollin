@@ -132,4 +132,51 @@ router.post('/stop_subscription', async function(req, res) {
 });
 
 
+/**
+ * WEBHOOK
+ **/
+
+// This is your Stripe CLI webhook secret for testing your endpoint locally.
+const endpointSecret = "whsec_4foNz7yskrBbBlsUdus1WtPOMJE7p2Tj";
+
+router.post('/webhook', async function(req, res) {
+    const sig = request.headers['stripe-signature'];
+
+    let event;
+
+    try {
+        event = stripe.webhooks.constructEvent(request.body, sig, endpointSecret);
+    } catch (err) {
+        response.status(400).send(`Webhook Error: ${err.message}`);
+        return;
+    }
+
+    // Handle the event
+    switch (event.type) {
+        case 'checkout.session.completed':
+            const session = event.data.object;
+            // Then define and call a function to handle the event checkout.session.completed
+            break;
+        case 'customer.subscription.deleted':
+            const subscription = event.data.object;
+            // Then define and call a function to handle the event customer.subscription.deleted
+            break;
+        case 'invoice.paid':
+            const invoice = event.data.object;
+            // Then define and call a function to handle the event invoice.paid
+            break;
+        case 'invoice.payment_failed':
+            const invoice = event.data.object;
+            // Then define and call a function to handle the event invoice.payment_failed
+            break;
+    // ... handle other event types
+    default:
+      console.log(`Unhandled event type ${event.type}`);
+  }
+
+  // Return a 200 response to acknowledge receipt of the event
+  response.send();
+});
+
+
 module.exports = router;

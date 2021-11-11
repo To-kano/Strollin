@@ -16,6 +16,7 @@ import {
   View,
   Image,
   ActivityIndicator,
+  Button
 } from 'react-native';
 
 // async function SetTrackItem(setTrack, id) {
@@ -64,6 +65,30 @@ function MessagesItem(props) {
         </Text>
       </View>
       );
+    } else if (props.message[props.messageID]["type"] == "position") {
+      return (
+        <View>
+          <View style={styles.view_message}>
+            <View style={styles.greyDisplay}>
+                <Text style={styles.messageGrey}>
+                  {props.message[props.messageID].expeditor_pseudo + " a partagé sa position"}
+                </Text>
+                <Button title="See on a map" onPress={() => {
+                  location = props.message[props.messageID].message.split(',')
+                  navigation.navigate('PositionShareMap',
+                    {
+                      latitude: location[0],
+                      longitude: location[1],
+                      name: props.message[props.messageID].expeditor_pseudo
+                    })
+                }}/>
+            </View>
+          </View>
+        <Text style={styles.expeditor} ellipsizeMode="tail">
+          {props.profil.friends_pseudo_list[props.message[props.messageID].expeditor_id]}
+        </Text>
+      </View>
+      );
     }
   } else if (props.profil.id == props.message[props.messageID].expeditor_id) {
     if (props.message[props.messageID]["type"] == "image") {
@@ -95,6 +120,30 @@ function MessagesItem(props) {
                 <Text style={styles.messageBlue}>
                   {props.message[props.messageID].message}
                 </Text>
+            </View>
+          </View>
+          <Text style={styles.expeditorUser} ellipsizeMode="tail">
+            {props.profil.pseudo}
+          </Text>
+        </View>
+      );
+    } else if (props.message[props.messageID]["type"] == "position") {
+      return (
+        <View>
+          <View style={styles.view_message_mine}>
+            <View style={styles.blueDisplay}>
+                <Text style={styles.messageBlue}>
+                  {props.message[props.messageID].expeditor_pseudo + " a partagé sa position"}
+                </Text>
+                <Button title="See on a map" onPress={() => {
+                  location = props.message[props.messageID].message.split(',')
+                  props.navigation.navigate('PositionShareMap',
+                    {
+                      latitude: location[0],
+                      longitude: location[1],
+                      name: props.message[props.messageID].expeditor_pseudo
+                    })
+                }}/>
             </View>
           </View>
           <Text style={styles.expeditorUser} ellipsizeMode="tail">

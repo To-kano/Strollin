@@ -104,6 +104,13 @@ function Socket({children, profil, dispatch}) {
       conversation: store.conversation.currentConversation, type: "course", message: courseId});
   };
 
+  const sendPosition = (position) => {
+    console.log('sending position:', position);
+  
+      socket.emit('sendMessage', { access_token: store.profil.access_token,
+        conversation: store.conversation.currentConversation, type: "position", message: position});
+    };
+  
   const createConversation = (participantsID) => {
   //console.log('creating conversation', participantsID);
     let convName = store.profil.pseudo;
@@ -117,7 +124,7 @@ function Socket({children, profil, dispatch}) {
   };
 
   return (
-    <SocketContext.Provider value={{ socket, sendMessage, createConversation, sendImage, sendCourse }}>
+    <SocketContext.Provider value={{ socket, sendMessage, createConversation, sendImage, sendCourse, sendPosition }}>
       {children}
     </SocketContext.Provider>
   );

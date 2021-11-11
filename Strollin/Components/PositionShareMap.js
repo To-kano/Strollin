@@ -122,7 +122,7 @@ function PositionShareMap({
     updateCoordinates(setUserPosition);
   }
   //
-  if (position.permission && userPosition && localRegion.latitude && localRegion.longitude) {
+  if (localRegion.latitude && localRegion.longitude) {
     const GOOGLE_MAPS_APIKEY = 'AIzaSyDGvC3HkeGolvgvOevKuaE_6LmS9MPjlvE';
     //
     return (

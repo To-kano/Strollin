@@ -4,6 +4,7 @@ var mongoose = require('mongoose');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+// var stripe = require('stripe')('sk_test_51JSMW9H9C7g7Ir78BQDjbCPJ71SYc19nSmTDAEZAqrMHcREIMi6SOhHaEuGspN62eT3g5Iza1QKex8ifc0a2jKGn00wrObLsAs')
 
 // Import Routes
 var indexRouter = require('./routes/index');
@@ -63,6 +64,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+// const webhookEndpoint = await stripe.webhookEndpoints.create({
+//   url: 'https://example.com/my/webhook/endpoint',
+//   enabled_events: [
+//     'charge.failed',
+//     'charge.succeeded',
+//   ],
+// });
 
 // ROUTES //
 
