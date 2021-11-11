@@ -38,8 +38,8 @@ export function Favorites(props) {
 
   return (
     <View style={globalStyles.container}>
-      <ScrollView
-        style={{width: '100%'}}
+      <View
+        style={{width: '100%', height: '70%'}}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingVertical: 96 }}
       >
@@ -61,7 +61,7 @@ export function Favorites(props) {
             />
           : <Text style={[globalStyles.subparagraphs, {marginTop: 96}]}>Malheureusement on dirait que tu n'as pas encore de trajet dans tes favoris. Essaye d'appuyer sur l'étoile quand un trajet sur la page d'acceuil te plaît 😉</Text>
         }
-      </ScrollView>
+      </View>
       <MenuButton props={props}/>
     </View>
   );

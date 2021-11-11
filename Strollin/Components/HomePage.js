@@ -94,10 +94,9 @@ function Header({ props, defaultState = false }) {
 export function HomePage(props) {
 
   let url = getUrl(props);
-
   return (
     <View style={globalStyles.container}>
-      <ScrollView
+      <View
         style={{width: '100%'}}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingVertical: 96 }}
@@ -105,7 +104,7 @@ export function HomePage(props) {
         <Text style={[globalStyles.titles, { marginBottom: 32, }]}>Salut {props.profil.pseudo} !</Text>
         { getTendanceList().length > 0
           ? <FlatList
-              style={{width: '100%'}}
+              style={{width: '100%', height: '70%'}}
               showsHorizontalScrollIndicator={false}
               showsVerticalScrollIndicator={false}
               data={getTendanceList()}
@@ -115,11 +114,11 @@ export function HomePage(props) {
                   data={item}
                 />
               )}
-              keyExtractor={(item) => item.id}
+              keyExtractor={(item) => item.id }
             />
           : <Text style={globalStyles.subtitles}>T'es nouveau par ici dis moi ! Essaye donc de faire un trajet 😉</Text>
         }
-      </ScrollView>
+      </View>
       <MenuButton props={props}/>
       <SearchBar
         onPress={(data) => { setSortedTendanceData(data); setpressed(!pressed); }}

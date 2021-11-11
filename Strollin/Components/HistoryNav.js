@@ -11,15 +11,16 @@ import I18n from '../Translation/configureTrans';
 
 import Menu from './Menu';
 
-export function HistoryNav({ navigation, profil }) {
+export function HistoryNav(props) {
   const [drawer, setDrawer] = useState(null);
+  console.log("historic = ", props.profil.course_historic);
 
-  // console.log("profile = ", profil);
+  // console.log("props.profile = ", props.profil);
   return (
     <View style={styles.view_back}>
       <View style={styles.view_header}>
         {/* <TouchableOpacity onPress={() => navigation.navigate('Menu')}> */}
-        <TouchableOpacity onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
+        <TouchableOpacity onPress={() => props.navigation.dispatch(DrawerActions.openDrawer())}>
           <Image style={styles.img_header} source={require('../images/icons/black/menu.png')} />
         </TouchableOpacity>
         <Text style={styles.text_header}>
@@ -31,21 +32,18 @@ export function HistoryNav({ navigation, profil }) {
         <FlatList
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
-          data={profil.course_historic}
+          data={props.profil.course_historic}
           renderItem={({ item }) => (
-            <HistoryItem courseId={item} duration={item.duration}/>
+            <HistoryItem courseId={item} duration={item.duration} {...props}/>
           )}
+          keyExtractor={(item) => item[0]}
         />
       </View>
     </View>
   );
 }
 
-const mapStateToProps = (state) => (
-  {
-    profil: state.profil
-  }
-);
+const mapStateToProps = (state) => state;
 export default connect(mapStateToProps)(HistoryNav);
 
 const styles = StyleSheet.create({

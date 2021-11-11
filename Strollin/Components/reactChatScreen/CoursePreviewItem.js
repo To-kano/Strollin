@@ -37,6 +37,11 @@ function CoursePreviewItem(props) {
           value: props.courseObject
         };
         Store.dispatch(action);
+        const action2 = {
+          type: 'SET_CURRENT_COURSE',
+          value: props.courseObject
+        };
+        Store.dispatch(action);
         navigation.navigate('New trip',{
           screen: 'TripSuggestion',
          }

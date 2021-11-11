@@ -306,7 +306,7 @@ router.get('/get_place', async function(req, res) {
     //     return res.status(400).send({status: "Error in database transaction:\n", error: user});
     // }
 
-    let url = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=" + req.headers.place_name.toLowerCase() + "&inputtype=textquery&key=AIzaSyC4MiDbDXP5M3gvpyUADaIUO60H7Vjb9Uk"
+    let url = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=" + req.headers.place_name.toLowerCase() + "&inputtype=textquery&key=AIzaSyDPc6ZV5KYveppsIq8o_1oeVEZ6CShTX4w"
     let research = await placeCall(url).then((response) => {
       return response
     })
