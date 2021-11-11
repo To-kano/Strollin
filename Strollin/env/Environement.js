@@ -5,12 +5,7 @@ const environement = {
 
 exports.environement = environement;
 
-<<<<<<< HEAD
 const IP_SERVER = process.env.IP_SERVER || 'strollin.ddns.net';
-=======
-const IP_SERVER = process.env.IP_SERVER || '82.66.98.16';
-//82.66.98.16
->>>>>>> 27d7d73de737f8d7d42f4c5681f4a433c43afe10
 
 exports.IP_SERVER = IP_SERVER;
 
