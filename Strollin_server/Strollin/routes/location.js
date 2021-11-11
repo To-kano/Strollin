@@ -141,6 +141,7 @@ router.post('/new_location', async function(req, res) {
  * @param {String} req.body.phone (Optional)
  * @param {String} req.body.website (Optional)
  * @param {Boolean} req.body.food (Optional)
+ * @param {String} req.body.tags_list (Optional)  = "tag1,tag2,tag3"
  */
 router.post('/update_location', async function(req, res) {
 
@@ -218,6 +219,14 @@ router.post('/update_location', async function(req, res) {
     }
     if (req.body.pop_ag) {
         update.pop_ag = req.body.pop_ag
+    }
+    if (req.body.tags_list) {
+        var tags_list = [];
+        tags_array = req.body.tags_list.split(',');
+        for (var index=0; index < tags_array.length; index++) {
+            tags_list.push({id: tags_array[index], disp: 0});
+        }
+        update.tags_list = tags_list;
     }
     error = await LocationModel.updateOne({id: location.id}, update).catch(error => error);
     if (error.errors) {
@@ -362,6 +371,7 @@ router.get('/get_locations', async function(req, res) {
 router.get('/get_partner_location', async function(req, res) {
 
     let location = undefined;
+    //console.log('req',req);
     let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo partner").catch(error => error);
 
     if (!user) {

@@ -14,11 +14,11 @@ function getLanguage() {
 export function translateTags(value) {
   let i = 1
   let language = getLanguage()
-  let res = 'error'
+  let res = ""
   if (language == 'fr-FR')
     i = 2
   tags_json.tags_array.forEach((item) => {
-    if (item[0] == value) {
+    if (item[0].toLowerCase() == value) {
       res = item[i]
       return
     }
@@ -29,12 +29,13 @@ export function translateTags(value) {
 export function detranslateTags(value) {
   let i = 1
   let language = getLanguage()
-  let res = 'error'
+  let res = ""
   if (language == 'fr-FR')
     i = 2
   tags_json.tags_array.forEach((item) => {
-    if (item[i] == value)
+    if (item[i].toLowerCase() == value)
       res = item[0]
+      return
   });
   return res
 }

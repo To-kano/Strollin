@@ -61,7 +61,7 @@ function getUrl(props) {
 
 function Header({ props, defaultState = false }) {
   const [pressed, setpressed] = useState(defaultState);
-  
+
   if (pressed === false) {
     return (
       <View style={styles.view_header}>
@@ -103,7 +103,7 @@ export function HomePage(props) {
         contentContainerStyle={{ paddingVertical: 96 }}
       >
         <Text style={[globalStyles.titles, { marginBottom: 32, }]}>Salut {props.profil.pseudo} !</Text>
-        { getTendanceList().length > 0 
+        { getTendanceList().length > 0
           ? <FlatList
               style={{width: '100%'}}
               showsHorizontalScrollIndicator={false}
@@ -127,7 +127,7 @@ export function HomePage(props) {
       />
       <Footer primaryText="Une envie de sortir ?" primaryOnPressFct={() => props.navigation.navigate("New trip", { screen: 'CourseSetting' })}/>
     </View>
-      
+
       // {/* <TouchableOpacity
       //   onPress={() => { Linking.openURL(url) }}
       //   style={styles.view_form}

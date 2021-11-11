@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "633082816704",
+    "project_id": "strollin-9f57f",
+    "storage_bucket": "strollin-9f57f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:633082816704:android:2ef472eea46363e5fbe525",
+        "android_client_info": {
+          "package_name": "com.strollin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "633082816704-n2ca01qn6h0b7cungm55qlsfm2lj9cqh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDo8fkCOUzTSLFYzWXeTtWE9Ouvyo_eePY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "633082816704-n2ca01qn6h0b7cungm55qlsfm2lj9cqh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

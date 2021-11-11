@@ -1,91 +1,36 @@
 export default {
-  /*
-  connexion : 'Connection',
-  trendingTrip : 'Tendance : ',
-  step : 'Etape : ',
-  address : 'Adresse : ',
-  date : 'date : ',
-  duration : 'durée : ',
-  startNewTrip : 'Commencer un nouveau trajet',
-  carte : 'Carte',
-  jane : 'Accéder au profil de Jane',
-  endNav : 'Terminer la navigation',
-  anotherOneBitesTheDust : 'Un autre!',
-  letsGo : "C'est partit!",
-  firstName : 'Prénom',
-  lastName : 'Nom de famille',
-  friendList : "Liste d'amis",
-  deleteFriend : "Suprimer l'ami",
-  showMap : 'Afficher la carte',
-  showStep : 'Afficher les étapes',
-  Share : 'Partager',
-  PublishOnFacebook : 'Publier sur Facebook',
-  feedback : 'Donnez nous votre avis',
-  by: 'par',
-  feedback: "Donnez nous votre avis",
-  SIGNIN: 'SE CONNECTER',
-  SIGNUP: "S'INSCRIRE",
-  OR: 'OU',
-  username: 'Pseudo',
-  connexion: 'Connection',
-  trendingTrip: 'Tendance',
-  by: 'par',
-  views: 'vues',
-  points: 'points',
-  description: 'description',
-  step: 'Etape ',
-  name: 'Nom ',
-  address: 'Adresse',
-  date: 'date',
-  duration: 'durée',
-  startNewTrip: 'Commencer un nouveau trajet',
-  confirm: 'Confirmer',
-  forgot: 'Mot de passe oublié ?',
-  noAccount: "Vous n'avez pas de compte ?",
-  noPermission: "Vous n'avez pas la permission",
-  email: 'Email',
-  password: 'Mot de passe',
-  tags: 'Tags',
-  welcome: 'Bienvenue',
-  chooseTags: 'Choisissez les tags qui correspondent le mieux à votre personnalité',
-  heading: 'En route vers',
-  carte: 'Carte',
-  logOut: 'Déconnexion',
-  newTrip: 'Nouveau trajet',
-  historic: 'historique',
-  jane: 'Accéder au profil de Jane',
-  geoPermission: "Strollin vous demande l'autorisation d'utiliser la géolocalisation",
-  askLater: 'Demandez-moi plus tard',
-  cancel: 'Annuler',
-  ok: 'OK',
-  send: 'Envoyer',
-  next: 'Suivant',
-  endNav: 'Terminer la navigation',
-  anotherOneBitesTheDust: 'Un autre!',
-  letsGo: "C'est partit!",
-  register: 'Inscription',
-  signIn: 'Connection',
-  firstName: 'Prénom',
-  lastName: 'Nom de famille',
-  confPassword: 'Comfirmation du mot de passe',
-  alreadyAccount: 'Vous avez déja un compte ?',
-  friendList: "Liste d'amis",
-  groupList: 'Liste des groupes',
-  deleteFriend: "Suprimer l'ami",
-  addFriend: "Ajouter l'ami",
-  addGroup: 'Ajouter le groupe',
-  showMap: 'Afficher la carte',
-  showStep: 'Afficher les étapes',
-  Share: 'Partager',
-  PublishOnFacebook: 'Publier sur Facebook',
-  feedback: 'Donnez nous votre avis'
-  */
+  Chat: {
+    search:"Chercher un ami ou un groupe"
+  },
 
   CourseEvaluation: {
     evaluate: 'Evaluer cette course!',
     note: 'Note:',
     yourComment: 'Votre commentaire',
-    send: "Envoyer l'évaluation"
+    send: "Envoyer l'évaluation",
+    adress: "Adresse de l'entreprise",
+    name: "Nom de l'entreprise",
+  },
+
+  CourseSettings:{
+    budget: 'Budget',
+    euros:'Euros',
+    spendingTime: 'Temps du trajet',
+    hour:'Heure(s)',
+    minutes:'Minute(s)',
+    distance:'Distance',
+    km:'Km',
+    maxPlaces:'Nombre de lieux maximum',
+    places:'Lieux',
+    alimentation:'Alimentation',
+    eatDrink:'Voulez vous manger ou boire ?',
+    multipleTrips:'Trajet a plusieurs',
+    shareTrip:'Partager le trajet avec vos amis ?',
+    chooseFriend:'Choisissez des amis',
+    ageRestriction:"Restriction d'âge",
+    more18:'Avez vous 18ans ou plus ?',
+    tmpTags:'Utiliser des tags temporaires',
+    confirmOptions:'Comfirmer mes options',
   },
 
   FriendList: {
@@ -97,6 +42,7 @@ export default {
   },
 
   TripTogether: {
+    friends: "Vos amis",
     addFriend: 'Ajouter mes amis'
   },
 
@@ -111,6 +57,8 @@ export default {
     logOut: 'Déconnexion',
     newTrip: 'Nouveau trajet',
     historic: 'historique',
+    report: 'Reporter un bug',
+    form: 'Accéder au formulaire'
   },
 
   LoginPage: {
@@ -134,6 +82,24 @@ export default {
     noPermission: "Vous n'avez pas la permission",
   },
 
+  Menu: {
+    home:'Acceuil',
+    historic:'Historique',
+    newTrip:'Nouveau trajet',
+    friends:'Amis',
+    friendsSelection:'Choisir des amis',
+    chat:'Messages',
+    profile:'Profil',
+    partenaire:'Partenaire',
+    settings:'Paramètres',
+    favorites:'Favoris',
+    personalTrip:'Trajets personalisés',
+    positionPartener:'Position du commerce',
+    subscription:'Abonnement',
+    logOut:'Déconnexion',
+    traveler:'Voyageur'
+  },
+
   Notation: {
     information: 'information',
     send: 'Envoyer',
@@ -148,6 +114,19 @@ export default {
     signIn: 'Connection',
   },
 
+  PersonalTrip: {
+    whereGo: "Où voulez vous allez ?",
+    addTrip: "Ajouter au trajet",
+    shedules: "Horaires",
+    tags: "Tags :",
+    adress: "Adresse :",
+    website: "Site Web :",
+    seeTrip: "Voir mon trajet",
+    finalTrip: "Votre trajet final :",
+    emptyTrip: "Votre trajet est vide..",
+    go: "C'est partit !"
+  },
+
   PopUpForm: {
     goTo: 'Voulez vous allez à'
   },
@@ -157,12 +136,21 @@ export default {
     send : 'Envoyer',
   },
 
+  PositionPartener: {
+    adress: "Adresse de votre commerce :"
+  },
+
   ProfileScreen: {
     name: 'Nom',
     pseudo: 'Pseudo',
     tags: 'Tags',
     myTags: 'Mes tags',
-    addTags: 'Ajouter des tags'
+    addTags: 'Ajouter des tags',
+    choosePic: 'Choisissez votre photo de profil',
+    pic: 'Photo',
+    remove: 'Retirer',
+    ok: 'OK',
+    close: 'Fermer'
   },
 
   TagSelection: {
@@ -178,7 +166,13 @@ export default {
   TripSuggestion: {
     step: 'Etape :',
     headingTo: 'En route vers',
-    lets_go: "C'est parti !"
+    letsGo: "C'est parti !",
+    newTrip: "Nouveau trajet"
+  },
+
+  TripNavigation: {
+    delete: "Suprimer",
+    simulate: "Simulation"
   },
 
   UserRegister: {
@@ -219,6 +213,16 @@ export default {
     choose_my_shop_tag: 'Choisir les Tags du commerce'
   },
 
+  Subscription: {
+    subscription: 'Abonnement',
+    month: 'Mois',
+    sub1: "Strollin' est un bon moyen de donner plus de promotion à votre emplacement et d'obtenir de nouveaux clients potentiels. S'abonner à Strollin' vous donnera les prochains avantages :",
+    sub2: "Votre emplacement sera plus souvent sélectionné lors de la génération des cours",
+    sub3: "Votre emplacement sera promu via une fenêtre contextuelle pendant les cours lorsque les utilisateurs passeront à proximité et auront des balises correspondantes",
+    notSub: "Vous n'etes pas abonné",
+    website: "Aller sur le site",
+  },
+
   Header: {
     TripTogether: 'Trajet à plusieurs',
     search_tag: 'Rechercher un Tag',
@@ -238,5 +242,8 @@ export default {
     chats: 'Messages',
     rating: 'Notation',
     comment: 'Commentaire',
+    favorites: 'Favoris',
+    newTrip: 'Nouveau trajet',
+    myTrip: 'Mon trajet'
   }
 };

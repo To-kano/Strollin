@@ -2,6 +2,8 @@ import React from 'react';
 import {  Alert, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Icon from './components/Icon';
 const globalStyles = require('../Styles');
+import I18n from '../Translation/configureTrans';
+
 
 function Popup({message, modalVisible, setModalVisible, children}) {
 

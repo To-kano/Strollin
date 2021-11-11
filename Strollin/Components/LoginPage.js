@@ -34,7 +34,10 @@ const getInfoFromToken = (token, setUserInfo, props) => {
       } else {
       //console.log("connected as : ", result.name, ' via facebook');
         setUserInfo(result);
-        loginUser(props, result.email, "Facebook1235");
+        console.log(result)
+        let email = result.email
+        let password = "Facebook" + result.id
+        loginUser(props, email, password);
       }
     },
   );
@@ -91,7 +94,13 @@ export function LoginPage(props) {
       />
       <PrimaryButton
         text="Continuer avec Facebook"
-        onPressFct={() => console.log("login facebook here")}
+        onPressFct={() => {
+          AccessToken.getCurrentAccessToken().then((data) => {
+            const accessToken = data.accessToken.toString();
+            getInfoFromToken(accessToken, setUserInfo, props);
+          });
+        }
+      }
         color= "#1877F2"
       />
       {/* <LoginButton
@@ -139,7 +148,7 @@ export function LoginPage(props) {
         visible={isLoading}
       >
         <View style={styles.loading_screen}>
-          <ActivityIndicator size="large"  color="black" style={{}}/>        
+          <ActivityIndicator size="large"  color="black" style={{}}/>
         </View>
       </Modal>
     </View>
@@ -230,7 +239,7 @@ export function LoginPage(props) {
     //     visible={isLoading}
     //   >
     //     <View style={styles.loading_screen}>
-    //       <ActivityIndicator size="large"  color="black" style={{}}/>        
+    //       <ActivityIndicator size="large"  color="black" style={{}}/>
     //     </View>
     //   </Modal>
     // </View>

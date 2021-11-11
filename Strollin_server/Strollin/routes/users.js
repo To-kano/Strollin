@@ -5,6 +5,8 @@ const nodemailer = require('nodemailer');
 
 const CryptoJS = require("crypto-js");
 
+const fs = require("fs");
+
 const keyCrypto = "key";
 
 const {
@@ -45,7 +47,9 @@ router.post('/register', async function (req, res) {
     return res.status(400).send({ error_code: 100 });
   }
 
-  let mail = await UserModel.findOne({ mail: req.body.mail.toLowerCase() }).catch(error => error);
+  let mail = await UserModel.findOne({
+    mail: req.body.mail.toLowerCase()
+  }).catch(error => error);
   let token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
   if (mail && mail.reason) {
@@ -93,44 +97,229 @@ router.post('/register', async function (req, res) {
       },
     });
 
-    // create the mail to send
-    const mailOptions = {
-      from: '"Strollin App" <strollinapp@outlook.com>', // sender address (who sends)
-      to: req.body.mail.toLowerCase(), // list of receivers (who receives)
-      subject: `subscribe the app Strollin `, // Subject line
-      html: `<a href="http://88.165.45.219:3004/users/verify?id=${user.id}">test</a> `,
-    };
+    console.log("path ", __dirname + '/../mailSubscription.html');
 
-    // send the mail
-    transporter.sendMail(mailOptions, function (error, info) {
+    fs.readFile(__dirname + '/../mailSubscription.html', "utf8", function (err, data) {
+      console.log('data ', data);
+      console.log('err: ', err);
+
+      const message = data.replace('USER_NAME', req.body.pseudo).replace("USER_ID", user.id.toString());
+
+      console.log("message :", message);
+
+      const mailOptions = {
+        from: '"Strollin App" <strollinapp@outlook.com>', // sender address (who sends)
+        to: req.body.mail.toLowerCase(), // list of receivers (who receives)
+        subject: `subscribe the app Strollin `, // Subject line
+        html: message,
+      };
+
+      transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log('Email sent: ' + info.response);
+        }
+      });
+
+    });
+
+    //// create the mail to send
+    //const mailOptions = {
+    //  from: '"Strollin App" <strollinapp@outlook.com>', // sender address (who sends)
+    //  to: req.body.mail.toLowerCase(), // list of receivers (who receives)
+    //  subject: `subscribe the app Strollin `, // Subject line
+    //  html: `<a href="https://strollin.ddns.net/users/verify?id=${user.id}">test</a> `,
+    //};
+    //
+    //// send the mail
+    //transporter.sendMail(mailOptions, function (error, info) {
+    //  if (error) {
+    //    console.log(error);
+    //  } else {
+    //    //console.log('Email sent: ' + info.response);
+    //  }
+    //});
+
+    return res.status(200).send({
+      status: "Account created successfully.",
+      access_token: token
+    });
+  }
+  return res.status(400).send({
+    status: "The entry is invalid."
+  });
+});
+
+
+router.post('/reset_password', async function (req, res) {
+  console.log("Reset password: ", req.body);
+  if (!req.body.mail || !req.body.mail.includes('@')) {
+    return res.status(400).send({
+      status: "A valid mail was not provided."
+    });
+  }
+
+  let mail = await UserModel.findOne({
+    mail: req.body.mail.toLowerCase()
+  }).catch(error => error);
+  //let token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+
+  if (mail && mail.reason) {
+    return res.status(400).send({
+      status: "Error in database transaction:\n",
+      error: mail
+    });
+  } else if (mail) {
+
+    const transporter = nodemailer.createTransport({
+      host: 'smtp-mail.outlook.com', // hostname
+      secureConnection: false, // TLS requires secureConnection to be false
+      port: 587, // port for secure SMTP
+      tls: {
+        ciphers: 'SSLv3',
+      },
+      auth: {
+        user: 'StrollinBeta@hotmail.com',
+        pass: 'Strollin1234',
+      },
+    });
+
+    //read tamplate mail,
+    fs.readFile(__dirname + '/../RestPassword.html', "utf8", function(err, data) {
+      //console.log('data ', data);
+      console.log('err', err, req.body.mail.toLowerCase() );
+
+      const mailUser = data.replace('LINK_USER', 'https://strollin.ddns.net/users/reset_password?id=' + mail.id.toString())
+
+      const mailOptions = {
+        from: '"Strollin App" <StrollinBeta@hotmail.com>', // sender address (who sends)
+        to: req.body.mail.toLowerCase(), // list of receivers (who receives)
+        subject: `Reset password Strollin `, // Subject line
+        html: mailUser,
+      };
+
+      // send the mail
+      transporter.sendMail(mailOptions, function (error, info) {
       if (error) {
         console.log(error);
       } else {
-        //console.log('Email sent: ' + info.response);
+        console.log('Email sent: ' + info.response);
       }
     });
+    })
 
-    return res.status(200).send({ status: "Account created successfully.", access_token: token });
+    // create the mail to send
+    
+
+    
+
+    return res.status(200).send({
+      status: "Reset Mail sent.",
+      //access_token: token
+    });
   }
   return res.status(400).send({ error_code: 3 });
 });
 
 
+
 router.get('/verify', async function (req, res) {
 
   //console.log("verify\n", req.query.id);
-  let user = await UserModel.findOne({ id: req.query.id }).catch(error => error);
+  let user = await UserModel.findOne({
+    id: req.query.id
+  }).catch(error => error);
   if (!user) {
     return res.status(401).send({ error_code: 1 });
   } else if (user.reason) {
     return res.status(500).send({ error_code: 2 });
   } else {
 
-    let error = await UserModel.updateOne({ id: user.id }, { verify: true }).catch(error => error);
+    let error = await UserModel.updateOne({
+      id: user.id
+    }, {
+      verify: true
+    }).catch(error => error);
     if (error.errors) {
       return res.status(500).send({ error_code: 2 });
     }
-    return res.status(200).send({ status: "Account verified successfully." });
+    /*return res.render("verify", {
+      user: user
+    }*/
+    return res.status(200).send({
+      status: "Account verified successfully."
+    });
+  }
+});
+
+router.post('/reset_password_confirme', async function (req, res) {
+
+  console.log("reset_password_confirme\n", req.body);
+  let user = await UserModel.findOne({
+    id: req.body.user_id
+  }).catch(error => error);
+  if (!user) {
+    return res.status(400).send({
+      status: "not valid link"
+    });
+  } else if (user.reason) {
+    return res.status(400).send({
+      status: "Error in database transaction:\n",
+      error: user
+    });
+  } else if (req.body.password !== req.body.confirm_password) {
+    return res.status(400).send({
+      status: "Error password or not the same:\n",
+    });
+  } else {
+
+    //const newPassword = CryptoJS.HmacSHA1(req.body.password, keyCrypto);
+
+    user.password = await CryptoJS.HmacSHA1(req.body.password, keyCrypto)
+
+    console.log("user new : ", user);
+
+    let error = await user.save().catch(error => error);
+
+    /*let error = await UserModel.updateOne({
+      id: req.body.user_id,
+    }, {password: CryptoJS.HmacSHA1(req.body.password, keyCrypto)}).catch(error => error);
+*/
+    if (error.errors) {
+      console.log("error ", error);
+      return res.status(400).send({
+        status: "Error in database transaction:\n",
+        error: error.errors
+      });
+    }
+
+    return res.render("confirmed_password", {
+      //user: user
+    })
+  }
+ 
+});
+
+router.get('/reset_password', async function (req, res) {
+
+  console.log("reset_password\n", req.query.id);
+  let user = await UserModel.findOne({
+    id: req.query.id
+  }).catch(error => error);
+  if (!user) {
+    return res.status(400).send({
+      status: "not valid link"
+    });
+  } else if (user.reason) {
+    return res.status(400).send({
+      status: "Error in database transaction:\n",
+      error: user
+    });
+  } else {
+    return res.render("reset_password", {
+      user: user
+    })
   }
 });
 
@@ -147,7 +336,9 @@ router.get('/verify', async function (req, res) {
  * @param {String} req.body.last_name (Optional)
  */
 router.post('/edit_profile', async function (req, res) {
-  let user = await UserModel.findOne({ access_token: req.headers.access_token }, "-_id id").catch(error => error);
+  let user = await UserModel.findOne({
+    access_token: req.headers.access_token
+  }, "-_id id").catch(error => error);
 
   if (!user) {
     return res.status(401).send({ error_code: 1 });
@@ -172,11 +363,15 @@ router.post('/edit_profile', async function (req, res) {
   if (req.body.last_name) {
     query.last_name = req.body.last_name;
   }
-  let error = await UserModel.updateOne({ id: user.id }, query).catch(error => error);
+  let error = await UserModel.updateOne({
+    id: user.id
+  }, query).catch(error => error);
   if (error.errors) {
     return res.status(500).send({ error_code: 2 });
   }
-  return res.status(200).send({ status: "Profile edited." });
+  return res.status(200).send({
+    status: "Profile edited."
+  });
 });
 
 
@@ -268,7 +463,9 @@ router.post('/edit_profile', async function (req, res) {
  * @param {ObjectID} req.body.friend_mail
  */
 router.post('/add_friend', async function (req, res) {
-  let user = await UserModel.findOne({ access_token: req.headers.access_token }, "-_id id pseudo friends_list").catch(error => error);
+  let user = await UserModel.findOne({
+    access_token: req.headers.access_token
+  }, "-_id id pseudo friends_list").catch(error => error);
 
   if (!user) {
     return res.status(401).send({ error_code: 1 });
@@ -277,7 +474,9 @@ router.post('/add_friend', async function (req, res) {
     return res.status(500).send({ error_code: 2 });
   }
 
-  let friend = await UserModel.findOne({ mail: req.body.friend_mail.toLowerCase() }, "-_id id pseudo friends_list").catch(error => error);
+  let friend = await UserModel.findOne({
+    mail: req.body.friend_mail.toLowerCase()
+  }, "-_id id pseudo friends_list").catch(error => error);
   if (!friend) {
     return res.status(400).send({ error_code: 4 });
   } else if (friend.reason) {
@@ -285,16 +484,30 @@ router.post('/add_friend', async function (req, res) {
   } else if (friend.friends_list.includes(user.id) || user.friends_list.includes(friend.id)) {
     return res.status(400).send({ error_code: 4 });
   } else {
-    let error = await UserModel.updateOne({ id: friend.id }, { $push: { friends_list: user.id } }).catch(error => error);
+    let error = await UserModel.updateOne({
+      id: friend.id
+    }, {
+      $push: {
+        friends_list: user.id
+      }
+    }).catch(error => error);
     if (error.errors) {
       return res.status(500).send({ error_code: 2 });
     }
 
-    error = await UserModel.updateOne({ id: user.id }, { $push: { friends_list: friend.id } }).catch(error => error);
+    error = await UserModel.updateOne({
+      id: user.id
+    }, {
+      $push: {
+        friends_list: friend.id
+      }
+    }).catch(error => error);
     if (error.errors) {
       return res.status(500).send({ error_code: 2 });
     }
-    return res.status(200).send({ status: "Friend added successfully." });
+    return res.status(200).send({
+      status: "Friend added successfully."
+    });
   }
 });
 
@@ -316,14 +529,18 @@ const storage = multer.diskStorage({
   },
 });
 
-const upload = multer({ storage });
+const upload = multer({
+  storage
+});
 
 router.post('/set_image_profile', upload.array('image', 3), async (req, res) => {
   //console.log('file', req.files);
   //console.log('body', req.body);
   //console.log('path', __dirname + '/../public/images');
 
-  let user = await UserModel.findOne({ access_token: req.body.access_token }).catch(error => error);
+  let user = await UserModel.findOne({
+    access_token: req.body.access_token
+  }).catch(error => error);
 
   //console.log('headers: ', req.headers);
   //console.log('user: ', user);
@@ -342,7 +559,11 @@ router.post('/set_image_profile', upload.array('image', 3), async (req, res) => 
       return res.status(500).send({ error_code: 2 });
     } else {
 
-      await UserModel.updateOne({ access_token: req.body.access_token }, { id_image_profile: image.id }).catch(error => error);
+      await UserModel.updateOne({
+        access_token: req.body.access_token
+      }, {
+        id_image_profile: image.id
+      }).catch(error => error);
 
 
       res.status(200).json({
@@ -365,7 +586,9 @@ router.post('/set_image_profile', upload.array('image', 3), async (req, res) => 
 router.post('/add_tag', async function (req, res) {
   let new_tag = null;
   let add_list = req.body.tags_list
-  let user = await UserModel.findOne({ access_token: req.headers.access_token }, "-_id id pseudo tags_list").catch(error => error);
+  let user = await UserModel.findOne({
+    access_token: req.headers.access_token
+  }, "-_id id pseudo tags_list").catch(error => error);
 
   if (!user) {
     return res.status(401).send({ error_code: 1 });
@@ -375,18 +598,28 @@ router.post('/add_tag', async function (req, res) {
   }
 
   for (let index = 0; index < add_list.length; index++) {
-    new_tag = await TagModel.findOne({ name: add_list[index].toLowerCase() }).catch(error => error);
+    new_tag = await TagModel.findOne({
+      name: add_list[index].toLowerCase()
+    }).catch(error => error);
     if (new_tag && new_tag.reason) {
       return res.status(500).send({ error_code: 2 });
     }
     if (new_tag && !user.tags_list.includes(new_tag.name)) {
-      let error = await UserModel.updateOne({ id: user.id }, { $push: { tags_list: new_tag.name } });
+      let error = await UserModel.updateOne({
+        id: user.id
+      }, {
+        $push: {
+          tags_list: new_tag.name
+        }
+      });
       if (error.errors) {
         return res.status(500).send({ error_code: 2 });
       }
     }
   }
-  return res.status(200).send({ status: "Tag(s) added successfully." });
+  return res.status(200).send({
+    status: "Tag(s) added successfully."
+  });
 });
 
 
@@ -398,7 +631,9 @@ router.post('/add_tag', async function (req, res) {
  */
 router.post('/add_historic', async function (req, res) {
 
-  let user = await UserModel.findOne({ access_token: req.headers.access_token }, "-_id id pseudo").catch(error => error);
+  let user = await UserModel.findOne({
+    access_token: req.headers.access_token
+  }, "-_id id pseudo").catch(error => error);
   if (!user) {
     return res.status(401).send({ error_code: 1 });
   }
@@ -406,18 +641,28 @@ router.post('/add_historic', async function (req, res) {
     return res.status(500).send({ error_code: 2 });
   }
 
-  let course = await CourseModel.findOne({ id: req.body.course }).catch(error => error);
+  let course = await CourseModel.findOne({
+    id: req.body.course
+  }).catch(error => error);
   if (!course) {
     return res.status(400).send({ error_code: 4 });
   } else if (course.reason) {
     return res.status(500).send({ error_code: 2 });
   } else {
     let new_course = [course.id, new Date().toLocaleDateString("fr-FR")];
-    let error = await UserModel.updateOne({ id: user.id }, { $push: { course_historic: new_course } }).catch(error => error);
+    let error = await UserModel.updateOne({
+      id: user.id
+    }, {
+      $push: {
+        course_historic: new_course
+      }
+    }).catch(error => error);
     if (error.errors) {
       return res.status(500).send({ error_code: 2 });
     }
-    return res.status(200).send({ status: "Historic added." });
+    return res.status(200).send({
+      status: "Historic added."
+    });
   }
 });
 
@@ -429,10 +674,12 @@ router.post('/add_historic', async function (req, res) {
  *
  * @param {String} req.body.course
  */
- router.post('/add_favorite', async function (req, res) {
+router.post('/add_favorite', async function (req, res) {
 
-   console.log("body: ", req.body.course);
-  let user = await UserModel.findOne({ access_token: req.headers.access_token }, "-_id id pseudo course_favorites").catch(error => error);
+  console.log("body: ", req.body.course);
+  let user = await UserModel.findOne({
+    access_token: req.headers.access_token
+  }, "-_id id pseudo course_favorites").catch(error => error);
   if (!user) {
     return res.status(401).send({ error_code: 1 });
   }
@@ -440,7 +687,9 @@ router.post('/add_historic', async function (req, res) {
     return res.status(500).send({ error_code: 2 });
   }
   console.log("ici");
-  let course = await CourseModel.findOne({ id: req.body.course }).catch(error => error);
+  let course = await CourseModel.findOne({
+    id: req.body.course
+  }).catch(error => error);
   if (!course) {
     return res.status(400).send({ error_code: 4 });
   } else if (course.reason) {
@@ -449,67 +698,118 @@ router.post('/add_historic', async function (req, res) {
     if (user.course_favorites.includes(course.id)) {
       return res.status(400).send({ error_code: 4 });
     }
-    let error = await UserModel.updateOne({ id: user.id }, { $push: { course_favorites: course.id } }).catch(error => error);
+    let error = await UserModel.updateOne({
+      id: user.id
+    }, {
+      $push: {
+        course_favorites: course.id
+      }
+    }).catch(error => error);
     if (error.errors) {
       return res.status(500).send({ error_code: 2 });
     }
 
-    user = await UserModel.findOne({ access_token: req.headers.access_token}, "id pseudo course_favorites").catch(error => error);
+    user = await UserModel.findOne({
+      access_token: req.headers.access_token
+    }, "id pseudo course_favorites").catch(error => error);
     if (user.reason) {
       return res.status(500).send({ error_code: 2 });
     }
     let courses_list = [];
     course = undefined;
     for (let index = 0; index < user.course_favorites.length; index++) {
-      course = await CourseModel.findOne({id: user.course_favorites[index]}).catch(error => error);
+      course = await CourseModel.findOne({
+        id: user.course_favorites[index]
+      }).catch(error => error);
       if (course && course.reason) {
         return res.status(500).send({ error_code: 2 });
       }
       courses_list.push(course);
     }
-    return res.status(200).send({ status: "Favorite added.", course_favorites: courses_list });
+    return res.status(200).send({
+      status: "Favorite added.",
+      course_favorites: courses_list
+    });
   }
 });
 
 router.post('/add_favorite', async function (req, res) {
 
   console.log("body: ", req.body.course);
- let user = await UserModel.findOne({ access_token: req.headers.access_token }, "-_id id pseudo course_favorites").catch(error => error);
- if (!user) {
-   return res.status(400).send({ status: "You are not connected." });
- }
- if (user.reason) {
-   return res.status(400).send({ status: "Error in database transaction:\n", error: user });
- }
- let course = await CourseModel.findOne({ id: req.body.course }).catch(error => error);
- if (!course) {
-   return res.status(400).send({ status: "The course does not exist." });
- } else if (course.reason) {
-   return res.status(400).send({ status: "Error in database transaction:\n", error: user });
- } else {
-   if (user.course_favorites.includes(course.id)) {
-     return res.status(400).send({ status: "The course is already in favorite." });
-   }
-   let error = await UserModel.updateOne({ id: user.id }, { $push: { course_favorites: course.id } }).catch(error => error);
-   if (error.errors) {
-     return res.status(400).send({ status: "Error in database transaction:\n", error: error });
-   }
+  let user = await UserModel.findOne({
+    access_token: req.headers.access_token
+  }, "-_id id pseudo course_favorites").catch(error => error);
+  if (!user) {
+    return res.status(400).send({
+      status: "You are not connected."
+    });
+  }
+  if (user.reason) {
+    return res.status(400).send({
+      status: "Error in database transaction:\n",
+      error: user
+    });
+  }
+  let course = await CourseModel.findOne({
+    id: req.body.course
+  }).catch(error => error);
+  if (!course) {
+    return res.status(400).send({
+      status: "The course does not exist."
+    });
+  } else if (course.reason) {
+    return res.status(400).send({
+      status: "Error in database transaction:\n",
+      error: user
+    });
+  } else {
+    if (user.course_favorites.includes(course.id)) {
+      return res.status(400).send({
+        status: "The course is already in favorite."
+      });
+    }
+    let error = await UserModel.updateOne({
+      id: user.id
+    }, {
+      $push: {
+        course_favorites: course.id
+      }
+    }).catch(error => error);
+    if (error.errors) {
+      return res.status(400).send({
+        status: "Error in database transaction:\n",
+        error: error
+      });
+    }
 
-   user = await UserModel.findOne({ access_token: req.headers.access_token}, "id pseudo course_favorites").catch(error => error);
-   if (user.reason) {
-     return res.status(400).send({ status: "Error in database transaction:\n", error: user });
-   }
-   let courses_list = [];
-   course = undefined;
-   for (let index = 0; index < user.course_favorites.length; index++) {
-     course = await CourseModel.findOne({id: user.course_favorites[index]}).catch(error => error);
-     if (course && course.reason) {
-       return res.status(400).send({status: "Error in database transaction:\n", error: course});
-     }
-     courses_list.push(course);
-   }
-   return res.status(200).send({ status: "Favorite added.", course_favorites: courses_list });
- }
+    user = await UserModel.findOne({
+      access_token: req.headers.access_token
+    }, "id pseudo course_favorites").catch(error => error);
+    if (user.reason) {
+      return res.status(400).send({
+        status: "Error in database transaction:\n",
+        error: user
+      });
+    }
+    let courses_list = [];
+    course = undefined;
+    for (let index = 0; index < user.course_favorites.length; index++) {
+      course = await CourseModel.findOne({
+        id: user.course_favorites[index]
+      }).catch(error => error);
+      if (course && course.reason) {
+        return res.status(400).send({
+          status: "Error in database transaction:\n",
+          error: course
+        });
+      }
+      courses_list.push(course);
+    }
+    return res.status(200).send({
+      status: "Favorite added.",
+      course_favorites: courses_list
+    });
+  }
 });
 
 // REMOVE_FRIEND (Version Beta)
@@ -521,7 +821,9 @@ router.post('/add_favorite', async function (req, res) {
  */
 router.post('/remove_friend', async function (req, res) {
 
-  let user = await UserModel.findOne({ access_token: req.headers.access_token}).catch(error => error);
+  let user = await UserModel.findOne({
+    access_token: req.headers.access_token
+  }).catch(error => error);
 
   if (!user) {
     return res.status(401).send({ error_code: 1 });
@@ -529,21 +831,37 @@ router.post('/remove_friend', async function (req, res) {
   if (user.reason) {
     return res.status(500).send({ error_code: 2 });
   }
-  let friend = await UserModel.findOne({ id: req.body.friend_id }, "-_id id pseudo friends_list").catch(error => error);
+  let friend = await UserModel.findOne({
+    id: req.body.friend_id
+  }, "-_id id pseudo friends_list").catch(error => error);
   if (!friend) {
     return res.status(400).send({ error_code: 4 });
   } else if (friend.reason) {
     return res.status(500).send({ error_code: 2 });
   }
-  let error = await UserModel.updateOne({ id: user.id }, { $pull: { friends_list: friend.id }}).catch(error => error);
+  let error = await UserModel.updateOne({
+    id: user.id
+  }, {
+    $pull: {
+      friends_list: friend.id
+    }
+  }).catch(error => error);
   if (error.errors) {
     return res.status(500).send({ error_code: 2 });
   }
-  error = await UserModel.updateOne({ id: friend.id }, { $pull: { friends_list: user.id }}).catch(error => error);
+  error = await UserModel.updateOne({
+    id: friend.id
+  }, {
+    $pull: {
+      friends_list: user.id
+    }
+  }).catch(error => error);
   if (error.errors) {
     return res.status(500).send({ error_code: 2 });
   }
-  return res.status(200).send({ status: "Friend successfully removed." });
+  return res.status(200).send({
+    status: "Friend successfully removed."
+  });
 });
 
 
@@ -554,9 +872,11 @@ router.post('/remove_friend', async function (req, res) {
  *
  * @param {String} req.body.course
  */
- router.post('/remove_favorite', async function (req, res) {
+router.post('/remove_favorite', async function (req, res) {
 
-  let user = await UserModel.findOne({ access_token: req.headers.access_token}, "id pseudo course_favorites").catch(error => error);
+  let user = await UserModel.findOne({
+    access_token: req.headers.access_token
+  }, "id pseudo course_favorites").catch(error => error);
 
   if (!user) {
     return res.status(401).send({ error_code: 1 });
@@ -567,25 +887,38 @@ router.post('/remove_friend', async function (req, res) {
   if (!user.course_favorites.includes(req.body.course_id)) {
     return res.status(400).send({ error_code: 4 });
   }
-  let error = await UserModel.updateOne({ id: user.id }, { $pull: { course_favorites: req.body.course_id }}).catch(error => error);
+  let error = await UserModel.updateOne({
+    id: user.id
+  }, {
+    $pull: {
+      course_favorites: req.body.course_id
+    }
+  }).catch(error => error);
   if (error.errors) {
     return res.status(500).send({ error_code: 2 });
   }
 
-  user = await UserModel.findOne({ access_token: req.headers.access_token}, "id pseudo course_favorites").catch(error => error);
+  user = await UserModel.findOne({
+    access_token: req.headers.access_token
+  }, "id pseudo course_favorites").catch(error => error);
   if (user.reason) {
     return res.status(500).send({ error_code: 2 });
   }
   let courses_list = [];
   let course = undefined;
   for (let index = 0; index < user.course_favorites.length; index++) {
-    course = await CourseModel.findOne({id: user.course_favorites[index]}).catch(error => error);
+    course = await CourseModel.findOne({
+      id: user.course_favorites[index]
+    }).catch(error => error);
     if (course && course.reason) {
       return res.status(500).send({ error_code: 2 });
     }
     courses_list.push(course);
   }
-  return res.status(200).send({ status: "Favorite successfully removed.", course_favorites: courses_list });
+  return res.status(200).send({
+    status: "Favorite successfully removed.",
+    course_favorites: courses_list
+  });
 });
 
 
@@ -597,14 +930,21 @@ router.post('/remove_friend', async function (req, res) {
  */
 router.get('/login', async function (req, res) {
 
-  let user = await UserModel.findOne({ mail: req.headers.mail.toLowerCase(), password: CryptoJS.HmacSHA1(req.headers.password, keyCrypto).toString() }).catch(error => error);
+  let user = await UserModel.findOne({
+    mail: req.headers.mail.toLowerCase(),
+    password: CryptoJS.HmacSHA1(req.headers.password, keyCrypto).toString()
+  }).catch(error => error);
   let token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
   let error = undefined;
   let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-  let blacklist = await BlacklistModel.findOne({ ip: ip }).catch(error => error);
+  let blacklist = await BlacklistModel.findOne({
+    ip: ip
+  }).catch(error => error);
 
   if (!blacklist) {
-    blacklist = new BlacklistModel({ ip: ip });
+    blacklist = new BlacklistModel({
+      ip: ip
+    });
     error = await blacklist.save().catch(error => error);
     if (error.errors) {
       return res.status(500).send({ error_code: 2 });
@@ -617,7 +957,12 @@ router.get('/login', async function (req, res) {
 
   //User Not found
   if (!user) {
-    error = await BlacklistModel.updateOne({ ip: blacklist.ip }, { attempt: (blacklist.attempt + 1), lock_date: Number(Date.now()) }).catch(error => error);
+    error = await BlacklistModel.updateOne({
+      ip: blacklist.ip
+    }, {
+      attempt: (blacklist.attempt + 1),
+      lock_date: Number(Date.now())
+    }).catch(error => error);
     if (error.errors) {
       return res.status(500).send({ error_code: 2 });
     }
@@ -632,15 +977,26 @@ router.get('/login', async function (req, res) {
 
     //User found
   } else {
-    error = await UserModel.updateOne({ id: user.id }, { access_token: token }).catch(error => error);
+    error = await UserModel.updateOne({
+      id: user.id
+    }, {
+      access_token: token
+    }).catch(error => error);
     if (error.errors) {
       return res.status(500).send({ error_code: 2 });
     }
-    error = await BlacklistModel.updateOne({ ip: blacklist.ip }, { attempt: 0 }).catch(error => error);
+    error = await BlacklistModel.updateOne({
+      ip: blacklist.ip
+    }, {
+      attempt: 0
+    }).catch(error => error);
     if (error.errors) {
       return res.status(500).send({ error_code: 2 });
     }
-    return res.status(200).send({ status: "Log in successfully.", access_token: token });
+    return res.status(200).send({
+      status: "Log in successfully.",
+      access_token: token
+    });
   }
 });
 
@@ -650,16 +1006,24 @@ router.get('/login', async function (req, res) {
  * @param {String} req.body.mail
  * @param {String} req.body.password
  */
- router.post('/login_web', async function (req, res) {
+router.post('/login_web', async function (req, res) {
 
-  let user = await UserModel.findOne({ mail: req.body.mail.toLowerCase(), password: CryptoJS.HmacSHA1(req.body.password, keyCrypto).toString() }).catch(error => error);
+  let user = await UserModel.findOne({
+    mail: req.body.mail.toLowerCase(),
+    password: CryptoJS.HmacSHA1(req.body.password, keyCrypto).toString()
+  }).catch(error => error);
   let token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+  console.log("token web:", token);
   let error = undefined;
   let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-  let blacklist = await BlacklistModel.findOne({ ip: ip }).catch(error => error);
+  let blacklist = await BlacklistModel.findOne({
+    ip: ip
+  }).catch(error => error);
 
   if (!blacklist) {
-    blacklist = new BlacklistModel({ ip: ip });
+    blacklist = new BlacklistModel({
+      ip: ip
+    });
     error = await blacklist.save().catch(error => error);
     if (error.errors) {
       return res.status(500).send({ error_code: 2 });
@@ -672,7 +1036,12 @@ router.get('/login', async function (req, res) {
 
   //User Not found
   if (!user) {
-    error = await BlacklistModel.updateOne({ ip: blacklist.ip }, { attempt: (blacklist.attempt + 1), lock_date: Number(Date.now()) }).catch(error => error);
+    error = await BlacklistModel.updateOne({
+      ip: blacklist.ip
+    }, {
+      attempt: (blacklist.attempt + 1),
+      lock_date: Number(Date.now())
+    }).catch(error => error);
     if (error.errors) {
       return res.status(500).send({ error_code: 2 });
     }
@@ -690,15 +1059,26 @@ router.get('/login', async function (req, res) {
     if (user.partner == false) {
       return res.status(401).send({ error_code: 5 });
     }
-    error = await UserModel.updateOne({ id: user.id }, { access_token: token }).catch(error => error);
+    error = await UserModel.updateOne({
+      id: user.id
+    }, {
+      access_token: token
+    }).catch(error => error);
     if (error.errors) {
       return res.status(500).send({ error_code: 2 });
     }
-    error = await BlacklistModel.updateOne({ ip: blacklist.ip }, { attempt: 0 }).catch(error => error);
+    error = await BlacklistModel.updateOne({
+      ip: blacklist.ip
+    }, {
+      attempt: 0
+    }).catch(error => error);
     if (error.errors) {
       return res.status(500).send({ error_code: 2 });
     }
-    return res.status(200).send({ status: "Log in successfully.", access_token: token });
+    return res.status(200).send({
+      status: "Log in successfully.",
+      access_token: token
+    });
   }
 });
 
@@ -710,7 +1090,9 @@ router.get('/login', async function (req, res) {
  */
 router.get('/logout', async function (req, res) {
 
-  let user = await UserModel.findOne({ access_token: req.headers.access_token }).catch(error => error);
+  let user = await UserModel.findOne({
+    access_token: req.headers.access_token
+  }).catch(error => error);
   let token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
   if (!user) {
@@ -718,11 +1100,17 @@ router.get('/logout', async function (req, res) {
   } else if (user && user.reason) {
     return res.status(500).send({ error_code: 2 });
   } else {
-    let error = await UserModel.updateOne({ id: user.id }, { access_token: token }).catch(error => error);
+    let error = await UserModel.updateOne({
+      id: user.id
+    }, {
+      access_token: token
+    }).catch(error => error);
     if (error.errors) {
       return res.status(500).send({ error_code: 2 });
     }
-    return res.status(200).send({ status: "Log out successfully." });
+    return res.status(200).send({
+      status: "Log out successfully."
+    });
   }
 });
 
@@ -734,14 +1122,19 @@ router.get('/logout', async function (req, res) {
  */
 router.get('/get_own_profile', async function (req, res) {
   const projection = '-_id -password -access_token -socket_id -facebook_id -stripe_id -subscription_id -verify' //-param for excluding
-  let profile = await UserModel.findOne({ access_token: req.headers.access_token }, projection).catch(error => error);
+  let profile = await UserModel.findOne({
+    access_token: req.headers.access_token
+  }, projection).catch(error => error);
 
   if (!profile) {
     return res.status(401).send({ error_code: 1 });
   } else if (profile.reason) {
     return res.status(500).send({ error_code: 2 });
   } else {
-    return res.status(200).send({ status: "Profile sent.", profile });
+    return res.status(200).send({
+      status: "Profile sent.",
+      profile
+    });
   }
 });
 
@@ -755,7 +1148,9 @@ router.get('/get_own_profile', async function (req, res) {
 router.get('/get_user_profile', async function (req, res) {
   const projection = '-_id id mail creation_date pseudo partner first_name last_name tags_list friends_list';
   let profile = undefined;
-  let user = await UserModel.findOne({ access_token: req.headers.access_token }, "-_id id pseudo").catch(error => error);
+  let user = await UserModel.findOne({
+    access_token: req.headers.access_token
+  }, "-_id id pseudo").catch(error => error);
 
   if (!user) {
     return res.status(401).send({ error_code: 1 });
@@ -763,14 +1158,19 @@ router.get('/get_user_profile', async function (req, res) {
   if (user.reason) {
     return res.status(500).send({ error_code: 2 });
   }
-  profile = await UserModel.findOne({ id: req.headers.user_id }, projection).catch(error => error);
+  profile = await UserModel.findOne({
+    id: req.headers.user_id
+  }, projection).catch(error => error);
   if (!profile) {
     return res.status(400).send({ error_code: 4 });
   }
   if (profile.reason) {
     return res.status(500).send({ error_code: 2 });
   }
-  return res.status(200).send({ status: "Profile sent.", profile });
+  return res.status(200).send({
+    status: "Profile sent.",
+    profile
+  });
 });
 
 
@@ -785,7 +1185,9 @@ router.get('/get_user_tags', async function (req, res) {
   let all_user_tags = [];
   let user_tags = undefined;
   let user_index = undefined;
-  let user = await UserModel.findOne({ access_token: req.headers.access_token }, "-_id id pseudo").catch(error => error);
+  let user = await UserModel.findOne({
+    access_token: req.headers.access_token
+  }, "-_id id pseudo").catch(error => error);
 
   if (!user) {
     return res.status(401).send({ error_code: 1 });
@@ -795,7 +1197,13 @@ router.get('/get_user_tags', async function (req, res) {
   }
   let user_id = req.headers.user_id.split(',');
   for (let index = 0; index < user_id.length; index++) {
-    user_index = await UserModel.findOne({ id: user_id[index] }, { projection: { _id: 0 } }).catch(error => error);
+    user_index = await UserModel.findOne({
+      id: user_id[index]
+    }, {
+      projection: {
+        _id: 0
+      }
+    }).catch(error => error);
     if (!user_index) {
       return res.status(400).send({ error_code: 4 });
     }
@@ -803,7 +1211,15 @@ router.get('/get_user_tags', async function (req, res) {
       return res.status(500).send({ error_code: 2 });
     }
     if (user_index) {
-      user_tags = await TagModel.find({ name: { $in: user_index.tags_list } }, { projection: { _id: 0 } }).catch(error => error);
+      user_tags = await TagModel.find({
+        name: {
+          $in: user_index.tags_list
+        }
+      }, {
+        projection: {
+          _id: 0
+        }
+      }).catch(error => error);
       if (user_tags && user_tags.reason) {
         return res.status(500).send({ error_code: 2 });
       }
@@ -812,7 +1228,10 @@ router.get('/get_user_tags', async function (req, res) {
       }
     }
   }
-  return res.status(200).send({ status: "User's Tags sent.", all_user_tags });
+  return res.status(200).send({
+    status: "User's Tags sent.",
+    all_user_tags
+  });
 });
 
 
@@ -821,11 +1240,13 @@ router.get('/get_user_tags', async function (req, res) {
  * Get the list of users
  * @param {String} req.headers.access_token
  */
-router.get('/get_users', async function(req, res) {
+router.get('/get_users', async function (req, res) {
 
   let users_list = undefined;
   const projection = '-_id id mail creation_date pseudo partner first_name last_name tags_list friends_list';
-  let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo").catch(error => error);
+  let user = await UserModel.findOne({
+    access_token: req.headers.access_token
+  }, "-_id id pseudo").catch(error => error);
 
   if (!user) {
       return res.status(401).send({ error_code: 1 });
@@ -849,7 +1270,9 @@ router.get('/get_users', async function(req, res) {
  */
 router.get('/get_user_by_id', async function (req, res) {
   const projection = "-_id -password -access_token -socket_id -facebook_id -stripe_id - subscription_id";
-  let user = await UserModel.findOne({ access_token: req.headers.access_token }, "-_id id pseudo").catch(error => error);
+  let user = await UserModel.findOne({
+    access_token: req.headers.access_token
+  }, "-_id id pseudo").catch(error => error);
 
   if (!user) {
     return res.status(401).send({ error_code: 1 });
@@ -858,11 +1281,18 @@ router.get('/get_user_by_id', async function (req, res) {
     return res.status(500).send({ error_code: 2 });
   }
   let given_list = req.headers.users_list.split(',');
-  let users_list = await UserModel.find({ id: { $in: given_list } }).catch(error => error);
+  let users_list = await UserModel.find({
+    id: {
+      $in: given_list
+    }
+  }).catch(error => error);
   if (users_list && users_list.reason) {
     return res.status(500).send({ error_code: 2 });
   } else if (users_list && users_list.length > 0) {
-    return res.status(200).send({ status: "User(s) found.", users_list });
+    return res.status(200).send({
+      status: "User(s) found.",
+      users_list
+    });
   } else {
     return res.status(200).send({ users_list });
   }
@@ -877,7 +1307,10 @@ router.get('/get_user_by_id', async function (req, res) {
  */
 router.delete('/remove_account', async function (req, res) {
 
-  let user = await UserModel.findOne({ access_token: req.headers.access_token, password: req.headers.password }).catch(error => error);
+  let user = await UserModel.findOne({
+    access_token: req.headers.access_token,
+    password: req.headers.password
+  }).catch(error => error);
 
   if (!user) {
     return res.status(401).send({ error_code: 1 });
@@ -885,11 +1318,15 @@ router.delete('/remove_account', async function (req, res) {
   if (user.reason) {
     return res.status(500).send({ error_code: 2 });
   }
-  let error = await UserModel.remove({ id: user.id }).catch(error => error);
+  let error = await UserModel.remove({
+    id: user.id
+  }).catch(error => error);
   if (error.errors) {
     return res.status(500).send({ error_code: 2 });
   }
-  return res.status(200).send({ status: "Account successfully deleted." });
+  return res.status(200).send({
+    status: "Account successfully deleted."
+  });
 });
 
 
@@ -897,7 +1334,7 @@ router.delete('/remove_account', async function (req, res) {
 
 /***
  * OTHER FUNCTION
-***/
+ ***/
 
 async function check_the_password(password) {
   let pass_lenght = false;

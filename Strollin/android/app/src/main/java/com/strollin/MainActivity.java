@@ -3,6 +3,8 @@ package com.strollin;
 import android.os.Bundle; // here
 import com.facebook.react.ReactActivity;
 import org.devio.rn.splashscreen.SplashScreen; // here
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
 
 public class MainActivity extends ReactActivity {
 
@@ -15,9 +17,13 @@ public class MainActivity extends ReactActivity {
     return "Strollin";
   }
 
+
   @Override
    protected void onCreate(Bundle savedInstanceState) {
        SplashScreen.show(this);
-       super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        AppEventsLogger.activateApp(this);
+
+      super.onCreate(savedInstanceState);
    }
 }

@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import Tts from 'react-native-tts';
 import { connect } from 'react-redux';
 import {
-  StyleSheet, Text, View, Button , Image, Dimensions, PermissionsAndroid, TouchableOpacity, FlatList, ImageBackground, ActivityIndicator, ScrollView, RefreshControl
+  StyleSheet, Text, View, Button , Image, Dimensions, PermissionsAndroid, TouchableOpacity, FlatList, ImageBackground, ActivityIndicator, ScrollView, RefreshControl, Share
 } from 'react-native';
 import { DrawerActions } from '@react-navigation/native';
 import I18n from '../Translation/configureTrans';
 import Map from './map';
+import { ShareDialog } from 'react-native-fbsdk';
+
 
 import CourseElementList from './CourseElementList';
 import BackgroundImage from './backgroundImage';
@@ -26,7 +28,6 @@ import MenuButton from './components/MenuButton';
 import Footer from './components/Footer';
 import Popup from './Popup';
 import Icon from './components/Icon';
-import { ShareDialog } from 'react-native-fbsdk';
 
 import { useNavigation } from '@react-navigation/native';
 

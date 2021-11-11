@@ -184,7 +184,7 @@ export function FriendSelection({ navigation }) {
       <Header navigation={navigation} />
       <View style={styles.viex_list}>
         <Text style={styles.text_field}>
-          {I18n.t('TripTogether.addFriend')}
+          {I18n.t('TripTogether.friends')}
           <Text style={styles.text_star}> *</Text>
         </Text>
         <FlatList
