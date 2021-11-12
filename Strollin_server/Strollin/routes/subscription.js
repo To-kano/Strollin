@@ -15,6 +15,16 @@ const {
  * @param {String} req.headers.access_token
 **/
 router.post('/create_session', async function(req, res) {
+
+    let user = await UserModel.findOne({ access_token: req.headers.access_token }, "-_id id mail stripe_id").catch(error => error);
+
+    if (!user) {
+        return res.status(401).send({ error_code: 1 });
+    }
+    if (user.reason) {
+        return res.status(500).send({ error_code: 2 });
+    }
+
     const price_id = "price_1JSl53H9C7g7Ir7890KpWvW8";
 
     const session = await stripe.checkout.sessions.create({
@@ -25,7 +35,7 @@ router.post('/create_session', async function(req, res) {
             quantity: 1,
         }],
         mode: 'subscription',
-        customer: 'cus_K6zMdyiRx5gSbG',
+        customer: user.stripe_id,
         success_url: 'https://stripe.com/docs/billing/subscriptions/build-subscription',
         cancel_url: 'https://stripe.com/docs/billing/subscriptions/sepa-debit',
     });
@@ -43,7 +53,8 @@ router.post('/create_session', async function(req, res) {
  * @param {String} req.headers.access_token
  */
 router.post('/create_customer', async function(req, res) {
-    let user = await UserModel.findOne({ access_token: req.headers.access_token }, "-_id id mail stripe_id").catch(error => error);
+
+    let user = await UserModel.findOne({ access_token: req.headers.access_token }, "-_id id mail stripe_id first_name last_name").catch(error => error);
 
     if (!user) {
         return res.status(401).send({ error_code: 1 });
@@ -54,6 +65,7 @@ router.post('/create_customer', async function(req, res) {
     if (user.stripe_id === '') {
         customer = await stripe.customers.create({
             email: user.mail,
+            name: user.first_name + ' ' + user.last_name
         })
         .catch(error => {
             return res.status(500).send({ error_code: 2 })
@@ -73,77 +85,13 @@ router.post('/create_customer', async function(req, res) {
 });
 
 
-// CREATE_SUBSCRIPTION
-/**
- * Create an incomplete subscription ready to be confirmed by getting payment confirmation.
- * 
- */
-// router.post('/create_subscription', async function(req, res) {
-//     const price_id = "price_1JSl53H9C7g7Ir7890KpWvW8";
-//     var subscription = undefined;
-
-//     let user = await UserModel.findOne({ access_token: req.headers.access_token }, "-_id id stripe_id").catch(error => error);
-
-//     if (!user) {
-//         return res.status(401).send({ error_code: 1 });
-//     }
-//     if (user.reason) {
-//         return res.status(500).send({ error_code: 2 });
-//     }
-//     if (user.stripe_id !== '') {
-
-//         subscription = await stripe.subscriptions.create({
-//             customer: user.stripe_id,
-//             items: [{
-//                 price: price_id,
-//             }],
-//             payment_behavior: 'default_incomplete',
-//             expand: ['latest_invoice.payment_intent'],
-//         })
-//         .catch(error => {
-//             return res.status(500).send({ error_code: 2 });
-//         });
-//     } else {
-//         return res.status(500).send({ error_code: 2 });
-//     }
-
-//     let error = await UserModel.updateOne({ id: user.id }, {subscription_id: subscription.id}).catch(error => error);
-//     if (error.errors) {
-//         return res.status(500).send({ error_code: 2 });
-//     }
-//     return res.status(200).send({ status: "The subscription is created, waiting to confirm the payment.", subscription_id: subscription.id, client_secret: subscription.latest_invoice.payment_intent.client_secret});
-// });
-
-
-// GET_SUBSCRIPTION
-/**
- * Collect and create Element to save card payment (Temporary, it has to be made in front)
- * 
- */
-router.get('/get_subscription', async function(req, res) {
-    // let user = await UserModel.findOne({ access_token: req.headers.access_token }, "-_id id subscription_id").catch(error => error);
-    // const sub = undefined;
-
-    // if (!user) {
-    //     return res.status(401).send({ error_code: 1 });
-    // }
-    // if (user.reason) {
-    //     return res.status(500).send({ error_code: 2 });
-    // }
-    // if (user.subscription_id !== '') {
-    sub = await stripe.subscriptions.retrieve(req.headers.sub)
-    // }
-    return res.status(200).send({ status: "Here is the subscription's information.", subscription: sub});
-});
-
-
-
 // STOP_SUBSCRIPTION
 /**
  * Stop the subscription of an user
  * @param {String} req.headers.access_token
  */
 router.post('/stop_subscription', async function(req, res) {
+
     let user = await UserModel.findOne({ access_token: req.headers.access_token }, "-_id id subscription_id").catch(error => error);
 
     if (!user) {
@@ -167,37 +115,58 @@ router.post('/stop_subscription', async function(req, res) {
 router.post('/webhook', async function(req, res) {
     let event = req.body;
 
-    // Handle the event
     switch (event.type) {
-        case 'checkout.session.completed':
-            console.log("session completed:\n");
-            // console.log(event.data.object);
-            // Then define and call a function to handle the event checkout.session.completed
-            break;
         case 'customer.subscription.deleted':
-            console.log("Sub deleted:\n");
-            // console.log(event.data.object);
-            // Then define and call a function to handle the event customer.subscription.deleted
+            set_partnership_off(event.data.object)
             break;
         case 'invoice.paid':
-            console.log("invoice paid:\n");
-            // console.log(event.data.object);
-            // Then define and call a function to handle the event invoice.paid
+            set_partnership_on(event.data.object);
             break;
-        case 'invoice.payment_failed':
-            console.log("invoice failure:\n");
-            // console.log(event.data.object);
-            // Then define and call a function to handle the event invoice.payment_failed
-            break;
-    // ... handle other event types
     default:
         console.log(`Unhandled event type ${event.type}`);
     }
-
-    // Return a 200 response to acknowledge receipt of the event
     res.send();
 });
 
+async function set_partnership_on(event) {
+
+    let user = await UserModel.findOne({ stripe_id: event.customer }, "-_id id stripe_id subscription_id partner").catch(error => error);
+
+    if (!user) {
+        console.log("User not found in set_partnership_on!");
+        return;
+    }
+    if (user.reason) {
+        console.log("Error in database in set_partnership_on!");
+        return;
+    }
+    let error = await UserModel.updateOne({ id: user.id }, {subscription_id: event.subscription, partner: true}).catch(error => error);
+    if (error.errors) {
+        console.log("Could not update user in set_partnership_on!");
+        return;
+    }
+    return;
+};
+
+async function set_partnership_off(event) {
+
+    let user = await UserModel.findOne({ stripe_id: event.customer }, "-_id id stripe_id subscription_id partner").catch(error => error);
+
+    if (!user) {
+        console.log("User not found in set_partnership_off!");
+        return;
+    }
+    if (user.reason) {
+        console.log("Error in database in set_partnership_off!");
+        return;
+    }
+    let error = await UserModel.updateOne({ id: user.id }, {subscription_id: '', partner: false}).catch(error => error);
+    if (error.errors) {
+        console.log("Could not update user in set_partnership_off!");
+        return;
+    }
+    return;
+};
 
 
 module.exports = router;

@@ -5,7 +5,6 @@ var mongoose = require('mongoose');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var stripe = require('stripe')('sk_test_51JSMW9H9C7g7Ir78BQDjbCPJ71SYc19nSmTDAEZAqrMHcREIMi6SOhHaEuGspN62eT3g5Iza1QKex8ifc0a2jKGn00wrObLsAs')
 
 // Import Routes
 var indexRouter = require('./routes/index');
@@ -67,16 +66,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-
-const webhookEndpoint = stripe.webhookEndpoints.create({
-  url: 'http://88.165.45.219:2000/subscription/webhook',
-  enabled_events: [
-    'checkout.session.completed',
-    'customer.subscription.deleted',
-    'invoice.paid',
-    'invoice.payment_failed',
-  ],
-});
 
 // ROUTES //
 
