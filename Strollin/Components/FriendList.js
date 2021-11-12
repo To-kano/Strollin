@@ -262,6 +262,21 @@ async function DeleteFriend(props, store, id) {
     });
 }
 
+function checkSearch(id) {
+  const store = Store.getState();
+
+  if (store.search.searchFriendList.length == 0) {
+    return (true);
+  }
+  for (let i in store.search.searchFriendList) {
+
+    if (id == store.search.searchFriendList[i]) {
+      return (true);
+    }
+  }
+  return (false);
+}
+
 export function FriendObject(props) {
   const [showBin, setshowBin] = useState(false);
 
@@ -296,7 +311,7 @@ export function UsersObject(props) {
     }
   }
   
-  if (props.id != props.store.profil.id && isFriend === false) {
+  if (props.id != props.store.profil.id && checkSearch(props.id) == true) {
     return (
       <View style={styles.view_friend}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -340,6 +355,29 @@ async function getUserList(store, setUserList) {
     }).catch((error) => {
       console.error('userList :', error);
     });
+}
+
+function sortFriendList(key) {
+  const store = Store.getState();
+  let found = false;
+
+  if (key == '') {
+    //console.log("nothing in search");
+    const action = {type: 'SET_SEARCH_FRIEND_LIST', value: store.profil.friends_list};
+    Store.dispatch(action);
+  } else {
+    for (let i in store.profil.friends_list) {
+      if (key == store.profil.friends_pseudo_list[store.profil.friends_list[i]]) {
+        const action = {type: 'SET_SEARCH_FRIEND_LIST', value: [store.profil.friends_list[i]]};
+        Store.dispatch(action);
+        found = true;
+        break;
+      }
+    }
+    if (found == false) {
+      //console.log("not found in search");
+    }
+  }
 }
 
 function FriendList(props) {

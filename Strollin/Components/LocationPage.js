@@ -3,15 +3,14 @@ import { connect } from 'react-redux';
 import {
   View, StyleSheet, Image, Text, TouchableOpacity, ImageBackground, FlatList,
 } from 'react-native';
-// import BackgroundImage from './backgroundImage';
-// import { SceneView } from 'react-navigation';
 import { DrawerActions } from '@react-navigation/native';
 import { ScrollView } from 'react-native-gesture-handler';
 import I18n from '../Translation/configureTrans';
-// import { useState, useEffect } from 'react';
-// import { IP_SERVER, PORT_SERVER } from '../env/Environement';
-// import { useNavigation } from '@react-navigation/native';
-// import { loadOptions } from '@babel/core';
+import { translateTags, detranslateTags } from '../Translation/translateTags'
+
+import { useNavigation } from '@react-navigation/native';
+
+const globalStyles = require('../Styles');
 
 function randPic() {
   const rand = (Math.floor(Math.random() * 2) + 1);
@@ -28,9 +27,8 @@ function randPic() {
 
 
 function LocationPage({route, navigation}) {
-  const {location} = route.params;
-//console.log("Location Infos: \n", location);
 
+  const {location} = route.params;
   return (
     <View style={styles.view_back}>
       <View style={styles.view_header}>
@@ -76,12 +74,16 @@ function LocationPage({route, navigation}) {
           </View>
         </View>
         <View style={styles.view_stat}>
-          <Text style={styles.text_stat}>
-            {"Address"}
-          </Text>
-          <View style={styles.view_number}>
-            <Text style={styles.text_number}>{location.address}</Text>
-          </View>
+          <TouchableOpacity
+            onPress={() => {navigation.navigate('PositionShareMap', {latitude: location.latitude, longitude: location.longitude, name: location.name})}}
+          >
+            <Text style={styles.text_stat}>
+              {"Address"}
+            </Text>
+            <View style={styles.view_number}>
+              <Text style={styles.text_number}>{location.address}</Text>
+            </View>
+          </TouchableOpacity>
         </View>
         <View style={styles.view_stat}>
           <Text style={styles.text_stat}>
@@ -123,20 +125,15 @@ function LocationPage({route, navigation}) {
             <Text style={styles.text_number}>{"Min: " + location.price_range[0] + " | Max: " + location.price_range[1] + " | Avg: " + location.price_range[2]}</Text>
           </View>
         </View>
-        <View style={styles.view_stat}>
-          <Text style={styles.text_stat}>
-            {"Tags"}
-          </Text>
+        <View style={{ marginTop: 8, width: "100%" }}>
+          <Text style={[globalStyles.paragraphs, { marginBottom: 8 }]}>Tags</Text>
           <FlatList
-            numColumns={3}
             style={styles.view_tagIn}
-            showsHorizontalScrollIndicator={false}
-            showsVerticalScrollIndicator={false}
             data={location.tags_list}
-            contentContainerStyle={{ flexGrow: 1 }}
-            keyExtractor={(item) => item.name}
+            contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap' }}
+            keyExtractor={(item) => item._id}
             renderItem={({ item }) => (
-              <Text style={styles.text_tagIn}>{item.name}</Text>
+              <Text style={[globalStyles.subparagraphs, globalStyles.tag]}>{translateTags(item._id)}</Text>
             )}
           />
         </View>
@@ -251,28 +248,27 @@ const styles = StyleSheet.create({
     color: '#0092A7',
   },
   view_tagIn: {
-    flex: 304,
     borderRadius: 4,
-    backgroundColor: '#ffffff',
-    paddingTop: 7.5,
+    color: "#1C1B1C",
+    borderColor: "#9B979B",
+    borderWidth: 1,
+    width: "100%",
+    padding: 8,
   },
   text_tagIn: {
-    alignSelf: 'flex-start',
     textAlign: 'center',
-    width: '30%',
-    marginLeft: 7.5,
-    marginBottom: 7.5,
-    paddingTop: 7,
-    paddingLeft: 2,
-    paddingRight: 2,
+    margin: 4,
+    paddingVertical: 4,
+    paddingHorizontal: 8,
     color: '#0091A7',
     fontSize: 16,
     fontWeight: 'bold',
     letterSpacing: 1,
     borderRadius: 20,
     borderColor: '#0091A7',
-    borderWidth: 4,
+    borderWidth: 2,
   },
+
 });
 
 const mapStateToProps = (state) => state;

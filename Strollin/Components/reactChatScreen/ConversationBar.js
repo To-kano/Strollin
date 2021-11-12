@@ -10,6 +10,8 @@ import {contextSocket} from '../Socket';
 import { uploadImage } from '../../apiServer/image';
 import Store from '../../Store/configureStore';
 import Icon from '../components/Icon';
+import Geolocation from 'react-native-geolocation-service';
+import requestGeolocalisationPermission from '../map'
 
 const globalStyles = require('../../Styles');
 
@@ -20,6 +22,8 @@ function ConversationBar(props) {
   const [MoreOptions, setMoreOptions] = useState(false);
   const [inputWidth, setinputWidth] = useState("75%");
   const {sendImage} = contextSocket();
+  const {sendPosition} = contextSocket();
+  const [position, setPosition] = useState("");
 
 
   const goToCourseScreen = () => {
@@ -37,6 +41,26 @@ function ConversationBar(props) {
   const cancelImage = () => {
     setImage(null);
   };
+
+  
+  const prepareSendPosition = () => {
+    //requestGeolocalisationPermission(Store.dispatch)
+    Geolocation.getCurrentPosition(
+      (position) => {
+        const data = {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        };
+      //console.log("pritn de pierre: ", position);
+        const currentPosition = String(data.latitude) + ',' + String(data.longitude);
+        sendPosition(currentPosition);
+      },
+      (error) => {
+       //console.log(error.code, error.message);
+      },
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+    );
+  }
   
   if (image) {
     return (
@@ -100,6 +124,9 @@ function ConversationBar(props) {
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => { handleChooseImage(); setMoreOptions(false); setinputWidth('75%')}}>
                   <Icon name="add_picture" size={29} color='#1C1B1C'/>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => { prepareSendPosition(); setMoreOptions(false); setinputWidth('75%')}}>
+                  <Icon name="marker" size={29} color='#1C1B1C'/>
                 </TouchableOpacity>
               </>
             : 

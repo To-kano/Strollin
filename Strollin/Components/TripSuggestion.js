@@ -29,6 +29,9 @@ import Footer from './components/Footer';
 import Popup from './Popup';
 import Icon from './components/Icon';
 
+import { useNavigation } from '@react-navigation/native';
+
+
 const globalStyles = require('../Styles');
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -341,7 +344,10 @@ async function check_open(result) {
         });
 };
 
-  function _renderItem2({item}){
+  function RenderItem2({item}){
+
+    const navigation = useNavigation();
+
     return (
       <View style={{
         backgroundColor: "#ffffff",
@@ -358,23 +364,27 @@ async function check_open(result) {
 
         elevation: 10,
       }}>
-        <Text style={globalStyles.subtitles}>{item.name}</Text>
-        <Text numberOfLines={1} style={[globalStyles.subparagraphs, {color: '#9B979B'}]}>{item.address}, {item.city}</Text>
-        <View style={{ marginTop: 16, width: "100%", }}>
-          <FlatList
-            style={{ width: "100%", flexWrap: 'wrap', flexDirection: 'row',  }}
-            data={item.tags_list}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item }) => (
-              <>
-              {translateTags(item._id) === 'error'
-              ? <></>
-              : <Text style={[globalStyles.subparagraphs, globalStyles.tag,]}>{translateTags(item._id) === 'error' ? <></> : translateTags(item._id)}</Text>
-              }
-            </>
-            )}
-          />
-        </View>
+        <TouchableOpacity
+          onPress={() => {navigation.navigate('LocationPage', {location: item})}}
+        >
+          <Text style={globalStyles.subtitles}>{item.name}</Text>
+          <Text numberOfLines={1} style={[globalStyles.subparagraphs, {color: '#9B979B'}]}>{item.address}, {item.city}</Text>
+          <View style={{ marginTop: 16, width: "100%", }}>
+            <FlatList
+              style={{ width: "100%", flexWrap: 'wrap', flexDirection: 'row',  }}
+              data={item.tags_list}
+              keyExtractor={(item) => item.id}
+              renderItem={({ item }) => (
+                <>
+                {translateTags(item._id) === 'error'
+                ? <></>
+                : <Text style={[globalStyles.subparagraphs, globalStyles.tag,]}>{translateTags(item._id) === 'error' ? <></> : translateTags(item._id)}</Text>
+                }
+              </>
+              )}
+            />
+          </View>
+        </TouchableOpacity>
         <View style={{ position: 'absolute', top: 8, right: 8, flexDirection: 'row' }}>
           <TouchableOpacity
             onPress={() => {
@@ -472,7 +482,9 @@ async function check_open(result) {
       <FlatList
         keyExtractor={item => item.id}
         data={item.locations}
-        renderItem={_renderItem2}
+        renderItem={({item}) => {
+          return <RenderItem2 item={item} />
+        }}
       />
     </ScrollView>
   )

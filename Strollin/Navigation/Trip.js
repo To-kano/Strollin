@@ -13,6 +13,7 @@ import LocationPage from '../Components/LocationPage';
 import Temporarytags from '../Components/Temporarytags';
 import ChosePosition from '../Components/ChosePosition';
 import FriendSelection from '../Components/FriendSelection';
+import PositionShareMap from '../Components/PositionShareMap';
 
 const Stack = createStackNavigator();
 
@@ -59,6 +60,10 @@ function Trip() {
             <Stack.Screen
                   name="ChosePosition"
                   component={ChosePosition}
+            />
+            <Stack.Screen
+                  name="PositionShareMap"
+                  component={PositionShareMap}
             />
         </Stack.Navigator>
     );
