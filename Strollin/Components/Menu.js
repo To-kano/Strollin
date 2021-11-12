@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import { profileUser } from '../apiServer/user';
 
-import GestureRecognizer from 'react-native-swipe-gestures';
+//import GestureRecognizer from 'react-native-swipe-gestures';
 
 import { DrawerActions } from '@react-navigation/native';
 import { IP_SERVER, PORT_SERVER } from '../env/Environement';
@@ -174,27 +174,6 @@ function Menu(props) {
           <Text style={styles.text_logOut}>Log Out</Text>
         </TouchableOpacity>*/}
         </View>
-      </View>
-      <View>
-        <GestureRecognizer
-          onSwipeDown={(state) => {
-            if (props.state.index > 0) {
-              props.navigation.navigate(props.state.routeNames[props.state.index - 1]);
-              props.navigation.dispatch(DrawerActions.openDrawer());
-            }
-          }}
-          onSwipeUp={(state) => {
-            if (props.state.index < 7) {
-              props.navigation.navigate(props.state.routeNames[props.state.index + 1]);
-              props.navigation.dispatch(DrawerActions.openDrawer());
-            }
-          }}
-          config={config}
-          style={{
-            flex: 5,
-            backgroundColor:'white' // si il y a pas ça alors la gesture ne marche pas
-          }}
-        />
       </View>
       <Modal
         animationType="none"

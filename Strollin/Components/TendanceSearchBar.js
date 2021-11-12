@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { connect } from 'react-redux';
 import {
-  StyleSheet, TextInput, View, Image, TouchableOpacity
+   TextInput, View, TouchableOpacity
 } from 'react-native';
 import I18n from '../Translation/configureTrans';
 import Icon from './components/Icon';

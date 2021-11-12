@@ -5,7 +5,7 @@ import {
 
 import { connect } from 'react-redux';
 
-import AndroidPip from 'react-native-android-pip';
+//import AndroidPip from 'react-native-android-pip';
 import I18n from '../Translation/configureTrans';
 import Map from './map';
 import { addUserHistoric } from '../apiServer/user';
