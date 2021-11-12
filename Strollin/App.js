@@ -12,6 +12,7 @@ import Navigation from './Navigation/Navigation';
 import Store from './Store/configureStore';
 import Socket from "./Components/Socket";
 import SplashScreen from  "react-native-splash-screen";
+import PushNotification, {Importance} from 'react-native-push-notification';
 
 
   
