@@ -44,24 +44,24 @@ router.post('/new_location', async function(req, res) {
     let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo").catch(error => error);
 
     if (!user) {
-        return res.status(400).send({status: "You are not connected."});
+        return res.status(401).send({ error_code: 1 });
     }
     if (user.reason) {
-        return res.status(400).send({status: "Error in database transaction:\n", error: user});
+        return res.status(500).send({ error_code: 2 });
     }
     if (!req.body.name || !req.body.latitude || !req.body.longitude || !req.body.address) {
-        return res.status(400).send({status: "Required data missing"});
+        return res.status(400).send({ error_code: 3 });
     }
     location = await LocationModel.findOne({name: req.body.name, address: req.body.address});
     if (location) {
-        return res.status(400).send({status: "The location exists already."});
+        return res.status(409).send({ error_code: 3 });
     }
     if (req.body.owner) {
         owner = await UserModel.findOne({id: req.body.owner}, "-_id id pseudo").catch(error => error);
         if (!owner) {
-            return res.status(400).send({status: "The owner is not valid"});
+            return res.status(400).send({ error_code: 4 });
         } else if (owner.reason) {
-            return res.status(400).send({status: "Error in database transaction:\n", error: owner});
+            return res.status(500).send({ error_code: 2 });
         } else {
             owner = owner.id;
         }
@@ -72,38 +72,52 @@ router.post('/new_location', async function(req, res) {
             tag = undefined;
             tag = await TagModel.findOne({name: req.body.tags_list[index]}, "-_id").catch(error => error);
             if (!tag) {
-                return res.status(400).send({status: "A tag is not valid"});
+                return res.status(400).send({ error_code: 4 });
             } else if (tag.reason) {
-                return res.status(400).send({status: "Error in database transaction:\n", error: tag});
+                return res.status(500).send({ error_code: 2 });
             }
         }
     }
 
-    location = new LocationModel({
+    let model = {
         id: new Number(Date.now()),
         name: req.body.name,
         owner_id: owner,
         owner_pseudo: owner.pseudo,
-        coordinate: req.body.coordinate,
         latitude: req.body.latitude,
         longitude: req.body.longitude,
         address: req.body.address,
         city: req.body.city,
         country: req.body.country,
-        description: req.body.description,
-        timetable: req.body.timetable,
         tags_list: req.body.tags_list,
         price_range: req.body.price_range,
         average_time: req.body.average_time,
-        phone: req.body.phone,
-        website: req.body.website,
         food: req.body.food
-    });
+    }
+
+    if (req.body.description) {
+
+        model.description = req.body.description
+    }
+    if (req.body.timetable) {
+
+        model.timetable = req.body.timetable
+    }
+    if (req.body.phone) {
+
+        model.phone = req.body.phone
+    }
+    if (req.body.website) {
+
+        model.website = req.body.website
+    }
+
+    location = new LocationModel(model);
     let error = await location.save().catch(error => error);
     if (error.errors) {
-        return res.status(400).send({status: "Error in database transaction:\n", error: error});
+        return res.status(500).send({ error_code: 2 });
     }
-    return res.status(200).send({status: "Location created."});
+    return res.status(200).send({ status: "Location created." });
 });
 
 
@@ -136,18 +150,18 @@ router.post('/update_location', async function(req, res) {
     let location = undefined;
 
     if (!user) {
-        return res.status(400).send({status: "You are not connected."});
+        return res.status(401).send({ error_code: 1 });
     }
     if (user.reason) {
-        return res.status(400).send({status: "Error in database transaction:\n", error: user});
+        return res.status(500).send({ error_code: 2 });
     }
 
     location = await LocationModel.findOne({id: req.headers.location_id}, "-_id").catch(error => error);
     if (!location) {
-        return res.status(400).send({status: "The location does not exist."});
+        return res.status(400).send({ error_code: 4 });
     }
     if (location.reason) {
-        return res.status(400).send({status: "Error in database transaction 1:\n", error: location});
+        return res.status(500).send({ error_code: 2 });
     }
 
     if (req.body.name) {
@@ -156,9 +170,9 @@ router.post('/update_location', async function(req, res) {
     if (req.body.owner) {
         let owner = await UserModel.findOne({id: req.body.owner}, "-_id id pseudo").catch(error => error);
         if (!owner) {
-            return res.status(400).send({status: "The owner is not valid"});
+            return res.status(400).send({ error_code: 4 });
         } else if (owner.reason) {
-            return res.status(400).send({status: "Error in database transaction:\n", error: owner});
+            return res.status(500).send({ error_code: 2 });
         } else {
             update.owner_id = req.body.owner;
             update.owner_pseudo = owner.pseudo;
@@ -216,9 +230,9 @@ router.post('/update_location', async function(req, res) {
     }
     error = await LocationModel.updateOne({id: location.id}, update).catch(error => error);
     if (error.errors) {
-        return res.status(400).send({status: "Location could not be updated."});
+        return res.status(500).send({ error_code: 2 });
     }
-    return res.status(200).send({status: "Location updated"});
+    return res.status(200).send({ status: "Location updated" });
 });
 
 
@@ -236,22 +250,22 @@ router.post('/add_location_tag', async function(req, res) {
     let location = undefined;
 
     if (!user) {
-        return res.status(400).send({status: "You are not connected."});
+        return res.status(401).send({ error_code: 1 });
     }
     if (user.reason) {
-        return res.status(400).send({status: "Error in database transaction:\n", error: user});
+        return res.status(500).send({ error_code: 2 });
     }
 
     location = await LocationModel.findOne({id: req.headers.location_id}, "-_id").catch(error => error);
     if (!location) {
-        return res.status(400).send({status: "The location does not exist."});
+        return res.status(400).send({ error_code: 4 });
     }
     if (location.reason) {
-        return res.status(400).send({status: "Error in database transaction:\n", error: location});
+        return res.status(500).send({ error_code: 2 });
     }
 
     if (!req.body.tags_list) {
-        return res.status(400).send({status: "No tag provided"});
+        return res.status(400).send({ error_code: 3 });
     }
 
     let tags = req.body.tags_list.split(',');
@@ -261,18 +275,18 @@ router.post('/add_location_tag', async function(req, res) {
         tag = undefined;
         tag = await TagModel.findOne({name: tags[index]}).catch(error => error);
         if (!tag) {
-            return res.status(400).send({status: "A tag does not exists"});
+            return res.status(400).send({ error_code: 4 });
         }
         if (tag.reason) {
-            return res.status(400).send({status: "Error in database transaction:\n", error: tag});
+            return res.status(500).send({ error_code: 2 });
         }
     }
 
     error = await LocationModel.updateOne({id: location.id}, {$push: {tags_list: {$each: tags}}}).catch(error => error);
     if (error.errors) {
-        return res.status(400).send({status: "Location could not be updated."});
+        return res.status(500).send({ error_code: 2 });
     }
-    return res.status(200).send({status: "Location updated"});
+    return res.status(200).send({ status: "Location updated" });
 });
 
 
@@ -300,10 +314,10 @@ router.get('/get_place', async function(req, res) {
 
     // let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo").catch(error => error);
     // if (!user) {
-    //     return res.status(400).send({status: "You are not connected."});
+    //     return res.status(401).send({ error_code: 1 });
     // }
     // if (user.reason) {
-    //     return res.status(400).send({status: "Error in database transaction:\n", error: user});
+    //     return res.status(500).send({ error_code: 2 });
     // }
 
     let url = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=" + req.headers.place_name.toLowerCase() + "&inputtype=textquery&key=AIzaSyDPc6ZV5KYveppsIq8o_1oeVEZ6CShTX4w"
@@ -318,9 +332,9 @@ router.get('/get_place', async function(req, res) {
     })
 
     if (result.status === 'OK') {
-        return res.status(200).send({status: true, result})
+        return res.status(200).send({ status: true, result})
     }
-    return res.status(400).send({status: false, error: "Place not found or error occured."})
+    return res.status(400).send({ error_code: false, error: "Place not found or error occured." })
 });
 
 
@@ -336,16 +350,16 @@ router.get('/get_locations', async function(req, res) {
     let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo").catch(error => error);
 
     if (!user) {
-        return res.status(400).send({status: "You are not connected."});
+        return res.status(401).send({ error_code: 1 });
     }
     if (user.reason) {
-        return res.status(400).send({status: "Error in database transaction:\n", error: user});
+        return res.status(500).send({ error_code: 2 });
     }
     locations_list = await LocationModel.find(query, "-_id").catch(error => error);
     if (locations_list.reason) {
-        return res.status(400).send({status: "Error in database transaction:\n", error: locations_list});
+        return res.status(500).send({ error_code: 2 });
     }
-    return res.status(200).send({status: "List of locations returned.", locations_list});
+    return res.status(200).send({ status: "List of locations returned.", locations_list});
 });
 
 
@@ -361,21 +375,21 @@ router.get('/get_partner_location', async function(req, res) {
     let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo partner").catch(error => error);
 
     if (!user) {
-        return res.status(400).send({status: "You are not connected."});
+        return res.status(401).send({ error_code: 1 });
     }
     if (user.reason) {
-        return res.status(400).send({status: "Error in database transaction:\n", error: user});
+        return res.status(500).send({ error_code: 2 });
     }
     /*if (user.partner == false) {
-        return res.status(400).send({status: "You are not a partner."});
+        return res.status(401).send({ error_code: 5 });
     }*/
     location = await LocationModel.findOne({owner_id: user.id}, "-_id").catch(error => error);
     if (!location) {
-        return res.status(400).send({status: "You have no location registered."});
+        return res.status(200).send({ status: "No location registered in your account", location });
     } else if (location.reason) {
-        return res.status(400).send({status: "Error in database transaction:\n", error: location});
+        return res.status(500).send({ error_code: 2 });
     }
-    return res.status(200).send({status: "Location returned.", location});
+    return res.status(200).send({ status: "Location returned.", location});
 });
 
 
@@ -390,19 +404,19 @@ router.get('/get_locations_by_id', async function(req, res) {
     let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo").catch(error => error);
 
     if (!user) {
-        return res.status(400).send({status: "You are not connected."});
+        return res.status(401).send({ error_code: 1 });
     }
     if (user.reason) {
-        return res.status(400).send({status: "Error in database transaction:\n", error: user});
+        return res.status(500).send({ error_code: 2 });
     }
     let given_list = req.headers.locations_id_list.split(',')
     let locations_list = await LocationModel.find({id: {$in: given_list}}).catch(error => error);
     if (locations_list && locations_list.reason) {
-        return res.status(400).send({status: "Error in the parameters.", error: locations_list});
+        return res.status(500).send({ error_code: 2 });
     } else if (locations_list.length > 0) {
-        return res.status(200).send({status: "Location(s) found.", locations_list});
+        return res.status(200).send({ status: "Location(s) found.", locations_list});
     } else {
-        return res.status(400).send({status: "Location(s) not found.", locations_list});
+        return res.status(200).send({ status: "Location(s) not found.", locations_list});
     }
 });
 
@@ -413,9 +427,9 @@ router.get('/get_location_position', async function(req, res) {
     })
     console.log(result)
     if (result) {
-        return res.status(200).send({status: true, result})
+        return res.status(200).send({ status: true, result})
     }
-    return res.status(400).send({status: false, error: "Place not found or error occured."})
+    return res.status(400).send({ error_code: false, error: "Place not found or error occured." })
 });
 
 router.post('/check_open', async function(req, res) {

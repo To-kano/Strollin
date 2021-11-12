@@ -92,7 +92,7 @@ methods.Popup = function (Destinations, List, LocationModel, tags, coordinate, t
       console.log("disp: ", res.PopDisp);
       location.updateOne({name: res.Name}, { $set: { pop_disp : res.PopDisp.toString()} }, function(err, raw) {
           if (err) {
-              return res.status(400).send({status: "Location could not be updated."});
+              return res.status(500).send({ error_code: 2 });
           } else {
               console.log("Location updated: ", raw)
           }
@@ -108,7 +108,7 @@ methods.Response = function (popup) {
   console.log("pop_ag: ", ag);
   location.updateOne({id: popup.Id}, { $set: { pop_ag : ag.toString()} }, function(err, raw) {
       if (err) {
-          return res.status(400).send({status: "Location could not be updated."});
+          return res.status(500).send({ error_code: 2 });
       } else {
           console.log("Location updated: ", raw)
       }
