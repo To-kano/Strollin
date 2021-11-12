@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {
   Text, Platform, KeyboardAvoidingView, safeAreaView, FlatList, View, StyleSheet, TouchableOpacity, Image
 } from 'react-native';
-import { SafeAreaView } from 'react-navigation';
+//import { SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
 import ConversationBar from './ConversationBar';
 import MessagesItem from './MessagesItem';

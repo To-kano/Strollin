@@ -12,7 +12,7 @@ import * as RNLocalize from 'react-native-localize';
 const locales = RNLocalize.getLocales();
 import MapView, { Marker } from "react-native-maps";
 import MapViewDirections from 'react-native-maps-directions';
-import { Popup, Toast, Root } from 'popup-ui'
+//import { Popup, Toast, Root } from 'popup-ui'
 import Store from '../Store/configureStore';
 import { getCustomCourse } from '../apiServer/course';
 const store = Store.getState();
