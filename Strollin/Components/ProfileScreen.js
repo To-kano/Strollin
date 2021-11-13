@@ -21,6 +21,8 @@ import Footer from './components/Footer';
 import Icon from './components/Icon';
 import HistoricButton from './components/HistoricButton';
 
+import { useFocusEffect } from '@react-navigation/native';
+
 const globalStyles = require('../Styles');
 
 function ParseTags(Tags) {
@@ -87,7 +89,7 @@ function ProfileScreen(props) {
         for (var i = 0; i < json.profile.tags_list.length; i++) {
           initialList.push({ id: i, name: json.profile.tags_list[i] })
         }
-        //console.log("tags setted: ", initialList);
+        console.log("tags setted: ", initialList);
         setTagsList(initialList)
         setReload(false)
       })
@@ -117,7 +119,8 @@ function ProfileScreen(props) {
   const [list, setList] = React.useState(initialList);
   const [name, setName] = React.useState('');
 
-  useLayoutEffect(() => {
+  useFocusEffect(() => {
+    console.log("focus");
     setLoading(true);
     getThings();
   });
