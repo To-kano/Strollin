@@ -65,6 +65,7 @@ module.exports = StyleSheet.create({
         marginVertical: 4,
         paddingVertical: 8,
         paddingHorizontal: 16,
+        flex : 0.5,
         borderRadius: 20,
         textTransform: 'capitalize',
     }

@@ -104,12 +104,12 @@ export function Tag({ name, chosen, setLoading, pos, defaultState = false }) {
   return (
     <>
       {pressed
-      ? <TouchableOpacity style={[globalStyles.tag, {flexDirection: 'row', alignItems: 'center'}]} onPress={() => { setpressed(!pressed); }} >
+      ? <TouchableOpacity style={[globalStyles.tag, {flexDirection: 'row', alignItems: 'center', justifyContent : 'space-around'}]} onPress={() => { setpressed(!pressed); }} >
           <Text style={[globalStyles.subparagraphs, {marginRight: 11, textTransform: 'capitalize'}]}>{translateTags(name)}</Text>
           <Icon name="checked" size={24} color="#1C1B1C"/>
         </TouchableOpacity>
       : <TouchableOpacity
-        style={[globalStyles.tag, {flexDirection: 'row', alignItems: 'center', backgroundColor: '#ffffff', borderWidth: 1, borderColor: "#1C1B1C"}]}
+        style={[globalStyles.tag, {flexDirection: 'row', alignItems: 'center', backgroundColor: '#ffffff', borderWidth: 1, borderColor: "#1C1B1C", justifyContent : 'space-around'}]}
         onPress={() => {
           setLoading(true);
           console.log("bonjour");
@@ -128,7 +128,7 @@ export function Tag({ name, chosen, setLoading, pos, defaultState = false }) {
 export function TagSelection(props, { navigation, profil }) {
   const [args, setArgs] = useState(true);
   const [Profargs, setProfArgs] = useState(true);
-  const [array, setArray] = useState(true);
+  const [array, setArray] = useState();
   const [isLoading, setLoading] = React.useState(false);
   const [pos, setPos] = useState('0');
   const [firstTime, setFirstTime] = useState(true);
@@ -233,21 +233,21 @@ export function TagSelection(props, { navigation, profil }) {
           <PrimaryButton text="J'ai compris ! Je choisi mes tags" onPressFct={() => setFirstTime(false)}/>
         </View>
       : <View style={[globalStyles.container, {justifyContent: 'flex-start'}]}>
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{ paddingVertical: 96 }}
-          >
-            <Text style={[globalStyles.titles]}>{I18n.t('Tags.select_our_tags')}</Text>
             <FlatList
-              style={{width: '100%'}}
+              style={{width: '100%', paddingVertical: 86}}
               data={array}
-              contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap' }}
+              ListHeaderComponent={() => {
+                return (<Text style={[globalStyles.titles]}>{I18n.t('Tags.select_our_tags')}</Text>)
+              }}
+              numColumns={2}
+              showsVerticalScrollIndicator={false}
+              columnWrapperStyle={{alignItems : 'center', justifyContent:'space-between'}}
+              contentContainerStyle={{ paddingBottom : 90 }}
               keyExtractor={(item) => item.name}
               renderItem={({ item }) => (
                 <Tag name={item.name} chosen={item.pressed} setLoading={setLoading} pos={pos}/>
               )}
             />
-          </ScrollView>
           <Modal
             animationType="none"
             transparent={true}
@@ -258,7 +258,7 @@ export function TagSelection(props, { navigation, profil }) {
             </View>
           </Modal>
           <MenuButton props={props}/>
-          <Footer primaryText="Valider mes tags" primaryOnPressFct={() => props.navigation.navigate('Profile')}/>
+          <Footer primaryText="Valider mes tags" primaryOnPressFct={() => props.navigation.navigate(I18n.t("Menu.profile"))}/>
         </View>
       }
     </>
