@@ -75,7 +75,7 @@ function MessagesItem(props) {
                 </Text>
                 <Button title="See on a map" onPress={() => {
                   location = props.message[props.messageID].message.split(',')
-                  navigation.navigate('PositionShareMap',
+                  props.navigation.navigate('PositionShareMap',
                     {
                       latitude: location[0],
                       longitude: location[1],

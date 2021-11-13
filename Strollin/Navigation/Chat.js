@@ -7,6 +7,7 @@ import MenuChat from '../Components/reactChatScreen/MenuScreen';
 import ScreenChat from '../Components/reactChatScreen/ChatScreen';
 import NewConversation from '../Components/reactChatScreen/NewConversation';
 import SendCourseScreen from '../Components/reactChatScreen/SendCourseScreen';
+import PositionShareMap from '../Components/PositionShareMap';
 
 
 const Stack = createStackNavigator();
@@ -35,6 +36,10 @@ function Trip() {
             <Stack.Screen
                   name="SendCourseScreen"
                   component={SendCourseScreen}
+            />
+            <Stack.Screen
+                  name="PositionShareMap"
+                  component={PositionShareMap}
             />
         </Stack.Navigator>
     );
