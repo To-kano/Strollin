@@ -43,8 +43,12 @@ function CustomDrawerContent(props) {
 function MyDrawer() {
   return (
     <Drawer.Navigator
-        openByDefault={false}
+        defaultStatus={'closed'}
         drawerType={'front'}
+        headerShown={false}
+        screenOptions={{
+            headerShown: false
+        }}
         drawerContent={(props) => <CustomDrawerContent {...props} />}
     >
       <Drawer.Screen name={I18n.t("Menu.home")} component={Home} />
