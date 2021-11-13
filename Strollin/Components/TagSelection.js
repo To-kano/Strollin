@@ -128,7 +128,7 @@ export function Tag({ name, chosen, setLoading, pos, defaultState = false }) {
 export function TagSelection(props, { navigation, profil }) {
   const [args, setArgs] = useState(true);
   const [Profargs, setProfArgs] = useState(true);
-  const [array, setArray] = useState(true);
+  const [array, setArray] = useState();
   const [isLoading, setLoading] = React.useState(false);
   const [pos, setPos] = useState('0');
   const [firstTime, setFirstTime] = useState(true);

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { connect } from 'react-redux';
 import {
   View, StyleSheet, Image, Text, TouchableOpacity, TextInput, ActivityIndicator, Modal
@@ -117,10 +117,10 @@ function ProfileScreen(props) {
   const [list, setList] = React.useState(initialList);
   const [name, setName] = React.useState('');
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     setLoading(true);
     getThings();
-  }, []);
+  });
 
 
   function handleChange(event) {
