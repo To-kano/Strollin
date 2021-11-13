@@ -10,7 +10,7 @@ import PushNotification, {Importance} from 'react-native-push-notification';
 
 const SocketContext = createContext();
 const ENDPOINT = `http://${IP_SERVER}:${PORT_SERVER}`;//3000 pour Tony
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 

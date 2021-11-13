@@ -1,6 +1,6 @@
 import React from 'react';
 
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { connect } from 'react-redux';
 
 import { NavigationContainer } from '@react-navigation/native';

@@ -4,7 +4,6 @@ import {
   View, StyleSheet, Image, Text, TouchableOpacity, ImageBackground, FlatList,
 } from 'react-native';
 import BackgroundImage from './backgroundImage';
-import { SceneView } from 'react-navigation';
 import { DrawerActions } from '@react-navigation/native';
 import { ScrollView } from 'react-native-gesture-handler';
 import I18n from '../Translation/configureTrans';
