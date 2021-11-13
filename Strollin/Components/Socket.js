@@ -160,7 +160,7 @@ function Socket({children, profil, dispatch}) {
   }, [profil.access_token])
 
   const sendMessage = (message) => {
-    //console.log('sending message ', message);
+    console.log('sending message ', message);
 
 
     socket.emit('sendMessage', { access_token: store.profil.access_token,
@@ -189,7 +189,7 @@ function Socket({children, profil, dispatch}) {
     };
   
   const createConversation = (participantsID) => {
-  //console.log('creating conversation', participantsID);
+  console.log('creating conversation', participantsID);
     let convName = store.profil.pseudo;
 
     for (let i in participantsID) {
