@@ -622,6 +622,42 @@ router.post('/add_tag', async function (req, res) {
   });
 });
 
+// REMOVE_TAG
+/**
+ * Remove tags in the current user's tag list
+ * @param {String} req.headers.access_token
+ *
+ * @param {[String]} req.body.tags_list
+ */
+router.post('/remove_tag', async function (req, res) {
+  let user = await UserModel.findOne({
+    access_token: req.headers.access_token
+  }, "-_id id pseudo tags_list").catch(error => error);
+
+  if (!user) {
+    return res.status(401).send({ error_code: 1 });
+  }
+  if (user.reason) {
+    return res.status(500).send({ error_code: 2 });
+  }
+
+  if (user.tags_list.includes(new_tag.name)) {
+    let error = await UserModel.updateOne({
+      id: user.id
+    }, {
+      $pull: {
+        tags_list: req.body.tag_name
+      }
+    });
+    if (error.errors) {
+      return res.status(500).send({ error_code: 2 });
+    }
+  }
+  return res.status(200).send({
+    status: "Tag(s) removed successfully."
+  });
+});
+
 
 // ADD_HISTORIC
 /**

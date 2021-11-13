@@ -9,6 +9,44 @@ const {
 } = require("../models/user")
 
 
+
+// CREATE_CUSTOMER
+/**
+ * Create or retrieve a customer for Stripe
+ * @param {String} req.headers.access_token
+ */
+router.post('/create_customer', async function(req, res) {
+    
+    let user = await UserModel.findOne({ access_token: req.headers.access_token }, "-_id id mail stripe_id first_name last_name").catch(error => error);
+    
+    if (!user) {
+        return res.status(401).send({ error_code: 1 });
+    }
+    if (user.reason) {
+        return res.status(500).send({ error_code: 2 });
+    }
+    if (user.stripe_id === '') {
+        customer = await stripe.customers.create({
+            email: user.mail,
+            name: user.first_name + ' ' + user.last_name
+        })
+        .catch(error => {
+            return res.status(500).send({ error_code: 2 })
+        });
+        let error = await UserModel.updateOne({ id: user.id }, {stripe_id: customer.id}).catch(error => error);
+        if (error.errors) {
+            return res.status(500).send({ error_code: 2 });
+        }
+        return res.status(200).send({ status: "The customer is created", id: customer.id});
+    } else {
+        customer = await stripe.customers.retrieve(user.stripe_id)
+        .catch(error => {
+            return res.status(500).send({ error_code: 2 })
+        });
+        return res.status(200).send({ status: "The customer is retrieved", id: customer.id});
+    }
+});
+
 // CREATE_SESSION
 /**
  * Create a session for Stripe
@@ -45,16 +83,15 @@ router.post('/create_session', async function(req, res) {
     return res.status(400).send({ status: "Session failed"});
 });
 
-
-
-// CREATE_CUSTOMER
+// GET_SUBSCRIPTION
 /**
- * Create or retrieve a customer for Stripe
- * @param {String} req.headers.access_token
+ * Collect and create Element to save card payment (Temporary, it has to be made in front)
+ * 
  */
-router.post('/create_customer', async function(req, res) {
+router.get('/get_subscription', async function(req, res) {
 
-    let user = await UserModel.findOne({ access_token: req.headers.access_token }, "-_id id mail stripe_id first_name last_name").catch(error => error);
+    let user = await UserModel.findOne({ access_token: req.headers.access_token }, "-_id id subscription_id").catch(error => error);
+    const sub = undefined;
 
     if (!user) {
         return res.status(401).send({ error_code: 1 });
@@ -62,28 +99,12 @@ router.post('/create_customer', async function(req, res) {
     if (user.reason) {
         return res.status(500).send({ error_code: 2 });
     }
-    if (user.stripe_id === '') {
-        customer = await stripe.customers.create({
-            email: user.mail,
-            name: user.first_name + ' ' + user.last_name
-        })
-        .catch(error => {
-            return res.status(500).send({ error_code: 2 })
-        });
-        let error = await UserModel.updateOne({ id: user.id }, {stripe_id: customer.id}).catch(error => error);
-        if (error.errors) {
-            return res.status(500).send({ error_code: 2 });
-        }
-        return res.status(200).send({ status: "The customer is created", id: customer.id});
-    } else {
-        customer = await stripe.customers.retrieve(user.stripe_id)
-        .catch(error => {
-            return res.status(500).send({ error_code: 2 })
-        });
-        return res.status(200).send({ status: "The customer is retrieved", id: customer.id});
+    if (user.subscription_id !== '') {
+        sub = await stripe.subscriptions.retrieve(req.headers.sub)
     }
-});
 
+    return res.status(200).send({ status: "Here is the subscription's information.", subscription: { current_period_start: sub.current_period_start, current_period_end: sub.current_period_end }});
+});
 
 // STOP_SUBSCRIPTION
 /**
@@ -91,9 +112,9 @@ router.post('/create_customer', async function(req, res) {
  * @param {String} req.headers.access_token
  */
 router.post('/stop_subscription', async function(req, res) {
-
+    
     let user = await UserModel.findOne({ access_token: req.headers.access_token }, "-_id id subscription_id").catch(error => error);
-
+    
     if (!user) {
         return res.status(401).send({ error_code: 1 });
     }
