@@ -24,7 +24,7 @@ services:
       #- ME_CONFIG_MONGODB_ADMINUSERNAME=root
       #- ME_CONFIG_MONGODB_ADMINPASSWORD=root
     restart: 'on-failure'
-    depends_on: 
+    depends_on:
       - db
 #  server:
 #    build: ./Strollin

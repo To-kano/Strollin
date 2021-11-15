@@ -439,7 +439,7 @@ async function RecoverPlaces(coordinate, tags) {
 
 hello = async function(params, test_list)
 {
-  var coordinateArr = coordinate.split(",");
+  //var coordinateArr = coordinate.split(",");
 
   //await RecoverPlaces(coordinate, tags)
 
