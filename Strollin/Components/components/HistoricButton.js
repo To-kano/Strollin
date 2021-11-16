@@ -2,10 +2,12 @@ import React from 'react'
 import { TouchableOpacity } from 'react-native'
 import Icon from './Icon'
 
+import I18n from '../../Translation/configureTrans';
+
 export default function HistoricButton({props}) {
     return (
       <TouchableOpacity
-        onPress={() => props.navigation.navigate("Historic")}
+        onPress={() => props.navigation.navigate(I18n.t("Menu.historic"))}
         style={{
             backgroundColor: "#ffffff",
             position: "absolute",
