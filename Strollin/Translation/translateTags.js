@@ -14,7 +14,7 @@ function getLanguage() {
 export function translateTags(value) {
   let i = 1
   let language = getLanguage()
-  let res = ""
+  let res = "error"
   if (language == 'fr-FR')
     i = 2
   tags_json.tags_array.forEach((item) => {
@@ -29,7 +29,7 @@ export function translateTags(value) {
 export function detranslateTags(value) {
   let i = 1
   let language = getLanguage()
-  let res = ""
+  let res = "error"
   if (language == 'fr-FR')
     i = 2
   tags_json.tags_array.forEach((item) => {
