@@ -262,6 +262,17 @@ async function DeleteFriend(props, store, id) {
     });
 }
 
+function isAlreadyFriend(id) {
+  const store = Store.getState();
+
+  for (let i in store.profil.friends_list) {
+    if (id == store.profil.friends_list[i]) {
+      return (true);
+    }
+  }
+  return (false);
+}
+
 function checkSearch(id) {
   const store = Store.getState();
 
@@ -269,7 +280,6 @@ function checkSearch(id) {
     return (true);
   }
   for (let i in store.search.searchFriendList) {
-
     if (id == store.search.searchFriendList[i]) {
       return (true);
     }
@@ -310,8 +320,8 @@ export function UsersObject(props) {
       isFriend = true;
     }
   }
-  
-  if (props.id != props.store.profil.id && checkSearch(props.id) == true) {
+
+  if (props.id != props.store.profil.id && checkSearch(props.id) == true && isAlreadyFriend(props.id) == false) {
     return (
       <View style={styles.view_friend}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -459,14 +469,14 @@ function FriendList(props) {
         <Text style={styles.text_header}>
           {I18n.t('Header.friends')}
         </Text>
-        {pressed === true && 
+        {pressed === true &&
           <TouchableOpacity
             onPress={() => { setpressed(!pressed); }}
           >
             <Image style={styles.img_header} source={require('../images/icons/black/addFriend.png')} />
           </TouchableOpacity>
         }
-        {pressed === false && 
+        {pressed === false &&
           <TouchableOpacity
             onPress={() => { setpressed(!pressed); }}
           >
@@ -474,7 +484,7 @@ function FriendList(props) {
           </TouchableOpacity>
         }
       </View> */}
-      
+
       {/* {pressed === true &&
         <View style={styles.view_list}>
           <FlatList
@@ -600,4 +610,3 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => state;
 export default connect(mapStateToProps)(FriendList);
-
