@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet, Text, View, Image, TouchableOpacity, FlatList, Linking, ScrollView
 } from 'react-native';
@@ -26,9 +26,10 @@ export function setSortedTendanceData(tag) {
   const store = Store.getState();
   const sortedData = [];
 
-//console.log("tag = ", tag)
+  //console.log("tag = ", tag, )
   for (i in store.tendance.tendanceList) {
     for (j in store.tendance.tendanceList[i].tags_list) {
+      //console.log('tags list ', store.tendance.tendanceList[i].tags_list)
       if (store.tendance.tendanceList[i].tags_list[j] == tag) {
         sortedData.push(store.tendance.tendanceList[i]);
         break;
@@ -47,6 +48,7 @@ function getTendanceList() {
   const store = Store.getState();
 
   if (store.tendance.sortedTendanceList.length > 0) {
+    //console.log("tendenc filter", store.tendance.sortedTendanceList)
     return (store.tendance.sortedTendanceList);
   }
   return (store.tendance.tendanceList);
@@ -93,6 +95,14 @@ function Header({ props, defaultState = false }) {
 
 export function HomePage(props) {
 
+  const store = Store.getState();
+
+  const [tendance, setTendance] = useState([]);
+
+  useEffect(() => {
+    setTendance(getTendanceList());
+  }, [store.tendance.sortedTendanceList, store.tendance.tendanceList])
+
   let url = getUrl(props);
   return (
     <View style={globalStyles.container}>
@@ -102,12 +112,12 @@ export function HomePage(props) {
         contentContainerStyle={{ paddingVertical: 96 }}
       >
         <Text style={[globalStyles.titles, { marginBottom: 32, }]}>Salut {props.profil.pseudo} !</Text>
-        { getTendanceList().length > 0
+        { tendance.length > 0
           ? <FlatList
               style={{width: '100%', height: '70%'}}
               showsHorizontalScrollIndicator={false}
               showsVerticalScrollIndicator={false}
-              data={getTendanceList()}
+              data={tendance}
               renderItem={({ item }) => (
                 <CourseItem
                   {...props}
@@ -121,7 +131,7 @@ export function HomePage(props) {
       </View>
       <MenuButton props={props}/>
       <SearchBar
-        onPress={(data) => { setSortedTendanceData(data); setpressed(!pressed); }}
+        onPress={(data) => { setSortedTendanceData(data); }}
         imagePath="../images/icons/black/search.png"
       />
       <Footer primaryText="Une envie de sortir ?" primaryOnPressFct={() => props.navigation.navigate(I18n.t("Menu.newTrip"), { screen: 'CourseSettings' })}/>

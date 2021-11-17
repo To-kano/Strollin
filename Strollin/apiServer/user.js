@@ -408,7 +408,7 @@ async function uploadImageProfile(access_token, image) {
 
 exports.uploadImageProfile = uploadImageProfile;
 
-async function addFavorite(props, setIsFavorite) {
+async function addFavorite(props) {
   const bodyRequest = JSON.stringify({
     course: props.data.id
   });
@@ -423,7 +423,6 @@ async function addFavorite(props, setIsFavorite) {
     body: bodyRequest,
   }).then((answer) => answer.json())
   .then(async function (answer) {
-    setIsFavorite(true);
   //console.log("add answer = ", answer);
     if (answer.course_favorites) {
       const action = {type: 'SET_FAVORITES_LIST', value: answer.course_favorites};
@@ -440,7 +439,7 @@ async function addFavorite(props, setIsFavorite) {
 
 exports.addFavorite = addFavorite;
 
-async function removeFavorite(props, setIsFavorite) {
+async function removeFavorite(props) {
 //console.log("remove props.data.id = ", props.data.id);
   const bodyRequest = JSON.stringify({
     course_id: props.data.id
@@ -455,7 +454,6 @@ async function removeFavorite(props, setIsFavorite) {
     body: bodyRequest,
   }).then((answer) => answer.json())
   .then(async function (answer) {
-    setIsFavorite(false);
   //console.log("remove answer = ", answer);
     if (answer.course_favorites) {
       const action = {type: 'SET_FAVORITES_LIST', value: answer.course_favorites};
