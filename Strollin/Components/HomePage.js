@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet, Text, View, Image, TouchableOpacity, FlatList, Linking, ScrollView
 } from 'react-native';
@@ -95,6 +95,14 @@ function Header({ props, defaultState = false }) {
 
 export function HomePage(props) {
 
+  const store = Store.getState();
+
+  const [tendance, setTendance] = useState([]);
+
+  useEffect(() => {
+    setTendance(getTendanceList());
+  }, [store.tendance.sortedTendanceList, store.tendance.tendanceList])
+
   let url = getUrl(props);
   return (
     <View style={globalStyles.container}>
@@ -104,12 +112,12 @@ export function HomePage(props) {
         contentContainerStyle={{ paddingVertical: 96 }}
       >
         <Text style={[globalStyles.titles, { marginBottom: 32, }]}>Salut {props.profil.pseudo} !</Text>
-        { getTendanceList().length > 0
+        { tendance.length > 0
           ? <FlatList
               style={{width: '100%', height: '70%'}}
               showsHorizontalScrollIndicator={false}
               showsVerticalScrollIndicator={false}
-              data={getTendanceList()}
+              data={tendance}
               renderItem={({ item }) => (
                 <CourseItem
                   {...props}

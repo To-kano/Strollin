@@ -1,7 +1,7 @@
 import {
   Image, View, StyleSheet, Text, TouchableOpacity, ImageBackground, FlatList, ScrollView, Touchable,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Location_List from './locations_list';
 import { connect } from 'react-redux';
 import Store from '../Store/configureStore';
@@ -42,15 +42,13 @@ function randPic() {
 function checkFavorite(props) {
   const store = Store.getState();
 
-  if (props.favoritesPage) {
-    return (true);
-  }
+  //if (props.favoritesPage) {
+  //  return (true);
+  //}
 
-  if (store.profil.course_favorites && props.data) {
-    for (let i = 0; i < store.profil.course_favorites.length; i++) {
-      //console.log("compared id = ", store.profil.course_favorites[i])
-      if (store.profil.course_favorites[i] == props.data.id) {
-        //console.log("returned true");
+  if (store.favorites.favoritesList && props.data) {
+    for (let i = 0; i < store.favorites.favoritesList.length; i++) {
+      if (store.favorites.favoritesList[i].id == props.data.id) {
         return (true);
       }
     }
@@ -60,16 +58,18 @@ function checkFavorite(props) {
 }
 
 function CourseItem(props) {
-  const [locationList, setLocationList] = useState(null);
-  const [isFavorite, setIsFavorite] = useState(null);
+  const [locationList, setLocationList] = useState([]);
+  const [isFavorite, setIsFavorite] = useState(false);
 
+  const store = Store.getState();
 
-  if (isFavorite == null) {
+  useEffect(() => {
     setIsFavorite(checkFavorite(props));
-  }
-  if (!locationList && props.data.locations_list) {
+  }, [store.favorites.favoritesList ])
+
+  useEffect(() => {
     getLocation(props, setLocationList);
-  }
+  }, [props.data.locations_list])
 
   return (
     <View style={styles.view_box}>
@@ -84,12 +84,12 @@ function CourseItem(props) {
           <View style={{flexDirection: 'row'}}>
             { isFavorite
               ? <TouchableOpacity
-                  onPress={() => removeFavorite(props, setIsFavorite)}
+                  onPress={() => removeFavorite(props)}
                 >
                   <Icon name='star_filled' size={29} color='#ffffff'/>
                 </TouchableOpacity>
               : <TouchableOpacity
-                  onPress={() => addFavorite(props, setIsFavorite)}
+                  onPress={() => addFavorite(props)}
                 >
                   <Icon name='star_empty' size={29} color='#ffffff'/>
                 </TouchableOpacity>
