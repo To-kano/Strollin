@@ -130,7 +130,7 @@ export function Temporarytags(props) {
   const [array, setArray] = useState(true);
   const store = Store.getState();
   const access_Token = store.profil.access_token;
-  const [pos, setPos] = useState('0');
+  const [pos, setPos] = useState(store.CourseSettings.pos);
 
   setUserPos();
   function setUserPos() {

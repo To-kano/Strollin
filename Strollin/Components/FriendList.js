@@ -295,7 +295,7 @@ export function FriendObject(props) {
       <View style={{flexDirection: 'row', alignItems: 'center'}}>
         <Image
           style={{height: 64, width: 64, borderRadius: 16}}
-          source={require('../assets/images/default_profile_picture.png')}
+          source={require('../images/happy_man.jpg')}
         />
         <Text style={[globalStyles.paragraphs, {marginLeft: 16}]}>
           {props.store.profil.friends_pseudo_list[props.id]}
@@ -327,7 +327,7 @@ export function UsersObject(props) {
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Image
             style={{height: 64, width: 64, borderRadius: 16}}
-            source={require('../assets/images/default_profile_picture.png')}
+            source={require('../images/happy_man.jpg')}
           />
           <Text style={[globalStyles.paragraphs, {marginLeft: 16}]}>
             {props.pseudo}
