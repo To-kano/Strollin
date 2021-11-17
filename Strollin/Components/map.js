@@ -74,7 +74,7 @@ function isNear(userPosition, elementPosition) {
 }
 
 function Map({
-  position, height, width, deltaView, locations, profil, map, dispatch, navigation
+  position, height, width, deltaView, locations, profil, map, dispatch, navigation, isMoving
 }) {
   const allTime = [];
   const store = Store.getState();
@@ -146,6 +146,8 @@ function Map({
   }
 
   const onUserPositionChange = (data) => {
+    if (isMoving == false)
+      return;
     const position = {
       latitude: data.coordinate.latitude,
       longitude: data.coordinate.longitude,

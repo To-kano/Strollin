@@ -64,7 +64,7 @@ exports.getCourseById = getCourseById;
 
 async function generateCourse(access_token, settings) {
 
-  const time = settings.hours * 60 + settings.minutes;
+  var time = settings.hours * 60 + settings.minutes;
   const coordinate = [];
   const store = Store.getState();
   var pos = store.CourseSettings.pos
@@ -74,6 +74,10 @@ async function generateCourse(access_token, settings) {
   }
   else {
     settings.pos = pos;
+  }
+
+  if (time == 0) {
+    time = 30;
   }
 
   coordinate[0] = pos.latitude;

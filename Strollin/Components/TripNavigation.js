@@ -40,6 +40,7 @@ export function TripNavigation({ map, profil, dispatch, navigation}) {
   const [del, setDel] = useState(false);
   const [course, setCourse] = useState(null);
   const [place, setPlace] = useState(null);
+  const [isMoving, setIsMoving] = useState(Store.getState().CourseSettings.isMoving);
   const [isLoading, setLoading] = React.useState(false);
 
   function compare(a, b) {
@@ -225,6 +226,7 @@ if (del) {
             width={windowWidth}
             deltaView={deltaView}
             locations={locations}
+            isMoving={isMoving}
           />
         }
       </View>
@@ -324,10 +326,15 @@ if (del) {
           const store = Store.getState();
           const result = await createNewCourse(store.profil.access_token, store.course.currentCourse);
           addUserHistoric(store.profil.access_token, result.id);
-          const action = { type: 'ADD_HISTORY', courseID: result.id };
+          var action = { type: 'ADD_HISTORY', courseID: result.id };
           dispatch(action);
           const action2 = { type: 'ADD_COURSE_OBJECT_HISTORIC', value: result };
           dispatch(action2);
+          action = {
+            type: 'ADD_IS_MOVING',
+            value: true
+          };
+          Store.dispatch(action);
           navigation.navigate('CourseEvaluation');
         }}
       />
