@@ -128,6 +128,29 @@ async function setFriendPseudo(props, access_token, profile) {
 
 exports.setFriendPseudo = setFriendPseudo;
 
+async function getUserProfile(access_token, UserId) {
+
+  let answer = await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/get_user_profile`, {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      access_token: access_token,
+      user_id: UserId,
+    },
+    method: 'GET',
+  })
+
+  answer = await answer.json();
+
+  if (answer?.profile) {
+    return answer.profile;
+  }
+
+  return {};
+}
+
+exports.getUserProfile = getUserProfile;
+
 async function setTendance(props, access_token) {
   await fetch(`http://${IP_SERVER}:${PORT_SERVER}/course/get_course`, {
     headers: {

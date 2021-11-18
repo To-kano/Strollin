@@ -1,31 +1,31 @@
+
 import React, { useState, useEffect } from 'react';
 
 import { IP_SERVER, PORT_SERVER } from '../../env/Environement';
-
-
-
-import { connect } from 'react-redux';
 import { Image, View, ActivityIndicator } from 'react-native';
 
 import { getImageId } from '../../apiServer/image';
 
-function ImageProfile({profil, style}) {
+function ImageUser({user, style}) {
 
     const [image, setImage] = useState(null);
 
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        setLoading(true);
-        getImageId(profil.id_image_profile).then(answer => {
+        if (user?.id_image_profile) {
+            setLoading(true);
+            getImageId(user.id_image_profile).then(answer => {
             setLoading(false);
-            if (answer?.uri) {
-                let pathImage = `http://${IP_SERVER}:${PORT_SERVER}/images/${answer.uri}`;
-                setImage(pathImage);
-            }
-        })
-
-    }, [profil.id_image_profile]);
+                if (answer?.uri) {
+                    let pathImage = `http://${IP_SERVER}:${PORT_SERVER}/images/${answer.uri}`;
+                    setImage(pathImage);
+                }
+            })
+        } else {
+            setLoading(false);
+        }
+    }, [user?.id_image_profile]);
 
     if (loading) {
         return (<View style={{...style, justifyContent : 'center'}} >
@@ -42,5 +42,4 @@ function ImageProfile({profil, style}) {
 
 }
 
-const mapStateToProps = (state) => state;
-export default connect(mapStateToProps)(ImageProfile);
+export default ImageUser;
