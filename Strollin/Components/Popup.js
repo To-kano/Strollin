@@ -21,7 +21,7 @@ function Popup({message, modalVisible, setModalVisible, children}) {
           <View style={styles.modalView}>
             <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 32}}>
               <Text style={globalStyles.subtitles}>{message}</Text>
-              <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
+              <TouchableOpacity onPress={() => setModalVisible(!modalVisible)} style={{padding : 10}} >
                 <Icon name='close' size={24} color='#1C1B1C'/>
               </TouchableOpacity>
             </View>
