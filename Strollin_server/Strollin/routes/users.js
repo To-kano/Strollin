@@ -1182,7 +1182,7 @@ router.get('/get_own_profile', async function (req, res) {
  * @param {String} req.headers.user_id
  */
 router.get('/get_user_profile', async function (req, res) {
-  const projection = '-_id id mail creation_date pseudo partner first_name last_name tags_list friends_list';
+  const projection = '-_id id mail creation_date pseudo partner first_name last_name tags_list friends_list id_image_profile';
   let profile = undefined;
   let user = await UserModel.findOne({
     access_token: req.headers.access_token
@@ -1279,7 +1279,7 @@ router.get('/get_user_tags', async function (req, res) {
 router.get('/get_users', async function (req, res) {
 
   let users_list = undefined;
-  const projection = '-_id id mail creation_date pseudo partner first_name last_name tags_list friends_list';
+  const projection = '-_id id mail creation_date pseudo partner first_name last_name tags_list friends_list id_image_profile';
   let user = await UserModel.findOne({
     access_token: req.headers.access_token
   }, "-_id id pseudo").catch(error => error);

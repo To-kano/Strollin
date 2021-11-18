@@ -1,17 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Text, View, FlatList, TouchableOpacity, TextInput, StyleSheet, Image, ScrollView
 } from 'react-native';
 import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 import { DrawerActions } from '@react-navigation/native';
 import I18n from '../Translation/configureTrans';
-import { profileUser } from '../apiServer/user';
+import { profileUser, getUserProfile } from '../apiServer/user';
 import { connect } from 'react-redux';
 import Store from '../Store/configureStore';
 import MenuButton from './components/MenuButton';
 import AddFriendsButton from './components/AddFriendsButton';
 import ReturnButton from './components/ReturnButton';
 import ImageProfile from './components/ImageProfile';
+import ImageUser from './components/ImageUser';
 import Icon from './components/Icon';
 import AddButton from './components/AddFriendsButton';
 
@@ -290,13 +291,22 @@ function checkSearch(id) {
 export function FriendObject(props) {
   const [showBin, setshowBin] = useState(false);
 
+  const [user, setUser] = useState({})
+
+  useEffect(() => {
+      getUserProfile(props.profil.access_token, props.id).then(answer => {
+              setUser(answer);
+      })
+}, [props.id]);
+
+
   return (
     <TouchableOpacity style={styles.view_friend} onLongPress={() => setshowBin(state => !state)}>
       <View style={{flexDirection: 'row', alignItems: 'center'}}>
-        <Image
-          style={{height: 64, width: 64, borderRadius: 16}}
-          source={require('../assets/images/default_profile_picture.png')}
-        />
+      <ImageUser
+            style={{height: 64, width: 64, borderRadius: 16}}
+            user={user}
+           />
         <Text style={[globalStyles.paragraphs, {marginLeft: 16}]}>
           {props.store.profil.friends_pseudo_list[props.id]}
         </Text>
@@ -321,14 +331,16 @@ export function UsersObject(props) {
     }
   }
 
+  console.log("user :", props.user);
+
   if (props.id != props.store.profil.id && checkSearch(props.id) == true && isAlreadyFriend(props.id) == false) {
     return (
       <View style={styles.view_friend}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Image
+          <ImageUser
             style={{height: 64, width: 64, borderRadius: 16}}
-            source={require('../assets/images/default_profile_picture.png')}
-          />
+            user={props.user}
+           />
           <Text style={[globalStyles.paragraphs, {marginLeft: 16}]}>
             {props.pseudo}
           </Text>
@@ -400,7 +412,7 @@ function FriendList(props) {
     getUserList(store, setUserList);
   }
 
-  console.log("amis : ", userList)
+  console.log("store.profil.friends_list : ", store.profil.friends_list)
 
   return (
     <View style={[globalStyles.container, {paddingHorizontal: 0}]}>
@@ -444,6 +456,7 @@ function FriendList(props) {
             renderItem={({ item }) => (
               <UsersObject
                 {...props}
+                user={item}
                 store={store}
                 pseudo={item.pseudo}
                 mail={item.mail}
