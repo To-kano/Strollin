@@ -12,8 +12,6 @@ function ImageUser({user, style}) {
 
     const [loading, setLoading] = useState(true);
 
-    console.log('user.id_image_profile', user.id_image_profile)
-
     useEffect(() => {
         if (user?.id_image_profile) {
             setLoading(true);

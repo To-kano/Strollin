@@ -15,8 +15,6 @@ function ImageProfile({profil, style}) {
 
     const [loading, setLoading] = useState(true);
 
-    console.log('profil.id_image_profile', profil.id_image_profile)
-
     useEffect(() => {
         setLoading(true);
         getImageId(profil.id_image_profile).then(answer => {

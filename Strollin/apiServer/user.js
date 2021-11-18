@@ -142,8 +142,6 @@ async function getUserProfile(access_token, UserId) {
 
   answer = await answer.json();
 
-  console.log("answer dfksf", answer);
-
   if (answer?.profile) {
     return answer.profile;
   }
