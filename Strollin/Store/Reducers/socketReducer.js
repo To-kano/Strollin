@@ -41,6 +41,8 @@ function SocketReducer(state = initialState, action) {
   // //console.log("\n\ngalleryReducer:\n")
   // //console.log(action)
   switch (action.type) {
+    case 'DECONNECTION':
+      return initialState;
     case 'SET_SOCKET':
       nextState = {
         ...state,

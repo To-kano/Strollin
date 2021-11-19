@@ -3,11 +3,11 @@ import { TouchableOpacity } from 'react-native'
 import { DrawerActions } from '@react-navigation/native';
 import Icon from './Icon'
 
-export default function CloseButton({onPressFct}) {
+export default function CloseButton({onPressFct, style}) {
     return (
       <TouchableOpacity
         onPress={onPressFct}
-        style={{
+        style={[{
             backgroundColor: "#ffffff",
             position: "absolute",
             top: 16,
@@ -23,7 +23,7 @@ export default function CloseButton({onPressFct}) {
             shadowRadius: 6.27,
 
             elevation: 10,
-        }}
+        }, style]}
       >
         <Icon name="close" size={29} color="#1C1B1C" />
       </TouchableOpacity>

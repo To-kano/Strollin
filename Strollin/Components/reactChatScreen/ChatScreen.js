@@ -18,7 +18,7 @@ function goToMenu(props) {
   props.navigation.navigate('MenuChat');
 }
 
-function ChatScreen(props) {
+function ScreenChat(props) {
   const {sendMessage} = contextSocket();
   const [name, setName] = useState(props.conversation[props.conversation.currentConversation].name);
 
@@ -69,7 +69,7 @@ function ChatScreen(props) {
 }
 
 const mapStateToProps = (state) => state;
-export default connect(mapStateToProps)(ChatScreen);
+export default connect(mapStateToProps)(ScreenChat);
 
 const styles = StyleSheet.create({
   view_chatScreen: {

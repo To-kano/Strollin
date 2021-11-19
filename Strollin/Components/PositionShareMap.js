@@ -62,10 +62,13 @@ function PositionShareMap({
     latitudeDelta: 0.1622,
     longitudeDelta: 0.1021,
   };
-  const { latitude, longitude, name } = route.params
+  const { latitude, longitude, name } = route.params;
+
+
   const sharedPosition = { latitude: Number(latitude), longitude: Number(longitude), latitudeDelta: deltaView.latitudeDelta, longitudeDelta: deltaView.longitudeDelta }
   const store = Store.getState();
   const [userPosition, setUserPosition] = useState(store.CourseSettings.pos);
+
 
   useEffect(() => {
     setLocalRegion({
@@ -118,7 +121,7 @@ function PositionShareMap({
     requestGeolocalisationPermission(dispatch);
   }
   //
-  if (position.permission == true && userPosition == null) {
+  if (position.permission == true && !userPosition) {
     updateCoordinates(setUserPosition);
   }
   //

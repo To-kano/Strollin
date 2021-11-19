@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Text, StyleSheet, TouchableOpacity, Image, View } from 'react-native';
 import Icon from '../components/Icon';
+import {getUserProfile} from '../../apiServer/user';
+import ImageUser from '../components/ImageUser';
 
 const globalStyles = require('../../Styles');
 
@@ -38,16 +40,37 @@ function getLastMessage(props) {
   }
 }
 
+function getOhterParticipantId(arrayParticipantId, UserId) {
+  return arrayParticipantId.filter((id) => {
+    return id != UserId;
+  })
+}
+
 function ConvPreview(props) {
+
+  const [profile, setProfile] = useState({});
+
+  useEffect(() => {
+
+    const otherParticipant = getOhterParticipantId(props.conversation[props.conversationID].participants , props.profil.id);
+
+    if (otherParticipant.length > 0) {
+      const userId = null;
+      getUserProfile(props.profil.access_token, otherParticipant[0]).then((result) => (setProfile(result)));
+    }
+
+  }, [props.conversation[props.conversationID].participants])
+
+
   return (
     <TouchableOpacity
       style={styles.button}
       onPress={() => GotoChat(props)}
     >
       {props.conversation[props.conversationID].participants.length === 2 ?
-        <Image
+        <ImageUser
           style={{height: 64, width: 64, borderRadius: 16, marginRight: 16}}
-          source={require('../../assets/images/default_profile_picture.png')}
+          user={profile}
         />
       :
         <Image

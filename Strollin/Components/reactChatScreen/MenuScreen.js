@@ -58,7 +58,7 @@ function sortConversation(key) {
   }
 }
 
-function LoginScreen(props) {
+function MenuScreen(props) {
   //console.log('Menu Screen');
 
   return (
@@ -80,7 +80,7 @@ function LoginScreen(props) {
 }
 
 const mapStateToProps = (state) => state;
-export default connect(mapStateToProps)(LoginScreen);
+export default connect(mapStateToProps)(MenuScreen);
 
 const styles = StyleSheet.create({
   view_back: {

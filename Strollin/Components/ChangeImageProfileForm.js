@@ -12,19 +12,24 @@ const globalStyles = require('../Styles');
 function ChangeImageProfileForm({ profil, dispatch, modalVisible, setModalVisible }) {
 
   const [image, setImage] = useState(null);
+  const [disable , setDisable] = useState(false);
 
   const handleChooseImage = () => {
     launchImageLibrary({ noData: true }, (response) => {
+      console.log("answer handle image", response, response.assets[0] );
       if (response) {
-        setImage(response);
+        setDisable(false);
+        setImage(response.assets[0]);
       }
     });
   };
 
+  console.log('image', image)
+
   return (
     <>
       {image && (
-        <View style={{ alignItems: 'center', width: '100%' }}>
+        <View style={{ alignItems: 'center', width: '100%'}}>
           <Image
             source={{ uri: image.uri }}
             style={{ width: 128, height: 128, borderRadius: 16, marginBottom: 32 }}
@@ -42,12 +47,14 @@ function ChangeImageProfileForm({ profil, dispatch, modalVisible, setModalVisibl
               <Text style={globalStyles.paragraphs}>Annuler</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={{ backgroundColor: "#0989FF", padding: 16, alignItems: 'center', borderRadius: 32 }}
+              disabled={disable}
+              style={{ backgroundColor: "#0989FF", padding: 16, alignItems: 'center', borderRadius: 32, opacity: disable ? 0.5 : 1}}
               onPress={() => {
                 if (image) {
+                  setDisable(true);
                   uploadImageProfile(profil.access_token, image).then((answer) => {
                     if (answer.image) {
-                      const action = { type: 'SET_IMAGE_PROFILE', value: answer.image?.id };
+                      const action = { type: 'SET_IMAGE_PROFILE', value: answer.image.id };
                       dispatch(action);
                     }
                   });

@@ -322,6 +322,7 @@ if (del) {
           </View>
       </View>
       <CloseButton
+        style={{right : undefined, left: 16}}
         onPressFct={async () => {
           const store = Store.getState();
           const result = await createNewCourse(store.profil.access_token, store.course.currentCourse);

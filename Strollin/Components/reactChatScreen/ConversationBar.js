@@ -32,8 +32,9 @@ function ConversationBar(props) {
 
   const handleChooseImage = () => {
     launchImageLibrary({ noData: true }, (response) => {
+      console.log("answer handle image", response, response.assets[0] );
       if (response) {
-        setImage(response);
+        setImage(response.assets[0]);
       }
     });
   };

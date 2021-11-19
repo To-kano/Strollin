@@ -151,16 +151,16 @@ app.use('/subscription', subscriptionRouter);
 
 
 
-app.get('/.well-known/pki-validation/5772AE219549AD7A92A5E824AF243A2B.txt', function (req, res) {
+app.get('/.well-known/pki-validation/B61144C9AE9C866A2D3D6873AA7820AF.txt', function (req, res) {
   var options = {
     root: path.join(__dirname)
   };
 
-  res.sendFile('5772AE219549AD7A92A5E824AF243A2B.txt', options , function (err) {
+  res.sendFile('B61144C9AE9C866A2D3D6873AA7820AF.txt', options , function (err) {
     if (err) {
       next(err);
     } else {
-      console.log('Sent:', '5772AE219549AD7A92A5E824AF243A2B.txt');
+      console.log('Sent:', 'B61144C9AE9C866A2D3D6873AA7820AF.txt');
     }
   });
 });

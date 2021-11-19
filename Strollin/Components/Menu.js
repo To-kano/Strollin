@@ -241,7 +241,8 @@ const styles = StyleSheet.create({
   view_navigationIn: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 16,
+    padding : 5,
+    marginTop: 6,
     width: '100%'
   },
   img_navigationIn: {

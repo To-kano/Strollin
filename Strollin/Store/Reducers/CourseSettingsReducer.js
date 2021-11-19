@@ -18,6 +18,8 @@ function CourseSettingsReducer(state = initialState, action) {
 //console.log("\n\nCourseSettingsReducer:\n")
 //console.log("//////////////////////////:action: ", action)
   switch (action.type) {
+    case 'DECONNECTION':
+      return initialState;
     case 'SET_COURSE_SETTINGS':
       nextState = {
         ...state,

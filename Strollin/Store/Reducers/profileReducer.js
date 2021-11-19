@@ -1,5 +1,3 @@
-//import AsyncStorage from '@react-native-community/async-storage';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 const initialState = {
   access_token: null,
   mail: null,
@@ -21,15 +19,6 @@ const initialState = {
   favid: 0
 };
 
-const storeProfile = async (value) => {
-  try {
-    const jsonValue = JSON.stringify(value);
-    await AsyncStorage.setItem('cache_profile', jsonValue);
-  } catch (e) {
-    //console.log('echec store profile ', e);
-  }
-};
-
 function profileReducer(state = initialState, action) {
   let nextState;
 
@@ -39,11 +28,9 @@ function profileReducer(state = initialState, action) {
         ...state,
         access_token: action.value
       };
-      //console.log("profile reducer connection", nextState);
       return nextState;
 
     case 'DECONNECTION':
-      //storeProfile(initialState);
       return initialState;
 
     case 'SET_USER':
@@ -51,8 +38,6 @@ function profileReducer(state = initialState, action) {
         ...state,
         ...action.value
       };
-      //console.log("profile reducer set user", nextState);
-      //storeProfile(nextState);
       return nextState;
 
     case 'ADD_HISTORY':
@@ -60,7 +45,6 @@ function profileReducer(state = initialState, action) {
         ...state,
         course_historic: [[action.courseID, new Date().toLocaleDateString("fr-FR")], ...state.course_historic],
       };
-      //storeProfile(nextState);
       return nextState;
     case 'SET_FRIEND':
       nextState = {
@@ -136,13 +120,6 @@ function profileReducer(state = initialState, action) {
       };
       return nextState;
     case 'ADD_TO_PROFILE_FAVORITES':
-        nextState = {
-          ...state,
-        };
-        nextState.course_favorites = [action.value, ...nextState.course_favorites]
-
-        return nextState;
-      case 'ADD_TO_PROFILE_FAVORITES':
         nextState = {
           ...state,
         };
