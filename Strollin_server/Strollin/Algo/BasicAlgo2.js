@@ -327,9 +327,9 @@ async function formatPlaces(data) {
         score: "",
         latitude: "",
         longitude: "",
-        address: "",
-        city: "",
-        country: "",
+        address: "N/A",
+        city: "N/A",
+        country: "N/A",
         description: "N/A",
         timetable: "N/A",
         tags_list: "",
@@ -373,6 +373,7 @@ async function placeCall(url) {
   })
     .then((response) => response.json())
     .then(function (answer){
+      //console.log("answer: ", answer);
       return answer
     })
     .catch((error) => {
@@ -383,11 +384,11 @@ async function placeCall(url) {
 
 async function callApi(url) {
   let token = null
-  let url_tmp = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=AIzaSyD6AVcufnom-RKQJeG8tlxAWhAOKor0-uo"
+  let url_tmp = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=AIzaSyDPc6ZV5KYveppsIq8o_1oeVEZ6CShTX4w"
 
   console.log("before await");
   await placeCall(url).then((response) => {
-    console.log("IN await");
+    console.log("ON await");
     formatPlaces(response.results);
     if (response.next_page_token) {
       token = response.next_page_token

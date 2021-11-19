@@ -759,8 +759,18 @@ function testrenderItem({item,index}){
             loctmp.push(finalLocations[i].id)
           }
           course.locations_list = loctmp;
-          const action = { type: 'SET_WAYPOINTS', course: course, locations: finalLocations };
+          var action = { type: 'SET_WAYPOINTS', course: course, locations: finalLocations };
           props.dispatch(action);
+           action = {
+            type: 'ADD_FRIENDSTAGS',
+            value: []
+          };
+          Store.dispatch(action);
+          action = {
+            type: 'ADD_TEMPORARYTAGS',
+            value: []
+          };
+          Store.dispatch(action);
           //registerCourse(props.profil.access_token);
           props.navigation.navigate('TripNavigation');
           // const action = { type: 'SET_WAYPOINTS', course: course, locations: locations };

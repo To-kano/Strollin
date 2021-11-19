@@ -106,7 +106,7 @@ export function Tag({ name, chosen, defaultState = false, props,  access_Token, 
           setpressed(!pressed);
         }}
       >
-        <Text style={styles.text_tagOff}>{name}</Text>
+        <Text style={styles.text_tagOff}>{translateTags(name)}</Text>
       </TouchableOpacity>
       )}
       {(pressed === true) && (
@@ -119,7 +119,7 @@ export function Tag({ name, chosen, defaultState = false, props,  access_Token, 
         }}
       >
         <Image style={styles.img_tagOn} source={require('../images/icons/white/checked.png')} />
-        <Text style={styles.text_tagOn}>{name}</Text>
+        <Text style={styles.text_tagOn}>{translateTags(name)}</Text>
       </TouchableOpacity>
       )}
     </View>
@@ -130,7 +130,7 @@ export function Temporarytags(props) {
   const [array, setArray] = useState(true);
   const store = Store.getState();
   const access_Token = store.profil.access_token;
-  const [pos, setPos] = useState('0');
+  const [pos, setPos] = useState(store.CourseSettings.pos);
 
   setUserPos();
   function setUserPos() {
@@ -195,7 +195,7 @@ export function Temporarytags(props) {
           data={array}
           keyExtractor={(item) => item.name}
           renderItem={({ item }) => (
-            <Tag name={translateTags(item.name)} chosen={item.pressed} access_Token={access_Token} pos={pos}/>
+            <Tag name={item.name} chosen={item.pressed} access_Token={access_Token} pos={pos}/>
           )}
         />
       </View>

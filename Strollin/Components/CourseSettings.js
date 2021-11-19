@@ -220,7 +220,7 @@ export function CourseSettings(props) {
             </View>
             <Slider
               maximumValue={20}
-              minimumValue={0}
+              minimumValue={1}
               step={1}
               minimumTrackTintColor="#0989FF"
               value={radius}

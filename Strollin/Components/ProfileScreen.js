@@ -56,7 +56,7 @@ var initialList = [
 function ProfileScreen(props) {
   // const [list, setList] = React.useState(props.profil.tags_list);
   const [reload, setReload] = useState(true);
-  const [args, setArgs] = useState();
+  const [args, setArgs] = useState("error");
   const [tagsList, setTagsList] = useState(initialList);
 
 
@@ -170,7 +170,7 @@ function ProfileScreen(props) {
               postMail(text, setLoading);
             }}
           >
-            {args?.pseudo}
+            {args.pseudo}
           </TextInput>
         </View>
         <Text style={[globalStyles.paragraphs, { marginVertical: 10 }]}>{I18n.t('ProfileScreen.myTags')}</Text>

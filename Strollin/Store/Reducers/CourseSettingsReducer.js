@@ -9,7 +9,8 @@ const initialState = {
   tags: 0,
   is18: 0,
   Temporarytags: 0,
-  friendstags: []
+  friendstags: [],
+  isMoving: true,
 };
 
 function CourseSettingsReducer(state = initialState, action) {
@@ -93,6 +94,12 @@ function CourseSettingsReducer(state = initialState, action) {
       nextState = {
         ...state,
         friendstags: action.value
+      };
+      return nextState;
+      case 'ADD_IS_MOVING':
+      nextState = {
+        ...state,
+        isMoving: action.value
       };
       return nextState;
     default:

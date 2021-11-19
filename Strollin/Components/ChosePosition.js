@@ -93,6 +93,11 @@ export function ChosePosition(props, {map, profil, dispatch, navigation}) {
               value: markers
             };
             Store.dispatch(action);
+            action = {
+              type: 'ADD_IS_MOVING',
+              value: false
+            };
+            Store.dispatch(action);
           }}
         >
           <Text style={styles.text_newTrip}>
