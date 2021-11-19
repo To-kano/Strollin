@@ -9,22 +9,23 @@ const {
 } = require("../models/user")
 
 
-
-// CREATE_CUSTOMER
+// CREATE_SESSION
 /**
- * Create or retrieve a customer for Stripe
+ * Create a session for Stripe
  * @param {String} req.headers.access_token
- */
-router.post('/create_customer', async function(req, res) {
-    
+**/
+router.post('/create_session', async function(req, res) {
+
     let user = await UserModel.findOne({ access_token: req.headers.access_token }, "-_id id mail stripe_id first_name last_name").catch(error => error);
-    
+
     if (!user) {
         return res.status(401).send({ error_code: 1 });
     }
     if (user.reason) {
         return res.status(500).send({ error_code: 2 });
     }
+
+    //Check stripe customer
     if (user.stripe_id === '') {
         customer = await stripe.customers.create({
             email: user.mail,
@@ -37,51 +38,32 @@ router.post('/create_customer', async function(req, res) {
         if (error.errors) {
             return res.status(500).send({ error_code: 2 });
         }
-        return res.status(200).send({ status: "The customer is created", id: customer.id});
     } else {
         customer = await stripe.customers.retrieve(user.stripe_id)
         .catch(error => {
             return res.status(500).send({ error_code: 2 })
         });
-        return res.status(200).send({ status: "The customer is retrieved", id: customer.id});
-    }
-});
-
-// CREATE_SESSION
-/**
- * Create a session for Stripe
- * @param {String} req.headers.access_token
-**/
-router.post('/create_session', async function(req, res) {
-
-    let user = await UserModel.findOne({ access_token: req.headers.access_token }, "-_id id mail stripe_id").catch(error => error);
-
-    if (!user) {
-        return res.status(401).send({ error_code: 1 });
-    }
-    if (user.reason) {
-        return res.status(500).send({ error_code: 2 });
     }
 
-    const price_id = "price_1JSl53H9C7g7Ir7890KpWvW8";
-
+    // create session
     const session = await stripe.checkout.sessions.create({
         payment_method_types: ['card', 'sepa_debit'],
 
         line_items: [{
-            price: price_id,
+            price: "price_1JSl53H9C7g7Ir7890KpWvW8",
             quantity: 1,
         }],
         mode: 'subscription',
-        customer: user.stripe_id,
-        success_url: 'https://stripe.com/docs/billing/subscriptions/build-subscription',
-        cancel_url: 'https://stripe.com/docs/billing/subscriptions/sepa-debit',
+        customer: customer.id,
+        success_url: 'https://strollin.vercel.app/SubscriptionSuccessPage',
+        cancel_url: 'https://strollin.vercel.app/SubscriptionFailedPage',
     });
     if (session) {
-        return res.status(200).send({ status: "Session created", session});
+        return res.status(200).send({ status: "Session created", url: session.url});
     }
     return res.status(400).send({ status: "Session failed"});
 });
+
 
 // GET_SUBSCRIPTION
 /**
@@ -90,6 +72,7 @@ router.post('/create_session', async function(req, res) {
  */
 router.get('/get_subscription', async function(req, res) {
 
+    console.log(req.headers.access_token)
     let user = await UserModel.findOne({ access_token: req.headers.access_token }, "-_id id subscription_id").catch(error => error);
     const sub = undefined;
 
@@ -102,8 +85,13 @@ router.get('/get_subscription', async function(req, res) {
     if (user.subscription_id !== '') {
         sub = await stripe.subscriptions.retrieve(req.headers.sub)
     }
+    let subscription = {
+        current_period_start: new Date().toISOString(sub.current_period_start).replace(/T/, ' ').replace(/\..+/, ''),
+        current_period_end: new Date().toISOString(sub.current_period_end).replace(/T/, ' ').replace(/\..+/, ''),
+        cancel_at_period_end: sub.cancel_at_period_end
+    }
 
-    return res.status(200).send({ status: "Here is the subscription's information.", subscription: { current_period_start: sub.current_period_start, current_period_end: sub.current_period_end }});
+    return res.status(200).send({ status: "Here is the subscription's information.", subscription });
 });
 
 // STOP_SUBSCRIPTION
@@ -121,11 +109,16 @@ router.post('/stop_subscription', async function(req, res) {
     if (user.reason) {
         return res.status(500).send({ error_code: 2 });
     }
-    stripe.subscriptions.update(user.subscription_id, {cancel_at_period_end: true})
+    let sub = await stripe.subscriptions.update(user.subscription_id, {cancel_at_period_end: true})
     .catch(error => {
         return res.status(500).send({ error_code: 2 });
     });
-    return res.status(200).send({ status: "Subscription cancel has been taken into account." });
+    let subscription = {
+        current_period_start: new Date().toISOString(sub.current_period_start).replace(/T/, ' ').replace(/\..+/, ''),
+        current_period_end: new Date().toISOString(sub.current_period_end).replace(/T/, ' ').replace(/\..+/, ''),
+        cancel_at_period_end: sub.cancel_at_period_end
+    }
+    return res.status(200).send({ status: "Subscription cancel has been taken into account.", subscription });
 });
 
 
@@ -161,7 +154,7 @@ async function set_partnership_on(event) {
         console.log("Error in database in set_partnership_on!");
         return;
     }
-    let error = await UserModel.updateOne({ id: user.id }, {subscription_id: event.subscription, partner: true}).catch(error => error);
+    let error = await UserModel.updateOne({ id: user.id }, {subscription_id: event.subscription}).catch(error => error);
     if (error.errors) {
         console.log("Could not update user in set_partnership_on!");
         return;
@@ -181,7 +174,7 @@ async function set_partnership_off(event) {
         console.log("Error in database in set_partnership_off!");
         return;
     }
-    let error = await UserModel.updateOne({ id: user.id }, {subscription_id: '', partner: false}).catch(error => error);
+    let error = await UserModel.updateOne({ id: user.id }, {subscription_id: ''}).catch(error => error);
     if (error.errors) {
         console.log("Could not update user in set_partnership_off!");
         return;
