@@ -97,7 +97,7 @@ export function UserRegister(props) {
       {SignInStep === 1 &&
         <>
           <Text style={globalStyles.subparapraphs}>
-            Choisi un nom d'utilisateur, ça permettra à tes amis de te retrouver dans l'app 😉
+            {I18n.t('UserRegister.chooseUsername')}
           </Text>
           <TextInput
             placeholder={I18n.t('UserRegister.username')}
@@ -108,14 +108,14 @@ export function UserRegister(props) {
             onChangeText={(valueText) => { setPseudo(valueText); }}
             value={pseudo}
           />
-          <PrimaryButton text="J'ai trouvé un bon nom d'utilisateur" onPressFct={() => setSignInStep(2)}/>
+          <PrimaryButton text={I18n.t("UserRegister.nextStep")} onPressFct={() => setSignInStep(2)}/>
         </>
       }
 
       {SignInStep === 2 &&
         <>
           <Text style={globalStyles.subparapraphs}>
-            Rentre ton adresse email ça te permettra de te connecter plus tard !
+            {I18n.t('UserRegister.chooseEmail')}
           </Text>
           <TextInput
             placeholder={I18n.t('UserRegister.email')}
@@ -127,14 +127,14 @@ export function UserRegister(props) {
             onChangeText={(valueText) => { setUserEmail(valueText); }}
             value={userEmail}
           />
-          <PrimaryButton text="Continuer mon inscription" onPressFct={() => setSignInStep(3)}/>
+          <PrimaryButton text={I18n.t("UserRegister.nextStep")} onPressFct={() => setSignInStep(3)}/>
         </>
       }
 
       {SignInStep === 3 &&
         <>
           <Text style={globalStyles.subparapraphs}>
-            Tu y es presque ! Trouve un mot de passe avec au  moins 8 caractères, 1 chiffre, 1 maj et 1 min
+            {I18n.t('UserRegister.choosePassword')}
           </Text>
           <TextInput
             placeholder={I18n.t('UserRegister.password')}
@@ -145,17 +145,17 @@ export function UserRegister(props) {
             onChangeText={(valueText) => { setUserPassword(valueText); }}
             value={userPassword}
           />
-          <PrimaryButton text="Continuer mon inscription" onPressFct={() => setSignInStep(4)}/>
+          <PrimaryButton text={I18n.t("UserRegister.nextStep")} onPressFct={() => setSignInStep(4)}/>
         </>
       }
 
       {SignInStep === 4 &&
         <>
           <Text style={globalStyles.subparapraphs}>
-            C'est la dernière étape ! Confirme ton mot de passe et prouve nous que tu n'es pas un robot
+            {I18n.t('UserRegister.confPassword')}
           </Text>
           <TextInput
-            placeholder={I18n.t('UserRegister.confPassword')}
+            placeholder={I18n.t('UserRegister.password')}
             secureTextEntry={true}
             style={[globalStyles.textInput, {marginBottom: 32}]}
             autoCapitalize="none"
@@ -164,7 +164,7 @@ export function UserRegister(props) {
             value={userConfirmPassWord}
           />
           <PrimaryButton
-            text="Continuer mon inscription"
+            text={I18n.t('UserRegister.continueInscription')}
             onPressFct={() => {
               if (userPassword === userConfirmPassWord) {
                 console.log("JE SUIS LAS");
@@ -175,7 +175,7 @@ export function UserRegister(props) {
         </>
       }
 
-      <PrimaryButton text='Continuer avec Facebook' onPressFct={() => {
+      <PrimaryButton text={I18n.t('UserRegister.facebook')} onPressFct={() => {
         console.log('facebook signin')
 
             AccessToken.getCurrentAccessToken().then((data) => {
@@ -207,11 +207,11 @@ export function UserRegister(props) {
             { color: "#9B979B", textAlign: "center" },
           ]}
         >
-          T'as déjà un compte ?
-          <Text style={{color: "#0989FF"}}> Connecte toi !</Text>
+          {I18n.t('UserRegister.alreadyAccount')}
+          <Text style={{color: "#0989FF"}}> {I18n.t('UserRegister.connect')}</Text>
         </Text>
       </TouchableOpacity>
-      <SecondaryButton text='Devenir partenaire' onPressFct={() => props.navigation.navigate('PartnerRegister')}/>
+      <SecondaryButton text={I18n.t("UserRegister.PartnerPage")} onPressFct={() => props.navigation.navigate('PartnerRegister')}/>
     </View>
     // <View style={styles.view_back}>
     //   <View style={styles.view_topButton}>

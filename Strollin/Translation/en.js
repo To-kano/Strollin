@@ -13,23 +13,38 @@ export default {
 
   CourseSettings:{
     budget: 'Budget',
-    euros:'Euros',
+    budget2: 'What is your budget for this trip ?',
+    spendingTime2: 'how much time do you have in front of you ?',
     spendingTime: 'Spending time',
-    hour:'Hour(s)',
-    minutes:'Minute(s)',
     distance:'Distance',
-    km:'Km',
-    maxPlaces:'Max number of places',
-    places:'Places',
+    distance2:'What maximum distance do you want to cover ?',
     alimentation:'Food',
     eatDrink:'Do you want to drink or eat ?',
-    multipleTrips:'Trips together',
+    eatDrink2: 'Your trip could contain places like bars or restaurants',
+    multipleTrips:'Do you want to travel with friends?',
+    multipleTrips2:"Add your friends to the ride and we'll take care of making a ride that everyone likes",
+    major: 'Are you major ?',
+    major2: 'Your age allows us to offer you different types of places',
+    majorTrue: 'I am a major !',
+    majorFalse: 'I am a minor !',
+    startPoint: 'Choose a starting point for your journey',
+    startPoint2: 'You can skip this step, Strollin will uses your current position',
+    startPoint3: "Choose your starting point",
+    tmpTags:"Do you want to use different tags ?",
+    tmpTags2:'Click here to select temporary tags that will only be taken into account for your next trip',
+    tmpTags3:'Use temporary tags',
+
+    maxPlaces:'How many maximum places for this trip?',
+    places:'Places',
     shareTrip:'Share trips with your friends ?',
     chooseFriend:'Choose your friends',
-    ageRestriction:"Age restriction",
-    more18:'Are you 18 or over ?',
-    tmpTags:'Use temporary tags',
     confirmOptions:'Confirm my options',
+    nextStep: 'Next step',
+    short: 'Short',
+    long: 'Long',
+    yes: 'Yes !',
+    no: 'No',
+    start:"Start the generation !"
   },
 
   FriendList: {
@@ -71,17 +86,25 @@ export default {
     form: 'Access the form'
   },
 
+  HomePage: {
+    hi: 'Hi',
+    newTrip: 'Start a new trip',
+    tryNewTrip: 'Try to start a trip !'
+  },
+
   LoginPage: {
     forgot: 'Forgot Pasword ?',
     confirm: 'Confirm',
     noAccount: 'Dont have an account ?',
-    SIGNIN: 'SIGN IN',
-    SIGNUP: 'SIGN UP',
+    SIGNIN: 'Sign in',
+    SIGNUP: 'Register !',
     OR: 'OR',
     or: 'OR',
     email: 'Email',
     password: 'Password',
     usernameOrEmail: 'Username or mail',
+    facebook: "Continue with Facebook",
+    noAccount: "No account yet ?"
   },
 
   Map: {
@@ -157,16 +180,35 @@ export default {
     myTags: 'My tags',
     addTags: 'Add tags',
     choosePic: 'Choose your profile picture',
+    chooseFormPic: 'Choose a picture',
     pic: 'Picture',
     remove: 'Remove',
     ok: 'OK',
-    close: 'Close'
+    close: 'Close',
+    changeTags: 'Change my tags',
+    cancel: 'Cancel',
+    confirm: 'Confirm'
   },
 
   TagSelection: {
-    welcome: 'Welcome: ',
+    welcome: 'Welcome to Strollin',
+    welcome2: 'Here you will be able to choose your tags',
+    welcome3: "What we call ",
+    welcome4: "tags",
+    welcome5: "are all the things you love in life. This will allow the application to ",
+    welcome6: "generate routes according to your tastes",
+    welcome7: "To add them to your list, select them. A tag added to your tag list is displayed with a ",
+    welcome8: "check ",
+    welcome9: "behind it. ",
+    welcome10: "You can change them at any time in your profile by clicking on ",
+    welcome11: "your photo in the menu",
+    welcomeButton: "Choose your tags !",
+    welcome13: "",
+    welcome14: "",
+    welcome15: "",
     chooseTags: 'Choose the tags that fit best your personality',
     next: 'Next',
+    validate: 'Validate my tags'
   },
 
   TendanceSearchBar: {
@@ -187,9 +229,13 @@ export default {
 
   UserRegister: {
     username: 'Username',
+    chooseUsername: 'Choose your username',
+    chooseEmail: 'Choose your email',
+    choosePassword: 'Choose your password (8 characters minimum including at least 1 number, 1 uppercase and 1 lowercase)',
     email: 'Email',
     password: 'Password',
-    confPassword: 'Confirme Password',
+    confPassword: 'Confirme your Password',
+    confYourPassword: 'Password confirmation',
     alreadyAccount: 'Already have an account ?',
     register: 'Register',
     signIn: 'Sign in',
@@ -198,12 +244,16 @@ export default {
     SIGNIN: 'SIGN IN',
     SIGNUP: 'SIGN UP',
     PartnerPage: "Become Partner",
-    companyName: "Company Name"
+    companyName: "Company Name",
+    facebook: "Continue with Facebook",
+    connect: 'Connect yourself !',
+    nextStep: 'Next step',
+    continueInscription: 'Continue my inscription'
   },
 
-  Tags: {
-    select_our_tags: 'Select out Tags',
-    confirm_my_tags: 'Confirm my Tags',
+  Step: {
+    step: 'Step',
+    to: 'to'
   },
 
   Partner: {

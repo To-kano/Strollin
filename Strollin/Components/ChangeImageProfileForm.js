@@ -44,7 +44,7 @@ function ChangeImageProfileForm({ profil, dispatch, modalVisible, setModalVisibl
               style={{ backgroundColor: "#ffffff", padding: 16, alignItems: 'center', borderRadius: 32 }}
               onPress={() => { setImage(null) }}
             >
-              <Text style={globalStyles.paragraphs}>Annuler</Text>
+              <Text style={globalStyles.paragraphs}>{I18n.t('ProfileScreen.cancel')}</Text>
             </TouchableOpacity>
             <TouchableOpacity
               disabled={disable}
@@ -61,7 +61,7 @@ function ChangeImageProfileForm({ profil, dispatch, modalVisible, setModalVisibl
                 }
               }}
             >
-              <Text style={[globalStyles.paragraphs, { color: '#ffffff' }]}>Confirmer</Text>
+              <Text style={[globalStyles.paragraphs, { color: '#ffffff' }]}>{I18n.t('ProfileScreen.confirm')}</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -77,10 +77,10 @@ function ChangeImageProfileForm({ profil, dispatch, modalVisible, setModalVisibl
             justifyContent: 'space-between'
           }}>
             <TouchableOpacity style={{ backgroundColor: "#ffffff", padding: 16, alignItems: 'center', borderRadius: 32 }} onPress={() => setModalVisible(!modalVisible)}>
-              <Text style={globalStyles.paragraphs}>Annuler</Text>
+              <Text style={globalStyles.paragraphs}>{I18n.t('ProfileScreen.cancel')}</Text>
             </TouchableOpacity>
             <TouchableOpacity style={{ backgroundColor: "#0989FF", padding: 16, alignItems: 'center', borderRadius: 32 }} onPress={handleChooseImage}>
-              <Text style={[globalStyles.paragraphs, { color: '#ffffff' }]}>Choisir une image</Text>
+              <Text style={[globalStyles.paragraphs, { color: '#ffffff' }]}>{I18n.t('ProfileScreen.chooseFormPic')}</Text>
             </TouchableOpacity>
           </View>
         </View>

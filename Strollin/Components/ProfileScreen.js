@@ -59,7 +59,7 @@ function ProfileScreen(props) {
   const [args, setArgs] = useState();
   const [tagsList, setTagsList] = useState(initialList);
 
-  
+
   const [isLoading, setLoading] = React.useState(false);
 
 
@@ -157,7 +157,7 @@ function ProfileScreen(props) {
           </View>
           </TouchableOpacity>
         </View>
-        <Popup message={"Changer ma photo"} modalVisible={modalVisible} setModalVisible={setModalVisible}>
+        <Popup message={I18n.t("ProfileScreen.choosePic")} modalVisible={modalVisible} setModalVisible={setModalVisible}>
           <ChangeImageProfileForm modalVisible={modalVisible} setModalVisible={setModalVisible}/>
         </Popup>
         <View style={{ marginTop: 32, width: "100%" }}>
@@ -173,7 +173,7 @@ function ProfileScreen(props) {
             {args?.pseudo}
           </TextInput>
         </View>
-        <Text style={[globalStyles.paragraphs, { marginVertical: 10 }]}>Les tags que j'aime</Text>
+        <Text style={[globalStyles.paragraphs, { marginVertical: 10 }]}>{I18n.t('ProfileScreen.myTags')}</Text>
       </>
     )
   }, [])
@@ -195,7 +195,7 @@ function ProfileScreen(props) {
           />
       <HistoricButton props={props}/>
       <MenuButton props={props} />
-      <Footer primaryText="Changer mes tags" primaryOnPressFct={() => { setReload(true); props.navigation.navigate('TagSelection'); }} />
+      <Footer primaryText={I18n.t("ProfileScreen.changeTags")} primaryOnPressFct={() => { setReload(true); props.navigation.navigate('TagSelection'); }} />
       {/* <Modal
         animationType="none"
         transparent={true}

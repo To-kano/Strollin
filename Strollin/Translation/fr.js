@@ -14,23 +14,37 @@ export default {
 
   CourseSettings:{
     budget: 'Budget',
-    euros:'Euros',
+    budget2: 'Quel est ton budget pour ce trajet ?',
     spendingTime: 'Temps du trajet',
-    hour:'Heure(s)',
-    minutes:'Minute(s)',
+    spendingTime2: 'combien de temps avez-vous devant vous ?',
     distance:'Distance',
-    km:'Km',
-    maxPlaces:'Nombre de lieux maximum',
-    places:'Lieux',
-    alimentation:'Alimentation',
+    distance2:'Quelle distance maxi tu veux parcourir ?',
     eatDrink:'Voulez vous manger ou boire ?',
-    multipleTrips:'Trajet à plusieurs',
+    eatDrink2: 'Ton trajet pourrait contenir des lieux comme des bars ou des restaurant',
+    multipleTrips:'Veux tu faire le trajet avec des amis ?',
+    multipleTrips2:'Ajoute tes amis au trajet et nous nous occupons de faire un trajet qui plait a tout le monde',
+    major: 'Es-tu majeur ?',
+    major2: 'Ton age nous permets de te proposer different types de lieux',
+    majorTrue: 'Je suis majeur !',
+    majorFalse: 'Je suis mineur !',
+    startPoint: 'Choisi un point de départ à ton trajet',
+    startPoint2: 'Vous pouvez passer cette étape, Strollin utiliseras votre position actuelle',
+    startPoint3: "Choisissez votre point de départ",
+    tmpTags:'Voulez vous utiliser des tags différents ?',
+    tmpTags2:'Cliquez ici pour sélectionner des tags temporaires qui ne seront pris en compte que pour ton prochain trajet',
+    tmpTags3:'Utiliser des tags temporaires',
+
+    maxPlaces:'Combien de lieux maximum pour ce trajet ?',
+    places:'Lieux',
     shareTrip:'Partager le trajet avec vos amis ?',
     chooseFriend:'Choisissez des amis',
-    ageRestriction:"Restriction d'âge",
-    more18:'Avez vous 18 ans ou plus ?',
-    tmpTags:'Utiliser des tags temporaires',
     confirmOptions:'Comfirmer mes options',
+    nextStep: 'Prochaine etape',
+    short: 'Court',
+    long: 'long',
+    yes: 'Oui !',
+    no: 'Non',
+    start:"Lancer la génération !"
   },
 
   FriendList: {
@@ -61,17 +75,25 @@ export default {
     form: 'Accéder au formulaire'
   },
 
+  HomePage: {
+    hi: 'Salut',
+    newTrip: 'Commencer un nouveau trajet',
+    tryNewTrip: 'Esseyer de lancer un trajet !'
+  },
+
   LoginPage: {
     confirm: 'Confirmer',
     forgot: 'Mot de passe oublié ?',
     noAccount: "Vous n'avez pas de compte ?",
-    SIGNIN: 'SE CONNECTER',
-    SIGNUP: "S'INSCRIRE",
+    SIGNIN: 'Se connecter',
+    SIGNUP: "Inscrit toi !",
     OR: 'OU',
     or: 'OU',
     email: 'Email',
     password: 'Mot de passe',
     usernameOrEmail: "Nom d'utilisateur ou email",
+    facebook: "Continuer avec Facebook",
+    noAccount: "Pas encore de compte ?"
   },
 
   Map: {
@@ -142,21 +164,40 @@ export default {
 
   ProfileScreen: {
     name: 'Nom',
-    pseudo: 'Pseudo',
+    pseudo: 'Pseudo:',
     tags: 'Tags',
     myTags: 'Mes tags',
     addTags: 'Ajouter des tags',
     choosePic: 'Choisissez votre photo de profil',
+    chooseFormPic: 'Choisissez une image',
     pic: 'Photo',
     remove: 'Retirer',
     ok: 'OK',
-    close: 'Fermer'
+    close: 'Fermer',
+    changeTags: 'Changer mes tags',
+    cancel: 'Annuler',
+    confirm: 'Confirmer'
   },
 
   TagSelection: {
-    welcome: 'Bienvenue',
+    welcome: 'Bienvenue sur Strollin',
+    welcome2: 'Ici tu vas pouvoir choisir tes tags',
+    welcome3: "Ce qu'on appelle",
+    welcome4: "les tags, ",
+    welcome5: "c'est toutes les choses que tu aimes dans la vie. Ça permettra à l'application de ",
+    welcome6: "générer des trajets en fonction de tes goûts",
+    welcome7: "Pour les ajouter à ta liste il suffit de les sélectionner. Un tag ajouté dans ta liste de tag s'affiche avec un ",
+    welcome8: "check ",
+    welcome9: "derrière. ",
+    welcome10: "Tu pourras les changer à tous moments dans ton profil en cliquant sur ",
+    welcome11: "ta photo dans le menu",
+    welcomeButton: "Choisissez vos tags !",
+    welcome13: "",
+    welcome14: "",
+    welcome15: "",
     chooseTags: 'Choisissez les tags qui correspondent le mieux à votre personnalité',
     next: 'Suivant',
+    validate: 'Valider mes tags'
   },
 
   TendanceSearchBar: {
@@ -177,10 +218,14 @@ export default {
 
   UserRegister: {
     username: "Nom d'utilisateur",
+    chooseUsername: "Choisissez votre nom d'utilisateur",
+    chooseEmail: 'Choisissez votre email',
+    choosePassword: 'Choisissez votre mot de passe (8 caractères minimum dont au moins 1 chiffre, 1 majuscule et 1 minucule)',
     email: 'Email',
     password: 'Mot de passe',
-    confPassword: 'Comfirmation du mot de passe',
-    alreadyAccount: 'Vous avez déjà un compte ?',
+    confPassword: 'Comfirmer votre mot de passe',
+    confYourPassword: 'Confirmer votre mot de passe',
+    alreadyAccount: 'Vous avez déja un compte ?',
     register: 'Inscription',
     signIn: 'Connection',
     or: 'OU',
@@ -188,12 +233,16 @@ export default {
     SIGNIN: 'SE CONNECTER',
     SIGNUP: "S'INSCRIRE",
     PartnerPage: "Devenir Partenaire",
-    companyName: "Nom d'entreprise"
+    companyName: "Nom d'entreprise",
+    facebook: "Continuer avec Facebook",
+    connect: 'Connecte toi !',
+    nextStep: 'Prochaine etape',
+    continueInscription: 'Continuer mon inscription'
   },
 
-  Tags: {
-    select_our_tags: 'Selectionnez vos Tags',
-    confirm_my_tags: 'Confirmer mes Tags',
+  Step: {
+    step: 'Etape',
+    to: 'sur'
   },
 
   Partner: {

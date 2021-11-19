@@ -750,7 +750,7 @@ function testrenderItem({item,index}){
       />
       <MenuButton props={props}/>
       <Footer
-        primaryText="C'est parti mon kiki"
+        primaryText={I18n.t("TripSuggestion.letsGo")}
         primaryOnPressFct={() => {
           let finalLocations = carouselItemFinal.carouselItems[carouselItemFinal.activeIndex].locations
           var loctmp = [];
@@ -770,7 +770,7 @@ function testrenderItem({item,index}){
           // props.dispatch(action);
           // props.navigation.navigate('TripNavigation');
         }}
-        secondaryText="Ca me plait pas trop"
+        secondaryText={I18n.t("TripSuggestion.newTrip")}
         secondaryOnPressFct={() => {
           setLoading(true);
           getLocations2()

@@ -80,10 +80,10 @@ export function LoginPage(props) {
       <TouchableOpacity style={{width: '100%', marginTop: 4, marginBottom: 32}} onPress={() => { props.navigation.navigate("ResetPassword") }}>
         <Text
           style={[globalStyles.subparagraphs, { fontSize: 10, textDecorationLine: "underline", textDecorationColor: "#1C1B1C"}]}
-        >Mot de passe oublié ?</Text>
+        >{I18n.t('LoginPage.forgot')}</Text>
       </TouchableOpacity>
       <PrimaryButton
-        text="Me connecter"
+        text={I18n.t('LoginPage.SIGNIN')}
         onPressFct={() => {
             if (value && valuePass) {
               setLoading(true);
@@ -93,7 +93,7 @@ export function LoginPage(props) {
         }
       />
       <PrimaryButton
-        text="Continuer avec Facebook"
+        text={I18n.t('LoginPage.facebook')}
         onPressFct={() => {
           AccessToken.getCurrentAccessToken().then((data) => {
             const accessToken = data.accessToken.toString();
@@ -138,8 +138,8 @@ export function LoginPage(props) {
             { color: "#9B979B", textAlign: "center" },
           ]}
         >
-          Pas encore de compte ?
-          <Text style={{ color: "#0989FF" }}> Inscrit toi !</Text>
+          {I18n.t('LoginPage.noAccount')}
+          <Text style={{ color: "#0989FF" }}> {I18n.t('LoginPage.SIGNUP')}</Text>
         </Text>
       </TouchableOpacity>
       <Modal

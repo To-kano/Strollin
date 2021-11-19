@@ -111,7 +111,7 @@ export function HomePage(props) {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingVertical: 96 }}
       >
-        <Text style={[globalStyles.titles, { marginBottom: 32, }]}>Salut {props.profil.pseudo} !</Text>
+        <Text style={[globalStyles.titles, { marginBottom: 32, }]}>{I18n.t('HomePage.hi')} {props.profil.pseudo} !</Text>
         { tendance.length > 0
           ? <FlatList
               style={{width: '100%', height: '70%'}}
@@ -126,7 +126,7 @@ export function HomePage(props) {
               )}
               keyExtractor={(item) => item.id }
             />
-          : <Text style={globalStyles.subtitles}>T'es nouveau par ici dis moi ! Essaye donc de faire un trajet 😉</Text>
+          : <Text style={globalStyles.subtitles}>{I18n.t('HomePage.tryNewTrip')}</Text>
         }
       </View>
       <MenuButton props={props}/>
@@ -134,7 +134,7 @@ export function HomePage(props) {
         onPress={(data) => { setSortedTendanceData(data); }}
         imagePath="../images/icons/black/search.png"
       />
-      <Footer primaryText="Une envie de sortir ?" primaryOnPressFct={() => props.navigation.navigate(I18n.t("Menu.newTrip"), { screen: 'CourseSettings' })}/>
+      <Footer primaryText={I18n.t('HomePage.newTrip')} primaryOnPressFct={() => props.navigation.navigate("New trip", { screen: 'CourseSetting' })}/>
     </View>
 
       // {/* <TouchableOpacity

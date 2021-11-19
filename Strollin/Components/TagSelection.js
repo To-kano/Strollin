@@ -218,26 +218,25 @@ export function TagSelection(props, { navigation, profil }) {
     <>
       {firstTime && props.profil.tags_list.length == 0
       ? <View style={[globalStyles.container, {justifyContent: 'flex-start'}]}>
-          <Text style={[globalStyles.titles, {marginVertical: 32}]}>Bienvenue sur Strollin {props.profil.pseudo} !</Text>
-          <Text style={[globalStyles.titles, {marginVertical: 16}]}>Ici tu vas pouvoir choisir tes tags</Text>
+          <Text style={[globalStyles.titles, {marginVertical: 32}]}>{I18n.t('TagSelection.welcome')} {props.profil.pseudo} !</Text>
+          <Text style={[globalStyles.titles, {marginVertical: 16}]}>{I18n.t('TagSelection.welcome2')}</Text>
           <Text style={[globalStyles.subparagraphs, {marginVertical: 8}]}>
-            Ce qu'on appelle <Text style={[globalStyles.paragraphs, {color: '#0989FF'}]}>les tags</Text> c'est toutes les choses que tu aimes dans la vie. Ça permettra à l'application de <Text style={[globalStyles.paragraphs, {color: '#0989FF'}]}>générer des trajets en fonction de tes goûts</Text>.
+            {I18n.t('TagSelection.welcome3')} <Text style={[globalStyles.paragraphs, {color: '#0989FF'}]}>{I18n.t('TagSelection.welcome4')}</Text>{I18n.t('TagSelection.welcome5')} <Text style={[globalStyles.paragraphs, {color: '#0989FF'}]}>{I18n.t('TagSelection.welcome6')}</Text>.
           </Text>
           <Text style={[globalStyles.subparagraphs, {marginVertical: 8}]}>
-            Pour les ajouter à ta liste t'auras juste à les sélectionner. Un tag ajouté dans ta liste de tag s'affiche avec un <Text style={[globalStyles.paragraphs, {color: '#0989FF'}]}>check</Text> derrière.
-            Si il n'y a pas le check, t'as compris, il n'est pas dans ta liste.
+            {I18n.t('TagSelection.welcome7')}<Text style={[globalStyles.paragraphs, {color: '#0989FF'}]}>{I18n.t('TagSelection.welcome8')}</Text>{I18n.t('TagSelection.welcome9')}
           </Text>
           <Text style={[globalStyles.subparagraphs, {marginVertical: 8, marginBottom: 48}]}>
-            Tu pourras les changer à tous moments dans ton profil en <Text style={[globalStyles.paragraphs, {color: '#0989FF'}]}>cliquant sur ta photo dans le menu</Text> 😉
+            {I18n.t('TagSelection.welcome10')}<Text style={[globalStyles.paragraphs, {color: '#0989FF'}]}>{I18n.t('TagSelection.welcome11')}</Text>
           </Text>
-          <PrimaryButton text="J'ai compris ! Je choisi mes tags" onPressFct={() => setFirstTime(false)}/>
+          <PrimaryButton text={I18n.t('TagSelection.welcomeButton')} onPressFct={() => setFirstTime(false)}/>
         </View>
       : <View style={[globalStyles.container, {justifyContent: 'flex-start'}]}>
             <FlatList
               style={{width: '100%', paddingVertical: 86}}
               data={array}
               ListHeaderComponent={() => {
-                return (<Text style={[globalStyles.titles]}>{I18n.t('Tags.select_our_tags')}</Text>)
+                return (<Text style={[globalStyles.titles]}>{I18n.t('TagSelection.chooseTags')}</Text>)
               }}
               numColumns={2}
               showsVerticalScrollIndicator={false}
@@ -258,7 +257,7 @@ export function TagSelection(props, { navigation, profil }) {
             </View>
           </Modal>
           <MenuButton props={props}/>
-          <Footer primaryText="Valider mes tags" primaryOnPressFct={() => props.navigation.navigate(I18n.t("Menu.profile"))}/>
+          <Footer primaryText={I18n.t("TagSelection.validate")} primaryOnPressFct={() => props.navigation.navigate(I18n.t("Menu.profile"))}/>
         </View>
       }
     </>

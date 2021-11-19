@@ -157,7 +157,7 @@ function Menu(props) {
             style={[styles.view_navigationIn, {position: 'absolute', bottom: 0}]}
           >
             <Icon name='logout' size={32} color='#1C1B1C'/>
-            <Text style={[globalStyles.paragraphs, {marginLeft: 8}]}>Se déconnecter</Text>
+            <Text style={[globalStyles.paragraphs, {marginLeft: 8}]}>{I18n.t('Menu.logOut')}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => props.navigation.navigate('Guide')}

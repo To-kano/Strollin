@@ -182,8 +182,8 @@ export function CourseSettings(props) {
       {CourseSettingStep === 1 &&
         <>
           <View>
-            <Text style={globalStyles.titles}>Combien de temps as-tu devant toi ?</Text>
-            <Text style={[globalStyles.subparagraphs, { marginTop: 16 }]}>Indique nous ton budget maximum, on te promet une sortie à ce prix la 😉</Text>
+            <Text style={globalStyles.titles}>{I18n.t('CourseSettings.spendingTime')}</Text>
+            <Text style={[globalStyles.subparagraphs, { marginTop: 16 }]}>{I18n.t('CourseSettings.spendingTime2')}</Text>
             <TimePicker
               hourOption={hourOption}
               hourSelected={hourSelected}
@@ -193,30 +193,30 @@ export function CourseSettings(props) {
               setMinuteSelected={setMinuteSelected}
             />
           </View>
-          <NextStep text='La suite' onPressFct={() => setCourseSettingStep(CourseSettingStep + 1)} />
+          <NextStep text={I18n.t('CourseSettings.nextStep')} onPressFct={() => setCourseSettingStep(CourseSettingStep + 1)} />
         </>
       }
 
       {CourseSettingStep === 2 &&
         <>
           <View>
-            <Text style={globalStyles.titles}>Quel est ton budget ?</Text>
-            <Text style={[globalStyles.subparagraphs, { marginTop: 16 }]}>Indique nous ton budget maximum, on te promet une sortie à ce prix la 😉</Text>
+            <Text style={globalStyles.titles}>{I18n.t('CourseSettings.budget')}</Text>
+            <Text style={[globalStyles.subparagraphs, { marginTop: 16 }]}>{I18n.t('CourseSettings.budget2')}</Text>
             <NumberPicker min={0} max={250} increment={10} text="€" indexList={budget} setIndexList={setBudget}/>
           </View>
-          <NextStep text='La suite' onPressFct={() => setCourseSettingStep(CourseSettingStep + 1)} />
+          <NextStep text={I18n.t('CourseSettings.nextStep')} onPressFct={() => setCourseSettingStep(CourseSettingStep + 1)} />
         </>
       }
 
       {CourseSettingStep === 3 &&
         <>
           <View>
-            <Text style={globalStyles.titles}>Quelle distance maxi tu veux parcourir ?</Text>
-            <Text style={[globalStyles.subparagraphs, { marginTop: 16 }]}>Dis nous si t'es plutôt du genre sportif ou flemmard, t'inquiète pas je ne suis qu une application je ne te jugerai pas !</Text>
+            <Text style={globalStyles.titles}>{I18n.t('CourseSettings.distance')}</Text>
+            <Text style={[globalStyles.subparagraphs, { marginTop: 16 }]}>{I18n.t('CourseSettings.distance2')}</Text>
             <View style={{ marginTop: 32, justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row' }}>
-              <Text style={[globalStyles.subparagraphs, { fontSize: 10 }]}>Oh flemme{"\n"}de ouf</Text>
+              <Text style={[globalStyles.subparagraphs, { fontSize: 10 }]}>{I18n.t('CourseSettings.short')}</Text>
               <Text style={globalStyles.subparagraphs}>{radius} km</Text>
-              <Text style={[globalStyles.subparagraphs, { fontSize: 10, textAlign: 'right' }]}>Un marathon{"\n"}serieux ?</Text>
+              <Text style={[globalStyles.subparagraphs, { fontSize: 10, textAlign: 'right' }]}>{I18n.t('CourseSettings.long')}</Text>
             </View>
             <Slider
               maximumValue={20}
@@ -239,86 +239,86 @@ export function CourseSettings(props) {
               }}
             />
           </View>
-          <NextStep text='La suite' onPressFct={() => setCourseSettingStep(CourseSettingStep + 1)} />
+          <NextStep text={I18n.t('CourseSettings.nextStep')} onPressFct={() => setCourseSettingStep(CourseSettingStep + 1)} />
         </>
       }
 
       {CourseSettingStep === 4 &&
         <>
           <View>
-            <Text style={globalStyles.titles}>Combien de lieux max ?</Text>
-            <Text style={[globalStyles.subparagraphs, { marginTop: 16 }]}>Indique nous ton budget maximum, on te promet une sortie à ce prix la 😉</Text>
+            <Text style={globalStyles.titles}>{I18n.t('CourseSettings.places')}</Text>
+            <Text style={[globalStyles.subparagraphs, { marginTop: 16 }]}>{I18n.t('CourseSettings.maxPlaces')}</Text>
             <NumberPicker min={1} max={30} increment={1} text="Lieux" indexList={placeNbr} setIndexList={setPlaceNbr}/>
           </View>
-          <NextStep text='La suite' onPressFct={() => setCourseSettingStep(CourseSettingStep + 1)} />
+          <NextStep text={I18n.t('CourseSettings.nextStep')} onPressFct={() => setCourseSettingStep(CourseSettingStep + 1)} />
         </>
       }
 
       {CourseSettingStep === 5 &&
         <>
           <View>
-            <Text style={globalStyles.titles}>Au fait, es-tu majeur ?</Text>
-            <Text style={[globalStyles.subparagraphs, { marginTop: 16 }]}>Indique nous ton budget maximum, on te promet une sortie à ce prix la 😉</Text>
-            <SwitchButton textTrue='Je suis majeur !' textFalse="Je suis mineur" switchValue={is18} onSwitchFct={() => setIs18(previousState => !previousState)} />
+            <Text style={globalStyles.titles}>{I18n.t('CourseSettings.major')}</Text>
+            <Text style={[globalStyles.subparagraphs, { marginTop: 16 }]}>{I18n.t('CourseSettings.major2')}</Text>
+            <SwitchButton textTrue={I18n.t('CourseSettings.majorTrue')}textFalse={I18n.t('CourseSettings.majorFalse')} switchValue={is18} onSwitchFct={() => setIs18(previousState => !previousState)} />
           </View>
-          <NextStep text='La suite' onPressFct={() => setCourseSettingStep(CourseSettingStep + 1)} />
+          <NextStep text={I18n.t('CourseSettings.nextStep')} onPressFct={() => setCourseSettingStep(CourseSettingStep + 1)} />
         </>
       }
 
       {CourseSettingStep === 6 &&
         <>
           <View>
-            <Text style={globalStyles.titles}>Aimerais-tu manger ou boire ?</Text>
-            <Text style={[globalStyles.subparagraphs, { marginTop: 16 }]}>Le meilleur pour la fin petit gourmand ! {'\n'}Si tu coches oui on essayera de te placer une pause repas dans ton trajet 😉</Text>
-            <SwitchButton textTrue='Oh bonne idée ça !' textFalse="J'ai pas trop faim" switchValue={isEatDrink} onSwitchFct={() => setEatDring(previousState => !previousState)} />
+            <Text style={globalStyles.titles}>{I18n.t('CourseSettings.eatDrink')}</Text>
+            <Text style={[globalStyles.subparagraphs, { marginTop: 16 }]}>{I18n.t('CourseSettings.eatDrink2')}</Text>
+            <SwitchButton textTrue={I18n.t('CourseSettings.yes')} textFalse={I18n.t('CourseSettings.no')} switchValue={isEatDrink} onSwitchFct={() => setEatDring(previousState => !previousState)} />
           </View>
-          <NextStep text='La suite' onPressFct={() => setCourseSettingStep(CourseSettingStep + 1)} />
+          <NextStep text={I18n.t('CourseSettings.nextStep')} onPressFct={() => setCourseSettingStep(CourseSettingStep + 1)} />
         </>
       }
       {CourseSettingStep === 7 &&
         <>
           <View>
-            <Text style={globalStyles.titles}>Veux tu faire le trajet avec des amis UwU ?</Text>
-            <Text style={[globalStyles.subparagraphs, { marginTop: 16 }]}>Strollin est aussi une application sociale {'\n'} Ajoute tes amis au trajet et nous nous occupons de faire un trajet qui plait a tout le monde</Text>
+            <Text style={globalStyles.titles}>{I18n.t('CourseSettings.multipleTrips')}</Text>
+            <Text style={[globalStyles.subparagraphs, { marginTop: 16 }]}>{I18n.t('CourseSettings.multipleTrips2')}</Text>
           </View>
           <SecondaryButton
-            text="Choisir des amis"
+            text={I18n.t('CourseSettings.chooseFriend')}
             onPressFct={() => {
               props.navigation.navigate("FriendSelection");
             }}
           />
-          <NextStep text='La suite' onPressFct={() => setCourseSettingStep(CourseSettingStep + 1)} />
+          <NextStep text={I18n.t('CourseSettings.nextStep')} onPressFct={() => setCourseSettingStep(CourseSettingStep + 1)} />
         </>
       }
       {CourseSettingStep === 8 &&
         <>
           <View>
-            <Text style={globalStyles.titles}>D'où veux tu partir ?</Text>
-            <Text style={[globalStyles.subparagraphs, { marginTop: 16 }]}>Choisis un point de départ à ton trajet.</Text>
+            <Text style={globalStyles.titles}>{I18n.t('CourseSettings.startPoint')}</Text>
+            <Text style={[globalStyles.subparagraphs, { marginTop: 16 }]}>{I18n.t('CourseSettings.startPoint2')}</Text>
           </View>
           <SecondaryButton
-            text="Choisir le point de départ"
+            text={I18n.t("CourseSettings.startPoint3")}
             onPressFct={() => {
               props.navigation.navigate("ChosePosition");
             }}
           />
-          <NextStep text='La suite' onPressFct={() => setCourseSettingStep(CourseSettingStep + 1)} />
+          <NextStep text={I18n.t('CourseSettings.nextStep')} onPressFct={() => setCourseSettingStep(CourseSettingStep + 1)} />
         </>
       }
       {CourseSettingStep === 9 &&
         <>
           <View style={{width: "100%", marginBottom: 16}}>
-            <Text style={globalStyles.titles}>Veux-tu un peu de changement ?</Text>
-            <Text style={[globalStyles.subparagraphs, { marginTop: 16 }]}>Tu en a marre de tes tags et veux tester de nouvelles choses ? {'\n'}Clique ici et selectionne des tags temporaires qui ne seront pris en compte que pour ton prochain trajet.</Text>
+            <Text style={globalStyles.titles}>{I18n.t("CourseSettings.tmpTags")}</Text>
+            <Text style={[globalStyles.subparagraphs, { marginTop: 16 }]}>{I18n.t("CourseSettings.tmpTags2")}</Text>
           </View>
           <SecondaryButton
-            text="Choisir des tags temporaires"
+            text={I18n.t("CourseSettings.tmpTags3")}
             onPressFct={() => {
               props.navigation.navigate("Temporarytags");
             }}
           />
           <Footer
-            primaryText="Lancer l'algo !"
+            primaryText={I18n.t("CourseSettings.start")}
             primaryOnPressFct={() => {
               console.log("hour: ", hourOption[hourSelected]);
               console.log("minute: ", minuteOption[minuteSelected]);
