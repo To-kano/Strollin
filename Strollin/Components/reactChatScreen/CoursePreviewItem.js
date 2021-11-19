@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import Store from '../../Store/configureStore';
 import DestinationItem from './DestinationItem';
 import { CommonActions } from '@react-navigation/native';
-
+import I18n from '../../Translation/configureTrans';
 
 import {
   StyleSheet,
@@ -42,7 +42,7 @@ function CoursePreviewItem(props) {
           value: props.courseObject
         };
         Store.dispatch(action);
-        navigation.navigate('New trip',{
+        navigation.navigate(I18n.t("Menu.newTrip"),{
           screen: 'TripSuggestion',
          }
         )
