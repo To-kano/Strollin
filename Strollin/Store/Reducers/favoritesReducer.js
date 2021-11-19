@@ -52,6 +52,8 @@ function FavoritesReducer(state = initialState, action) {
   let nextState;
 
   switch (action.type) {
+    case 'DECONNECTION':
+      return initialState;
     case 'SET_FAVORITES_LIST':
       nextState = {
         ...state,

@@ -45,6 +45,8 @@ function FavoritesReducer(state = initialState, action) {
       };
       nextState.selectedCourse = action.value
       return nextState;
+    case 'DECONNECTION':
+      return initialState;
     default:
       return state;
   }

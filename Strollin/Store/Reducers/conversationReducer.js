@@ -30,6 +30,8 @@ function ConversationReducer(state = initialState, action) {
       nextState[action.value.id] = action.value;
       nextState.conversationList = [action.value.id, ...nextState.conversationList]
       return nextState;
+    case 'DECONNECTION':
+      return initialState;
     case 'SET_CURRENT_CONVERSATION':
       nextState = {
         ...state,

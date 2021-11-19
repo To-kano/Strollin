@@ -22,6 +22,8 @@ function searchReducer(state = initialState, action) {
   let nextState;
 
   switch (action.type) {
+    case 'DECONNECTION':
+      return initialState;
     case 'SET_SEARCH_FRIEND_LIST':
       nextState = {
         ...state,

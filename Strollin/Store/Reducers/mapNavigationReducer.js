@@ -114,6 +114,8 @@ function mapNavigationReducer(state = initialState, action) {
   let nextState;
   // //console.log("\n\ngalleryReducer:\n")
   switch (action.type) {
+    case 'DECONNECTION':
+      return initialState;
     case 'SET_WAYPOINTS':
       nextState = {
         ...state,
