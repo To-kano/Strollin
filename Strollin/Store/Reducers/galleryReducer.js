@@ -7,6 +7,8 @@ function galleryReducer(state = initialState, action) {
   // //console.log("\n\ngalleryReducer:\n")
   // //console.log(action)
   switch (action.type) {
+    case 'DECONNECTION':
+      return initialState;
     case 'SET_GALLERY':
       nextState = {
         ...state,

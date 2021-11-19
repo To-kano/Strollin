@@ -7,13 +7,14 @@
  */
 
 import React from 'react';
+import { ActivityIndicator, View } from "react-native";
 import { Provider } from 'react-redux';
 import Navigation from './Navigation/Navigation';
-import Store from './Store/configureStore';
+import {store, persistor} from './Store/configureStore';
 import Socket from "./Components/Socket";
 import SplashScreen from  "react-native-splash-screen";
 import PushNotification, {Importance} from 'react-native-push-notification';
-
+import { PersistGate } from 'redux-persist/integration/react'
 
   
 
@@ -23,11 +24,17 @@ Sentry.init({
   dsn: 'https://ad5c52fe29484925ae30e9fa78fafbac@o1021953.ingest.sentry.io/5988093', 
 });
 
+//const {store, persistor} = configureStore();
+
+const onBeforeLift = () => {
+  SplashScreen.hide();
+  // take some action before the gate lifts
+}
 
 function App() {
 
   React.useEffect(() => {
-     SplashScreen.hide();
+     //SplashScreen.hide();
      //Sentry.nativeCrash();
 
      PushNotification.createChannel(
@@ -46,10 +53,15 @@ function App() {
    },[]);
    
   return (
-      <Provider store={Store}>
-        <Socket>
-          <Navigation />
-        </Socket>
+      <Provider store={store}>
+        <PersistGate loading={null} 
+        persistor={persistor}
+        onBeforeLift={onBeforeLift}
+         >
+          <Socket  >
+            <Navigation />
+          </Socket>
+        </PersistGate>
       </Provider>
   );
 }

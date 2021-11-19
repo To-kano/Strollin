@@ -97,7 +97,7 @@ export function HomePage(props) {
 
   const store = Store.getState();
 
-  const [tendance, setTendance] = useState([]);
+  const [tendance, setTendance] = useState(store.tendance.tendanceList || []);
 
   useEffect(() => {
     setTendance(getTendanceList());

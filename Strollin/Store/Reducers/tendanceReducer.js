@@ -154,6 +154,8 @@ function tendanceReducer(state = initialState, action) {
   let nextState;
 
   switch (action.type) {
+    case 'DECONNECTION':
+      return initialState;
     case 'SET_TENDANCE_LIST':
       nextState = {
         ...state,

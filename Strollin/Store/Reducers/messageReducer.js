@@ -21,6 +21,8 @@ const EXEMPLE = {
     // //console.log("\n\ngalleryReducer:\n")
     // //console.log(action)
     switch (action.type) {
+      case 'DECONNECTION':
+        return initialState;
       case 'ADD_MESSAGE':
         nextState = {
           ...state,

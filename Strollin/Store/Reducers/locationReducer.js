@@ -6,6 +6,8 @@ function LocationReducer(state = initialState, action) {
   // //console.log("\n\ngalleryReducer:\n")
   // //console.log(action)
   switch (action.type) {
+    case 'DECONNECTION':
+      return initialState;
     case 'ADD_LOCATION':
       nextState = {
         ...state,
