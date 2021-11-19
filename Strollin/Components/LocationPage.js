@@ -37,7 +37,7 @@ function LocationPage({route, navigation}) {
           <Image style={styles.img_header} source={require('../images/icons/black/menu.png')} />
         </TouchableOpacity>
         <Text style={styles.text_header}>
-          {I18n.t('Header.partner')}
+          {I18n.t('Header.location')}
           {'   '}
         </Text>
       </View>
@@ -133,7 +133,9 @@ function LocationPage({route, navigation}) {
             contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap' }}
             keyExtractor={(item) => item._id}
             renderItem={({ item }) => (
-              <Text style={[globalStyles.subparagraphs, globalStyles.tag]}>{translateTags(item._id)}</Text>
+              (translateTags(item._id) != 'error' &&
+                <Text style={[globalStyles.subparagraphs, globalStyles.tag]}>{translateTags(item._id)}</Text>
+              )
             )}
           />
         </View>

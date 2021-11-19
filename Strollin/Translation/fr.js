@@ -4,7 +4,7 @@ export default {
   },
 
   CourseEvaluation: {
-    evaluate: 'Evaluer cette course!',
+    evaluate: 'Evaluer ce parcours !',
     note: 'Note:',
     yourComment: 'Votre commentaire',
     send: "Envoyer l'évaluation",
@@ -24,11 +24,11 @@ export default {
     places:'Lieux',
     alimentation:'Alimentation',
     eatDrink:'Voulez vous manger ou boire ?',
-    multipleTrips:'Trajet a plusieurs',
+    multipleTrips:'Trajet à plusieurs',
     shareTrip:'Partager le trajet avec vos amis ?',
     chooseFriend:'Choisissez des amis',
     ageRestriction:"Restriction d'âge",
-    more18:'Avez vous 18ans ou plus ?',
+    more18:'Avez vous 18 ans ou plus ?',
     tmpTags:'Utiliser des tags temporaires',
     confirmOptions:'Comfirmer mes options',
   },
@@ -83,7 +83,7 @@ export default {
   },
 
   Menu: {
-    home:'Acceuil',
+    home:'Accueil',
     historic:'Historique',
     newTrip:'Nouveau trajet',
     friends:'Amis',
@@ -93,7 +93,7 @@ export default {
     partenaire:'Partenaire',
     settings:'Paramètres',
     favorites:'Favoris',
-    personalTrip:'Trajets personalisés',
+    personalTrip:'Trajets personnalisés',
     positionPartener:'Position du commerce',
     subscription:'Abonnement',
     logOut:'Déconnexion',
@@ -109,13 +109,13 @@ export default {
     email: 'Email',
     password: 'Mot de passe',
     confPassword: 'Comfirmation du mot de passe',
-    alreadyAccount: 'Vous avez déja un compte ?',
+    alreadyAccount: 'Vous avez déjà un compte ?',
     register: 'Inscription',
     signIn: 'Connection',
   },
 
   PersonalTrip: {
-    whereGo: "Où voulez vous allez ?",
+    whereGo: "Où voulez vous aller ?",
     addTrip: "Ajouter au trajet",
     shedules: "Horaires",
     tags: "Tags :",
@@ -124,11 +124,11 @@ export default {
     seeTrip: "Voir mon trajet",
     finalTrip: "Votre trajet final :",
     emptyTrip: "Votre trajet est vide..",
-    go: "C'est partit !"
+    go: "C'est parti !"
   },
 
   PopUpForm: {
-    goTo: 'Voulez vous allez à'
+    goTo: 'Voulez vous aller à'
   },
 
   Position: {
@@ -171,7 +171,7 @@ export default {
   },
 
   TripNavigation: {
-    delete: "Suprimer",
+    delete: "Supprimer",
     simulate: "Simulation"
   },
 
@@ -180,7 +180,7 @@ export default {
     email: 'Email',
     password: 'Mot de passe',
     confPassword: 'Comfirmation du mot de passe',
-    alreadyAccount: 'Vous avez déja un compte ?',
+    alreadyAccount: 'Vous avez déjà un compte ?',
     register: 'Inscription',
     signIn: 'Connection',
     or: 'OU',
@@ -199,8 +199,8 @@ export default {
   Partner: {
     number_of_popup: 'Nombre de popup',
     number_of_accepted_popup: 'Nombre de popup accepté',
-    appearances_in_the_algorithm: "Apparition dans l'algorythme",
-    acceptance_in_the_algorithm: "Acceptation dans l'algorythme",
+    appearances_in_the_algorithm: "Apparition dans l'algorithme",
+    acceptance_in_the_algorithm: "Acceptation dans l'algorithme",
     number_of_visitors: 'Nombre de visiteurs',
     appearance_by_tags: 'Apparence par tags',
   },
@@ -217,8 +217,8 @@ export default {
     subscription: 'Abonnement',
     month: 'Mois',
     sub1: "Strollin' est un bon moyen de donner plus de promotion à votre emplacement et d'obtenir de nouveaux clients potentiels. S'abonner à Strollin' vous donnera les prochains avantages :",
-    sub2: "Votre emplacement sera plus souvent sélectionné lors de la génération des cours",
-    sub3: "Votre emplacement sera promu via une fenêtre contextuelle pendant les cours lorsque les utilisateurs passeront à proximité et auront des balises correspondantes",
+    sub2: "Votre emplacement sera plus souvent sélectionné lors de la génération des parcours",
+    sub3: "Votre emplacement sera promu via une fenêtre contextuelle pendant les parcours lorsque les utilisateurs passeront à proximité et auront des balises correspondantes",
     notSub: "Vous n'etes pas abonné",
     website: "Aller sur le site",
   },
@@ -244,6 +244,7 @@ export default {
     comment: 'Commentaire',
     favorites: 'Favoris',
     newTrip: 'Nouveau trajet',
-    myTrip: 'Mon trajet'
+    myTrip: 'Mon trajet',
+    location: 'Lieu'
   }
 };

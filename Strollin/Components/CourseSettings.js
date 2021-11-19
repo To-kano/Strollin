@@ -257,7 +257,7 @@ export function CourseSettings(props) {
       {CourseSettingStep === 5 &&
         <>
           <View>
-            <Text style={globalStyles.titles}>Au fait es-tu majeur ?</Text>
+            <Text style={globalStyles.titles}>Au fait, es-tu majeur ?</Text>
             <Text style={[globalStyles.subparagraphs, { marginTop: 16 }]}>Indique nous ton budget maximum, on te promet une sortie à ce prix la 😉</Text>
             <SwitchButton textTrue='Je suis majeur !' textFalse="Je suis mineur" switchValue={is18} onSwitchFct={() => setIs18(previousState => !previousState)} />
           </View>
@@ -269,7 +269,7 @@ export function CourseSettings(props) {
         <>
           <View>
             <Text style={globalStyles.titles}>Aimerais-tu manger ou boire ?</Text>
-            <Text style={[globalStyles.subparagraphs, { marginTop: 16 }]}>Le meilleur pour la fin petit gourmand ! {'\n'}Si tu coche oui on essayera de te placer une pause repas dans ton trajet 😉</Text>
+            <Text style={[globalStyles.subparagraphs, { marginTop: 16 }]}>Le meilleur pour la fin petit gourmand ! {'\n'}Si tu coches oui on essayera de te placer une pause repas dans ton trajet 😉</Text>
             <SwitchButton textTrue='Oh bonne idée ça !' textFalse="J'ai pas trop faim" switchValue={isEatDrink} onSwitchFct={() => setEatDring(previousState => !previousState)} />
           </View>
           <NextStep text='La suite' onPressFct={() => setCourseSettingStep(CourseSettingStep + 1)} />
@@ -293,8 +293,8 @@ export function CourseSettings(props) {
       {CourseSettingStep === 8 &&
         <>
           <View>
-            <Text style={globalStyles.titles}>D ou veux tu partir ?</Text>
-            <Text style={[globalStyles.subparagraphs, { marginTop: 16 }]}>Choisi un point de départ à ton trajet.</Text>
+            <Text style={globalStyles.titles}>D'où veux tu partir ?</Text>
+            <Text style={[globalStyles.subparagraphs, { marginTop: 16 }]}>Choisis un point de départ à ton trajet.</Text>
           </View>
           <SecondaryButton
             text="Choisir le point de départ"

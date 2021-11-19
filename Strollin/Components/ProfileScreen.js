@@ -170,7 +170,7 @@ function ProfileScreen(props) {
             {args?.pseudo}
           </TextInput>
         </View>
-        <Text style={[globalStyles.paragraphs, { marginVertical: 10 }]}>Les tags que j aime</Text>
+        <Text style={[globalStyles.paragraphs, { marginVertical: 10 }]}>Les tags que j'aime</Text>
       </>
     )
   }
