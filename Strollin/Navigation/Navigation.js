@@ -1,7 +1,5 @@
 import React from 'react';
 
-//import AsyncStorage from '@react-native-community/async-storage';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { connect } from 'react-redux';
 
 import { NavigationContainer } from '@react-navigation/native';
@@ -19,26 +17,7 @@ import ResetPassword from '../Components/ResetPassword';
 
 const Stack = createStackNavigator();
 
-const getProfilCache = async (props) => {
-  try {
-    let jsonValue = await AsyncStorage.getItem('cache_profile');
-
-    if (jsonValue) {
-      jsonValue = JSON.parse(jsonValue);
-
-      const action = { type: 'SET_USER', value: jsonValue };
-      props.dispatch(action);
-    }
-  } catch (e) {
-    //console.log('echec store profile ', e);
-  }
-};
-
 function MyStack(props) {
-  if (!props.profil.access_token) {
-    getProfilCache(props);
-    //console.log('nav props: ', props.profil);
-  }
   return (
     <NavigationContainer>
       <Stack.Navigator
