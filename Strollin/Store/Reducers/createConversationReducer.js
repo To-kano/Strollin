@@ -12,6 +12,8 @@ function createConversationReducer(state = initialState, action) {
   // //console.log("\n\ngalleryReducer:\n")
   // //console.log(action)
   switch (action.type) {
+    case 'DECONNECTION':
+      return initialState;
     case 'ADD_PARTICIPANT_TO_CONVERSATION':
       nextState = {
         ...state,
