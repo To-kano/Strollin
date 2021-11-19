@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react';
+import React, { useState, useCallback, useLayoutEffect } from 'react';
 import { connect } from 'react-redux';
 import {
   View, StyleSheet, Image, Text, TouchableOpacity, TextInput, ActivityIndicator, Modal
@@ -59,7 +59,7 @@ function ProfileScreen(props) {
   const [args, setArgs] = useState();
   const [tagsList, setTagsList] = useState(initialList);
 
-  const [modalVisible, setModalVisible] = useState(false);
+  
   const [isLoading, setLoading] = React.useState(false);
 
 
@@ -137,7 +137,10 @@ function ProfileScreen(props) {
 
   //getThings();
 
-  const headerFlatList = () => {
+  const headerFlatList = useCallback( () => {
+
+    const [modalVisible, setModalVisible] = useState(false);
+
     return (
       <>
         <View style={{alignItems: 'center'}}>
@@ -173,7 +176,7 @@ function ProfileScreen(props) {
         <Text style={[globalStyles.paragraphs, { marginVertical: 10 }]}>Les tags que j aime</Text>
       </>
     )
-  }
+  }, [])
 
   return (
     <>
