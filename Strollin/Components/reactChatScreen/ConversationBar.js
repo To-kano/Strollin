@@ -121,7 +121,7 @@ function ConversationBar(props) {
           {MoreOptions
             ? <>
                 <TouchableOpacity onPress={() => { goToCourseScreen(); setMoreOptions(false); setinputWidth('75%')}}>
-                  <Icon name="marker" size={29} color='#1C1B1C'/>
+                  <Icon name="course" size={29} color='#1C1B1C'/>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => { handleChooseImage(); setMoreOptions(false); setinputWidth('75%')}}>
                   <Icon name="add_picture" size={29} color='#1C1B1C'/>

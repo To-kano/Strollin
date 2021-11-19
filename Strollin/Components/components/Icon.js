@@ -43,6 +43,10 @@ const ICONS = [
         uri: require("../../assets/icons/conversation.png"),
     },
     {
+        name: 'course',
+        uri: require("../../assets/icons/course.png"),
+    },
+    {
         name: 'facebook',
         uri: require("../../assets/icons/facebook.png"),
     },
