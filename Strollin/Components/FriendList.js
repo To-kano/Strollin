@@ -438,8 +438,8 @@ function FriendList(props) {
                 id={item}
               />
             )}
-            keyExtractor={(item, index) => {
-              item;
+            keyExtractor={(item) => {
+              return (item);
             }}
           />
           <MenuButton props={props}/>
@@ -463,8 +463,8 @@ function FriendList(props) {
                 id={item.id}
               />
             )}
-            keyExtractor={(item, index) => {
-              item.id;
+            keyExtractor={(item) => {
+              return (item.id);
             }}
           />
           <ReturnButton onPressFct={() => setAddFriendPage(false)}/>
