@@ -83,7 +83,9 @@ router.get('/get_subscription', async function(req, res) {
         return res.status(500).send({ error_code: 2 });
     }
     if (user.subscription_id !== '') {
-        sub = await stripe.subscriptions.retrieve(req.headers.sub)
+        sub = await stripe.subscriptions.retrieve(user.subscription_id);
+    } else {
+        return res.status(200).send({ status: "Here is the subscription's information.", subscription: null });
     }
     let subscription = {
         current_period_start: new Date().toISOString(sub.current_period_start).replace(/T/, ' ').replace(/\..+/, ''),
