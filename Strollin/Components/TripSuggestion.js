@@ -30,6 +30,7 @@ import Popup from './Popup';
 import Icon from './components/Icon';
 
 import { useNavigation } from '@react-navigation/native';
+import SecondaryButton from './components/SecondaryButton';
 
 
 const globalStyles = require('../Styles');
@@ -385,40 +386,49 @@ async function check_open(result) {
             />
           </View>
         </TouchableOpacity>
-        <View style={{ position: 'absolute', top: 8, right: 8, flexDirection: 'row' }}>
-          <TouchableOpacity
-            onPress={() => {
-              Share.share({
-                message: `Strollin' m'a proposé un trajet ! \nRejoignons nous a ${item.name} au ${item.address} !`,
-                title: "Sortir avec Strollin'",
-                url: 'https://www.google.com',
-              }, {
-              // Android only:
-                dialogTitle: 'Share Strollin travel',
-                // iOS only:
-                excludedActivityTypes: [
-                  'com.apple.UIKit.activity.PostToTwitter'
-                ]
-              });
-            }}
-            accessibilityLabel="Share"
-          >
-            <Icon name="share" size={29} color='#000000'/>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{marginLeft: 8}}
-            onPress={() => {
-              const shareLinkContent = {
-                contentType: 'link',
-                contentUrl: 'https://www.google.com',
-                quote: `Strollin' m'a proposé un trajet ! \nRejoignons nous a ${item.name} au ${item.address} !`,
-              };
-              ShareDialog.show(shareLinkContent);
-            }}
-            accessibilityLabel="Share"
-          >
-            <Icon name="facebook" size={29} color='#000000'/>
-          </TouchableOpacity>
+        <View style={{ marginTop: 16, flexDirection: 'row', justifyContent: 'space-between' }}>
+          <View style={{flexDirection: 'row'}}>
+            <TouchableOpacity
+              onPress={() => {
+                Share.share({
+                  message: `Strollin' m'a proposé un trajet ! \nRejoignons nous a ${item.name} au ${item.address} !`,
+                  title: "Sortir avec Strollin'",
+                  url: 'https://www.google.com',
+                }, {
+                // Android only:
+                  dialogTitle: 'Share Strollin travel',
+                  // iOS only:
+                  excludedActivityTypes: [
+                    'com.apple.UIKit.activity.PostToTwitter'
+                  ]
+                });
+              }}
+              accessibilityLabel="Share"
+            >
+              <Icon name="share" size={29} color='#000000'/>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{marginLeft: 8}}
+              onPress={() => {
+                const shareLinkContent = {
+                  contentType: 'link',
+                  contentUrl: 'https://www.google.com',
+                  quote: `Strollin' m'a proposé un trajet ! \nRejoignons nous a ${item.name} au ${item.address} !`,
+                };
+                ShareDialog.show(shareLinkContent);
+              }}
+              accessibilityLabel="Share"
+            >
+              <Icon name="facebook" size={29} color='#000000'/>
+            </TouchableOpacity>
+          </View>
+
+          <View>
+            <TouchableOpacity onPress={() => {console.log('Supprimer')}}>
+              <Icon name="bin" size={29} color='#FF0000'/>
+            </TouchableOpacity>
+          </View>
+
         </View>
       </View>
 
@@ -486,6 +496,28 @@ async function check_open(result) {
           return <RenderItem2 item={item} />
         }}
       />
+      <TouchableOpacity style={{
+        backgroundColor: "#ffffff",
+        padding: 16,
+        margin: 16,
+        borderRadius: 16,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 5,
+        },
+        shadowOpacity: 0.34,
+        shadowRadius: 6.27,
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        elevation: 10,
+      }}
+        onPress={() => {console.log('Ajouter')}}
+      >
+          <Icon name="add" size={24} color='#000000'/>
+          <Text style={[globalStyles.paragraphs, {marginHorizontal: 16}]}>Ajouter une étape</Text>
+        </TouchableOpacity>
     </ScrollView>
   )
 }
