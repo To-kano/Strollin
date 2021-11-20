@@ -74,7 +74,7 @@ router.get('/get_subscription', async function(req, res) {
 
     console.log(req.headers.access_token)
     let user = await UserModel.findOne({ access_token: req.headers.access_token }, "-_id id subscription_id").catch(error => error);
-    const sub = undefined;
+    let sub = undefined;
 
     if (!user) {
         return res.status(401).send({ error_code: 1 });
@@ -85,6 +85,9 @@ router.get('/get_subscription', async function(req, res) {
     if (user.subscription_id !== '') {
         sub = await stripe.subscriptions.retrieve(user.subscription_id);
     } else {
+        return res.status(200).send({ status: "Here is the subscription's information.", subscription: null });
+    }
+    if (!sub) {
         return res.status(200).send({ status: "Here is the subscription's information.", subscription: null });
     }
     let subscription = {
