@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import MapView, { Marker } from 'react-native-maps';
-import { PermissionsAndroid, View, Text, Dimensions } from 'react-native';
+import { PermissionsAndroid, View, Text, Dimensions, Modal, Button } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import MapViewDirections from 'react-native-maps-directions';
 import Store from '../Store/configureStore';
@@ -10,6 +10,7 @@ import Tts from 'react-native-tts';
 import { addUserHistoric } from '../apiServer/user';
 
 import I18n from '../Translation/configureTrans';
+import { uses24HourClock } from 'react-native-localize';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -79,6 +80,7 @@ function Map({
   const allTime = [];
   const store = Store.getState();
   const [userPosition, setUserPosition] = useState(store.CourseSettings.pos);
+  const [locationToDelete, setLocationToDelete] = useState(null)
 
   /// /console.log(props.navigate);
   // console.log("map\n");
@@ -94,6 +96,14 @@ function Map({
     latitudeDelta: deltaView.latitudeDelta,
     longitudeDelta: deltaView.longitudeDelta
   });
+
+  const deleteOneLocation = (id) => {
+    const result = destinations.filter((lieux) => {
+      return lieux.id != id
+    })
+
+    setDestinations(result);
+  }
 
   //const [waypoint, setWaypoint] = useState(props.waypoints);
   const [destinations, setDestinations] = useState(locations || map.locations);// props.course);
@@ -195,57 +205,71 @@ function Map({
     const GOOGLE_MAPS_APIKEY = 'AIzaSyDGvC3HkeGolvgvOevKuaE_6LmS9MPjlvE';
     //
     return (
-      <MapView
-        customMapStyle={mapStyle}
-        style={{ height: windowHeight, width: windowWidth }} // showsMyLocationButton dont show if width is not change
-        initialRegion={localRegion}
-        showsUserLocation={true}
-        showsCompass={false}
-        mapType="standard"
-        followUserLocation={true}
-        onMapReady={BlackMagic}
-        userLocationPriority="balanced"
-        onUserLocationChange={(data) => {
-          onUserPositionChange(data.nativeEvent);
-        }}
-      >
+      <>
+        <MapView
+          customMapStyle={mapStyle}
+          style={{ height: windowHeight, width: windowWidth }} // showsMyLocationButton dont show if width is not change
+          initialRegion={localRegion}
+          showsUserLocation={true}
+          showsCompass={false}
+          mapType="standard"
+          followUserLocation={true}
+          onMapReady={BlackMagic}
+          userLocationPriority="balanced"
+          onUserLocationChange={(data) => {
+            onUserPositionChange(data.nativeEvent);
+          }}
+        >
 
-        <MapViewDirections
-          origin={userPosition}
-          destination={destinations[destinations.length - 1]}
-            // destination={getLocation()}
-          waypoints={destinations.slice(0, destinations.length - 1)}
-            // waypoints={destinations.slice(0, destinations.length - 1)}
-          apikey={GOOGLE_MAPS_APIKEY}
-          strokeWidth={3}
-          language='fr'
-          timePrecision="now"
-          resetOnChange={false}
-          strokeColor="#0989FF"
-          mode="WALKING"
-        />
-
-        {destinations.map((marker) => (
-          <Marker
-            key={marker.id}
-            coordinate={{ latitude: marker.latitude, longitude: marker.longitude }}
-            title={marker.name}
-            description={marker.address}
-            image={require('../images/logo/marker_small.png')}
-            width={44}
-            height={64}
-            onCalloutPress={() => {
-              const store = Store.getState();
-              var action = {
-                type: 'ADD_DELETE',
-                value: [marker.id, marker.name]
-              };
-              Store.dispatch(action);
-            }}
+          <MapViewDirections
+            origin={userPosition}
+            destination={destinations[destinations.length - 1]}
+              // destination={getLocation()}
+            waypoints={destinations.slice(0, destinations.length - 1)}
+              // waypoints={destinations.slice(0, destinations.length - 1)}
+            apikey={GOOGLE_MAPS_APIKEY}
+            strokeWidth={3}
+            language='fr'
+            timePrecision="now"
+            resetOnChange={false}
+            strokeColor="#0989FF"
+            mode="WALKING"
           />
-        ))}
 
-      </MapView>
+          {destinations.map((marker) => (
+            <Marker
+              key={marker.id}
+              coordinate={{ latitude: marker.latitude, longitude: marker.longitude }}
+              title={marker.name}
+              description={marker.address}
+              image={require('../images/logo/marker_small.png')}
+              width={44}
+              height={64}
+              onCalloutPress={() => {
+                setLocationToDelete(marker)
+              }}
+            />
+          ))}
+        </MapView>
+        {locationToDelete != null &&
+          <Modal animationType="slide">
+            <Text style={{textAlign: 'center'}}>Do you want to remove {locationToDelete.name} from the course ?</Text>
+            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+              <Button
+                title="Yes"
+                onPress={() => {
+                  deleteOneLocation(locationToDelete.id);
+                  setLocationToDelete(null);
+                }}
+              />
+              <Button
+                title="No"
+                onPress={() => {setLocationToDelete(null)}}
+              />
+            </View>
+          </Modal>
+        }
+      </>
     );
   }
   return (

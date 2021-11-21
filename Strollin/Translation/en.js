@@ -130,6 +130,7 @@ export default {
     positionPartener:'Shop position',
     subscription:'Subscription',
     logOut:'Log out',
+    subscription: 'Subscribe to Strollin',
     traveler:'Traveler'
   },
 
@@ -244,6 +245,7 @@ export default {
     SIGNIN: 'SIGN IN',
     SIGNUP: 'SIGN UP',
     PartnerPage: "Become Partner",
+    CancelInscription: 'Cancel registration',
     companyName: "Company Name",
     facebook: "Continue with Facebook",
     connect: 'Connect yourself !',
