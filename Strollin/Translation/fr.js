@@ -119,6 +119,7 @@ export default {
     positionPartener:'Position du commerce',
     subscription:'Abonnement',
     logOut:'Déconnexion',
+    subscription: 'Payez mon abonnement',
     traveler:'Voyageur'
   },
 
@@ -233,6 +234,7 @@ export default {
     SIGNIN: 'SE CONNECTER',
     SIGNUP: "S'INSCRIRE",
     PartnerPage: "Devenir Partenaire",
+    CancelInscription: "Annuler l'inscription",
     companyName: "Nom d'entreprise",
     facebook: "Continuer avec Facebook",
     connect: 'Connecte toi !',

@@ -31,6 +31,7 @@ import Home from './Home';
 import Trip from './Trip';
 import { FriendSelection } from '../Components/FriendSelection';
 import I18n from '../Translation/configureTrans';
+import SubscriptionPage from '../Components/SubscriptionPage';
 
 const Drawer = createDrawerNavigator();
 
@@ -63,6 +64,7 @@ function MyDrawer() {
       <Drawer.Screen name={'Guide'} component={TutorialPage} />
       <Drawer.Screen name={I18n.t("Menu.personalTrip")} component={Personal_trip} />
       <Drawer.Screen name="TripNavigation" component={TripNavigation} />
+      <Drawer.Screen name={I18n.t("Menu.subscription")} component={SubscriptionPage} />
     </Drawer.Navigator>
   );
 }

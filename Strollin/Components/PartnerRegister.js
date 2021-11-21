@@ -4,7 +4,7 @@ import { Input } from 'react-native-elements';
 import { connect } from 'react-redux';
 // import * as actions from './features/registration/action';
 import {
-  StyleSheet, Text, View, TouchableOpacity, ActivityIndicator, Image, TextInput
+  StyleSheet, Text, View, TouchableOpacity, ActivityIndicator, Image, TextInput, Modal
 } from 'react-native';
 import {
   LoginButton, AccessToken, GraphRequest, GraphRequestManager
