@@ -39,56 +39,64 @@ async function getArrayLocation(access_token, idLocations) {
   return result
 }
 
+async function generateNewTrip(setCarrousel, setGeneredTrip, acc) {
+  const store = Store.getState();
+  const access_Token = store.profil.access_token;
+  const settings = {
+    pos : store.CourseSettings.pos,
+    budget : store.CourseSettings.budget,
+    hours : store.CourseSettings.hours,
+    minutes : store.CourseSettings.minutes,
+    eat : store.CourseSettings.eat,
+    radius : store.CourseSettings.radius,
+    placeNbr : store.CourseSettings.placeNbr,
+    tags : store.CourseSettings.tags,
+    locations_list: store.course.currentLocationProposition,
+    is18: store.CourseSettings.is18,
+    tempTags: store.CourseSettings.tempTags,
+    friendstags: store.CourseSettings.friendstags
+  }
+  const newTrip = await generateCourse(access_Token, settings);
+  setGeneredTrip((ArrayTrip) => {
+    const newArraytrip = [...ArrayTrip, newTrip.course];
+    return newArraytrip;
+  })
+  const result = await getArrayLocation(access_Token, newTrip.course.locations_list);
+  setCarrousel((arrayCourse) => {
+    const newArrayCourse = [...arrayCourse, result];
+    return newArrayCourse;
+  })
+  //setLocations(result);
+  //setLocationsCarrousel(result)
+  //check_open(result)
+}
+
 export function TripSuggestion(props) {
 
   const [isModalVisible, setModalVisible] = useState(false);
   const [isLoading, setLoading] = useState(false);
 
+  const [generetedTrip, setGeneredTrip] = useState([]);
   const [carousel, setCarrousel] = useState([]);
+  const [indexCarrousel, setindexCarrousel] = useState(0);
+
+  useEffect(() => {
+    console.log("index ", indexCarrousel);
+  }, [indexCarrousel])
+
   const [filteredOpenLocation, setFilteredOpenLocation] = useState([]);
   const [closedLocationsName, setClosedLocationsName] = useState([]);
 
-  console.log("access token ", props.profil.access_token)
-
-
-  useEffect(() => {
-    //Tts.setDefaultLanguage('en-US');
-
-    //async function getCourse() {
-    //  const result = props.course.currentCourse;
-    //  //setCourse(result);
-    //}
-    //carouselItem.carouselItems = []
-
-    async function getLocations() {
-      const result = await getArrayLocation(props.profil.access_token, props.course.currentCourse.locations_list)
-      setCarrousel((arrayCourse) => {
-        arrayCourse.push(result);
-        return arrayCourse;
-      })
-      //setLocations(result);
-      //setLocationsCarrousel(result)
-      //check_open(result)
-    }
-
-
-    //if (course) {
-      //getCourse();
-    //}
-
-    //if (props.profil.sound && course) {
-    //  for (let i = 0; i < course.length; i++) {
-    //    Tts.speak(`${I18n.t("TripSuggestion.step")} ${i + 1}`);
-    //    Tts.speak(course.name);
-    //  }
-    //}
-    if (props.course.currentCourse && props.course.currentCourse.locations_list) {
-      getLocations();
-    }
-  }, [props.course.currentCourse]);
+  //console.log("render ", carousel);
 
   useEffect(() => {
+    console.log("closec location", closedLocationsName);
+    if (closedLocationsName.length > 0) {
+      setModalVisible(true);
+    }
+  }, [closedLocationsName])
 
+  useEffect(() => {
     async function checkOpen(locations) {
       let locationsOpen = [];
       let locationsName = [];
@@ -112,14 +120,146 @@ export function TripSuggestion(props) {
     if (carousel.length > 0) {
       checkOpen(carousel[carousel.length - 1])
     }
-  }, [carousel])
+  }, [carousel.length])
 
   useEffect(() => {
-    console.log("closec location", closedLocationsName);
-    if (closedLocationsName.length > 0) {
-      setModalVisible(true);
+
+     const getLocations = async () => {
+      const result = await getArrayLocation(props.profil.access_token, props.course.currentCourse.locations_list)
+      setCarrousel((arrayCourse) => {
+        const newArrayCourse = [...arrayCourse, result];
+        return newArrayCourse;
+      })
+      setGeneredTrip((ArrayTrip) => {
+        const newArraytrip = [...ArrayTrip, props.course.currentCourse];
+        return newArraytrip;
+      })
     }
-  }, [closedLocationsName])
+    if (props.course.currentCourse && props.course.currentCourse.locations_list) {
+      getLocations();
+    }
+  }, [props.course.currentCourse]);
+
+  const LocationItem = ({item}) => {
+    const navigation = useNavigation();
+
+    return (
+      <View style={{
+        backgroundColor: "#ffffff",
+        padding: 16,
+        margin: 16,
+        borderRadius: 16,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 5,
+        },
+        shadowOpacity: 0.34,
+        shadowRadius: 6.27,
+
+        elevation: 10,
+      }}>
+        <TouchableOpacity
+          onPress={() => {navigation.navigate('LocationPage', {location: item})}}
+        >
+          <Text style={globalStyles.subtitles}>{item.name}</Text>
+          <Text numberOfLines={1} style={[globalStyles.subparagraphs, {color: '#9B979B'}]}>{item.address}, {item.city}</Text>
+          <View style={{ marginTop: 16, width: "100%", }}>
+            <FlatList
+              style={{ width: "100%", flexWrap: 'wrap', flexDirection: 'row',  }}
+              data={item.tags_list}
+              keyExtractor={(item) => item.id}
+              renderItem={({ item }) => (
+                <>
+                {translateTags(item._id) === 'error'
+                ? <></>
+                : <Text style={[globalStyles.subparagraphs, globalStyles.tag,]}>{translateTags(item._id) === 'error' ? <></> : translateTags(item._id)}</Text>
+                }
+              </>
+              )}
+            />
+          </View>
+        </TouchableOpacity>
+        <View style={{ marginTop: 16, flexDirection: 'row', justifyContent: 'space-between' }}>
+          <View style={{flexDirection: 'row'}}>
+            <TouchableOpacity
+              onPress={() => {
+                Share.share({
+                  message: `Strollin' m'a proposé un trajet ! \nRejoignons nous a ${item.name} au ${item.address} !`,
+                  title: "Sortir avec Strollin'",
+                  url: 'https://www.google.com',
+                }, {
+                // Android only:
+                  dialogTitle: 'Share Strollin travel',
+                  // iOS only:
+                  excludedActivityTypes: [
+                    'com.apple.UIKit.activity.PostToTwitter'
+                  ]
+                });
+              }}
+              accessibilityLabel="Share"
+            >
+              <Icon name="share" size={29} color='#000000'/>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{marginLeft: 8}}
+              onPress={() => {
+                const shareLinkContent = {
+                  contentType: 'link',
+                  contentUrl: 'https://www.google.com',
+                  quote: `Strollin' m'a proposé un trajet ! \nRejoignons nous a ${item.name} au ${item.address} !`,
+                };
+                ShareDialog.show(shareLinkContent);
+              }}
+              accessibilityLabel="Share"
+            >
+              <Icon name="facebook" size={29} color='#000000'/>
+            </TouchableOpacity>
+          </View>
+
+          <View>
+            <TouchableOpacity onPress={() => { //#endregion
+              console.log('Supprimer ', indexCarrousel, carouselItemFinal.carouselItems[0])
+              setCarrousel((carousel) => {
+                const result = carousel.carouselItems[indexCarrousel].locations.filter((location) => {
+                  return location.id !== item.id;
+                })
+
+                console.log('result lol', result, carousel.carouselItems[indexCarrousel])
+
+                carousel.carouselItems[indexCarrousel].locations = result;
+
+                return carousel;
+
+
+
+              })
+            }}>
+              <Icon name="bin" size={29} color='#FF0000'/>
+            </TouchableOpacity>
+          </View>
+
+        </View>
+      </View>
+  )}
+
+  const _renderItem = ({item}) => {
+    return (
+      <FlatList
+        data={item}
+        style={{ backgroundColor: '#ffffff'}}
+        contentContainerStyle={{paddingTop: 96, paddingBottom: 176}}
+        ListHeaderComponent={() => {
+          return (<Text style={[globalStyles.subtitles, {marginHorizontal: 16}]}>On a trouvé ça pour toi</Text>)
+        }}
+        keyExtractor={item => item.id}
+        renderItem={({item}) => {
+          return <LocationItem item={item} />
+        }}
+      />
+    )
+  }
+  
 
   return (
     <>
@@ -169,6 +309,24 @@ export function TripSuggestion(props) {
           </View>
       </Popup>
       <MenuButton props={props}/>
+      <Pagination
+        dotsLength={carousel.length}
+        activeDotIndex={indexCarrousel}
+        containerStyle={{ backgroundColor: '#ffffff00', position: 'absolute', top: 56, right: 0, left: 0, zIndex : 1 }}
+        dotStyle={{
+            width: 10,
+            height: 10,
+            borderRadius: 5,
+            marginHorizontal: 4,
+            backgroundColor: '#0989FF',
+        }}
+        inactiveDotStyle={{
+            backgroundColor: '#9B979B',
+            // Define styles for inactive dots here
+        }}
+        inactiveDotOpacity={0.4}
+        inactiveDotScale={0.6}
+      />
       <ButtonSwitch
         iconOn={"sound_active"}
         iconOff={"sound_inactive"}
@@ -186,18 +344,35 @@ export function TripSuggestion(props) {
         }}
       />
       <View style={[globalStyles.container, {paddingHorizontal: 0}]}>
+        <Carousel
+            layout={"stack"}
+            //ref={ref => this.carousel = ref}
+            data={carousel}
+            //containerCustomStyle={styles.carouselContainer}
+            sliderWidth={windowWidth}
+            itemWidth={windowWidth}
+            // itemHeight={100}
+            //useScrollView={true}
+            keyExtractor={(item) => item.id}
+            renderItem={_renderItem}
+            onSnapToItem={index => {
+              //carouselItemFinal.activeIndex = index;
+              setindexCarrousel(index);
+            }}
+          />
       </View>
       <Footer
         primaryText={I18n.t("TripSuggestion.letsGo")}
         primaryOnPressFct={() => {
-          let finalLocations = carouselItemFinal.carouselItems[carouselItemFinal.activeIndex].locations
+          let selectedTrip = generetedTrip[indexCarrousel];
+          let selectedLocations = carousel[indexCarrousel];
           var loctmp = [];
 
-          for (var i = 0; i < finalLocations.length; i++) {
-            loctmp.push(finalLocations[i].id)
+          for (var i = 0; i < selectedLocations.length; i++) {
+            loctmp.push(selectedLocations[i].id)
           }
-          course.locations_list = loctmp;
-          var action = { type: 'SET_WAYPOINTS', course: course, locations: finalLocations };
+          selectedTrip.locations_list = loctmp;
+          var action = { type: 'SET_WAYPOINTS', course: selectedTrip, locations: selectedLocations };
           props.dispatch(action);
            action = {
             type: 'ADD_FRIENDSTAGS',
@@ -220,8 +395,10 @@ export function TripSuggestion(props) {
         }}
         secondaryText={I18n.t("TripSuggestion.newTrip")}
         secondaryOnPressFct={() => {
-          setLoading(true);
-          getLocations2()
+          //setLoading(true);
+          if (carousel.length < 5) {
+            generateNewTrip(setCarrousel, setGeneredTrip);
+          }
         }}
       />
       <Modal
