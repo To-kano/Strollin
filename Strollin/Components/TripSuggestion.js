@@ -345,7 +345,7 @@ async function check_open(result) {
         });
 };
 
-  function RenderItem2({item}){
+  const RenderItem2 = ({item}) => {
 
     const navigation = useNavigation();
 
@@ -424,7 +424,23 @@ async function check_open(result) {
           </View>
 
           <View>
-            <TouchableOpacity onPress={() => {console.log('Supprimer')}}>
+            <TouchableOpacity onPress={() => { //#endregion
+              console.log('Supprimer ', indexCarrousel, carouselItemFinal.carouselItems[0])
+              setCarrousel((carousel) => {
+                const result = carousel.carouselItems[indexCarrousel].locations.filter((location) => {
+                  return location.id !== item.id;
+                })
+
+                console.log('result lol', result, carousel.carouselItems[indexCarrousel])
+
+                carousel.carouselItems[indexCarrousel].locations = result;
+
+                return carousel;
+
+
+
+              })
+            }}>
               <Icon name="bin" size={29} color='#FF0000'/>
             </TouchableOpacity>
           </View>
@@ -483,7 +499,7 @@ async function check_open(result) {
       // </View>
   )}
 
-  function _renderItem({item,index}){
+  const  _renderItem = ({item,index}) => {
   return (
     <ScrollView
       contentContainerStyle={{ width: '100%', backgroundColor: '#ffffff', paddingTop: 96, paddingBottom: 176 }}
@@ -491,6 +507,7 @@ async function check_open(result) {
       <Text style={[globalStyles.subtitles, {marginHorizontal: 16}]}>On a trouvé ça pour toi</Text>
       <FlatList
         keyExtractor={item => item.id}
+        extraData={carouselItemFinal}
         data={item.locations}
         renderItem={({item}) => {
           return <RenderItem2 item={item} />
@@ -662,6 +679,8 @@ function testrenderItem({item,index}){
         console.error('error :', error);
       });
   }
+
+  console.log("mdrr ", carouselItemFinal)
 
   return (
     <View style={[globalStyles.container, {paddingHorizontal: 0}]}>
