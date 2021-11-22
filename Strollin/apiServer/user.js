@@ -81,6 +81,7 @@ async function profileUser(props, access_token) {
     .then(async (answer) => {
       if (answer.profile) {
         const action = { type: 'SET_USER', value: answer.profile };
+        console.log("\n_______________________________\n", answer.profile);
         props.dispatch(action);
         setFriendPseudo(props, access_token, answer.profile);
         await setFavorites(props, access_token);

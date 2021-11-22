@@ -9,16 +9,6 @@ import { getTimeZone } from 'react-native-localize';
 import I18n from '../Translation/configureTrans';
 import Store from '../Store/configureStore';
 import { IP_SERVER, PORT_SERVER } from '../env/Environement';
-import {translateTags, detranslateTags} from '../Translation/translateTags'
-import {GetPlaces} from '../apiServer/tag';
-import { requestGeolocalisationPermission, updateCoordinates } from './map'
-import Footer from './components/Footer';
-import MenuButton from './components/MenuButton';
-import Icon from './components/Icon';
-import { ScrollView } from 'react-native-gesture-handler';
-import PrimaryButton from './components/PrimaryButton';
-
-const globalStyles = require('../Styles');
 
 function Header({ navigation, defaultState = false }) {
   const [pressed, setpressed] = useState(defaultState);
@@ -60,115 +50,123 @@ function Header({ navigation, defaultState = false }) {
   );
 }
 
-export function Tag({ name, chosen, setLoading, pos, defaultState = false }) {
+export function Tag({ name, chosen, defaultState = false, Id, Tags, setLoading}) {
   const [pressed, setpressed] = useState(defaultState);
   const [args, setArgs] = useState(true);
 
-  async function postTags(body, setLoading) {
+  async function postTags(body) {
     const store = Store.getState();
     const access_Token = store.profil.access_token;
 
-    const list = [body];
-    const test = JSON.stringify({ tags_list: list });
-    const locId = JSON.stringify({ location_id: store.profil.partner_location.id });
+    const list = Tags;
 
-    const tagsArray = store.profil.tags;
-    tagsArray.push(body);
-    console.log("body: ", tagsArray);
-    let action = {
-      type: 'SET_USER_TAGS',
-      value: tagsArray
-    };
-    Store.dispatch(action);
-    console.log("CONTINUE");
-    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/add_location_tag`, {
+
+    list.push({_id: body, dips: 0})
+  //console.log("list: ", list);
+    const test = JSON.stringify({ tags_list: list });
+    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/update_location`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
         access_Token,
-        locId
+        location_id: Id
       },
       body: test,
       method: 'POST',
     })
       .then((res) => res.json())
       .then((json) => {
-        console.log("json: ", json);
       })
-      .then(setLoading(false)
-      );
-    GetPlaces(access_Token, body, pos)
+      .then(setLoading(false));
+  }
+
+  async function RemoveTags(body, setLoading) {
+    const store = Store.getState();
+    const access_Token = store.profil.access_token;
+
+    const list = Tags;
+
+
+    for (var i = 0; i < list.length; i++) {
+      if (list[i]._id == body) {
+        list.splice(i, 1)
+        break;
+      }
+    }
+  //console.log("list: ", list);
+    const test = JSON.stringify({ tags_list: list });
+    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/update_location`, {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        access_Token,
+        location_id: Id
+      },
+      body: test,
+      method: 'POST',
+    })
+      .then((res) => res.json())
+      .then((json) => {
+      })
+      .then(setLoading(false));
   }
 
   useEffect(() => {
+  //console.log('hola');
     setpressed(chosen);
   }, []);
 
   return (
-    <>
-      {pressed
-      ? <TouchableOpacity style={[globalStyles.tag, {flexDirection: 'row', alignItems: 'center', justifyContent : 'space-around'}]} onPress={() => { setpressed(!pressed); }} >
-          <Text style={[globalStyles.subparagraphs, {marginRight: 11, textTransform: 'capitalize'}]}>{translateTags(name)}</Text>
-          <Icon name="checked" size={24} color="#1C1B1C"/>
-        </TouchableOpacity>
-      : <TouchableOpacity
-        style={[globalStyles.tag, {flexDirection: 'row', alignItems: 'center', backgroundColor: '#ffffff', borderWidth: 1, borderColor: "#1C1B1C", justifyContent : 'space-around'}]}
+    <View style={styles.view_tags}>
+      {pressed === false && (
+      <TouchableOpacity
+        style={styles.view_tagOff}
         onPress={() => {
           setLoading(true);
-          console.log("bonjour");
-          postTags(name, setLoading);
+          postTags(name);
           setpressed(!pressed);
         }}
       >
-        <Text style={[globalStyles.subparagraphs, {marginRight: 11, textTransform: 'capitalize'}]}>{translateTags(name)}</Text>
-          <Icon name="add" size={24} color="#1C1B1C"/>
+        <Text style={styles.text_tagOff}>{name}</Text>
       </TouchableOpacity>
-      }
-    </>
+      )}
+      {(pressed === true) && (
+      <TouchableOpacity
+        style={styles.view_tagOn}
+        onPress={() => {
+          setLoading(true);
+          // console.log('unpressed');
+          RemoveTags(name, setLoading);
+          setpressed(!pressed);
+        }}
+      >
+        <Image style={styles.img_tagOn} source={require('../images/icons/white/checked.png')} />
+        <Text style={styles.text_tagOn}>{name}</Text>
+      </TouchableOpacity>
+      )}
+    </View>
   );
 }
 
-export function TagSelectionPart(props, { navigation, profil }) {
-  const store = Store.getState();
-
+export function TagSelectionPart({ navigation, profil }) {
   const [args, setArgs] = useState(true);
   const [Profargs, setProfArgs] = useState(true);
-  const [array, setArray] = useState();
+  const [array, setArray] = useState(true);
+  const [Id, setId] = useState(null)
   const [isLoading, setLoading] = React.useState(false);
-  const [pos, setPos] = useState('0');
-  const [firstTime, setFirstTime] = useState(true);
 
-  
+  const store = Store.getState();
   const access_Token = store.profil.access_token;
-
-  setUserPos();
-  function setUserPos() {
-    if (props.position.asked == false) {
-      requestGeolocalisationPermission(props.dispatch);
-    }
-    if (props.position.permission == true && pos == '0') {
-      updateCoordinates(setPos);
-    }
-    if (props.permission && pos && localRegion.latitude && localRegion.longitude) {
-      setPermision(true);
-    }
-  }
-
-  function setUserTags(tags) {
-    let action = {
-      type: 'SET_USER_TAGS',
-      value: tags
-    };
-    Store.dispatch(action);
-  }
 
   async function buildArray(List, UserList) {
     const arr = [];
     let flag = false;
 
+  //console.log('hello');
     for (let i = 0; i < List.length; i++) {
       for (let j = 0; j < UserList.length; j++) {
         if (UserList[j]._id == List[i].name) {
+        //console.log('hellot: ', UserList[j]);
           arr.push({ name: UserList[j]._id, _id: List[i]._id, pressed: true });
           flag = true;
           break;
@@ -177,15 +175,29 @@ export function TagSelectionPart(props, { navigation, profil }) {
       if (flag == false) arr.push({ name: List[i].name, _id: List[i]._id, pressed: false });
       flag = false;
     }
+  //console.log('array: ', arr);
     setArray(arr);
   }
 
   async function getLocationTags(List) {
-    console.log("lois: ",store.profil.partner_location.tags_list);
-    buildArray(List, store.profil.partner_location.tags_list);
+    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/get_partner_location`, {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        access_Token,
+      },
+      method: 'GET',
+    })
+      .then((res) => res.json())
+      .then((json) => {
+      //console.log('########', json.location.tags_list);
+        setProfArgs(json.location.tags_list);
+        buildArray(List, json.location.tags_list);
+        setId(json.location.id)
+      });
   }
 
-  async function getThings(setLoading) {
+  async function getThings() {
     await fetch(`http://${IP_SERVER}:${PORT_SERVER}/tag/get_tag`, {
       headers: {
         Accept: 'application/json',
@@ -196,6 +208,7 @@ export function TagSelectionPart(props, { navigation, profil }) {
     })
       .then((res) => res.json())
       .then((json) => {
+      //console.log('yooooo', json.tags_list);
         setArgs(json.tags_list);
         getLocationTags(json.tags_list);
       })
@@ -203,92 +216,88 @@ export function TagSelectionPart(props, { navigation, profil }) {
   }
 
   useEffect(() => {
-    getThings(setLoading);
-    setUserPos();
+    getThings();
     // getLocationTags();
   }, []);
 
   return (
-    <>
-      {firstTime && props.profil.tags_list.length == 0
-      ? <View style={[globalStyles.container, {justifyContent: 'flex-start'}]}>
-          <Text style={[globalStyles.titles, {marginVertical: 32}]}>{I18n.t('TagSelectionPart.welcome')} {props.profil.pseudo} !</Text>
-          <Text style={[globalStyles.titles, {marginVertical: 16}]}>{I18n.t('TagSelectionPart.welcome2')}</Text>
-          <Text style={[globalStyles.subparagraphs, {marginVertical: 8}]}>
-            {I18n.t('TagSelectionPart.welcome3')} <Text style={[globalStyles.paragraphs, {color: '#0989FF'}]}>{I18n.t('TagSelection.welcome4')}</Text>{I18n.t('TagSelection.welcome5')} <Text style={[globalStyles.paragraphs, {color: '#0989FF'}]}>{I18n.t('TagSelection.welcome6')}</Text>.
-          </Text>
-          <Text style={[globalStyles.subparagraphs, {marginVertical: 8}]}>
-            {I18n.t('TagSelectionPart.welcome7')}<Text style={[globalStyles.paragraphs, {color: '#0989FF'}]}>{I18n.t('TagSelection.welcome8')}</Text>{I18n.t('TagSelection.welcome9')}
-          </Text>
-          <Text style={[globalStyles.subparagraphs, {marginVertical: 8, marginBottom: 48}]}>
-            {I18n.t('TagSelectionPart.welcome10')}<Text style={[globalStyles.paragraphs, {color: '#0989FF'}]}>{I18n.t('TagSelection.welcome11')}</Text>
-          </Text>
-          <PrimaryButton text={I18n.t('TagSelectionPart.welcomeButton')} onPressFct={() => setFirstTime(false)}/>
+    <View style={styles.view_back}>
+      <Header navigation={navigation} />
+      <View style={styles.viex_list}>
+        <Text style={styles.text_field}>
+          {I18n.t('Tags.select_our_tags')}
+          <Text style={styles.text_star}> *</Text>
+        </Text>
+        <FlatList
+          data={array}
+          keyExtractor={(item) => item.name}
+          renderItem={({ item }) => (
+            <Tag name={item.name} chosen={item.pressed} Id={Id} Tags={Profargs} setLoading={setLoading}/>
+          )}
+        />
+      </View>
+      <TouchableOpacity
+        style={styles.view_button}
+        onPress={() => {
+          navigation.navigate('SettingPartenaire');
+        }}
+      >
+        <Text style={styles.text_button}>
+          {I18n.t('Tags.confirm_my_tags')}
+        </Text>
+      </TouchableOpacity>
+      <Modal
+        animationType="none"
+        transparent={true}
+        visible={isLoading}
+      >
+        <View style={styles.loading_screen}>
+          <ActivityIndicator size="large"  color="black" style={{}}/>        
         </View>
-      : <View style={[globalStyles.container, {justifyContent: 'flex-start'}]}>
-            <FlatList
-              style={{width: '100%', paddingVertical: 86}}
-              data={array}
-              ListHeaderComponent={() => {
-                return (<Text style={[globalStyles.titles]}>{I18n.t('TagSelectionPart.chooseTags')}</Text>)
-              }}
-              numColumns={2}
-              showsVerticalScrollIndicator={false}
-              columnWrapperStyle={{alignItems : 'center', justifyContent:'space-between'}}
-              contentContainerStyle={{ paddingBottom : 90 }}
-              keyExtractor={(item) => item.name}
-              renderItem={({ item }) => (
-                <Tag name={item.name} chosen={item.pressed} setLoading={setLoading} pos={pos}/>
-              )}
-            />
-          <Modal
-            animationType="none"
-            transparent={true}
-            visible={isLoading}
-          >
-            <View style={styles.loading_screen}>
-              <ActivityIndicator size="large"  color="black"/>
-            </View>
-          </Modal>
-          <MenuButton props={props}/>
-          <Footer primaryText={I18n.t("TagSelectionPart.validate")} primaryOnPressFct={() => props.navigation.navigate(I18n.t("Menu.profile"))}/>
-        </View>
-      }
-    </>
-    // <View style={styles.view_back}>
-    //   <Header navigation={navigation} />
-    //   <View style={styles.viex_list}>
-    //     <Text style={styles.text_field}>
-    //       {I18n.t('Tags.select_our_tags')}
-    //       <Text style={styles.text_star}> *</Text>
+      </Modal>
+    </View>
+    // <View style={styles.back}>
+    //   <BackgroundImage />
+    //   <View style={styles.fill}>
+    //     <Text style={[{ textAlign: 'left', color: 'black', fontSize: 25 }]}>
+    //       {I18n.t('welcome')}
     //     </Text>
-    //     <FlatList
-    //       data={array}
-    //       keyExtractor={(item) => item.name}
-    //       renderItem={({ item }) => (
-    //         <Tag name={item.name} chosen={item.pressed} setLoading={setLoading} />
-    //       )}
-    //     />
+    //     <Text style={[
+    //       {
+    //         textAlign: 'center', color: 'black', fontWeight: 'bold', fontSize: 25
+    //       }
+    //     ]}
+    //     >
+    //       {profil.pseudo}
+    //     </Text>
+    //     <Text style={[{
+    //       textAlign: 'left',
+    //       color: 'black',
+    //       fontSize: 18,
+    //       marginTop: 18,
+    //       fontWeight: 'normal',
+    //     }]}
+    //     >
+    //       {I18n.t('chooseTags')}
+    //     </Text>
+    //     <View style={{ flex: 2, margin: 10, marginTop: 40 }}>
+    //       <FlatList
+    //         data={data}
+    //         renderItem={({ item }) => (
+    //           <Tag name={item.name} pressed={item.pressed} />
+    //         )}
+    //       />
+    //       <TouchableOpacity
+    //         style={styles.newTrip}
+    //         onPress={() => navigation.navigate('Profile')}
+    //         // onPress={() =>
+    //         //  // this.NextPage(navigation.getParam('uid'))
+    //         // }
+    //       >
+    //         <Text style={{ fontSize: 16, color: '#FFFFFF' }}>{I18n.t('next')}</Text>
+    //       </TouchableOpacity>
+    //     </View>
     //   </View>
-    //   <TouchableOpacity
-    //     style={styles.view_button}
-    //     onPress={() => {
-    //       navigation.navigate('Profile');
-    //     }}
-    //   >
-    //     <Text style={styles.text_button}>
-    //       {I18n.t('Tags.confirm_my_tags')}
-    //     </Text>
-    //   </TouchableOpacity>
-      // <Modal
-      //   animationType="none"
-      //   transparent={true}
-      //   visible={isLoading}
-      // >
-      //   <View style={styles.loading_screen}>
-      //     <ActivityIndicator size="large"  color="black" style={{}}/>
-      //   </View>
-      // </Modal>
     // </View>
   );
 }
@@ -413,7 +422,7 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: 'space-around',
     height: '100%'
-  }
+  },
   // back: {
   //   flexDirection: 'column',
   //   justifyContent: 'flex-start',

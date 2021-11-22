@@ -35,34 +35,35 @@ var initialList = [
 
 function SettingPartenaire(props) {
   const [list, setList] = React.useState(initialList);
-  const [args, setArgs] = useState(true);
+  const [location, setLocation] = useState(true);
   const [isLoading, setLoading] = React.useState(false);
 
   async function getThings(setLoading) {
     const store = Store.getState();
     const access_Token = store.profil.access_token;
-    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/get_partner_location`, {
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        access_token: props.profil.access_token,
-      },
-      method: 'GET',
-    })
-      .then((res) => res.json())
-      .then((json) => {
-      //console.log("jqson: ", json);
-        if (json.location) {
-        //console.log("location: ", json.location);
-          setArgs(json.location);
-          initialList = [];
-          for (var i = 0; i < json.location.tags_list.length; i++) {
-            initialList.push({id: i, name: json.location.tags_list[i]._id})
-          }
-          setList(initialList)
-        }
+    const url = `http://${IP_SERVER}:${PORT_SERVER}/location/get_locations`
+      fetch(url, {
+        headers : {
+          access_token: props.profil.access_token,
+        },
+        method: 'GET',
       })
-      .then(setLoading(false));
+        .then((response) => response.json())
+        .then((answer) => {
+        //console.log("answer.locations_list", answer);
+        for (let i = 0; i < answer.locations_list.length; i++) {
+          if (answer.locations_list[i].owner_id == props.profil.id) {
+            setLocation(answer.locations_list[i])
+            console.log("location is : ",answer.locations_list[i]);
+            let action = {type: 'SET_PARTNER_LOCATION', value: answer.locations_list[i]};
+            Store.dispatch(action)
+            break;
+          }
+        }
+        })
+        .catch((error) => {
+          console.error('error :', error);
+        }).finally(() => {i == false});
   }
 
   async function postAdd(body, setLoading) {
@@ -70,13 +71,13 @@ function SettingPartenaire(props) {
     const access_Token = store.profil.access_token;
     const test = JSON.stringify({ address: body });
 
-  //console.log("id: ", args.id);
+  //console.log("id: ", location.id);
     await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/update_location`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
         access_Token,
-        location_id: args.id
+        location_id: location.id
       },
       body: test,
       method: 'POST',
@@ -93,13 +94,13 @@ function SettingPartenaire(props) {
     const access_Token = store.profil.access_token;
     const test = JSON.stringify({ name: body });
 
-  //console.log("id: ", args.id);
+  //console.log("id: ", location.id);
     await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/update_location`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
         access_Token,
-        location_id: args.id
+        location_id: location.id
       },
       body: test,
       method: 'POST',
@@ -121,7 +122,7 @@ function SettingPartenaire(props) {
         Accept: 'application/json',
         'Content-Type': 'application/json',
         access_Token,
-        location_id: args.id
+        location_id: location.id
       },
       body: test,
       method: 'POST',
@@ -160,9 +161,9 @@ function SettingPartenaire(props) {
           <View style={styles.view_boxIn}>
             <View style={styles.view_information}>
               <Image style={styles.img_location} source={require('../images/icons/white/location.png')} />
-              <Text style={styles.text_location}>{args.address}</Text>
+              <Text style={styles.text_location}>{location.address}</Text>
             </View>
-            <Text style={styles.text_name}>{args.name}</Text>
+            <Text style={styles.text_name}>{location.name}</Text>
           </View>
         </ImageBackground>
       </TouchableOpacity>
@@ -175,7 +176,7 @@ function SettingPartenaire(props) {
             <TextInput
           autoCapitalize={'none'}
               style={styles.textInput_number}
-              placeholder={args.name}
+              placeholder={location.name}
               onChangeText={(text) => {
                 setLoading(true);
                 postName(text);
@@ -191,7 +192,7 @@ function SettingPartenaire(props) {
             <TextInput
           autoCapitalize={'none'}
               style={styles.textInput_number}
-              placeholder={args.address}
+              placeholder={location.address}
               onChangeText={(text) => {
                 setLoading(true);
                 postAdd(text);
@@ -207,10 +208,10 @@ function SettingPartenaire(props) {
             <TextInput
           autoCapitalize={'none'}
               style={styles.textInput_number}
-              placeholder={args.description}
+              placeholder={location.description}
               onChangeText={(text) => {
                 setLoading(true);
-                postAdd(text);
+                postDesc(text);
               }}
             />
           </View>
@@ -224,11 +225,11 @@ function SettingPartenaire(props) {
             style={styles.view_tagIn}
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}
-            data={list}
+            data={location.tags_list}
             contentContainerStyle={{ flexGrow: 1 }}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item) => item._id}
             renderItem={({ item }) => (
-              <Text style={styles.text_tagIn}>{item.name}</Text>
+              <Text style={styles.text_tagIn}>{item._id}</Text>
             )}
           />
         </View>
@@ -245,118 +246,6 @@ function SettingPartenaire(props) {
         </Text>
       </TouchableOpacity>
     </View>
-    // <View style={styles.back}>
-    //   <BackgroundImage />
-    //   <View style={styles.header}>
-    //     <TouchableOpacity
-    //       style={{ width: '20%', height: '100%', marginLeft: 15 }}
-    //       onPress={() => props.navigation.navigate('HomePage')}
-    //     >
-    //       <Image
-    //         style={{
-    //           marginTop: '10%', height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'
-    //         }}
-    //         source={require('../ressources/home.png')}
-    //       />
-    //     </TouchableOpacity>
-    //     <TouchableOpacity
-    //       style={{ width: '20%', height: '100%' }}
-    //       onPress={() => props.navigation.navigate('historicUser')}
-    //     >
-    //       <Image
-    //         style={{
-    //           marginTop: '10%', height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'
-    //         }}
-    //         source={require('../ressources/trip.png')}
-    //       />
-    //     </TouchableOpacity>
-    //     <TouchableOpacity
-    //       style={{ width: '20%', height: '100%' }}
-    //       onPress={() => props.navigation.navigate('TripSuggestion')}
-    //     >
-    //       <Image
-    //         style={{
-    //           marginTop: '10%', height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'
-    //         }}
-    //         source={require('../ressources/plus.png')}
-    //       />
-    //     </TouchableOpacity>
-    //     <TouchableOpacity
-    //       style={{ width: '20%', height: '100%' }}
-    //       onPress={() => props.navigation.navigate('FriendList')}
-    //     >
-    //       <Image
-    //         style={{
-    //           marginTop: '10%', height: '65%', width: '50%', opacity: 0.5, resizeMode: 'stretch'
-    //         }}
-    //         source={require('../ressources/friend.png')}
-    //       />
-    //     </TouchableOpacity>
-    //     <TouchableOpacity
-    //       style={{ width: '20%', height: '100%' }}
-    //       onPress={() => props.navigation.navigate('Profile')}
-    //     >
-    //       <Image
-    //         style={{
-    //           marginTop: '10%', height: '70%', width: '50%', opacity: 0.5, resizeMode: 'stretch'
-    //         }}
-    //         source={require('../ressources/profile.png')}
-    //       />
-    //     </TouchableOpacity>
-    //   </View>
-    //   <View style={styles.fill}>
-    //     <View style={styles.logo}>
-    //       <Image style={{ resizeMode: 'center' }} source={require('../ressources/profile.png')} />
-    //     </View>
-    //     <View style={styles.name}>
-    //       <Text style={{ fontSize: 40 }}>
-    //         Nom Entreprise
-    //         {' '}
-    //         {/* nom de l'entreprise */}
-    //       </Text>
-    //     </View>
-    //     <View style={styles.infos}>
-    //       <View style={styles.textLine}>
-    //         <Text style={styles.textInfos}>Description : </Text>
-    //         <TextInput
-    //           style={styles.textInput}
-    //           placeholder="Description de votre commerce"
-    //           multiline
-    //           onChangeText={(text) => {
-    //            setLoading(true);
-    //            postDesc(text, setLoading);
-    //           }}
-    //         >
-    //           {args.description}
-    //         </TextInput>
-    //       </View>
-    //       <View style={styles.textLine}>
-    //         <Text style={styles.textInfos}>Tags : </Text>
-    //         <TextInput
-    //           style={styles.textInput}
-    //           placeholder="Tags rattachez votre commerce"
-    //           multiline
-    //         >
-    //           Tags de Basile
-    //         </TextInput>
-    //       </View>
-    //       <View style={styles.textLine}>
-    //         <Text style={styles.textInfos}>Localisation : </Text>
-    //         <TextInput
-    //           style={styles.textInput}
-    //           placeholder="Adresse de votre commerce"
-    //           multiline
-    //           onChangeText={(text) => {
-    //             setLoading(true);
-    //             postAdd(text);
-    //           }}
-    //         >
-    //           {args.address}
-    //         </TextInput>
-    //       </View>
-    //     </View>
-    //   </View>
-    // </View>
   );
 }
 
