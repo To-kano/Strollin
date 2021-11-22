@@ -219,17 +219,19 @@ export function TripSuggestion(props) {
 
           <View>
             <TouchableOpacity onPress={() => { //#endregion
-              console.log('Supprimer ', indexCarrousel, carouselItemFinal.carouselItems[0])
-              setCarrousel((carousel) => {
-                const result = carousel.carouselItems[indexCarrousel].locations.filter((location) => {
+              console.log('Supprimer ', indexCarrousel, carousel[indexCarrousel])
+              setCarrousel((arrayTripLocation) => {
+                const result = arrayTripLocation[indexCarrousel].filter((location) => {
                   return location.id !== item.id;
                 })
 
-                console.log('result lol', result, carousel.carouselItems[indexCarrousel])
+                console.log('result lol', result, arrayTripLocation[indexCarrousel]);
 
-                carousel.carouselItems[indexCarrousel].locations = result;
+                const newValue = [...arrayTripLocation];
 
-                return carousel;
+                newValue[indexCarrousel] = result;
+
+                return newValue;
 
 
 

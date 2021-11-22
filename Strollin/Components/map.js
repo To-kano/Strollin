@@ -107,6 +107,7 @@ function Map({
 
   //const [waypoint, setWaypoint] = useState(props.waypoints);
   const [destinations, setDestinations] = useState(locations || map.locations);// props.course);
+  console.log("destination ", destinations);
   const [delToken, setDelToken] = useState("Bonchour");
   //console.log(waypoint);
   /* useEffect(() => {
@@ -121,12 +122,14 @@ function Map({
   }, []) */
 
   useEffect(() => {
+
+
     if (profil.sound) {
-      if (destinations.length == []) {
-        Tts.setDefaultLanguage('en-US');
-        Tts.speak('You have done your navigation');
+      if (destinations.length <= 0 || destinations == []) {
+        //Tts.setDefaultLanguage('en-US');
+        //Tts.speak('You have done your navigation');
         addUserHistoric(profil.access_token, map.course._id);
-        setDestinations();
+        //setDestinations();
         const action = { type: 'ADD_HISTORY', courseID: map.course.id };
         dispatch(action);
         // sleep(2000);
@@ -162,7 +165,7 @@ function Map({
       latitude: data.coordinate.latitude,
       longitude: data.coordinate.longitude,
     };
-    if (destinations.length != 0 && isNear(position, destinations[0])) {
+    if (destinations.length > 0 && isNear(position, destinations[0])) {
       setDestinations(destinations.slice(1, destinations.length));
       setTimedestinations();
     }
@@ -201,6 +204,9 @@ function Map({
     updateCoordinates(setUserPosition);
   }
   //
+  if (!destinations || destinations.length <= 0) {
+    return null;
+  }
   if (position.permission && userPosition && localRegion.latitude && localRegion.longitude) {
     const GOOGLE_MAPS_APIKEY = 'AIzaSyDGvC3HkeGolvgvOevKuaE_6LmS9MPjlvE';
     //
