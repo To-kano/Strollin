@@ -67,3 +67,24 @@ async function getloc(access_Token) {
 }
 
 exports.getloc = getloc;
+
+async function checkLocationIsOpen(body) {
+  let result = await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/check_open`, {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: body,
+    method: 'POST',
+    })
+
+    result = await result.json();
+
+    if (result.res) {
+      return result.res;
+    } else {
+      return null;
+    }
+}
+
+exports.checkLocationIsOpen = checkLocationIsOpen;
