@@ -71,10 +71,8 @@ function SearchBar(props) {
           />
         <TouchableOpacity
           onPress={() => {
-            if (research) {
-              props.onPress(research);
-              setresearch('');
-            }
+            props.onPress(research);
+            setresearch('');
             setpressed(!pressed);
           }}
         >

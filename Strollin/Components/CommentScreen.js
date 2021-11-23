@@ -43,14 +43,30 @@ function Header(props) {
       </Text>
       <TouchableOpacity
          onPress={() => {
-          const action = {
+          let action = {
+            type: 'SET_CURRENT_COURSE',
+            value: props.store.comment.selectedCourse
+          };
+          Store.dispatch(action);
+          action = {
+            type: 'ADD_LOCATION_PROPOSITION',
+            value: props.store.comment.selectedCourse.locations_list
+          };
+          Store.dispatch(action);
+          action = {
+            type: 'ADD_AGE',
+            value: true
+          };
+          Store.dispatch(action);
+
+          /*const action = {
             type: 'ADD_COURSE',
             value: props.store.comment.selectedCourse
           };
           Store.dispatch(action);
-        //console.log("course = ", props.store.comment.selectedCommentCourse);
+          console.log("course = ", props.store.comment.selectedCourse);*/
 
-          const popAction = StackActions.pop(5);
+          const popAction = StackActions.pop(2);
 
           props.navigation.dispatch(popAction);
 
