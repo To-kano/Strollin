@@ -221,12 +221,8 @@ router.post('/update_location', async function(req, res) {
         update.pop_ag = req.body.pop_ag
     }
     if (req.body.tags_list) {
-        var tags_list = [];
-        tags_array = req.body.tags_list.split(',');
-        for (var index=0; index < tags_array.length; index++) {
-            tags_list.push({id: tags_array[index], disp: 0});
-        }
-        update.tags_list = tags_list;
+        console.log("tags_list: ", req.body.tags_list);
+        update.tags_list = req.body.tags_list;
     }
     error = await LocationModel.updateOne({id: location.id}, update).catch(error => error);
     if (error.errors) {
@@ -246,6 +242,7 @@ router.post('/update_location', async function(req, res) {
  */
 router.post('/add_location_tag', async function(req, res) {
 
+    console.log("req: ", req.headers.location_id, " : ", req.body.tags_list);
     let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo").catch(error => error);
     let location = undefined;
 
@@ -256,7 +253,7 @@ router.post('/add_location_tag', async function(req, res) {
         return res.status(500).send({ error_code: 2 });
     }
 
-    location = await LocationModel.findOne({id: req.headers.location_id}, "-_id").catch(error => error);
+    location = await LocationModel.findOne({id: req.headers.location_id}).catch(error => error);
     if (!location) {
         return res.status(400).send({ error_code: 4 });
     }
@@ -282,7 +279,7 @@ router.post('/add_location_tag', async function(req, res) {
         }
     }
 
-    error = await LocationModel.updateOne({id: location.id}, {$push: {tags_list: {$each: tags}}}).catch(error => error);
+    error = await LocationModel.updateOne({id: location.id}, {$push: {tags_list: {_id: tag.name, disp: 0}}}).catch(error => error);
     if (error.errors) {
         return res.status(500).send({ error_code: 2 });
     }

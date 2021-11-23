@@ -64,29 +64,28 @@ export function Tag({ name, chosen, setLoading, pos, defaultState = false }) {
   const [pressed, setpressed] = useState(defaultState);
   const [args, setArgs] = useState(true);
 
-  async function postTags(body, setLoading) {
-    const store = Store.getState();
-    const access_Token = store.profil.access_token;
+  const store = Store.getState();
+  const access_Token = store.profil.access_token;
 
-    const list = [body];
-    const test = JSON.stringify({ tags_list: list });
+  async function removeTags(body, setLoading) {
     const locId = JSON.stringify({ location_id: store.profil.partner_location.id });
 
-    const tagsArray = store.profil.tags;
-    tagsArray.push(body);
+    const tagsArray = store.profil.partner_location.tags_list;
+    console.log("body: ", body, "array: ", tagsArray);
+    for (let i = 0; i < tagsArray.length; i++) {
+      if (body == tagsArray[i]._id) {
+        tagsArray.splice(i, 1);
+        break
+      }
+    }
     console.log("body: ", tagsArray);
-    let action = {
-      type: 'SET_USER_TAGS',
-      value: tagsArray
-    };
-    Store.dispatch(action);
-    console.log("CONTINUE");
-    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/add_location_tag`, {
+    const test = JSON.stringify({ tags_list: tagsArray });
+    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/update_location`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
         access_Token,
-        locId
+        'location_id': store.profil.partner_location.id
       },
       body: test,
       method: 'POST',
@@ -94,6 +93,35 @@ export function Tag({ name, chosen, setLoading, pos, defaultState = false }) {
       .then((res) => res.json())
       .then((json) => {
         console.log("json: ", json);
+      })
+  }
+
+  async function postTags(body, setLoading) {
+    const list = body;
+    const test = JSON.stringify({ tags_list: list });
+    const locId = JSON.stringify({ location_id: store.profil.partner_location.id });
+    var new_loc = store.profil.partner_location;
+
+    console.log("locId: ", locId);
+    console.log("CONTINUE");
+    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/add_location_tag`, {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        access_Token,
+        'location_id': store.profil.partner_location.id
+      },
+      body: test,
+      method: 'POST',
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        console.log("json: ", json);
+        new_loc.tags_list.push({_id: detranslateTags(body), disp: 0})
+        action = {
+          type: 'SET_PARTNER_LOCATION',
+          value: new_loc
+        };
       })
       .then(setLoading(false)
       );
@@ -107,7 +135,10 @@ export function Tag({ name, chosen, setLoading, pos, defaultState = false }) {
   return (
     <>
       {pressed
-      ? <TouchableOpacity style={[globalStyles.tag, {flexDirection: 'row', alignItems: 'center', justifyContent : 'space-around'}]} onPress={() => { setpressed(!pressed); }} >
+      ? <TouchableOpacity style={[globalStyles.tag, {flexDirection: 'row', alignItems: 'center', justifyContent : 'space-around'}]} onPress={() => { 
+        setpressed(!pressed);
+        removeTags(name, setLoading) 
+        }} >
           <Text style={[globalStyles.subparagraphs, {marginRight: 11, textTransform: 'capitalize'}]}>{translateTags(name)}</Text>
           <Icon name="checked" size={24} color="#1C1B1C"/>
         </TouchableOpacity>

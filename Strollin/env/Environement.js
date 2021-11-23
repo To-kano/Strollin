@@ -5,10 +5,10 @@ const environement = {
 
 exports.environement = environement;
 
-const IP_SERVER = process.env.IP_SERVER || 'strollin.ddns.net';
+const IP_SERVER = process.env.IP_SERVER || '82.66.98.16';
 
 exports.IP_SERVER = IP_SERVER;
 
-const PORT_SERVER = process.env.PORT_SERVER || '3000';
+const PORT_SERVER = process.env.PORT_SERVER || '3004';
 
 exports.PORT_SERVER = PORT_SERVER;
