@@ -94,7 +94,7 @@ async function generateCourse(access_token, settings) {
   };
   Store.dispatch(action);
 
-  let answer = await fetch(`http://${IP_SERVER}:${PORT_SERVER}/generator/generate_course`, {
+  let answer = await fetch(`http://${IP_SERVER}:${PORT_SERVER}/generator/pierre_req`, {
     headers: {
       ...buffer,
       Accept: 'application/json',
