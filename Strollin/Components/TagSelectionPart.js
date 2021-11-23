@@ -93,6 +93,11 @@ export function Tag({ name, chosen, setLoading, pos, defaultState = false }) {
       .then((res) => res.json())
       .then((json) => {
         console.log("json: ", json);
+        new_loc.tags_list = tagsArray
+        action = {
+          type: 'SET_PARTNER_LOCATION',
+          value: new_loc
+        };
       })
   }
 
