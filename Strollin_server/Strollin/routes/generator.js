@@ -90,9 +90,9 @@ router.get('/generate_course', async function(req, res) {
       console.log("prioFriends: ", prioFriends);
     }
 
-    console.log("userTags: ", userTags);
-    const promise2 = algo.data.algo(req.headers.time , req.headers.budget , userTags, req.headers.coordinate, req.headers.eat, radius, placeNbr, locations_list, req.headers.is18, prioFriends, friendflag, friendsArray);
-    promise2.then((value) => {
+    console.log("userTagsiiiiiiiiiii: ", userTags);
+    const promise = algo.data.algo(req.headers.time , req.headers.budget , userTags, req.headers.coordinate, req.headers.eat, radius, placeNbr, locations_list, req.headers.is18, prioFriends, friendflag, friendsArray);
+    promise.then((value) => {
       let generated_course = value;
       console.log("course: ", generated_course);
 

@@ -167,6 +167,10 @@ router.post('/update_location', async function(req, res) {
     if (req.body.name) {
         update.name = req.body.name
     }
+    if (req.body.owner_id) {
+        console.log("je updtae ta daronne: ", user.id)
+        update.owner_id = Number(user.id)
+    }
     if (req.body.owner) {
         let owner = await UserModel.findOne({id: req.body.owner}, "-_id id pseudo").catch(error => error);
         if (!owner) {

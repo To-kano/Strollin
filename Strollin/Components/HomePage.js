@@ -134,7 +134,7 @@ export function HomePage(props) {
         onPress={(data) => { setSortedTendanceData(data); }}
         imagePath="../images/icons/black/search.png"
       />
-      <Footer primaryText={I18n.t('HomePage.newTrip')} primaryOnPressFct={() => props.navigation.navigate("New trip", { screen: 'CourseSetting' })}/>
+      <Footer primaryText={I18n.t('HomePage.newTrip')} primaryOnPressFct={() => props.navigation.navigate("Nouveau trajet")}/>
     </View>
 
       // {/* <TouchableOpacity

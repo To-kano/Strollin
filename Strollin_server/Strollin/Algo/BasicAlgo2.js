@@ -115,12 +115,13 @@ function NotInOldList(Place, old_locations_list) {
   let rand = 0;
   for (var i = 0; i < old_locations_list.length; i++) {
     if (old_locations_list[i] == Place.id) {
-      rand = Math.floor(Math.random() * 3);
-      if (rand == 0) {
-        return true
-      }
       return false
     }
+  }
+  rand = Math.floor(Math.random() * 4);
+  console.log("rand: ", rand);
+  if (rand <= 1) {
+    return false
   }
   return true
 }
@@ -138,7 +139,7 @@ function IsForMinor(Place, is18) {
   return true
 }
 
-function algoTest(params, test_list) {
+function algoMain(params, test_list) {
 
   //console.log("food bool: ", Food);
   return new Promise((resolve, reject) => {
@@ -175,60 +176,12 @@ function algoTest(params, test_list) {
 }
 
 //gets the tags from tge DB and transform them to a json with the right format
-async function getTags(params) {
+async function getLocations(params) {
 
   let query = {};
   var locations_list = await LocationModel.find(query);
-  /*
-  let locations_list = null
-  let true_list = []
-  let tagslist = []
-  let test = []
-  let tagsMod = []
 
-
-  console.log("LIST SIZE: ", locations_list.length);
-  for (var i = 0; i < locations_list.length; i++) {
-    tagsMod = []
-    tagslist = []
-    for (var j = 0; j < locations_list[i].tags_list.length; j++) {
-      test = []
-      tagsMod[j] = locations_list[i].tags_list[j]._id
-      if (locations_list[i].tags_list[j].disp) {
-        test.push(locations_list[i].tags_list[j]._id)
-        test.push(locations_list[i].tags_list[j].disp)
-      } else {
-        test.push(locations_list[i].tags_list[j]._id)
-        test.push(0)
-      }
-      tagslist.push(test)
-    }
-    true_list.push({
-      Tags: tagsMod,
-      Pos: [locations_list[i].latitude, locations_list[i].longitude],
-      Name: locations_list[i].name,
-      Dist: 0,
-      Price: Number(locations_list[i].price_range[0]),
-      PopDisp: Number(locations_list[i].pop_disp),
-      PopAg: Number(locations_list[i].pop_ag),
-      AlgDisp: Number(locations_list[i].alg_disp),
-      AlgAg: Number(locations_list[i].alg_ag),
-      TagsDisp: tagslist,
-      Desc: locations_list[i].description,
-      Id: locations_list[i].id,
-      Owner: locations_list[i].owner,
-      Time: Number(locations_list[i].average_time),
-      City: locations_list[i].city,
-      Food: locations_list[i].food
-    })
-  }
-  console.log("TRUE_LIST: ", true_list[0]);
-  console.log("LOCATIONs_LIST: ", locations_list[0]);*/
-  /*for (var i = 0; i < true_list.length; i++) {
-    console.log("please: ", true_list[i]);
-  }*/
-
-  const promise1 = hello(params, locations_list)
+  const promise1 = prepAlgo(params, locations_list)
   return promise1;
 }
 
@@ -438,26 +391,20 @@ async function RecoverPlaces(coordinate, tags) {
   //console.log("fini");
 }
 
-hello = async function(params, test_list)
+prepAlgo = async function(params, test_list)
 {
-  //var coordinateArr = coordinate.split(",");
-
-  //await RecoverPlaces(coordinate, tags)
-
-  //promise1.then((value) => {
-    //console.log("coordiante: ", coordinateArr);
     var tmpTags = params.tags;
     return new Promise((resolve, reject) => {
       if (params.friendflag) {
         params.placeNbr = params.placeNbr / 3;
         params.tags = params.prioFriends;
-        var test2 = algoTest(params, test_list)
+        var test2 = algoMain(params, test_list)
         test2.then((value) => {
           params.tags = tmpTags;
-          var test3 = algoTest(params, test_list)
+          var test3 = algoMain(params, test_list)
           test3.then((value2) => {
             params.tags = params.friendsArray;
-            var test4 = algoTest(params, test_list)
+            var test4 = algoMain(params, test_list)
             test4.then((value3) => {
               var res = value.concat(value2)
               res = res.concat(value3)
@@ -466,15 +413,14 @@ hello = async function(params, test_list)
           })
         })
       } else {
-        var test = algoTest(params, test_list)
+        var test = algoMain(params, test_list)
         resolve(test)
       }
     });
-  //})
 }
 
 methods.algo = function(time, budget, tags, coordinate, eat, radius, placeNbr, locations_list, is18, prioFriends, friendflag, friendsArray) {
-  console.log("------------------------------------------------------------------");
+  console.log("------------------------------oui------------------------------------");
   var UserPos = [];
   var coordinateArr = coordinate.split(",");
   var tagsArray = tags.split(",");
@@ -488,7 +434,7 @@ methods.algo = function(time, budget, tags, coordinate, eat, radius, placeNbr, l
   radius = radius * 1000;
 
   var params = {time: time, budget: budget, tags: tagsArray, coordinate: coordinateArr, eat: eat, radius: radius, placeNbr: placeNbr, locations_list: locations_list, is18: is18, prioFriends: prioFriends, friendflag: friendflag, friendsArray: friendsArray}
-  const promise1 = getTags(params);
+  const promise1 = getLocations(params);
   return promise1;
 }
 
@@ -502,8 +448,5 @@ methods.places = function(coordinate, tag, course) {
   console.log("------------------------------------------------------------------");
   getPlaces(coordinate, tag)
 }
-
-//algoTest(TagsJson, PlacesJson)
-//DistCalc2D([-7,-4], [17,6.5])
 
 exports.data = methods;

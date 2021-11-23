@@ -69,7 +69,7 @@ function algoTest(params, test_list) {
         x++;
       }
     }
-    console.log("Places: ", PlacesArray);
+    console.log("Places pierre: ", PlacesArray);
     resolve(PlacesArray)
   });
 }

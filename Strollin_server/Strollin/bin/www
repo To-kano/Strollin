@@ -42,7 +42,7 @@ const { fstat } = require('fs');
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort('3004');
+var port = normalizePort('3000');
 //var portHttps = normalizePort('3443');
 app.set('port', port);
 //appHttps.set('port', port);

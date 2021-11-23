@@ -98,6 +98,13 @@ function Menu(props) {
             <Icon name='star_empty' size={32} color='#1C1B1C'/>
             <Text style={[globalStyles.paragraphs, {marginLeft: 8}]}>{props.state.routeNames[8]}</Text>
           </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => props.navigation.navigate('Guide')}
+            style={[styles.view_navigationIn, props.name == 'Guide' ? styles.current_page : {}]}
+          >
+            <Icon name='course' size={32} color='#1C1B1C'/>
+            <Text style={styles.text_navigationIn}>Guide</Text>
+          </TouchableOpacity>
 
           {/* <TouchableOpacity
             onPress={() => props.navigation.navigate(props.state.routeNames[5])}
@@ -107,11 +114,11 @@ function Menu(props) {
             <Text style={[globalStyles.paragraphs, {marginLeft: 8}]}>{props.state.routeNames[5]}</Text>
           </TouchableOpacity> */}
 
-          {props.profil.partner &&
-          <>
+          {/* {props.profil.partner &&
+          <> */}
             <TouchableOpacity
               onPress={() => props.navigation.navigate(props.state.routeNames[6])}
-              style={[styles.view_navigationIn, props.state.index == 6 ? styles.current_page : {}]}
+              style={[styles.view_navigationIn, {marginTop: 32}, props.state.index == 6 ? styles.current_page : {}]}
             >
               <Icon name='partner' size={32} color='#1C1B1C'/>
               <Text style={[globalStyles.paragraphs, {marginLeft: 8}]}>{props.state.routeNames[6]}</Text>
@@ -124,8 +131,16 @@ function Menu(props) {
               <Icon name='settings' size={32} color='#1C1B1C'/>
               <Text style={[globalStyles.paragraphs, {marginLeft: 8}]}>{props.state.routeNames[7]}</Text>
             </TouchableOpacity>
-          </>
-          }
+
+            <TouchableOpacity
+              onPress={() => props.navigation.navigate(props.state.routeNames[12])}
+              style={[styles.view_navigationIn, props.state.index == 7 ? styles.current_page : {}]}
+              >
+              <Icon name='piggy' size={32} color='#1C1B1C'/>
+              <Text style={[globalStyles.paragraphs, {marginLeft: 8}]}>{props.state.routeNames[12]}</Text>
+            </TouchableOpacity>
+            {/* </>
+            } */}
 
           {/* <TouchableOpacity
             onPress={() => props.navigation.navigate('Personal_trip')}
@@ -159,13 +174,6 @@ function Menu(props) {
           >
             <Icon name='logout' size={32} color='#1C1B1C'/>
             <Text style={[globalStyles.paragraphs, {marginLeft: 8}]}>{I18n.t('Menu.logOut')}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => props.navigation.navigate('Guide')}
-            style={[styles.view_navigationIn, props.name == 'Guide' ? styles.current_page : {}]}
-          >
-            <Image style={styles.img_navigationIn} source={require('../images/icons/black/next_trip.png')} />
-            <Text style={styles.text_navigationIn}>Guide</Text>
           </TouchableOpacity>
         {/*</ScrollView>*/}
         {/*<TouchableOpacity
@@ -234,7 +242,7 @@ const styles = StyleSheet.create({
     color: '#B9B9B9',
   },
   view_navigation: {
-    marginTop: 48,
+    marginTop: 32,
     flexDirection: 'column',
     width: '100%',
     flex: 1,
