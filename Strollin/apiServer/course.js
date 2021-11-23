@@ -112,6 +112,50 @@ async function generateCourse(access_token, settings) {
 
 exports.generateCourse = generateCourse;
 
+async function getLocationCloseToUser(access_token, settings) {
+
+  var time = settings.hours * 60 + settings.minutes;
+  const coordinate = [];
+  const store = Store.getState();
+  var pos = store.CourseSettings.pos
+
+  if (!pos) {
+    pos = settings.pos;
+  }
+  else {
+    settings.pos = pos;
+  }
+
+  if (time == 0) {
+    time = 30;
+  }
+
+  coordinate[0] = pos.latitude;
+  coordinate[1] = pos.longitude;
+
+  const buffer = {...settings};
+
+  buffer.time = time;
+  buffer.coordinate = coordinate;
+
+  let answer = await fetch(`http://${IP_SERVER}:${PORT_SERVER}/generator/pierre_req`, {
+    headers: {
+      ...buffer,
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      access_token,
+    },
+    method: 'GET',
+  })
+
+  answer = await answer.json();
+
+  return answer.places;
+
+}
+
+exports.getLocationCloseToUser = getLocationCloseToUser;
+
 async function createNewCourse(access_token, settings) {
 
   console.log("createNewCourse:", settings);

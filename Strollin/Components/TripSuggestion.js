@@ -17,7 +17,7 @@ import Store from '../Store/configureStore';
 import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 import Modal from 'react-native-modal';
 import {checkLocationIsOpen} from '../apiServer/locations';
-import {generateCourse} from '../apiServer/course';
+import {generateCourse, getLocationCloseToUser} from '../apiServer/course';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import MenuButton from './components/MenuButton';
 import Footer from './components/Footer';
@@ -39,7 +39,196 @@ async function getArrayLocation(access_token, idLocations) {
   return result
 }
 
-async function generateNewTrip(setCarrousel, setGeneredTrip, acc) {
+async function getLocationArroundUser(placenbr ,locations = []) {
+  const store = Store.getState();
+  const access_Token = store.profil.access_token;
+  const settings = {
+    pos : store.CourseSettings.pos,
+    budget : store.CourseSettings.budget,
+    hours : store.CourseSettings.hours,
+    minutes : store.CourseSettings.minutes,
+    eat : store.CourseSettings.eat,
+    radius : store.CourseSettings.radius,
+    placeNbr : store.CourseSettings.placeNbr,
+    tags : store.CourseSettings.tags,
+    locations_list: store.course.currentLocationProposition,
+    is18: store.CourseSettings.is18,
+    tempTags: store.CourseSettings.tempTags,
+    friendstags: store.CourseSettings.friendstags,
+    locations_list: locations,
+    placenbr
+  }
+  const result = await getLocationCloseToUser(access_Token, settings);
+
+  return result;
+
+  //setLocations(result);
+  //setLocationsCarrousel(result)
+  //check_open(result)
+}
+
+function ModalAddLocation({setCarrousel, isOpen, setOpen, indexCarrousel,  locationIgnored = []}) {
+
+  const [locationSugestion, setLocationSugestion] = useState([]);
+  const [selectedLocation, setSelectedLocation] = useState(null);
+
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setLoading(true)
+    const loadLocations = async () => {
+      const result = await getLocationArroundUser(10, locationIgnored);
+      setLocationSugestion(result);
+      setLoading(false)
+    }
+    loadLocations();
+  }, [])
+
+  useEffect(() => {
+    console.log("selectedLocation ", selectedLocation);
+  }, [selectedLocation]);
+
+  //console.log("locationSugestion", locationSugestion)
+
+  return (
+    <Popup message={"Ajouter un lieu"} modalVisible={isOpen} setModalVisible={setOpen}>
+        <FlatList
+          style={{height : 200}}
+          data={locationSugestion}
+          renderItem={({item}) => {
+            return (
+              <View style={{
+                backgroundColor: "#ffffff",
+                padding: 16,
+                margin: 16,
+                borderRadius: 16,
+                shadowColor: "#000",
+                shadowOffset: {
+                    width: 0,
+                    height: 5,
+                },
+                shadowOpacity: 0.34,
+                shadowRadius: 6.27,
+        
+                elevation: 10,
+              }}>
+                <TouchableOpacity
+                  onPress={() => {setSelectedLocation(item)}}
+                >
+                  <Text style={globalStyles.subtitles}>{item.name}</Text>
+                  <Text numberOfLines={1} style={[globalStyles.subparagraphs, {color: '#9B979B'}]}>{item.address}, {item.city}</Text>
+                  <View style={{ marginTop: 16, width: "100%", }}>
+                    <FlatList
+                      style={{ width: "100%", flexWrap: 'wrap', flexDirection: 'row',  }}
+                      data={item.tags_list}
+                      keyExtractor={(item) => item.id}
+                      renderItem={({ item }) => (
+                        <>
+                        {translateTags(item._id) === 'error'
+                        ? <></>
+                        : <Text style={[globalStyles.subparagraphs, globalStyles.tag,]}>{translateTags(item._id) === 'error' ? <></> : translateTags(item._id)}</Text>
+                        }
+                      </>
+                      )}
+                    />
+                  </View>
+                </TouchableOpacity>
+                <View style={{ marginTop: 16, flexDirection: 'row', justifyContent: 'space-between' }}>
+                  <View style={{flexDirection: 'row'}}>
+                    <TouchableOpacity
+                      onPress={() => {
+                        Share.share({
+                          message: `Strollin' m'a proposé un trajet ! \nRejoignons nous a ${item.name} au ${item.address} !`,
+                          title: "Sortir avec Strollin'",
+                          url: 'https://www.google.com',
+                        }, {
+                        // Android only:
+                          dialogTitle: 'Share Strollin travel',
+                          // iOS only:
+                          excludedActivityTypes: [
+                            'com.apple.UIKit.activity.PostToTwitter'
+                          ]
+                        });
+                      }}
+                      accessibilityLabel="Share"
+                    >
+                      <Icon name="share" size={29} color='#000000'/>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={{marginLeft: 8}}
+                      onPress={() => {
+                        const shareLinkContent = {
+                          contentType: 'link',
+                          contentUrl: 'https://www.google.com',
+                          quote: `Strollin' m'a proposé un trajet ! \nRejoignons nous a ${item.name} au ${item.address} !`,
+                        };
+                        ShareDialog.show(shareLinkContent);
+                      }}
+                      accessibilityLabel="Share"
+                    >
+                      <Icon name="facebook" size={29} color='#000000'/>
+                    </TouchableOpacity>
+                  </View>
+        
+                  <View>
+
+                      { selectedLocation && item.id ===  selectedLocation.id && <Icon name="bin" size={29} color='#FF0000'/>}
+                  </View>
+        
+                </View>
+              </View>
+          )
+          }}
+          keyExtractor={(item) => item.id}
+        />
+
+        {loading && <ActivityIndicator size="large"  color="black" style={{}}/>}
+
+        <Text style={[globalStyles.paragraphs, {marginTop: 32, width: '100%'}]}>Veux tu ajouter ce lieu au trajet ?</Text>
+        <View style={{
+            width: '100%',
+            marginTop: 32,
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between'
+          }}>
+            <TouchableOpacity
+              style={{ backgroundColor: "#ffffff", padding: 16, alignItems: 'center', borderRadius: 32 }}
+              onPress={() => {
+                setOpen(false);
+              }}
+            >
+              <Text style={globalStyles.paragraphs}>Non merci</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              disabled={!selectedLocation}
+              style={{ backgroundColor: "#0989FF", padding: 16, alignItems: 'center', borderRadius: 32 }}
+              onPress={() => {
+
+                setCarrousel((arrayTripLocation) => {
+                  console.log('index ', indexCarrousel)
+                  const result = arrayTripLocation[indexCarrousel].push(selectedLocation);
+  //
+                  //console.log('result lol', result, arrayTripLocation[indexCarrousel]);
+  //
+                  const newValue = [...arrayTripLocation];
+  //
+                  //newValue[indexCarrousel] = result;
+  
+                  return newValue;
+                })
+                setOpen(false);
+                
+              }}
+            >
+              <Text style={[globalStyles.paragraphs, { color: '#ffffff' }]}>Oui svp</Text>
+            </TouchableOpacity>
+          </View>
+      </Popup>
+  );
+}
+
+async function generateNewTrip(setCarrousel, setGeneredTrip) {
   const store = Store.getState();
   const access_Token = store.profil.access_token;
   const settings = {
@@ -74,6 +263,7 @@ async function generateNewTrip(setCarrousel, setGeneredTrip, acc) {
 export function TripSuggestion(props) {
 
   const [isModalVisible, setModalVisible] = useState(false);
+  const [isModalLocationVisible, setModalLocationVisible] = useState(false);
   const [isLoading, setLoading] = useState(false);
 
   const [generetedTrip, setGeneredTrip] = useState([]);
@@ -139,6 +329,22 @@ export function TripSuggestion(props) {
       getLocations();
     }
   }, [props.course.currentCourse]);
+
+  const addLocationItem = (locationToAdd) => {
+
+    console.log('addLocationItem', locationToAdd, indexCarrousel);
+    setCarrousel((arrayTripLocation) => {
+      const result = arrayTripLocation[indexCarrousel].push(locationToAdd);
+
+      console.log('result AddLocationitem', result, arrayTripLocation[indexCarrousel]);
+
+      const newValue = [...arrayTripLocation];
+
+      newValue[indexCarrousel] = result;
+
+      return newValue;
+    })
+  }
 
   const LocationItem = ({item}) => {
     const navigation = useNavigation();
@@ -249,6 +455,31 @@ export function TripSuggestion(props) {
     return (
       <FlatList
         data={item}
+        ListFooterComponent={() => {
+          return (
+          <TouchableOpacity style={{
+            backgroundColor: "#ffffff",
+            padding: 16,
+            margin: 16,
+            borderRadius: 16,
+            shadowColor: "#000",
+            shadowOffset: {
+                width: 0,
+                height: 5,
+            },
+            shadowOpacity: 0.34,
+            shadowRadius: 6.27,
+            flexDirection: 'row',
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+            elevation: 10,
+          }}
+            onPress={() => {setModalLocationVisible(true)}}
+          >
+              <Icon name="add" size={24} color='#000000'/>
+              <Text style={[globalStyles.paragraphs, {marginHorizontal: 16}]}>Ajouter une étape</Text>
+            </TouchableOpacity>)
+        }}
         style={{ backgroundColor: '#ffffff'}}
         contentContainerStyle={{paddingTop: 96, paddingBottom: 176}}
         ListHeaderComponent={() => {
@@ -265,6 +496,7 @@ export function TripSuggestion(props) {
 
   return (
     <>
+      <ModalAddLocation setCarrousel={setCarrousel} indexCarrousel={indexCarrousel} isOpen={isModalLocationVisible} setOpen={setModalLocationVisible}  />
       <Popup message={"Ces lieux sont fermés.."} modalVisible={isModalVisible} setModalVisible={setModalVisible}>
         <FlatList
           style={{height : 200}}
