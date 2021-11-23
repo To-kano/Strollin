@@ -18,7 +18,8 @@ const initialState = {
   fav: false,
   partner: false,
   favid: 0,
-  partner_location: {}
+  partner_location: {},
+  id: 0
 };
 
 function profileReducer(state = initialState, action) {

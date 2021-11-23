@@ -22,6 +22,7 @@ import PartenaireScreen from '../Components/PartenairePage';
 import SettingPartenaire from '../Components/SettingPartenaire';
 import Personal_trip from '../Components/Personal_trip';
 import Favorites from '../Components/Favorites';
+import PartnerPlace from '../Components/PartnerPlace';
 import TutorialPage from '../Components/tuto/TutorialPage';
 import Subscription from '../Components/SubscriptionPage';
 
@@ -59,7 +60,7 @@ function MyDrawer() {
       <Drawer.Screen name={I18n.t("Menu.profile")} component={Profile} />
       <Drawer.Screen name={I18n.t("Menu.partenaire")} component={PartenaireScreen} />
       <Drawer.Screen name={I18n.t("Menu.settings")} component={SettingPartenaire} />
-      <Drawer.Screen name={I18n.t("Menu.favorites")} component={Favorites} />
+      <Drawer.Screen name={I18n.t("Menu.favorites")} component={PartnerPlace} />
       <Drawer.Screen name={'Guide'} component={TutorialPage} />
       <Drawer.Screen name={I18n.t("Menu.personalTrip")} component={Personal_trip} />
       <Drawer.Screen name="TripNavigation" component={TripNavigation} />
