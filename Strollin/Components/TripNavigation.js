@@ -348,7 +348,7 @@ export function TripNavigation({ map, profil, dispatch, navigation}) {
         <Text style={styles.text_signIn}>{I18n.t("TripNavigation.delete")}</Text>
       </TouchableOpacity>
 
-      <Popup message={"Do you want to remove " + Store.getState().course.delete[1] + " from the course ?"} modalVisible={del} setModalVisible={setDel}>
+      <Popup message={I18n.t('TripNavigation.deleteLocation') + '\n"' + Store.getState().course.delete[1] + '"'} modalVisible={del} setModalVisible={setDel}>
         <View style={{
             width: '50%',
             marginTop: 32,
