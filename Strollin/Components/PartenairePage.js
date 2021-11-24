@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {
-  View, StyleSheet, Image, Text, TouchableOpacity, ImageBackground, FlatList,
+  View, StyleSheet, Image, Text, TouchableOpacity, ImageBackground, FlatList, Modal, ActivityIndicator
 } from 'react-native';
 import BackgroundImage from './backgroundImage';
 //import { SceneView } from 'react-navigation';
@@ -46,10 +46,11 @@ function PartenaireScreen(props) {
   var i = false
   const [tagsList, setTagsList] = useState(initialList)
   const [location, setLocation] = useState('')
+  const [isLoading, setLoading] = useState(false);
 //console.log(locationUser)
 
   useEffect(() => {
-    if (!i) {
+      setLoading(true)
       const url = `http://${IP_SERVER}:${PORT_SERVER}/location//get_locations`
       fetch(url, {
         headers : {
@@ -67,12 +68,12 @@ function PartenaireScreen(props) {
             break;
           }
         }
+        setLoading(false)
         })
         .catch((error) => {
           console.error('error :', error);
-        }).finally(() => {i == false});
-
-    }
+          setLoading(false)
+        })
   }, []);
 
   const [list, setList] = React.useState(initialList);
@@ -170,44 +171,16 @@ function PartenaireScreen(props) {
           />
         </View>
       </ScrollView>
+      <Modal
+        animationType="none"
+        transparent={false}
+        visible={isLoading}
+      >
+        <View style={styles.loading_screen}>
+          <ActivityIndicator size="large"  color="blue" style={{}}/>
+        </View>
+      </Modal>
     </View>
-    // <View style={styles.back}>
-    //   <BackgroundImage />
-    //   <View style={styles.fill}>
-    //     <View style={styles.logo}>
-    //       <Image style={{ resizeMode: 'center' }} source={require('../ressources/profile.png')} />
-    //     </View>
-    //     <View style={styles.name}>
-    //       <Text style={{ fontSize: 40 }}>
-    //         Nom Entreprise
-    //         {' '}
-    //         {/* nom de l'entreprise */}
-    //       </Text>
-    //     </View>
-    //     <View style={styles.infos}>
-    //       <View style={styles.textLine}>
-    //         <Text style={styles.textInfos}>Popup affiché : </Text>
-    //         <Text style={styles.textNumber}>9057</Text>
-    //       </View>
-    //       <View style={styles.textLine}>
-    //         <Text style={styles.textInfos}>Popup accepté : </Text>
-    //         <Text style={styles.textNumber}>4397</Text>
-    //       </View>
-    //       <View style={styles.textLine}>
-    //         <Text style={styles.textInfos}>Apparu dans l'algorithme : </Text>
-    //         <Text style={styles.textNumber}>4918</Text>
-    //       </View>
-    //       <View style={styles.textLine}>
-    //         <Text style={styles.textInfos}>Accepté dans l'algorithme : </Text>
-    //         <Text style={styles.textNumber}>627</Text>
-    //       </View>
-    //       <View style={styles.textLine}>
-    //         <Text style={styles.textInfos}>Visiteurs : </Text>
-    //         <Text style={styles.textNumber}>65</Text>
-    //       </View>
-    //     </View>
-    //   </View>
-    // </View>
   );
 }
 
@@ -339,6 +312,12 @@ const styles = StyleSheet.create({
     borderColor: '#0091A7',
     borderWidth: 4,
   },
+  loading_screen: {
+    backgroundColor: 'rgba(100,100,100,0.75)',
+    display: "flex",
+    justifyContent: 'space-around',
+    height: '100%'
+  }
 });
 
 const mapStateToProps = (state) => state;

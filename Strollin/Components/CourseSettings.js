@@ -78,6 +78,7 @@ async function confirmeSettings(pos, budget, hours, minutes, props, eat, radius,
     friendstags: store.CourseSettings.friendstags
   }
 
+  setLoading(true)
   const result = await generateCourse(access_token, settings);
   setLoading(false);
 
@@ -339,7 +340,7 @@ export function CourseSettings(props) {
         visible={isLoading}
       >
         <View style={styles.loading_screen}>
-          <ActivityIndicator size="large"  color="black" style={{}}/>
+          <ActivityIndicator size="large"  color="blue" style={{}}/>
         </View>
       </Modal>
     </View>

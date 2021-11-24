@@ -118,7 +118,7 @@ function Menu(props) {
           <>
             <TouchableOpacity
               onPress={() => props.navigation.navigate(props.state.routeNames[6])}
-              style={[styles.view_navigationIn, {marginTop: 32}, props.state.index == 6 ? styles.current_page : {}]}
+              style={[styles.view_navigationIn, props.state.index == 6 ? styles.current_page : {}]}
             >
               <Icon name='partner' size={32} color='#1C1B1C'/>
               <Text style={[globalStyles.paragraphs, {marginLeft: 8}]}>{props.state.routeNames[6]}</Text>

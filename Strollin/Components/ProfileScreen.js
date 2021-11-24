@@ -165,6 +165,7 @@ function ProfileScreen(props) {
           <TextInput
             style={[globalStyles.textInput, { marginTop: 0, width: "100%"}]}
             autoCapitalize="none"
+            placeholder={args.pseudo}
             onChangeText={text => {
               setLoading(true);
               postMail(text, setLoading);

@@ -176,7 +176,7 @@ export default {
     tags: 'Tags',
     myTags: 'Mes tags',
     addTags: 'Ajouter des tags',
-    choosePic: 'Choisissez votre photo de profil',
+    choosePic: 'Choisissez une photo',
     chooseFormPic: 'Choisissez une image',
     pic: 'Photo',
     remove: 'Retirer',

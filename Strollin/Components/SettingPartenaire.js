@@ -43,6 +43,7 @@ function SettingPartenaire(props) {
     const store = Store.getState();
     const access_Token = store.profil.access_token;
     const url = `http://${IP_SERVER}:${PORT_SERVER}/location/get_locations`
+    setLoading(true)
       fetch(url, {
         headers : {
           access_token: props.profil.access_token,
@@ -61,10 +62,12 @@ function SettingPartenaire(props) {
             break;
           }
         }
+        setLoading(false)
         })
         .catch((error) => {
           console.error('error :', error);
-        }).finally(() => {i == false});
+          setLoading(false)
+        })
   }
 
   async function postAdd(body, setLoading) {
@@ -245,6 +248,15 @@ function SettingPartenaire(props) {
           {I18n.t('SettingsPartner.choose_my_shop_tag')}
         </Text>
       </TouchableOpacity>
+      <Modal
+        animationType="none"
+        transparent={false}
+        visible={isLoading}
+      >
+        <View style={styles.loading_screen}>
+          <ActivityIndicator size="large"  color="blue" style={{}}/>
+        </View>
+      </Modal>
     </View>
   );
 }

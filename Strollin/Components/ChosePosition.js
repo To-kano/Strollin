@@ -87,7 +87,6 @@ export function ChosePosition(props, {map, profil, dispatch, navigation}) {
           id="test"
           style={styles.view_newTrip}
           onPress={() => {
-            console.log("POS OF MARKER IS: ", markers);
             let action = {
               type: 'ADD_POS',
               value: markers
@@ -98,6 +97,7 @@ export function ChosePosition(props, {map, profil, dispatch, navigation}) {
               value: false
             };
             Store.dispatch(action);
+            props.navigation.navigate('CourseSettings');
           }}
         >
           <Text style={styles.text_newTrip}>
