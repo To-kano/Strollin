@@ -464,8 +464,8 @@ export function TripSuggestion(props) {
         }}
       />
       <ButtonSwitch
-        iconOff={'star_filled'}
-        iconOn={'star_empty'}
+        iconOff={'star_empty'}
+        iconOn={'star_filled'}
         position={{top: 16, right: 90}}
         statue={props.profil.fav}
         onPressOff={() => {
@@ -495,16 +495,6 @@ export function TripSuggestion(props) {
           selectedTrip.locations_list = loctmp;
           var action = { type: 'SET_WAYPOINTS', course: selectedTrip, locations: selectedLocations };
           props.dispatch(action);
-           action = {
-            type: 'ADD_FRIENDSTAGS',
-            value: []
-          };
-          Store.dispatch(action);
-          action = {
-            type: 'ADD_TEMPORARYTAGS',
-            value: []
-          };
-          Store.dispatch(action);
           //registerCourse(props.profil.access_token);
           props.navigation.navigate('TripNavigation');
           // const action = { type: 'SET_WAYPOINTS', course: course, locations: locations };
