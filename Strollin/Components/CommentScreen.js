@@ -69,11 +69,7 @@ function Header(props) {
           const popAction = StackActions.pop(2);
 
           props.navigation.dispatch(popAction);
-
-          props.navigation.navigate('New trip',{
-            screen: 'TripSuggestion',
-           }
-          )
+          props.navigation.navigate("TripSuggestion")
         }}
       >
         <Image style={styles.img_header} source={require('../images/icons/black/next_trip.png')} />

@@ -8,6 +8,8 @@ import TagSelectionPart from '../Components/TagSelectionPart';
 import HomePage from '../Components/HomePage';
 import CommentScreen from '../Components/CommentScreen';
 import SettingPartenaire from '../Components/SettingPartenaire';
+import TripSuggestion from '../Components/TripSuggestion';
+import CourseEvaluation from '../Components/CourseEvaluation';
 
 const Stack = createStackNavigator();
 
@@ -40,6 +42,14 @@ function Home() {
             <Stack.Screen
                   name="SettingPartenaire"
                   component={SettingPartenaire}
+            />
+            <Stack.Screen
+                  name="TripSuggestion"
+                  component={TripSuggestion}
+            />
+            <Stack.Screen
+                  name="CourseEvaluation"
+                  component={CourseEvaluation}
             />
         </Stack.Navigator>
     );
