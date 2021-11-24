@@ -19,6 +19,7 @@ import { FlatList } from 'react-native-gesture-handler';
 import { translateTags } from '../Translation/translateTags';
 import Icon from './components/Icon';
 import { ShareDialog } from 'react-native-fbsdk';
+import Popup from './Popup';
 
 const globalStyles = require('../Styles');
 const windowWidth = Dimensions.get('window').width;
@@ -191,7 +192,8 @@ if (del) {
         onPress={() => DeletePlace(false)}
       />
     </View>
-  )}
+  )
+}
  // if (pop) {
  //   return (
  //     <View style={styles.view_popup}>
@@ -339,6 +341,14 @@ if (del) {
           navigation.navigate('CourseEvaluation');
         }}
       />
+      <TouchableOpacity
+        style={{}}
+        onPress={() => {
+          setDel(true)
+        }}
+      >
+        <Text style={styles.text_signIn}>{I18n.t("TripNavigation.delete")}</Text>
+      </TouchableOpacity>
 
       {pop &&
         <View style={styles.view_popup}>
@@ -361,12 +371,8 @@ if (del) {
           </View>
         </View>
       }
+
       {/* <TouchableOpacity onPress={() => {
-        setDel(true)
-      }}>
-        <Text style={styles.text_signIn}>{I18n.t("TripNavigation.delete")}</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => {
         const store = Store.getState();
         setLoading(true);
         //DeletePlace();
@@ -374,6 +380,7 @@ if (del) {
       }}>
         <Text style={styles.text_signIn}>Simulate</Text>
       </TouchableOpacity> */}
+
       <Modal
         animationType="none"
         transparent={true}

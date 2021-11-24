@@ -272,7 +272,12 @@ function Map({
               width={44}
               height={64}
               onCalloutPress={() => {
-                setLocationToDelete(marker)
+                const store = Store.getState();
+                var action = {
+                  type: 'ADD_DELETE',
+                  value: [marker.id, marker.name]
+                };
+                Store.dispatch(action);
               }}
             />
           ))}
