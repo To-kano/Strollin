@@ -225,7 +225,8 @@ export default {
 
   TripNavigation: {
     delete: "Supprimer",
-    simulate: "Simulation"
+    simulate: "Simulation",
+    deleteLocation: "Voulez-vous supprimer du parcours le lieu suivant ? :"
   },
 
   UserRegister: {

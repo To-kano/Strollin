@@ -81,7 +81,6 @@ function Map({
   const allTime = [];
   const store = Store.getState();
   const [userPosition, setUserPosition] = useState(store.CourseSettings.pos);
-  const [locationToDelete, setLocationToDelete] = useState(null);
 
   /// /console.log(props.navigate);
   // console.log("map\n");
@@ -97,14 +96,6 @@ function Map({
     latitudeDelta: deltaView.latitudeDelta,
     longitudeDelta: deltaView.longitudeDelta
   });
-
-  const deleteOneLocation = (id) => {
-    const result = destinations.filter((lieux) => {
-      return lieux.id != id
-    })
-
-    setDestinations(result);
-  }
 
   //const [waypoint, setWaypoint] = useState(props.waypoints);
   const [destinations, setDestinations] = useState(locations || map.locations);// props.course);
@@ -282,24 +273,6 @@ function Map({
             />
           ))}
         </MapView>
-        {locationToDelete != null &&
-          <Modal animationType="slide">
-            <Text style={{textAlign: 'center'}}>Do you want to remove {locationToDelete.name} from the course ?</Text>
-            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
-              <Button
-                title="Yes"
-                onPress={() => {
-                  deleteOneLocation(locationToDelete.id);
-                  setLocationToDelete(null);
-                }}
-              />
-              <Button
-                title="No"
-                onPress={() => {setLocationToDelete(null)}}
-              />
-            </View>
-          </Modal>
-        }
       </>
     );
   }
