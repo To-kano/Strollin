@@ -80,6 +80,7 @@ export function TripSuggestion(props) {
   const [carousel, setCarrousel] = useState([]);
   const [indexCarrousel, setindexCarrousel] = useState(0);
   const [refreshing, setRefreshing] = useState(false);
+  const [course, setCourse] = useState(null);
 
   useEffect(() => {
     console.log("index ", indexCarrousel);
@@ -90,13 +91,20 @@ export function TripSuggestion(props) {
 
   //console.log("render ", carousel);
 
+  async function getCourse() {
+    const result = props.course.currentCourse;
+    setCourse(result);
+  }
+
   useEffect(() => {
+    getCourse()
     console.log("closec location", closedLocationsName);
     if (closedLocationsName.length > 0) {
       setModalVisible(true);
     }
   }, [closedLocationsName])
 
+  
   useEffect(() => {
     async function checkOpen(locations) {
       let locationsOpen = [];
@@ -129,6 +137,78 @@ export function TripSuggestion(props) {
     generateNewTrip(setCarrousel, setGeneredTrip);
     setRefreshing(false);
   }, []);
+
+  async function removeFav() {
+    const store = Store.getState();
+    const access_Token = store.profil.access_token;
+    const body = JSON.stringify({course_id: store.profil.favid})
+    console.log("body: ", body);
+    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/remove_favorite`, {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'access_token': access_Token,
+      },
+      method: 'post',
+      body: body,
+      })
+      .then(res => res.json())
+      .then(json => {
+        console.log(json);
+      })
+      .catch((error) => {
+        console.error('error :', error);
+      });
+  }
+
+  async function pushFav(courseID) {
+    const store = Store.getState();
+    const access_Token = store.profil.access_token;
+    console.log("courseID: ", courseID);
+    const body = JSON.stringify({course: courseID})
+    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/add_favorite`, {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'access_token': access_Token,
+      },
+      method: 'post',
+      body: body,
+      })
+      .then(res => res.json())
+      .then(json => {
+        console.log(json);
+      })
+      .catch((error) => {
+        console.error('error :', error);
+      });
+  }
+
+  async function addFav(coursetmp) {
+    const store = Store.getState();
+    const access_Token = store.profil.access_token;
+    const body = JSON.stringify({locations_list: coursetmp.locations_list, name: coursetmp.name})
+    console.log("body: ", body);
+    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/course/new_course`, {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'access_token': access_Token,
+      },
+      method: 'post',
+      body: body,
+      })
+      .then(res => res.json())
+      .then(json => {
+        console.log(json);
+        let action = { type: 'SET_FAV_ID', value: json.course.id};
+        props.dispatch(action);
+        pushFav(json.course.id)
+      })
+      .catch((error) => {
+        console.error('error :', error);
+      });
+  }
 
   useEffect(() => {
 
@@ -318,7 +398,6 @@ export function TripSuggestion(props) {
             </TouchableOpacity>
           </View>
       </Popup>
-      <MenuButton props={props}/>
       <Pagination
         dotsLength={carousel.length}
         activeDotIndex={indexCarrousel}
@@ -336,22 +415,6 @@ export function TripSuggestion(props) {
         }}
         inactiveDotOpacity={0.4}
         inactiveDotScale={0.6}
-      />
-      <ButtonSwitch
-        iconOn={"sound_active"}
-        iconOff={"sound_inactive"}
-        position={{top: 16, right: 16}}
-        statue={props.profil.sound}
-        onPressOff={() => {
-          Tts.stop();
-          const action = { type: 'SET_SOUND', value: !props.profil.sound };
-          props.dispatch(action);
-        }}
-        onPressOn={() => {
-          Tts.stop();
-          const action = { type: 'SET_SOUND', value: !props.profil.sound };
-          props.dispatch(action);
-        }}
       />
       <ScrollView
         style={{width: "100%"}}
@@ -383,6 +446,42 @@ export function TripSuggestion(props) {
             />
         </View>
       </ScrollView>
+      <MenuButton props={props}/>
+      <ButtonSwitch
+        iconOn={"sound_active"}
+        iconOff={"sound_inactive"}
+        position={{top: 16, right: 16}}
+        statue={props.profil.sound}
+        onPressOff={() => {
+          Tts.stop();
+          const action = { type: 'SET_SOUND', value: !props.profil.sound };
+          props.dispatch(action);
+        }}
+        onPressOn={() => {
+          Tts.stop();
+          const action = { type: 'SET_SOUND', value: !props.profil.sound };
+          props.dispatch(action);
+        }}
+      />
+      <ButtonSwitch
+        iconOff={'star_filled'}
+        iconOn={'star_empty'}
+        position={{top: 16, right: 90}}
+        statue={props.profil.fav}
+        onPressOff={() => {
+          const action = { type: 'SET_FAV', value: !props.profil.fav };
+          props.dispatch(action);
+          console.log("course: ", course);
+          addFav(course);
+        }}
+        onPressOn={() => {
+          const action = { type: 'SET_FAV', value: !props.profil.fav };
+          props.dispatch(action);
+          console.log("IT iS ONS");
+          console.log("course: ", course);
+          removeFav();
+        }}
+      />
       <Footer
         primaryText={I18n.t("TripSuggestion.letsGo")}
         primaryOnPressFct={() => {
