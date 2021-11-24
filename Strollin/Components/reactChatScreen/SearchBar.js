@@ -65,7 +65,7 @@ function SearchBar(props) {
             autoCapitalize={'none'}
             style={[
               globalStyles.subparagraphs, { padding: 0, }]}
-            placeholder={'Rechercher une conversation'}
+            placeholder={I18n.t("SearchBar.searchConv")}
             onChangeText={(text) => setresearch(text)}
             value={research}
           />

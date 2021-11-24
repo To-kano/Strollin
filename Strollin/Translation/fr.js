@@ -47,7 +47,14 @@ export default {
     start:"Lancer la génération !"
   },
 
+  Favorites: {
+    favoritesTrip: 'Trajets favoris',
+    noFavorites: "Vous n'avez pas de trajet favori pour l'instant. Vous pouvez ajouter un trajet en favoris en cliquant sur l'étoile du trajet"
+  },
+
   FriendList: {
+    yourFriends: 'Vos amis',
+    friend: 'Amis',
     groupList: 'liste des groupes',
     groupName: 'nom de groupe',
     friendName: "nom de l'ami",
@@ -178,6 +185,10 @@ export default {
     changeTags: 'Changer mes tags',
     cancel: 'Annuler',
     confirm: 'Confirmer'
+  },
+
+  SearchBar: {
+    searchConv: 'Rechercher une conversation',
   },
 
   TagSelection: {

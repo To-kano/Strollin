@@ -43,8 +43,8 @@ export function Favorites(props) {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingVertical: 96 }}
       >
-        <Text style={[globalStyles.titles, { marginBottom: 32, }]}>Tes trajets favoris sont ici</Text>
-        { getFavoritesList().length > 0 
+        <Text style={[globalStyles.titles, { marginBottom: 32, }]}>{I18n.t("Favorites.favoritesTrip")}</Text>
+        { getFavoritesList().length > 0
           ? <FlatList
               style={{width: '100%'}}
               showsHorizontalScrollIndicator={false}
@@ -59,7 +59,7 @@ export function Favorites(props) {
               )}
               keyExtractor={(item) => item.id}
             />
-          : <Text style={[globalStyles.subparagraphs, {marginTop: 96}]}>Malheureusement on dirait que tu n'as pas encore de trajet dans tes favoris. Essaye d'appuyer sur l'étoile quand un trajet sur la page d'acceuil te plaît 😉</Text>
+          : <Text style={[globalStyles.subparagraphs, {marginTop: 96}]}>{I18n.t('Favorites.noFavorites')}</Text>
         }
       </View>
       <MenuButton props={props}/>
