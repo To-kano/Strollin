@@ -79,6 +79,7 @@ export function TripSuggestion(props) {
   const [generetedTrip, setGeneredTrip] = useState([]);
   const [carousel, setCarrousel] = useState([]);
   const [indexCarrousel, setindexCarrousel] = useState(0);
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     console.log("index ", indexCarrousel);
@@ -121,6 +122,13 @@ export function TripSuggestion(props) {
       checkOpen(carousel[carousel.length - 1])
     }
   }, [carousel.length])
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    console.log("C frais");
+    generateNewTrip(setCarrousel, setGeneredTrip);
+    setRefreshing(false);
+  }, []);
 
   useEffect(() => {
 
@@ -345,24 +353,36 @@ export function TripSuggestion(props) {
           props.dispatch(action);
         }}
       />
-      <View style={[globalStyles.container, {paddingHorizontal: 0}]}>
-        <Carousel
-            layout={"stack"}
-            //ref={ref => this.carousel = ref}
-            data={carousel}
-            //containerCustomStyle={styles.carouselContainer}
-            sliderWidth={windowWidth}
-            itemWidth={windowWidth}
-            // itemHeight={100}
-            //useScrollView={true}
-            keyExtractor={(item) => item.id}
-            renderItem={_renderItem}
-            onSnapToItem={index => {
-              //carouselItemFinal.activeIndex = index;
-              setindexCarrousel(index);
-            }}
-          />
-      </View>
+      <ScrollView
+        style={{width: "100%"}}
+        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+                <RefreshControl
+                  refreshing={refreshing}
+                  onRefresh={onRefresh}
+                />
+        }
+      >
+        <View style={[globalStyles.container, {paddingHorizontal: 0}]}>
+          <Carousel
+              layout={"stack"}
+              //ref={ref => this.carousel = ref}
+              data={carousel}
+              //containerCustomStyle={styles.carouselContainer}
+              sliderWidth={windowWidth}
+              itemWidth={windowWidth}
+              // itemHeight={100}
+              //useScrollView={true}
+              keyExtractor={(item) => item.id}
+              renderItem={_renderItem}
+              onSnapToItem={index => {
+                //carouselItemFinal.activeIndex = index;
+                setindexCarrousel(index);
+              }}
+            />
+        </View>
+      </ScrollView>
       <Footer
         primaryText={I18n.t("TripSuggestion.letsGo")}
         primaryOnPressFct={() => {
