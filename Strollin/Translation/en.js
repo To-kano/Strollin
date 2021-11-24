@@ -47,7 +47,14 @@ export default {
     start:"Start the generation !"
   },
 
+  Favorites: {
+    favoritesTrip: 'Favorites trips',
+    noFavorites: "You don't have favorites trip for now. you can add a trip to favorites by clicking on the star of the trip"
+  },
+
   FriendList: {
+    yourFriends: 'Your friends',
+    friend: 'Friends',
     groupList: 'Groups list',
     groupName: 'Group name',
     friendName: 'Friend name',
@@ -189,6 +196,10 @@ export default {
     changeTags: 'Change my tags',
     cancel: 'Cancel',
     confirm: 'Confirm'
+  },
+
+  SearchBar: {
+    searchConv: 'Search for a conversation',
   },
 
   TagSelection: {
