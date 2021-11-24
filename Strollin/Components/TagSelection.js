@@ -63,11 +63,41 @@ function Header({ navigation, defaultState = false }) {
 export function Tag({ name, chosen, setLoading, pos, defaultState = false }) {
   const [pressed, setpressed] = useState(defaultState);
   const [args, setArgs] = useState(true);
+  const store = Store.getState();
+  const access_Token = store.profil.access_token;
+
+  async function removeTags(body, setLoading) {
+    const tagsArray = store.profil.tags
+    console.log("body: ", body, "array: ", tagsArray);
+    for (let i = 0; i < tagsArray.length; i++) {
+      if (body == tagsArray[i]) {
+        tagsArray.splice(i, 1);
+        break
+      }
+    }
+    let action = {
+      type: 'SET_USER_TAGS',
+      value: tagsArray
+    };
+    Store.dispatch(action);
+    console.log("tagsarray: ", tagsArray);
+    const test = JSON.stringify({ tags_list: tagsArray });
+    await fetch(`http://${IP_SERVER}:${PORT_SERVER}/users/edit_profile`, {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        access_Token,
+      },
+      body: test,
+      method: 'POST',
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        console.log("json: ", json);
+      })
+  }
 
   async function postTags(body, setLoading) {
-    const store = Store.getState();
-    const access_Token = store.profil.access_token;
-
     const list = [body];
     const test = JSON.stringify({ tags_list: list });
 
@@ -104,7 +134,10 @@ export function Tag({ name, chosen, setLoading, pos, defaultState = false }) {
   return (
     <>
       {pressed
-      ? <TouchableOpacity style={[globalStyles.tag, {flexDirection: 'row', alignItems: 'center', justifyContent : 'space-around'}]} onPress={() => { setpressed(!pressed); }} >
+      ? <TouchableOpacity style={[globalStyles.tag, {flexDirection: 'row', alignItems: 'center', justifyContent : 'space-around'}]} onPress={() => { 
+        setpressed(!pressed);
+        removeTags(name, setLoading);
+        }} >
           <Text style={[globalStyles.subparagraphs, {marginRight: 11, textTransform: 'capitalize'}]}>{translateTags(name)}</Text>
           <Icon name="checked" size={24} color="#1C1B1C"/>
         </TouchableOpacity>

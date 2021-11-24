@@ -40,8 +40,6 @@ function sortConversation(key) {
   } else {
     for (let i in store.conversation.conversationList) {
       for (let j in store.conversation[store.conversation.conversationList[i]].participants) {
-        console.log("j = ", j);
-        console.log("compared to ", store.profil.friends_pseudo_list[store.conversation[store.conversation.conversationList[i]].participants[j]]);
         if (key == store.profil.friends_pseudo_list[store.conversation[store.conversation.conversationList[i]].participants[j]]) {
           //console.log("FOUND!")
           searchedConv.push(store.conversation.conversationList[i]);

@@ -370,7 +370,7 @@ async function getUserList(store, setUserList) {
     })
     .then(res => res.json())
     .then(json => {
-    //console.log("users_list = ", json.users_list);
+    console.log("users_list = ", json.users_list);
       if (json.users_list) {
         setUserList(json.users_list);
       }
@@ -420,8 +420,8 @@ function FriendList(props) {
         <>
           <View style={{ marginTop: 96, marginBottom: 16, width: "100%", flexDirection: "row", justifyContent: 'space-between', paddingHorizontal: 16}}>
             <View>
-              <Text style={globalStyles.subtitles}>Tes amis sont ici</Text>
-              <Text style={[globalStyles.subparagraphs, {color: '#9B979B'}]}>{store.profil.friends_list.length} ami{store.profil.friends_list.length > 1 ? "s" : ""}</Text>
+              <Text style={globalStyles.subtitles}>{I18n.t('FriendList.yourFriends')}</Text>
+              <Text style={[globalStyles.subparagraphs, {color: '#9B979B'}]}>{store.profil.friends_list.length} {I18n.t('FriendList.friend')}{store.profil.friends_list.length > 1 ? "s" : ""}</Text>
             </View>
             <ImageProfile style={{height: 64, width: 64, borderRadius: 16}} />
           </View>

@@ -27,8 +27,8 @@ export function setSortedTendanceData(tag) {
   const sortedData = [];
 
   //console.log("tag = ", tag, )
-  for (i in store.tendance.tendanceList) {
-    for (j in store.tendance.tendanceList[i].tags_list) {
+  for (let i = 0; i < store.tendance.tendanceList.length; i++) {
+    for (let j = 0; j < store.tendance.tendanceList[i].tags_list.length; j++) {
       //console.log('tags list ', store.tendance.tendanceList[i].tags_list)
       if (store.tendance.tendanceList[i].tags_list[j] == tag) {
         sortedData.push(store.tendance.tendanceList[i]);
@@ -46,10 +46,17 @@ export function setSortedTendanceData(tag) {
 
 function getTendanceList() {
   const store = Store.getState();
+  let reducedList = [];
 
   if (store.tendance.sortedTendanceList.length > 0) {
     //console.log("tendenc filter", store.tendance.sortedTendanceList)
     return (store.tendance.sortedTendanceList);
+  }
+  if (store.tendance.tendanceList.length > 4) {
+    for (let i = 0; i < 4; i++) {
+      reducedList.push(store.tendance.tendanceList[i]);
+    }
+    return (reducedList);
   }
   return (store.tendance.tendanceList);
 }
@@ -61,7 +68,7 @@ function getUrl(props) {
   return ('https://forms.gle/cR126bgPaexbgGYD9')
 }
 
-function Header({ props, defaultState = false }) {
+/*function Header({ props, defaultState = false }) {
   const [pressed, setpressed] = useState(defaultState);
 
   if (pressed === false) {
@@ -86,12 +93,12 @@ function Header({ props, defaultState = false }) {
   return (
     <View style={styles.view_header}>
       <SearchBar
-        onPress={(data) => { setSortedTendanceData(data); setpressed(!pressed); }}
+        onPress={(data) => { setSortedTendanceData(data); }}
         imagePath="../images/icons/black/search.png"
       />
     </View>
   );
-}
+}*/
 
 export function HomePage(props) {
 

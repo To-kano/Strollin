@@ -22,6 +22,7 @@ import PartenaireScreen from '../Components/PartenairePage';
 import SettingPartenaire from '../Components/SettingPartenaire';
 import Personal_trip from '../Components/Personal_trip';
 import Favorites from '../Components/Favorites';
+import PartnerPlace from '../Components/PartnerPlace';
 import TutorialPage from '../Components/tuto/TutorialPage';
 import Subscription from '../Components/SubscriptionPage';
 

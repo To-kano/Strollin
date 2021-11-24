@@ -11,6 +11,7 @@ import I18n from '../Translation/configureTrans';
 import { useState, useEffect } from 'react';
 import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 import {translateTags, detranslateTags} from '../Translation/translateTags'
+const globalStyles = require('../Styles');
 
 function randPic() {
   const rand = (Math.floor(Math.random() * 2) + 1);
@@ -43,20 +44,13 @@ var initialList = [
 function PartenaireScreen(props) {
 
   var i = false
-  const [locationUser, setUser] = useState({
-      "owner": "",
-      "pop_disp": "0",
-      "pop_ag": "0",
-      "alg_disp": "0",
-      "alg_ag": "0",
-      "__v": 0
-  })
   const [tagsList, setTagsList] = useState(initialList)
+  const [location, setLocation] = useState('')
 //console.log(locationUser)
 
   useEffect(() => {
     if (!i) {
-      const url = `http://${IP_SERVER}:${PORT_SERVER}/location/get_partner_location`
+      const url = `http://${IP_SERVER}:${PORT_SERVER}/location//get_locations`
       fetch(url, {
         headers : {
           access_token: props.profil.access_token,
@@ -65,19 +59,18 @@ function PartenaireScreen(props) {
       })
         .then((response) => response.json())
         .then((answer) => {
-        //console.log("answer.location_list", answer);
-          if (answer.location) {
-            setUser(answer.location);
-            initialList = []
-            for (var i = 0; i < answer.location.tags_list.length; i++) {
-              initialList.push({id: i, name: answer.location.tags_list[i]._id})
-            }
-            setTagsList(initialList)
+        //console.log("answer.locations_list", answer);
+        for (let i = 0; i < answer.locations_list.length; i++) {
+          if (answer.locations_list[i].owner_id == props.profil.id) {
+            setLocation(answer.locations_list[i])
+            console.log("location is : ",answer.locations_list[i]);
+            break;
           }
+        }
         })
         .catch((error) => {
           console.error('error :', error);
-        }).finally(() => {i == true});
+        }).finally(() => {i == false});
 
     }
   }, []);
@@ -114,9 +107,9 @@ function PartenaireScreen(props) {
             <View style={styles.view_boxIn}>
               <View style={styles.view_information}>
                 <Image style={styles.img_location} source={require('../images/icons/white/location.png')}/>
-                <Text style={styles.text_location}>{locationUser.address}</Text>
+                <Text style={styles.text_location}>{location.address}</Text>
               </View>
-              <Text style={styles.text_name}>{locationUser.name}</Text>
+              <Text style={styles.text_name}>{location.name}</Text>
             </View>
           </ImageBackground>
         </TouchableOpacity>
@@ -125,7 +118,7 @@ function PartenaireScreen(props) {
             {I18n.t('Partner.number_of_popup')}
           </Text>
           <View style={styles.view_number}>
-            <Text style={styles.text_number}>{locationUser.pop_disp}</Text>
+            <Text style={styles.text_number}>{location.pop_disp}</Text>
           </View>
         </View>
         <View style={styles.view_stat}>
@@ -133,7 +126,7 @@ function PartenaireScreen(props) {
             {I18n.t('Partner.number_of_accepted_popup')}
           </Text>
           <View style={styles.view_number}>
-            <Text style={styles.text_number}>{locationUser.pop_ag}</Text>
+            <Text style={styles.text_number}>{location.pop_ag}</Text>
           </View>
         </View>
         <View style={styles.view_stat}>
@@ -141,7 +134,7 @@ function PartenaireScreen(props) {
             {I18n.t('Partner.appearances_in_the_algorithm')}
           </Text>
           <View style={styles.view_number}>
-            <Text style={styles.text_number}>{locationUser.alg_disp}</Text>
+            <Text style={styles.text_number}>{location.alg_disp}</Text>
           </View>
         </View>
         <View style={styles.view_stat}>
@@ -149,7 +142,7 @@ function PartenaireScreen(props) {
             {I18n.t('Partner.acceptance_in_the_algorithm')}
           </Text>
           <View style={styles.view_number}>
-            <Text style={styles.text_number}>{locationUser.alg_ag}</Text>
+            <Text style={styles.text_number}>{location.alg_ag}</Text>
           </View>
         </View>
         <View style={styles.view_stat}>
@@ -157,7 +150,7 @@ function PartenaireScreen(props) {
             {I18n.t('Partner.number_of_visitors')}
           </Text>
           <View style={styles.view_number}>
-            <Text style={styles.text_number}>{Number(locationUser.alg_ag) + Number(locationUser.pop_ag)}</Text>
+            <Text style={styles.text_number}>{Number(location.alg_ag) + Number(location.pop_ag)}</Text>
           </View>
         </View>
         <View style={styles.view_stat}>
@@ -165,15 +158,14 @@ function PartenaireScreen(props) {
             {I18n.t('Partner.appearance_by_tags')}
           </Text>
           <FlatList
-            numColumns={3}
             style={styles.view_tagIn}
-            showsHorizontalScrollIndicator={false}
-            showsVerticalScrollIndicator={false}
-            data={tagsList}
-            contentContainerStyle={{ flexGrow: 1 }}
-            keyExtractor={(item) => item.id}
+            data={location.tags_list}
+            numColumns={2}
+            columnWrapperStyle={{alignItems : 'center', justifyContent:'space-between'}}
+            contentContainerStyle={{ paddingBottom : 80 }}
+            keyExtractor={(item) => item._id}
             renderItem={({ item }) => (
-              <Text style={styles.text_tagIn}>{item.name}</Text>
+              <Text style={[globalStyles.subparagraphs, globalStyles.tag]}>{item._id}</Text>
             )}
           />
         </View>

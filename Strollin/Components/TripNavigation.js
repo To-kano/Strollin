@@ -334,9 +334,24 @@ if (del) {
           const action2 = { type: 'ADD_COURSE_OBJECT_HISTORIC', value: result };
           dispatch(action2);
           action = {
+            type: 'ADD_POS',
+            value: 0
+          };
+          Store.dispatch(action);
+          action = {
             type: 'ADD_IS_MOVING',
             value: true
           };
+          action = {
+            type: 'ADD_FRIENDSTAGS',
+            value: []
+          };
+          Store.dispatch(action);
+          action = {
+            type: 'ADD_TEMPORARYTAGS',
+            value: []
+          };
+          Store.dispatch(action);
           Store.dispatch(action);
           navigation.navigate('CourseEvaluation');
         }}

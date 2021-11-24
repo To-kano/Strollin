@@ -7,10 +7,10 @@ import { connect } from 'react-redux';
 import { ShareDialog } from 'react-native-fbsdk';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
-
+import Store, { store } from '../Store/configureStore';
 import FormUpdateLocationCourse from './form/FormUpdateLocationCourse';
 import FormDeleteLocationCourse from './form/FormDeleteLocationCourse';
-
+import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 
 function CourseElement({item}) {
 
@@ -18,12 +18,37 @@ function CourseElement({item}) {
     const [showDeleteForm, setShowDeleteForm] = useState(false);
     const [showUpdateForm, setShowUpdateForm] = useState(false);
 
+    async function addPartnerPlace(loc) {
+      const store = Store.getState();
+      const access_Token = store.profil.access_token;
+      var action = {
+        type: 'SET_PARTNER_LOCATION',
+        value: loc
+      };
+      Store.dispatch(action);
+      const test = JSON.stringify({ owner_id: 22 });
+      await fetch(`http://${IP_SERVER}:${PORT_SERVER}/location/update_location`, {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        access_Token,
+        'location_id': loc.id
+      },
+      body: test,
+      method: 'POST',
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        console.log("json: ", json);
+      })
+    }
+
     return (
 
         <View style={styles.view_boxIn}>
             <TouchableOpacity
               style={styles.view_box}
-              onPress={() => {navigation.navigate('LocationPage', {location: item})}}
+              onPress={() => {addPartnerPlace(item)}}
             >
                 <View style={styles.view_information}>
                     <Image style={styles.img_information} source={require('../images/icons/white/marker.png')} />
@@ -31,59 +56,6 @@ function CourseElement({item}) {
                 </View>
                 <Text style={styles.text_name}>{item.name}</Text>
             </TouchableOpacity>
-            <View style={styles.view_share}>
-                <TouchableOpacity
-                  onPress={() => {
-                    Share.share({
-                      message: `Strollin' m'a proposé un trajet ! \nRejoignons nous a ${item.name} au ${item.address} !`,
-                      title: "Sortir avec Strollin'",
-                      url: 'https://www.google.com',
-                    }, {
-                    // Android only:
-                      dialogTitle: 'Share Strollin travel',
-                      // iOS only:
-                      excludedActivityTypes: [
-                        'com.apple.UIKit.activity.PostToTwitter'
-                      ]
-                    });
-                  }}
-                  accessibilityLabel="Share"
-                >
-                    <Image style={styles.img_share} source={require('../images/icons/white/share.png')} />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => {
-                    const shareLinkContent = {
-                      contentType: 'link',
-                      contentUrl: 'https://www.google.com',
-                      quote: `Strollin' m'a proposé un trajet ! \nRejoignons nous a ${item.name} au ${item.address} !`,
-                    };
-                    ShareDialog.show(shareLinkContent);
-                  }}
-                  accessibilityLabel="Share"
-                >
-                    <Image style={styles.img_share} source={require('../images/icons/white/facebook.png')} />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => {
-                    setShowDeleteForm(true);
-                  }}
-                  accessibilityLabel="Share"
-                >
-                    <Image style={styles.img_share} source={require('../images/icons/white/share.png')} />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => {
-                    setShowUpdateForm(true);
-
-                  }}
-                  accessibilityLabel="Share"
-                >
-                    <Image style={styles.img_share} source={require('../images/icons/white/share.png')} />
-                </TouchableOpacity>
-                <FormDeleteLocationCourse isVisible={showDeleteForm} setIsVisible={setShowDeleteForm} itemId={item.id} />
-                <FormUpdateLocationCourse isVisible={showUpdateForm} setIsVisible={setShowUpdateForm} itemId={item.id} />
-            </View>
         </View>
     )
 }

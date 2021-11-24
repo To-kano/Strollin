@@ -16,7 +16,10 @@ const initialState = {
   course_historic: [],
   position: [],
   fav: false,
-  favid: 0
+  partner: false,
+  favid: 0,
+  partner_location: {},
+  id: 0
 };
 
 function profileReducer(state = initialState, action) {
@@ -142,6 +145,12 @@ function profileReducer(state = initialState, action) {
         nextState = {
           ...state,
           favid: action.value
+        };
+        return nextState;
+      case 'SET_PARTNER_LOCATION':
+        nextState = {
+          ...state,
+          partner_location: action.value
         };
         return nextState;
     default:

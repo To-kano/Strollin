@@ -334,6 +334,7 @@ router.get('/reset_password', async function (req, res) {
  * @param {String} req.body.pseudo (Optional)
  * @param {String} req.body.first_name (Optional)
  * @param {String} req.body.last_name (Optional)
+ * @param {String} req.body.tags_list (Optional)
  */
 router.post('/edit_profile', async function (req, res) {
   let user = await UserModel.findOne({
@@ -347,10 +348,13 @@ router.post('/edit_profile', async function (req, res) {
     return res.status(500).send({ error_code: 2 });
   }
 
-  if (!req.body.password && !req.body.pseudo && !req.body.first_name && !req.body.last_name) {
+  if (!req.body.password && !req.body.pseudo && !req.body.first_name && !req.body.last_name && !req.body.tags_list) {
     return res.status(400).send({ error_code: 3 });
   }
   let query = {};
+  if (req.body.tags_list) {
+    query.tags_list = req.body.tags_list;
+  }
   if (req.body.password) {
     query.password = req.body.password;
   }

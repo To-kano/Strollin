@@ -47,7 +47,14 @@ export default {
     start:"Start the generation !"
   },
 
+  Favorites: {
+    favoritesTrip: 'Favorites trips',
+    noFavorites: "You don't have favorites trip for now. you can add a trip to favorites by clicking on the star of the trip"
+  },
+
   FriendList: {
+    yourFriends: 'Your friends',
+    friend: 'Friends',
     groupList: 'Groups list',
     groupName: 'Group name',
     friendName: 'Friend name',
@@ -191,6 +198,10 @@ export default {
     confirm: 'Confirm'
   },
 
+  SearchBar: {
+    searchConv: 'Search for a conversation',
+  },
+
   TagSelection: {
     welcome: 'Welcome to Strollin',
     welcome2: 'Here you will be able to choose your tags',
@@ -287,7 +298,9 @@ export default {
     rating: 'Rating',
     comment: 'Comment',
     favorites: 'Favorites',
-    myTrip: 'My trip'
+    myTrip: 'My trip',
+    error: 'Connexion error',
+    passMissmatch: 'Passwords are different'
   },
 
   SettingsPartner: {

@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var algo = require('../Algo/BasicAlgo2');
 var pop = require('../Algo/PopUpAlgo');
+var pierre = require('../Algo/pierre_req');
 
 const {
     UserModel
@@ -89,9 +90,9 @@ router.get('/generate_course', async function(req, res) {
       console.log("prioFriends: ", prioFriends);
     }
 
-    console.log("userTags: ", userTags);
-    const promise2 = algo.data.algo(req.headers.time , req.headers.budget , userTags, req.headers.coordinate, req.headers.eat, radius, placeNbr, locations_list, req.headers.is18, prioFriends, friendflag, friendsArray);
-    promise2.then((value) => {
+    console.log("userTagsiiiiiiiiiii: ", userTags);
+    const promise = algo.data.algo(req.headers.time , req.headers.budget , userTags, req.headers.coordinate, req.headers.eat, radius, placeNbr, locations_list, req.headers.is18, prioFriends, friendflag, friendsArray);
+    promise.then((value) => {
       let generated_course = value;
       console.log("course: ", generated_course);
 
@@ -198,6 +199,51 @@ router.get('/recover_places', async function(req, res) {
   algo.data.places(coordinate, req.headers.tag);
   console.log("I AM REEEEEEEEEEEEALLLLLLY OUT");
   return res.status(200).send({status: "Result."});
+});
+
+router.get('/pierre_req', async function(req, res) {
+
+  let user = await UserModel.findOne({access_token: req.headers.access_token}, "-_id id pseudo").catch(error => error);
+  let radius = Number(req.headers.radius)
+  let placeNbr = Number(req.headers.placenbr)
+  let locations_list = []
+
+  console.log("placenbr: ", req.headers.placenbr);
+  console.log("time: ", req.headers.time);
+  console.log("tags: ", req.headers.tags);
+  console.log("coordinate: ", req.headers.coordinate);
+  console.log("radius: ", req.headers.radius);
+  console.log("locations_list: ", req.headers.locations_list);
+
+  let friendstags = req.headers.friendstags;
+  let userTags = req.headers.tags;
+
+  if (!user) {
+      return res.status(401).send({ error_code: 1 });
+  }
+  if (user.reason) {
+      return res.status(500).send({ error_code: 2 });
+  }
+
+  if (!req.headers.coordinate || !req.headers.time || !req.headers.budget || !req.headers.tags) {
+      return res.status(400).send({ error_code: 3 });
+  }
+
+  if (req.headers.locations_list) {
+    locations_list = req.headers.locations_list.split(',');
+  }
+
+  if (req.headers.temptags) {
+    console.log("USING TEMPORARY TAGS");
+    userTags = req.headers.temptags
+  }
+
+  const promise2 = pierre.data.pierre(req.headers.time , userTags, req.headers.coordinate, radius, placeNbr, locations_list);
+  promise2.then((value) => {
+    let places = value;
+    console.log("places: ", places);
+    return res.status(200).send({status: "Result of the generator.", places, places});
+  })
 });
 
 module.exports = router;
