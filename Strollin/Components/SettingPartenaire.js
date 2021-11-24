@@ -8,6 +8,7 @@ import Store from '../Store/configureStore';
 import { DrawerActions } from '@react-navigation/native';
 import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 import I18n from '../Translation/configureTrans';
+const globalStyles = require('../Styles');
 
 function randPic() {
   const rand = (Math.floor(Math.random() * 2) + 1);
@@ -221,15 +222,14 @@ function SettingPartenaire(props) {
             {I18n.t('SettingsPartner.shop_tags')}
           </Text>
           <FlatList
-            numColumns={3}
             style={styles.view_tagIn}
-            showsHorizontalScrollIndicator={false}
-            showsVerticalScrollIndicator={false}
             data={location.tags_list}
-            contentContainerStyle={{ flexGrow: 1 }}
+            numColumns={2}
+            columnWrapperStyle={{alignItems : 'center', justifyContent:'space-between'}}
+            contentContainerStyle={{ paddingBottom : 80 }}
             keyExtractor={(item) => item._id}
             renderItem={({ item }) => (
-              <Text style={styles.text_tagIn}>{item._id}</Text>
+              <Text style={[globalStyles.subparagraphs, globalStyles.tag]}>{item._id}</Text>
             )}
           />
         </View>

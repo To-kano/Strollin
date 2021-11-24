@@ -114,8 +114,8 @@ function Menu(props) {
             <Text style={[globalStyles.paragraphs, {marginLeft: 8}]}>{props.state.routeNames[5]}</Text>
           </TouchableOpacity> */}
 
-          {/* {props.profil.partner &&
-          <> */}
+          {props.profil.partner &&
+          <>
             <TouchableOpacity
               onPress={() => props.navigation.navigate(props.state.routeNames[6])}
               style={[styles.view_navigationIn, {marginTop: 32}, props.state.index == 6 ? styles.current_page : {}]}
@@ -139,8 +139,8 @@ function Menu(props) {
               <Icon name='piggy' size={32} color='#1C1B1C'/>
               <Text style={[globalStyles.paragraphs, {marginLeft: 8}]}>{props.state.routeNames[12]}</Text>
             </TouchableOpacity>
-            {/* </>
-            } */}
+             </>
+            } 
 
           {/* <TouchableOpacity
             onPress={() => props.navigation.navigate('Personal_trip')}

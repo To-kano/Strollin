@@ -248,25 +248,25 @@ export function TagSelectionPart(props, { navigation, profil }) {
     <>
       {firstTime && props.profil.tags_list.length == 0
       ? <View style={[globalStyles.container, {justifyContent: 'flex-start'}]}>
-          <Text style={[globalStyles.titles, {marginVertical: 32}]}>{I18n.t('TagSelectionPart.welcome')} {props.profil.pseudo} !</Text>
-          <Text style={[globalStyles.titles, {marginVertical: 16}]}>{I18n.t('TagSelectionPart.welcome2')}</Text>
+          <Text style={[globalStyles.titles, {marginVertical: 32}]}>{I18n.t('TagSelection.welcome')} {props.profil.pseudo} !</Text>
+          <Text style={[globalStyles.titles, {marginVertical: 16}]}>{I18n.t('TagSelection.welcome2')}</Text>
           <Text style={[globalStyles.subparagraphs, {marginVertical: 8}]}>
-            {I18n.t('TagSelectionPart.welcome3')} <Text style={[globalStyles.paragraphs, {color: '#0989FF'}]}>{I18n.t('TagSelection.welcome4')}</Text>{I18n.t('TagSelection.welcome5')} <Text style={[globalStyles.paragraphs, {color: '#0989FF'}]}>{I18n.t('TagSelection.welcome6')}</Text>.
+            {I18n.t('TagSelection.welcome3')} <Text style={[globalStyles.paragraphs, {color: '#0989FF'}]}>{I18n.t('TagSelection.welcome4')}</Text>{I18n.t('TagSelection.welcome5')} <Text style={[globalStyles.paragraphs, {color: '#0989FF'}]}>{I18n.t('TagSelection.welcome6')}</Text>.
           </Text>
           <Text style={[globalStyles.subparagraphs, {marginVertical: 8}]}>
-            {I18n.t('TagSelectionPart.welcome7')}<Text style={[globalStyles.paragraphs, {color: '#0989FF'}]}>{I18n.t('TagSelection.welcome8')}</Text>{I18n.t('TagSelection.welcome9')}
+            {I18n.t('TagSelection.welcome7')}<Text style={[globalStyles.paragraphs, {color: '#0989FF'}]}>{I18n.t('TagSelection.welcome8')}</Text>{I18n.t('TagSelection.welcome9')}
           </Text>
           <Text style={[globalStyles.subparagraphs, {marginVertical: 8, marginBottom: 48}]}>
-            {I18n.t('TagSelectionPart.welcome10')}<Text style={[globalStyles.paragraphs, {color: '#0989FF'}]}>{I18n.t('TagSelection.welcome11')}</Text>
+            {I18n.t('TagSelection.welcome10')}<Text style={[globalStyles.paragraphs, {color: '#0989FF'}]}>{I18n.t('TagSelection.welcome11')}</Text>
           </Text>
-          <PrimaryButton text={I18n.t('TagSelectionPart.welcomeButton')} onPressFct={() => setFirstTime(false)}/>
+          <PrimaryButton text={I18n.t('TagSelection.welcomeButton')} onPressFct={() => setFirstTime(false)}/>
         </View>
       : <View style={[globalStyles.container, {justifyContent: 'flex-start'}]}>
             <FlatList
               style={{width: '100%', paddingVertical: 86}}
               data={array}
               ListHeaderComponent={() => {
-                return (<Text style={[globalStyles.titles]}>{I18n.t('TagSelectionPart.chooseTags')}</Text>)
+                return (<Text style={[globalStyles.titles]}>{I18n.t('TagSelection.chooseTags')}</Text>)
               }}
               numColumns={2}
               showsVerticalScrollIndicator={false}
@@ -287,7 +287,7 @@ export function TagSelectionPart(props, { navigation, profil }) {
             </View>
           </Modal>
           <MenuButton props={props}/>
-          <Footer primaryText={I18n.t("TagSelectionPart.validate")} primaryOnPressFct={() => props.navigation.navigate(I18n.t("Menu.profile"))}/>
+          <Footer primaryText={I18n.t("TagSelection.validate")} primaryOnPressFct={() => props.navigation.navigate(I18n.t("Menu.settings"))}/>
         </View>
       }
     </>
