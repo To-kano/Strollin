@@ -307,6 +307,8 @@ export default {
     favorites: 'Favoris',
     newTrip: 'Nouveau trajet',
     myTrip: 'Mon trajet',
-    location: 'Lieu'
+    location: 'Lieu',
+    error: 'Error de connexion',
+    passMissmatch: 'Les mots de passe sont differents'
   }
 };

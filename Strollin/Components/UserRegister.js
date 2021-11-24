@@ -18,6 +18,7 @@ import Popup from './Popup';
 import Step from './components/Step';
 import PrimaryButton from './components/PrimaryButton';
 import SecondaryButton from './components/SecondaryButton';
+import { translateErrors, detranslateErrors } from '../Translation/translateErrors'
 
 const globalStyles = require('../Styles');
 
@@ -56,6 +57,10 @@ export function UserRegister(props) {
   const [userLastName, setUserLastName] = useState('');
   const [userInfo, setUserInfo] = React.useState({});
   const [SignInStep, setSignInStep] = useState(1);
+  const [errorCode, setError] = React.useState(0)
+  const [popupError, setPopup] = React.useState(false)
+  const [isLoading, setLoading] = React.useState(false);
+  const [popupErrorPass, setPopupPass] = React.useState(false)
 
   const [modalVisible, setModalVisible] = useState(false);
   const [message, setMessage] = useState("");
@@ -88,6 +93,44 @@ export function UserRegister(props) {
   //}
   return (
     <View style={globalStyles.container}>
+      <Popup message={I18n.t("Header.error")} modalVisible={popupError} setModalVisible={setPopup}>
+        <Text style={[globalStyles.paragraphs, {marginTop: 32, width: '100%'}]}>{translateErrors(errorCode.toString())}</Text>
+        <View style={{
+            width: '100%',
+            marginTop: 32,
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between'
+          }}>
+            <TouchableOpacity
+              style={{ backgroundColor: "#ffffff", padding: 16, alignItems: 'center', borderRadius: 32 }}
+              onPress={() => {
+                setPopup(false);
+              }}
+            >
+              <Text style={globalStyles.paragraphs}>Ok</Text>
+            </TouchableOpacity>
+          </View>
+      </Popup>
+      <Popup message={I18n.t("Header.error")} modalVisible={popupErrorPass} setModalVisible={setPopupPass}>
+        <Text style={[globalStyles.paragraphs, {marginTop: 32, width: '100%'}]}>{I18n.t("Header.passMissmatch")}</Text>
+        <View style={{
+            width: '100%',
+            marginTop: 32,
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between'
+          }}>
+            <TouchableOpacity
+              style={{ backgroundColor: "#ffffff", padding: 16, alignItems: 'center', borderRadius: 32 }}
+              onPress={() => {
+                setPopupPass(false);
+              }}
+            >
+              <Text style={globalStyles.paragraphs}>Ok</Text>
+            </TouchableOpacity>
+          </View>
+      </Popup>
       <Step actualStep={SignInStep} finishStep={4} onPressFct={() => setSignInStep(SignInStep-1)}/>
       <Image
         source={require("../assets/images/Strollin_logo.png")}
@@ -168,7 +211,10 @@ export function UserRegister(props) {
             onPressFct={() => {
               if (userPassword === userConfirmPassWord) {
                 console.log("JE SUIS LAS");
-                registerUser(props, pseudo, userPassword, userEmail, setMessage, setModalVisible, false);
+                registerUser(props, pseudo, userPassword, userEmail, setMessage, setModalVisible, false, setLoading, setError, setPopup);
+              }
+              else {
+                setPopupPass(true)
               }
             }}
           />
