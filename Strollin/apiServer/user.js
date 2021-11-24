@@ -1,6 +1,6 @@
 import { IP_SERVER, PORT_SERVER } from '../env/Environement';
 
-async function loginUser(props, newMail, newPassword, setLoading) {
+async function loginUser(props, newMail, newPassword, setLoading, setError, setPopup) {
 
   console.log("mail", newMail, "password", newPassword);
 
@@ -25,7 +25,9 @@ async function loginUser(props, newMail, newPassword, setLoading) {
         const action = { type: 'CONNECTION', value: answer.access_token };
         props.dispatch(action);
       } else {
-        //console.log('login user faile: ', answer);
+        console.log('login user faile: ', answer);
+        await setError(answer.error_code)
+        await setPopup(true)
       }
     })
     .then(setLoading(false))
@@ -267,7 +269,7 @@ async function conversationUser(props, access_token) {
 
 exports.conversationUser = conversationUser;
 
-async function registerUser(props, newPseudo, newPassword, newMail, setMessage, setPopup, partner, setLoading) {
+async function registerUser(props, newPseudo, newPassword, newMail, setMessage, setModalVisible, partner, setLoading, setError, setPopup) {
   const bodyRequest = JSON.stringify({
     pseudo: newPseudo,
     password: newPassword,
@@ -286,16 +288,19 @@ async function registerUser(props, newPseudo, newPassword, newMail, setMessage, 
     .then((response) => response.json())
     .then(async (answer) => {
     //console.log("okkkk")
-      //console.log(" answer = " , answer);
+      console.log(" answer = " , answer);
       if (answer.access_token) {
         await profileUser(props, answer.access_token);
         await setFavorites(props, answer.access_token);
         await setTendance(props, answer.access_token);
         const action = { type: 'CONNECTION', value: answer.access_token };
         props.dispatch(action);
-      } else if (answer.status) {
-        setMessage(answer.status);
-        setPopup(true);
+      } else if (answer.error_code) {
+        await setMessage(answer.status);
+        await setModalVisible(true);
+        await setError(answer.error_code)
+        await setPopup(true)
+        console.log("zqddddd")
       }
     })
     .then()

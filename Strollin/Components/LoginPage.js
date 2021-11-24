@@ -14,6 +14,8 @@ import I18n from '../Translation/configureTrans';
 import { loginUser } from '../apiServer/user';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import PrimaryButton from './components/PrimaryButton';
+import Popup from './Popup';
+import { translateErrors, detranslateErrors } from '../Translation/translateErrors'
 
 const globalStyles = require('../Styles');
 
@@ -50,9 +52,30 @@ export function LoginPage(props) {
   const [valuePass, onChangePass] = React.useState('');
   const [userInfo, setUserInfo] = React.useState({});
   const [isLoading, setLoading] = React.useState(false);
+  const [errorCode, setError] = React.useState(0)
+  const [popupError, setPopup] = React.useState(false)
 
   return (
     <View style={globalStyles.container}>
+      <Popup message={I18n.t("Header.error")} modalVisible={popupError} setModalVisible={setPopup}>
+        <Text style={[globalStyles.paragraphs, {marginTop: 32, width: '100%'}]}>{translateErrors(errorCode.toString())}</Text>
+        <View style={{
+            width: '100%',
+            marginTop: 32,
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between'
+          }}>
+            <TouchableOpacity
+              style={{ backgroundColor: "#ffffff", padding: 16, alignItems: 'center', borderRadius: 32 }}
+              onPress={() => {
+                setPopup(false);
+              }}
+            >
+              <Text style={globalStyles.paragraphs}>Ok</Text>
+            </TouchableOpacity>
+          </View>
+      </Popup>
       <Image
         source={require("../assets/images/Strollin_logo.png")}
         style={globalStyles.logo}
@@ -87,7 +110,8 @@ export function LoginPage(props) {
         onPressFct={() => {
             if (value && valuePass) {
               setLoading(true);
-              loginUser(props, value, valuePass, setLoading);
+              loginUser(props, value, valuePass, setLoading, setError, setPopup);
+              console.log(errorCode)
             }
           }
         }

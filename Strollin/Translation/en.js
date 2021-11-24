@@ -298,7 +298,9 @@ export default {
     rating: 'Rating',
     comment: 'Comment',
     favorites: 'Favorites',
-    myTrip: 'My trip'
+    myTrip: 'My trip',
+    error: 'Connexion error',
+    passMissmatch: 'Passwords are different'
   },
 
   SettingsPartner: {
