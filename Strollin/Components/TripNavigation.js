@@ -177,24 +177,7 @@ export function TripNavigation({ map, profil, dispatch, navigation}) {
     longitudeDelta: 0.0121,
   };
 
-if (del) {
-  return (
-    <View>
-      <Text>
-        Are you sure you want to delete this place ?: {Store.getState().course.delete[1]}
-      </Text>
-      <Button
-        title="yes"
-        onPress={() => DeletePlace(true)}
-      />
-      <Button
-        title="no"
-        onPress={() => DeletePlace(false)}
-      />
-    </View>
-  )
-}
- // if (pop) {
+  // if (pop) {
  //   return (
  //     <View style={styles.view_popup}>
  //       <Text style={[styles.text_popup, styles.text_question]}>
@@ -364,6 +347,25 @@ if (del) {
       >
         <Text style={styles.text_signIn}>{I18n.t("TripNavigation.delete")}</Text>
       </TouchableOpacity>
+
+      <Popup message={"Do you want to remove " + Store.getState().course.delete[1] + " from the course ?"} modalVisible={del} setModalVisible={setDel}>
+        <View style={{
+            width: '50%',
+            marginTop: 32,
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between'
+        }}>
+          <Button
+            title="yes"
+            onPress={() => DeletePlace(true)}
+          />
+          <Button
+            title="no"
+            onPress={() => DeletePlace(false)}
+          />
+        </View>
+      </Popup>
 
       {pop &&
         <View style={styles.view_popup}>
