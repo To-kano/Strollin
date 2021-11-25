@@ -67,7 +67,7 @@ function LocationPage({route, navigation}) {
 
         <View style={styles.view_stat}>
           <Text style={styles.text_stat}>
-            {I18n.t('Locationpage.name')}
+            {I18n.t('LocationPage.name')}
           </Text>
           <View style={styles.view_number}>
             <Text style={styles.text_number}>{location.name}</Text>
@@ -78,7 +78,7 @@ function LocationPage({route, navigation}) {
             onPress={() => {navigation.navigate('PositionShareMap', {latitude: location.latitude, longitude: location.longitude, name: location.name})}}
           >
             <Text style={styles.text_stat}>
-              {I18n.t('Locationpage.address')}
+              {I18n.t('LocationPage.address')}
             </Text>
             <View style={styles.view_number}>
               <Text style={styles.text_number}>{location.address}</Text>
@@ -87,7 +87,7 @@ function LocationPage({route, navigation}) {
         </View>
         <View style={styles.view_stat}>
           <Text style={styles.text_stat}>
-            {I18n.t('Locationpage.description')}
+            {I18n.t('LocationPage.description')}
           </Text>
           <View style={styles.view_number}>
             <Text style={styles.text_number}>{location.description}</Text>
@@ -95,7 +95,7 @@ function LocationPage({route, navigation}) {
         </View>
         <View style={styles.view_stat}>
           <Text style={styles.text_stat}>
-            {I18n.t('Locationpage.phone')}
+            {I18n.t('LocationPage.phone')}
           </Text>
           <View style={styles.view_number}>
             <Text style={styles.text_number}>{location.phone}</Text>
@@ -103,7 +103,7 @@ function LocationPage({route, navigation}) {
         </View>
         <View style={styles.view_stat}>
           <Text style={styles.text_stat}>
-            {I18n.t('Locationpage.website')}
+            {I18n.t('LocationPage.website')}
           </Text>
           <View style={styles.view_number}>
             <Text style={styles.text_number}>{location.website}</Text>
@@ -111,7 +111,7 @@ function LocationPage({route, navigation}) {
         </View>
         <View style={styles.view_stat}>
           <Text style={styles.text_stat}>
-            {I18n.t('Locationpage.timetable')}
+            {I18n.t('LocationPage.timetable')}
           </Text>
           <View style={styles.view_number}>
             <Text style={styles.text_number}>{location.timetable}</Text>
@@ -119,14 +119,14 @@ function LocationPage({route, navigation}) {
         </View>
         <View style={styles.view_stat}>
           <Text style={styles.text_stat}>
-            {I18n.t('Locationpage.priceRange')}
+            {I18n.t('LocationPage.priceRange')}
           </Text>
           <View style={styles.view_number}>
             <Text style={styles.text_number}>{"Min: " + location.price_range[0] + " | Max: " + location.price_range[1] + " | Avg: " + location.price_range[2]}</Text>
           </View>
         </View>
         <View style={{ marginTop: 8, width: "100%" }}>
-          <Text style={[globalStyles.paragraphs, { marginBottom: 8 }]}>{I18n.t('Locationpage.tag')}</Text>
+          <Text style={[globalStyles.paragraphs, { marginBottom: 8 }]}>{I18n.t('LocationPage.tag')}</Text>
           <FlatList
             style={styles.view_tagIn}
             data={location.tags_list}
