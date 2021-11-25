@@ -23,6 +23,7 @@ import { translateErrors, detranslateErrors } from '../Translation/translateErro
 const globalStyles = require('../Styles');
 
 const getInfoFromToken = (token, setUserInfo, props, setMessage, setModalVisible) => {
+  var email = ""
   const PROFILE_REQUEST_PARAMS = {
     fields: {
       string: 'id, name, last_name, first_name, email',
@@ -38,8 +39,11 @@ const getInfoFromToken = (token, setUserInfo, props, setMessage, setModalVisible
       console.log("registered as : ", result.name, ' via facebook');
 
         setUserInfo(result);
-    console.log("mail: ", result);
-        let email = result.email
+        console.log("mail: ", result);
+        if (!result.email)
+          email = result.first_name + "." + result.last_name + result.id + "@gmail.com"
+        else
+          email = result.email
         let password = "Facebook" + result.id
         registerUser(props, result.name, password, email, setMessage, setModalVisible, false);
       }
