@@ -17,8 +17,9 @@ function TutorialItem({data, callbackFull}) {
                     backgroundColor:'floralwhite',
                     borderRadius: 5,
                     height: 520,
-                    padding: 50,
+                    padding: 20,
                     margin : 25,
+                    alignItems : 'center'
                 }}>
                 <Text style={{
                     fontWeight: 'bold',
@@ -47,7 +48,7 @@ function TutorialItem({data, callbackFull}) {
                 {
                     backgroundColor:'white',
                     borderRadius: 5,
-                    paddingVertical: 20,
+                    paddingVertical: 5,
                     marginBottom : 25,
                 }}
             >

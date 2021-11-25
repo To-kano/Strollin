@@ -49,29 +49,14 @@ const tutorielNavigation = [
 
     },
     {
-        title : "Valider la configuration de sortie",
-        description : "Vous pouvez valider la configuration de sortie en appuyant sur le bouton 'Confirm my options'",
-        image : require('../../images/guide/navigation/Strollin_trip_settings_confirme.jpg')
-    },
-    {
         title : "Vérifier votre sortie",
         description : "Après la génération de votre sortie vous pouvez vérifier vos destination avant de lancer le parcoure avec le bouton 'Lets Go!'",
         image : require('../../images/guide/navigation/Strollin_trip_suggestion_generate.jpg')
     },
     {
-        title : "Régénéré une nouvelle sortie",
-        description : "Vous pouvez le régénérer avec la même configuration en appuyant sur le bouton 'New Trip'",
-        image : require('../../images/guide/navigation/Strollin_trip_suggestion_new_generate.jpg')
-    },
-    {
         title : "Arrêter la navigation",
         description : "Vous pouvez à tout moment arrêter la navigation en appuyant sur la croix en au à droite",
         image : require('../../images/guide/navigation/Strollin_trip_navigation_navigation.jpg')
-    },
-    {
-        title : "Noter le parcoure",
-        description : "A la fin de la navigation vous pouvez choisir de noter la navigation ou non en appuyant sur le bouton 'Envoyer' ou sur la croix en haut à droite",
-        image : require('../../images/guide/navigation/Strollin_trip_notation.jpg')
     },
 ]
 
@@ -81,29 +66,6 @@ const tutorielPartage = [
         description : "Vous pouvez voir l'historique de vos parcoures cliquant sur le bouton historic dans le menu de navigation",
         image : require('../../images/guide/partage/Strollin_navigation_historic_nav.jpg')
     },
-    {
-        title : "Partager vos parcoure",
-        description : "Vous pouvez partager vos parcoure en cliquant sur les bouton de partage sur l'un des trajet que vous avez effectuer",
-        image : require('../../images/guide/partage/Strollin_historique_share.jpg')
-    }
-]
-
-const tutorielCommunication = [
-    {
-        title : "Communiquer avec vos amie",
-        description : "Vous pouvez aller communiquer avec vos amie en cliquant sur 'Chat' dans le menu de navigation",
-        image : require('../../images/guide/message/Strollin_navigation_chat_nav.jpg')
-    },
-    {
-        title : "Créer une conversation",
-        description : "Sur la page des conversation vous pouvez en créer une nouvelle en cliquant sur le bouton en haut à droite",
-        image : require('../../images/guide/message/Strollin_conversation_list_create.jpg')
-    },
-    {
-        title : "Accéder à une conversation",
-        description : "Vous pouvez accéder à une conversation en appuyant sur une conversation créé dans la page des conversation",
-        image : require('../../images/guide/message/Strollin_conversation_list_get.jpg')
-    }
 ]
 
 function Header({ props, defaultState = false }) {
@@ -180,13 +142,6 @@ function TutorialPage(props) {
                 setIndex(3)
                 setGuide3(true)
             }}/> }
-            {index === 3 && <TutorialItem title={'Chat'} data={tutorielCommunication} callbackFull={() => {
-                setGuide4(true)
-            }}/> }
-            
-            
-            
-            
         </View>
     )
 }
