@@ -91,7 +91,7 @@ function ModalAddLocation({setCarrousel, isOpen, setOpen, indexCarrousel,  locat
   //console.log("locationSugestion", locationSugestion)
 
   return (
-    <Popup message={"Ajouter un lieu"} modalVisible={isOpen} setModalVisible={setOpen}>
+    <Popup message={I18n.t('TripSuggestion.addThisLocation')} modalVisible={isOpen} setModalVisible={setOpen}>
         <FlatList
           style={{height : 200}}
           data={locationSugestion}

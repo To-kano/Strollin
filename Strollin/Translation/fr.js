@@ -236,6 +236,7 @@ export default {
     deleteClosedLocation: "Est-ce que tu veux qu'on les enlève du trajet que tu vas faire ?",
     addStep: "Ajouter une étape",
     foundThat: "On a trouvé ça pour toi",
+    addLocation: "Ajouter un lieu",
     addThisLocation: "Veux tu ajouter ce lieu au trajet ?",
     addYes: "Oui s'il vous plait",
     addNo: "Non merci"

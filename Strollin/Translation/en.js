@@ -247,6 +247,7 @@ export default {
     deleteClosedLocation: "Do you want to remove them from the course?",
     addStep: "Add a step",
     foundThat: "We found this for you",
+    addLocation: "Add a location",
     addThisLocation: "Do you want to add this location to the course?",
     addYes: "Yes please",
     addNo: "No thanks"
