@@ -32,7 +32,7 @@ const getInfoFromToken = (token, setUserInfo, props) => {
     { token, parameters: PROFILE_REQUEST_PARAMS },
     (error, result) => {
       if (error) {
-        // //console.log(`login info has error: ${error}`);
+        console.log(`login info has error: ${error}`);
       } else {
       //console.log("connected as : ", result.name, ' via facebook');
         setUserInfo(result);
@@ -118,11 +118,13 @@ export function LoginPage(props) {
       />
       <PrimaryButton
         text={I18n.t('LoginPage.facebook')}
+        readPermissions={['public_profile', 'email']}
         onPressFct={() => {
           AccessToken.getCurrentAccessToken().then((data) => {
+            console.log(data);
             const accessToken = data.accessToken.toString();
             getInfoFromToken(accessToken, setUserInfo, props);
-          });
+          }).catch((error) => console.log("lol", error));
         }
       }
         color= "#1877F2"
