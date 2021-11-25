@@ -221,19 +221,31 @@ export function UserRegister(props) {
         </>
       }
 
-      <PrimaryButton text={I18n.t('UserRegister.facebook')} onPressFct={() => {
-        console.log('facebook signin')
-
-            AccessToken.getCurrentAccessToken().then((data) => {
-              console.log('login is ta grosse mere.');
-              const accessToken = data.accessToken.toString();
-              getInfoFromToken(accessToken, setUserInfo, props, setMessage, setModalVisible);
-            });
-        }
-      } color='#1877F2'
-        readPermissions={['public_profile', 'email']}
-        onLogoutFinished={() => setUserInfo({})}
-      />
+      <LoginButton
+          style={{
+            width: "100%",
+            backgroundColor: "#1877F2",
+            padding: 16,
+            marginTop: 16,
+            justifyContent: "center",
+            alignContent: "center",
+            borderRadius: 32,
+          }}
+         readPermissions={['public_profile', 'email']}
+         onLoginFinished={(error, result) => {
+           if (error) {
+             console.log(`login has error: ${result.error}`);
+           } else if (result.isCancelled) {
+             console.log('login is cancelled.');
+           } else {
+             AccessToken.getCurrentAccessToken().then((data) => {
+               const accessToken = data.accessToken.toString();
+               getInfoFromToken(accessToken, setUserInfo, props, setMessage, setModalVisible);
+             });
+           }
+         }}
+         onLogoutFinished={() => setUserInfo({})}
+       />
       <TouchableOpacity
         onPress={() => props.navigation.navigate('userLogin')}
         style={{
