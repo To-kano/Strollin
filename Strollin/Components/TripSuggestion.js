@@ -172,7 +172,7 @@ function ModalAddLocation({setCarrousel, isOpen, setOpen, indexCarrousel,  locat
         
                   <View>
 
-                      { selectedLocation && item.id ===  selectedLocation.id && <Icon name="bin" size={29} color='#FF0000'/>}
+                      { selectedLocation && item.id ===  selectedLocation.id && <Icon name="checked" size={29} color='#FF0000'/>}
                   </View>
         
                 </View>
@@ -184,7 +184,7 @@ function ModalAddLocation({setCarrousel, isOpen, setOpen, indexCarrousel,  locat
 
         {loading && <ActivityIndicator size="large"  color="black" style={{}}/>}
 
-        <Text style={[globalStyles.paragraphs, {marginTop: 32, width: '100%'}]}>Veux tu ajouter ce lieu au trajet ?</Text>
+        <Text style={[globalStyles.paragraphs, {marginTop: 32, width: '100%'}]}>{I18n.t('TripSuggestion.addThisLocation')}</Text>
         <View style={{
             width: '100%',
             marginTop: 32,
@@ -198,7 +198,7 @@ function ModalAddLocation({setCarrousel, isOpen, setOpen, indexCarrousel,  locat
                 setOpen(false);
               }}
             >
-              <Text style={globalStyles.paragraphs}>Non merci</Text>
+              <Text style={globalStyles.paragraphs}>{I18n.t('TripSuggestion.addNo')}</Text>
             </TouchableOpacity>
             <TouchableOpacity
               disabled={!selectedLocation}
@@ -221,7 +221,7 @@ function ModalAddLocation({setCarrousel, isOpen, setOpen, indexCarrousel,  locat
                 
               }}
             >
-              <Text style={[globalStyles.paragraphs, { color: '#ffffff' }]}>Oui svp</Text>
+              <Text style={[globalStyles.paragraphs, { color: '#ffffff' }]}>{I18n.t('TripSuggestion.addYes')}</Text>
             </TouchableOpacity>
           </View>
       </Popup>
@@ -565,13 +565,13 @@ export function TripSuggestion(props) {
             onPress={() => {setModalLocationVisible(true)}}
           >
               <Icon name="add" size={24} color='#000000'/>
-              <Text style={[globalStyles.paragraphs, {marginHorizontal: 16}]}>Ajouter une étape</Text>
+              <Text style={[globalStyles.paragraphs, {marginHorizontal: 16}]}>{I18n.t('TripSuggestion.addStep')}</Text>
             </TouchableOpacity>)
         }}
         style={{ backgroundColor: '#ffffff'}}
         contentContainerStyle={{paddingTop: 96, paddingBottom: 176}}
         ListHeaderComponent={() => {
-          return (<Text style={[globalStyles.subtitles, {marginHorizontal: 16}]}>On a trouvé ça pour toi</Text>)
+          return (<Text style={[globalStyles.subtitles, {marginHorizontal: 16}]}>{I18n.t('TripSuggestion.foundThat')}</Text>)
         }}
         keyExtractor={item => item.id}
         renderItem={({item}) => {
@@ -585,7 +585,7 @@ export function TripSuggestion(props) {
   return (
     <>
       <ModalAddLocation setCarrousel={setCarrousel} indexCarrousel={indexCarrousel} isOpen={isModalLocationVisible} setOpen={setModalLocationVisible}  />
-      <Popup message={"Ces lieux sont fermés.."} modalVisible={isModalVisible} setModalVisible={setModalVisible}>
+      <Popup message={I18n.t('TripSuggestion.closedLocation')} modalVisible={isModalVisible} setModalVisible={setModalVisible}>
         <FlatList
           style={{height : 200}}
           data={closedLocationsName}
@@ -594,7 +594,7 @@ export function TripSuggestion(props) {
           }}
           keyExtractor={(item) => item}
         />
-        <Text style={[globalStyles.paragraphs, {marginTop: 32, width: '100%'}]}>Est-ce tu veux qu on les enlève du trajet que tu vas faire ?</Text>
+        <Text style={[globalStyles.paragraphs, {marginTop: 32, width: '100%'}]}>{I18n.t('TripSuggestion.deleteClosedLocation')}</Text>
         <View style={{
             width: '100%',
             marginTop: 32,

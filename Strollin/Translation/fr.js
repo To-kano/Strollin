@@ -88,6 +88,17 @@ export default {
     tryNewTrip: 'Esseyer de lancer un trajet !'
   },
 
+  LocationPage: {
+    name: "Nom",
+    address: "Adresse",
+    description: "Description",
+    phone: "Téléphone",
+    website: "Site Web",
+    timetable: "Horaires",
+    priceRange: "Prix",
+    tag: "Tags",
+  },
+
   LoginPage: {
     confirm: 'Confirmer',
     forgot: 'Mot de passe oublié ?',
@@ -220,7 +231,14 @@ export default {
     step: 'Etape :',
     headingTo: 'En route vers',
     letsGo: "C'est parti !",
-    newTrip: "Nouveau trajet"
+    newTrip: "Nouveau trajet",
+    closedLocation: "Ces lieux sont fermés...",
+    deleteClosedLocation: "Est-ce que tu veux qu'on les enlève du trajet que tu vas faire ?",
+    addStep: "Ajouter une étape",
+    foundThat: "On a trouvé ça pour toi",
+    addThisLocation: "Veux tu ajouter ce lieu au trajet ?",
+    addYes: "Oui s'il vous plait",
+    addNo: "Non merci"
   },
 
   TripNavigation: {

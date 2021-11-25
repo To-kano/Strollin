@@ -99,6 +99,17 @@ export default {
     tryNewTrip: 'Try to start a trip !'
   },
 
+  LocationPage: {
+    name: "Name",
+    address: "Address",
+    description: "Description",
+    phone: "Phone",
+    website: "Website",
+    timetable: "Timetable",
+    priceRange: "Price range",
+    tag: "Tags",
+  },
+
   LoginPage: {
     forgot: 'Forgot Pasword ?',
     confirm: 'Confirm',
@@ -231,12 +242,20 @@ export default {
     step: 'Step :',
     headingTo: 'Heading to',
     letsGo: "Let's go !",
-    newTrip: "New Trip"
+    newTrip: "New Trip",
+    closedLocation: "These locations are closed...",
+    deleteClosedLocation: "Do you want to remove them from the course?",
+    addStep: "Add a step",
+    foundThat: "We found this for you",
+    addThisLocation: "Do you want to add this location to the course?",
+    addYes: "Yes please",
+    addNo: "No thanks"
   },
 
   TripNavigation: {
     delete: "Delete",
-    simulate: "Simulate"
+    simulate: "Simulate",
+    deleteLocation: "Do you want to remove from the course this location? :"
   },
 
   UserRegister: {
@@ -300,6 +319,7 @@ export default {
     favorites: 'Favorites',
     myTrip: 'My trip',
     error: 'Connexion error',
+    location: 'Location',
     passMissmatch: 'Passwords are different'
   },
 
