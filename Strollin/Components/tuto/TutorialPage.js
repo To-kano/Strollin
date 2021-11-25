@@ -8,6 +8,8 @@ import Carousel from 'react-native-snap-carousel';
 import TutorialItem from './TutorialItem';
 import { DrawerActions } from '@react-navigation/native';
 
+import GifImage from '@lowkey/react-native-gif';
+
 const globalStyles = require('../../Styles');
 
 
@@ -15,23 +17,28 @@ const tutorielTags = [
     {
         title : "Aller à la page des tags",
         description : "Vous pouvez aller à la page des tags en selectionnant 'Profile' dans le menu de navigation",
-        image : require('../../images/guide/tags/Strollin_navigation_profile_done.jpg')
+        image : require('../../images/guide/tags/go_to_tags.gif')
     },
     {
         title : "Voir mes tags",
         description : "Sur la page de profile les tags sont visible en dessous du mot 'tags'",
-        image : require('../../images/guide/tags/Strollin_profile_tags.jpg')
+        image : require('../../images/guide/tags/tag_selection.gif')
     },
     {
         title : "Changer mes tags",
         description : "Vous pouvez changer vos tags en appuyant sur le bouton 'Choose my tags' dans la page de profile",
-        image : require('../../images/guide/tags/Strollin_profile_choose_my_tags.jpg')
+        image : require('../../images/guide/tags/tag_change.gif')
 
     },
     {
         title : "Valider mes tags",
         description : "Sur la page de selection des tags vous pouvez valider les tags selectionné en appuyant sur le bouton 'Confirmer mes Tags'",
-        image : require('../../images/guide/tags/Strollin_tag_selection_confirmer.jpg')
+        image : require('../../images/guide/tags/tag_validation.gif')
+    },
+    {
+        title : "Valider mes tags",
+        description : "Sur la page de selection des tags vous pouvez valider les tags selectionné en appuyant sur le bouton 'Confirmer mes Tags'",
+        image : require('../../images/guide/tags/tag_validation.gif')
     }
 ]
 
@@ -39,24 +46,29 @@ const tutorielNavigation = [
     {
         title : "Créer une nouvelle sortie",
         description : "Créer une nouvelle sortie en selectionnant 'New trip' dans le menu de navigation",
-        image : require('../../images/guide/navigation/Strollin_navigation_new_trip_navigation.jpg')
+        image : require('../../images/guide/navigation/nouvel_navigation.gif')
 
     },
     {
         title : "Configurer ma sortie",
         description : "Sur la page de configuration de sortie, vous pouvez selectionner vos besoin pour ce parcoure",
-        image : require('../../images/guide/navigation/Strollin_trip_settings.jpg')
+        image : require('../../images/guide/navigation/config_navigation.gif')
 
     },
     {
         title : "Vérifier votre sortie",
         description : "Après la génération de votre sortie vous pouvez vérifier vos destination avant de lancer le parcoure avec le bouton 'Lets Go!'",
-        image : require('../../images/guide/navigation/Strollin_trip_suggestion_generate.jpg')
+        image : require('../../images/guide/navigation/check_navigation.gif')
     },
     {
         title : "Arrêter la navigation",
         description : "Vous pouvez à tout moment arrêter la navigation en appuyant sur la croix en au à droite",
-        image : require('../../images/guide/navigation/Strollin_trip_navigation_navigation.jpg')
+        image : require('../../images/guide/navigation/end_navigation.gif')
+    },
+    {
+        title : "Arrêter la navigation",
+        description : "Vous pouvez à tout moment arrêter la navigation en appuyant sur la croix en au à droite",
+        image : require('../../images/guide/navigation/end_navigation.gif')
     },
 ]
 
@@ -64,7 +76,12 @@ const tutorielPartage = [
     {
         title : "Voir l'historique",
         description : "Vous pouvez voir l'historique de vos parcoures cliquant sur le bouton historic dans le menu de navigation",
-        image : require('../../images/guide/partage/Strollin_navigation_historic_nav.jpg')
+        image : require('../../images/guide/partage/historique.gif')
+    },
+    {
+        title : "Voir l'historique",
+        description : "Vous pouvez voir l'historique de vos parcoures cliquant sur le bouton historic dans le menu de navigation",
+        image : require('../../images/guide/partage/historique.gif')
     },
 ]
 
@@ -118,15 +135,7 @@ function TutorialPage(props) {
                     onPress={() => setIndex(2)}
                 >
                     <Text style={[globalStyles.subparagraphs, { marginVertical: 16 }]}>
-                        Partage
-                    </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={{backgroundColor : guide4 ? 'green' : undefined, flex: 1,  alignItems : 'center', borderWidth : 1}}
-                    onPress={() => setIndex(3)}
-                >
-                    <Text style={[globalStyles.subparagraphs, { marginVertical: 16 }]}>
-                        Chat
+                        historic
                     </Text>
                 </TouchableOpacity>
             </View>
@@ -139,7 +148,7 @@ function TutorialPage(props) {
                 setGuide2(true)
             }}/> }
             {index === 2 && <TutorialItem title={'Partage'} data={tutorielPartage} callbackFull={() => {
-                setIndex(3)
+                setIndex(0)
                 setGuide3(true)
             }}/> }
         </View>

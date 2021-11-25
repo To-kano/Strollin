@@ -7,6 +7,9 @@ import {
 import Carousel from 'react-native-snap-carousel';
 
 
+import GifImage from '@lowkey/react-native-gif';
+
+
 function TutorialItem({data, callbackFull}) {
 
     const _renderItem = ({item, index}) => {
@@ -29,7 +32,7 @@ function TutorialItem({data, callbackFull}) {
                     color: '#000000',
                     marginBottom : 10,
                 }}>{ item.title }</Text>
-                <Image style={{width : 150, height : 300}} source={item.image} />
+                <GifImage style={{width : 150, height : 300}} source={item.image} />
                 <Text style={{
                     fontSize: 12,
                     letterSpacing: 1.4,
