@@ -8,6 +8,8 @@ import Carousel from 'react-native-snap-carousel';
 import TutorialItem from './TutorialItem';
 import { DrawerActions } from '@react-navigation/native';
 
+const globalStyles = require('../../Styles');
+
 
 const tutorielTags = [
     {
@@ -122,19 +124,69 @@ function Header({ props, defaultState = false }) {
 
 function TutorialPage(props) {
 
+    const [index, setIndex] = useState(0);
+
+    const [guide1, setGuide1] = useState(false);
+    const [guide2, setGuide2] = useState(false);
+    const [guide3, setGuide3] = useState(false);
+    const [guide4, setGuide4] = useState(false);
+
     return (
         <View style={styles.view_back} >
             <Header props={props} />
-            <ScrollView style={{
-                //backgroundColor : "blue",
-                //paddingVertical: 20,
-                height : '100%'
-            }} >
-                <TutorialItem title={'Tags'} data={tutorielTags}/>
-                <TutorialItem title={'Navigation'} data={tutorielNavigation}/>
-                <TutorialItem title={'Partage'} data={tutorielPartage}/>
-                <TutorialItem title={'Chat'} data={tutorielCommunication}/>
-            </ScrollView>
+            <View  style={{flexDirection : "row", justifyContent: 'space-around',width :  "100%", alignItems : 'center'}}>
+                <TouchableOpacity
+                    style={{backgroundColor : guide1 ? 'green' : undefined, flex: 1, alignItems : 'center', borderWidth : 1}}
+                    onPress={() => setIndex(0)}
+                    >
+                    <Text style={[globalStyles.subparagraphs, { marginVertical: 16 }]}>
+                        Tags
+                    </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={{backgroundColor : guide2 ? 'green' : undefined, flex: 1,  alignItems : 'center', borderWidth : 1}}
+                    onPress={() => setIndex(1)}
+                >
+                    <Text style={[globalStyles.subparagraphs, { marginVertical: 16 }]}>
+                        Navigation
+                    </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={{backgroundColor : guide3 ? 'green' : undefined, flex: 1,  alignItems : 'center', borderWidth : 1}}
+                    onPress={() => setIndex(2)}
+                >
+                    <Text style={[globalStyles.subparagraphs, { marginVertical: 16 }]}>
+                        Partage
+                    </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={{backgroundColor : guide4 ? 'green' : undefined, flex: 1,  alignItems : 'center', borderWidth : 1}}
+                    onPress={() => setIndex(3)}
+                >
+                    <Text style={[globalStyles.subparagraphs, { marginVertical: 16 }]}>
+                        Chat
+                    </Text>
+                </TouchableOpacity>
+            </View>
+            {index === 0 && <TutorialItem title={'Tags'} data={tutorielTags} callbackFull={() => {
+                setGuide1(true)
+                setIndex(1)
+            }} /> }
+            {index === 1 && <TutorialItem title={'Navigation'} data={tutorielNavigation} callbackFull={() => {
+                setIndex(2)
+                setGuide2(true)
+            }}/> }
+            {index === 2 && <TutorialItem title={'Partage'} data={tutorielPartage} callbackFull={() => {
+                setIndex(3)
+                setGuide3(true)
+            }}/> }
+            {index === 3 && <TutorialItem title={'Chat'} data={tutorielCommunication} callbackFull={() => {
+                setGuide4(true)
+            }}/> }
+            
+            
+            
+            
         </View>
     )
 }

@@ -7,7 +7,7 @@ import {
 import Carousel from 'react-native-snap-carousel';
 
 
-function TutorialItem({data, title}) {
+function TutorialItem({data, callbackFull}) {
 
     const _renderItem = ({item, index}) => {
         return (
@@ -51,13 +51,6 @@ function TutorialItem({data, title}) {
                     marginBottom : 25,
                 }}
             >
-            <Text style={{
-                fontWeight: 'bold',
-                fontSize: 25,
-                letterSpacing: 2,
-                textAlign: 'center',
-                color: '#000000',
-            }}>{title}</Text>
             <Carousel
                 autoplay={true}
                 autoplayDelay={3000}
@@ -70,6 +63,12 @@ function TutorialItem({data, title}) {
               itemWidth={300}
               layout={'default'}
               layoutCardOffset={9}
+              onSnapToItem={(value) => {
+                  console.log("value", value);
+                  if (callbackFull && value == data.length -1) {
+                      callbackFull();
+                  }
+              }}
             />
         </View>
     )
