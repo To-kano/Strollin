@@ -2,17 +2,17 @@
 
 NOTE:
 
-- The list is separated in Object Related.
+- The list is separated in Object Related (See the Index).
 
-- Each object will presents the schema and the available requests.
+- Each object will presents the schema and the available API requests.
 
-- Where full URLs are provided in responses they will be rendered as if service is running on 'http://' + IP_SERVER + ':' + PORT_SERVER + '/'.
+- Where full URLs are provided in responses they will be rendered as if service is running on 'https://' + IP_SERVER + ':' + PORT_SERVER + '/'.
 
-- All documents in the database has a variable "id" (Some Exceptions). Do not use "_id" given by MongoDB.
+- All documents in the database has the variable "id" (Some Exceptions). Do not use "_id" given by MongoDB.
 
 - This document show some type as "ObjectID" which represent the "id" of a model. (Example: `UserID` represent user.id)
 
-- In case of successful request, all request will return an object as:<br>{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;status: String<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;eventual return: Object (See in requests for details)<br>}
+- In case of successful request, all request will return an JSON object as:<br>{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;status: String<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;eventual return: Object (See in requests for details)<br>}
 
 - In case of failed request, all request will return an error code which correspond of the next list:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1: You must be authenticated<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2: An error has occured in the server<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3: An internal error has occured<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4: An error in the data has occured<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5: You must be a subscribed to access this functionality<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;100: The mail is not valid<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;101: The mail is already used<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;102: The password must contains 6 characters with at least 1 uppercase, 1 lowercase and 1 digit<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;103: The login or the password is incorrect<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;104: You made too much attempt. Please retry later.
 
@@ -23,12 +23,13 @@ INDEX:
 - [CONVERSATION RELATED](#CONVERSATION-RELATED)
 - [COURSE RELATED](#COURSE-RELATED)
 - [FAQ RELATED](#FAQ-RELATED)
+- [GENERATOR RELATED](#GENERATOR-RELATED)
 - [IMAGE RELATED](#IMAGE-RELATED)
 - [LOCATION RELATED](#LOCATION-RELATED)
 - [MESSAGE RELATED](#MESSAGE-RELATED)
+- [SUBSCRIPTION RELATED](#SUBSCRIPTION-RELATED)
 - [TAGS RELATED](#TAGS-RELATED)
 - [USER RELATED](#USER-RELATED)
-- [GENERATOR RELATED](#GENERATOR-RELATED)
 
 <br>
 
@@ -38,6 +39,8 @@ BLACKLIST RELATED:
 **DESCRIPTION**
 
 Blacklist is used to save the IP of the user and lock the attempt to connect if the user send wrong authentication.
+
+<br>
 
 **SCHEMA:**
 
@@ -59,6 +62,8 @@ COMMENT RELATED:
 **DESCRIPTION**
 
 The object Comment represents the comments and rates left by an user to a location or a course.
+
+<br>
 
 **SCHEMA:**
 
@@ -96,6 +101,8 @@ CONVERSATION RELATED:
 
 The object Conversation represents the chat room for the user. It contains a list of Message Object.
 
+<br>
+
 **SCHEMA:**
 
 - id `Number`
@@ -129,6 +136,8 @@ COURSE RELATED:
 **DESCRIPTION**
 
 The object Course contains the informations of the course saved in database.
+
+<br>
 
 **SCHEMA:**
 
@@ -187,6 +196,8 @@ FAQ RELATED:
 
 The object Faq represents the question sent by users and non users about Strollin.
 
+<br>
+
 **SCHEMA:**
 
 - id `Number`
@@ -205,7 +216,7 @@ The object Faq represents the question sent by users and non users about Strolli
 
 | Description | Headers | Body | Return |
 |-|-|-|-|
-| Create a new question. | | mail: String<br>question: String<br>language: String | |
+| Create a new question for the FAQ. | | mail: String<br>question: String<br>language: String | |
 
 
 - ADD answer to a question: `POST /faq/answer_question`
@@ -238,12 +249,63 @@ The object Faq represents the question sent by users and non users about Strolli
 <br>
 
 
+GENERATOR RELATED:
+==================
+
+**DESCRIPTION:**
+
+Generator course is not a model but it is used for the algorithm of Strollin and interact with the database. The algorithm will return an array of object containing:
+
+- AlgAg: Number,
+- AlgDisp: Number,
+- City: String,
+- Desc: String,
+- Dist: Number,
+- Id: Number,
+- Name: String,
+- PopAg: Number,
+- PopDisp: Number,
+- Pos: [Number],
+- Price: Number,
+- Tags: [String],
+- TagsDisp: [Number],
+- Time: Number
+
+<br>
+
+**REQUESTS:**
+
+- GET a generated course: `GET /generator/generate_course`
+
+| Description | Headers | Body | Return |
+|-|-|-|-|
+| Generate a course according to the given parameters. Will automatically create locations in database if new locations are found. | access_token: String<br>time: String<br>budget: String<br>tags: [String]<br>coordinate: [String] | | generated_course: [AlgorithmObject]<br>course: PartialCourseObject (Not created in database) |
+
+
+- GET a generated popup: `GET /generator/generate_popup`
+
+| Description | Headers | Body | Return |
+|-|-|-|-|
+| Generate a popup of a location owned by a partner. | access_token: String<br>coordinate: [String] | course: CourseID | popup: LocationObject |
+
+
+- GET popup answer: `GET /generator/popup_answer`
+
+| Description | Headers | Body | Return |
+|-|-|-|-|
+| Answer of the user for the previously generated popup. | access_token: String<br>anwser: Boolean<br>popup: LocationObject | | WIP |
+
+<br>
+
+
 IMAGE RELATED:
 ===============
 
 **DESCRIPTION**
 
 The object Image represents the stored images in the server for the user's profile or the shared images in conversations.
+
+<br>
 
 **SCHEMA:**
 
@@ -256,6 +318,18 @@ The object Image represents the stored images in the server for the user's profi
 
 **REQUESTS:**
 
+- GET an image: `GET /image/id`
+
+| Description | Headers | Body | Return |
+|-|-|-|-|
+| Get an image to display. | id: String | | image: ImageObject |
+
+- POST an image: `GET /image/upload`
+
+| Description | Headers | Body | Return |
+|-|-|-|-|
+| Upload an image in the server. | | access_token: String<br>filename: String<br>mimetype: String | image: ImageObject |
+
 <br>
 
 
@@ -265,6 +339,8 @@ LOCATION RELATED:
 **DESCRIPTION**
 
 The object Location represents the locations used in courses. It is also used for the partner user.
+
+<br>
 
 **SCHEMA:**
 
@@ -339,13 +415,6 @@ The object Location represents the locations used in courses. It is also used fo
 | Get the location of the partner. | access_token: String | | location: LocationObject |
 
 
-- GET location: `GET /location/get_partner_location`
-
-| Description | Headers | Body | Return |
-|-|-|-|-|
-| Get the location of the partner. | access_token: String | | LocationObject |
-
-
 - GET get location by ID: `GET /location/get_location_by_id`
 
 | Description | Headers | Body | Return |
@@ -360,6 +429,8 @@ MESSAGE RELATED:
 **DESCRIPTION**
 
 The object Message is the message sent in conversations. It can contains simple messages, images or courses.
+
+<br>
 
 **SCHEMA:**
 
@@ -388,6 +459,44 @@ The object Message is the message sent in conversations. It can contains simple 
 |-|-|-|-|
 | Get message's data by ID or list of ID. | access_token: String<br>message_id: [MessageID] | | messages_list: [MessageObject] (see Schema) |
 
+<br>
+
+SUBSCRIPTION RELATED:
+=============
+
+**DESCRIPTION**
+
+The subscription routes manages the subscription of users. The subscription uses Stripe to manage the payment.
+
+<br>
+
+**SCHEMA:**
+
+None
+
+<br>
+
+**REQUESTS:**
+
+- CREATE a subscription session: `POST /subscription/create_session`
+
+| Description | Headers | Body | Return |
+|-|-|-|-|
+| Create/Retrieve a customer in Stripe and create a securised session of payment with Stripe. Return a link to the session. | access_token: String | None | url: String |
+
+- GET a subscription's data: `GET /subscription/get_subscription`
+
+| Description | Headers | Body | Return |
+|-|-|-|-|
+| Get informations of an user's subscription. Return Null if no information. | access_token: String | None | subscription: {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;current_period_start: String<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;currend_period_end: String<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cancel_at_period_end: Boolean<br>} |
+
+- STOP a subscription: `POST /subscription/stop_subscription`
+
+| Description | Headers | Body | Return |
+|-|-|-|-|
+| Cancel an user's subscription. The subscription remains active for the duration of the paid period. | access_token: String | None | subscription: {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;current_period_start: String<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;currend_period_end: String<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cancel_at_period_end: Boolean<br>} |
+
+<br>
 
 
 TAGS RELATED:
@@ -396,6 +505,8 @@ TAGS RELATED:
 **DESCRIPTION**
 
 The object Tag is used for users, locations and courses.
+
+<br>
 
 **SCHEMA:**
 
@@ -430,6 +541,7 @@ The object Tag is used for users, locations and courses.
 |-|-|-|-|
 | Get tag's data by ID or list of ID. | access_token: String<br>tags_list: [TagID] | | tags_list: [TagObject] (see Schema) |
 
+<br>
 
 USER RELATED:
 =============
@@ -438,9 +550,12 @@ USER RELATED:
 
 The object User represents the users of the application Strollin and the partner.
 
+<br>
+
 **SCHEMA:**
 
 - id `Number`
+- id_image_profile `ImageID`
 - mail `String`
 - password `String`
 - creation_date `String`
@@ -457,6 +572,8 @@ The object User represents the users of the application Strollin and the partner
 - course_favorites `[courseID]`
 - socket_id `String`
 - facebook_id `String`
+- stripe_id `String`
+- subscription_id `String`
 - verify `Boolean`
 
 <br>
@@ -467,7 +584,14 @@ The object User represents the users of the application Strollin and the partner
 
 | Description | Headers | Body | Return |
 |-|-|-|-|
-| Register a new user for database.<br>partner = false for normal user.<br>Return a access token.<br>The app will send a mail to check the validity. | None | mail: String<br>password: String<br>partner: Boolean<br>pseudo: String (optional)<br>first_name: String (optional)<br>last_name: String (optional) | access_token: String |
+| Register a new user for database. Return a access token on success. An email will be sent to check the validity. | None | mail: String<br>password: String<br>partner: Boolean<br>pseudo: String (optional)<br>first_name: String (optional)<br>last_name: String (optional) | access_token: String |
+
+
+- RESET the password: `POST /users/reset_password`
+
+| Description | Headers | Body | Return |
+|-|-|-|-|
+| Reset the password of the user. An email will be sent confirm the action. | None | mail: String | None |
 
 
 - VERIFY the user's mail: `GET /users/verify`
@@ -475,6 +599,13 @@ The object User represents the users of the application Strollin and the partner
 | Description | Headers | Body | Return |
 |-|-|-|-|
 | Check and set to true the variable "verify". | id: String | | None |
+
+
+- CONFIRM the password's reset: `POST /users/reset_password_confirme`
+
+| Description | Headers | Body | Return |
+|-|-|-|-|
+| Confirm the reset and edit the password. | None | user_id: String<br>password: String<br>confirm_password: String | None |
 
 
 - UPDATE user's information: `POST /users/edit_profile`
@@ -511,6 +642,12 @@ The object User represents the users of the application Strollin and the partner
 | Description | Headers | Body | Return |
 |-|-|-|-|
 | Add existing tag in user's list. | access_token: String | tags_list: [tagID] | None |
+
+- REMOVE tags in user's tags: `POST /users/remove_tag`
+
+| Description | Headers | Body | Return |
+|-|-|-|-|
+| Remove existing tag in user's list. | access_token: String | tags_list: [tagID] | None |
 
 
 - ADD a course in the user's historic: `POST /users/add_historic`
@@ -555,7 +692,7 @@ The object User represents the users of the application Strollin and the partner
 
 | Description | Headers | Body | Return |
 |-|-|-|-|
-| Log out an user.<br>Make unavailable the current token.| access_token: String | None | None |
+| Log out an user. Make unavailable the current token.| access_token: String | None | None |
 
 
 - GET user's profile: `GET /users/get_own_profile`
@@ -583,7 +720,7 @@ The object User represents the users of the application Strollin and the partner
 
 | Description | Headers | Body | Return |
 |-|-|-|-|
-| Get user's data. | access_token: String | | users_list: [UserObject] (see Schema) |
+| Get all user's data. | access_token: String | | users_list: [UserObject] (see Schema) |
 
 
 - GET get user by ID: `GET /user/get_user_by_id`
@@ -598,51 +735,3 @@ The object User represents the users of the application Strollin and the partner
 | Description | Headers | Body | Return |
 |-|-|-|-|
 | Delete an user's account.| access_token: String<br>password: String | None | None |
-
-
-
-
-GENERATOR RELATED:
-==================
-
-**DESCRIPTION:**
-
-Generator course is not a model but it is used for the algorithm of Strollin and interact with the database. The algorithm will return an array of object containing:
-
-- AlgAg: Number,
-- AlgDisp: Number,
-- City: String,
-- Desc: String,
-- Dist: Number,
-- Id: Number,
-- Name: String,
-- PopAg: Number,
-- PopDisp: Number,
-- Pos: [Number],
-- Price: Number,
-- Tags: [String],
-- TagsDisp: [Number],
-- Time: Number
-
-
-**REQUESTS:**
-
-- GET a generated course: `GET /generator/generate_course`
-
-| Description | Headers | Body | Return |
-|-|-|-|-|
-| Generate a course according to the given parameters. Will automatically create locations in database if new locations are found. | access_token: String<br>time: String<br>budget: String<br>tags: [String]<br>coordinate: [String] | | generated_course: [AlgorithmObject]<br>course: PartialCourseObject (Not created in database) |
-
-
-- GET a generated popup: `GET /generator/generate_popup`
-
-| Description | Headers | Body | Return |
-|-|-|-|-|
-| Generate a popup of a location owned by a partner. | access_token: String<br>coordinate: [String] | course: CourseID | popup: LocationObject |
-
-
-- GET popup answer: `GET /generator/popup_answer`
-
-| Description | Headers | Body | Return |
-|-|-|-|-|
-| Answer of the user for the previously generated popup. | access_token: String<br>anwser: Boolean<br>popup: LocationObject | | WIP |
