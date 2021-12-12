@@ -7,7 +7,10 @@ import {
 import Carousel from 'react-native-snap-carousel';
 
 
-function TutorialItem({data, title}) {
+import GifImage from '@lowkey/react-native-gif';
+
+
+function TutorialItem({data, callbackFull}) {
 
     const _renderItem = ({item, index}) => {
         return (
@@ -17,8 +20,9 @@ function TutorialItem({data, title}) {
                     backgroundColor:'floralwhite',
                     borderRadius: 5,
                     height: 520,
-                    padding: 50,
+                    padding: 20,
                     margin : 25,
+                    alignItems : 'center'
                 }}>
                 <Text style={{
                     fontWeight: 'bold',
@@ -28,7 +32,7 @@ function TutorialItem({data, title}) {
                     color: '#000000',
                     marginBottom : 10,
                 }}>{ item.title }</Text>
-                <Image style={{width : 150, height : 300}} source={item.image} />
+                <GifImage style={{width : 150, height : 300}} source={item.image} />
                 <Text style={{
                     fontSize: 12,
                     letterSpacing: 1.4,
@@ -47,17 +51,10 @@ function TutorialItem({data, title}) {
                 {
                     backgroundColor:'white',
                     borderRadius: 5,
-                    paddingVertical: 20,
+                    paddingVertical: 5,
                     marginBottom : 25,
                 }}
             >
-            <Text style={{
-                fontWeight: 'bold',
-                fontSize: 25,
-                letterSpacing: 2,
-                textAlign: 'center',
-                color: '#000000',
-            }}>{title}</Text>
             <Carousel
                 autoplay={true}
                 autoplayDelay={3000}
@@ -70,6 +67,12 @@ function TutorialItem({data, title}) {
               itemWidth={300}
               layout={'default'}
               layoutCardOffset={9}
+              onSnapToItem={(value) => {
+                  console.log("value", value);
+                  if (callbackFull && value == data.length -1) {
+                      callbackFull();
+                  }
+              }}
             />
         </View>
     )

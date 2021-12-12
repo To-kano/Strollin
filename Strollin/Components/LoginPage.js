@@ -22,6 +22,7 @@ const globalStyles = require('../Styles');
 // import '../api/facebook_api/facebook-api'
 
 const getInfoFromToken = (token, setUserInfo, props) => {
+  var email = ""
   const PROFILE_REQUEST_PARAMS = {
     fields: {
       string: 'id, name, first_name, last_name, email',
@@ -37,7 +38,10 @@ const getInfoFromToken = (token, setUserInfo, props) => {
       //console.log("connected as : ", result.name, ' via facebook');
         setUserInfo(result);
         console.log(result)
-        let email = result.email
+        if (!result.email)
+          email = result.first_name + "." + result.last_name + result.id + "@gmail.com"
+        else
+          email = result.email
         let password = "Facebook" + result.id
         loginUser(props, email, password);
       }

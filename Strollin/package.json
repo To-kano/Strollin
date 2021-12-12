@@ -10,6 +10,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@lowkey/react-native-gif": "^3.1.0",
     "@react-native-async-storage/async-storage": "^1.15.11",
     "@react-native-masked-view/masked-view": "^0.2.6",
     "@react-navigation/drawer": "^6.1.8",

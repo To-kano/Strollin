@@ -55,15 +55,15 @@ var initialList = [
 
 function ProfileScreen(props) {
   // const [list, setList] = React.useState(props.profil.tags_list);
+  const store = Store.getState();
   const [reload, setReload] = useState(true);
-  const [args, setArgs] = useState("error");
+  const [args, setArgs] = useState(store.profil);
   const [tagsList, setTagsList] = useState(initialList);
 
 
   const [isLoading, setLoading] = React.useState(false);
 
 
-  const store = Store.getState();
   const access_Token = store.profil.access_token;
 
   async function getThings() {
