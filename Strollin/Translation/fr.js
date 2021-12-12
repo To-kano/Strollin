@@ -328,7 +328,7 @@ export default {
     newTrip: 'Nouveau trajet',
     myTrip: 'Mon trajet',
     location: 'Lieu',
-    error: 'Error de connexion',
+    error: 'Erreur de connexion',
     passMissmatch: 'Les mots de passe sont differents'
   }
 };
