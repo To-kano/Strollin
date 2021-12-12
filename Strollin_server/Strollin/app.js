@@ -20,7 +20,6 @@ var generatorRouter = require('./routes/generator');
 var imageRouter = require('./routes/image');
 var mailsRouter = require('./routes/mails');
 var subscriptionRouter = require('./routes/subscription');
-var documentationRouter = require('./routes/documentation')
 
 //var algo = require('./Algo/BasicAlgo');
 var algo = require('./Algo/BasicAlgo2');
@@ -149,7 +148,6 @@ app.use('/generator', generatorRouter);
 app.use('/image', imageRouter);
 app.use('/mails', mailsRouter);
 app.use('/subscription', subscriptionRouter);
-app.use('/documentation', documentationRouter);
 
 
 
