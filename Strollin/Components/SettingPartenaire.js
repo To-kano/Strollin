@@ -182,7 +182,6 @@ function SettingPartenaire(props) {
               style={styles.textInput_number}
               placeholder={location.name}
               onChangeText={(text) => {
-                setLoading(true);
                 postName(text);
               }}
             />
@@ -198,7 +197,6 @@ function SettingPartenaire(props) {
               style={styles.textInput_number}
               placeholder={location.address}
               onChangeText={(text) => {
-                setLoading(true);
                 postAdd(text);
               }}
             />
@@ -214,7 +212,6 @@ function SettingPartenaire(props) {
               style={styles.textInput_number}
               placeholder={location.description}
               onChangeText={(text) => {
-                setLoading(true);
                 postDesc(text);
               }}
             />
